@@ -3,8 +3,23 @@ import mercurius from "mercurius";
 import resolvers from "./graphql/resolvers";
 import schema from "./graphql/schema";
 
+const ENV = process.env.NODE_ENV || "development"
+
+const envToLogger = {
+  development: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss Z",
+        ignore: "pid,hostname",
+      },
+    },
+  },
+  production: true,
+};
+
 const app = Fastify({
-  logger: process.env.NODE_ENV == "production" ? false : true,
+  logger: envToLogger[ENV],
 });
 
 // https://github.com/mercurius-js/mercurius-typescript/tree/master/examples

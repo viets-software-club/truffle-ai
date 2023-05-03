@@ -11,6 +11,6 @@ const schema = `
     gitRepository(id: ID!): GitRepository!
 		gitRepositories: [GitRepository]!
   }
-`;
+`
 
-export default schema;
+export default schema

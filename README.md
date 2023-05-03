@@ -1,38 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Truffle-AI-Frontend
 
-## Getting Started
-
-First, run the development server:
+## Setup
 
 ```bash
+git clone git@github.com:jst-seminar-rostlab-tum/truffle-ai-frontend.git
+npm install
+npm run prepare
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`git clone git@github.com:jst-seminar-rostlab-tum/truffle-ai-frontend.git` clones the repository
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+`npm install` installs the packages
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+`npm run prepare` installs the precommit hook, that will run eslint and prettier before you commit anything.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+`npm run dev` open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Start working on your commits by adding files or modifying existing ones like `pages/index.tsx`. The pages auto-update as you edit the file.
 
-## Learn More
+_Look at the **[Coding Guidelines](https://www.notion.so/Development-Guidelines-3013fbf7b3c941cdac8f0dd85628a133?pvs=4#ec664c8c9b1141e8bfeea173c8c4eb7f)** before starting to code_
 
-To learn more about Next.js, take a look at the following resources:
+## Learn More about Next.js
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [the Next.js GitHub repository](https://github.com/vercel/next.js/)
+- the easiest way to deploy a Next.js app is to use [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Next.js deployment documentation](https://nextjs.org/docs/deployment)

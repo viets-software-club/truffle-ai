@@ -15,6 +15,8 @@ module.exports = {
     'plugin:jsx-a11y/strict'
   ],
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'sonarjs', 'jsx-a11y'],
+  parser: '@typescript-eslint/parser',
+
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }]
   },
@@ -22,21 +24,15 @@ module.exports = {
     browser: true,
     node: false
   },
-  parserOptions: {
-    project: ['./tsconfig.json'],
-    ecmaFeatures: {
-      jsx: true
-    }
-  },
   settings: {
     react: {
       version: '18'
     }
   },
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx', '*.js', '*.jsx'],
-      parser: '@typescript-eslint/parser'
+  parserOptions: {
+    project: ['./tsconfig.json'],
+    ecmaFeatures: {
+      jsx: true
     }
-  ]
+  }
 }

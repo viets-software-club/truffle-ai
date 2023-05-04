@@ -1,3 +1,3 @@
-import app from "./server";
+import app from './server'
 
-app.listen({ port: 3000 });
+void app.listen({ port: 3000 })

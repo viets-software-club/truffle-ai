@@ -1,0 +1,56 @@
+{
+  "name": "truffle-ai-backend",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently 'tsc -w' 'nodemon dist/listen.js'",
+    "start": "node dist/listen.js",
+    "lint": "eslint ./src",
+    "lint:debug": "eslint ./src --debug",
+    "lint:fix": "eslint ./src --fix",
+    "prepare": "husky install",
+    "prettier:all": "prettier --write .",
+    "prettier:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend/issues"
+  },
+  "homepage": "https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend#readme",
+  "dependencies": {
+    "fastify": "^4.17.0",
+    "graphql": "^16.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "mercurius": "^13.0.0",
+    "prettier": "^2.8.8"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
+    "concurrently": "^8.0.1",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-sonarjs": "^0.19.0",
+    "nodemon": "^2.0.22",
+    "pino-pretty": "^10.0.0",
+    "typescript": "^5.0.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint ./src --cache --fix",
+      "prettier --write"
+    ],
+    "*.{html,css,scss,sass,md,mdx}": "prettier --write"
+  }
+}

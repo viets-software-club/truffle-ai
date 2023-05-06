@@ -234,7 +234,6 @@ async function main() {
     }
 
   }
-  
   // get the developers
   const developers = await fetchDevelopers(userInput)
   console.log(developers)

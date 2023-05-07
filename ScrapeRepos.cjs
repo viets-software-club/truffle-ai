@@ -179,11 +179,8 @@ async function fetchDevelopers(userInput){
 }
 
 async function main() {
-  // Choose whether to scrape daily, weekly or monthly information
-  const userInput = await getUserInput();
-  readline.close();
-
-  const trendingSplit = await fetchRepos(userInput);
+  // 0: daily; 1: weekly; 2: monthly
+  const trendingSplit = await fetchRepos(0);
   
   // your personal GitHub authToken
   const authToken = `Bearer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`;

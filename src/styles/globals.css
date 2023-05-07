@@ -2,10 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  /* Add Inter font-family and size variations */
+  --font-family-inter: 'Inter', sans-serif;
+  --font-size-1: 0.625rem;
+  /* 10px */
+  --font-size-2: 0.75rem;
+  /* 12px */
+  --font-size-3: 0.875rem;
+  /* 14px */
+  --font-size-4: 1rem;
+  /* 16px */
+  --font-size-5: 1.125rem;
+  /* 18px */
+  --font-size-6: 1.25rem;
+  /* 20px */
+  --font-size-7: 1.375rem;
+  /* 22px */
+  --font-size-8: 1.5rem;
+  /* 24px */
+  --font-size-9: 1.625rem;
+  /* 26px */
+  --font-size-10: 1.75rem;
+  /* 28px */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +43,6 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  font-family: var(--font-family-inter);
 }

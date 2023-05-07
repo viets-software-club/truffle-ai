@@ -1,20 +1,13 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const { time } = require('console');
+const { pathToArray } = require('graphql/jsutils/Path');
 const showdown = require('showdown');
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 });
-
-
-async function getUserInput() {
-  return new Promise(resolve => {
-    readline.question('From which timeframe do you want to get your data (0: daily; 1: weekly; 2: monthly): ', input => {
-      resolve(input);
-    });
-  });
-}
+const gitHubGraphQL = 'https://api.github.com/graphql';
 
 /** Fetches the repo owner and name for each repo on the GitHub trending page
  * @param userInput 0: daily; 1: weekly; 2: monthly
@@ -23,7 +16,8 @@ async function getUserInput() {
 async function fetchRepos(userInput) {
   try {
     const timeModes = ['?since=daily', '?since=weekly', '?since=monthly'];
-    const response = await axios.get('https://github.com/trending' + timeModes[userInput]);
+    const pathGitHubTrending = 'https://github.com/trending';
+    const response = await axios.get(pathGitHubTrending + timeModes[userInput]);
     const $ = cheerio.load(response.data);
     const repos = [];
 
@@ -55,6 +49,9 @@ async function fetchRepos(userInput) {
 *           returns null if the repo can't be located
 */
 async function getReadme(owner, name) {
+  // the following paths are used to try out various possible locations where the readMe files
+  // could be located at. If a readMe file of a repository is found at a different path
+  // it can be added here to find an even higher percentage of read me files
   const readmePaths = [`https://raw.githubusercontent.com/${owner}/${name}/release/readme.md`,
                          `https://raw.githubusercontent.com/${owner}/${name}/dev/README.rst`,
                         `https://raw.githubusercontent.com/${owner}/${name}/main/README.md`,
@@ -75,10 +72,9 @@ async function getReadme(owner, name) {
       return text3;
     }
     catch(error){
-
+      console.log(error)
     }
   }
-  console.log("Couldn't locate the read me file")
   return null
 }
 
@@ -89,7 +85,7 @@ async function getReadme(owner, name) {
  */
 async function getRepoInfo(query, authToken){
   try{
-    const response = await  axios.post('https://api.github.com/graphql', {
+    const response = await  axios.post(gitHubGraphQL, {
       query: query
     }, {
       headers: {
@@ -111,7 +107,6 @@ async function getRepoInfo(query, authToken){
  * @returns SHOULD return the summary of the repo
  */
 async function openAIRequestTurbo(readME) {
-  //const readme = await convertReadMe(); //here something wrong with the await
   const OPENAI_API_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
   const question =
     "The following text describes a prorgamming project that is current in development. Explain to me what the project is trying to archieve without telling me" +
@@ -139,8 +134,6 @@ async function openAIRequestTurbo(readME) {
     }),
   });
   const data = await response.json();
-  //const content = data.choices[0].message.content;
-  //console.log(content);
   console.log(data)
 }
 

@@ -16,13 +16,22 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'sonarjs', 'jsx-a11y'],
   parser: '@typescript-eslint/parser',
-
   rules: {
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }]
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never'
+      }
+    ]
   },
   env: {
     browser: true,
-    node: false
+    node: true
   },
   settings: {
     react: {

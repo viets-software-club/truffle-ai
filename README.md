@@ -58,7 +58,7 @@ Same as `prettier:check` but automatically fixes problems.
 
 #### `react:update-react-imports`
 
-Removes redunant import statements of `react` in components.
+Removes redundant import statements of `react` in components.
 
 ## Learn more
 

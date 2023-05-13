@@ -1,6 +1,5 @@
+import { BASE_URL } from '@/util/constants'
 import type { CodegenConfig } from '@graphql-codegen/cli'
-
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000/graphql'
 
 const config: CodegenConfig = {
   overwrite: true,

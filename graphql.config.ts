@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/util/constants'
+import BASE_URL from '@/constants/baseUrl'
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {

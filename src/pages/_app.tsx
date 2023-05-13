@@ -1,21 +1,19 @@
-import { Provider, SSRData } from 'urql'
-import type { AppProps } from 'next/app'
-import useClient from '../urql/useClient'
+import { cacheExchange, fetchExchange } from 'urql'
+import { withUrqlClient } from 'next-urql'
+import { AppProps } from 'next/app'
 
+import { BASE_URL } from '@/util/constants'
 import '@/styles/globals.css'
 
-type PageProps = {
-  URQL_DATA?: SSRData | undefined
+function App({ Component, pageProps }: AppProps) {
+  /* eslint-disable react/jsx-props-no-spreading */
+  return <Component {...pageProps} />
 }
 
-export default function App({ Component, pageProps }: AppProps<PageProps>) {
-  // Initialize urql client
-  const client = useClient(pageProps)
-
-  return (
-    <Provider value={client}>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <Component {...pageProps} />
-    </Provider>
-  )
-}
+export default withUrqlClient(
+  (ssrExchange) => ({
+    url: BASE_URL,
+    exchanges: [cacheExchange, ssrExchange, fetchExchange]
+  }),
+  { ssr: true } // enables SSR using getInitialProps
+)(App)

@@ -1,4 +1,4 @@
-import { useGitRepositoriesQuery } from '@/graphql/repositories.gql'
+import { useGitRepositoriesQuery } from '@/graphql/gitRepositories'
 
 /**
  * Simple component demonstrating how to use GraphQL queries

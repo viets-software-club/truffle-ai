@@ -20,10 +20,10 @@ module.exports = {
         'icon-color': '#858699',
         'bg-secondary-highlighted': '#26273B',
         'highlight-color': '#575BC7',
-        'red': '#EB5757',
-        'yellow': '#F2C94C',
-        'green': '#4CB782'
-      },
+        red: '#EB5757',
+        yellow: '#F2C94C',
+        green: '#4CB782'
+      }
     }
   },
   plugins: []

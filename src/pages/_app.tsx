@@ -11,9 +11,9 @@ const App = ({ Component, pageProps }: AppProps) => (
 )
 
 export default withUrqlClient(
-  (ssrExchange) => ({
+  () => ({
     url: BASE_URL,
-    exchanges: [cacheExchange, ssrExchange, fetchExchange]
+    exchanges: [cacheExchange, fetchExchange]
   }),
-  { ssr: true } // enables SSR using getInitialProps
+  { ssr: false }
 )(App)

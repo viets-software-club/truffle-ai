@@ -21,6 +21,12 @@ Start working on your commits by adding files or modifying existing ones like `p
 
 _Look at the **[Coding Guidelines](https://www.notion.so/Development-Guidelines-3013fbf7b3c941cdac8f0dd85628a133?pvs=4#ec664c8c9b1141e8bfeea173c8c4eb7f)** before starting to code_
 
+## Extensions to use for Development
+
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [TailwindCSS](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
 ## Learn More about Next.js
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.

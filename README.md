@@ -14,6 +14,13 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the r
 
 Please have a look at the [coding guidelines](https://www.notion.so/Development-Guidelines-3013fbf7b3c941cdac8f0dd85628a133?pvs=4#ec664c8c9b1141e8bfeea173c8c4eb7f) for this project before starting to code.
 
+## Recommended extensions
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [GraphQL](https://marketplace.visualstudio.com/items?itemName=mquandalle.graphql)
+- [TailwindCSS](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+
 ## NPM scripts
 
 #### `dev`

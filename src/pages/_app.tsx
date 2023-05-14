@@ -5,10 +5,10 @@ import { AppProps } from 'next/app'
 import BASE_URL from '@/constants/baseUrl'
 import '@/styles/globals.css'
 
-function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => (
   /* eslint-disable react/jsx-props-no-spreading */
-  return <Component {...pageProps} />
-}
+  <Component {...pageProps} />
+)
 
 export default withUrqlClient(
   (ssrExchange) => ({

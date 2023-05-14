@@ -1,9 +1,10 @@
+import { NextPage } from 'next'
 import { useGitRepositoriesQuery } from '@/graphql/gitRepositories'
 
 /**
  * Simple component demonstrating how to use GraphQL queries
  */
-export default function Example() {
+const Example: NextPage = () => {
   const [{ data, fetching, error }] = useGitRepositoriesQuery()
 
   if (fetching) return <p>Loading...</p>
@@ -20,3 +21,5 @@ export default function Example() {
     </div>
   )
 }
+
+export default Example

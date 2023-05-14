@@ -31,7 +31,10 @@ module.exports = {
   },
   env: {
     browser: true,
-    node: true
+    node: false
+  },
+  globals: {
+    process: true
   },
   settings: {
     react: {

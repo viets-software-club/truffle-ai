@@ -1,7 +1,0 @@
-query GitRepositories {
-  gitRepositories {
-    id
-    name
-    stars
-  }
-}

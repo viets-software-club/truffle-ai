@@ -1,11 +1,11 @@
 import { Inter } from 'next/font/google'
 
-import LeftSidebar from '@/components/LeftSidebar'
 import RepositoryTable from '@/components/RepositoryTable'
+import LeftSidebar from '@/components/LeftSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const Home = () => (
+const Bookmarks = () => (
   <main className={`min-h-screen p-24 ${inter.className} bg-gray-900 text-gray-100`}>
     <div className="flex flex-col">
       <LeftSidebar />
@@ -15,4 +15,4 @@ const Home = () => (
     </div>
   </main>
 )
-export default Home
+export default Bookmarks

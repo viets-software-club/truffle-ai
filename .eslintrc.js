@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-unused-vars': 'error'
   },
+
   env: {
     browser: true,
     node: false

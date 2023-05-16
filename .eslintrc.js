@@ -34,6 +34,9 @@ module.exports = {
     browser: true,
     node: false
   },
+  globals: {
+    process: true
+  },
   settings: {
     react: {
       version: '18'

@@ -2,3 +2,4 @@
 next.config.js
 postcss.config.js
 tailwind.config.js
+/src/generated/*.ts

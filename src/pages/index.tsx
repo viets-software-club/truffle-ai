@@ -16,7 +16,6 @@ const Home = () => {
         setOpenModel(false)
       }
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.removeEventListener('keydown', handleKeyDown)

@@ -7,10 +7,10 @@ import {
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
 import Button from '@/components/Button'
 import Card from '@/components/Card'
-import Chart from '@/pages/details/Chart'
-import ProjectInformation from '@/pages/details/ProjectInformation'
+import Chart from '@/pageComponents/details/Chart'
+import ProjectInformation from '@/pageComponents/details/ProjectInformation'
 import InformationRow from '@/components/InformationRow'
-import ScatterPlot from '@/pages/details/ScatterPlot'
+import ScatterPlot from '@/pageComponents/details/ScatterPlot'
 import {
   forksMock,
   issuesMock,
@@ -21,7 +21,7 @@ import {
   tweetListMock
 } from '@/data/detailPageMocks'
 import Page from '@/containers/Page'
-import SmallSidebar from './Sidebar'
+import SmallSidebar from '@/pageComponents/details/Sidebar'
 
 const handleClick = () => {
   // eslint-disable-next-line no-alert

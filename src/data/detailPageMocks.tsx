@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import GitHubMetricIcon from '@/pages/details/GitHubMetricIcon'
+import GitHubMetricIcon from '@/pageComponents/details/GitHubMetricIcon'
 import Sidebar from '@/components/Sidebar'
 import {
   IssueOpenedIcon,

@@ -4,16 +4,13 @@ import {
   flexRender,
   createColumnHelper
 } from '@tanstack/react-table'
-import React from 'react'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
 import { BiGitPullRequest } from 'react-icons/bi'
 import { VscIssues } from 'react-icons/vsc'
-
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
-import GitHubStatisticItem from '@/components/RightSidebar/GitHubStatisticItem'
-
+import GitHubStatisticItem from '@/components/Sidebar/Box/GithubStatItem'
 import respositoriesMock from '../../data/repositoriesMock'
 
 type Repository = {
@@ -117,14 +114,12 @@ const browseListColumns = [
 ]
 
 const RepositoryTable = () => {
-  // REACT TABLE
-  const tableData = React.useMemo(() => respositoriesMock, [])
-
   const table = useReactTable({
-    data: tableData,
+    data: respositoriesMock,
     columns: browseListColumns,
     getCoreRowModel: getCoreRowModel()
   })
+
   return (
     <div className="flex flex-col rounded-lg">
       <table>
@@ -146,7 +141,7 @@ const RepositoryTable = () => {
             <tr
               key={row.id}
               className="cursor-pointer hover:bg-gray-800"
-              // eslint-disable-next-line no-alert
+              // @TODO
               onClick={() => alert('This will soon open up a detail view page!')}
             >
               {row.getVisibleCells().map((cell) => (
@@ -157,8 +152,8 @@ const RepositoryTable = () => {
             </tr>
           ))}
         </tbody>
-        {/* We are not using Footers for now */}
-        <tfoot>
+        {/* @TODO We are not using Footers for now */}
+        {/* <tfoot>
           {table.getFooterGroups().map((footerGroup) => (
             <tr key={footerGroup.id}>
               {footerGroup.headers.map((header) => (
@@ -170,7 +165,7 @@ const RepositoryTable = () => {
               ))}
             </tr>
           ))}
-        </tfoot>
+        </tfoot> */}
       </table>
     </div>
   )

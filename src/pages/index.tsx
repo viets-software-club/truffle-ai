@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 const Home = () => {
-  const [openModel, setOpenModel] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === 'k') {
         event.preventDefault()
-        setOpenModel(true)
+        setOpenModal(true)
       } else if (event.key === 'Escape') {
-        setOpenModel(false)
+        setOpenModal(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -22,11 +22,11 @@ const Home = () => {
     }
   }, [])
   const closeModel = () => {
-    setOpenModel(false)
+    setOpenModal(false)
   }
   return (
     <>
-      {openModel && <CommandInterface action={closeModel} />}
+      {openModal && <CommandInterface action={closeModel} />}
       <main className={`min-h-screen p-24 ${inter.className} bg-primary text-primary`}>
         <RepositoryTable />
       </main>

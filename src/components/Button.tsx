@@ -38,8 +38,6 @@ const Button = ({
   textColor = 'text-gray-300',
   fullWidth
 }: ButtonProps) => {
-  if (Icon && !text) return <Icon className={`h-4 w-4 ${iconColor}`} />
-
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
   }`
@@ -48,7 +46,13 @@ const Button = ({
       {text}
     </span>
   )
-  const iconNode = Icon && <Icon key="2" className={`mr-2 h-4 w-4 ${iconColor}`} />
+  const iconNode =
+    Icon &&
+    (variant === 'onlyIcon' || variant === 'onlyIconnoBordernoBG' ? (
+      <Icon key="2" className={`h-4 w-4 ${iconColor}`} />
+    ) : (
+      <Icon key="2" className={`${order === 'ltr' ? 'mr-2' : 'ml-2'} h-4 w-4 ${iconColor}`} />
+    ))
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
 
   return (

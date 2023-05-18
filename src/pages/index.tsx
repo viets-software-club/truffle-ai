@@ -3,7 +3,7 @@ import Page from '@/containers/Page'
 
 const Home = () => (
   <Page>
-    <div className="p-10">
+    <div className="w-full p-10">
       <RepositoryTable />
     </div>
   </Page>

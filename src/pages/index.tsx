@@ -3,7 +3,9 @@ import Page from '@/containers/Page'
 
 const Home = () => (
   <Page>
-    <RepositoryTable />
+    <div className="p-10">
+      <RepositoryTable />
+    </div>
   </Page>
 )
 export default Home

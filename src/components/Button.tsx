@@ -43,8 +43,12 @@ const Button = ({
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
   }`
-  const textNode = text && <span className={`text-14 ${textColor}`}>{text}</span>
-  const iconNode = Icon && <Icon className={`mr-2 h-4 w-4 ${iconColor}`} />
+  const textNode = text && (
+    <span key="1" className={`text-14 ${textColor}`}>
+      {text}
+    </span>
+  )
+  const iconNode = Icon && <Icon key="2" className={`mr-2 h-4 w-4 ${iconColor}`} />
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
 
   return (

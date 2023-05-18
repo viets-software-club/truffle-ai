@@ -7,18 +7,18 @@ import { FaSlack } from 'react-icons/fa'
 const SmallSidebar = () => (
   <Sidebar.Small>
     <Sidebar.Box title="GitHub Stats">
-      {githubStatListMock.map((data) => (
-        <Sidebar.Box.GithubStatItem {...data} />
+      {githubStatListMock.map(({ id, ...data }) => (
+        <Sidebar.Box.GithubStatItem key={id} {...data} />
       ))}
     </Sidebar.Box>
     <Sidebar.Box title="SocialMedia">
-      {socialMediaListMock.map((data) => (
-        <Sidebar.Box.SocialMediaItem {...data} />
+      {socialMediaListMock.map(({ id, ...data }) => (
+        <Sidebar.Box.SocialMediaItem key={id} {...data} />
       ))}
     </Sidebar.Box>
     <Sidebar.Box title="Founder">
-      {founderListMock.map((data) => (
-        <Sidebar.Box.FounderItem {...data} />
+      {founderListMock.map(({ id, ...data }) => (
+        <Sidebar.Box.FounderItem key={id} {...data} />
       ))}
     </Sidebar.Box>
     <Sidebar.Box title="Integrations">

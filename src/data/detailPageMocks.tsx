@@ -30,8 +30,11 @@ export const founderListMock = [
   }
 ]
 
-export const socialMediaListMock: ComponentProps<typeof Sidebar.Box.SocialMediaItem>[] = [
+export const socialMediaListMock: ({ id: ID } & ComponentProps<
+  typeof Sidebar.Box.SocialMediaItem
+>)[] = [
   {
+    id: '0',
     icon: 'discord',
     name: 'Discord ',
     text: 'Followers',
@@ -42,6 +45,7 @@ export const socialMediaListMock: ComponentProps<typeof Sidebar.Box.SocialMediaI
     }
   },
   {
+    id: '1',
     icon: 'twitter',
     name: 'Twitter ',
     text: 'Followers',
@@ -71,21 +75,25 @@ export const tweetListMock = [
   }
 ]
 
-export const githubStatListMock: ComponentProps<typeof Sidebar.Box.GithubStatItem>[] = [
-  { Icon: StarIcon, value: '105k', growth: '+450' },
-  { Icon: IssueOpenedIcon, value: '1.6k', growth: '+121' },
-  { Icon: RepoForkedIcon, value: '23.7k', growth: '+1.1k' },
+export const githubStatListMock: ({ id: ID } & ComponentProps<
+  typeof Sidebar.Box.GithubStatItem
+>)[] = [
+  { id: '0', Icon: StarIcon, value: '105k', growth: '+450' },
+  { id: '1', Icon: IssueOpenedIcon, value: '1.6k', growth: '+121' },
+  { id: '2', Icon: RepoForkedIcon, value: '23.7k', growth: '+1.1k' },
   {
+    id: '3',
     IconMetric: <GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />,
     value: '3.2',
     growth: '-0.2'
   },
   {
+    id: '4',
     IconMetric: <GitHubMetricIcon Icon={RepoForkedIcon} Icon2={IssueOpenedIcon} />,
     value: '1.6',
     growth: '+0.1'
   },
-  { Icon: PeopleIcon, value: '23', growth: '+2' }
+  { id: '5', Icon: PeopleIcon, value: '23', growth: '+2' }
 ]
 
 export const githubStatListMockWithId: ({ id: ID } & ComponentProps<

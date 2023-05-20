@@ -1,9 +1,18 @@
 import axios, { AxiosResponse } from 'axios'
-const cheerio = require('cheerio');
-const showdown = require('showdown');
-import { Developer, DeveloperRepo, OpenAIResponse, Repository} from "./types";
+import cheerio from 'cheerio'
+import showdown from 'showdown'
+import {
+  Developer,
+  DeveloperRepo,
+  OpenAIResponse,
+  StarRecord,
+  Repository,
+  StargazerCount,
+  StargazersData,
+  StargazerRecord
+} from './types'
 
-const DEFAULT_PER_PAGE = 30;
+const DEFAULT_PER_PAGE = 30
 
 /** Get all the information from the GitHub trending page; all the repos and the names of their creators
  * @param {number} timeMode 0: daily; 1: weekly; 2: monthly => timescope of the trending page
@@ -178,34 +187,38 @@ async function getRepoStargazers(
   repo: string,
   token?: string,
   page?: number
-) {
-  let url = `https://api.github.com/repos/${repo}/stargazers?per_page=${DEFAULT_PER_PAGE}`;
+): Promise<AxiosResponse<StargazersData[]>> {
+  let url = `https://api.github.com/repos/${repo}/stargazers?per_page=${DEFAULT_PER_PAGE}`
 
   if (page !== undefined) {
-    url = `${url}&page=${page}`;
+    url = `${url}&page=${page}`
   }
   return axios.get(url, {
     headers: {
-      Accept: "application/vnd.github.v3.star+json",
-      Authorization: token ? `token ${token}` : "",
-    },
-  });
+      Accept: 'application/vnd.github.v3.star+json',
+      Authorization: token ? `token ${token}` : ''
+    }
+  })
 }
 
 /** Retrieves the total count of stargazers for a Github repository
  * @param {string} repo - Name of the Github repository: "owner/repository"
  * @param {string} token - Github access token
- * @returns Promise<Object> : A promise that resolves to the total count of stargzers for the repository
+ * @returns Promise<number> : A promise that resolves to the total count of stargzers for the repository
  */
-async function getRepoStargazersCount(repo: string, token?: string) {
-  const { data } = await axios.get(`https://api.github.com/repos/${repo}`, {
-    headers: {
-      Accept: "application/vnd.github.v3.star+json",
-      Authorization: token ? `token ${token}` : "",
-    },
-  });
+async function getRepoStargazersCount(repo: string, token?: string): Promise<number> {
+  const response: AxiosResponse<StargazerCount> = await axios.get(
+    `https://api.github.com/repos/${repo}`,
+    {
+      headers: {
+        Accept: 'application/vnd.github.v3.star+json',
+        Authorization: token ? `token ${token}` : ''
+      }
+    }
+  )
 
-  return data.stargazers_count;
+  const data: StargazerCount = response.data
+  return data.stargazers_count
 }
 
 /** Retrieves the star records (star count by date) of a Github repository
@@ -215,109 +228,110 @@ async function getRepoStargazersCount(repo: string, token?: string) {
  * The higher this value is the more accurate is going to be the graph of the star history
  * @returns Promise<Array<{ date: string, count: number }>>: A promise that resolves to an array of star records
  */
-async function getRepoStarRecords(
-  repo: string,
-  token: string,
-  maxRequestAmount: number
-) {
-  const patchRes = await getRepoStargazers(repo, token);
+async function getRepoStarRecords(repo: string, token: string, maxRequestAmount: number) {
+  const patchRes: AxiosResponse<StargazersData[]> = await getRepoStargazers(repo, token)
 
-  const headerLink = patchRes.headers["link"] || "";
+  const headerLink: string = (patchRes.headers['link'] as string) || ''
 
-  let pageCount = 1;
-  const regResult = /next.*&page=(\d*).*last/.exec(headerLink);
+  let pageCount = 1
+  const regResult = /next.*&page=(\d*).*last/.exec(headerLink)
 
-  if (regResult) {
-    if (regResult[1] && Number.isInteger(Number(regResult[1]))) {
-      pageCount = Number(regResult[1]);
-    }
+  if (regResult && regResult[1] && Number.isInteger(Number(regResult[1]))) {
+    pageCount = Number(regResult[1])
   }
 
   if (pageCount === 1 && patchRes?.data?.length === 0) {
     throw {
       status: patchRes.status,
-      data: [],
-    };
-  }
-
-  const requestPages: number[] = [];
-  if (pageCount < maxRequestAmount) {
-    requestPages.push(...range(1, pageCount));
-  } else {
-    range(1, maxRequestAmount).map((i: number) => {
-      requestPages.push(Math.round((i * pageCount) / maxRequestAmount) - 1);
-    });
-    if (!requestPages.includes(1)) {
-      requestPages.unshift(1);
+      data: []
     }
   }
 
+  const requestPages: number[] = []
+  if (pageCount < maxRequestAmount) {
+    requestPages.push(...range(1, pageCount))
+  } else {
+    range(1, maxRequestAmount).forEach((i: number) => {
+      requestPages.push(Math.round((i * pageCount) / maxRequestAmount) - 1)
+    })
+    if (!requestPages.includes(1)) {
+      requestPages.unshift(1)
+    }
+  }
+
+  return await getRepoStarsMap(repo, token, requestPages, maxRequestAmount)
+}
+
+/** Retrieves the star records (star count by date) of a GitHub repository and returns them as an array of `StarRecord` objects.
+ * Had to split up the original method by star-history because of ESLint
+ * @param {string} repo - Name of the GitHub repository in the format "owner/repository".
+ * @param {string} token - GitHub Access token for authentication (optional).
+ * @param {number[]} requestPages - Array of page numbers to request from the API.
+ * @param {number} maxRequestAmount - Maximum number of API requests to make to retrieve the star records.
+ * @returns {StarRecord[]} - An array of `StarRecord` objects representing the star records.
+ */
+async function getRepoStarsMap(
+  repo: string,
+  token: string,
+  requestPages: number[],
+  maxRequestAmount: number
+) {
   const resArray = await Promise.all(
     requestPages.map((page) => {
-      return getRepoStargazers(repo, token, page);
+      return getRepoStargazers(repo, token, page)
     })
-  );
+  )
 
-  const starRecordsMap: Map<string, number> = new Map();
+  const starRecordsMap: Map<string, number> = new Map()
 
   if (requestPages.length < maxRequestAmount) {
-    const starRecordsData: {
-      starred_at: string;
-    }[] = [];
-    resArray.map((res) => {
-      const { data } = res;
-      starRecordsData.push(...data);
-    });
+    const starRecordsData: { starred_at: string }[] = []
+    resArray.forEach(({ data }) => {
+      starRecordsData.push(...data)
+    })
     for (let i = 0; i < starRecordsData.length; ) {
-      starRecordsMap.set(
-        getDateString(starRecordsData[i].starred_at),
-        i + 1
-      );
-      i += Math.floor(starRecordsData.length / maxRequestAmount) || 1;
+      starRecordsMap.set(getDateString(starRecordsData[i].starred_at), i + 1)
+      i += Math.floor(starRecordsData.length / maxRequestAmount) || 1
     }
   } else {
-    resArray.map(({ data }, index) => {
+    resArray.forEach(({ data }: { data: StargazerRecord[] }, index) => {
       if (data.length > 0) {
-        const starRecord = data[0];
+        const starRecord = data[0]
         starRecordsMap.set(
           getDateString(starRecord.starred_at),
           DEFAULT_PER_PAGE * (requestPages[index] - 1)
-        );
+        )
       }
-    });
+    })
   }
 
-  const starAmount = await getRepoStargazersCount(repo, token);
-  starRecordsMap.set(getDateString(Date.now()), starAmount);
+  const starAmount = await getRepoStargazersCount(repo, token)
+  starRecordsMap.set(getDateString(Date.now()), starAmount)
 
-  const starRecords: {
-    date: string;
-    count: number;
-  }[] = [];
+  const starRecords: StarRecord[] = []
 
   starRecordsMap.forEach((v, k) => {
     starRecords.push({
       date: k,
-      count: v,
-    });
-  });
-
-  return starRecords;
+      count: v
+    })
+  })
+  return starRecords
 }
 
 /** Function generates an array of numbers within a given range
  * This is needed to only reconstruct the star history from some specific points in the history
  * And not from looking at every single star recorded
- * @param {number} from 
- * @param {number} to 
+ * @param {number} from
+ * @param {number} to
  * @returns Array<number>: An array of numbers within the specified range.
  */
 function range(from: number, to: number): number[] {
-  const r: number[] = [];
+  const r: number[] = []
   for (let i = from; i <= to; i++) {
-    r.push(i);
+    r.push(i)
   }
-  return r;
+  return r
 }
 
 /** Retuns the timestamp of a given date
@@ -325,39 +339,34 @@ function range(from: number, to: number): number[] {
  * @returns Timestamp of the given date
  */
 function getTimeStampByDate(t: Date | number | string): number {
-  const d = new Date(t);
+  const d = new Date(t)
 
-  return d.getTime();
+  return d.getTime()
 }
 
 /** Formats a dat into a string using the specified format
- * @param {Date | number | string} t 
- * @param {string} format - The format string for the desired date format. 
+ * @param {Date | number | string} t
+ * @param {string} format - The format string for the desired date format.
  * Default is "yyyy/MM/dd hh:mm:ss".
  * @returns Formatted string
  */
-function getDateString(
-  t: Date | number | string,
-  format = "yyyy/MM/dd hh:mm:ss"
-): string {
-  const d = new Date(getTimeStampByDate(t));
+function getDateString(t: Date | number | string, format = 'yyyy/MM/dd hh:mm:ss'): string {
+  const d = new Date(getTimeStampByDate(t))
 
-  const year = d.getFullYear();
-  const month = d.getMonth() + 1;
-  const date = d.getDate();
-  const hours = d.getHours();
-  const minutes = d.getMinutes();
-  const seconds = d.getSeconds();
+  const year = d.getFullYear()
+  const month = d.getMonth() + 1
+  const date = d.getDate()
+  const hours = d.getHours()
+  const minutes = d.getMinutes()
+  const seconds = d.getSeconds()
 
-  const formatedString = format
-    .replace("yyyy", String(year))
-    .replace("MM", String(month))
-    .replace("dd", String(date))
-    .replace("hh", String(hours))
-    .replace("mm", String(minutes))
-    .replace("ss", String(seconds));
-
-  return formatedString;
+  return format
+    .replace('yyyy', String(year))
+    .replace('MM', String(month))
+    .replace('dd', String(date))
+    .replace('hh', String(hours))
+    .replace('mm', String(minutes))
+    .replace('ss', String(seconds))
 }
 
 /** Main function to test the functionality of the different methods
@@ -369,9 +378,9 @@ async function main(timeMode: number) {
   const trendingSplit: string[] | undefined = await fetchRepos(timeMode)
 
   // your personal GitHub authToken
-  const authToken = `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`
+  const authToken = `XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
   // //Authorization: "Bearer " + process.env.OPENAI_API_KEY,
-  const OPENAI_API_KEY = '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'
+  const OPENAI_API_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
   // check if any repos were actually found
   if (!trendingSplit) {
@@ -400,7 +409,7 @@ async function main(timeMode: number) {
       }
     }`
 
-    console.log(await getRepoInfo(query, ("Bearer " + authToken)))
+    console.log(await getRepoInfo(query, 'Bearer ' + authToken))
 
     // TODO check if the repo has more than a 1k stars: repoInfo.stargazers.totalCount < 1000
 
@@ -412,9 +421,8 @@ async function main(timeMode: number) {
     }
 
     // get the star history of the repo
-    console.log(await getRepoStarRecords((owner + "/" + name), authToken, 10))
+    console.log(await getRepoStarRecords(owner + '/' + name, authToken, 10))
   }
   // get the developers
-  console.log(fetchDevelopers(timeMode))
+  // console.log(fetchDevelopers(timeMode))
 }
-main(0)

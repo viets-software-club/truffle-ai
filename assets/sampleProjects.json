@@ -1,0 +1,2579 @@
+[
+  {
+    "id": "123",
+    "gitHubInformation": {
+      "name": "Next.js",
+      "author": {
+        "gitHubHandle": "vercel",
+        "name": "vercel",
+        "repositoryCount": 145,
+        "starCount": 56838,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://vercel.co/",
+        "twitterHandle": "@vercel"
+      },
+      "about": "Next.js is a minimalistic framework for server-rendered React applications.",
+      "eli5": "Next.js is a framework that simplifies building React applications that render on the server.",
+      "programmingLanguages": ["JavaScript", "CSS", "HTML"],
+      "categories": ["Web Framework"],
+      "starCount": 56317,
+      "issueCount": 531,
+      "forkCount": 4606,
+      "pullRequestCount": 444,
+      "contributorsCount": 245,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "developit",
+          "name": "Jason Miller",
+          "repositoryCount": 128,
+          "starCount": 33595,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": "https://jasonformat.com/",
+          "twitterHandle": "@_developit"
+        },
+        {
+          "gitHubHandle": "timer150",
+          "name": "Tim Neutkens",
+          "repositoryCount": 35,
+          "starCount": 5361,
+          "employedAt": "Vercel",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@timneutkens"
+        },
+        {
+          "gitHubHandle": "laurieontech",
+          "name": "Laurie Barth",
+          "repositoryCount": 23,
+          "starCount": 323,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": "https://www.laurieontech.com/",
+          "twitterHandle": "@laurieontech"
+        }
+      ],
+      "linkToRepo": "https://github.com/vercel/next.js",
+      "websiteOfRepo": "https://nextjs.org/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Next.js",
+        "link": "https://twitter.com/vercel",
+        "followerCount": 245000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Next.js",
+        "link": "https://www.linkedin.com/company/zeitco/",
+        "followerCount": 19000
+      },
+      {
+        "platform": "Slack",
+        "accountName": "#next-js",
+        "link": "https://vercel.com/chat",
+        "memberCount": 45000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Next.js",
+        "link": "https://discord.gg/nextjs",
+        "memberCount": 95000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=29490051",
+        "title": "Next.js 11.1: Faster Full-Stack Performance, Live Image Editing, Image Component, and more",
+        "pointCount": 453,
+        "commentCount": 154
+      },
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/vercel/status/1390351807263238660",
+        "title": "Next.js 11.1 is here! 🎉\n\nThis release includes:\n\n- Faster full-stack performance 🚀\n- Live image editing in development 📸\n- A new &lt;Image&gt; component 💻\n- Custom domains for Vercel Preview 🌐\n- Improved component rendering speed ⚡️\n\nhttps://t.co/PGLLSMv8rY",
+        "date": "2021-05-06T14:11:22.000Z",
+        "likeCount": 573,
+        "commentCount": 69,
+        "retweetCount": 270,
+        "viewsCount": 15328
+      },
+      {
+        "platform": "Product Hunt",
+        "link": "https://www.producthunt.com/posts/next-js-11-1",
+        "title": "Next.js 11.1 - Faster Full-Stack Performance, Live Image Editing, and More",
+        "descriptionPreview": "Build your React apps faster and smarter",
+        "date": "2021-05-06T11:03:32.000Z",
+        "likeCount": 186,
+        "commentCount": 17
+      }
+    ]
+  },
+  {
+    "id": "124",
+    "gitHubInformation": {
+      "name": "Visual Studio Code",
+      "author": {
+        "gitHubHandle": "microsoft",
+        "name": "Microsoft",
+        "repositoryCount": 242,
+        "starCount": 137846,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.microsoft.com/",
+        "twitterHandle": "@Microsoft"
+      },
+      "about": "Visual Studio Code is a free source-code editor made by Microsoft for Windows, Linux and macOS.",
+      "eli5": "Visual Studio Code is a free, cross-platform source code editor with a focus on productivity.",
+      "programmingLanguages": ["TypeScript", "JavaScript", "CSS", "HTML"],
+      "categories": ["Text Editor", "Integrated Development Environment"],
+      "starCount": 137695,
+      "issueCount": 24455,
+      "forkCount": 30350,
+      "pullRequestCount": 12016,
+      "contributorsCount": 1709,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "Tyriar",
+          "name": "Henrique Boregio",
+          "repositoryCount": 136,
+          "starCount": 3124,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@Tyriar"
+        },
+        {
+          "gitHubHandle": "isidorn",
+          "name": "Isidor Nikolic",
+          "repositoryCount": 23,
+          "starCount": 182,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://isidorn.github.io/",
+          "twitterHandle": "@isidorn"
+        },
+        {
+          "gitHubHandle": "bpasero",
+          "name": "Benjamin Pasero",
+          "repositoryCount": 44,
+          "starCount": 154,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://benjaminpasero.de/",
+          "twitterHandle": "@bpasero"
+        }
+      ],
+      "linkToRepo": "https://github.com/microsoft/vscode",
+      "websiteOfRepo": "https://code.visualstudio.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Visual Studio Code",
+        "link": "https://twitter.com/code",
+        "followerCount": 280000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Visual Studio Code",
+        "link": "https://www.linkedin.com/company/visual-studio-code/",
+        "followerCount": 62000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/code/status/1389286175310775809",
+        "title": "Join us on May 6th for a special event celebrating 5 years of Visual StudioCode! 🎉 We'll be reflecting on the journey so far and looking ahead to what's next. RSVP now: https://aka.ms/vscode5th #VSCodeTurns5",
+        "date": "2021-05-03T15:08:08.000Z",
+        "likeCount": 509,
+        "commentCount": 24,
+        "retweetCount": 132,
+        "viewsCount": 13843
+      }
+    ]
+  },
+  {
+    "id": "125",
+    "gitHubInformation": {
+      "name": "Docker",
+      "author": {
+        "gitHubHandle": "docker",
+        "name": "Docker",
+        "repositoryCount": 66,
+        "starCount": 65227,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.docker.com/",
+        "twitterHandle": "@Docker"
+      },
+      "about": "Docker is a set of platform-as-a-service products that use OS-level virtualization to deliver software in packages called containers.",
+      "eli5": "Docker is a tool designed to make it easier to create, deploy, and run applications by using containers.",
+      "programmingLanguages": ["Go", "Python"],
+      "categories": ["Containerization", "Virtualization"],
+      "starCount": 65227,
+      "issueCount": 6318,
+      "forkCount": 17491,
+      "pullRequestCount": 4994,
+      "contributorsCount": 1958,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "thaJeztah",
+          "name": "Sebastiaan van Stijn",
+          "repositoryCount": 108,
+          "starCount": 2649,
+          "employedAt": "Docker",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@thaJeztah"
+        },
+        {
+          "gitHubHandle": "aaronlehmann",
+          "name": "Aaron Lehmann",
+          "repositoryCount": 66,
+          "starCount": 649,
+          "employedAt": "Docker",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "crosbymichael",
+          "name": "Michael Crosby",
+          "repositoryCount": 57,
+          "starCount": 430,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@ericchiang"
+        }
+      ],
+      "linkToRepo": "https://github.com/docker/docker-ce",
+      "websiteOfRepo": "https://www.docker.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Docker",
+        "link": "https://twitter.com/Docker",
+        "followerCount": 303000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Docker",
+        "link": "https://www.linkedin.com/company/docker-inc-/",
+        "followerCount": 73827
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/Docker/status/1449806656325347336",
+        "title": "👋 Say hello to Docker 22.0! \n\n🔥 Faster container builds with BuildKit and enhanced caching \n🐳 New ARM64 architecture support\n🌟 Better Windows container support\n📝 And more...\n\nLearn about all the latest features and improvements 👉 https://dockr.ly/3lnmwAx",
+        "date": "2021-10-17T21:17:55.000Z",
+        "likeCount": 360,
+        "commentCount": 38,
+        "retweetCount": 179,
+        "viewsCount": 18605
+      }
+    ]
+  },
+  {
+    "id": "456",
+    "gitHubInformation": {
+      "name": "Kubernetes",
+      "author": {
+        "gitHubHandle": "kubernetes",
+        "name": "Kubernetes Authors",
+        "repositoryCount": 890,
+        "starCount": 112000,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://kubernetes.io/",
+        "twitterHandle": "@kubernetesio"
+      },
+      "about": "Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.",
+      "eli5": "Kubernetes is like a conductor that helps manage and run multiple containers in a coordinated and efficient manner.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Container Orchestration"],
+      "starCount": 112000,
+      "issueCount": 7417,
+      "forkCount": 30700,
+      "pullRequestCount": 13600,
+      "contributorsCount": 2060,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "thockin",
+          "name": "Tim Hockin",
+          "repositoryCount": 110,
+          "starCount": 1530,
+          "employedAt": "Google",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "lavalamp",
+          "name": "Brian Grant",
+          "repositoryCount": 100,
+          "starCount": 1320,
+          "employedAt": "Google",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "brendandburns",
+          "name": "Brendan Burns",
+          "repositoryCount": 250,
+          "starCount": 2740,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://brendandburns.github.io/",
+          "twitterHandle": "@brendandburns"
+        }
+      ],
+      "linkToRepo": "https://github.com/kubernetes/kubernetes",
+      "websiteOfRepo": "https://kubernetes.io/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Kubernetes",
+        "link": "https://twitter.com/kubernetesio",
+        "followerCount": 354000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Kubernetes",
+        "link": "https://www.linkedin.com/company/kubernetes/",
+        "followerCount": 137000
+      },
+      {
+        "platform": "Slack",
+        "accountName": "Kubernetes",
+        "link": "https://slack.k8s.io/",
+        "memberCount": 80000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/kubernetesio/status/1425559722499540996",
+        "title": "We just released Kubernetes v1.22! 🎉",
+        "date": "2021-08-11T18:01:24.000Z",
+        "likeCount": 1234,
+        "commentCount": 567,
+        "retweetCount": 321,
+        "viewsCount": 9876
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=29490051",
+        "title": "Kubernetes: An Introduction and Overview",
+        "pointCount": 453,
+        "commentCount": 154
+      }
+    ]
+  },
+  {
+    "id": "457",
+    "gitHubInformation": {
+      "name": "GitHub CLI",
+      "author": {
+        "gitHubHandle": "cli",
+        "name": "GitHub",
+        "repositoryCount": 590,
+        "starCount": 19800,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://cli.github.com/",
+        "twitterHandle": "@github"
+      },
+      "about": "GitHub CLI is a command-line tool that brings GitHub to your terminal.",
+      "eli5": "GitHub CLI is like a Swiss Army knife for GitHub, allowing you to manage repositories, issues, pull requests, and more, all from the command line.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Developer Tools"],
+      "starCount": 19800,
+      "issueCount": 403,
+      "forkCount": 4500,
+      "pullRequestCount": 252,
+      "contributorsCount": 124,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "mislav",
+          "name": "Mislav Marohnić",
+          "repositoryCount": 75,
+          "starCount": 3221,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "tj",
+          "name": "TJ Holowaychuk",
+          "repositoryCount": 220,
+          "starCount": 4567,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "dahlia",
+          "name": "Dahlia",
+          "repositoryCount": 90,
+          "starCount": 1876,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/cli/cli",
+      "websiteOfRepo": "https://cli.github.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "GitHub",
+        "link": "https://twitter.com/github",
+        "followerCount": 1800000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "GitHub",
+        "link": "https://www.linkedin.com/company/github/",
+        "followerCount": 580000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "GitHub",
+        "link": "https://discord.gg/github",
+        "memberCount": 80000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/github/status/1446875164427516421",
+        "title": "GitHub CLI 2.0 is now available!",
+        "date": "2021-10-09T18:01:24.000Z",
+        "likeCount": 1872,
+        "commentCount": 476,
+        "retweetCount": 328,
+        "viewsCount": 12876
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30079191",
+        "title": "GitHub CLI 2.0: gh brings GitHub to the command line",
+        "pointCount": 645,
+        "commentCount": 189
+      }
+    ]
+  },
+  {
+    "id": "789",
+    "gitHubInformation": {
+      "name": "Terraform",
+      "author": {
+        "gitHubHandle": "hashicorp",
+        "name": "HashiCorp",
+        "repositoryCount": 140,
+        "starCount": 23700,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.hashicorp.com/",
+        "twitterHandle": "@hashicorp"
+      },
+      "about": "Terraform is an open-source infrastructure as code software tool that enables you to define and provision infrastructure resources in a declarative manner.",
+      "eli5": "Terraform is like a blueprint for setting up and managing your infrastructure resources. It allows you to write code that describes your desired infrastructure state and automatically provisions and manages those resources.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Infrastructure as Code"],
+      "starCount": 23700,
+      "issueCount": 498,
+      "forkCount": 4300,
+      "pullRequestCount": 156,
+      "contributorsCount": 215,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "apparentlymart",
+          "name": "Martin Atkins",
+          "repositoryCount": 65,
+          "starCount": 2876,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bflad",
+          "name": "Brian Flad",
+          "repositoryCount": 80,
+          "starCount": 2465,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "kelseyhightower",
+          "name": "Kelsey Hightower",
+          "repositoryCount": 150,
+          "starCount": 7654,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/hashicorp/terraform",
+      "websiteOfRepo": "https://www.terraform.io/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "HashiCorp",
+        "link": "https://twitter.com/hashicorp",
+        "followerCount": 330000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "HashiCorp",
+        "link": "https://www.linkedin.com/company/hashicorp/",
+        "followerCount": 65000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "HashiCorp",
+        "link": "https://discord.com/invite/hashicorp",
+        "memberCount": 95000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/hashicorp/status/1446609124387558405",
+        "title": "Terraform 1.1 is here with native support for AWS Cloud Control API, enhanced provider testing, and more!",
+        "date": "2021-10-08T17:35:21.000Z",
+        "likeCount": 1273,
+        "commentCount": 253,
+        "retweetCount": 179,
+        "viewsCount": 9724
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30077855",
+        "title": "Terraform 1.1: Native support for AWS Cloud Control API, enhanced provider testing",
+        "pointCount": 568,
+        "commentCount": 189
+      }
+    ]
+  },
+  {
+    "id": "987",
+    "gitHubInformation": {
+      "name": "Ansible",
+      "author": {
+        "gitHubHandle": "ansible",
+        "name": "Ansible",
+        "repositoryCount": 600,
+        "starCount": 30200,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.ansible.com/",
+        "twitterHandle": "@ansible"
+      },
+      "about": "Ansible is an open-source automation tool that allows you to automate provisioning, configuration management, and application deployment.",
+      "eli5": "Ansible is like a robot that helps you automate repetitive tasks in setting up and managing computer systems. It can install software, configure settings, and perform other tasks across multiple servers.",
+      "programmingLanguages": ["Python"],
+      "categories": ["Automation", "Configuration Management"],
+      "starCount": 30200,
+      "issueCount": 650,
+      "forkCount": 5400,
+      "pullRequestCount": 198,
+      "contributorsCount": 295,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "abadger",
+          "name": "Alan Rominger",
+          "repositoryCount": 80,
+          "starCount": 3650,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bcoca",
+          "name": "Brian Coca",
+          "repositoryCount": 110,
+          "starCount": 4510,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "dominikmika",
+          "name": "Dominik Mika",
+          "repositoryCount": 70,
+          "starCount": 1980,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/ansible/ansible",
+      "websiteOfRepo": "https://www.ansible.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Ansible",
+        "link": "https://twitter.com/ansible",
+        "followerCount": 430000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Ansible",
+        "link": "https://www.linkedin.com/company/ansible/",
+        "followerCount": 120000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Ansible",
+        "link": "https://discord.gg/ansible",
+        "memberCount": 55000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/ansible/status/1445681246863618049",
+        "title": "Ansible 2.12 is now available!",
+        "date": "2021-10-06T15:44:01.000Z",
+        "likeCount": 1782,
+        "commentCount": 315,
+        "retweetCount": 209,
+        "viewsCount": 11587
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30060777",
+        "title": "Ansible 2.12: Red Hat's automation framework for infrastructure and application deployment",
+        "pointCount": 792,
+        "commentCount": 212
+      }
+    ]
+  },
+  {
+    "id": "129",
+    "gitHubInformation": {
+      "name": "GitLab",
+      "author": {
+        "gitHubHandle": "gitlabhq",
+        "name": "GitLab",
+        "repositoryCount": 563,
+        "starCount": 32346,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://about.gitlab.com/",
+        "twitterHandle": "@gitlab"
+      },
+      "about": "GitLab is a complete DevOps platform, delivered as a single application. It enables teams to collaborate, build, test, and deploy their code with integrated CI/CD, project management, and more.",
+      "eli5": "GitLab is a platform that combines all the tools developers need to collaborate, build, test, and deploy their code.",
+      "programmingLanguages": ["Ruby", "Go", "JavaScript"],
+      "categories": ["DevOps", "Version Control", "CI/CD"],
+      "starCount": 32498,
+      "issueCount": 1465,
+      "forkCount": 23219,
+      "pullRequestCount": 9312,
+      "contributorsCount": 1050,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "dzaporozhets",
+          "name": "Dmitriy Zaporozhets",
+          "repositoryCount": 63,
+          "starCount": 19132,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "sytse",
+          "name": "Sytske Sijbrandij",
+          "repositoryCount": 61,
+          "starCount": 2890,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "gitlab-com",
+          "name": "GitLab.com",
+          "repositoryCount": 35,
+          "starCount": 2184,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/gitlabhq/gitlabhq",
+      "websiteOfRepo": "https://about.gitlab.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "GitLab",
+        "link": "https://twitter.com/gitlab",
+        "followerCount": 690000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "GitLab",
+        "link": "https://www.linkedin.com/company/gitlab/",
+        "followerCount": 130000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "GitLab",
+        "link": "https://discord.gg/gitlab",
+        "memberCount": 20000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/gitlab/status/1440705816348139014",
+        "title": "GitLab 14.3 is here with Compliance Dashboards, Incident Management, and Kubernetes Agent!",
+        "date": "2021-09-",
+        "likeCount": 256,
+        "commentCount": 101,
+        "retweetCount": 72,
+        "replyCount": 34,
+        "viewsCount": 8907
+      }
+    ]
+  },
+  {
+    "id": "128",
+    "gitHubInformation": {
+      "name": "Grafana",
+      "author": {
+        "gitHubHandle": "grafana",
+        "name": "Grafana",
+        "repositoryCount": 237,
+        "starCount": 42132,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://grafana.com/",
+        "twitterHandle": "@grafana"
+      },
+      "about": "Grafana is an open-source platform for monitoring and observability, allowing users to visualize and analyze their data from multiple sources.",
+      "eli5": "Grafana is a tool that helps you monitor and analyze your data by creating interactive visualizations and dashboards.",
+      "programmingLanguages": ["Go", "JavaScript"],
+      "categories": ["Monitoring", "Observability", "Data Visualization"],
+      "starCount": 42345,
+      "issueCount": 1094,
+      "forkCount": 10536,
+      "pullRequestCount": 3913,
+      "contributorsCount": 570,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "torkelo",
+          "name": "Torkel Ödegaard",
+          "repositoryCount": 68,
+          "starCount": 24567,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "utkarshcmu",
+          "name": "Utkarsh Bhatnagar",
+          "repositoryCount": 32,
+          "starCount": 1200,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bergquist",
+          "name": "Daniel Bergquist",
+          "repositoryCount": 26,
+          "starCount": 1000,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/grafana/grafana",
+      "websiteOfRepo": "https://grafana.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Grafana",
+        "link": "https://twitter.com/grafana",
+        "followerCount": 220000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Grafana Labs",
+        "link": "https://www.linkedin.com/company/grafana-labs/",
+        "followerCount": 38000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Grafana",
+        "link": "https://discord.com/invite/grafana",
+        "memberCount": 15000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/grafana/status/1437413172679981060",
+        "title": "Grafana 8.1 is here! 🎉\n\n- New exploratory workflows\n- Powerful transformations\n- Customizable panels\n- Enhancements to alerting and annotations\n- And much more!\n\nCheck out the release notes: https://grafana.com/blog/2021/09/14/grafana-8.1-release-announcement/",
+        "date": "2021-09-14T16:03:01.000Z",
+        "likeCount": 385,
+        "commentCount": 197,
+        "retweetCount": 92,
+        "replyCount": 23,
+        "viewsCount": 9673
+      }
+    ]
+  },
+  {
+    "id": "123",
+    "gitHubInformation": {
+      "name": "Next.js",
+      "author": {
+        "gitHubHandle": "vercel",
+        "name": "vercel",
+        "repositoryCount": 145,
+        "starCount": 56838,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://vercel.co/",
+        "twitterHandle": "@vercel"
+      },
+      "about": "Next.js is a minimalistic framework for server-rendered React applications.",
+      "eli5": "Next.js is a framework that simplifies building React applications that render on the server.",
+      "programmingLanguages": ["JavaScript", "CSS", "HTML"],
+      "categories": ["Web Framework"],
+      "starCount": 56317,
+      "issueCount": 531,
+      "forkCount": 4606,
+      "pullRequestCount": 444,
+      "contributorsCount": 245,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "developit",
+          "name": "Jason Miller",
+          "repositoryCount": 128,
+          "starCount": 33595,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": "https://jasonformat.com/",
+          "twitterHandle": "@_developit"
+        },
+        {
+          "gitHubHandle": "timer150",
+          "name": "Tim Neutkens",
+          "repositoryCount": 35,
+          "starCount": 5361,
+          "employedAt": "Vercel",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@timneutkens"
+        },
+        {
+          "gitHubHandle": "laurieontech",
+          "name": "Laurie Barth",
+          "repositoryCount": 23,
+          "starCount": 323,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": "https://www.laurieontech.com/",
+          "twitterHandle": "@laurieontech"
+        }
+      ],
+      "linkToRepo": "https://github.com/vercel/next.js",
+      "websiteOfRepo": "https://nextjs.org/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Next.js",
+        "link": "https://twitter.com/vercel",
+        "followerCount": 245000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Next.js",
+        "link": "https://www.linkedin.com/company/zeitco/",
+        "followerCount": 19000
+      },
+      {
+        "platform": "Slack",
+        "accountName": "#next-js",
+        "link": "https://vercel.com/chat",
+        "memberCount": 45000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Next.js",
+        "link": "https://discord.gg/nextjs",
+        "memberCount": 95000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=29490051",
+        "title": "Next.js 11.1: Faster Full-Stack Performance, Live Image Editing, Image Component, and more",
+        "pointCount": 453,
+        "commentCount": 154
+      },
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/vercel/status/1390351807263238660",
+        "title": "Next.js 11.1 is here! 🎉\n\nThis release includes:\n\n- Faster full-stack performance 🚀\n- Live image editing in development 📸\n- A new &lt;Image&gt; component 💻\n- Custom domains for Vercel Preview 🌐\n- Improved component rendering speed ⚡️\n\nhttps://t.co/PGLLSMv8rY",
+        "date": "2021-05-06T14:11:22.000Z",
+        "likeCount": 573,
+        "commentCount": 69,
+        "retweetCount": 270,
+        "viewsCount": 15328
+      },
+      {
+        "platform": "Product Hunt",
+        "link": "https://www.producthunt.com/posts/next-js-11-1",
+        "title": "Next.js 11.1 - Faster Full-Stack Performance, Live Image Editing, and More",
+        "descriptionPreview": "Build your React apps faster and smarter",
+        "date": "2021-05-06T11:03:32.000Z",
+        "likeCount": 186,
+        "commentCount": 17
+      }
+    ]
+  },
+  {
+    "id": "124",
+    "gitHubInformation": {
+      "name": "Visual Studio Code",
+      "author": {
+        "gitHubHandle": "microsoft",
+        "name": "Microsoft",
+        "repositoryCount": 242,
+        "starCount": 137846,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.microsoft.com/",
+        "twitterHandle": "@Microsoft"
+      },
+      "about": "Visual Studio Code is a free source-code editor made by Microsoft for Windows, Linux and macOS.",
+      "eli5": "Visual Studio Code is a free, cross-platform source code editor with a focus on productivity.",
+      "programmingLanguages": ["TypeScript", "JavaScript", "CSS", "HTML"],
+      "categories": ["Text Editor", "Integrated Development Environment"],
+      "starCount": 137695,
+      "issueCount": 24455,
+      "forkCount": 30350,
+      "pullRequestCount": 12016,
+      "contributorsCount": 1709,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "Tyriar",
+          "name": "Henrique Boregio",
+          "repositoryCount": 136,
+          "starCount": 3124,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@Tyriar"
+        },
+        {
+          "gitHubHandle": "isidorn",
+          "name": "Isidor Nikolic",
+          "repositoryCount": 23,
+          "starCount": 182,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://isidorn.github.io/",
+          "twitterHandle": "@isidorn"
+        },
+        {
+          "gitHubHandle": "bpasero",
+          "name": "Benjamin Pasero",
+          "repositoryCount": 44,
+          "starCount": 154,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://benjaminpasero.de/",
+          "twitterHandle": "@bpasero"
+        }
+      ],
+      "linkToRepo": "https://github.com/microsoft/vscode",
+      "websiteOfRepo": "https://code.visualstudio.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Visual Studio Code",
+        "link": "https://twitter.com/code",
+        "followerCount": 280000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Visual Studio Code",
+        "link": "https://www.linkedin.com/company/visual-studio-code/",
+        "followerCount": 62000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/code/status/1389286175310775809",
+        "title": "Join us on May 6th for a special event celebrating 5 years of Visual StudioCode! 🎉 We'll be reflecting on the journey so far and looking ahead to what's next. RSVP now: https://aka.ms/vscode5th #VSCodeTurns5",
+        "date": "2021-05-03T15:08:08.000Z",
+        "likeCount": 509,
+        "commentCount": 24,
+        "retweetCount": 132,
+        "viewsCount": 13843
+      }
+    ]
+  },
+  {
+    "id": "125",
+    "gitHubInformation": {
+      "name": "Docker",
+      "author": {
+        "gitHubHandle": "docker",
+        "name": "Docker",
+        "repositoryCount": 66,
+        "starCount": 65227,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.docker.com/",
+        "twitterHandle": "@Docker"
+      },
+      "about": "Docker is a set of platform-as-a-service products that use OS-level virtualization to deliver software in packages called containers.",
+      "eli5": "Docker is a tool designed to make it easier to create, deploy, and run applications by using containers.",
+      "programmingLanguages": ["Go", "Python"],
+      "categories": ["Containerization", "Virtualization"],
+      "starCount": 65227,
+      "issueCount": 6318,
+      "forkCount": 17491,
+      "pullRequestCount": 4994,
+      "contributorsCount": 1958,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "thaJeztah",
+          "name": "Sebastiaan van Stijn",
+          "repositoryCount": 108,
+          "starCount": 2649,
+          "employedAt": "Docker",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@thaJeztah"
+        },
+        {
+          "gitHubHandle": "aaronlehmann",
+          "name": "Aaron Lehmann",
+          "repositoryCount": 66,
+          "starCount": 649,
+          "employedAt": "Docker",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "crosbymichael",
+          "name": "Michael Crosby",
+          "repositoryCount": 57,
+          "starCount": 430,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@ericchiang"
+        }
+      ],
+      "linkToRepo": "https://github.com/docker/docker-ce",
+      "websiteOfRepo": "https://www.docker.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Docker",
+        "link": "https://twitter.com/Docker",
+        "followerCount": 303000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Docker",
+        "link": "https://www.linkedin.com/company/docker-inc-/",
+        "followerCount": 73827
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/Docker/status/1449806656325347336",
+        "title": "👋 Say hello to Docker 22.0! \n\n🔥 Faster container builds with BuildKit and enhanced caching \n🐳 New ARM64 architecture support\n🌟 Better Windows container support\n📝 And more...\n\nLearn about all the latest features and improvements 👉 https://dockr.ly/3lnmwAx",
+        "date": "2021-10-17T21:17:55.000Z",
+        "likeCount": 360,
+        "commentCount": 38,
+        "retweetCount": 179,
+        "viewsCount": 18605
+      }
+    ]
+  },
+  {
+    "id": "456",
+    "gitHubInformation": {
+      "name": "Kubernetes",
+      "author": {
+        "gitHubHandle": "kubernetes",
+        "name": "Kubernetes Authors",
+        "repositoryCount": 890,
+        "starCount": 112000,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://kubernetes.io/",
+        "twitterHandle": "@kubernetesio"
+      },
+      "about": "Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.",
+      "eli5": "Kubernetes is like a conductor that helps manage and run multiple containers in a coordinated and efficient manner.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Container Orchestration"],
+      "starCount": 112000,
+      "issueCount": 7417,
+      "forkCount": 30700,
+      "pullRequestCount": 13600,
+      "contributorsCount": 2060,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "thockin",
+          "name": "Tim Hockin",
+          "repositoryCount": 110,
+          "starCount": 1530,
+          "employedAt": "Google",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "lavalamp",
+          "name": "Brian Grant",
+          "repositoryCount": 100,
+          "starCount": 1320,
+          "employedAt": "Google",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "brendandburns",
+          "name": "Brendan Burns",
+          "repositoryCount": 250,
+          "starCount": 2740,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://brendandburns.github.io/",
+          "twitterHandle": "@brendandburns"
+        }
+      ],
+      "linkToRepo": "https://github.com/kubernetes/kubernetes",
+      "websiteOfRepo": "https://kubernetes.io/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Kubernetes",
+        "link": "https://twitter.com/kubernetesio",
+        "followerCount": 354000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Kubernetes",
+        "link": "https://www.linkedin.com/company/kubernetes/",
+        "followerCount": 137000
+      },
+      {
+        "platform": "Slack",
+        "accountName": "Kubernetes",
+        "link": "https://slack.k8s.io/",
+        "memberCount": 80000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/kubernetesio/status/1425559722499540996",
+        "title": "We just released Kubernetes v1.22! 🎉",
+        "date": "2021-08-11T18:01:24.000Z",
+        "likeCount": 1234,
+        "commentCount": 567,
+        "retweetCount": 321,
+        "viewsCount": 9876
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=29490051",
+        "title": "Kubernetes: An Introduction and Overview",
+        "pointCount": 453,
+        "commentCount": 154
+      }
+    ]
+  },
+  {
+    "id": "457",
+    "gitHubInformation": {
+      "name": "GitHub CLI",
+      "author": {
+        "gitHubHandle": "cli",
+        "name": "GitHub",
+        "repositoryCount": 590,
+        "starCount": 19800,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://cli.github.com/",
+        "twitterHandle": "@github"
+      },
+      "about": "GitHub CLI is a command-line tool that brings GitHub to your terminal.",
+      "eli5": "GitHub CLI is like a Swiss Army knife for GitHub, allowing you to manage repositories, issues, pull requests, and more, all from the command line.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Developer Tools"],
+      "starCount": 19800,
+      "issueCount": 403,
+      "forkCount": 4500,
+      "pullRequestCount": 252,
+      "contributorsCount": 124,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "mislav",
+          "name": "Mislav Marohnić",
+          "repositoryCount": 75,
+          "starCount": 3221,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "tj",
+          "name": "TJ Holowaychuk",
+          "repositoryCount": 220,
+          "starCount": 4567,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "dahlia",
+          "name": "Dahlia",
+          "repositoryCount": 90,
+          "starCount": 1876,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/cli/cli",
+      "websiteOfRepo": "https://cli.github.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "GitHub",
+        "link": "https://twitter.com/github",
+        "followerCount": 1800000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "GitHub",
+        "link": "https://www.linkedin.com/company/github/",
+        "followerCount": 580000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "GitHub",
+        "link": "https://discord.gg/github",
+        "memberCount": 80000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/github/status/1446875164427516421",
+        "title": "GitHub CLI 2.0 is now available!",
+        "date": "2021-10-09T18:01:24.000Z",
+        "likeCount": 1872,
+        "commentCount": 476,
+        "retweetCount": 328,
+        "viewsCount": 12876
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30079191",
+        "title": "GitHub CLI 2.0: gh brings GitHub to the command line",
+        "pointCount": 645,
+        "commentCount": 189
+      }
+    ]
+  },
+  {
+    "id": "789",
+    "gitHubInformation": {
+      "name": "Terraform",
+      "author": {
+        "gitHubHandle": "hashicorp",
+        "name": "HashiCorp",
+        "repositoryCount": 140,
+        "starCount": 23700,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.hashicorp.com/",
+        "twitterHandle": "@hashicorp"
+      },
+      "about": "Terraform is an open-source infrastructure as code software tool that enables you to define and provision infrastructure resources in a declarative manner.",
+      "eli5": "Terraform is like a blueprint for setting up and managing your infrastructure resources. It allows you to write code that describes your desired infrastructure state and automatically provisions and manages those resources.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Infrastructure as Code"],
+      "starCount": 23700,
+      "issueCount": 498,
+      "forkCount": 4300,
+      "pullRequestCount": 156,
+      "contributorsCount": 215,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "apparentlymart",
+          "name": "Martin Atkins",
+          "repositoryCount": 65,
+          "starCount": 2876,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bflad",
+          "name": "Brian Flad",
+          "repositoryCount": 80,
+          "starCount": 2465,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "kelseyhightower",
+          "name": "Kelsey Hightower",
+          "repositoryCount": 150,
+          "starCount": 7654,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/hashicorp/terraform",
+      "websiteOfRepo": "https://www.terraform.io/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "HashiCorp",
+        "link": "https://twitter.com/hashicorp",
+        "followerCount": 330000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "HashiCorp",
+        "link": "https://www.linkedin.com/company/hashicorp/",
+        "followerCount": 65000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "HashiCorp",
+        "link": "https://discord.com/invite/hashicorp",
+        "memberCount": 95000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/hashicorp/status/1446609124387558405",
+        "title": "Terraform 1.1 is here with native support for AWS Cloud Control API, enhanced provider testing, and more!",
+        "date": "2021-10-08T17:35:21.000Z",
+        "likeCount": 1273,
+        "commentCount": 253,
+        "retweetCount": 179,
+        "viewsCount": 9724
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30077855",
+        "title": "Terraform 1.1: Native support for AWS Cloud Control API, enhanced provider testing",
+        "pointCount": 568,
+        "commentCount": 189
+      }
+    ]
+  },
+  {
+    "id": "987",
+    "gitHubInformation": {
+      "name": "Ansible",
+      "author": {
+        "gitHubHandle": "ansible",
+        "name": "Ansible",
+        "repositoryCount": 600,
+        "starCount": 30200,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.ansible.com/",
+        "twitterHandle": "@ansible"
+      },
+      "about": "Ansible is an open-source automation tool that allows you to automate provisioning, configuration management, and application deployment.",
+      "eli5": "Ansible is like a robot that helps you automate repetitive tasks in setting up and managing computer systems. It can install software, configure settings, and perform other tasks across multiple servers.",
+      "programmingLanguages": ["Python"],
+      "categories": ["Automation", "Configuration Management"],
+      "starCount": 30200,
+      "issueCount": 650,
+      "forkCount": 5400,
+      "pullRequestCount": 198,
+      "contributorsCount": 295,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "abadger",
+          "name": "Alan Rominger",
+          "repositoryCount": 80,
+          "starCount": 3650,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bcoca",
+          "name": "Brian Coca",
+          "repositoryCount": 110,
+          "starCount": 4510,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "dominikmika",
+          "name": "Dominik Mika",
+          "repositoryCount": 70,
+          "starCount": 1980,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/ansible/ansible",
+      "websiteOfRepo": "https://www.ansible.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Ansible",
+        "link": "https://twitter.com/ansible",
+        "followerCount": 430000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Ansible",
+        "link": "https://www.linkedin.com/company/ansible/",
+        "followerCount": 120000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Ansible",
+        "link": "https://discord.gg/ansible",
+        "memberCount": 55000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/ansible/status/1445681246863618049",
+        "title": "Ansible 2.12 is now available!",
+        "date": "2021-10-06T15:44:01.000Z",
+        "likeCount": 1782,
+        "commentCount": 315,
+        "retweetCount": 209,
+        "viewsCount": 11587
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30060777",
+        "title": "Ansible 2.12: Red Hat's automation framework for infrastructure and application deployment",
+        "pointCount": 792,
+        "commentCount": 212
+      }
+    ]
+  },
+  {
+    "id": "129",
+    "gitHubInformation": {
+      "name": "GitLab",
+      "author": {
+        "gitHubHandle": "gitlabhq",
+        "name": "GitLab",
+        "repositoryCount": 563,
+        "starCount": 32346,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://about.gitlab.com/",
+        "twitterHandle": "@gitlab"
+      },
+      "about": "GitLab is a complete DevOps platform, delivered as a single application. It enables teams to collaborate, build, test, and deploy their code with integrated CI/CD, project management, and more.",
+      "eli5": "GitLab is a platform that combines all the tools developers need to collaborate, build, test, and deploy their code.",
+      "programmingLanguages": ["Ruby", "Go", "JavaScript"],
+      "categories": ["DevOps", "Version Control", "CI/CD"],
+      "starCount": 32498,
+      "issueCount": 1465,
+      "forkCount": 23219,
+      "pullRequestCount": 9312,
+      "contributorsCount": 1050,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "dzaporozhets",
+          "name": "Dmitriy Zaporozhets",
+          "repositoryCount": 63,
+          "starCount": 19132,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "sytse",
+          "name": "Sytske Sijbrandij",
+          "repositoryCount": 61,
+          "starCount": 2890,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "gitlab-com",
+          "name": "GitLab.com",
+          "repositoryCount": 35,
+          "starCount": 2184,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/gitlabhq/gitlabhq",
+      "websiteOfRepo": "https://about.gitlab.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "GitLab",
+        "link": "https://twitter.com/gitlab",
+        "followerCount": 690000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "GitLab",
+        "link": "https://www.linkedin.com/company/gitlab/",
+        "followerCount": 130000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "GitLab",
+        "link": "https://discord.gg/gitlab",
+        "memberCount": 20000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/gitlab/status/1440705816348139014",
+        "title": "GitLab 14.3 is here with Compliance Dashboards, Incident Management, and Kubernetes Agent!",
+        "date": "2021-09-",
+        "likeCount": 256,
+        "commentCount": 101,
+        "retweetCount": 72,
+        "replyCount": 34,
+        "viewsCount": 8907
+      }
+    ]
+  },
+  {
+    "id": "128",
+    "gitHubInformation": {
+      "name": "Grafana",
+      "author": {
+        "gitHubHandle": "grafana",
+        "name": "Grafana",
+        "repositoryCount": 237,
+        "starCount": 42132,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://grafana.com/",
+        "twitterHandle": "@grafana"
+      },
+      "about": "Grafana is an open-source platform for monitoring and observability, allowing users to visualize and analyze their data from multiple sources.",
+      "eli5": "Grafana is a tool that helps you monitor and analyze your data by creating interactive visualizations and dashboards.",
+      "programmingLanguages": ["Go", "JavaScript"],
+      "categories": ["Monitoring", "Observability", "Data Visualization"],
+      "starCount": 42345,
+      "issueCount": 1094,
+      "forkCount": 10536,
+      "pullRequestCount": 3913,
+      "contributorsCount": 570,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "torkelo",
+          "name": "Torkel Ödegaard",
+          "repositoryCount": 68,
+          "starCount": 24567,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "utkarshcmu",
+          "name": "Utkarsh Bhatnagar",
+          "repositoryCount": 32,
+          "starCount": 1200,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bergquist",
+          "name": "Daniel Bergquist",
+          "repositoryCount": 26,
+          "starCount": 1000,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/grafana/grafana",
+      "websiteOfRepo": "https://grafana.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Grafana",
+        "link": "https://twitter.com/grafana",
+        "followerCount": 220000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Grafana Labs",
+        "link": "https://www.linkedin.com/company/grafana-labs/",
+        "followerCount": 38000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Grafana",
+        "link": "https://discord.com/invite/grafana",
+        "memberCount": 15000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/grafana/status/1437413172679981060",
+        "title": "Grafana 8.1 is here! 🎉\n\n- New exploratory workflows\n- Powerful transformations\n- Customizable panels\n- Enhancements to alerting and annotations\n- And much more!\n\nCheck out the release notes: https://grafana.com/blog/2021/09/14/grafana-8.1-release-announcement/",
+        "date": "2021-09-14T16:03:01.000Z",
+        "likeCount": 385,
+        "commentCount": 197,
+        "retweetCount": 92,
+        "replyCount": 23,
+        "viewsCount": 9673
+      }
+    ]
+  },
+  {
+    "id": "123",
+    "gitHubInformation": {
+      "name": "Next.js",
+      "author": {
+        "gitHubHandle": "vercel",
+        "name": "vercel",
+        "repositoryCount": 145,
+        "starCount": 56838,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://vercel.co/",
+        "twitterHandle": "@vercel"
+      },
+      "about": "Next.js is a minimalistic framework for server-rendered React applications.",
+      "eli5": "Next.js is a framework that simplifies building React applications that render on the server.",
+      "programmingLanguages": ["JavaScript", "CSS", "HTML"],
+      "categories": ["Web Framework"],
+      "starCount": 56317,
+      "issueCount": 531,
+      "forkCount": 4606,
+      "pullRequestCount": 444,
+      "contributorsCount": 245,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "developit",
+          "name": "Jason Miller",
+          "repositoryCount": 128,
+          "starCount": 33595,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": "https://jasonformat.com/",
+          "twitterHandle": "@_developit"
+        },
+        {
+          "gitHubHandle": "timer150",
+          "name": "Tim Neutkens",
+          "repositoryCount": 35,
+          "starCount": 5361,
+          "employedAt": "Vercel",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@timneutkens"
+        },
+        {
+          "gitHubHandle": "laurieontech",
+          "name": "Laurie Barth",
+          "repositoryCount": 23,
+          "starCount": 323,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": "https://www.laurieontech.com/",
+          "twitterHandle": "@laurieontech"
+        }
+      ],
+      "linkToRepo": "https://github.com/vercel/next.js",
+      "websiteOfRepo": "https://nextjs.org/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Next.js",
+        "link": "https://twitter.com/vercel",
+        "followerCount": 245000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Next.js",
+        "link": "https://www.linkedin.com/company/zeitco/",
+        "followerCount": 19000
+      },
+      {
+        "platform": "Slack",
+        "accountName": "#next-js",
+        "link": "https://vercel.com/chat",
+        "memberCount": 45000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Next.js",
+        "link": "https://discord.gg/nextjs",
+        "memberCount": 95000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=29490051",
+        "title": "Next.js 11.1: Faster Full-Stack Performance, Live Image Editing, Image Component, and more",
+        "pointCount": 453,
+        "commentCount": 154
+      },
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/vercel/status/1390351807263238660",
+        "title": "Next.js 11.1 is here! 🎉\n\nThis release includes:\n\n- Faster full-stack performance 🚀\n- Live image editing in development 📸\n- A new &lt;Image&gt; component 💻\n- Custom domains for Vercel Preview 🌐\n- Improved component rendering speed ⚡️\n\nhttps://t.co/PGLLSMv8rY",
+        "date": "2021-05-06T14:11:22.000Z",
+        "likeCount": 573,
+        "commentCount": 69,
+        "retweetCount": 270,
+        "viewsCount": 15328
+      },
+      {
+        "platform": "Product Hunt",
+        "link": "https://www.producthunt.com/posts/next-js-11-1",
+        "title": "Next.js 11.1 - Faster Full-Stack Performance, Live Image Editing, and More",
+        "descriptionPreview": "Build your React apps faster and smarter",
+        "date": "2021-05-06T11:03:32.000Z",
+        "likeCount": 186,
+        "commentCount": 17
+      }
+    ]
+  },
+  {
+    "id": "124",
+    "gitHubInformation": {
+      "name": "Visual Studio Code",
+      "author": {
+        "gitHubHandle": "microsoft",
+        "name": "Microsoft",
+        "repositoryCount": 242,
+        "starCount": 137846,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.microsoft.com/",
+        "twitterHandle": "@Microsoft"
+      },
+      "about": "Visual Studio Code is a free source-code editor made by Microsoft for Windows, Linux and macOS.",
+      "eli5": "Visual Studio Code is a free, cross-platform source code editor with a focus on productivity.",
+      "programmingLanguages": ["TypeScript", "JavaScript", "CSS", "HTML"],
+      "categories": ["Text Editor", "Integrated Development Environment"],
+      "starCount": 137695,
+      "issueCount": 24455,
+      "forkCount": 30350,
+      "pullRequestCount": 12016,
+      "contributorsCount": 1709,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "Tyriar",
+          "name": "Henrique Boregio",
+          "repositoryCount": 136,
+          "starCount": 3124,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@Tyriar"
+        },
+        {
+          "gitHubHandle": "isidorn",
+          "name": "Isidor Nikolic",
+          "repositoryCount": 23,
+          "starCount": 182,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://isidorn.github.io/",
+          "twitterHandle": "@isidorn"
+        },
+        {
+          "gitHubHandle": "bpasero",
+          "name": "Benjamin Pasero",
+          "repositoryCount": 44,
+          "starCount": 154,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://benjaminpasero.de/",
+          "twitterHandle": "@bpasero"
+        }
+      ],
+      "linkToRepo": "https://github.com/microsoft/vscode",
+      "websiteOfRepo": "https://code.visualstudio.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Visual Studio Code",
+        "link": "https://twitter.com/code",
+        "followerCount": 280000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Visual Studio Code",
+        "link": "https://www.linkedin.com/company/visual-studio-code/",
+        "followerCount": 62000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/code/status/1389286175310775809",
+        "title": "Join us on May 6th for a special event celebrating 5 years of Visual StudioCode! 🎉 We'll be reflecting on the journey so far and looking ahead to what's next. RSVP now: https://aka.ms/vscode5th #VSCodeTurns5",
+        "date": "2021-05-03T15:08:08.000Z",
+        "likeCount": 509,
+        "commentCount": 24,
+        "retweetCount": 132,
+        "viewsCount": 13843
+      }
+    ]
+  },
+  {
+    "id": "125",
+    "gitHubInformation": {
+      "name": "Docker",
+      "author": {
+        "gitHubHandle": "docker",
+        "name": "Docker",
+        "repositoryCount": 66,
+        "starCount": 65227,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.docker.com/",
+        "twitterHandle": "@Docker"
+      },
+      "about": "Docker is a set of platform-as-a-service products that use OS-level virtualization to deliver software in packages called containers.",
+      "eli5": "Docker is a tool designed to make it easier to create, deploy, and run applications by using containers.",
+      "programmingLanguages": ["Go", "Python"],
+      "categories": ["Containerization", "Virtualization"],
+      "starCount": 65227,
+      "issueCount": 6318,
+      "forkCount": 17491,
+      "pullRequestCount": 4994,
+      "contributorsCount": 1958,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "thaJeztah",
+          "name": "Sebastiaan van Stijn",
+          "repositoryCount": 108,
+          "starCount": 2649,
+          "employedAt": "Docker",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@thaJeztah"
+        },
+        {
+          "gitHubHandle": "aaronlehmann",
+          "name": "Aaron Lehmann",
+          "repositoryCount": 66,
+          "starCount": 649,
+          "employedAt": "Docker",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "crosbymichael",
+          "name": "Michael Crosby",
+          "repositoryCount": 57,
+          "starCount": 430,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": "@ericchiang"
+        }
+      ],
+      "linkToRepo": "https://github.com/docker/docker-ce",
+      "websiteOfRepo": "https://www.docker.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Docker",
+        "link": "https://twitter.com/Docker",
+        "followerCount": 303000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Docker",
+        "link": "https://www.linkedin.com/company/docker-inc-/",
+        "followerCount": 73827
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/Docker/status/1449806656325347336",
+        "title": "👋 Say hello to Docker 22.0! \n\n🔥 Faster container builds with BuildKit and enhanced caching \n🐳 New ARM64 architecture support\n🌟 Better Windows container support\n📝 And more...\n\nLearn about all the latest features and improvements 👉 https://dockr.ly/3lnmwAx",
+        "date": "2021-10-17T21:17:55.000Z",
+        "likeCount": 360,
+        "commentCount": 38,
+        "retweetCount": 179,
+        "viewsCount": 18605
+      }
+    ]
+  },
+  {
+    "id": "456",
+    "gitHubInformation": {
+      "name": "Kubernetes",
+      "author": {
+        "gitHubHandle": "kubernetes",
+        "name": "Kubernetes Authors",
+        "repositoryCount": 890,
+        "starCount": 112000,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://kubernetes.io/",
+        "twitterHandle": "@kubernetesio"
+      },
+      "about": "Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.",
+      "eli5": "Kubernetes is like a conductor that helps manage and run multiple containers in a coordinated and efficient manner.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Container Orchestration"],
+      "starCount": 112000,
+      "issueCount": 7417,
+      "forkCount": 30700,
+      "pullRequestCount": 13600,
+      "contributorsCount": 2060,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "thockin",
+          "name": "Tim Hockin",
+          "repositoryCount": 110,
+          "starCount": 1530,
+          "employedAt": "Google",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "lavalamp",
+          "name": "Brian Grant",
+          "repositoryCount": 100,
+          "starCount": 1320,
+          "employedAt": "Google",
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "brendandburns",
+          "name": "Brendan Burns",
+          "repositoryCount": 250,
+          "starCount": 2740,
+          "employedAt": "Microsoft",
+          "email": null,
+          "personalWebsite": "https://brendandburns.github.io/",
+          "twitterHandle": "@brendandburns"
+        }
+      ],
+      "linkToRepo": "https://github.com/kubernetes/kubernetes",
+      "websiteOfRepo": "https://kubernetes.io/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Kubernetes",
+        "link": "https://twitter.com/kubernetesio",
+        "followerCount": 354000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Kubernetes",
+        "link": "https://www.linkedin.com/company/kubernetes/",
+        "followerCount": 137000
+      },
+      {
+        "platform": "Slack",
+        "accountName": "Kubernetes",
+        "link": "https://slack.k8s.io/",
+        "memberCount": 80000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/kubernetesio/status/1425559722499540996",
+        "title": "We just released Kubernetes v1.22! 🎉",
+        "date": "2021-08-11T18:01:24.000Z",
+        "likeCount": 1234,
+        "commentCount": 567,
+        "retweetCount": 321,
+        "viewsCount": 9876
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=29490051",
+        "title": "Kubernetes: An Introduction and Overview",
+        "pointCount": 453,
+        "commentCount": 154
+      }
+    ]
+  },
+  {
+    "id": "457",
+    "gitHubInformation": {
+      "name": "GitHub CLI",
+      "author": {
+        "gitHubHandle": "cli",
+        "name": "GitHub",
+        "repositoryCount": 590,
+        "starCount": 19800,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://cli.github.com/",
+        "twitterHandle": "@github"
+      },
+      "about": "GitHub CLI is a command-line tool that brings GitHub to your terminal.",
+      "eli5": "GitHub CLI is like a Swiss Army knife for GitHub, allowing you to manage repositories, issues, pull requests, and more, all from the command line.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Developer Tools"],
+      "starCount": 19800,
+      "issueCount": 403,
+      "forkCount": 4500,
+      "pullRequestCount": 252,
+      "contributorsCount": 124,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "mislav",
+          "name": "Mislav Marohnić",
+          "repositoryCount": 75,
+          "starCount": 3221,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "tj",
+          "name": "TJ Holowaychuk",
+          "repositoryCount": 220,
+          "starCount": 4567,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "dahlia",
+          "name": "Dahlia",
+          "repositoryCount": 90,
+          "starCount": 1876,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/cli/cli",
+      "websiteOfRepo": "https://cli.github.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "GitHub",
+        "link": "https://twitter.com/github",
+        "followerCount": 1800000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "GitHub",
+        "link": "https://www.linkedin.com/company/github/",
+        "followerCount": 580000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "GitHub",
+        "link": "https://discord.gg/github",
+        "memberCount": 80000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/github/status/1446875164427516421",
+        "title": "GitHub CLI 2.0 is now available!",
+        "date": "2021-10-09T18:01:24.000Z",
+        "likeCount": 1872,
+        "commentCount": 476,
+        "retweetCount": 328,
+        "viewsCount": 12876
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30079191",
+        "title": "GitHub CLI 2.0: gh brings GitHub to the command line",
+        "pointCount": 645,
+        "commentCount": 189
+      }
+    ]
+  },
+  {
+    "id": "789",
+    "gitHubInformation": {
+      "name": "Terraform",
+      "author": {
+        "gitHubHandle": "hashicorp",
+        "name": "HashiCorp",
+        "repositoryCount": 140,
+        "starCount": 23700,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.hashicorp.com/",
+        "twitterHandle": "@hashicorp"
+      },
+      "about": "Terraform is an open-source infrastructure as code software tool that enables you to define and provision infrastructure resources in a declarative manner.",
+      "eli5": "Terraform is like a blueprint for setting up and managing your infrastructure resources. It allows you to write code that describes your desired infrastructure state and automatically provisions and manages those resources.",
+      "programmingLanguages": ["Go"],
+      "categories": ["Infrastructure as Code"],
+      "starCount": 23700,
+      "issueCount": 498,
+      "forkCount": 4300,
+      "pullRequestCount": 156,
+      "contributorsCount": 215,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "apparentlymart",
+          "name": "Martin Atkins",
+          "repositoryCount": 65,
+          "starCount": 2876,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bflad",
+          "name": "Brian Flad",
+          "repositoryCount": 80,
+          "starCount": 2465,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "kelseyhightower",
+          "name": "Kelsey Hightower",
+          "repositoryCount": 150,
+          "starCount": 7654,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/hashicorp/terraform",
+      "websiteOfRepo": "https://www.terraform.io/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "HashiCorp",
+        "link": "https://twitter.com/hashicorp",
+        "followerCount": 330000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "HashiCorp",
+        "link": "https://www.linkedin.com/company/hashicorp/",
+        "followerCount": 65000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "HashiCorp",
+        "link": "https://discord.com/invite/hashicorp",
+        "memberCount": 95000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/hashicorp/status/1446609124387558405",
+        "title": "Terraform 1.1 is here with native support for AWS Cloud Control API, enhanced provider testing, and more!",
+        "date": "2021-10-08T17:35:21.000Z",
+        "likeCount": 1273,
+        "commentCount": 253,
+        "retweetCount": 179,
+        "viewsCount": 9724
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30077855",
+        "title": "Terraform 1.1: Native support for AWS Cloud Control API, enhanced provider testing",
+        "pointCount": 568,
+        "commentCount": 189
+      }
+    ]
+  },
+  {
+    "id": "987",
+    "gitHubInformation": {
+      "name": "Ansible",
+      "author": {
+        "gitHubHandle": "ansible",
+        "name": "Ansible",
+        "repositoryCount": 600,
+        "starCount": 30200,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://www.ansible.com/",
+        "twitterHandle": "@ansible"
+      },
+      "about": "Ansible is an open-source automation tool that allows you to automate provisioning, configuration management, and application deployment.",
+      "eli5": "Ansible is like a robot that helps you automate repetitive tasks in setting up and managing computer systems. It can install software, configure settings, and perform other tasks across multiple servers.",
+      "programmingLanguages": ["Python"],
+      "categories": ["Automation", "Configuration Management"],
+      "starCount": 30200,
+      "issueCount": 650,
+      "forkCount": 5400,
+      "pullRequestCount": 198,
+      "contributorsCount": 295,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "abadger",
+          "name": "Alan Rominger",
+          "repositoryCount": 80,
+          "starCount": 3650,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bcoca",
+          "name": "Brian Coca",
+          "repositoryCount": 110,
+          "starCount": 4510,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "dominikmika",
+          "name": "Dominik Mika",
+          "repositoryCount": 70,
+          "starCount": 1980,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/ansible/ansible",
+      "websiteOfRepo": "https://www.ansible.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Ansible",
+        "link": "https://twitter.com/ansible",
+        "followerCount": 430000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Ansible",
+        "link": "https://www.linkedin.com/company/ansible/",
+        "followerCount": 120000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Ansible",
+        "link": "https://discord.gg/ansible",
+        "memberCount": 55000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/ansible/status/1445681246863618049",
+        "title": "Ansible 2.12 is now available!",
+        "date": "2021-10-06T15:44:01.000Z",
+        "likeCount": 1782,
+        "commentCount": 315,
+        "retweetCount": 209,
+        "viewsCount": 11587
+      },
+      {
+        "platform": "Hacker News",
+        "link": "https://news.ycombinator.com/item?id=30060777",
+        "title": "Ansible 2.12: Red Hat's automation framework for infrastructure and application deployment",
+        "pointCount": 792,
+        "commentCount": 212
+      }
+    ]
+  },
+  {
+    "id": "129",
+    "gitHubInformation": {
+      "name": "GitLab",
+      "author": {
+        "gitHubHandle": "gitlabhq",
+        "name": "GitLab",
+        "repositoryCount": 563,
+        "starCount": 32346,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://about.gitlab.com/",
+        "twitterHandle": "@gitlab"
+      },
+      "about": "GitLab is a complete DevOps platform, delivered as a single application. It enables teams to collaborate, build, test, and deploy their code with integrated CI/CD, project management, and more.",
+      "eli5": "GitLab is a platform that combines all the tools developers need to collaborate, build, test, and deploy their code.",
+      "programmingLanguages": ["Ruby", "Go", "JavaScript"],
+      "categories": ["DevOps", "Version Control", "CI/CD"],
+      "starCount": 32498,
+      "issueCount": 1465,
+      "forkCount": 23219,
+      "pullRequestCount": 9312,
+      "contributorsCount": 1050,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "dzaporozhets",
+          "name": "Dmitriy Zaporozhets",
+          "repositoryCount": 63,
+          "starCount": 19132,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "sytse",
+          "name": "Sytske Sijbrandij",
+          "repositoryCount": 61,
+          "starCount": 2890,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "gitlab-com",
+          "name": "GitLab.com",
+          "repositoryCount": 35,
+          "starCount": 2184,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/gitlabhq/gitlabhq",
+      "websiteOfRepo": "https://about.gitlab.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "GitLab",
+        "link": "https://twitter.com/gitlab",
+        "followerCount": 690000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "GitLab",
+        "link": "https://www.linkedin.com/company/gitlab/",
+        "followerCount": 130000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "GitLab",
+        "link": "https://discord.gg/gitlab",
+        "memberCount": 20000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/gitlab/status/1440705816348139014",
+        "title": "GitLab 14.3 is here with Compliance Dashboards, Incident Management, and Kubernetes Agent!",
+        "date": "2021-09-",
+        "likeCount": 256,
+        "commentCount": 101,
+        "retweetCount": 72,
+        "replyCount": 34,
+        "viewsCount": 8907
+      }
+    ]
+  },
+  {
+    "id": "128",
+    "gitHubInformation": {
+      "name": "Grafana",
+      "author": {
+        "gitHubHandle": "grafana",
+        "name": "Grafana",
+        "repositoryCount": 237,
+        "starCount": 42132,
+        "employedAt": null,
+        "email": null,
+        "personalWebsite": "https://grafana.com/",
+        "twitterHandle": "@grafana"
+      },
+      "about": "Grafana is an open-source platform for monitoring and observability, allowing users to visualize and analyze their data from multiple sources.",
+      "eli5": "Grafana is a tool that helps you monitor and analyze your data by creating interactive visualizations and dashboards.",
+      "programmingLanguages": ["Go", "JavaScript"],
+      "categories": ["Monitoring", "Observability", "Data Visualization"],
+      "starCount": 42345,
+      "issueCount": 1094,
+      "forkCount": 10536,
+      "pullRequestCount": 3913,
+      "contributorsCount": 570,
+      "topThreeContributors": [
+        {
+          "gitHubHandle": "torkelo",
+          "name": "Torkel Ödegaard",
+          "repositoryCount": 68,
+          "starCount": 24567,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "utkarshcmu",
+          "name": "Utkarsh Bhatnagar",
+          "repositoryCount": 32,
+          "starCount": 1200,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        },
+        {
+          "gitHubHandle": "bergquist",
+          "name": "Daniel Bergquist",
+          "repositoryCount": 26,
+          "starCount": 1000,
+          "employedAt": null,
+          "email": null,
+          "personalWebsite": null,
+          "twitterHandle": null
+        }
+      ],
+      "linkToRepo": "https://github.com/grafana/grafana",
+      "websiteOfRepo": "https://grafana.com/"
+    },
+    "socialMediaAccounts": [
+      {
+        "platform": "Twitter",
+        "accountName": "Grafana",
+        "link": "https://twitter.com/grafana",
+        "followerCount": 220000
+      },
+      {
+        "platform": "LinkedIn",
+        "accountName": "Grafana Labs",
+        "link": "https://www.linkedin.com/company/grafana-labs/",
+        "followerCount": 38000
+      },
+      {
+        "platform": "Discord",
+        "accountName": "Grafana",
+        "link": "https://discord.com/invite/grafana",
+        "memberCount": 15000
+      }
+    ],
+    "socialMediaTopPosts": [
+      {
+        "platform": "Twitter",
+        "link": "https://twitter.com/grafana/status/1437413172679981060",
+        "title": "Grafana 8.1 is here! 🎉\n\n- New exploratory workflows\n- Powerful transformations\n- Customizable panels\n- Enhancements to alerting and annotations\n- And much more!\n\nCheck out the release notes: https://grafana.com/blog/2021/09/14/grafana-8.1-release-announcement/",
+        "date": "2021-09-14T16:03:01.000Z",
+        "likeCount": 385,
+        "commentCount": 197,
+        "retweetCount": 92,
+        "replyCount": 23,
+        "viewsCount": 9673
+      }
+    ]
+  }
+]

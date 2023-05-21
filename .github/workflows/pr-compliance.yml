@@ -1,8 +1,8 @@
-name: PR Compliance
+name: 'PR Compliance'
 
 on:
-  pull_request_target:
-    types: [opened, edited, reopened]
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
 
 # Action should have write permission to make updates to PR
 permissions:

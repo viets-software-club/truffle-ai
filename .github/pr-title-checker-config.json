@@ -5,7 +5,7 @@
   },
   "CHECKS": {
     "prefixes": [],
-    "regexp": "/^[\b(META|BACK|FRONT)-d+]s.+",
+    "regexp": "/[\b(META|BACK|FRONT)-d+]s.+",
     "regexpFlags": "i",
     "ignoreLabels": []
   },

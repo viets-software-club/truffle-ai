@@ -22,6 +22,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_PATTERN: '[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}'
-          PULL_REQUEST_COMMENT: ''
+          PULL_REQUEST_COMMENT: '###Description\n###How I implemented'
           ISSUE_PATTERN: ''
           ISSUE_COMMENT: ''

@@ -3,8 +3,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 import { FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { subMonths } from 'date-fns'
 
-import Button from '../../components/Button'
-import Modal from '../../components/Modal'
+import Button from '../../pureComponents/Button'
+import Modal from '../../pureComponents/Modal'
 
 type ChartData = {
   name: string
@@ -108,19 +108,19 @@ const Chart = ({ starData, forkData, issueData }: ChartProps) => {
             />
             <Modal isOpen={isModalOpen} onClose={toggleModal}>
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="Stars"
                 fullWidth
                 onClick={() => handleModalValueChange('Stars')}
               />
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="Forks"
                 fullWidth
                 onClick={() => handleModalValueChange('Forks')}
               />
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="Issues"
                 fullWidth
                 onClick={() => handleModalValueChange('Issues')}
@@ -140,25 +140,25 @@ const Chart = ({ starData, forkData, issueData }: ChartProps) => {
             />
             <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="1 Month"
                 fullWidth={false}
                 onClick={() => handleTimeframeChange(1)}
               />
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="3 Months"
                 fullWidth={false}
                 onClick={() => handleTimeframeChange(3)}
               />
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="6 Months"
                 fullWidth={false}
                 onClick={() => handleTimeframeChange(6)}
               />
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text="1 Year"
                 fullWidth={false}
                 onClick={() => handleTimeframeChange(12)}

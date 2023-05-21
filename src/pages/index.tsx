@@ -1,4 +1,4 @@
-import RepositoryTable from '@/components/RepositoryTable'
+import RepositoryTable from '@/pureComponents/RepositoryTable'
 import Page from '@/containers/Page'
 
 const Home = () => (

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import Button from '@/components/Button'
-import Sidebar from '@/components/Sidebar'
+import Button from '@/pureComponents/Button'
+import Sidebar from '@/pureComponents/Sidebar'
 import { founderListMock, githubStatListMock, socialMediaListMock } from '@/data/detailPageMocks'
 import { FaSlack } from 'react-icons/fa'
 

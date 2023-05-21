@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react'
-import GithubStatItem from '@/components/Sidebar/Box/GithubStatItem'
+import GithubStatItem from '@/pureComponents/Sidebar/Box/GithubStatItem'
 
 type InformationRowProps = {
   githubStats: ({ id: ID } & ComponentProps<typeof GithubStatItem>)[]

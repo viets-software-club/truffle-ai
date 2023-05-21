@@ -5,11 +5,11 @@ import {
   FiCalendar as Calendar
 } from 'react-icons/fi'
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
-import Button from '@/components/Button'
-import Card from '@/components/Card'
+import Button from '@/pureComponents/Button'
+import Card from '@/pureComponents/Card'
 import Chart from '@/pageComponents/details/Chart'
 import ProjectInformation from '@/pageComponents/details/ProjectInformation'
-import InformationRow from '@/components/InformationRow'
+import InformationRow from '@/pureComponents/InformationRow'
 import ScatterPlot from '@/pageComponents/details/ScatterPlot'
 import {
   forksMock,
@@ -33,7 +33,7 @@ const DetailPage = () => (
     <div className="border-b border-solid border-gray-800 py-2.5 pl-7 pr-2 text-gray-500">
       <div className="flex justify-between">
         <div className="flex flex-row items-center gap-3">
-          <Button variant="onlyIconnoBordernoBG" onClick={handleClick} Icon={X} />
+          <Button variant="onlyIconnoBorderNoBG" onClick={handleClick} Icon={X} />
           <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
           <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
           <p className="text-14 text-gray-300">3/12</p>

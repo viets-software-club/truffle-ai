@@ -4,7 +4,7 @@ import {
   FiBookmark as Bookmark
 } from 'react-icons/fi'
 import { withRouter, NextRouter } from 'next/router'
-import Sidebar from '@/components/Sidebar'
+import Sidebar from '@/pureComponents/Sidebar'
 
 // @TODO replace nullFunc with getRedirectFunc
 const nullFunc = () => null

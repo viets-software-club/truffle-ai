@@ -13,8 +13,8 @@ import {
   Label,
   LabelList
 } from 'recharts'
-import Modal from '../../components/Modal'
-import Button from '../../components/Button'
+import Modal from '../../pureComponents/Modal'
+import Button from '../../pureComponents/Button'
 
 const names = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 const dataSets = {
@@ -86,7 +86,7 @@ const ScatterPlot = () => {
           <Modal isOpen={isModalOpenY} onClose={toggleModalY}>
             {Object.keys(dataSets).map((value) => (
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text={value}
                 fullWidth
                 onClick={() => {
@@ -132,7 +132,7 @@ const ScatterPlot = () => {
           <Modal isOpen={isModalOpenX} onClose={toggleModalX}>
             {Object.keys(dataSets).map((value) => (
               <Button
-                variant="noBordernoBG"
+                variant="noBorderNoBG"
                 text={value}
                 fullWidth
                 onClick={() => {

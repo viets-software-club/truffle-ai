@@ -6,11 +6,12 @@ import {
 } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
+import Link from 'next/link'
 import { BiGitPullRequest } from 'react-icons/bi'
 import { VscIssues } from 'react-icons/vsc'
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
-import GitHubStatisticItem from '@/components/Sidebar/Box/GithubStatItem'
+import GitHubStatisticItem from '@/pureComponents/Sidebar/Box/GithubStatItem'
 import respositoriesMock from '../../data/repositoriesMock'
 
 type Repository = {
@@ -138,15 +139,12 @@ const RepositoryTable = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className="cursor-pointer hover:bg-gray-800"
-              // @TODO
-              onClick={() => alert('This will soon open up a detail view page!')}
-            >
+            <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="p-2 text-left">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <Link href="/details">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Link>
                 </td>
               ))}
             </tr>

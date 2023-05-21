@@ -22,7 +22,7 @@ jobs:
         with:
           protected-branch-auto-close: false
           title-check-enable: false
-          body-regex: /[\s\S]*Description[\s\S]{35,}How I implemented[\s\S]{45,}/g
+          body-regex: "[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}"
           body-fail: true
           body-auto-close: false
           repo-token: ${{ secrets.GITHUB_TOKEN }}

@@ -13,7 +13,7 @@ const Page = ({ children }: PageProps) => (
       <div className="fixed flex-initial">
         <NavSidebar />
       </div>
-      <main className="ml-56 w-full text-gray-100">{children}</main>
+      <main className="ml-56 w-full p-10 text-gray-100">{children}</main>
     </div>
   </div>
 )

@@ -19,7 +19,7 @@
     "url": "git+https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend.git"
   },
   "author": "",
-  "license": "MIT",
+  "license": "MIT", 
   "bugs": {
     "url": "https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend/issues"
   },

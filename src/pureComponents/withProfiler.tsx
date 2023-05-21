@@ -2,6 +2,7 @@ import { Profiler, createElement } from 'react'
 
 // see https://react.dev/reference/react/Profiler#onrender-callback
 const onRender: React.ProfilerOnRenderCallback = (id, phase, actualDuration, baseDuration) => {
+  // eslint-disable-next-line no-console
   console.info(`Rerender ${id} on ${phase} in ${actualDuration}ms and base ${baseDuration}ms`)
 }
 

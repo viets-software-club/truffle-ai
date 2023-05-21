@@ -1,12 +1,7 @@
 name: 'PR Title Checker'
 on:
   pull_request_target:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - labeled
-      - unlabeled
+    types: [opened, edited, ready_for_review]
 
 jobs:
   check:

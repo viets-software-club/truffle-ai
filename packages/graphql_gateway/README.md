@@ -1,6 +1,6 @@
 # graphql_gateway
 
-A gateway exposing graphql apis (from Supabase and [graphql_server service](../graphql_server/README.md)
+A gateway exposing graphql apis (from Supabase and [graphql_server service](../graphql_server/README.md))
 
 ### Installation
 

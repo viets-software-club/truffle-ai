@@ -1,2 +1,6 @@
 .husky
 dist
+.meshrc.yaml
+.mesh
+.env*
+env.sh

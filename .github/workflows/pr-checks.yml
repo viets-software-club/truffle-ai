@@ -17,12 +17,8 @@ jobs:
         uses: ryanvade/enforce-pr-description-length-action@v1
         with:
           minLength: 50
-      - name: PR description format check
-        uses: mtfoley/pr-compliance-action@main
-        with:
-          protected-branch-auto-close: false
-          title-check-enable: false
-          body-regex: "[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}"
-          body-fail: true
-          body-auto-close: false
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run fabiankoestring/body-regex-validator-action
+        uses: fabiankoestring/body-regex-validator-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_PATTERN: '[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}'

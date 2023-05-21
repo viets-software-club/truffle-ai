@@ -1,5 +1,5 @@
 import { StarIcon } from '@primer/octicons-react'
-import Button from '../../pureComponents/Button'
+import Button from '../../pure/Button'
 
 type ProjectInformationProps = {
   name: string

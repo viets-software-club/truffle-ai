@@ -1,4 +1,4 @@
-import NavSidebar from '@/containers/NavSidebar'
+import NavSidebar from '@/components/side-effects/NavSidebar'
 import { ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 

@@ -1,5 +1,5 @@
-import RepositoryTable from '@/pureComponents/RepositoryTable'
-import Page from '@/containers/Page'
+import RepositoryTable from '@/components/pure/RepositoryTable'
+import Page from '@/components/side-effects/Page'
 
 const Bookmarks = () => (
   <Page>

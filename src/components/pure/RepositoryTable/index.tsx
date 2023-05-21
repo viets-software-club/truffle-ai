@@ -11,8 +11,8 @@ import { BiGitPullRequest } from 'react-icons/bi'
 import { VscIssues } from 'react-icons/vsc'
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
-import GitHubStatisticItem from '@/pureComponents/Sidebar/Box/GithubStatItem'
-import respositoriesMock from '../../data/repositoriesMock'
+import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
+import respositoriesMock from '../../../data/repositoriesMock'
 
 type Repository = {
   name: string

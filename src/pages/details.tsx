@@ -5,12 +5,12 @@ import {
   FiCalendar as Calendar
 } from 'react-icons/fi'
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
-import Button from '@/pureComponents/Button'
-import Card from '@/pureComponents/Card'
-import Chart from '@/pageComponents/details/Chart'
-import ProjectInformation from '@/pageComponents/details/ProjectInformation'
-import InformationRow from '@/pureComponents/InformationRow'
-import ScatterPlot from '@/pageComponents/details/ScatterPlot'
+import Button from '@/components/pure/Button'
+import Card from '@/components/pure/Card'
+import Chart from '@/components/page/details/Chart'
+import ProjectInformation from '@/components/page/details/ProjectInformation'
+import InformationRow from '@/components/pure/InformationRow'
+import ScatterPlot from '@/components/page/details/ScatterPlot'
 import {
   forksMock,
   issuesMock,
@@ -20,8 +20,8 @@ import {
   tagsMock,
   tweetListMock
 } from '@/data/detailPageMocks'
-import Page from '@/containers/Page'
-import SmallSidebar from '@/pageComponents/details/Sidebar'
+import Page from '@/components/side-effects/Page'
+import SmallSidebar from '@/components/page/details/Sidebar'
 
 const handleClick = () => {
   // eslint-disable-next-line no-alert

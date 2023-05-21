@@ -13,8 +13,8 @@ import {
   Label,
   LabelList
 } from 'recharts'
-import Modal from '../../pureComponents/Modal'
-import Button from '../../pureComponents/Button'
+import Modal from '../../pure/Modal'
+import Button from '../../pure/Button'
 
 const names = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 const dataSets = {

@@ -1,0 +1,14 @@
+{
+  "LABEL": {
+    "name": "PR Title needs formatting",
+    "color": "EEEEEE"
+  },
+  "CHECKS": {
+    "regexp": "/^[\b(META|BACK|FRONT)-d+]s.+",
+    "regexpFlags": "i"
+  },
+  "MESSAGES": {
+    "success": "Success PR title",
+    "failure": "Failing PR title"
+  }
+}

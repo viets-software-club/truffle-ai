@@ -21,7 +21,7 @@ export type OpenAIResponse = {
 }
 
 export type StargazerCount = {
-  stargazersCount: number
+  stargazers_count: number
 }
 
 export type StargazersData = {
@@ -30,11 +30,11 @@ export type StargazersData = {
     link?: string
   }
   status: number
-  starredAt: string
+  starred_at: string
 }
 
 export type StargazerRecord = {
-  starredAt: string
+  starred_at: string
 }
 
 export type StarRecord = {

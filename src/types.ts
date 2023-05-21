@@ -20,20 +20,12 @@ export type OpenAIResponse = {
   }[]
 }
 
-export type StargazerCount = {
-  stargazers_count: number
-}
-
 export type StargazersData = {
   length: number
   headers: {
     link?: string
   }
   status: number
-  starred_at: string
-}
-
-export type StargazerRecord = {
   starred_at: string
 }
 

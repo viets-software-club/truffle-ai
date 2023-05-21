@@ -3,7 +3,7 @@
 ## Installation
 
 Install Docker from https://www.docker.com/ and install dependencies with `npm ci`.<br/>
-Before starting to develop check that you have setup your Environment variables in `.env.dev`! The script `env.sh` checks they are loaded during development.
+Before starting to develop check that you have setup your environment variables, see section [Environment Variables](#Environment-variables)
 
 ## Commands
 
@@ -39,3 +39,19 @@ The gateway service composes schemas into one superschema and redirects the quer
 The graphql server service sets up a [Fastify](https://www.fastify.io/) server, that runs [Mercurius](https://mercurius.dev/#/) to host a GraphQL schema. It will be used to build our own GraphQL schemas.
 <br /><br/>
 Both services expose a graphiql endpoint. To work with these services you can use [NPM workspaces](https://docs.npmjs.com/cli/v9/using-npm/workspaces).
+
+## Environment variables
+
+Before starting to develop check that you have setup your Environment variables in `.env.dev`! They are provided to you in the official channels. The script `env.sh` checks they are loaded only during development.
+
+```zsh
+SUPABASE_REFERENCE_ID # supabase reference id
+SUPABASE_URL # supabase url
+SUPABASE_GRAPHQL_URL # supabase graphql url
+SUPABASE_API_KEY # apiKey
+GATEWAY_PORT # number
+SERVER_PORT # number
+SERVER_URL # url to graphql_server
+SERVER_GRAPHQL_URL # url to graphql route on graphql_server
+NODE_ENV # development|production
+```

@@ -218,7 +218,7 @@ async function getRepoStargazersCount(repo: string, token?: string): Promise<num
   )
 
   const data: StargazerCount = response.data
-  return data.stargazersCount
+  return data.stargazers_count
 }
 
 /** Retrieves the star records (star count by date) of a Github repository
@@ -285,12 +285,12 @@ async function getRepoStarsMap(
   const starRecordsMap: Map<string, number> = new Map()
 
   if (requestPages.length < maxRequestAmount) {
-    const starRecordsData: { starredAt: string }[] = []
+    const starRecordsData: { starred_at: string }[] = []
     resArray.forEach(({ data }) => {
       starRecordsData.push(...data)
     })
     for (let i = 0; i < starRecordsData.length; ) {
-      starRecordsMap.set(getDateString(starRecordsData[i].starredAt), i + 1)
+      starRecordsMap.set(getDateString(starRecordsData[i].starred_at), i + 1)
       i += Math.floor(starRecordsData.length / maxRequestAmount) || 1
     }
   } else {
@@ -298,7 +298,7 @@ async function getRepoStarsMap(
       if (data.length > 0) {
         const starRecord = data[0]
         starRecordsMap.set(
-          getDateString(starRecord.starredAt),
+          getDateString(starRecord.starred_at),
           DEFAULT_PER_PAGE * (requestPages[index] - 1)
         )
       }

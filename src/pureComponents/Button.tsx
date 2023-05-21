@@ -5,7 +5,7 @@ type ButtonProps = {
     | 'noBorderNoBG'
     | 'noBG'
     | 'onlyIcon'
-    | 'onlyIconnoBorderNoBG'
+    | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
   onClick: () => void
   text?: string
@@ -22,10 +22,10 @@ const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>
   ['normal', 'bg-gray-850 border border-gray-800 px-4 py-2'],
   ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-4 py-2'],
   ['noBG', 'border border-gray-800 px-4 py-2'],
-  ['noBorderNoBG', ' px-4 py-2'],
+  ['noBorderNoBG', 'px-4 py-2'],
   ['highlighted', 'bg-indigo-500 px-4 py-2'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
-  ['onlyIconnoBorderNoBG', '']
+  ['onlyIconNoBorderNoBG', '']
 ])
 
 const Button = ({
@@ -48,7 +48,7 @@ const Button = ({
   )
   const iconNode =
     Icon &&
-    (variant === 'onlyIcon' || variant === 'onlyIconnoBorderNoBG' ? (
+    (variant === 'onlyIcon' || variant === 'onlyIconNoBorderNoBG' ? (
       <Icon key="2" className={`h-4 w-4 ${iconColor}`} />
     ) : (
       <Icon key="2" className={`${order === 'ltr' ? 'mr-2' : 'ml-2'} h-4 w-4 ${iconColor}`} />

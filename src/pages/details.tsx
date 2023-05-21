@@ -33,7 +33,7 @@ const DetailPage = () => (
     <div className="border-b border-solid border-gray-800 py-2.5 pl-7 pr-2 text-gray-500">
       <div className="flex justify-between">
         <div className="flex flex-row items-center gap-3">
-          <Button variant="onlyIconnoBorderNoBG" onClick={handleClick} Icon={X} />
+          <Button variant="onlyIconNoBorderNoBG" onClick={handleClick} Icon={X} />
           <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
           <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
           <p className="text-14 text-gray-300">3/12</p>

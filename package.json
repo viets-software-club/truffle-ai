@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend#readme",
   "dependencies": {
-    "@types/axios": "^0.14.0", 
+    "@types/axios": "^0.14.0",
     "@types/cheerio": "^0.22.31",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
-    "@types/showdown": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
     "concurrently": "^8.0.1",

@@ -3,7 +3,6 @@ import mercurius from 'mercurius'
 import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
 
-console.log(process.env.NODE_ENV)
 const ENV = process.env.NODE_ENV || 'development'
 
 const envToLogger = {

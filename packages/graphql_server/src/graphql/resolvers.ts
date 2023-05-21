@@ -24,7 +24,6 @@ const resolvers = {
   SocialMediaPresence: {
     // resolves the type of SocialMediaPresence based on the platform field
     resolveType(socialMediaPresence: SocialMediaPresence) {
-      console.log(socialMediaPresence.platform)
       switch (socialMediaPresence.platform) {
         case 'Twitter':
           return 'TwitterAccount'

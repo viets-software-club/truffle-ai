@@ -4,11 +4,14 @@
     "color": "EEEEEE"
   },
   "CHECKS": {
+    "prefixes": [],
     "regexp": "/^[\b(META|BACK|FRONT)-d+]s.+",
-    "regexpFlags": "i"
+    "regexpFlags": "i",
+    "ignoreLabels": []
   },
   "MESSAGES": {
     "success": "Success PR title",
-    "failure": "Failing PR title"
+    "failure": "Failing PR title",
+    "notice": ""
   }
 }

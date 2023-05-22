@@ -4,17 +4,15 @@ import {
   flexRender,
   createColumnHelper
 } from '@tanstack/react-table'
-import React from 'react'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
+import Link from 'next/link'
 import { BiGitPullRequest } from 'react-icons/bi'
 import { VscIssues } from 'react-icons/vsc'
-
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
-import GitHubStatisticItem from '@/components/RightSidebar/GitHubStatisticItem'
-
-import respositoriesMock from '../../data/repositoriesMock'
+import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
+import respositoriesMock from '../../../data/repositoriesMock'
 
 type Repository = {
   name: string
@@ -117,14 +115,12 @@ const browseListColumns = [
 ]
 
 const RepositoryTable = () => {
-  // REACT TABLE
-  const tableData = React.useMemo(() => respositoriesMock, [])
-
   const table = useReactTable({
-    data: tableData,
+    data: respositoriesMock,
     columns: browseListColumns,
     getCoreRowModel: getCoreRowModel()
   })
+
   return (
     <div className="flex flex-col rounded-lg">
       <table>
@@ -143,34 +139,17 @@ const RepositoryTable = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className="cursor-pointer hover:bg-gray-800"
-              // eslint-disable-next-line no-alert
-              onClick={() => alert('This will soon open up a detail view page!')}
-            >
+            <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="p-2 text-left">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <Link href="/details">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Link>
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
-        {/* We are not using Footers for now */}
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.footer, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
     </div>
   )

@@ -28,9 +28,11 @@ module.exports = {
     'import/extensions': ['error', { tsx: 'never' }],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
-    '@typescript-eslint/no-unused-vars': 'error'
+    '@typescript-eslint/no-unused-vars': 'error',
+    // see for no-undef https://typescript-eslint.io/linting/troubleshooting/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+    'no-undef': 'off',
+    'no-void': ['error', { allowAsStatement: true }]
   },
-
   env: {
     browser: true,
     node: false

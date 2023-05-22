@@ -1,13 +1,11 @@
-import { ComponentType } from 'react'
-
-type MenuItemProps = {
-  Icon: ComponentType<{ className?: string }>
+type ItemProps = {
+  Icon: IconComponentType
   text: string
   onClick: () => void
   showIcon?: boolean
 }
 
-const MenuItem = ({ Icon, text, onClick, showIcon }: MenuItemProps) => (
+const Item = ({ Icon, text, onClick, showIcon }: ItemProps) => (
   <div className="flex flex-col justify-between">
     <button
       type="button"
@@ -22,8 +20,8 @@ const MenuItem = ({ Icon, text, onClick, showIcon }: MenuItemProps) => (
   </div>
 )
 
-MenuItem.defaultProps = {
+Item.defaultProps = {
   showIcon: true
 }
 
-export default MenuItem
+export default Item

@@ -1,16 +1,16 @@
-import { ComponentType, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-type GitHubStatisticProps = {
-  Icon?: ComponentType<{ className?: string }>
+type GithubStatItemProps = {
+  Icon?: IconComponentType
   IconMetric?: ReactNode
   value: string
   growth?: string
-  paddingOn: boolean
+  paddingOn?: boolean
   outerPaddingOn?: boolean
   hoverOn?: boolean
 }
 
-const GitHubStatisticItem = ({
+const GithubStatItem = ({
   Icon,
   value,
   growth,
@@ -18,7 +18,7 @@ const GitHubStatisticItem = ({
   paddingOn,
   outerPaddingOn,
   hoverOn
-}: GitHubStatisticProps) => (
+}: GithubStatItemProps) => (
   <div className="flex flex-col justify-between">
     <div
       className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5 ${
@@ -37,12 +37,13 @@ const GitHubStatisticItem = ({
   </div>
 )
 
-GitHubStatisticItem.defaultProps = {
+GithubStatItem.defaultProps = {
   Icon: undefined,
   IconMetric: undefined,
   growth: undefined,
   outerPaddingOn: true,
+  paddingOn: true,
   hoverOn: true
 }
 
-export default GitHubStatisticItem
+export default GithubStatItem

@@ -1,6 +1,5 @@
 import { StarIcon } from '@primer/octicons-react'
-
-import Button from '../Button'
+import Button from '../../pure/Button'
 
 type ProjectInformationProps = {
   name: string
@@ -30,6 +29,7 @@ const ProjectInformation = ({ name, eli5, tags }: ProjectInformationProps) => (
           // eslint-disable-next-line no-alert
           alert('Bookmark clicked!')
         }}
+        order="ltr"
         textColor="text-gray-100"
         iconColor="text-gray-100"
       />

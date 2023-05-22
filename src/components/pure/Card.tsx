@@ -1,10 +1,13 @@
-import { ComponentType, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 type CardProps = {
-  Icon: ComponentType<{ className?: string }>
+  Icon: IconComponentType
   name: string
   button: ReactNode
-  textFields: string[]
+  textFields: {
+    id: ID
+    content: string
+  }[]
 }
 
 const Card = ({ Icon, name, button, textFields }: CardProps) => (
@@ -13,9 +16,9 @@ const Card = ({ Icon, name, button, textFields }: CardProps) => (
       <Icon className="mr-2 text-indigo-500" />
       <h2>{name}</h2>
     </div>
-    {textFields.map((text) => (
-      <p key={text} className="border-b border-gray-800 p-4 text-12 font-light text-gray-300">
-        {text}
+    {textFields.map(({ id, content }) => (
+      <p key={id} className="border-b border-gray-800 p-4 text-12 font-light text-gray-300">
+        {content}
       </p>
     ))}
     <div className="p-4">{button}</div>

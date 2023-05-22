@@ -14,9 +14,9 @@
     "serve:graphql_server": "npm run dev -w graphql_server",
     "test": "npm run format:check && npm run lint",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi;",
-    "lint": "eslint ./packages/graphql_server/src",
-    "lint:debug": "eslint ./src --debug",
-    "lint:fix": "eslint ./src --fix",
+    "lint": "eslint ./packages/**",
+    "lint:debug": "eslint ./packages/** --debug",
+    "lint:fix": "eslint ./packages/** --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -26,7 +26,7 @@
   ],
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint ./src --cache --fix",
+      "eslint ./packages/** --cache --fix",
       "prettier --write"
     ],
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"

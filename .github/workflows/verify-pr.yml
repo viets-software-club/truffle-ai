@@ -11,7 +11,7 @@ jobs:
         uses: pczern/verify-pr-action@v0.0.3-alpha.26
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          titleRegex: '[\b(META|BACK|FRONT)-d+]s.+'
+          titleRegex: '\\[(META|BACK|FRONT)\\-\\d+\\]\\s.+'
           descriptionRegex: '[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}'
           titleMinLength: 20
           descriptionMinLength: 60

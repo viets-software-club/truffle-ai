@@ -1,18 +1,38 @@
 {
   "name": "truffle-ai-backend",
-  "version": "0.0.1",
-  "description": "",
+  "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "dev": "concurrently 'tsc -w' 'nodemon dist/listen.js'",
-    "start": "node dist/listen.js",
-    "lint": "eslint ./src",
+    "dev": "concurrently -c 'gray,magenta' 'npm run dev:graphql_gateway' 'npm run dev:graphql_server'",
+    "dev:graphql_gateway": "npm run dev -w graphql_gateway",
+    "dev:graphql_server": "npm run dev -w graphql_server",
+    "build": "concurrently -c 'gray,magenta' 'npm run build:graphql_gatway' 'npm run build:graphql_server'",
+    "build:graphql_gatway": "npm run build -w graphql_gateway",
+    "build:graphql_server": "npm run build -w graphql_server",
+    "serve": "concurrently -c 'gray,magenta' 'sleep 3 && npm run serve:graphql_gateway' 'npm run serve:graphql_server'",
+    "serve:graphql_gateway": "npm run dev -w graphql_gateway",
+    "serve:graphql_server": "npm run dev -w graphql_server",
+    "test": "npm run format:check && npm run lint",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi;",
+    "lint": "eslint ./packages/graphql_server/src",
     "lint:debug": "eslint ./src --debug",
     "lint:fix": "eslint ./src --fix",
     "prepare": "husky install",
     "prettier:all": "prettier --write .",
-    "prettier:check": "prettier --check ."
+    "prettier:check": "prettier --check .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "workspaces": [
+    "packages/graphql_server",
+    "packages/graphql_gateway"
+  ],
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint ./src --cache --fix",
+      "prettier --write"
+    ],
+    "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },
   "repository": {
     "type": "git",
@@ -48,15 +68,8 @@
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-sonarjs": "^0.19.0",
-    "nodemon": "^2.0.22",
-    "pino-pretty": "^10.0.0",
-    "typescript": "^5.0.4"
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint ./src --cache --fix",
-      "prettier --write"
-    ],
-    "*.{html,css,scss,sass,md,mdx}": "prettier --write"
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
   }
 }

@@ -1,0 +1,27 @@
+name: 'PR Checks'
+on:
+  pull_request:
+    types: [opened, edited, ready_for_review, reopened, synchronize]
+
+jobs:
+  pr-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR title check
+        uses: thehanimo/pr-title-checker@v1.3.7
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pass_on_octokit_error: false
+          configuration_path: '.github/pr-title-checker-config.json'
+      - name: PR description length check
+        uses: ryanvade/enforce-pr-description-length-action@v1
+        with:
+          minLength: 50
+      - name: Run fabiankoestring/body-regex-validator-action
+        uses: fabiankoestring/body-regex-validator-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_PATTERN: '[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}'
+          PULL_REQUEST_COMMENT: '###Description\n###How I implemented'
+          ISSUE_PATTERN: ''
+          ISSUE_COMMENT: ''

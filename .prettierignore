@@ -1,2 +1,6 @@
 .husky
 dist
+.mesh
+.env*
+env.sh
+.dockerignore

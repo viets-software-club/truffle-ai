@@ -21,13 +21,27 @@ const Login = () => {
     }
   }
 
+  async function signOut() {
+    await supabaseClient.auth.signOut()
+  }
+
   return (
     <main className={`${inter.className} flex min-h-screen flex-col`}>
       <div className="flex grow flex-col items-center justify-between bg-radial-gradient">
         <div />
         <div className="flex flex-col items-center space-y-4">
           <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
-          {!user && (
+          {user ? (
+            <Button
+              text="Logout"
+              textColor="white"
+              onClick={() => {
+                // eslint-disable-next-line no-console
+                signOut().catch((err) => console.error(err))
+              }}
+              variant="normal"
+            />
+          ) : (
             <Button
               text="Continue with Google"
               Icon={AiOutlineGoogle}
@@ -35,6 +49,7 @@ const Login = () => {
               iconColor="white"
               textColor="white"
               onClick={() => {
+                // eslint-disable-next-line no-console
                 signInWithGoogle().catch((err) => console.error(err))
               }}
               variant="highlighted"

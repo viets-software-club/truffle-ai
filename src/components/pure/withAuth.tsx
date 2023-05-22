@@ -10,18 +10,19 @@ export default function withAuth<P extends NonNullable<unknown>>(
     const user = useUser()
 
     useEffect(() => {
-      // Redirect if the user object doesn't exist
-      if (!user) {
-        void router.replace('/login')
-      }
+      const timeoutId = setTimeout(() => {
+        if (!user) {
+          void router.replace('/login')
+        }
+      }, 500)
+
+      return () => clearTimeout(timeoutId)
     }, [user, router])
 
-    // While checking the user, you can return some loading state
     if (!user) {
       return <div>Loading...</div>
     }
 
-    // Otherwise, return the wrapped component
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <WrappedComponent {...props} />
   }

@@ -17,9 +17,6 @@
     "lint": "eslint ./packages/graphql_server/src",
     "lint:debug": "eslint ./src --debug",
     "lint:fix": "eslint ./src --fix",
-    "prepare": "husky install",
-    "prettier:all": "prettier --write .",
-    "prettier:check": "prettier --check .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -29,26 +26,16 @@
   ],
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint ./src --cache --fix",
+      "eslint ./packages/graphql_server/src --cache --fix",
       "prettier --write"
     ],
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend.git"
-  },
-  "author": "",
-  "license": "MIT", 
-  "bugs": {
-    "url": "https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend/issues"
-  },
-  "homepage": "https://github.com/jst-seminar-rostlab-tum/truffle-ai-backend#readme",
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/cheerio": "^0.22.31",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
+    "cookie": "^0.5.0",
     "fastify": "^4.17.0",
     "graphql": "^16.6.0",
     "husky": "^8.0.3",
@@ -58,6 +45,7 @@
     "showdown": "^2.1.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/node": "^18.16.3",
     "@types/showdown": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^5.59.2",

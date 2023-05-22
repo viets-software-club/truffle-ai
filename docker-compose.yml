@@ -1,0 +1,24 @@
+version: '3.9'
+name: truffle-ai
+services:
+  graphql_server:
+    build:
+      context: ./
+      dockerfile: ./packages/graphql_server/Dockerfile
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    env_file:
+      - .env
+  graphql_gateway:
+    build:
+      context: ./
+      dockerfile: ./packages/graphql_gateway/Dockerfile
+      args:
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_API_KEY=${SUPABASE_API_KEY}
+        - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
+        - SERVER_GRAPHQL_URL=${SERVER_GRAPHQL_URL}
+    ports:
+      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+    env_file:
+      - .env

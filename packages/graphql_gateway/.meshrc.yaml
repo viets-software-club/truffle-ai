@@ -1,0 +1,19 @@
+serve:
+  endpoint: /graphql
+  playground: true
+  port: 3000
+sources:
+  - name: Supabase
+    handler:
+      graphql:
+        endpoint: '{env.SUPABASE_GRAPHQL_URL}'
+        operationHeaders:
+          apiKey: '{env.SUPABASE_API_KEY}'
+        schemaHeaders:
+          apiKey: '{env.SUPABASE_API_KEY}'
+  - name: Server
+    handler:
+      graphql:
+        endpoint: '{env.SERVER_GRAPHQL_URL}'
+        source: ./../graphql_server/src/graphql/schema.ts
+additionalEnvelopPlugins: './src/envelopPlugins'

@@ -1,0 +1,29 @@
+{
+  "name": "graphql_server",
+  "version": "0.0.1",
+  "description": "A server with data available over a graphql endpoint",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.ts",
+  "config": {
+    "env_dev": ". ../../env.sh"
+  },
+  "scripts": {
+    "dev": "concurrently -c 'magenta' 'tsc -w' '$npm_package_config_env_dev && nodemon dist/index.js'",
+    "build": "tsc",
+    "serve": "$npm_package_config_env_dev && node dist/index.js"
+  },
+  "dependencies": {
+    "fastify": "^4.17.0",
+    "graphql": "^16.6.0",
+    "mercurius": "^13.0.0",
+    "typescript": "^5.0.4",
+    "@types/node": "^18.16.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "nodemon": "^2.0.22",
+    "pino-pretty": "^10.0.0",
+    "ts-node": "^10.9.1"
+  }
+}

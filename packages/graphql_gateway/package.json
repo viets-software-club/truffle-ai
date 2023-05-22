@@ -1,0 +1,29 @@
+{
+  "name": "graphql_gateway",
+  "version": "0.0.1",
+  "description": "A gateway to graphql apis",
+  "license": "MIT",
+  "private": true,
+  "config": {
+    "env_dev": ". ../../env.sh"
+  },
+  "scripts": {
+    "dev": "$npm_package_config_env_dev && mesh dev",
+    "build": "$npm_package_config_env_dev && mesh build",
+    "serve": "$npm_package_config_env_dev && mesh start"
+  },
+  "dependencies": {
+    "@envelop/core": "^3.0.6",
+    "@envelop/generic-auth": "^5.0.6",
+    "@graphql-mesh/cli": "^0.82.35",
+    "@graphql-mesh/graphql": "^0.93.1",
+    "@graphql-mesh/transform-filter-schema": "^0.93.2",
+    "@supabase/supabase-js": "^2.22.0",
+    "cookie": "^0.5.0",
+    "fastify": "^4.17.0",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.5.1"
+  }
+}

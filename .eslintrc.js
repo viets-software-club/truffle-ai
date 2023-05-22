@@ -11,6 +11,10 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'import', 'sonarjs'],
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: ['./packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname
+  },
   rules: {
     'import/no-unresolved': 'error'
   },
@@ -30,7 +34,5 @@ module.exports = {
     browser: false,
     node: true
   },
-  parserOptions: {
-    project: ['./tsconfig.json']
-  }
+  root: true
 }

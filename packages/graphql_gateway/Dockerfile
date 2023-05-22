@@ -21,11 +21,17 @@ COPY ./packages/graphql_server/src/graphql/schema.ts schema.ts
 WORKDIR /app/packages/graphql_gateway
 COPY ./packages/graphql_gateway/package.json package.json
 
-RUN npm ci --omit=dev -w graphql_gateway
+# see https://github.com/nodejs/docker-node/issues/282#issuecomment-358907790
+RUN apk --no-cache --virtual build-dependencies add \
+  python3 \
+  make \
+  g++ \
+  && npm ci --omit=dev -w graphql_gateway \
+  && apk del build-dependencies
 
 COPY ./packages/graphql_gateway .
 
 RUN npm run build
 
 EXPOSE ${GATEWAY_PORT}
-CMD npm run serve
+CMD ["npm", "run", "serve"]

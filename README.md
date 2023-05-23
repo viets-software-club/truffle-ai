@@ -67,10 +67,10 @@ Same as `prettier:check` but automatically fixes problems.
 
 Removes redundant import statements of `react` in components.
 
-## Environment Variables
+## NextJS Environment Variables
 
-`NEXT_PUBLIC_SUPABASE_URL=https://yipnhkmklmbuxjwzpipg.supabase.co`
-`NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpcG5oa21rbG1idXhqd3pwaXBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQ1MTU3NTcsImV4cCI6MjAwMDA5MTc1N30.r_sih3YT0PqgHoYC59LxBA7OO2SXkAcLX44KRs1Q7O0`
+`NEXT_PUBLIC_SUPABASE_URL`
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ## Learn more
 

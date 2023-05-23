@@ -44,7 +44,7 @@ const Login = () => {
         <div className="flex flex-col items-center space-y-4">
           <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
           {user ? (
-            <div>You are already logged in.</div>
+            <p>You are already logged in.</p>
           ) : (
             <Button
               text="Continue with Google"

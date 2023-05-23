@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import { useProjectsQuery } from '@/generated/gql'
+import withAuth from '@/components/pure/withAuth'
 
 /**
  * Simple component demonstrating how to use GraphQL queries
@@ -22,4 +23,4 @@ const Example: NextPage = () => {
   )
 }
 
-export default Example
+export default withAuth(Example)

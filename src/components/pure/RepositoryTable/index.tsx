@@ -12,7 +12,6 @@ import { VscIssues } from 'react-icons/vsc'
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
-import withAuth from '@/components/pure/withAuth'
 import respositoriesMock from '../../../data/repositoriesMock'
 
 type Repository = {
@@ -155,4 +154,4 @@ const RepositoryTable = () => {
     </div>
   )
 }
-export default withAuth(RepositoryTable)
+export default RepositoryTable

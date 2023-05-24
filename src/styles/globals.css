@@ -47,16 +47,3 @@ body {
     rgb(var(--background-start-rgb));
   font-family: var(--font-family-inter);
 }
-
-#spotlight_wrapper {
-  @apply fixed flex h-screen w-screen items-start justify-center;
-}
-
-#spotlight {
-  @apply mt-28 block h-14 w-96 appearance-none rounded-3xl bg-neutral-600 bg-left-bottom bg-no-repeat p-5 text-white outline-none;
-  box-shadow: 0 25px 60px 10px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  font-size: 1.6rem;
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
-    'Lucida Grande', sans-serif;
-}

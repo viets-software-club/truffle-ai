@@ -1,6 +1,6 @@
 import RepositoryTable from '@/components/pure/RepositoryTable'
 import Page from '@/components/side-effects/Page'
-import withAuth from '@/components/pure/withAuth'
+import withAuth from '@/components/side-effects/withAuth'
 
 const Bookmarks = () => (
   <Page>

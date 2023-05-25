@@ -5,7 +5,7 @@ import BASE_URL from '@/constants/baseUrl'
 import '@/styles/globals.css'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 const App = ({
   Component,
@@ -25,8 +25,8 @@ const App = ({
       initialSession={pageProps.initialSession}
     >
       {/* TODO: PR review */}
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <Component {...pageProps} />
+      {/* Replace this line */}
+      {React.createElement(Component, pageProps)}
     </SessionContextProvider>
   )
 }

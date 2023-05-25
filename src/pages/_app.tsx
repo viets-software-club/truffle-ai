@@ -24,6 +24,7 @@ const App = ({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
+      {/* TODO: PR review */}
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Component {...pageProps} />
     </SessionContextProvider>

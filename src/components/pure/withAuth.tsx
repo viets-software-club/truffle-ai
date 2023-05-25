@@ -1,6 +1,8 @@
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
+import Loading from '@/pages/loading'
+import Error from '@/pages/error'
 
 export default function withAuth<P extends JSX.IntrinsicAttributes>(
   WrappedComponent: React.ComponentType<P>
@@ -14,13 +16,10 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
       if (!isLoading && !user) void router.replace('/login')
     }, [isLoading])
 
-    if (error) return <span style={{ color: 'white' }}>error</span>
+    if (error) return <Error />
 
-    if (isLoading || !user) {
-      return <span style={{ color: 'white' }}>loading</span>
-    }
+    if (isLoading || !user) return <Loading />
 
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <WrappedComponent {...props} />
+    return React.createElement(WrappedComponent, props)
   }
 }

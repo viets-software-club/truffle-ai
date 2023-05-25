@@ -133,9 +133,9 @@ export const hackerNewsListMock = [
     content:
       'Lorem2 ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore  -> Source: Hackernews'
   }
-]
+]  
 
-export const starsMock = [
+export const stars = [
   { name: '01/01/2023', value: 4000, value2: 1000 },
   { name: '01/02/2023', value: 3000, value2: 2000 },
   { name: '01/03/2023', value: 2000, value2: 3000 },
@@ -145,7 +145,7 @@ export const starsMock = [
   { name: '01/07/2023', value: 3490, value2: 7000 }
 ]
 
-export const forksMock = [
+export const forks = [
   { name: '01/01/2023', value: 1000, value2: 4000 },
   { name: '01/02/2023', value: 2000, value2: 3000 },
   { name: '01/03/2023', value: 3000, value2: 2000 },
@@ -155,7 +155,7 @@ export const forksMock = [
   { name: '01/07/2023', value: 7000, value2: 3490 }
 ]
 
-export const issuesMock = [
+export const issues = [
   { name: '01/01/2023', value: 4800, value2: 1000 },
   { name: '01/02/2023', value: 4200, value2: 2000 },
   { name: '01/03/2023', value: 3600, value2: 3000 },
@@ -164,3 +164,12 @@ export const issuesMock = [
   { name: '01/06/2023', value: 1800, value2: 6000 },
   { name: '01/07/2023', value: 1200, value2: 7000 }
 ]
+
+export const data = [
+  stars,
+  forks,
+  issues
+]
+
+export const dataTypeNames = ['Stars', 'Forks', 'Issues'];
+

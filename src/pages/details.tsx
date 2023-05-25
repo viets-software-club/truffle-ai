@@ -12,9 +12,8 @@ import ProjectInformation from '@/components/page/details/ProjectInformation'
 import InformationRow from '@/components/pure/InformationRow'
 import ScatterPlot from '@/components/page/details/ScatterPlot'
 import {
-  forksMock,
-  issuesMock,
-  starsMock,
+  data,
+  dataTypeNames,
   githubStatListMockWithId,
   hackerNewsListMock,
   tagsMock,
@@ -54,8 +53,8 @@ const DetailPage = () => (
           eli5="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
           tags={['React', 'Static Site Generation', 'TypeScript']}
         />
-        <Chart starData={starsMock} forkData={forksMock} issueData={issuesMock} />
-        <ScatterPlot />
+        <Chart dataArray={data} dataTypeNames={dataTypeNames}/>
+        {/* <ScatterPlot /> */}
         <div className="flex flex-row">
           <Card Icon={FaTwitter} name="Top Tweets" button={SomeButton} textFields={tweetListMock} />
           <Card
@@ -63,23 +62,6 @@ const DetailPage = () => (
             name="Community sentiment"
             button={SomeButton}
             textFields={hackerNewsListMock}
-          />
-        </div>
-        <div className="flex flex-col px-7 py-2.5">
-          <InformationRow
-            githubStats={githubStatListMockWithId}
-            name="vercel/next.js"
-            tags={tagsMock}
-          />
-          <InformationRow
-            githubStats={githubStatListMockWithId}
-            name="vercel/next2.js"
-            tags={tagsMock}
-          />
-          <InformationRow
-            githubStats={githubStatListMockWithId}
-            name="vercel/next3.js"
-            tags={tagsMock}
           />
         </div>
       </div>

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 const Home = () => {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState<boolean>(false)
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === 'k') {

@@ -4,8 +4,8 @@ type CommandInterfaceProps = {
   action: (event: FocusEvent<HTMLInputElement>) => void
 }
 const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
-  const [searchWord, setSearchWord] = React.useState('')
-  const [recommendationIsOpen, setRecommendationIsOpen] = React.useState(false)
+  const [searchWord, setSearchWord] = React.useState<string>('')
+  const [recommendationIsOpen, setRecommendationIsOpen] = React.useState<boolean>(false)
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (inputRef && inputRef.current) {

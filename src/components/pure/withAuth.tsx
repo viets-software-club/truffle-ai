@@ -1,27 +1,23 @@
-import { useUser } from '@supabase/auth-helpers-react'
+import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Loading from '@/pages/loading'
 
 export default function withAuth<P extends JSX.IntrinsicAttributes>(
   WrappedComponent: React.ComponentType<P>
 ) {
   return (props: React.PropsWithChildren<P>) => {
+    const { isLoading, error } = useSessionContext()
     const router = useRouter()
     const user = useUser()
 
     useEffect(() => {
-      const timeoutId = setTimeout(() => {
-        if (!user) {
-          void router.replace('/login')
-        }
-      }, 500)
+      if (!isLoading && !user) void router.replace('/login')
+    }, [isLoading])
 
-      return () => clearTimeout(timeoutId)
-    }, [user, router])
+    if (error) return <span style={{ color: 'white' }}>error</span>
 
-    if (!user) {
-      return <Loading />
+    if (isLoading || !user) {
+      return <span style={{ color: 'white' }}>loading</span>
     }
 
     // eslint-disable-next-line react/jsx-props-no-spreading

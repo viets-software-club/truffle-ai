@@ -1,0 +1,24 @@
+query Projects {
+  projects {
+    id
+    gitHubInformation {
+      name
+      author {
+        name
+        email
+      }
+      about
+      eli5
+    }
+    socialMediaAccounts {
+      platform
+      accountName
+      link
+    }
+    socialMediaTopPosts {
+      platform
+      link
+      title
+    }
+  }
+}

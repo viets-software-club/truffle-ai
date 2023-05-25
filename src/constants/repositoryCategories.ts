@@ -5,7 +5,7 @@ enum RepositoryCategories {
   CONTINUOUS_INTEGRATION = 'Continuous Integration',
   TESTING_FRAMEWORKS = 'Testing Frameworks',
   PACKAGE_MANAGERS = 'Package Managers',
-  IDE = 'Integrated Development Environments',
+  IDE = 'IDE',
   DEBUGGERS = 'Debuggers',
   PROFILERS = 'Profilers',
   BUILD_TOOLS = 'Build Tools',

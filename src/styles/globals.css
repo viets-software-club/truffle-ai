@@ -5,9 +5,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --bgPrimary: #191a23;
+  --textPrimary: #eeeffc;
+  --border: #2c2d3c;
+  --textSecondary: #d2d3e0;
+  --bgSecondary: #1f2130;
+  --icon: #858699;
+  --bgSecondaryHighlighted: #26273b;
+  --highlight-color: #575bc7;
+  --red: #eb5757;
+  --yellow: #f2c94c;
+  --green: #4cb782;
 
   /* Add Inter font-family and size variations */
   --font-family-inter: 'Inter', sans-serif;
@@ -43,7 +51,6 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
+  background: var(--bgPrimary);
   font-family: var(--font-family-inter);
 }

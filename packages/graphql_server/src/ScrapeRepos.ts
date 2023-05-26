@@ -181,9 +181,9 @@ async function main(timeMode: number) {
   const trendingSplit: string[] | undefined = await fetchRepos(timeMode)
 
   // your personal GitHub authToken
-  const authToken = `XXXXXXXXXXXXXXXXXXXXXX`
+  const authToken: string = process.env.XXXXXXXXXX as string
   // //Authorization: "Bearer " + process.env.OPENAI_API_KEY,
-  const OPENAI_API_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+  const OPENAI_API_KEY: string  = process.env.XXXXXX as string
 
   // check if any repos were actually found
   if (!trendingSplit) {

@@ -9,7 +9,7 @@ export type DeveloperRepo = {
 }
 
 export type Repository = {
-  [key: string]: any
+  [key: string]: undefined
 }
 
 export type OpenAIResponse = {

@@ -88,7 +88,6 @@ export async function getRepoStarRecords(repo: string, token: string, maxRequest
 }
 
 /** Retrieves the star records (star count by date) of a GitHub repository and returns them as an array of `StarRecord` objects.
- * Had to split up the original method by star-history because of ESLint
  * @param {string} repo - Name of the GitHub repository in the format "owner/repository".
  * @param {string} token - GitHub Access token for authentication (optional).
  * @param {number[]} requestPages - Array of page numbers to request from the API.

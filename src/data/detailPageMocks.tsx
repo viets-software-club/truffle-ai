@@ -133,7 +133,7 @@ export const hackerNewsListMock = [
     content:
       'Lorem2 ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore  -> Source: Hackernews'
   }
-]  
+]
 
 export const stars = [
   { name: '01/01/2023', value: 4000, value2: 1000 },
@@ -166,10 +166,7 @@ export const issues = [
 ]
 
 export const data = [
-  stars,
-  forks,
-  issues
+  { name: 'Stars', data: stars },
+  { name: 'Forks', data: forks },
+  { name: 'Issues', data: issues }
 ]
-
-export const dataTypeNames = ['Stars', 'Forks', 'Issues'];
-

@@ -9,14 +9,12 @@ import Button from '@/components/pure/Button'
 import Card from '@/components/pure/Card'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
-import InformationRow from '@/components/pure/InformationRow'
-import ScatterPlot from '@/components/page/details/ScatterPlot'
+// import ScatterPlot from '@/components/page/details/ScatterPlot'
 import {
   data,
-  dataTypeNames,
-  githubStatListMockWithId,
   hackerNewsListMock,
-  tagsMock,
+  // tagsMock,
+  // githubStatListMockWithId,
   tweetListMock
 } from '@/data/detailPageMocks'
 import Page from '@/components/side-effects/Page'
@@ -53,7 +51,7 @@ const DetailPage = () => (
           eli5="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
           tags={['React', 'Static Site Generation', 'TypeScript']}
         />
-        <Chart dataArray={data} dataTypeNames={dataTypeNames}/>
+        <Chart data={data} />
         {/* <ScatterPlot /> */}
         <div className="flex flex-row">
           <Card Icon={FaTwitter} name="Top Tweets" button={SomeButton} textFields={tweetListMock} />

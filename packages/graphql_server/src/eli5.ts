@@ -30,11 +30,7 @@ export async function getELI5DescriptionForRepositoryFromText(readME: string, OP
         ]
       })
     })
-    const data: OpenAIResponse = (await response.json()) as OpenAIResponse
-    try {
-      return data.choices[0]?.message?.content
-    } catch {
-      // this mostly occurs when the free version of openai turbo api is used more often than 3 times per minute
-      return null
-    }
+    const data = (await response.json()) as OpenAIResponse
+      // this mostly becomes null when the free version of openai turbo api is used more often than 3 times per minute
+      return data.choices?.[0]?.message?.content ?? null
   }

@@ -46,11 +46,5 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
-  },
-  "dependencies": {
-    "@types/cheerio": "^0.22.31",
-    "axios": "^1.4.0",
-    "cheerio": "^1.0.0-rc.12",
-    "showdown": "^2.1.0"
   }
 }

@@ -1,5 +1,5 @@
 import {timeMode } from '../types'
-import * as scrape from '../scrape-trending-repos'
+import * as scrape from '../scrape-repos'
 import * as eli5 from '../eli5'
 import * as starHistory from '../star-history'
 
@@ -9,7 +9,7 @@ import * as starHistory from '../star-history'
  * @param {string} timeMode - should be 'daily', 'weekly' or 'monthly' => defines the scope of which repos and developers the methods looks at
  */
 async function main(timeMode: timeMode) {
-    const trendingSplit: string[] | undefined = await scrape.fetchRepos(timeMode)
+    const trendingSplit: string[] | undefined = await scrape.fetchTrendingRepos(timeMode)
   
     // your personal GitHub authToken
     const authToken: string = process.env.XXXXXXXXXX as string
@@ -47,7 +47,7 @@ async function main(timeMode: timeMode) {
   
       // TODO check if the repo has more than a 1k stars: repoInfo.stargazers.totalCount < 1000
   
-      const readme: string = await scrape.getReadme(owner, name)
+      const readme: string = await scrape.fetchRepositoryReadme(owner, name)
   
       if (readme != null) {
         // call openai api
@@ -58,6 +58,6 @@ async function main(timeMode: timeMode) {
       console.log(await starHistory.getRepoStarRecords(owner + '/' + name, authToken, 10))
     }
     // get the developers
-    // console.log(scrape.fetchDevelopers(timeMode))
+    // console.log(scrape.fetchTrendingDevelopers(timeMode))
   }
   

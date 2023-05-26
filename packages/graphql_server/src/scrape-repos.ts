@@ -7,9 +7,9 @@ import { Developer, DeveloperRepo, Repository, timeMode } from './types'
  * @param {string} timeMode shoud be 'daily', 'weekly' or 'monthly' => timescope of the trending page
  * @returns {string[]} an array that stores alternatingly the owner and the name of each repo: [owner1, repo1, owner2, repo2]
  */
-export async function fetchRepos(timeMode: timeMode) {
+export async function fetchTrendingRepos(timeMode: timeMode) {
   const response: AxiosResponse<string> = await axios.get(
-    'https://github.com/trending?since=' + timeMode
+    `https://github.com/trending?since=${timeMode}`
   )
   const html = cheerio.load(response.data)
   const repos: string[] = []
@@ -36,7 +36,7 @@ export async function fetchRepos(timeMode: timeMode) {
  * @returns {string} a string containing the text of the repo. Throws an error if file can't be located
  * @todo paths in the beginning can be constantly adapted if new ReadMe file locations are being found
  */
-export async function getReadme(owner: string, name: string) {
+export async function fetchRepositoryReadme(owner: string, name: string) {
   // these paths exists to check in multiple locations for the readme files
   const readmePaths: string[] = [
     `https://raw.githubusercontent.com/${owner}/${name}/release/readme.md`,
@@ -67,10 +67,9 @@ export async function getReadme(owner: string, name: string) {
 /** Gets the repo's information via GitHub's GraphQL API
  * @param {string} query GraphQL query for the repo (including owner and name)
  * @param {string} authToken personal authorization token
- * @returns {any[]} the json data for the requested repo as by the graphql query; null on error
+ * @returns {any[]} the json data for the requested repo as by the graphql query
  */
 export async function getRepoInfo(query: string, authToken: string): Promise<Repository | null> {
-  try {
     const response: AxiosResponse<{ data: { repository: Repository } }> = await axios.post(
       'https://api.github.com/graphql',
       {
@@ -83,17 +82,14 @@ export async function getRepoInfo(query: string, authToken: string): Promise<Rep
       }
     )
     return response.data.data.repository
-  } catch (error) {
-    return null
-  }
 }
 
 /** Get trending developers (and their trending repos) from the github page
  * @param {string} timeMode describes the timeframe; 'daily' | 'weekly' | 'monthly'
  * @returns   list of {name: 'NAME', username: 'USERNAME', repo: 'REPO'}
  */
-export function fetchDevelopers(timeMode: timeMode) {
-  axios
+export async function fetchTrendingDevelopers(timeMode: timeMode) {
+  await axios
     .get('https://github.com/trending/developers?since=' + timeMode)
     .then((response: { data: string | Buffer }) => {
       const htmlC = cheerio.load(response.data)
@@ -118,13 +114,9 @@ export function fetchDevelopers(timeMode: timeMode) {
       })
 
       // correctly merge the two arrays
-      const repo = ''
       return developers.map((developer) => {
         const matchingRepo = developerRepos.find((repo) => repo.username === developer.username)
-        return { ...developer, ...(matchingRepo || { repo }) }
+        return { ...developer, ...(matchingRepo || { repo: '' }) }
       })
-    })
-    .catch((error: string) => {
-      throw new Error("Couldn't get trending developers" + error)
     })
 }

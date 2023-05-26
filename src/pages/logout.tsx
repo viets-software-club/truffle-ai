@@ -1,5 +1,5 @@
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 const Logout = () => {
@@ -7,9 +7,9 @@ const Logout = () => {
   const supabaseClient = useSupabaseClient()
   const router = useRouter()
 
-  const signOut = useCallback(async () => {
+  const signOut = async () => {
     await supabaseClient.auth.signOut()
-  }, [supabaseClient])
+  }
 
   useEffect(() => {
     if (user) void signOut().then(() => router.replace('/login'))

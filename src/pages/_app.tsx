@@ -24,8 +24,6 @@ const App = ({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      {/* TODO: PR review */}
-      {/* Replace this line */}
       {React.createElement(Component, pageProps)}
     </SessionContextProvider>
   )

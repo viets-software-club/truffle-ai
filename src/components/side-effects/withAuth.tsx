@@ -13,7 +13,7 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
 
     useEffect(() => {
       if (!isLoading && !user) void router.replace('/login')
-    }, [isLoading])
+    }, [isLoading, user])
 
     useEffect(() => {
       if (error) void router.replace('/error')

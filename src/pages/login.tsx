@@ -19,6 +19,10 @@ const Login = () => {
     }
   }
 
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle().catch(() => setIsError(true))
+  }
+
   if (isError) {
     return (
       <main className={`${inter.className} flex min-h-screen flex-col`}>
@@ -52,9 +56,7 @@ const Login = () => {
               order="ltr"
               iconColor="white"
               textColor="white"
-              onClick={() => {
-                signInWithGoogle().catch(() => setIsError(true))
-              }}
+              onClick={handleSignInWithGoogle}
               variant="highlighted"
             />
           )}

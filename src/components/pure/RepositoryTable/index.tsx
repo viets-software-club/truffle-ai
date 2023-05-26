@@ -15,7 +15,7 @@ import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import Button from '@/components/pure/Button'
 import { TbColumns2 } from 'react-icons/tb'
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
 import respositoriesMock from '../../../data/repositoriesMock'
 
@@ -121,10 +121,23 @@ const browseListColumns = [
   })
 ]
 
+const initialDisplayColumns = new Array(browseListColumns.length).fill(true)
+
 const RepositoryTable = () => {
+  const [displayColumns, setDisplayColumns] = useState(initialDisplayColumns)
+
+  const toggleColumn = (index: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const newDisplayColumns = [...displayColumns]
+    newDisplayColumns[index] = !newDisplayColumns[index]
+    setDisplayColumns(newDisplayColumns)
+  }
+
+  const filteredColumns = browseListColumns.filter((column, index) => displayColumns[index])
+
   const table = useReactTable({
     data: respositoriesMock,
-    columns: browseListColumns,
+    columns: filteredColumns,
     getCoreRowModel: getCoreRowModel()
   })
 
@@ -153,20 +166,41 @@ const RepositoryTable = () => {
               leaveTo="transform opacity-0 scale-95"
             >
               {/* eslint-disable-next-line tailwindcss/migration-from-tailwind-2 */}
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
-                  <Menu.Item>
-                    <div className="flex flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600">
-                      <RiCheckboxFill />
-                      <p className="text-sm">Checked</p>
-                    </div>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <div className="flex flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600">
-                      <RiCheckboxBlankLine />
-                      <p className="text-sm">Unchecked</p>
-                    </div>
-                  </Menu.Item>
+                  {browseListColumns.map((column, index) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    const headerText =
+                      column.header && typeof column.header === 'function'
+                        ? column.header()
+                        : column.header
+
+                    return (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <Menu.Item key={column.header}>
+                        <button
+                          type="button"
+                          onClick={() => toggleColumn(index)}
+                          className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                        >
+                          {displayColumns[index] ? (
+                            <RiCheckboxFill className="text-indigo-600" />
+                          ) : (
+                            <RiCheckboxBlankLine />
+                          )}
+                          <p
+                            className={
+                              displayColumns[index]
+                                ? 'text-14 text-gray-100'
+                                : 'text-14 text-gray-400'
+                            }
+                          >
+                            {headerText}
+                          </p>
+                        </button>
+                      </Menu.Item>
+                    )
+                  })}
                 </div>
               </Menu.Items>
             </Transition>

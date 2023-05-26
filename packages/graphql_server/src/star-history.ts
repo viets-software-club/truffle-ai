@@ -43,8 +43,7 @@ async function getRepoStargazersCount(repo: string, token?: string): Promise<num
     }
   )
 
-  const data: { stargazers_count: number } = response.data
-  return data.stargazers_count
+  return response?.data?.stargazers_count
 }
 
 /** Retrieves the star records (star count by date) of a Github repository
@@ -164,9 +163,7 @@ function range(from: number, to: number): number[] {
  * @returns Timestamp of the given date
  */
 function getTimeStampByDate(t: Date | number | string): number {
-  const d = new Date(t)
-
-  return d.getTime()
+  return new Date(t).getTime()
 }
 
 /** Formats a dat into a string using the specified format

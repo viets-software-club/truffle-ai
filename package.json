@@ -30,5 +30,27 @@
       "prettier --write"
     ],
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node": "^18.16.3",
+    "@types/showdown": "^2.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
+    "concurrently": "^8.0.1",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-sonarjs": "^0.19.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "@types/cheerio": "^0.22.31",
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12",
+    "showdown": "^2.1.0"
   }
 }

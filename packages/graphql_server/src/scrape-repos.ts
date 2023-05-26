@@ -73,7 +73,7 @@ export async function getRepoInfo(query: string, authToken: string): Promise<Rep
   const response: AxiosResponse<{ data: { repository: Repository } }> = await axios.post(
     'https://api.github.com/graphql',
     {
-      query: query
+      query
     },
     {
       headers: {
@@ -99,13 +99,13 @@ export async function fetchTrendingDevelopers(timeMode: timeMode) {
       // get the developer names and usernames
       htmlC('h1.h3.lh-condensed a').each((i: number, el: cheerio.Element) => {
         const name: string = htmlC(el).text().trim()
-        const username: string = htmlC(el).attr('href')?.substr(1) ?? ''
+        const username: string = htmlC(el).attr('href')?.substring(1) ?? ''
         developers.push({ name, username })
       })
 
       // get the repo name
       htmlC('h1.h4.lh-condensed a').each((i: number, el: cheerio.Element) => {
-        const repo: string = htmlC(el).attr('href')?.substr(1) ?? ''
+        const repo: string = htmlC(el).attr('href')?.substring(1) ?? ''
         // check if the repo exists
         if (repo) {
           const split = repo.split('/')

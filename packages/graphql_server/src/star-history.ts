@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { StarRecord, StargazersData } from './types'
+import * as utils from './utils'
 
 const DEFAULT_PER_PAGE = 30
 
@@ -74,9 +75,9 @@ export async function getRepoStarRecords(repo: string, token: string, maxRequest
 
   const requestPages: number[] = []
   if (pageCount < maxRequestAmount) {
-    requestPages.push(...range(1, pageCount))
+    requestPages.push(...utils.range(1, pageCount))
   } else {
-    range(1, maxRequestAmount).forEach((i: number) => {
+    utils.range(1, maxRequestAmount).forEach((i: number) => {
       requestPages.push(Math.round((i * pageCount) / maxRequestAmount) - 1)
     })
     if (!requestPages.includes(1)) {
@@ -113,7 +114,7 @@ async function getRepoStarsMap(
       starRecordsData.push(...data)
     })
     for (let i = 0; i < starRecordsData.length; ) {
-      starRecordsMap.set(getDateString(starRecordsData[i].starred_at), i + 1)
+      starRecordsMap.set(utils.getDateString(starRecordsData[i].starred_at), i + 1)
       i += Math.floor(starRecordsData.length / maxRequestAmount) || 1
     }
   } else {
@@ -121,7 +122,7 @@ async function getRepoStarsMap(
       if (data.length > 0) {
         const starRecord = data[0]
         starRecordsMap.set(
-          getDateString(starRecord.starred_at),
+          utils.getDateString(starRecord.starred_at),
           DEFAULT_PER_PAGE * (requestPages[index] - 1)
         )
       }
@@ -129,7 +130,7 @@ async function getRepoStarsMap(
   }
 
   const starAmount = await getRepoStargazersCount(repo, token)
-  starRecordsMap.set(getDateString(Date.now()), starAmount)
+  starRecordsMap.set(utils.getDateString(Date.now()), starAmount)
 
   const starRecords: StarRecord[] = []
 
@@ -141,52 +142,4 @@ async function getRepoStarsMap(
   })
 
   return starRecords
-}
-
-/** Function generates an array of numbers within a given range
- * This is needed to only reconstruct the star history from some specific points in the history
- * And not from looking at every single star recorded
- * @param {number} from
- * @param {number} to
- * @returns Array<number>: An array of numbers within the specified range.
- */
-function range(from: number, to: number): number[] {
-  const r: number[] = []
-  for (let i = from; i <= to; i++) {
-    r.push(i)
-  }
-  return r
-}
-
-/** Retuns the timestamp of a given date
- * @param {Date | number | string} t - Date, timestamp or string
- * @returns Timestamp of the given date
- */
-function getTimeStampByDate(t: Date | number | string): number {
-  return new Date(t).getTime()
-}
-
-/** Formats a dat into a string using the specified format
- * @param {Date | number | string} t
- * @param {string} format - The format string for the desired date format.
- * Default is "yyyy/MM/dd hh:mm:ss".
- * @returns Formatted string
- */
-function getDateString(t: Date | number | string, format = 'yyyy/MM/dd hh:mm:ss'): string {
-  const d = new Date(getTimeStampByDate(t))
-
-  const year = d.getFullYear()
-  const month = d.getMonth() + 1
-  const date = d.getDate()
-  const hours = d.getHours()
-  const minutes = d.getMinutes()
-  const seconds = d.getSeconds()
-
-  return format
-    .replace('yyyy', String(year))
-    .replace('MM', String(month))
-    .replace('dd', String(date))
-    .replace('hh', String(hours))
-    .replace('mm', String(minutes))
-    .replace('ss', String(seconds))
 }

@@ -11,7 +11,7 @@ type CardProps = {
 }
 
 const Card = ({ Icon, name, button, textFields }: CardProps) => (
-  <div className="mx-7 my-4 rounded-lg border border-gray-800 bg-gray-850">
+  <div className="rounded-lg border border-gray-800 bg-gray-850">
     <div className="flex flex-row items-center px-4 pt-4">
       <Icon className="mr-2 text-indigo-500" />
       <h2>{name}</h2>

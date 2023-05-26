@@ -27,6 +27,7 @@ const NavSidebar = ({ router }: { router: NextRouter }) => (
       <Sidebar.Section.Item Icon={Compass} text="All projects" onClick={nullFunc} showIcon />
       <Sidebar.Section.Item Icon={Bookmark} text="Saved projects" onClick={nullFunc} showIcon />
     </Sidebar.Section>
+
     <Sidebar.Section title="Saved searches">
       <Sidebar.Section.Item
         Icon={Compass}

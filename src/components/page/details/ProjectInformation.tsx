@@ -8,7 +8,7 @@ type ProjectInformationProps = {
 }
 
 const ProjectInformation = ({ name, eli5, tags }: ProjectInformationProps) => (
-  <div className="border-b border-gray-800 px-7 py-4">
+  <div className="border-b border-gray-800 py-4">
     <div className="mb-4 flex flex-row items-center justify-between">
       <div className="flex flex-row items-center">
         <h1 className="mr-3">{name}</h1>

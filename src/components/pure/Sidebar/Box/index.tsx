@@ -10,7 +10,7 @@ type Props = {
 }
 
 const SidebarBox = ({ title, children }: Props) => (
-  <div className="border-y border-solid border-gray-800 py-2.5 text-14 font-normal leading-4">
+  <div className="border-t border-solid border-gray-800 py-2.5 text-14 font-normal leading-4">
     <h1 className="px-7 py-2.5 text-12 uppercase text-gray-300">{title}</h1>
     {children}
   </div>

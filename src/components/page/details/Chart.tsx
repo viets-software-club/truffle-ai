@@ -154,7 +154,7 @@ const Chart = ({ data }: ChartProps) => {
             height={300}
             data={chartData}
             margin={{
-              top: 35,
+              top: 30,
               right: 40,
               left: -15,
               bottom: 5
@@ -165,10 +165,12 @@ const Chart = ({ data }: ChartProps) => {
               dataKey="name"
               tick={{ fontSize: '12', fontWeight: 'light' }}
               tickFormatter={formatDate}
+              stroke="#858699"
             />
             <YAxis
-              label={{ value: dataType, dy: -130, dx: 25 }}
+              label={{ value: dataType, dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
               tick={{ fontSize: '12', fontWeight: 'light' }}
+              stroke="#858699"
             />
             <Tooltip contentStyle={{ backgroundColor: '#191A23', color: 'white' }} />
             <Legend />

@@ -70,18 +70,18 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
  * @returns {any[]} the json data for the requested repo as by the graphql query
  */
 export async function getRepoInfo(query: string, authToken: string): Promise<Repository | null> {
-    const response: AxiosResponse<{ data: { repository: Repository } }> = await axios.post(
-      'https://api.github.com/graphql',
-      {
-        query: query
-      },
-      {
-        headers: {
-          Authorization: authToken
-        }
+  const response: AxiosResponse<{ data: { repository: Repository } }> = await axios.post(
+    'https://api.github.com/graphql',
+    {
+      query: query
+    },
+    {
+      headers: {
+        Authorization: authToken
       }
-    )
-    return response.data.data.repository
+    }
+  )
+  return response.data.data.repository
 }
 
 /** Get trending developers (and their trending repos) from the github page

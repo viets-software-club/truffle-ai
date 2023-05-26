@@ -7,7 +7,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
+  TooltipProps
 } from 'recharts'
 import { FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { subMonths } from 'date-fns'
@@ -36,6 +37,19 @@ const TimeframeOptions = [
   { value: 6, label: '6 Months' },
   { value: 12, label: '1 Year' }
 ]
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded border border-gray-800 bg-gray-900 p-2 text-xs text-white">
+        <p>{label}</p>
+        <p>{payload[0].value}</p>
+      </div>
+    )
+  }
+
+  return null
+}
 
 const Chart = ({ data }: ChartProps) => {
   const dataTypes = useMemo(() => data.map((d) => d.name), [data])
@@ -172,7 +186,9 @@ const Chart = ({ data }: ChartProps) => {
               tick={{ fontSize: '12', fontWeight: 'light' }}
               stroke="#858699"
             />
-            <Tooltip contentStyle={{ backgroundColor: '#191A23', color: 'white' }} />
+            <Tooltip
+              content={<CustomTooltip active={undefined} payload={undefined} label={undefined} />}
+            />
             <Legend />
             <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
             {showSecondLine && <Line type="monotone" dataKey="value2" stroke="#82ca9d" />}

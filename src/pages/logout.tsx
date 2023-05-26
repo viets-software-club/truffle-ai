@@ -14,7 +14,7 @@ const Logout = () => {
   useEffect(() => {
     if (user) void signOut().then(() => router.replace('/login'))
     else void router.replace('/login')
-  }, [user, router, signOut])
+  }, [])
 }
 
 export default Logout

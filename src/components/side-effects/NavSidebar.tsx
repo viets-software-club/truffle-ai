@@ -24,10 +24,10 @@ const renderFooter = (router: NextRouter) => (
 const NavSidebar = ({ router }: { router: NextRouter }) => (
   <Sidebar title="TruffleAI" footer={renderFooter(router)}>
     <Sidebar.Section title="Overview">
-      <Sidebar.Section.Item Icon={Compass} text="All projects" onClick={nullFunc} showIcon />
-      <Sidebar.Section.Item Icon={Bookmark} text="Saved projects" onClick={nullFunc} showIcon />
+      <Sidebar.Section.Item Icon={Compass} text="Trending projects" onClick={nullFunc} showIcon />
+      <Sidebar.Section.Item Icon={Bookmark} text="All bookmarks" onClick={nullFunc} showIcon />
     </Sidebar.Section>
-    <Sidebar.Section title="Saved searches">
+    <Sidebar.Section title="Saved projects">
       <Sidebar.Section.Item
         Icon={Compass}
         text="JavaScript Frameworks"

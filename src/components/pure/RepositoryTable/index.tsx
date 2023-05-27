@@ -152,7 +152,7 @@ const RepositoryTable = () => {
   })
 
   return (
-    <div className="flex flex-col rounded-lg py-3.5">
+    <div className="flex w-full flex-col rounded-lg py-3.5">
       {/* Top button bar */}
       <div className="flex flex-row justify-between border-b border-gray-800 px-6 pb-3.5">
         {/* Filter, Sort, Edit Columns buttons */}
@@ -286,39 +286,37 @@ const RepositoryTable = () => {
         </div>
       </div>
       {/* Table */}
-      <div className="px-6 py-3.5">
-        <table>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="text-left text-12 font-medium uppercase text-gray-400"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-2 text-left">
-                    <Link href="/details">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </Link>
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <table className="mx-6 my-3.5 w-full">
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="text-left text-12 font-medium uppercase text-gray-400"
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="p-2 text-left">
+                  <Link href="/details">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Link>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

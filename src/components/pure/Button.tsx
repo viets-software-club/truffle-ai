@@ -7,6 +7,7 @@ type ButtonProps = {
     | 'onlyIcon'
     | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
+    | 'filter'
   onClick: () => void
   text?: string
   Icon?: IconComponentType
@@ -19,13 +20,14 @@ type ButtonProps = {
 const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
-  ['normal', 'bg-gray-850 border border-gray-800 px-4 py-2'],
-  ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-4 py-2'],
-  ['noBG', 'border border-gray-800 px-4 py-2'],
-  ['noBorderNoBG', 'px-4 py-2'],
-  ['highlighted', 'bg-indigo-500 px-4 py-2'],
+  ['normal', 'bg-gray-850 border border-gray-800 px-3 py-1.5'],
+  ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-3 py-1.5'],
+  ['noBG', 'border border-gray-800 px-3 py-1.5'],
+  ['noBorderNoBG', 'px-3 py-1.5'],
+  ['highlighted', 'bg-indigo-500 px-3 py-1.5'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
-  ['onlyIconNoBorderNoBG', '']
+  ['onlyIconNoBorderNoBG', ''],
+  ['filter', 'border border-dashed border-gray-800 px-3 py-1.5']
 ])
 
 const Button = ({

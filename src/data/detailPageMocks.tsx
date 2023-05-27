@@ -78,22 +78,24 @@ export const tweetListMock = [
 export const githubStatListMock: ({ id: ID } & ComponentProps<
   typeof Sidebar.Box.GithubStatItem
 >)[] = [
-  { id: '0', Icon: StarIcon, value: '105k', growth: '+450' },
-  { id: '1', Icon: IssueOpenedIcon, value: '1.6k', growth: '+121' },
-  { id: '2', Icon: RepoForkedIcon, value: '23.7k', growth: '+1.1k' },
+  { id: '0', Icon: StarIcon, value: '105k', growth: '+450', largeGap: true },
+  { id: '1', Icon: IssueOpenedIcon, value: '1.6k', growth: '+121', largeGap: true },
+  { id: '2', Icon: RepoForkedIcon, value: '23.7k', growth: '+1.1k', largeGap: true },
   {
     id: '3',
     IconMetric: <GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />,
     value: '3.2',
-    growth: '-0.2'
+    growth: '-0.2',
+    largeGap: true
   },
   {
     id: '4',
     IconMetric: <GitHubMetricIcon Icon={RepoForkedIcon} Icon2={IssueOpenedIcon} />,
     value: '1.6',
-    growth: '+0.1'
+    growth: '+0.1',
+    largeGap: true
   },
-  { id: '5', Icon: PeopleIcon, value: '23', growth: '+2' }
+  { id: '5', Icon: PeopleIcon, value: '23', growth: '+2', largeGap: true }
 ]
 
 export const githubStatListMockWithId: ({ id: ID } & ComponentProps<

@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
   createColumnHelper
 } from '@tanstack/react-table'
-import { AiOutlineFork, AiOutlinePlus, AiOutlineStar } from 'react-icons/ai'
+import { AiOutlineFork, AiOutlinePlus, AiOutlineStar, AiOutlineCalendar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
 import Link from 'next/link'
 import { BiGitPullRequest } from 'react-icons/bi'
-import { VscIssues } from 'react-icons/vsc'
+import { VscIssues, VscSettings } from 'react-icons/vsc'
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
@@ -51,6 +52,8 @@ const browseListColumns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
+        redValue={20000}
+        greenValue={40000}
         value={info.getValue().toString()}
       />
     )
@@ -63,6 +66,8 @@ const browseListColumns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
+        redValue={5000}
+        greenValue={10000}
         value={info.getValue().toString()}
       />
     )
@@ -75,6 +80,8 @@ const browseListColumns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
+        redValue={500}
+        greenValue={1000}
         value={info.getValue().toString()}
       />
     )
@@ -87,6 +94,8 @@ const browseListColumns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
+        redValue={120}
+        greenValue={500}
         value={info.getValue().toString()}
       />
     )
@@ -99,6 +108,8 @@ const browseListColumns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
+        redValue={100}
+        greenValue={500}
         value={info.getValue().toString()}
       />
     )
@@ -106,7 +117,7 @@ const browseListColumns = [
   columnHelper.accessor('programmingLanguage', {
     header: () => 'Language',
     cell: (info) => (
-      <p className="inline-block rounded-lg bg-gray-800 px-2 py-0.5 text-12 font-light text-gray-300">
+      <p className="inline-block rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300">
         {info.getValue()}
       </p>
     )
@@ -114,7 +125,7 @@ const browseListColumns = [
   columnHelper.accessor('category', {
     header: () => 'Category',
     cell: (info) => (
-      <p className="inline-block rounded-lg bg-gray-800 px-2 py-0.5 text-12 font-light text-gray-300">
+      <p className="inline-block rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300">
         {info.getValue()}
       </p>
     )
@@ -127,7 +138,6 @@ const RepositoryTable = () => {
   const [displayColumns, setDisplayColumns] = useState(initialDisplayColumns)
 
   const toggleColumn = (index: number) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const newDisplayColumns = [...displayColumns]
     newDisplayColumns[index] = !newDisplayColumns[index]
     setDisplayColumns(newDisplayColumns)
@@ -142,15 +152,52 @@ const RepositoryTable = () => {
   })
 
   return (
-    <div className="flex flex-col rounded-lg">
+    <div className="flex flex-col rounded-lg py-3.5">
       {/* Top button bar */}
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between border-b border-gray-800 px-6 pb-3.5">
         {/* Filter, Sort, Edit Columns buttons */}
-        <div className="mb-8 flex flex-row space-x-2">
-          {/* Dropdown */}
+        <div className="flex flex-row gap-3">
+          <div className="inline-block">
+            <Button
+              onClick={nullFunc}
+              variant="normal"
+              text="This week"
+              Icon={AiOutlineCalendar}
+              order="ltr"
+              iconColor="white"
+              textColor="white"
+            />
+          </div>
+          <div className="inline-block">
+            <Button
+              onClick={nullFunc}
+              variant="filter"
+              text="Add Filter"
+              Icon={AiOutlinePlus}
+              order="ltr"
+              iconColor="white"
+              textColor="white"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-row gap-3">
+          <div className="inline-block">
+            <Button
+              onClick={nullFunc}
+              variant="normal"
+              text="Sort"
+              Icon={VscSettings}
+              order="ltr"
+              iconColor="white"
+              textColor="white"
+            />
+          </div>
+          <div className="mb-8 flex flex-row space-x-2">{/* Dropdown */}</div>
+
           <Menu as="div" className="relative inline-block text-left">
             <div>
-              <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-4 py-2 transition-colors duration-100 hover:bg-gray-700">
+              <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-3 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
                 <TbColumns2 />
                 <p>Edit Columns</p>
               </Menu.Button>
@@ -169,15 +216,15 @@ const RepositoryTable = () => {
               <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
                   {browseListColumns.map((column, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     const headerText =
                       column.header && typeof column.header === 'function'
                         ? column.header()
                         : column.header
 
                     return (
-                      // eslint-disable-next-line react/no-array-index-key
-                      <Menu.Item key={column.header}>
+                      <Menu.Item key={column.id}>
                         <button
                           type="button"
                           onClick={() => toggleColumn(index)}
@@ -205,47 +252,73 @@ const RepositoryTable = () => {
               </Menu.Items>
             </Transition>
           </Menu>
-        </div>
-        <div className="inline-block">
-          <Button
-            onClick={nullFunc}
-            variant="normal"
-            text="Add Project"
-            Icon={AiOutlinePlus}
-            order="ltr"
-            iconColor="white"
-            textColor="white"
-          />
+          <div className="inline-block">
+            <Button
+              onClick={nullFunc}
+              variant="highlighted"
+              text="Add Project"
+              Icon={AiOutlinePlus}
+              order="ltr"
+              iconColor="white"
+              textColor="white"
+            />
+          </div>
         </div>
       </div>
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="text-left font-light">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-2 text-left">
-                  <Link href="/details">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Link>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Filterbar */}
+      <div className="flex flex-row justify-between border-b border-gray-800 px-6 py-2.5">
+        <div className="flex flex-row gap-3">
+          <div className="inline-block">
+            <Button
+              onClick={nullFunc}
+              variant="normal"
+              text="This week"
+              Icon={AiOutlineCalendar}
+              order="ltr"
+              iconColor="white"
+              textColor="white"
+            />
+          </div>
+        </div>
+        <div className="flex flex-row items-center">
+          <p className="text-14">10</p>
+          <p className="text-14 text-gray-500">/25</p>
+        </div>
+      </div>
+      {/* Table */}
+      <div className="px-6 py-3.5">
+        <table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="text-left text-12 font-medium uppercase text-gray-400"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="p-2 text-left">
+                    <Link href="/details">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </Link>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

@@ -10,7 +10,7 @@ import Page from '@/components/side-effects/Page'
 import Button from '@/components/pure/Button'
 import columns from '@/components/page/repositoryTable/columns'
 import respositoriesMock from '@/data/repositoriesMock'
-import { starsMock, forksMock, issuesMock } from '@/data/detailPageMocks'
+import { data } from '@/data/detailPageMocks'
 
 const initialDisplayColumns = new Array(columns.length).fill(true)
 
@@ -64,12 +64,13 @@ const Compare = () => {
           </div>
         </div>
 
-        <Chart starData={starsMock} forkData={forksMock} issueData={issuesMock} />
+        <Chart data={data} />
 
         <div className="flex flex-row items-center justify-between px-6 py-3.5">
           <div className="flex flex-col">
             <p>All projects in this category</p>
           </div>
+
           <div>
             <Button
               onClick={nullFunc}

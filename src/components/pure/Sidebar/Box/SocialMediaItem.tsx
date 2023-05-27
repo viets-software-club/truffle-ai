@@ -20,7 +20,7 @@ const SocialMediaItem = ({ icon, text, name, value, growth, onClick }: SocialMed
   const Icon = iconNameToIconComponentType.get(icon) || FaQuestion
   return (
     <div className="flex flex-col justify-between">
-      <div className="inline-flex px-7 py-2.5 transition-colors duration-100 hover:bg-gray-850">
+      <div className="inline-flex px-7 py-2.5">
         <div className="flex flex-row items-center justify-center gap-[15px]">
           <button type="button" onClick={onClick}>
             <Icon className="h-[14px] w-[14px] text-gray-500" />

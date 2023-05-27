@@ -3,8 +3,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'r
 import { FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { subMonths } from 'date-fns'
 
-import Button from '../../pure/Button'
-import Modal from '../../pure/Modal'
+import Button from '@/components/pure/Button'
+import Modal from '@/components/pure/Modal'
 
 type ChartData = {
   name: string

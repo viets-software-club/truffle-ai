@@ -8,7 +8,7 @@ import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
 
 export type Repository = {
-  logo: string // todo change when data is there
+  logo: string // TODO: Change when data is there
   name: string
   ownerName: string
   starCount: number
@@ -21,7 +21,8 @@ export type Repository = {
 }
 
 const columnHelper = createColumnHelper<Repository>()
-const browseListColumns = [
+
+const columns = [
   columnHelper.accessor('logo', {
     header: () => 'Logo',
     cell: () => (
@@ -129,6 +130,7 @@ const browseListColumns = [
     )
   })
 ]
-export default browseListColumns
 
-export type BrowseListColumns = typeof browseListColumns
+export default columns
+
+export type columnsType = typeof columns

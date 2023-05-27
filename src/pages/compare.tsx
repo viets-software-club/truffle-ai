@@ -1,18 +1,19 @@
-import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { useState } from 'react'
+import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
+import { FiChevronDown } from 'react-icons/fi'
+import { AiOutlinePlus } from 'react-icons/ai'
 import TopBar from '@/components/page/repositoryTable/TopBar'
 import Table from '@/components/page/repositoryTable/Table'
 import FilterBar from '@/components/page/repositoryTable/Filterbar'
 import Chart from '@/components/page/details/Chart'
-import { starsMock, forksMock, issuesMock } from '@/data/detailPageMocks'
 import Page from '@/components/side-effects/Page'
 import Button from '@/components/pure/Button'
-import { FiChevronDown } from 'react-icons/fi'
-import { AiOutlinePlus } from 'react-icons/ai'
-import respositoriesMock from '../data/repositoriesMock'
-import browseListColumns from '../components/page/repositoryTable/browseListColumns'
+import columns from '@/components/page/repositoryTable/columns'
+import respositoriesMock from '@/data/repositoriesMock'
+import { starsMock, forksMock, issuesMock } from '@/data/detailPageMocks'
 
-const initialDisplayColumns = new Array(browseListColumns.length).fill(true)
+const initialDisplayColumns = new Array(columns.length).fill(true)
+
 const nullFunc = () => null
 
 const Compare = () => {
@@ -24,7 +25,7 @@ const Compare = () => {
     setDisplayColumns(newDisplayColumns)
   }
 
-  const filteredColumns = browseListColumns.filter((column, index) => displayColumns[index])
+  const filteredColumns = columns.filter((_column, index) => displayColumns[index])
 
   const table = useReactTable({
     data: respositoriesMock,
@@ -36,12 +37,15 @@ const Compare = () => {
     <Page>
       <div className="flex w-full flex-col rounded-lg py-3.5">
         <TopBar
-          toggleColumn={toggleColumn}
+          columns={columns}
           displayColumns={displayColumns}
-          browseListColumns={browseListColumns}
+          headers={table.getHeaderGroups()[0].headers}
+          toggleColumn={toggleColumn}
           nullFunc={nullFunc}
         />
+
         <FilterBar />
+
         <div className="flex flex-row items-center justify-between px-6 py-3.5">
           <div className="flex flex-col">
             <p className="text-12 font-medium uppercase text-gray-400">Compare</p>
@@ -59,7 +63,9 @@ const Compare = () => {
             />
           </div>
         </div>
+
         <Chart starData={starsMock} forkData={forksMock} issueData={issuesMock} />
+
         <div className="flex flex-row items-center justify-between px-6 py-3.5">
           <div className="flex flex-col">
             <p>All projects in this category</p>
@@ -76,6 +82,7 @@ const Compare = () => {
             />
           </div>
         </div>
+
         <Table table={table} />
       </div>
     </Page>

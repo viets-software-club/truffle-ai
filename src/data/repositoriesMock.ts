@@ -1,5 +1,5 @@
-import ProgrammingLanguages from '../constants/programmingLanguages'
-import RepositoryCategories from '../constants/repositoryCategories'
+import ProgrammingLanguages from '@/constants/programmingLanguages'
+import RepositoryCategories from '@/constants/repositoryCategories'
 
 const repositories = [
   {

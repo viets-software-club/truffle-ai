@@ -1,5 +1,5 @@
 import { StarIcon } from '@primer/octicons-react'
-import Button from '../../pure/Button'
+import Button from '@/components/pure/Button'
 
 type ProjectInformationProps = {
   name: string
@@ -12,6 +12,7 @@ const ProjectInformation = ({ name, eli5, tags }: ProjectInformationProps) => (
     <div className="mb-4 flex flex-row items-center justify-between">
       <div className="flex flex-row items-center">
         <h1 className="mr-3">{name}</h1>
+
         {tags.map((text) => (
           <p
             key={text}
@@ -21,13 +22,13 @@ const ProjectInformation = ({ name, eli5, tags }: ProjectInformationProps) => (
           </p>
         ))}
       </div>
+
       <Button
         variant="highlighted"
         text="Bookmark"
         Icon={StarIcon}
         onClick={() => {
-          // eslint-disable-next-line no-alert
-          alert('Bookmark clicked!')
+          // TODO: Open bookmark modal
         }}
         order="ltr"
         textColor="text-gray-100"

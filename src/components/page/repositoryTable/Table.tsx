@@ -1,6 +1,6 @@
 import { useReactTable, flexRender } from '@tanstack/react-table'
 import Link from 'next/link'
-import { Repository } from './browseListColumns'
+import { Repository } from './columns'
 
 type TableProps = {
   table: ReturnType<typeof useReactTable<Repository>>

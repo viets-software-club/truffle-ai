@@ -7,8 +7,8 @@ const Error = () => (
     <div className="flex grow flex-col items-center justify-between bg-radial-gradient">
       <div />
       <div className="flex flex-col items-center">
-        <p className="mb-4 text-36 font-semibold text-gray-100">TruffleAI</p>
-        <p>Something went wrong. Tough luck, you sucker!</p>
+        <p className="mb-4 text-36 font-semibold text-gray-100">Oops...</p>
+        <p>Something went wrong! Please try reloading the page or get in touch with us.</p>
       </div>
       <div className="self-center pb-4 text-12 text-gray-300">© 2023 La Famiglia x Rostlab</div>
     </div>

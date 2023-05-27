@@ -8,7 +8,7 @@ type ItemProps = {
 }
 
 const Item = ({ Icon, text, onClick, showIcon, secondaryItem, highlighted }: ItemProps) => (
-  <div className={`flex flex-col justify-between ${highlighted ? 'bg-gray-500' : ''} `}>
+  <div className={`flex flex-col justify-between ${highlighted ? 'bg-gray-700' : ''} `}>
     <button
       type="button"
       onClick={onClick}

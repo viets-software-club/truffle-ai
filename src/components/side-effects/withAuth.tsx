@@ -1,6 +1,6 @@
-import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import Loading from '@/pages/loading'
 
 export default function withAuth<P extends JSX.IntrinsicAttributes>(
@@ -12,12 +12,8 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
     const user = useUser()
 
     useEffect(() => {
-      if (!isLoading && !user) void router.replace('/login')
-    }, [isLoading, user])
-
-    useEffect(() => {
-      if (error) void router.replace('/error')
-    }, [error])
+      if (error || (!isLoading && !user)) void router.replace('/login')
+    }, [error, isLoading, user])
 
     if (isLoading || !user) return <Loading />
 

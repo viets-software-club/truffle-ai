@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -12,37 +11,19 @@ import columns from '@/components/page/repositoryTable/columns'
 import respositoriesMock from '@/data/repositoriesMock'
 import { data } from '@/data/detailPageMocks'
 
-const initialDisplayColumns = new Array(columns.length).fill(true)
-
 const nullFunc = () => null
 
 const Compare = () => {
-  const [displayColumns, setDisplayColumns] = useState<boolean[]>(initialDisplayColumns)
-
-  const toggleColumn = (index: number) => {
-    const newDisplayColumns = [...displayColumns]
-    newDisplayColumns[index] = !newDisplayColumns[index]
-    setDisplayColumns(newDisplayColumns)
-  }
-
-  const filteredColumns = columns.filter((_column, index) => displayColumns[index])
-
   const table = useReactTable({
     data: respositoriesMock,
-    columns: filteredColumns,
+    columns,
     getCoreRowModel: getCoreRowModel()
   })
 
   return (
     <Page>
       <div className="flex w-full flex-col rounded-lg py-3.5">
-        <TopBar
-          columns={columns}
-          displayColumns={displayColumns}
-          headers={table.getHeaderGroups()[0].headers}
-          toggleColumn={toggleColumn}
-          nullFunc={nullFunc}
-        />
+        <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
 
         <FilterBar />
 

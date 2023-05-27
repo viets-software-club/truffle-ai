@@ -24,7 +24,7 @@ const columnHelper = createColumnHelper<Repository>()
 
 const columns = [
   columnHelper.accessor('logo', {
-    header: () => 'Logo',
+    header: 'Logo',
     cell: () => (
       <div className="h-[20px] w-[20px] rounded-[5px] bg-gray-700" />
       // <img
@@ -35,7 +35,7 @@ const columns = [
     )
   }),
   columnHelper.accessor('name', {
-    header: () => 'Name',
+    header: 'Name',
     cell: (info) => (
       <div className="flex items-center">
         <p className="text-14 ">{info.row.original.ownerName}</p>
@@ -44,7 +44,7 @@ const columns = [
     )
   }),
   columnHelper.accessor('starCount', {
-    header: () => 'Stars',
+    header: 'Stars',
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineStar}
@@ -58,7 +58,7 @@ const columns = [
     )
   }),
   columnHelper.accessor('forkCount', {
-    header: () => 'Forks',
+    header: 'Forks',
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineFork}
@@ -100,7 +100,7 @@ const columns = [
     )
   }),
   columnHelper.accessor('pullRequestCount', {
-    header: () => 'Pull Requests',
+    header: 'Pull Requests',
     cell: (info) => (
       <GitHubStatisticItem
         Icon={BiGitPullRequest}
@@ -114,7 +114,7 @@ const columns = [
     )
   }),
   columnHelper.accessor('programmingLanguage', {
-    header: () => 'Language',
+    header: 'Language',
     cell: (info) => (
       <p className="inline-block rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300">
         {info.getValue()}
@@ -122,7 +122,7 @@ const columns = [
     )
   }),
   columnHelper.accessor('category', {
-    header: () => 'Category',
+    header: 'Category',
     cell: (info) => (
       <p className="inline-block rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300">
         {info.getValue()}

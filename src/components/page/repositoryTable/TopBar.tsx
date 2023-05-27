@@ -1,23 +1,20 @@
 import { Fragment } from 'react'
 import { nanoid } from 'nanoid'
-import { Header } from '@tanstack/react-table'
+import { Column } from '@tanstack/react-table'
 import { Menu, Transition } from '@headlessui/react'
 import { VscSettings } from 'react-icons/vsc'
 import { TbColumns2 } from 'react-icons/tb'
 import { AiOutlinePlus, AiOutlineCalendar } from 'react-icons/ai'
 import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
 import Button from '@/components/pure/Button'
-import { columnsType, Repository } from './columns'
+import { Repository } from './columns'
 
 type TopBarProps = {
-  columns: columnsType
-  displayColumns: boolean[]
-  headers: Header<Repository, number>[]
-  toggleColumn: (index: number) => void
+  columns: Column<Repository, unknown>[]
   nullFunc: () => void
 }
 
-const TopBar = ({ toggleColumn, displayColumns, columns, headers, nullFunc }: TopBarProps) => (
+const TopBar = ({ columns, nullFunc }: TopBarProps) => (
   <div className="flex flex-row justify-between border-b border-gray-800 px-6 pb-3.5">
     {/* Filter, Sort, Edit Columns buttons */}
     <div className="flex flex-row gap-3">
@@ -32,6 +29,7 @@ const TopBar = ({ toggleColumn, displayColumns, columns, headers, nullFunc }: To
           textColor="white"
         />
       </div>
+
       <div className="inline-block">
         <Button
           onClick={nullFunc}
@@ -57,11 +55,14 @@ const TopBar = ({ toggleColumn, displayColumns, columns, headers, nullFunc }: To
           textColor="white"
         />
       </div>
+
       <div className="mb-8 flex flex-row space-x-2">{/* Dropdown */}</div>
+
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-3 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
             <TbColumns2 />
+
             <p>Edit Columns</p>
           </Menu.Button>
         </div>
@@ -77,26 +78,25 @@ const TopBar = ({ toggleColumn, displayColumns, columns, headers, nullFunc }: To
         >
           <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
             <div className="py-1">
-              {columns.map((column, index) => (
+              {columns.map((column) => (
                 <Menu.Item key={nanoid()}>
                   <button
                     type="button"
-                    onClick={() => toggleColumn(index)}
+                    onClick={() => column.toggleVisibility()}
                     className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
                   >
-                    {displayColumns[index] ? (
+                    {column.getIsVisible() ? (
                       <RiCheckboxFill className="text-indigo-600" />
                     ) : (
                       <RiCheckboxBlankLine />
                     )}
+
                     <p
                       className={
-                        displayColumns[index] ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
+                        column.getIsVisible() ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
                       }
                     >
-                      {typeof column.header === 'function'
-                        ? column.header(headers[index].getContext())
-                        : column.header}
+                      {typeof column.columnDef.header === 'string' ? column.columnDef.header : ''}
                     </p>
                   </button>
                 </Menu.Item>

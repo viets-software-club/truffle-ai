@@ -21,6 +21,7 @@ import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
 import respositoriesMock from '../../../data/repositoriesMock'
 
 type Repository = {
+  logo: string // todo change when data is there
   name: string
   ownerName: string
   starCount: number
@@ -36,13 +37,25 @@ const nullFunc = () => null
 
 const columnHelper = createColumnHelper<Repository>()
 const browseListColumns = [
+  columnHelper.accessor('logo', {
+    header: () => 'Logo',
+    cell: () => (
+      <div className="h-[20px] w-[20px] rounded-[5px] bg-gray-700" />
+      // <img
+      //   className="w-8 h-8 rounded-full"
+      //   src={``}
+      //   alt="logo"
+      // />
+    )
+  }),
   columnHelper.accessor('name', {
     header: () => 'Name',
-    cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
-  }),
-  columnHelper.accessor('ownerName', {
-    header: () => 'Owner',
-    cell: (info) => <p className="text-14">{info.getValue()}</p>
+    cell: (info) => (
+      <div className="flex items-center">
+        <p className="text-14 ">{info.row.original.ownerName}</p>
+        <p className="ml-1 text-14 font-bold">{`/ ${info.row.original.name}`}</p>
+      </div>
+    )
   }),
   columnHelper.accessor('starCount', {
     header: () => 'Stars',
@@ -215,11 +228,10 @@ const RepositoryTable = () => {
               <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
                   {browseListColumns.map((column, index) => {
+                    // prettier-ignore
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    const text =
-                      typeof column.header === 'function' ? column.header() : column.header
-                    const headerText = column.header && text
+                    const headerText = column.header && typeof column.header === 'function' ? column.header() : column.header
 
                     return (
                       <Menu.Item key={column.id}>
@@ -304,13 +316,31 @@ const RepositoryTable = () => {
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-2 text-left">
-                  <Link href="/details">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Link>
-                </td>
-              ))}
+              {row.getVisibleCells().map((cell, cellIndex) => {
+                const isFirstChild = cellIndex === 0
+                const isLastChild = cellIndex === row.getVisibleCells().length - 1
+                return (
+                  <td
+                    key={cell.id}
+                    className={`p-2 text-left 
+              ${isFirstChild ? 'rounded-l-lg' : ''} 
+              ${isLastChild ? 'rounded-r-lg' : ''}
+            `}
+                  >
+                    <Link
+                      href={{
+                        pathname: '/details',
+                        query: {
+                          owner: cell.row.original.ownerName,
+                          name: cell.row.original.name
+                        }
+                      }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </Link>
+                  </td>
+                )
+              })}
             </tr>
           ))}
         </tbody>

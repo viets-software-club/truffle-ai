@@ -194,7 +194,6 @@ const RepositoryTable = () => {
             />
           </div>
           <div className="mb-8 flex flex-row space-x-2">{/* Dropdown */}</div>
-
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-3 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">

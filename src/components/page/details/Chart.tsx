@@ -43,7 +43,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>)
     return (
       <div className="rounded border border-gray-800 bg-gray-900 p-2 text-xs text-white">
         <p>{label}</p>
-        <p>{payload[0].value}</p>
+        <p className="mt-2 font-bold">{payload[0].value}</p>
       </div>
     )
   }
@@ -188,8 +188,9 @@ const Chart = ({ data }: ChartProps) => {
             />
             <Tooltip
               content={<CustomTooltip active={undefined} payload={undefined} label={undefined} />}
+              cursor={{ stroke: '#858699', strokeWidth: 1 }}
             />
-            <Legend />
+            <Legend wrapperStyle={{ fontSize: '12px' }} />
             <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
             {showSecondLine && <Line type="monotone" dataKey="value2" stroke="#82ca9d" />}
           </LineChart>

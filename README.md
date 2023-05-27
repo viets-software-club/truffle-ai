@@ -54,4 +54,6 @@ SERVER_PORT # number
 SERVER_URL # url to graphql_server
 SERVER_GRAPHQL_URL # url to graphql route on graphql_server
 NODE_ENV # development|production
+GITHUB_API_KEY # github api key
+OPENAI_API_KEY # openAI api key
 ```

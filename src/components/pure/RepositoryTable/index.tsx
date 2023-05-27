@@ -1,12 +1,12 @@
-import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { useState } from 'react'
+import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import TopBar from '@/components/page/repositoryTable/TopBar'
 import Table from '@/components/page/repositoryTable/Table'
 import FilterBar from '@/components/page/repositoryTable/Filterbar'
-import respositoriesMock from '../../../data/repositoriesMock'
-import browseListColumns from '../../page/repositoryTable/browseListColumns'
+import columns from '@/components/page/repositoryTable/columns'
+import respositoriesMock from '@/data/repositoriesMock'
 
-const initialDisplayColumns = new Array(browseListColumns.length).fill(true)
+const initialDisplayColumns = new Array(columns.length).fill(true)
 const nullFunc = () => null
 
 const RepositoryTable = () => {
@@ -18,7 +18,7 @@ const RepositoryTable = () => {
     setDisplayColumns(newDisplayColumns)
   }
 
-  const filteredColumns = browseListColumns.filter((column, index) => displayColumns[index])
+  const filteredColumns = columns.filter((_column, index) => displayColumns[index])
 
   const table = useReactTable({
     data: respositoriesMock,
@@ -30,9 +30,10 @@ const RepositoryTable = () => {
     <div className="flex w-full flex-col rounded-lg py-3.5">
       {/* Top button bar */}
       <TopBar
-        toggleColumn={toggleColumn}
+        columns={columns}
         displayColumns={displayColumns}
-        browseListColumns={browseListColumns}
+        headers={table.getHeaderGroups()[0].headers}
+        toggleColumn={toggleColumn}
         nullFunc={nullFunc}
       />
       {/* Filterbar */}

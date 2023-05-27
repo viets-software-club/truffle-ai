@@ -1,19 +1,23 @@
-import { AiOutlinePlus, AiOutlineCalendar } from 'react-icons/ai'
-import { VscSettings } from 'react-icons/vsc'
-import Button from '@/components/pure/Button'
-import { TbColumns2 } from 'react-icons/tb'
-import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
+import { nanoid } from 'nanoid'
+import { Header } from '@tanstack/react-table'
+import { Menu, Transition } from '@headlessui/react'
+import { VscSettings } from 'react-icons/vsc'
+import { TbColumns2 } from 'react-icons/tb'
+import { AiOutlinePlus, AiOutlineCalendar } from 'react-icons/ai'
 import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
+import Button from '@/components/pure/Button'
+import { columnsType, Repository } from './columns'
 
 type TopBarProps = {
-  toggleColumn: (index: number) => void
+  columns: columnsType
   displayColumns: boolean[]
-  browseListColumns: unknown[]
+  headers: Header<Repository, number>[]
+  toggleColumn: (index: number) => void
   nullFunc: () => void
 }
 
-const TopBar = ({ toggleColumn, displayColumns, browseListColumns, nullFunc }: TopBarProps) => (
+const TopBar = ({ toggleColumn, displayColumns, columns, headers, nullFunc }: TopBarProps) => (
   <div className="flex flex-row justify-between border-b border-gray-800 px-6 pb-3.5">
     {/* Filter, Sort, Edit Columns buttons */}
     <div className="flex flex-row gap-3">
@@ -71,42 +75,37 @@ const TopBar = ({ toggleColumn, displayColumns, browseListColumns, nullFunc }: T
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          {/* eslint-disable-next-line tailwindcss/migration-from-tailwind-2 */}
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
             <div className="py-1">
-              {browseListColumns.map((column, index) => {
-                // prettier-ignore
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-                const headerText = column.header && typeof column.header === 'function' ? column.header() : column.header
-
-                return (
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  <Menu.Item key={column.id}>
-                    <button
-                      type="button"
-                      onClick={() => toggleColumn(index)}
-                      className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+              {columns.map((column, index) => (
+                <Menu.Item key={nanoid()}>
+                  <button
+                    type="button"
+                    onClick={() => toggleColumn(index)}
+                    className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                  >
+                    {displayColumns[index] ? (
+                      <RiCheckboxFill className="text-indigo-600" />
+                    ) : (
+                      <RiCheckboxBlankLine />
+                    )}
+                    <p
+                      className={
+                        displayColumns[index] ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
+                      }
                     >
-                      {displayColumns[index] ? (
-                        <RiCheckboxFill className="text-indigo-600" />
-                      ) : (
-                        <RiCheckboxBlankLine />
-                      )}
-                      <p
-                        className={
-                          displayColumns[index] ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
-                        }
-                      >
-                        {headerText}
-                      </p>
-                    </button>
-                  </Menu.Item>
-                )
-              })}
+                      {typeof column.header === 'function'
+                        ? column.header(headers[index].getContext())
+                        : column.header}
+                    </p>
+                  </button>
+                </Menu.Item>
+              ))}
             </div>
           </Menu.Items>
         </Transition>
       </Menu>
+
       <div className="inline-block">
         <Button
           onClick={nullFunc}

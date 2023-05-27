@@ -132,5 +132,3 @@ const columns = [
 ]
 
 export default columns
-
-export type columnsType = typeof columns

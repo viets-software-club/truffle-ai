@@ -20,6 +20,7 @@ import {
 } from '@/data/detailPageMocks'
 import Page from '@/components/side-effects/Page'
 import SmallSidebar from '@/components/page/details/Sidebar'
+import withAuth from '@/components/side-effects/withAuth'
 
 const handleClick = () => {
   // eslint-disable-next-line no-alert
@@ -71,4 +72,4 @@ const DetailPage = () => (
     </div>
   </Page>
 )
-export default DetailPage
+export default withAuth(DetailPage)

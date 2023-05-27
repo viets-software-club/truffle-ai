@@ -137,7 +137,7 @@ export const hackerNewsListMock = [
   }
 ]
 
-export const starsMock = [
+export const stars = [
   { name: '01/01/2023', value: 4000, value2: 1000 },
   { name: '01/02/2023', value: 3000, value2: 2000 },
   { name: '01/03/2023', value: 2000, value2: 3000 },
@@ -147,7 +147,7 @@ export const starsMock = [
   { name: '01/07/2023', value: 3490, value2: 7000 }
 ]
 
-export const forksMock = [
+export const forks = [
   { name: '01/01/2023', value: 1000, value2: 4000 },
   { name: '01/02/2023', value: 2000, value2: 3000 },
   { name: '01/03/2023', value: 3000, value2: 2000 },
@@ -157,7 +157,7 @@ export const forksMock = [
   { name: '01/07/2023', value: 7000, value2: 3490 }
 ]
 
-export const issuesMock = [
+export const issues = [
   { name: '01/01/2023', value: 4800, value2: 1000 },
   { name: '01/02/2023', value: 4200, value2: 2000 },
   { name: '01/03/2023', value: 3600, value2: 3000 },
@@ -165,4 +165,10 @@ export const issuesMock = [
   { name: '01/05/2023', value: 2400, value2: 5000 },
   { name: '01/06/2023', value: 1800, value2: 6000 },
   { name: '01/07/2023', value: 1200, value2: 7000 }
+]
+
+export const data = [
+  { name: 'Stars', data: stars },
+  { name: 'Forks', data: forks },
+  { name: 'Issues', data: issues }
 ]

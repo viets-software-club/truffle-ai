@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: PR Check
-        uses: pczern/verify-pr-action@v0.0.3-alpha.38
+        uses: pczern/verify-pr-action@v0.0.3-alpha.39
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           titleRegex: "\\[(META|BACK|FRONT)\\-\\d+\\]\\s.+"

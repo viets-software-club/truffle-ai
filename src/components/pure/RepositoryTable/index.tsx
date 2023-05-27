@@ -217,10 +217,9 @@ const RepositoryTable = () => {
                   {browseListColumns.map((column, index) => {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    const headerText =
-                      column.header && typeof column.header === 'function'
-                        ? column.header()
-                        : column.header
+                    const text =
+                      typeof column.header === 'function' ? column.header() : column.header
+                    const headerText = column.header && text
 
                     return (
                       <Menu.Item key={column.id}>

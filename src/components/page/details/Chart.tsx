@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   TooltipProps
 } from 'recharts'
+import { nanoid } from 'nanoid'
 import { FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { subMonths } from 'date-fns'
 import Button from '@/components/pure/Button'
@@ -52,6 +53,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>)
 
 const Chart = ({ data }: ChartProps) => {
   const dataTypes = useMemo(() => data.map((d) => d.name), [data])
+
   const [showSecondLine, setShowSecondLine] = useState(false)
   const [dataType, setDataType] = useState(dataTypes[0])
 
@@ -88,6 +90,7 @@ const Chart = ({ data }: ChartProps) => {
       const date = new Date(year, month - 1, day)
       return date >= pastDate
     })
+
     setChartData(newFilteredData)
   }, [dataType, data, timeframe])
 
@@ -98,7 +101,6 @@ const Chart = ({ data }: ChartProps) => {
   const formatDate = (dateString: string) => {
     const [day, month, year] = dateString.split('/').map((str) => parseInt(str, 10))
     const date = new Date(year, month - 1, day)
-
     const options: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' }
 
     return date.toLocaleDateString(undefined, options)
@@ -131,7 +133,7 @@ const Chart = ({ data }: ChartProps) => {
             <Modal isOpen={isModalOpen} onClose={toggleModal}>
               {dataTypes.map((item) => (
                 <Button
-                  key={dataType}
+                  key={nanoid()}
                   variant="noBorderNoBG"
                   text={item}
                   fullWidth
@@ -155,7 +157,7 @@ const Chart = ({ data }: ChartProps) => {
             <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
               {TimeframeOptions.map((option) => (
                 <Button
-                  key={option.value}
+                  key={nanoid()}
                   variant="noBorderNoBG"
                   text={option.label}
                   fullWidth

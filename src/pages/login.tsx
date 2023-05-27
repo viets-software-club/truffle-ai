@@ -29,7 +29,7 @@ const Login = () => {
         <div className="flex grow flex-col items-center justify-between bg-radial-gradient">
           <div />
           <div className="flex flex-col items-center space-y-4">
-            <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
+            <div className="mb-4 text-36 font-semibold text-gray-100">Something went wrong</div>
             <div>
               There was an error signing you in with Google. Please try again later or contact an
               admin.

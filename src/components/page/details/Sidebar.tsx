@@ -11,21 +11,25 @@ const SmallSidebar = () => (
         <Sidebar.Box.GithubStatItem key={id} {...data} />
       ))}
     </Sidebar.Box>
+
     <Sidebar.Box title="SocialMedia">
       {socialMediaListMock.map(({ id, ...data }) => (
         <Sidebar.Box.SocialMediaItem key={id} {...data} />
       ))}
     </Sidebar.Box>
+
     <Sidebar.Box title="Founder">
       {founderListMock.map(({ id, ...data }) => (
         <Sidebar.Box.FounderItem key={id} {...data} />
       ))}
     </Sidebar.Box>
+
     <Sidebar.Box title="Integrations">
       <div className="flex flex-col justify-between">
         <div className="inline-flex px-7 py-2.5">
           <div className="flex flex-row items-center justify-center gap-[15px]">
             <Button variant="normal" onClick={() => null} text="Add to CRM" />
+
             <button type="button" onClick={() => null}>
               <FaSlack className=" h-[14px] w-[14px]" />
             </button>

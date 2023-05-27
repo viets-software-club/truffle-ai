@@ -20,13 +20,15 @@ export const founderListMock = [
     id: '0',
     name: 'John Doe',
     linkedin: 'https://linkedin.com',
-    mail: 'mailto:john.doe@gmail'
+    mail: 'john.doe@gmail.com',
+    company: 'Google'
   },
   {
     id: '1',
     name: 'Jane Doe',
     linkedin: 'https://linkedin.com',
-    mail: 'mailto:jane.doe@gmail'
+    mail: 'jane.doe@gmail.com',
+    company: 'Meta'
   }
 ]
 

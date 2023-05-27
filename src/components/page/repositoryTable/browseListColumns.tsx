@@ -7,7 +7,7 @@ import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
 
-type Repository = {
+export type Repository = {
   logo: string // todo change when data is there
   name: string
   ownerName: string
@@ -130,3 +130,5 @@ const browseListColumns = [
   })
 ]
 export default browseListColumns
+
+export type BrowseListColumns = typeof browseListColumns

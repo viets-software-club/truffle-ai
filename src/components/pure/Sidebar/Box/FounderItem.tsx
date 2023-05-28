@@ -9,7 +9,7 @@ type FounderProps = {
 
 const FounderItem = ({ name, mail, linkedin }: FounderProps) => (
   <div className="flex flex-col justify-between">
-    <div className="inline-flex px-7 py-2.5 transition-colors duration-100 hover:bg-gray-850">
+    <div className="inline-flex px-7 py-2.5">
       <div className="flex flex-row items-center justify-center gap-[15px]">
         <span className="text-xs not-italic leading-3 text-gray-500">{name}</span>
         {linkedin && (

@@ -1,9 +1,8 @@
-import { Inter } from 'next/font/google'
-import RepositoryTable from '@/components/RepositoryTable'
-import CommandInterface from '@/components/CommandInterface/CommandInterface'
+import RepositoryTable from '@/components/pure/RepositoryTable'
+import Page from '@/components/side-effects/Page'
+import withAuth from '@/components/side-effects/withAuth'
 import { useEffect, useState } from 'react'
-
-const inter = Inter({ subsets: ['latin'] })
+import CommandInterface from '@/components/CommandInterface/CommandInterface'
 
 const Home = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
@@ -25,13 +24,9 @@ const Home = () => {
   const closeModel = () => {
     setOpenModal(false)
   }
-  return (
-    <>
-      {openModal && <CommandInterface action={closeModel} />}
-      <main className={`min-h-screen p-24 ${inter.className} bg-primary text-primary`}>
-        <RepositoryTable />
-      </main>
-    </>
-  )
+  <Page>
+    {openModal && <CommandInterface action={closeModel} />}
+    <RepositoryTable />
+  </Page>
 }
-export default Home
+export default withAuth(Home)

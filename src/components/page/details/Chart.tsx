@@ -108,105 +108,109 @@ const Chart = ({ data }: ChartProps) => {
 
   return (
     <div className="flex w-full flex-row border-b border-gray-800 px-7 py-8">
-      <div className="flex w-full flex-col gap-3">
-        <div className="flex flex-row gap-3 ">
-          <div>
-            <Button
-              variant="normal"
-              text={showSecondLine ? 'Hide Second Line' : 'Show Second Line'}
-              onClick={() => setShowSecondLine(!showSecondLine)}
-            />
+      {data.length === 0 ? (
+        <p>No data</p>
+      ) : (
+        <div className="flex w-full flex-col gap-3">
+          <div className="flex flex-row gap-3 ">
+            <div>
+              <Button
+                variant="normal"
+                text={showSecondLine ? 'Hide Second Line' : 'Show Second Line'}
+                onClick={() => setShowSecondLine(!showSecondLine)}
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <Button
+                variant="normal"
+                text={modalValue}
+                Icon={ChevronDown}
+                order="rtl"
+                fullWidth
+                onClick={() => {
+                  toggleModal()
+                }}
+              />
+
+              <Modal isOpen={isModalOpen} onClose={toggleModal}>
+                {dataTypes.map((item) => (
+                  <Button
+                    key={nanoid()}
+                    variant="noBorderNoBG"
+                    text={item}
+                    fullWidth
+                    onClick={() => handleModalValueChange(dataType)}
+                  />
+                ))}
+              </Modal>
+            </div>
+
+            <div className="flex flex-col">
+              <Button
+                variant="normal"
+                text={timeframeModalValue}
+                Icon={ChevronDown}
+                order="rtl"
+                onClick={() => {
+                  setTimeframeModalOpen(true)
+                }}
+              />
+
+              <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
+                {TimeframeOptions.map((option) => (
+                  <Button
+                    key={nanoid()}
+                    variant="noBorderNoBG"
+                    text={option.label}
+                    fullWidth
+                    onClick={() => handleTimeframeChange(option.value)}
+                  />
+                ))}
+              </Modal>
+            </div>
           </div>
 
-          <div className="flex flex-col">
-            <Button
-              variant="normal"
-              text={modalValue}
-              Icon={ChevronDown}
-              order="rtl"
-              fullWidth
-              onClick={() => {
-                toggleModal()
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart
+              height={300}
+              data={chartData}
+              margin={{
+                top: 30,
+                right: 40,
+                left: -15,
+                bottom: 5
               }}
-            />
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#2C2D3C" />
 
-            <Modal isOpen={isModalOpen} onClose={toggleModal}>
-              {dataTypes.map((item) => (
-                <Button
-                  key={nanoid()}
-                  variant="noBorderNoBG"
-                  text={item}
-                  fullWidth
-                  onClick={() => handleModalValueChange(dataType)}
-                />
-              ))}
-            </Modal>
-          </div>
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: '12', fontWeight: 'light' }}
+                tickFormatter={formatDate}
+                stroke="#858699"
+              />
 
-          <div className="flex flex-col">
-            <Button
-              variant="normal"
-              text={timeframeModalValue}
-              Icon={ChevronDown}
-              order="rtl"
-              onClick={() => {
-                setTimeframeModalOpen(true)
-              }}
-            />
+              <YAxis
+                label={{ value: dataType, dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
+                tick={{ fontSize: '12', fontWeight: 'light' }}
+                stroke="#858699"
+              />
 
-            <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
-              {TimeframeOptions.map((option) => (
-                <Button
-                  key={nanoid()}
-                  variant="noBorderNoBG"
-                  text={option.label}
-                  fullWidth
-                  onClick={() => handleTimeframeChange(option.value)}
-                />
-              ))}
-            </Modal>
-          </div>
+              <Tooltip
+                content={<CustomTooltip active={undefined} payload={undefined} label={undefined} />}
+                cursor={{ stroke: '#858699', strokeWidth: 1 }}
+              />
+
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
+
+              <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+
+              {showSecondLine && <Line type="monotone" dataKey="value2" stroke="#82ca9d" />}
+            </LineChart>
+          </ResponsiveContainer>
         </div>
-
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            height={300}
-            data={chartData}
-            margin={{
-              top: 30,
-              right: 40,
-              left: -15,
-              bottom: 5
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#2C2D3C" />
-
-            <XAxis
-              dataKey="name"
-              tick={{ fontSize: '12', fontWeight: 'light' }}
-              tickFormatter={formatDate}
-              stroke="#858699"
-            />
-
-            <YAxis
-              label={{ value: dataType, dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
-              tick={{ fontSize: '12', fontWeight: 'light' }}
-              stroke="#858699"
-            />
-
-            <Tooltip
-              content={<CustomTooltip active={undefined} payload={undefined} label={undefined} />}
-              cursor={{ stroke: '#858699', strokeWidth: 1 }}
-            />
-
-            <Legend wrapperStyle={{ fontSize: '12px' }} />
-
-            <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
-
-            {showSecondLine && <Line type="monotone" dataKey="value2" stroke="#82ca9d" />}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      )}
     </div>
   )
 }

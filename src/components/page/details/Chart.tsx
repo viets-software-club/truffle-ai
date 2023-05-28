@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   LineChart,
   Line,
@@ -52,7 +52,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>)
 }
 
 const Chart = ({ data }: ChartProps) => {
-  const dataTypes = useMemo(() => data.map((d) => d.name), [data])
+  const dataTypes = data.map((d) => d.name)
 
   const [showSecondLine, setShowSecondLine] = useState(false)
   const [dataType, setDataType] = useState(dataTypes[0])

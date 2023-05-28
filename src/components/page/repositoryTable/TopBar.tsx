@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { nanoid } from 'nanoid'
 import { Column } from '@tanstack/react-table'
 import { Menu, Transition } from '@headlessui/react'
 import { VscSettings } from 'react-icons/vsc'
@@ -79,7 +78,7 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
           <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
             <div className="py-1">
               {columns.map((column) => (
-                <Menu.Item key={nanoid()}>
+                <Menu.Item key={column.id}>
                   <button
                     type="button"
                     onClick={() => column.toggleVisibility()}

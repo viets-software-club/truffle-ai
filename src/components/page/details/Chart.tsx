@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
   TooltipProps
 } from 'recharts'
-import { nanoid } from 'nanoid'
 import { FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { subMonths } from 'date-fns'
 import Button from '@/components/pure/Button'
@@ -136,7 +135,7 @@ const Chart = ({ data }: ChartProps) => {
               <Modal isOpen={isModalOpen} onClose={toggleModal}>
                 {dataTypes.map((item) => (
                   <Button
-                    key={nanoid()}
+                    key={item}
                     variant="noBorderNoBG"
                     text={item}
                     fullWidth
@@ -160,7 +159,7 @@ const Chart = ({ data }: ChartProps) => {
               <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
                 {TimeframeOptions.map((option) => (
                   <Button
-                    key={nanoid()}
+                    key={option.label}
                     variant="noBorderNoBG"
                     text={option.label}
                     fullWidth

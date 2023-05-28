@@ -3,7 +3,6 @@ import RepositoryCategories from '@/constants/repositoryCategories'
 
 const repositories = [
   {
-    logo: '',
     name: 'axios',
     ownerName: 'axios',
     starCount: 78834,
@@ -15,7 +14,6 @@ const repositories = [
     category: RepositoryCategories.CODE_EDITORS
   },
   {
-    logo: '',
     name: 'tensorflow',
     ownerName: 'tensorflow',
     starCount: 160975,
@@ -27,7 +25,6 @@ const repositories = [
     category: RepositoryCategories.MACHINE_LEARNING
   },
   {
-    logo: '',
     name: 'kubernetes',
     ownerName: 'kubernetes',
     starCount: 76624,
@@ -39,7 +36,6 @@ const repositories = [
     category: RepositoryCategories.CONTAINERIZATION
   },
   {
-    logo: '',
     name: 'react',
     ownerName: 'facebook',
     starCount: 179469,
@@ -51,7 +47,6 @@ const repositories = [
     category: RepositoryCategories.CODE_EDITORS
   },
   {
-    logo: '',
     name: 'ansible',
     ownerName: 'ansible',
     starCount: 47313,
@@ -63,7 +58,6 @@ const repositories = [
     category: RepositoryCategories.ORCHESTRATION
   },
   {
-    logo: '',
     name: 'pandas',
     ownerName: 'pandas-dev',
     starCount: 31613,
@@ -75,7 +69,6 @@ const repositories = [
     category: RepositoryCategories.DATABASES
   },
   {
-    logo: '',
     name: 'vscode',
     ownerName: 'microsoft',
     starCount: 121255,
@@ -87,7 +80,6 @@ const repositories = [
     category: RepositoryCategories.IDE
   },
   {
-    logo: '',
     name: 'flask',
     ownerName: 'pallets',
     starCount: 57471,
@@ -99,7 +91,6 @@ const repositories = [
     category: RepositoryCategories.PACKAGE_MANAGERS
   },
   {
-    logo: '',
     name: 'webpack',
     ownerName: 'webpack',
     starCount: 56295,
@@ -111,7 +102,6 @@ const repositories = [
     category: RepositoryCategories.BUILD_TOOLS
   },
   {
-    logo: '',
     name: 'nginx',
     ownerName: 'nginx',
     starCount: 44523,
@@ -123,7 +113,6 @@ const repositories = [
     category: RepositoryCategories.LOAD_BALANCING
   },
   {
-    logo: '',
     name: 'kafka',
     ownerName: 'apache',
     starCount: 27368,
@@ -135,7 +124,6 @@ const repositories = [
     category: RepositoryCategories.NETWORKING
   },
   {
-    logo: '',
     name: 'eslint',
     ownerName: 'eslint',
     starCount: 18659,
@@ -147,7 +135,6 @@ const repositories = [
     category: RepositoryCategories.CODE_QUALITY
   },
   {
-    logo: '',
     name: 'prometheus',
     ownerName: 'prometheus',
     starCount: 30656,
@@ -159,7 +146,6 @@ const repositories = [
     category: RepositoryCategories.MONITORING
   },
   {
-    logo: '',
     name: 'mongodb',
     ownerName: 'mongodb',
     starCount: 16755,
@@ -171,7 +157,6 @@ const repositories = [
     category: RepositoryCategories.DATABASES
   },
   {
-    logo: '',
     name: 'prettier',
     ownerName: 'prettier',
     starCount: 39364,
@@ -183,7 +168,6 @@ const repositories = [
     category: RepositoryCategories.CODE_QUALITY
   },
   {
-    logo: '',
     name: 'netty',
     ownerName: 'netty',
     starCount: 20881,
@@ -195,7 +179,6 @@ const repositories = [
     category: RepositoryCategories.NETWORKING
   },
   {
-    logo: '',
     name: 'jupyter',
     ownerName: 'jupyter',
     starCount: 23167,
@@ -207,7 +190,6 @@ const repositories = [
     category: RepositoryCategories.DATABASES
   },
   {
-    logo: '',
     name: 'fastapi',
     ownerName: 'tiangolo',
     starCount: 32479,
@@ -219,7 +201,6 @@ const repositories = [
     category: RepositoryCategories.PACKAGE_MANAGERS
   },
   {
-    logo: '',
     name: 'kibana',
     ownerName: 'elastic',
     starCount: 20125,
@@ -231,7 +212,6 @@ const repositories = [
     category: RepositoryCategories.MONITORING
   },
   {
-    logo: '',
     name: 'next.js',
     ownerName: 'vercel',
     starCount: 69577,

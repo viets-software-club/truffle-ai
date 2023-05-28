@@ -8,7 +8,7 @@ import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
 
 export type Repository = {
-  logo: string // TODO: Change when data is there
+  logo?: string // TODO: Change when data is there
   name: string
   ownerName: string
   starCount: number

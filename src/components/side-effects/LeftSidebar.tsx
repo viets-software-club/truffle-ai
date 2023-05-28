@@ -1,13 +1,14 @@
+import { withRouter, NextRouter } from 'next/router'
 import {
   FiBookOpen as BookOpen,
   FiCompass as Compass,
   FiBookmark as Bookmark
 } from 'react-icons/fi'
-import { withRouter, NextRouter } from 'next/router'
 import Sidebar from '@/components/pure/Sidebar'
 
-// @TODO replace nullFunc with getRedirectFunc
+// TODO replace nullFunc with getRedirectFunc
 const nullFunc = () => null
+
 const getRedirectFunction = (router: NextRouter, path: string) => () => {
   void router.push(`/${path}`)
 }
@@ -21,7 +22,10 @@ const renderFooter = (router: NextRouter) => (
   />
 )
 
-const NavSidebar = ({ router }: { router: NextRouter }) => (
+/**
+ * Main sidebar on the left
+ */
+const LeftSidebar = ({ router }: { router: NextRouter }) => (
   <Sidebar title="TruffleAI" footer={renderFooter(router)}>
     <Sidebar.Section title="Overview">
       <Sidebar.Section.Item Icon={Compass} text="All projects" onClick={nullFunc} showIcon />
@@ -66,4 +70,4 @@ const NavSidebar = ({ router }: { router: NextRouter }) => (
   </Sidebar>
 )
 
-export default withRouter(NavSidebar)
+export default withRouter(LeftSidebar)

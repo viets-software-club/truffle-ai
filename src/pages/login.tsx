@@ -5,7 +5,7 @@ import { AiOutlineGoogle } from 'react-icons/ai'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
-import Loading from './loading'
+import Loading from '../components/pure/Loading'
 
 const inter = Inter({ subsets: ['latin'] })
 

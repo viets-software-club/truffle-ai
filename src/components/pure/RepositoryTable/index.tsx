@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table'
 import { useTrendingProjectsQuery } from '@/generated/gql'
+import Loading from '@/components/pure/Loading'
+import Error from '@/components/pure/Error'
 import columns from './columns'
 
 /**
@@ -11,16 +13,16 @@ const RepositoryTable = () => {
   const [{ data, fetching, error }] = useTrendingProjectsQuery()
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) || []
 
+  // Initialize TanStack table
   const table = useReactTable({
     data: projects,
     columns,
     getCoreRowModel: getCoreRowModel()
   })
 
-  // TODO: Replace with loading component
-  if (fetching) return <p>Loading...</p>
-  // TODO: Replace with error component
-  if (projects.length === 0 || error) return <p>{error?.message}</p>
+  // Display loading/ error messages conditionally
+  if (fetching) return <Loading message="Getting trending projects for you..." />
+  if (projects.length === 0 || error) return <Error />
 
   return (
     <div className="flex flex-col rounded-lg">
@@ -38,6 +40,7 @@ const RepositoryTable = () => {
             </tr>
           ))}
         </thead>
+
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
@@ -57,4 +60,5 @@ const RepositoryTable = () => {
     </div>
   )
 }
+
 export default RepositoryTable

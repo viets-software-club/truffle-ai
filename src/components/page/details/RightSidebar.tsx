@@ -20,7 +20,7 @@ type Props = {
 /**
  * Right sidebar for project details page
  */
-const SmallSidebar = ({ project }: Props) => (
+const RightSidebar = ({ project }: Props) => (
   // TODO: Add historical data for showing growth
   <Sidebar.Small>
     <Sidebar.Box title="GitHub Stats">
@@ -76,4 +76,4 @@ const SmallSidebar = ({ project }: Props) => (
   </Sidebar.Small>
 )
 
-export default SmallSidebar
+export default RightSidebar

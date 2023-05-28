@@ -8,8 +8,25 @@ type FounderProps = {
   company: string
 }
 
-const emailTemplate = (founderName: string, companyName: string) =>
-  `?subject=La%20Famiglia%20x%20${companyName}&body=Dear%20${founderName},%0D%0A%0D%0AI%20hope%20you're%20well.%20I%20saw%20you're%20the%20mastermind%20behind%20${companyName},%20and%20I%20had%20to%20reach%20out.%0D%0A%0D%0AI'm%20a%20former%20ML%20researcher%20(in%20federated%20learning)%20%2B%20data%20scientist%20at%20Amazon%20turned%20VC%20at%20La%20Famiglia%20(early-stage%20investor%20of%20Deel,%20Personio,%20Applied%20Intuition,%20Groq,%20Abacus%20AI,%20Stripe,%20etc.).%0D%0A%0D%0A{What%20you%20are%20building%20is%20compelling,%20especially%20after%20I%20played%20with%20Langchain%20%2B%20Pinecone%20%2B%20GPT3%20API%20a%20few%20weeks%20ago.}%0D%0A%0D%0AI%20would%20love%20to%20meet%20you%20and%20learn%20more%20about%20how%20we%20could%20work%20together.%20Is%20there%20a%20good%20time%20in%20the%20next%20few%20days%3F%0D%0A%0D%0ATake%20care%20%26%20all%20the%20best,%0D%0AViet%0D%0A%0D%0APS:%20if%20you%20have%20time,%20please%20check%20out%20my%20blog%20post%20on%20Building%20a%20Defensible%20ML%20company%20here:%20https%3A%2F%2Fvietle.substack.com%2Fp%2Fdefensible-machine-learning`
+const emailTemplate = (email: string, founderName: string, companyName: string) => {
+  const subject = `La Famiglia x ${companyName}`
+  const body = `Dear ${founderName},
+
+I hope you're well. I saw you're the mastermind behind ${companyName}, and I had to reach out.
+
+I'm a former ML researcher (in federated learning) + data scientist at Amazon turned VC at La Famiglia (early-stage investor of Deel, Personio, Applied Intuition, Groq, Abacus AI, Stripe, etc.).
+
+{What you are building is compelling, especially after I played with Langchain + Pinecone + GPT3 API a few weeks ago.}
+
+I would love to meet you and learn more about how we could work together. Is there a good time in the next few days?
+
+Take care & all the best,
+Viet
+
+PS: if you have time, please check out my blog post on Building a Defensible ML company here: https://vietle.substack.com/p/defensible-machine-learning`
+
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
 
 const FounderItem = ({ name, mail, linkedin, company }: FounderProps) => (
   <div className="flex flex-col justify-between">
@@ -22,11 +39,7 @@ const FounderItem = ({ name, mail, linkedin, company }: FounderProps) => (
           </a>
         )}
         {mail && (
-          <a
-            href={`mailto:${mail}${emailTemplate(name, company)}`}
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={emailTemplate(mail, name, company)} target="_blank" rel="noreferrer">
             <AiFillMail className="h-[14px] w-[14px] text-gray-500" />
           </a>
         )}

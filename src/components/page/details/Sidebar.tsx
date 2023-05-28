@@ -62,9 +62,10 @@ const SmallSidebar = ({ project }: Props) => (
 
     <Sidebar.Box title="Integrations">
       <div className="flex flex-col justify-between">
-        <div className="inline-flex px-7 py-2.5 transition-colors duration-100 hover:bg-gray-850">
+        <div className="inline-flex px-7 py-2.5">
           <div className="flex flex-row items-center justify-center gap-[15px]">
             <Button variant="normal" onClick={() => null} text="Add to CRM" />
+
             <button type="button" onClick={() => null}>
               <FaSlack className=" h-[14px] w-[14px]" />
             </button>

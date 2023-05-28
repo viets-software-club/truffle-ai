@@ -12,16 +12,11 @@ import Button from '@/components/pure/Button'
 import Card from '@/components/pure/Card'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
-import {
-  forksMock,
-  issuesMock,
-  starsMock,
-  hackerNewsListMock,
-  tweetListMock
-} from '@/data/detailPageMocks'
 import Page from '@/components/side-effects/Page'
+import withAuth from '@/components/side-effects/withAuth'
 import SmallSidebar from '@/components/page/details/Sidebar'
 import { useProjectDetailsQuery } from '@/generated/gql'
+import { data as chartDataMock, hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
 
 // TODO: Implement handler for navigation
 const handleClick = () => ''
@@ -73,6 +68,8 @@ const DetailPage: NextPage = () => {
       <div className="flex grow">
         <div className="mr-4 w-4/5 flex-row border-y border-solid border-gray-800 ">
           <ProjectInformation
+            // TODO: Add actual image URL
+            image=""
             // TODO: Adjust for owner (could be user or organization)
             name={`${project.organization?.login || 'No name'}/${project.name}`}
             eli5={project.about || 'No description'}
@@ -80,7 +77,7 @@ const DetailPage: NextPage = () => {
             tags={['React', 'Static Site Generation', 'TypeScript']}
           />
 
-          <Chart starData={starsMock} forkData={forksMock} issueData={issuesMock} />
+          <Chart data={chartDataMock} />
 
           {/* TODO: Add real data */}
           <div className="my-4 flex flex-row gap-4">
@@ -105,4 +102,4 @@ const DetailPage: NextPage = () => {
   )
 }
 
-export default DetailPage
+export default withAuth(DetailPage)

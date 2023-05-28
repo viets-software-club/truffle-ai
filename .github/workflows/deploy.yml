@@ -1,0 +1,45 @@
+name: 'Deploy'
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/**'
+      - '.github/workflows/**'
+      - 'config/deployment.template.yml'
+env:
+  SERVER_PORT: ${{ vars.SERVER_PORT }}
+  GATEWAY_PORT: ${{ vars.GATEWAY_PORT }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@main
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Build truffle-ai-graphql-gateway image
+        run: docker build --build-arg GATEWAY_PORT=${{ vars.GATEWAY_PORT }} --build-arg SERVER_GRAPHQL_URL=${{ vars.SERVER_GRAPHQL_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }} --build-arg SUPABASE_API_KEY=${{ secrets.SUPABASE_API_KEY }} --build-arg SUPABASE_GRAPHQL_URL=${{ vars.SUPABASE_GRAPHQL_URL }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_gateway/Dockerfile .
+      - name: Build truffle-ai-graphql-server image
+        run: docker build --build-arg SERVER_PORT=${{ vars.SERVER_PORT }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_server/Dockerfile .
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+      - name: Push truffle-ai-graphql-gateway image to DigitalOcean Container Registry
+        run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:$(echo $GITHUB_SHA | head -c7)
+      - name: Push truffle-ai-graphql-server image to DigitalOcean Container Registry
+        run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7)
+      - name: Create deployment.yml from deployment.template.yml and add environment variables
+        run: envsubst < $GITHUB_WORKSPACE/config/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
+      - name: Update truffle-ai-graphql-gateway in deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE-GRAPHQL-GATEWAY>|registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+      - name: Update truffle-ai-graphql-server in deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE-GRAPHQL-SERVER>|registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 truffle-ai-cluster
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+      - name: Verify deployment
+        run: kubectl rollout status --timeout 180s deployment/truffle-ai-deployment

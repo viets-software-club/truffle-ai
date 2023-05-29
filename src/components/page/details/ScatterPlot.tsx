@@ -13,8 +13,8 @@ import {
   Label,
   LabelList
 } from 'recharts'
-import Modal from '../../pure/Modal'
-import Button from '../../pure/Button'
+import Modal from '@/components/pure/Modal'
+import Button from '@/components/pure/Button'
 
 const names = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 const dataSets = {
@@ -107,13 +107,18 @@ const ScatterPlot = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
+
           <XAxis type="number" dataKey="x" name={xValue} label={{ value: xValue, dy: 10 }} />
+
           <YAxis type="number" dataKey="y" name={yValue}>
             <Label value={xValue} angle={-90} position="insideLeft" dx={10} />
           </YAxis>
+
           <ZAxis type="number" dataKey="z" range={[60, 400]} name="name" />
+
           <Tooltip cursor={{ strokeDasharray: '3 3' }} />
           <Legend />
+
           <Scatter name="Your data" data={state.data} fill="#8884d8">
             <LabelList dataKey="z" position="outside" />
           </Scatter>
@@ -129,6 +134,7 @@ const ScatterPlot = () => {
             Icon={ChevronDown}
             order="rtl"
           />
+
           <Modal isOpen={isModalOpenX} onClose={toggleModalX}>
             {Object.keys(dataSets).map((value) => (
               <Button

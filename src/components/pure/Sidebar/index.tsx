@@ -1,4 +1,5 @@
 import { PropsWithChildren, ReactNode } from 'react'
+import Link from 'next/link'
 import Box from './Box'
 import SmallSidebar from './Small'
 import Section from './Section'
@@ -11,7 +12,9 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
   <aside className="flex h-screen w-56 flex-col justify-between border-r border-gray-800">
     <div>
       <div className="flex w-full items-center justify-between px-7 py-2.5 text-gray-100">
-        <span className="mr-2">{props.title}</span>
+        <Link href="/">
+          <span className="mr-2 text-18 font-medium">{props.title}</span>
+        </Link>
         <div className="h-[30px] w-[30px] rounded-[5px] bg-gray-500" />
       </div>
       {props.children}

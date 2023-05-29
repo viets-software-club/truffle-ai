@@ -76,7 +76,8 @@ const Item = ({
             />
           ) : (
             <span
-              className="overflow-hidden text-left text-xs not-italic leading-3 text-gray-100"
+              // className="text-left text-xs not-italic leading-3 text-gray-100"
+              className="mt-[1px] h-[13px] w-[110px] overflow-hidden text-left text-xs not-italic leading-3 text-gray-100"
               style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
             >
               {text}

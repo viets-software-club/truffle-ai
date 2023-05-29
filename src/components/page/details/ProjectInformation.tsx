@@ -14,17 +14,20 @@ const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps
     <div className="mb-4 flex flex-row items-center justify-between">
       <div className="flex flex-row items-center">
         <div className="mr-4 h-[30px] w-[30px] rounded-[5px] bg-gray-500" />
-
         <h1 className="mr-3 text-16 font-medium">{name}</h1>
-
-        {tags.map((text) => (
-          <p
-            key={text}
-            className="mx-1 rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
-          >
-            {text}
-          </p>
-        ))}
+        {tags.length > 0 ? (
+          tags.map((text) => (
+            <p
+              key={text}
+              className="mx-1 rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
+            >
+              {text}
+            </p>
+          ))
+        ) : (
+          <p className="text-12 font-light text-gray-300">No tags available</p>
+        )}
+        g
       </div>
 
       <Button

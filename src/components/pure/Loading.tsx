@@ -23,7 +23,7 @@ const Loading = ({ message }: LoadingProps) => (
 )
 
 Loading.defaultProps = {
-  message: undefined
+  message: null
 }
 
 export default Loading

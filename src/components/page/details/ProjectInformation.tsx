@@ -49,7 +49,7 @@ const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps
 )
 
 ProjectInformation.defaultProps = {
-  image: undefined
+  image: null
 }
 
 export default ProjectInformation

@@ -2,6 +2,7 @@ import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { getOrganizationInfo, getRepoInfo, getUserInfo } from './api/githubApi'
 import { OrganizationInsertion, ProjectInsertion, UserInsertion } from '../types/dataAggregation'
 import supabase from './supabase'
+import { getRepoStarRecords } from './starHistory/starHistory'
 
 /**
  * Returns the info for a repository in a format that can be inserted into the DB.
@@ -51,6 +52,8 @@ export const aggregateDataForRepo = async (name: string, owner: string) => {
     color: edge.node?.color || ''
   }))
 
+  const starHistory = await getRepoStarRecords(owner + '/' + name, process.env.GITHUB_API_TOKEN, 10)
+
   repoInfo = {
     name: repoGHdata?.name,
     about: repoGHdata?.description,
@@ -62,9 +65,11 @@ export const aggregateDataForRepo = async (name: string, owner: string) => {
     github_url: repoGHdata?.url,
     website_url: repoGHdata?.homepageUrl,
     languages: languages,
+    star_history: starHistory,
     owning_organization: owningOrganizationID,
     owning_person: owningPersonID,
-    is_bookmarked: false
+    is_bookmarked: false,
+    is_trending_daily: true
   }
 
   return repoInfo

@@ -10,21 +10,12 @@ import { RxDotFilled as Dot } from 'react-icons/rx'
 import { withRouter, NextRouter } from 'next/router'
 import Sidebar from '@/components/pure/Sidebar'
 
-const getRedirectFunction = (router: NextRouter, path: string) => () => {
-  void router.push(`/${path}`)
-}
-const nullFunc = () => null
-
-const goTo = (router: NextRouter, path: string) => () => {
-  getRedirectFunction(router, path)()
-}
-
-const renderFooter = (router: NextRouter) => (
+const renderFooter = () => (
   <Sidebar.Section.Item
     id={0}
     Icon={BookOpen}
     text="Help & Support"
-    onClick={getRedirectFunction(router, '/docs')}
+    path="docs"
     showIcon
     editable={false}
   />
@@ -39,7 +30,8 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
           id: 1,
           Icon: Compass,
           text: 'Trending projects',
-          onClick: goTo(router, ''),
+          path: '/',
+          params: '',
           showIcon: true,
           editable: false
         },
@@ -47,7 +39,8 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
           id: 2,
           Icon: Bookmark,
           text: 'All bookmarks',
-          onClick: goTo(router, 'bookmarks'),
+          path: '/bookmarks',
+          params: '',
           showIcon: true,
           editable: false
         }
@@ -58,52 +51,58 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
       items: [
         {
           id: 3,
+          path: 'compare',
+          params: '/infrastructure',
           Icon: Folder,
           text: 'Infrastructure',
-          onClick: goTo(router, 'compare'),
           showIcon: true,
           highlighted: true,
           editable: true
         },
         {
           id: 4,
+          path: '/compare',
+          params: 'dev-tools',
           Icon: Folder,
           text: 'Dev Tools',
-          onClick: nullFunc,
           showIcon: true,
           editable: true
         },
         {
           id: 5,
+          path: '/details',
+          params: 'vercel/next.js',
+          text: 'vercel/next.js',
           Icon: Dot,
-          text: 'vercel / next.js',
-          onClick: goTo(router, 'details'),
           showIcon: true,
           secondaryItem: true,
           editable: true
         },
         {
           id: 6,
+          path: '/details',
+          params: 'microsoft/playwright',
           Icon: Dot,
-          text: 'microsoft / playwright',
-          onClick: goTo(router, 'details'),
+          text: 'microsoft/playwright',
           showIcon: true,
           secondaryItem: true,
           editable: true
         },
         {
           id: 7,
+          path: '/compare',
+          params: 'machine-learning',
           Icon: Folder,
           text: 'Machine Learning',
-          onClick: goTo(router, 'compare'),
           showIcon: true,
           editable: true
         },
         {
           id: 8,
+          path: '/compare',
+          params: 'artificial-intelligence',
           Icon: Folder,
           text: 'Artificial Intelligence',
-          onClick: goTo(router, 'compare'),
           showIcon: true,
           editable: true
         }
@@ -133,7 +132,7 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
   }
 
   return (
-    <Sidebar title="TruffleAI" footer={renderFooter(router)}>
+    <Sidebar title="TruffleAI" footer={renderFooter()}>
       {sections.map((section) => (
         <Sidebar.Section key={section.title} title={section.title}>
           {section.items.map((item) => (
@@ -144,9 +143,10 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
               text={item.text}
               onSave={handleSave}
               onDelete={handleDelete}
-              onClick={item.onClick}
+              path={item.path}
+              params={item.params}
               showIcon={item.showIcon}
-              highlighted={item.highlighted}
+              highlighted={router.pathname === item.path && router.query.parameters === item.params}
               secondaryItem={item.secondaryItem}
               editable={item.editable}
             />

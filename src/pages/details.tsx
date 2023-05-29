@@ -63,12 +63,7 @@ const DetailPage = () => {
             />
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
               <Button variant="noBorderNoBG" text="Today" fullWidth onClick={() => handleClick} />
-              <Button
-                variant="noBorderNoBG"
-                text="This Week"
-                fullWidth
-                onClick={() => handleClick}
-              />
+              <Button variant="normal" text="This Week" fullWidth onClick={() => handleClick} />
               <Button
                 variant="noBorderNoBG"
                 text="This Month"

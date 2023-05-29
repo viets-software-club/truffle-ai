@@ -9,6 +9,21 @@ import Loading from './loading'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const getURL = () => {
+  let url =
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? // prod URL
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // automatically set by Vercel
+    'http://localhost:3000/' // dev URL
+
+  // include `https://` when not localhost
+  url = url.includes('http') ? url : `https://${url}`
+
+  // make sure to include trailing `/`
+  url = url.charAt(url.length - 1) === '/' ? url : `${url}/`
+
+  return url
+}
+
 const Login = () => {
   const [isError, setIsError] = useState(false)
   const user = useUser()
@@ -18,7 +33,10 @@ const Login = () => {
 
   async function signInWithGoogle() {
     const { error } = await supabaseClient.auth.signInWithOAuth({
-      provider: 'google'
+      provider: 'google',
+      options: {
+        redirectTo: getURL()
+      }
     })
     if (error) {
       setIsError(true)

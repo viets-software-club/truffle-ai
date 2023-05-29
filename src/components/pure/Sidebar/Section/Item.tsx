@@ -11,6 +11,7 @@ type ItemProps = {
   highlighted?: boolean
   onSave?: (id: number, text: string) => void
   onDelete?: (id: number) => void
+  editable: boolean
 }
 
 const Item = ({
@@ -22,7 +23,8 @@ const Item = ({
   secondaryItem,
   highlighted,
   onSave,
-  onDelete
+  onDelete,
+  editable
 }: ItemProps) => {
   const [isEditable, setIsEditable] = useState(false)
   const [value, setValue] = useState(text)
@@ -81,7 +83,7 @@ const Item = ({
             </span>
           )}
         </div>
-        {isHovered && (
+        {isHovered && editable && (
           <div className="flex space-x-1 pr-1">
             <MdCreate onClick={handleEdit} className="cursor-pointer text-gray-500" />
             <MdClose onClick={handleDelete} className="cursor-pointer text-gray-500" />

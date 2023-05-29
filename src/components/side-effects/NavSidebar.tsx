@@ -21,6 +21,7 @@ const renderFooter = (router: NextRouter) => (
     text="Help & Support"
     onClick={getRedirectFunction(router, '/documentation')}
     showIcon
+    editable={false}
   />
 )
 
@@ -28,8 +29,22 @@ const initialSections = [
   {
     title: 'Overview',
     items: [
-      { id: 1, Icon: Compass, text: 'Trending projects', onClick: nullFunc, showIcon: true },
-      { id: 2, Icon: Bookmark, text: 'All bookmarks', onClick: nullFunc, showIcon: true }
+      {
+        id: 1,
+        Icon: Compass,
+        text: 'Trending projects',
+        onClick: nullFunc,
+        showIcon: true,
+        editable: false
+      },
+      {
+        id: 2,
+        Icon: Bookmark,
+        text: 'All bookmarks',
+        onClick: nullFunc,
+        showIcon: true,
+        editable: false
+      }
     ]
   },
   {
@@ -41,16 +56,18 @@ const initialSections = [
         text: 'Infrastructure',
         onClick: nullFunc,
         showIcon: true,
-        highlighted: true
+        highlighted: true,
+        editable: true
       },
-      { id: 4, Icon: Folder, text: 'Dev Tools', onClick: nullFunc, showIcon: true },
+      { id: 4, Icon: Folder, text: 'Dev Tools', onClick: nullFunc, showIcon: true, editable: true },
       {
         id: 5,
         Icon: Dot,
         text: 'vercel / next.js',
         onClick: nullFunc,
         showIcon: true,
-        secondaryItem: true
+        secondaryItem: true,
+        editable: true
       },
       {
         id: 6,
@@ -58,10 +75,25 @@ const initialSections = [
         text: 'microsfot / playwright',
         onClick: nullFunc,
         showIcon: true,
-        secondaryItem: true
+        secondaryItem: true,
+        editable: true
       },
-      { id: 7, Icon: Folder, text: 'Machine Learning', onClick: nullFunc, showIcon: true },
-      { id: 8, Icon: Folder, text: 'Artificial Intelligence', onClick: nullFunc, showIcon: true }
+      {
+        id: 7,
+        Icon: Folder,
+        text: 'Machine Learning',
+        onClick: nullFunc,
+        showIcon: true,
+        editable: true
+      },
+      {
+        id: 8,
+        Icon: Folder,
+        text: 'Artificial Intelligence',
+        onClick: nullFunc,
+        showIcon: true,
+        editable: true
+      }
     ]
   }
 ]
@@ -103,6 +135,7 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
               showIcon={item.showIcon}
               highlighted={item.highlighted}
               secondaryItem={item.secondaryItem}
+              editable={item.editable}
             />
           ))}
         </Sidebar.Section>

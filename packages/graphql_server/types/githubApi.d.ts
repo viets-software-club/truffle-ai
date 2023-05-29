@@ -21,3 +21,15 @@ export type GitHubOrganization = {
   twitterUsername: string
   url: string
 }
+
+// Github user info type as returned by GraphQL API
+export type GitHubUser = {
+  name: string
+  login: string
+  avatarUrl: string
+  repositories: { totalCount: number }
+  email: string
+  websiteUrl: string
+  twitterUsername: string
+  url: string
+}

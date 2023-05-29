@@ -58,14 +58,24 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
 
   // for each of those with the same name check if the owner has the same name
   for (const repo of matchingRepos) {
-    const { data: currentOrg } = await supabase
-      .from('organization')
-      .select('*')
-      .eq('id', repo.owned_by)
+    // if the owner is an organization
+    if (repo.owning_organization) {
+      const { data: owning_organization } = await supabase
+        .from('organization')
+        .select('*')
+        .eq('id', repo.owning_organization)
 
-    // the owner has the same name -> the repo is already in the database
-    // atm also checks whether the owner is vercel because vercel is inserted whenever the owner is a user not a organization
-    if (currentOrg?.[0]?.login !== 'vercel' && currentOrg?.[0]?.login === owner) return true
+      // the owner has the same name -> the repo is already in the database
+      if (owning_organization?.[0]?.login === owner) return true
+    } else {
+      const { data: owning_person } = await supabase
+        .from('associated_person')
+        .select('*')
+        .eq('id', repo.owning_person)
+
+      // the owner has the same name -> the repo is already in the database
+      if (owning_person?.[0]?.login === owner) return true
+    }
   }
 
   return false

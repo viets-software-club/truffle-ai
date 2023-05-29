@@ -15,24 +15,30 @@ export const dbUpdater = async () => {
   deleteReposError && console.error('Error while deleting old projects: \n', deleteReposError)
 
   // get all projects that remain in the database
-  const { data: existingRepos, error: getReposError } = await supabase
+  const { data: existingRepos, error: repoRetrievalError } = await supabase
     .from('project')
-    .select('name, owned_by')
-  getReposError && console.error('Error while getting all projects: \n', getReposError)
+    .select('name, owning_organization, owning_person')
+  repoRetrievalError && console.error('Error while getting all projects: \n', repoRetrievalError)
 
   // get all organizations in the database
-  const { data: organizations, error: getOrganizationsError } = await supabase
+  const { data: organizations, error: organizationsRetrievalError } = await supabase
     .from('organization')
     .select('id, name')
-  getOrganizationsError &&
-    console.error('Error while getting all organizations: \n', getOrganizationsError)
+  organizationsRetrievalError &&
+    console.error('Error while getting all organizations: \n', organizationsRetrievalError)
+
+  const { data: people, error: personsRetrievalError } = await supabase
+    .from('associated_person')
+    .select('id, name')
+  personsRetrievalError &&
+    console.error('Error while getting all persons: \n', personsRetrievalError)
 
   // update all remaining projects
   if (existingRepos) {
     for (const repo of existingRepos) {
-      const orgName: string = organizations?.filter((org) => org.id === repo.owned_by)[0]
-        .name as string
-      updateRepo(repo.name, orgName)
+      let owner = organizations?.filter((org) => org.id === repo.owning_organization)[0]?.name
+      if (!owner) owner = people?.filter((person) => person.id === repo.owning_person)[0]?.name
+      if (owner) updateRepo(repo.name, owner)
     }
   }
 

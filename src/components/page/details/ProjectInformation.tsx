@@ -2,7 +2,7 @@ import { StarIcon } from '@primer/octicons-react'
 import Button from '@/components/pure/Button'
 
 type ProjectInformationProps = {
-  image: string // TODO: change type
+  image: string // @TODO: change type
   name: string
   eli5: string
   tags: string[]
@@ -32,7 +32,7 @@ const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps
         text="Bookmark"
         Icon={StarIcon}
         onClick={() => {
-          // TODO: Open bookmark modal
+          // @TODO: Open bookmark modal
         }}
         order="ltr"
         textColor="text-gray-100"

@@ -1,5 +1,10 @@
 import { ReactNode } from 'react'
 
+enum Color {
+  DEFAULT = 'text-gray-100',
+  GREEN = 'text-green',
+  RED = 'text-red'
+}
 type GithubStatItemProps = {
   Icon?: IconComponentType
   IconMetric?: ReactNode
@@ -12,6 +17,7 @@ type GithubStatItemProps = {
   redValue?: number
   largeGap?: boolean
 }
+
 const GithubStatItem = ({
   Icon,
   value,
@@ -24,16 +30,15 @@ const GithubStatItem = ({
   redValue,
   largeGap
 }: GithubStatItemProps) => {
-  let textColor = 'text-gray-100'
-  let iconColor = 'text-gray-500'
   const valueAsNumber = Number(value)
+
+  let color = Color.DEFAULT
   if (greenValue !== undefined && valueAsNumber > greenValue) {
-    textColor = 'text-green'
-    iconColor = 'text-green'
+    color = Color.GREEN
   } else if (redValue !== undefined && valueAsNumber < redValue) {
-    textColor = 'text-red'
-    iconColor = 'text-red'
+    color = Color.RED
   }
+
   const gap = largeGap ? 'gap-[10px]' : 'gap-[5px]'
 
   return (
@@ -44,9 +49,9 @@ const GithubStatItem = ({
         }`}
       >
         <div className={`flex flex-row items-center justify-center ${gap}`}>
-          {Icon && <Icon className={`h-[14px] w-[14px] ${iconColor}`} />}
+          {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
-          <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${textColor}`}>
+          <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
             {value}
           </span>
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}

@@ -8,7 +8,7 @@ import ProgrammingLanguages from '@/constants/programmingLanguages'
 import RepositoryCategories from '@/constants/repositoryCategories'
 
 export type Repository = {
-  logo?: string // TODO: Change when data is there
+  logo?: string // @TODO: Change when data is there
   name: string
   ownerName: string
   starCount: number
@@ -25,14 +25,7 @@ const columnHelper = createColumnHelper<Repository>()
 const columns = [
   columnHelper.accessor('logo', {
     header: 'Logo',
-    cell: () => (
-      <div className="h-[20px] w-[20px] rounded-[5px] bg-gray-700" />
-      // <img
-      //   className="w-8 h-8 rounded-full"
-      //   src={``}
-      //   alt="logo"
-      // />
-    )
+    cell: () => <div className="h-[20px] w-[20px] rounded-[5px] bg-gray-700" />
   }),
   columnHelper.accessor('name', {
     header: 'Name',

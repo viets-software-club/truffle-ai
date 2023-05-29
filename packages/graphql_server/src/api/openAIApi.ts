@@ -1,4 +1,4 @@
-import { OpenAIResponse } from './types'
+import { OpenAIResponse } from '../../types/openAIApi'
 
 /** Creates the ELI5 of the repository by passing the readme to chatgpt
  * @param {string} readME readMe file of the repository as a string

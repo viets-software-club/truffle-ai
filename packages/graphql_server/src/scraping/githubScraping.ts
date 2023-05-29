@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import * as cheerio from 'cheerio'
 import * as showdown from 'showdown'
-import { Developer, DeveloperRepo, Repository, timeMode } from './types'
+import { Developer, DeveloperRepo, timeMode } from '../../types/githubScraping'
 
 /** Get all the information from the GitHub trending page; all the repos and the names of their creators
  * @param {string} timeMode shoud be 'daily', 'weekly' or 'monthly' => timescope of the trending page
@@ -62,26 +62,6 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
     }
   }
   throw new Error("ReadMe couldn't be found")
-}
-
-/** Gets the repo's information via GitHub's GraphQL API
- * @param {string} query GraphQL query for the repo (including owner and name)
- * @param {string} authToken personal authorization token
- * @returns {any[]} the json data for the requested repo as by the graphql query
- */
-export async function getRepoInfo(query: string, authToken: string): Promise<Repository | null> {
-  const response: AxiosResponse<{ data: { repository: Repository } }> = await axios.post(
-    'https://api.github.com/graphql',
-    {
-      query
-    },
-    {
-      headers: {
-        Authorization: authToken
-      }
-    }
-  )
-  return response.data.data.repository
 }
 
 /** Get trending developers (and their trending repos) from the github page

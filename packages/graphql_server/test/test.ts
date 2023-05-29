@@ -1,7 +1,8 @@
-import { timeMode } from '../types'
-import * as scrape from '../scrape-repos'
-import * as eli5 from '../eli5'
-import * as starHistory from '../star-history'
+import { timeMode } from '../src/starHistory/types'
+import * as scrape from '../src/scraping/githubScraping'
+import * as github from '../src/api/githubApi'
+import * as eli5 from '../src/api/openAIApi'
+import * as starHistory from '../src/starHistory/starHistory'
 
 /** Main function to test the functionality of the different methods
  * and how to correctly call them and what the intended workflow is about
@@ -43,7 +44,7 @@ async function main(timeMode: timeMode) {
         }
       }`
 
-    console.log(await scrape.getRepoInfo(query, 'Bearer ' + authToken))
+    console.log(await github.getRepoInfo(query, 'Bearer ' + authToken))
 
     // TODO check if the repo has more than a 1k stars: repoInfo.stargazers.totalCount < 1000
 
@@ -60,3 +61,5 @@ async function main(timeMode: timeMode) {
   // get the developers
   // console.log(scrape.fetchTrendingDevelopers(timeMode))
 }
+
+void main('daily')

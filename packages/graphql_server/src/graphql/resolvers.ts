@@ -1,3 +1,6 @@
+// we don't need this anymore because the projects now come from the DB.
+// But I will leave it here for testing purposes, until another GraphQL endpoint is implemented
+
 // I get an error when importing this module. It works still.
 // chatGPT says this might come from the standard module loader not supporting
 // json files?! I do not know how to resolve this atm

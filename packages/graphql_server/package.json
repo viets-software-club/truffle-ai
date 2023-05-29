@@ -18,7 +18,8 @@
     "cheerio": "^1.0.0-rc.12",
     "fastify": "^4.17.0",
     "mercurius": "^13.0.0",
-    "showdown": "^2.1.0"
+    "showdown": "^2.1.0",
+    "supabase": "^1.62.4"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",

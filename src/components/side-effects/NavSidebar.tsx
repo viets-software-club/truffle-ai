@@ -72,7 +72,7 @@ const initialSections = [
       {
         id: 6,
         Icon: Dot,
-        text: 'microsfot / playwright',
+        text: 'microsoft / playwright',
         onClick: nullFunc,
         showIcon: true,
         secondaryItem: true,

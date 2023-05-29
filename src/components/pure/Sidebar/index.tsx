@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactNode } from 'react'
 import Link from 'next/link'
-import Box from './Box'
+import Box from './Box/Box'
 import SmallSidebar from './Small'
 import Section from './Section'
 

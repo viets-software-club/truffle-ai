@@ -16,6 +16,7 @@
     "react:update-react-imports": "npx react-codemod update-react-imports"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@primer/octicons-react": "^19.1.0",
     "@supabase/auth-helpers-nextjs": "^0.6.1",
     "@supabase/auth-helpers-react": "^0.3.1",
@@ -35,6 +36,7 @@
     "react-icons": "^4.8.0",
     "react-is": "^18.2.0",
     "recharts": "^2.6.2",
+    "sass": "^1.62.1",
     "tailwindcss": "3.3.2",
     "urql": "^4.0.2"
   },

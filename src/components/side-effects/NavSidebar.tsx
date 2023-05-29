@@ -24,7 +24,7 @@ const renderFooter = (router: NextRouter) => (
     id={0}
     Icon={BookOpen}
     text="Help & Support"
-    onClick={getRedirectFunction(router, '/documentation')}
+    onClick={getRedirectFunction(router, '/docs')}
     showIcon
     editable={false}
   />

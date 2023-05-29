@@ -15,6 +15,7 @@ const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps
       <div className="flex flex-row items-center">
         <div className="mr-4 h-[30px] w-[30px] rounded-[5px] bg-gray-500" />
         <h1 className="mr-3 text-16 font-medium">{name}</h1>
+
         {tags.length > 0 ? (
           tags.map((text) => (
             <p
@@ -27,7 +28,6 @@ const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps
         ) : (
           <p className="text-12 font-light text-gray-300">No tags available</p>
         )}
-        g
       </div>
 
       <Button

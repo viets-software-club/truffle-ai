@@ -60,7 +60,7 @@ const columns = [
         hoverOn={false}
         redValue={5000}
         greenValue={10000}
-        value={info.getValue().toString()}
+        value={info.getValue()}
       />
     )
   }),
@@ -74,7 +74,7 @@ const columns = [
         hoverOn={false}
         redValue={500}
         greenValue={1000}
-        value={info.getValue().toString()}
+        value={info.getValue()}
       />
     )
   }),
@@ -88,7 +88,7 @@ const columns = [
         hoverOn={false}
         redValue={120}
         greenValue={500}
-        value={info.getValue().toString()}
+        value={info.getValue()}
       />
     )
   }),
@@ -102,7 +102,7 @@ const columns = [
         hoverOn={false}
         redValue={100}
         greenValue={500}
-        value={info.getValue().toString()}
+        value={info.getValue()}
       />
     )
   }),

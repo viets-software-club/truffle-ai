@@ -7,20 +7,20 @@ query ProjectDetails($id: UUID) {
         eli5
         about
         name
-        star_count
-        issue_count
-        fork_count
-        pull_request_count
-        contributor_count
-        github_url
-        website_url
-        star_history
+        starCount
+        issueCount
+        forkCount
+        pullRequestCount
+        contributorCount
+        githubUrl
+        websiteUrl
+        starHistory
         owned_by
         organization {
           id
           nodeId
           login
-          avatar_url
+          avatarUrl
         }
       }
     }

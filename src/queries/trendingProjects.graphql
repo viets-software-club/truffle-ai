@@ -5,18 +5,18 @@ query TrendingProjects {
         id
         nodeId
         name
-        star_count
-        issue_count
-        fork_count
-        pull_request_count
-        contributor_count
-        website_url
+        starCount
+        issueCount
+        forkCount
+        pullRequestCount
+        contributorCount
+        websiteUrl
         owned_by
         organization {
           id
           nodeId
           login
-          avatar_url
+          avatarUrl
         }
       }
     }

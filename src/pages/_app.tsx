@@ -35,7 +35,7 @@ export default withUrqlClient(
     exchanges: [cacheExchange, fetchExchange],
     fetchOptions: () => ({
       headers: {
-        Authorization: document.cookie
+        Authorization: typeof window !== 'undefined' ? document.cookie : ''
       }
     })
   }),

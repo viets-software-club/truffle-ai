@@ -46,7 +46,7 @@ const columns = [
         hoverOn={false}
         redValue={20000}
         greenValue={40000}
-        value={info.getValue().toString()}
+        value={info.getValue()}
       />
     )
   }),

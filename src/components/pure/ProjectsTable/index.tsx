@@ -2,17 +2,17 @@ import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { useTrendingProjectsQuery } from '@/generated/gql'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
-import Table from '@/components/page/repositoryTable/Table'
-import TopBar from '@/components/page/repositoryTable/TopBar'
-import columns from '@/components/pure/RepositoryTable/columns'
-import FilterBar from '@/components/page/repositoryTable/Filterbar'
+import Table from '@/components/page/overview/Table'
+import TopBar from '@/components/page/overview/TopBar'
+import columns from '@/components/pure/ProjectsTable/columns'
+import FilterBar from '@/components/page/overview/Filterbar'
 
 const nullFunc = () => null
 
 /**
- * Table for displaying trending repositories
+ * Table for displaying trending projects
  */
-const RepositoryTable = () => {
+const ProjectsTable = () => {
   // Fetch data from Supabase using generated Urql hook
   const [{ data, fetching, error }] = useTrendingProjectsQuery()
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) || []
@@ -37,4 +37,4 @@ const RepositoryTable = () => {
   )
 }
 
-export default RepositoryTable
+export default ProjectsTable

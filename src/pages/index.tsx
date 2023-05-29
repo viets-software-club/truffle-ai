@@ -1,13 +1,13 @@
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
-import RepositoryTable from '@/components/pure/RepositoryTable'
+import ProjectsTable from '@/components/pure/ProjectsTable'
 
 /**
  * Overview page with trending projects
  */
 const Home = () => (
   <Page>
-    <RepositoryTable />
+    <ProjectsTable />
   </Page>
 )
 

@@ -24,6 +24,8 @@ const getURL = () => {
   return url
 }
 
+const redirectURL = getURL()
+
 const Login = () => {
   const [isError, setIsError] = useState(false)
   const user = useUser()
@@ -35,9 +37,10 @@ const Login = () => {
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getURL()
+        redirectTo: redirectURL
       }
     })
+
     if (error) {
       setIsError(true)
     }
@@ -58,6 +61,7 @@ const Login = () => {
       ) : (
         <div className="flex grow flex-col items-center justify-between bg-radial-gradient">
           <div />
+
           <div className="flex flex-col items-center space-y-4">
             <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
             <Button
@@ -70,6 +74,7 @@ const Login = () => {
               variant="highlighted"
             />
           </div>
+
           <div className="self-center pb-4 text-12 text-gray-300">© 2023 La Famiglia x Rostlab</div>
         </div>
       )}

@@ -20,7 +20,7 @@ const resolveUserFn: ResolveUserFn<User, Context> = async (context: Context) => 
 
   // Get JWT from cookie (cookie set by Supabase is array of tokens)
   const tokenArray: string[] = JSON.parse(cookies?.['supabase-auth-token']) as string[]
-  const jwt = tokenArray[0]
+  const jwt = tokenArray?.[0]
 
   // Get user from Supabase if JWT is valid
   const {

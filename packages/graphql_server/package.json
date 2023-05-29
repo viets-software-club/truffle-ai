@@ -15,6 +15,7 @@
     "update-types": "npx supabase gen types typescript --project-id \"yipnhkmklmbuxjwzpipg\" > types/supabase.d.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.23.0",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "fastify": "^4.17.0",

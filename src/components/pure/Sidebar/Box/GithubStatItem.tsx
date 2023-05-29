@@ -43,7 +43,7 @@ GithubStatItem.defaultProps = {
   growth: undefined,
   outerPaddingOn: true,
   paddingOn: true,
-  hoverOn: true
+  hoverOn: false
 }
 
 export default GithubStatItem

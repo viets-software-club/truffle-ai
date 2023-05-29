@@ -9,11 +9,7 @@ type ItemProps = {
 
 const Item = ({ Icon, text, onClick, showIcon, secondaryItem, highlighted }: ItemProps) => (
   <div className={`flex flex-col justify-between ${highlighted ? 'bg-gray-700' : ''} `}>
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex px-7 py-2.5 transition-colors duration-100 hover:bg-gray-850"
-    >
+    <button type="button" onClick={onClick} className="inline-flex px-7 py-2.5">
       <div
         className={`flex flex-row items-center justify-center gap-[5px] 
         ${secondaryItem ? 'ml-2' : ''}`}

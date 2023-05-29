@@ -1,9 +1,13 @@
-import Link from 'next/link'
-import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table'
+import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { useTrendingProjectsQuery } from '@/generated/gql'
-import Loading from '@/components/pure/Loading'
 import Error from '@/components/pure/Error'
-import columns from './columns'
+import Loading from '@/components/pure/Loading'
+import Table from '@/components/page/repositoryTable/Table'
+import TopBar from '@/components/page/repositoryTable/TopBar'
+import columns from '@/components/pure/RepositoryTable/columns'
+import FilterBar from '@/components/page/repositoryTable/Filterbar'
+
+const nullFunc = () => null
 
 /**
  * Table for displaying trending repositories
@@ -25,38 +29,10 @@ const RepositoryTable = () => {
   if (projects.length === 0 || error) return <Error />
 
   return (
-    <div className="flex flex-col rounded-lg">
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="text-left font-light">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-2 text-left">
-                  <Link
-                    href={`/details/${typeof row.original.id === 'string' ? row.original.id : ''}`}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Link>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flex w-full flex-col rounded-lg py-3.5">
+      <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
+      <FilterBar />
+      <Table table={table} />
     </div>
   )
 }

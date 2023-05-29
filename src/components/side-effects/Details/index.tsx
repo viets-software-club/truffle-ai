@@ -3,7 +3,8 @@ import {
   FiX as X,
   FiChevronUp as ChevronUp,
   FiChevronDown as ChevronDown,
-  FiCalendar as Calendar
+  FiCalendar as Calendar,
+  FiArrowUpRight
 } from 'react-icons/fi'
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
@@ -20,7 +21,9 @@ import { data as chartDataMock, hackerNewsListMock, tweetListMock } from '@/data
 const handleClick = () => ''
 
 // @TODO Update social media buttons
-const SomeButton = <Button variant="normalHighlighted" onClick={handleClick} text="Do something" />
+const SomeButton = (
+  <Button Icon={FiArrowUpRight} variant="normal" onClick={handleClick} text="Open" order="ltr" />
+)
 
 type DetailsProps = {
   id: string

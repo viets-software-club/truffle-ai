@@ -18,7 +18,7 @@ const Page = ({ children }: PageProps) => (
         <NavSidebar />
       </div>
 
-      <main className="ml-64 w-full text-gray-100">{children}</main>
+      <main className="ml-56 w-full text-gray-100">{children}</main>
     </div>
   </div>
 )

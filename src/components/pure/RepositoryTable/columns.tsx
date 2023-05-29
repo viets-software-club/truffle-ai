@@ -33,7 +33,7 @@ const columns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
-        value={info.getValue()?.toString() || ''}
+        value={info.getValue() as number}
       />
     )
   }),
@@ -45,7 +45,7 @@ const columns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
-        value={info.getValue()?.toString() || ''}
+        value={info.getValue() as number}
       />
     )
   }),
@@ -57,7 +57,7 @@ const columns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
-        value={info.getValue()?.toString() || ''}
+        value={info.getValue() as number}
       />
     )
   }),
@@ -69,7 +69,7 @@ const columns = [
         paddingOn={false}
         outerPaddingOn={false}
         hoverOn={false}
-        value={info.getValue()?.toString() || ''}
+        value={info.getValue() as number}
       />
     )
   }),

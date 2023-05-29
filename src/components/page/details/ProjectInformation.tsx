@@ -1,5 +1,5 @@
 import { StarIcon } from '@primer/octicons-react'
-import Button from '../../pure/Button'
+import Button from '@/components/pure/Button'
 
 type ProjectInformationProps = {
   image?: string
@@ -21,14 +21,18 @@ const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps
 
         <h1 className="mr-3 text-16 font-medium">{name}</h1>
 
-        {tags.map((text) => (
-          <p
-            key={text}
-            className="mx-1 rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
-          >
-            {text}
-          </p>
-        ))}
+        {tags.length > 0 ? (
+          tags.map((text) => (
+            <p
+              key={text}
+              className="mx-1 rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
+            >
+              {text}
+            </p>
+          ))
+        ) : (
+          <p className="text-12 font-light text-gray-300">No tags available</p>
+        )}
       </div>
 
       <Button

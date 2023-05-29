@@ -2,7 +2,7 @@ import { createElement, FC } from 'react'
 import { DiJava } from 'react-icons/di'
 import { TbBrandGolang, TbBrandJavascript, TbBrandPython, TbBrandTypescript } from 'react-icons/tb'
 
-import ProgrammingLanguage from '../../constants/programmingLanguages'
+import ProgrammingLanguage from '@/constants/programmingLanguages'
 
 type Props = {
   programmingLang: ProgrammingLanguage

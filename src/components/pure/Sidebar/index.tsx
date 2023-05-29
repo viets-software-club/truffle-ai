@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactNode } from 'react'
-import Box from './Box'
+import Box from './Box/Box'
 import SmallSidebar from './Small'
 import Section from './Section'
 

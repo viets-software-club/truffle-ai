@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "concurrently -c 'magenta' 'tsc -w' '$npm_package_config_env_dev && nodemon dist/index.js'",
     "build": "tsc",
-    "serve": "$npm_package_config_env_dev && node dist/index.js"
+    "serve": "$npm_package_config_env_dev && node dist/index.js",
+    "update-types": "npx supabase gen types typescript --project-id \"yipnhkmklmbuxjwzpipg\" > types/supabase.d.ts"
   },
   "dependencies": {
     "axios": "^1.4.0",

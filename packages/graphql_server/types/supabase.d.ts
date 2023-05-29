@@ -1,11 +1,16 @@
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[]
 
 export interface Database {
   public: {
     Tables: {
       associated_person: {
         Row: {
-          associated_with: string | null
           avatar_url: string | null
           created_at: string | null
           email: string | null
@@ -18,7 +23,6 @@ export interface Database {
           website_url: string | null
         }
         Insert: {
-          associated_with?: string | null
           avatar_url?: string | null
           created_at?: string | null
           email?: string | null
@@ -31,7 +35,6 @@ export interface Database {
           website_url?: string | null
         }
         Update: {
-          associated_with?: string | null
           avatar_url?: string | null
           created_at?: string | null
           email?: string | null
@@ -92,12 +95,17 @@ export interface Database {
           github_url: string | null
           id: string
           is_bookmarked: boolean | null
+          is_trending_daily: boolean | null
+          is_trending_monthly: boolean | null
+          is_trending_weekly: boolean | null
           issue_count: number | null
+          languages: Json[] | null
           name: string
-          owned_by: string
+          owning_organization: string | null
+          owning_person: string | null
           pull_request_count: number | null
           star_count: number | null
-          star_history: number[] | null
+          star_history: Json[] | null
           website_url: string | null
         }
         Insert: {
@@ -109,12 +117,17 @@ export interface Database {
           github_url?: string | null
           id?: string
           is_bookmarked?: boolean | null
+          is_trending_daily?: boolean | null
+          is_trending_monthly?: boolean | null
+          is_trending_weekly?: boolean | null
           issue_count?: number | null
+          languages?: Json[] | null
           name: string
-          owned_by: string
+          owning_organization?: string | null
+          owning_person?: string | null
           pull_request_count?: number | null
           star_count?: number | null
-          star_history?: number[] | null
+          star_history?: Json[] | null
           website_url?: string | null
         }
         Update: {
@@ -126,12 +139,17 @@ export interface Database {
           github_url?: string | null
           id?: string
           is_bookmarked?: boolean | null
+          is_trending_daily?: boolean | null
+          is_trending_monthly?: boolean | null
+          is_trending_weekly?: boolean | null
           issue_count?: number | null
+          languages?: Json[] | null
           name?: string
-          owned_by?: string
+          owning_organization?: string | null
+          owning_person?: string | null
           pull_request_count?: number | null
           star_count?: number | null
-          star_history?: number[] | null
+          star_history?: Json[] | null
           website_url?: string | null
         }
       }

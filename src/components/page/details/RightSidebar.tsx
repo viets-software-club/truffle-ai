@@ -21,7 +21,7 @@ type Props = {
  * Right sidebar for project details page
  */
 const RightSidebar = ({ project }: Props) => (
-  // TODO: Add historical data for showing growth
+  // @TODO Add historical data for showing growth
   <Sidebar.Small>
     <Sidebar.Box title="GitHub Stats">
       <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project?.star_count?.toString() || '0'} />
@@ -47,7 +47,7 @@ const RightSidebar = ({ project }: Props) => (
       />
     </Sidebar.Box>
 
-    {/* TODO: Add real data for social media + founders */}
+    {/* @TODO Add real data for social media + founders */}
     <Sidebar.Box title="SocialMedia">
       {socialMediaListMock.map(({ id, ...data }) => (
         <Sidebar.Box.SocialMediaItem key={id} {...data} />

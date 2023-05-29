@@ -16,10 +16,10 @@ import RightSidebar from '@/components/page/details/RightSidebar'
 import { useProjectDetailsQuery } from '@/generated/gql'
 import { data as chartDataMock, hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
 
-// TODO: Implement handler for navigation
+// @TODO Implement handler for navigation
 const handleClick = () => ''
 
-// TODO: Update social media buttons
+// @TODO Update social media buttons
 const SomeButton = <Button variant="normalHighlighted" onClick={handleClick} text="Do something" />
 
 type DetailsProps = {
@@ -51,7 +51,7 @@ const Details = ({ id }: DetailsProps) => {
 
             <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
             <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
-            {/* TODO: Make values dynamic */}
+            {/* @TODO Make values dynamic */}
             <p className="text-14 text-gray-300">3/12</p>
           </div>
 
@@ -68,18 +68,18 @@ const Details = ({ id }: DetailsProps) => {
       <div className="flex grow">
         <div className="mr-4 w-4/5 flex-row border-y border-solid border-gray-800 ">
           <ProjectInformation
-            // TODO: Add actual image URL
+            // @TODO Add actual image URL
             image={project.organization?.avatar_url || undefined}
-            // TODO: Adjust for owner (could be user or organization)
+            // @TODO Adjust for owner (could be user or organization)
             name={`${project.organization?.login || 'No name'}/${project.name}`}
             eli5={project.about || 'No description'}
-            // TODO: Replace with actual tags
+            // @TODO Replace with actual tags
             tags={['React', 'Static Site Generation', 'TypeScript']}
           />
 
           <Chart data={chartDataMock} />
 
-          {/* TODO: Add real data */}
+          {/* @TODO Add real data */}
           <div className="my-4 flex flex-row gap-4">
             <Card
               Icon={FaTwitter}

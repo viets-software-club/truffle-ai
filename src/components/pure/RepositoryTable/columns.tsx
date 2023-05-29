@@ -9,13 +9,13 @@ import Logo from '@/assets/logo.svg'
 
 const columnHelper = createColumnHelper<Project>()
 
-// TODO: Format large numbers
-// TODO: Make columns sortable, filterable, dynamic
+// @TODO Format large numbers
+// @TODO Make columns sortable, filterable, dynamic
 const columns = [
   columnHelper.accessor(() => '', {
     header: 'Logo',
-    // TODO: Add real logo
-    // TODO: Fix next image types
+    // @TODO Add real logo
+    // @TODO Fix next image types
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     cell: () => <Image src={Logo} alt="logo" className="h-6 w-6" />
   }),
@@ -24,7 +24,7 @@ const columns = [
     header: () => 'Name',
     cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
   }),
-  // TODO: Add tags column
+  // @TODO Add tags column
   columnHelper.accessor('star_count', {
     header: () => 'Stars',
     cell: (info) => (

@@ -6,7 +6,7 @@ import {
 } from 'react-icons/fi'
 import Sidebar from '@/components/pure/Sidebar'
 
-// TODO replace nullFunc with getRedirectFunc
+// @TODO replace nullFunc with getRedirectFunc
 const nullFunc = () => null
 
 const getRedirectFunction = (router: NextRouter, path: string) => () => {

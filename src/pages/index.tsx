@@ -24,9 +24,11 @@ const Home = () => {
   const closeModel = () => {
     setOpenModal(false)
   }
-  <Page>
-    {openModal && <CommandInterface action={closeModel} />}
-    <RepositoryTable />
-  </Page>
+  return (
+    <Page>
+      {openModal && <CommandInterface action={closeModel} />}
+      <RepositoryTable />
+    </Page>
+  )
 }
 export default withAuth(Home)

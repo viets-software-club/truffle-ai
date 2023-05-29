@@ -100,7 +100,7 @@ export interface Database {
           is_trending_weekly: boolean | null
           issue_count: number | null
           languages: Json[] | null
-          name: string
+          name: string | null
           owning_organization: string | null
           owning_person: string | null
           pull_request_count: number | null
@@ -122,7 +122,7 @@ export interface Database {
           is_trending_weekly?: boolean | null
           issue_count?: number | null
           languages?: Json[] | null
-          name: string
+          name?: string | null
           owning_organization?: string | null
           owning_person?: string | null
           pull_request_count?: number | null
@@ -144,7 +144,7 @@ export interface Database {
           is_trending_weekly?: boolean | null
           issue_count?: number | null
           languages?: Json[] | null
-          name?: string
+          name?: string | null
           owning_organization?: string | null
           owning_person?: string | null
           pull_request_count?: number | null

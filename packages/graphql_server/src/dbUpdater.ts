@@ -65,7 +65,7 @@ const getCutOffTime: (hours: number, minutes: number) => string = (
 // daily: gh + twitter
 // weekly: rest
 // @TODO: implement
-const updateRepo = (name: string, owner: string) => {
+const updateRepo = (name: string | null, owner: string) => {
   return null
 }
 

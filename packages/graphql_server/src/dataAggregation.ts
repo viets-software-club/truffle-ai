@@ -23,6 +23,7 @@ export const aggregateDataForRepo = async (name: string, owner: string) => {
       pullRequests(states: [OPEN]) {totalCount}
       url
       homepageUrl
+      languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {edges {node {name color}}}
     owner {
       login
     }
@@ -35,7 +36,7 @@ export const aggregateDataForRepo = async (name: string, owner: string) => {
     'Bearer ' + process.env.GITHUB_API_TOKEN
   )
 
-  if (repoGHdata === null) {
+  if (!repoGHdata) {
     console.error('Could not get GitHub data for repo', name)
     return null
   }
@@ -45,16 +46,22 @@ export const aggregateDataForRepo = async (name: string, owner: string) => {
   const owningPersonID = await getPersonID(owner)
   // @Todo aggregate more data for the repo
 
+  const languages = repoGHdata?.languages?.edges?.map((edge) => ({
+    name: edge.node?.name || '',
+    color: edge.node?.color || ''
+  }))
+
   repoInfo = {
     name: repoGHdata?.name,
     about: repoGHdata?.description,
     star_count: repoGHdata?.stargazerCount,
-    issue_count: repoGHdata?.issues.totalCount,
+    issue_count: repoGHdata?.issues?.totalCount,
     fork_count: repoGHdata?.forkCount,
     pull_request_count: repoGHdata?.pullRequests?.totalCount,
     contributor_count: 1,
     github_url: repoGHdata?.url,
     website_url: repoGHdata?.homepageUrl,
+    languages: languages,
     owning_organization: owningOrganizationID,
     owning_person: owningPersonID,
     is_bookmarked: false
@@ -112,7 +119,7 @@ const getOrganizationID = async (owner: string) => {
       name: organizationGHData.name,
       login: organizationGHData.login,
       avatar_url: organizationGHData.avatarUrl,
-      repository_count: organizationGHData.repositories.totalCount,
+      repository_count: organizationGHData?.repositories?.totalCount,
       email: organizationGHData.email,
       website_url: organizationGHData.websiteUrl,
       twitter_username: organizationGHData.twitterUsername,
@@ -179,7 +186,7 @@ const getPersonID = async (owner: string) => {
       name: userGHData.name,
       login: userGHData.login,
       avatar_url: userGHData.avatarUrl,
-      repository_count: userGHData.repositories.totalCount,
+      repository_count: userGHData?.repositories?.totalCount,
       email: userGHData.email,
       website_url: userGHData.websiteUrl,
       twitter_username: userGHData.twitterUsername,

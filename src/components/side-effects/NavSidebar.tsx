@@ -25,7 +25,7 @@ const renderFooter = (router: NextRouter) => (
 /**
  * Main sidebar on the left
  */
-const LeftSidebar = ({ router }: { router: NextRouter }) => (
+const NavSidebar = ({ router }: { router: NextRouter }) => (
   <Sidebar title="TruffleAI" footer={renderFooter(router)}>
     <Sidebar.Section title="Overview">
       <Sidebar.Section.Item Icon={Compass} text="All projects" onClick={nullFunc} showIcon />
@@ -70,4 +70,4 @@ const LeftSidebar = ({ router }: { router: NextRouter }) => (
   </Sidebar>
 )
 
-export default withRouter(LeftSidebar)
+export default withRouter(NavSidebar)

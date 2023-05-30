@@ -1,5 +1,5 @@
 import { fetchTrendingRepos } from './scraping/githubScraping'
-import { insertProject, updateProjectTrendingState } from './processRepo'
+import { insertProject, updateProjectTrendingState, updateRepo } from './processRepo'
 import supabase from './supabase'
 import { TrendingState } from '../types/processRepo'
 
@@ -44,12 +44,12 @@ export const dbUpdater = async () => {
   personsRetrievalError &&
     console.error('Error while getting all persons: \n', personsRetrievalError)
 
-  // update all remaining projects
+  // update all old projects
   if (oldRepos) {
     for (const repo of oldRepos) {
       let owner = organizations?.filter((org) => org.id === repo.owning_organization)[0]?.name
       if (!owner) owner = people?.filter((person) => person.id === repo.owning_person)[0]?.name
-      if (owner) updateRepo(repo.name, owner)
+      if (owner) await updateRepo(repo.name as string, owner)
     }
   }
 }
@@ -70,13 +70,6 @@ const getCutOffTime: (hours: number, minutes: number) => string = (
   return cutoffTime.toISOString()
 }
 
-// daily: gh + twitter
-// weekly: rest
-// @TODO: implement
-const updateRepo = (name: string | null, owner: string) => {
-  return null
-}
-
 const purgeTrendingState = async () => {
   await supabase
     .from('project')
@@ -88,7 +81,7 @@ const purgeTrendingState = async () => {
  * @param {string[]} repos - The repos to go through
  */
 const goThroughListOfRepos = async (repos: string[], trendingState: TrendingState) => {
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < repos.length / 2; i++) {
     const owner = repos[2 * i]
     const name = repos[2 * i + 1]
     // if it is in the database already only the trending state has to be updated
@@ -97,7 +90,7 @@ const goThroughListOfRepos = async (repos: string[], trendingState: TrendingStat
       // update the trending state
       await updateProjectTrendingState(name, owner, trendingState)
     } else {
-      await insertProject(name, owner)
+      await insertProject(name, owner, trendingState)
     }
   }
 }

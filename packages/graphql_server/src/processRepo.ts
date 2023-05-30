@@ -17,7 +17,7 @@ import { TrendingState } from '../types/processRepo'
  * @param {string} name - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
  */
-export const insertProject = async (name: string, owner: string) => {
+export const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
   // get the github data
   const githubData: GitHubInfo | null = await getGithubData(name, owner)
   if (!githubData) return null
@@ -33,6 +33,8 @@ export const insertProject = async (name: string, owner: string) => {
   projectInsertion.owning_organization = await getOrganizationID(owner)
   projectInsertion.owning_person = await getPersonID(owner)
 
+  projectInsertion[trendingState] = true
+
   // insert the repo into the database
   const { error: insertionError } = await supabase.from('project').insert([projectInsertion])
   insertionError &&
@@ -40,28 +42,62 @@ export const insertProject = async (name: string, owner: string) => {
   !insertionError && console.log('Inserted ', name, 'owned by', owner)
 }
 
+/**
+ * Updates a repo that is currently in the db.
+ * Ath the moment this method only updates the github stats and star history.
+ * In the future it will update gh stats + twitter on a daily and everything else on a weekly basis
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
+export const updateRepo = async (name: string, owner: string) => {
+  // get the github data
+  const githubData: GitHubInfo | null = await getGithubData(name, owner)
+  if (!githubData) return null
+  // get the starHistory
+  const starHistory: StarRecord[] = await getRepoStarRecords(
+    owner + '/' + name,
+    process.env.GITHUB_API_TOKEN,
+    10
+  )
+  // convert the github data into a format that can be inserted into the database. ProjectUpdate and ProjectInsertion are virtually  the same
+  const projectUpdate: ProjectUpdate = turnIntoProjectInsertion(
+    githubData,
+    starHistory
+  ) as ProjectUpdate
+
+  const updated = await updateProject(name, owner, projectUpdate)
+
+  updated ? console.log('updated ', name, 'owned by', owner) : null
+}
+
 export const updateProjectTrendingState = async (
   name: string,
   owner: string,
   trendingState: TrendingState
 ) => {
-  console.log('updating trending state of ', name, ' to ', trendingState)
   const projectUpdate: ProjectUpdate = {}
   projectUpdate[trendingState] = true
 
+  const updated = await updateProject(name, owner, projectUpdate)
+  updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
+}
+
+export const updateProject = async (name: string, owner: string, updatedProject: ProjectUpdate) => {
   const owningOrganizationID = await getOrganizationID(owner)
 
-  const { error: updateOrgError } = await supabase
+  const { error: ownerUpdateError } = await supabase
     .from('project')
-    .update(projectUpdate)
+    .update(updatedProject)
     .eq('name', name)
     .eq('owning_organization', owningOrganizationID)
 
-  if (!updateOrgError) return
+  if (!ownerUpdateError) return true
   const owningPersonID = await getPersonID(owner)
-  await supabase
+  const { error: ownerUpdateError2 } = await supabase
     .from('project')
-    .update(projectUpdate)
+    .update(updatedProject)
     .eq('name', name)
     .eq('owning_person', owningPersonID)
+
+  return ownerUpdateError2 ? false : true
 }

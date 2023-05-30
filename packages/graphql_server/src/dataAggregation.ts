@@ -1,78 +1,62 @@
 import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { getOrganizationInfo, getRepoInfo, getUserInfo } from './api/githubApi'
-import { OrganizationInsertion, ProjectInsertion, UserInsertion } from '../types/dataAggregation'
+import {
+  OrganizationInsertion,
+  ProjectInsertion,
+  UserInsertion,
+  ProjectUpdate
+} from '../types/dataAggregation'
 import supabase from './supabase'
-import { getRepoStarRecords } from './starHistory/starHistory'
+import { StarRecord } from '../types/starHistory'
 
-/**
- * Returns the info for a repository in a format that can be inserted into the DB.
- * It goes through all data sources and aggregates the data.
- * @param {string} name - The name of the repository.
- * @param {string} owner - The name of the organization.
- * @returns {ProjectInsertion | null} The info for the repository in a format that can be inserted into the DB.
- */
-export const aggregateDataForRepo = async (name: string, owner: string) => {
-  let repoInfo: ProjectInsertion | null = null
-  // query send to github. If this is changed the corresponding types have to be changed as well
-  const query = `query {
-    repository(owner: "${owner}", name: "${name}") {
-      name 
-      description
-      stargazerCount
-      issues(filterBy: {states: [OPEN]}) {totalCount}
-      forkCount
-      pullRequests(states: [OPEN]) {totalCount}
-      url
-      homepageUrl
-      languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {edges {node {name color}}}
-    owner {
-      login
-    }
-  }
-  }`
-
-  // call github api
-  const repoGHdata: GitHubInfo | null = await getRepoInfo(
-    query,
-    'Bearer ' + process.env.GITHUB_API_TOKEN
-  )
-
-  if (!repoGHdata) {
-    console.error('Could not get GitHub data for repo', name)
-    return null
-  }
-
-  const owningOrganizationID = await getOrganizationID(owner)
-
-  const owningPersonID = await getPersonID(owner)
-  // @Todo aggregate more data for the repo
-
-  const languages = repoGHdata?.languages?.edges?.map((edge) => ({
+export const turnIntoProjectInsertion = (githubData: GitHubInfo, starHistory: StarRecord[]) => {
+  const languages = githubData?.languages?.edges?.map((edge) => ({
     name: edge.node?.name || '',
     color: edge.node?.color || ''
   }))
 
-  const starHistory = await getRepoStarRecords(owner + '/' + name, process.env.GITHUB_API_TOKEN, 10)
-
-  repoInfo = {
-    name: repoGHdata?.name,
-    about: repoGHdata?.description,
-    star_count: repoGHdata?.stargazerCount,
-    issue_count: repoGHdata?.issues?.totalCount,
-    fork_count: repoGHdata?.forkCount,
-    pull_request_count: repoGHdata?.pullRequests?.totalCount,
+  return {
+    name: githubData?.name,
+    about: githubData?.description,
+    star_count: githubData?.stargazerCount,
+    issue_count: githubData?.issues?.totalCount,
+    fork_count: githubData?.forkCount,
+    pull_request_count: githubData?.pullRequests?.totalCount,
     contributor_count: 1,
-    github_url: repoGHdata?.url,
-    website_url: repoGHdata?.homepageUrl,
+    github_url: githubData?.url,
+    website_url: githubData?.homepageUrl,
     languages: languages,
     star_history: starHistory,
-    owning_organization: owningOrganizationID,
-    owning_person: owningPersonID,
-    is_bookmarked: false,
-    is_trending_daily: true
+    is_bookmarked: false
   }
+}
 
-  return repoInfo
+export const getGithubData = async (name: string, owner: string) => {
+  // query send to github. If this is changed the corresponding types have to be changed as well
+  const query = `query {
+      repository(owner: "${owner}", name: "${name}") {
+        name 
+        description
+        stargazerCount
+        issues(filterBy: {states: [OPEN]}) {totalCount}
+        forkCount
+        pullRequests(states: [OPEN]) {totalCount}
+        url
+        homepageUrl
+        languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {edges {node {name color}}}
+      owner {
+        login
+      }
+    }
+    }`
+
+  // call github api
+  const githubData: GitHubInfo | null = await getRepoInfo(
+    query,
+    'Bearer ' + process.env.GITHUB_API_TOKEN
+  )
+
+  return githubData ? githubData : null
 }
 
 /**
@@ -81,7 +65,7 @@ export const aggregateDataForRepo = async (name: string, owner: string) => {
  * @param {string} owner - The name of a github entity - either organization or person.
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
-const getOrganizationID = async (owner: string) => {
+export const getOrganizationID = async (owner: string) => {
   const { data: organization, error: organizationRetrievalError } = await supabase
     .from('organization')
     .select('id')
@@ -153,7 +137,7 @@ const getOrganizationID = async (owner: string) => {
  * @param {string} owner - The name of a github entity - either organization or person.
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
-const getPersonID = async (owner: string) => {
+export const getPersonID = async (owner: string) => {
   const { data: person, error: personRetrievalError } = await supabase
     .from('associated_person')
     .select('id')

@@ -12,4 +12,4 @@ export type StarRecord = {
   count: number
 }
 
-export type timeMode = 'daily' | 'weekly' | 'monthly'
+//export type timeMode = 'daily' | 'weekly' | 'monthly'

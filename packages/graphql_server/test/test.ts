@@ -1,4 +1,4 @@
-import { timeMode } from '../src/starHistory/types'
+import { timeMode } from '../types/githubScraping'
 import * as scrape from '../src/scraping/githubScraping'
 import * as github from '../src/api/githubApi'
 import * as eli5 from '../src/api/openAIApi'

@@ -21,94 +21,95 @@ const renderFooter = () => (
   />
 )
 
+const initialSections = [
+  {
+    title: 'Overview',
+    items: [
+      {
+        id: 1,
+        Icon: Compass,
+        text: 'Trending projects',
+        path: '/',
+        params: '',
+        showIcon: true,
+        editable: false
+      },
+      {
+        id: 2,
+        Icon: Bookmark,
+        text: 'All bookmarks',
+        path: '/bookmarks',
+        params: '',
+        showIcon: true,
+        editable: false
+      }
+    ]
+  },
+  {
+    title: 'Categories',
+    items: [
+      {
+        id: 3,
+        path: 'compare',
+        params: '/infrastructure',
+        Icon: Folder,
+        text: 'Infrastructure',
+        showIcon: true,
+        highlighted: true,
+        editable: true
+      },
+      {
+        id: 4,
+        path: '/compare',
+        params: 'dev-tools',
+        Icon: Folder,
+        text: 'Dev Tools',
+        showIcon: true,
+        editable: true
+      },
+      {
+        id: 5,
+        path: '/details',
+        params: 'vercel/next.js',
+        text: 'vercel/next.js',
+        Icon: Dot,
+        showIcon: true,
+        secondaryItem: true,
+        editable: true
+      },
+      {
+        id: 6,
+        path: '/details',
+        params: 'microsoft/playwright',
+        Icon: Dot,
+        text: 'microsoft/playwright',
+        showIcon: true,
+        secondaryItem: true,
+        editable: true
+      },
+      {
+        id: 7,
+        path: '/compare',
+        params: 'machine-learning',
+        Icon: Folder,
+        text: 'Machine Learning',
+        showIcon: true,
+        editable: true
+      },
+      {
+        id: 8,
+        path: '/compare',
+        params: 'artificial-intelligence',
+        Icon: Folder,
+        text: 'Artificial Intelligence',
+        showIcon: true,
+        editable: true
+      }
+    ]
+  }
+]
+
 const NavSidebar = ({ router }: { router: NextRouter }) => {
-  const initialSections = [
-    {
-      title: 'Overview',
-      items: [
-        {
-          id: 1,
-          Icon: Compass,
-          text: 'Trending projects',
-          path: '/',
-          params: '',
-          showIcon: true,
-          editable: false
-        },
-        {
-          id: 2,
-          Icon: Bookmark,
-          text: 'All bookmarks',
-          path: '/bookmarks',
-          params: '',
-          showIcon: true,
-          editable: false
-        }
-      ]
-    },
-    {
-      title: 'Categories',
-      items: [
-        {
-          id: 3,
-          path: 'compare',
-          params: '/infrastructure',
-          Icon: Folder,
-          text: 'Infrastructure',
-          showIcon: true,
-          highlighted: true,
-          editable: true
-        },
-        {
-          id: 4,
-          path: '/compare',
-          params: 'dev-tools',
-          Icon: Folder,
-          text: 'Dev Tools',
-          showIcon: true,
-          editable: true
-        },
-        {
-          id: 5,
-          path: '/details',
-          params: 'vercel/next.js',
-          text: 'vercel/next.js',
-          Icon: Dot,
-          showIcon: true,
-          secondaryItem: true,
-          editable: true
-        },
-        {
-          id: 6,
-          path: '/details',
-          params: 'microsoft/playwright',
-          Icon: Dot,
-          text: 'microsoft/playwright',
-          showIcon: true,
-          secondaryItem: true,
-          editable: true
-        },
-        {
-          id: 7,
-          path: '/compare',
-          params: 'machine-learning',
-          Icon: Folder,
-          text: 'Machine Learning',
-          showIcon: true,
-          editable: true
-        },
-        {
-          id: 8,
-          path: '/compare',
-          params: 'artificial-intelligence',
-          Icon: Folder,
-          text: 'Artificial Intelligence',
-          showIcon: true,
-          editable: true
-        }
-      ]
-    }
-  ]
   const [sections] = useState(initialSections)
 
   const handleSave = (id: number, newText: string) => {

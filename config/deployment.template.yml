@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: truffle-ai-deployment
+  labels:
+    app: truffle-ai-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: truffle-ai-deployment
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: truffle-ai-deployment
+    spec:
+      containers:
+        - name: truffle-ai-graphql-gateway
+          image: <IMAGE-GRAPHQL-GATEWAY>
+          ports:
+            - containerPort: $GATEWAY_PORT
+        - name: truffle-ai-graphql-server
+          image: <IMAGE-GRAPHQL-SERVER>
+          ports:
+            - containerPort: $SERVER_PORT
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: truffle-ai-load-balancer
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+  selector:
+    app: truffle-ai-deployment

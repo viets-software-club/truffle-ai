@@ -9,8 +9,10 @@ sources:
         endpoint: '{env.SUPABASE_GRAPHQL_URL}'
         operationHeaders:
           apiKey: '{env.SUPABASE_API_KEY}'
+          Content-Type: application/json
         schemaHeaders:
           apiKey: '{env.SUPABASE_API_KEY}'
+          Content-Type: application/json
   - name: Server
     handler:
       graphql:

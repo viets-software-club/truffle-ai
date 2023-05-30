@@ -6,9 +6,18 @@ on:
     branches: ['main']
   pull_request:
     branches: ['main']
+env:
+  SUPABASE_REFERENCE_ID: ${{ vars.SUPABASE_REFERENCE_ID }}
+  SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+  SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
+  GATEWAY_PORT: ${{ vars.GATEWAY_PORT }}
+  SERVER_PORT: ${{ vars.SERVER_PORT }}
+  SERVER_URL: ${{ vars.SERVER_URL }}
+  SERVER_GRAPHQL_URL: ${{ vars.SERVER_GRAPHQL_URL }}
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     strategy:
       matrix:
         node-version: [18.x]
@@ -20,6 +29,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm run test
-      - run: npm run build -ws
+      - name: Install npm packages
+        run: NODE_ENV=test npm ci
+      - name: Test
+        run: NODE_ENV=test npm run test
+      - name: Build
+        env:
+          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+        run: NODE_ENV=production npm run build

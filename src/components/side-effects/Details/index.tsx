@@ -45,7 +45,7 @@ const Details = ({ id }: DetailsProps) => {
 
   return (
     <>
-      <div className="py-2 text-gray-500">
+      <div className="px-3 py-2 pl-7 text-gray-500">
         <div className="flex justify-between">
           <div className="flex flex-row items-center gap-3">
             <Link href="/">
@@ -69,7 +69,7 @@ const Details = ({ id }: DetailsProps) => {
       </div>
 
       <div className="flex grow">
-        <div className="mr-4 w-4/5 flex-row border-y border-solid border-gray-800 ">
+        <div className="w-4/5 flex-row border-y border-solid border-gray-800 ">
           <ProjectInformation
             // @TODO Add actual image URL
             image={project?.organization?.avatarUrl as string}
@@ -83,7 +83,7 @@ const Details = ({ id }: DetailsProps) => {
           <Chart data={chartDataMock} />
 
           {/* @TODO Add real data */}
-          <div className="my-4 flex flex-row gap-4">
+          <div className="my-4 flex flex-row gap-4 pl-7 pr-3">
             <Card
               Icon={FaTwitter}
               name="Top Tweets"

@@ -10,6 +10,9 @@ import { GitHubInfo } from '../types/githubApi'
 import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'
 import { TrendingState } from '../types/processRepo'
+import { fetchRepositoryReadme } from './scraping/githubScraping'
+import { getELI5DescriptionForRepositoryFromText } from './api/openAIApi'
+import { get } from 'http'
 
 /**
  * Adds a repo to the database.
@@ -37,6 +40,7 @@ export const insertProject = async (name: string, owner: string, trendingState: 
 
   // insert the repo into the database
   const { error: insertionError } = await supabase.from('project').insert([projectInsertion])
+  await updateProjectELI5(name, owner)
   insertionError &&
     console.log('Error while inserting ', name, 'owned by', owner, ' \n Error: \n ', insertionError)
   !insertionError && console.log('Inserted ', name, 'owned by', owner)
@@ -100,4 +104,21 @@ export const updateProject = async (name: string, owner: string, updatedProject:
     .eq('owning_person', owningPersonID)
 
   return ownerUpdateError2 ? false : true
+}
+
+export const updateProjectELI5 = async (name: string, owner: string) => {
+  try {
+    const readMe = (await fetchRepositoryReadme(owner, name)).slice(0, 2500)
+    const description = await getELI5DescriptionForRepositoryFromText(
+      readMe,
+      process.env.OPENAI_API_KEY
+    )
+    const updated = await updateProject(name, owner, { eli5: description })
+    console.log('updated eli5 of ', name, 'owned by', owner)
+  } catch (e) {
+    console.error('Error while fetching readme for ', name, 'owned by', owner)
+    await updateProject(name, owner, {
+      eli5: 'ELI5/description could not be generated for this project'
+    })
+  }
 }

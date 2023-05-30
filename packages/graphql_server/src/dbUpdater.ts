@@ -1,5 +1,10 @@
 import { fetchTrendingRepos } from './scraping/githubScraping'
-import { insertProject, updateProjectTrendingState, updateRepo } from './processRepo'
+import {
+  insertProject,
+  updateProjectELI5,
+  updateProjectTrendingState,
+  updateRepo
+} from './processRepo'
 import supabase from './supabase'
 import { TrendingState } from '../types/processRepo'
 

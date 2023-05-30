@@ -13,9 +13,9 @@ async function main(timeMode: timeMode) {
   const trendingSplit: string[] | undefined = await scrape.fetchTrendingRepos(timeMode)
 
   // your personal GitHub authToken
-  const authToken: string = process.env.GITHUB_API_KEY as string
+  const authToken: string = process.env.GITHUB_API_TOKEN
   // your personal OpenAI API Key
-  const OPENAI_API_KEY: string = process.env.OPENAI_API_KEY as string
+  const OPENAI_API_KEY: string = process.env.OPENAI_API_KEY
 
   // check if any repos were actually found
   if (!trendingSplit) {

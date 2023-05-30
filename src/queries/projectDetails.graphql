@@ -14,8 +14,6 @@ query ProjectDetails($id: UUID) {
         contributorCount
         githubUrl
         websiteUrl
-        starHistory
-        owned_by
         organization {
           id
           nodeId

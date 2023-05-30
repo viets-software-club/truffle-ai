@@ -1,7 +1,7 @@
 import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { useTrendingProjectsQuery } from '@/generated/gql'
+import { Project, useTrendingProjectsQuery } from '@/generated/gql'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import TopBar from '@/components/page/overview/TopBar'
@@ -18,7 +18,7 @@ const nullFunc = () => null
 const Compare = () => {
   // Fetch data from Supabase using generated Urql hook
   const [{ data, fetching, error }] = useTrendingProjectsQuery()
-  const projects = data?.projectCollection?.edges?.map((edge) => edge.node) || []
+  const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
   // Initialize TanStack table
   const table = useReactTable({

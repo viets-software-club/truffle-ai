@@ -24,18 +24,18 @@ const RightSidebar = ({ project }: Props) => (
   // @TODO Add historical data for showing growth
   <Sidebar.Small>
     <Sidebar.Box title="GitHub Stats">
-      <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project?.star_count as number} />
-      <Sidebar.Box.GithubStatItem Icon={IssueOpenedIcon} value={project?.issue_count as number} />
-      <Sidebar.Box.GithubStatItem Icon={RepoForkedIcon} value={project?.fork_count as number} />
+      <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project?.starCount as number} />
+      <Sidebar.Box.GithubStatItem Icon={IssueOpenedIcon} value={project?.issueCount as number} />
+      <Sidebar.Box.GithubStatItem Icon={RepoForkedIcon} value={project?.forkCount as number} />
       <Sidebar.Box.GithubStatItem
         IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-        value={(project?.fork_count || 0) / (project?.contributor_count || 1)}
+        value={(project?.forkCount || 0) / (project?.contributorCount || 1)}
       />
       <Sidebar.Box.GithubStatItem
         IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-        value={(project?.issue_count || 0) / (project?.contributor_count || 1)}
+        value={(project?.issueCount || 0) / (project?.contributorCount || 1)}
       />
-      <Sidebar.Box.GithubStatItem Icon={PeopleIcon} value={project?.contributor_count as number} />
+      <Sidebar.Box.GithubStatItem Icon={PeopleIcon} value={project?.contributorCount as number} />
     </Sidebar.Box>
 
     {/* @TODO Add real data for social media + founders */}

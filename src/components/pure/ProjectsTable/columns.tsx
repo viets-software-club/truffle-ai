@@ -19,14 +19,15 @@ const columns = [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     cell: () => <Image src={Logo} alt="logo" className="h-6 w-6" />
   }),
-  columnHelper.accessor(({ organization, name }) => `${organization?.login || ''} / ${name}`, {
+  // @TODO Adjust for user owners
+  columnHelper.accessor(({ organization, name }) => `${organization?.login || 'user'} / ${name}`, {
     id: 'nameWithOwner',
-    header: () => 'Name',
+    header: 'Name',
     cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
   }),
   // @TODO Add tags column
-  columnHelper.accessor('star_count', {
-    header: () => 'Stars',
+  columnHelper.accessor('starCount', {
+    header: 'Stars',
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineStar}
@@ -37,7 +38,7 @@ const columns = [
       />
     )
   }),
-  columnHelper.accessor('issue_count', {
+  columnHelper.accessor('issueCount', {
     header: 'Issues',
     cell: (info) => (
       <GitHubStatisticItem
@@ -49,8 +50,8 @@ const columns = [
       />
     )
   }),
-  columnHelper.accessor('fork_count', {
-    header: () => 'Forks',
+  columnHelper.accessor('forkCount', {
+    header: 'Forks',
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineFork}
@@ -61,7 +62,7 @@ const columns = [
       />
     )
   }),
-  columnHelper.accessor('contributor_count', {
+  columnHelper.accessor('contributorCount', {
     header: 'Contributors',
     cell: (info) => (
       <GitHubStatisticItem
@@ -73,19 +74,16 @@ const columns = [
       />
     )
   }),
-  columnHelper.accessor((project) => (project.fork_count || 0) / (project.contributor_count || 1), {
+  columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
     id: 'forksPerContributor',
-    header: () => 'Forks/ Contributor',
+    header: 'Forks/ Contributor',
     cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
   }),
-  columnHelper.accessor(
-    (project) => (project.issue_count || 0) / (project.contributor_count || 1),
-    {
-      id: 'issuesPerContributor',
-      header: () => 'Issues/ Contributor',
-      cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
-    }
-  )
+  columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
+    id: 'issuesPerContributor',
+    header: 'Issues/ Contributor',
+    cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
+  })
 ]
 
 export default columns

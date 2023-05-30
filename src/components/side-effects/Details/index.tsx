@@ -14,7 +14,7 @@ import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { useProjectDetailsQuery } from '@/generated/gql'
+import { Project, useProjectDetailsQuery } from '@/generated/gql'
 import { data as chartDataMock, hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
 
 // @TODO Implement handler for navigation
@@ -37,7 +37,7 @@ const Details = ({ id }: DetailsProps) => {
   const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
 
   // Get first entry of returned collection
-  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0]
+  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
 
   // Display loading/ error messages conditionally
   if (fetching) return <Loading />
@@ -72,7 +72,7 @@ const Details = ({ id }: DetailsProps) => {
         <div className="mr-4 w-4/5 flex-row border-y border-solid border-gray-800 ">
           <ProjectInformation
             // @TODO Add actual image URL
-            image={project.organization?.avatar_url || undefined}
+            image={project?.organization?.avatarUrl as string}
             // @TODO Adjust for owner (could be user or organization)
             name={`${project.organization?.login || 'No name'}/${project.name}`}
             eli5={project.about || 'No description'}

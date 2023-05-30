@@ -24,6 +24,117 @@ export type Scalars = {
   UUID: any
 }
 
+export type AssociatedPerson = Node & {
+  __typename?: 'AssociatedPerson'
+  associatedWith?: Maybe<Scalars['UUID']>
+  avatarUrl?: Maybe<Scalars['String']>
+  createdAt?: Maybe<Scalars['Datetime']>
+  email?: Maybe<Scalars['String']>
+  githubUrl?: Maybe<Scalars['String']>
+  id: Scalars['UUID']
+  login?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']
+  project?: Maybe<Project>
+  repositoryCount?: Maybe<Scalars['Int']>
+  twitterUsername?: Maybe<Scalars['String']>
+  websiteUrl?: Maybe<Scalars['String']>
+}
+
+export type AssociatedPersonConnection = {
+  __typename?: 'AssociatedPersonConnection'
+  edges: Array<AssociatedPersonEdge>
+  pageInfo: PageInfo
+}
+
+export type AssociatedPersonDeleteResponse = {
+  __typename?: 'AssociatedPersonDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<AssociatedPerson>
+}
+
+export type AssociatedPersonEdge = {
+  __typename?: 'AssociatedPersonEdge'
+  cursor: Scalars['String']
+  node: AssociatedPerson
+}
+
+export type AssociatedPersonFilter = {
+  associatedWith?: InputMaybe<UuidFilter>
+  avatarUrl?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DatetimeFilter>
+  email?: InputMaybe<StringFilter>
+  githubUrl?: InputMaybe<StringFilter>
+  id?: InputMaybe<UuidFilter>
+  login?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
+  nodeId?: InputMaybe<IdFilter>
+  repositoryCount?: InputMaybe<IntFilter>
+  twitterUsername?: InputMaybe<StringFilter>
+  websiteUrl?: InputMaybe<StringFilter>
+}
+
+export type AssociatedPersonInsertInput = {
+  associatedWith?: InputMaybe<Scalars['UUID']>
+  avatarUrl?: InputMaybe<Scalars['String']>
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  email?: InputMaybe<Scalars['String']>
+  githubUrl?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['UUID']>
+  login?: InputMaybe<Scalars['String']>
+  name?: InputMaybe<Scalars['String']>
+  repositoryCount?: InputMaybe<Scalars['Int']>
+  twitterUsername?: InputMaybe<Scalars['String']>
+  websiteUrl?: InputMaybe<Scalars['String']>
+}
+
+export type AssociatedPersonInsertResponse = {
+  __typename?: 'AssociatedPersonInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<AssociatedPerson>
+}
+
+export type AssociatedPersonOrderBy = {
+  associatedWith?: InputMaybe<OrderByDirection>
+  avatarUrl?: InputMaybe<OrderByDirection>
+  createdAt?: InputMaybe<OrderByDirection>
+  email?: InputMaybe<OrderByDirection>
+  githubUrl?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  login?: InputMaybe<OrderByDirection>
+  name?: InputMaybe<OrderByDirection>
+  repositoryCount?: InputMaybe<OrderByDirection>
+  twitterUsername?: InputMaybe<OrderByDirection>
+  websiteUrl?: InputMaybe<OrderByDirection>
+}
+
+export type AssociatedPersonUpdateInput = {
+  associatedWith?: InputMaybe<Scalars['UUID']>
+  avatarUrl?: InputMaybe<Scalars['String']>
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  email?: InputMaybe<Scalars['String']>
+  githubUrl?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['UUID']>
+  login?: InputMaybe<Scalars['String']>
+  name?: InputMaybe<Scalars['String']>
+  repositoryCount?: InputMaybe<Scalars['Int']>
+  twitterUsername?: InputMaybe<Scalars['String']>
+  websiteUrl?: InputMaybe<Scalars['String']>
+}
+
+export type AssociatedPersonUpdateResponse = {
+  __typename?: 'AssociatedPersonUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<AssociatedPerson>
+}
+
 /** Boolean expression comparing fields on type "BigFloat" */
 export type BigFloatFilter = {
   eq?: InputMaybe<Scalars['BigFloat']>
@@ -78,6 +189,14 @@ export type DatetimeFilter = {
   neq?: InputMaybe<Scalars['Datetime']>
 }
 
+export type DiscordChannel = SocialMediaPresence & {
+  __typename?: 'DiscordChannel'
+  accountName: Scalars['String']
+  link: Scalars['String']
+  memberCount: Scalars['Int']
+  platform: Scalars['String']
+}
+
 export enum FilterIs {
   NotNull = 'NOT_NULL',
   Null = 'NULL'
@@ -93,6 +212,45 @@ export type FloatFilter = {
   lt?: InputMaybe<Scalars['Float']>
   lte?: InputMaybe<Scalars['Float']>
   neq?: InputMaybe<Scalars['Float']>
+}
+
+export type GitHubInformation = {
+  __typename?: 'GitHubInformation'
+  about: Scalars['String']
+  author: GitHubUser
+  categories: Array<Maybe<Scalars['String']>>
+  contributorsCount: Scalars['Int']
+  eli5: Scalars['String']
+  forkCount: Scalars['Int']
+  issueCount: Scalars['Int']
+  linkToRepo: Scalars['String']
+  name: Scalars['String']
+  programmingLanguages: Array<Maybe<Scalars['String']>>
+  pullRequestCount: Scalars['Int']
+  starCount: Scalars['Int']
+  topThreeContributors: Array<Maybe<GitHubUser>>
+  websiteOfRepo: Scalars['String']
+}
+
+export type GitHubUser = {
+  __typename?: 'GitHubUser'
+  email?: Maybe<Scalars['String']>
+  employedAt?: Maybe<Scalars['String']>
+  gitHubHandle: Scalars['String']
+  name: Scalars['String']
+  personalWebsite?: Maybe<Scalars['String']>
+  repositoryCount: Scalars['Int']
+  starCount: Scalars['Int']
+  twitterHandle?: Maybe<Scalars['String']>
+}
+
+export type HackernewsTopPost = SocialMediaTopPost & {
+  __typename?: 'HackernewsTopPost'
+  commentCount: Scalars['Int']
+  link: Scalars['String']
+  platform: Scalars['String']
+  pointCount: Scalars['Int']
+  title: Scalars['String']
 }
 
 /** Boolean expression comparing fields on type "ID" */
@@ -112,78 +270,86 @@ export type IntFilter = {
   neq?: InputMaybe<Scalars['Int']>
 }
 
+export type LinkedInAccount = SocialMediaPresence & {
+  __typename?: 'LinkedInAccount'
+  accountName: Scalars['String']
+  followerCount: Scalars['Int']
+  link: Scalars['String']
+  platform: Scalars['String']
+}
+
 /** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation'
-  /** Deletes zero or more records from the `associated_person` collection */
-  deleteFromassociated_personCollection: Associated_PersonDeleteResponse
-  /** Deletes zero or more records from the `organization` collection */
-  deleteFromorganizationCollection: OrganizationDeleteResponse
-  /** Deletes zero or more records from the `project` collection */
-  deleteFromprojectCollection: ProjectDeleteResponse
-  /** Adds one or more `associated_person` records to the collection */
-  insertIntoassociated_personCollection?: Maybe<Associated_PersonInsertResponse>
-  /** Adds one or more `organization` records to the collection */
-  insertIntoorganizationCollection?: Maybe<OrganizationInsertResponse>
-  /** Adds one or more `project` records to the collection */
-  insertIntoprojectCollection?: Maybe<ProjectInsertResponse>
-  /** Updates zero or more records in the `associated_person` collection */
-  updateassociated_personCollection: Associated_PersonUpdateResponse
-  /** Updates zero or more records in the `organization` collection */
-  updateorganizationCollection: OrganizationUpdateResponse
-  /** Updates zero or more records in the `project` collection */
-  updateprojectCollection: ProjectUpdateResponse
+  /** Deletes zero or more records from the `AssociatedPerson` collection */
+  deleteFromAssociatedPersonCollection: AssociatedPersonDeleteResponse
+  /** Deletes zero or more records from the `Organization` collection */
+  deleteFromOrganizationCollection: OrganizationDeleteResponse
+  /** Deletes zero or more records from the `Project` collection */
+  deleteFromProjectCollection: ProjectDeleteResponse
+  /** Adds one or more `AssociatedPerson` records to the collection */
+  insertIntoAssociatedPersonCollection?: Maybe<AssociatedPersonInsertResponse>
+  /** Adds one or more `Organization` records to the collection */
+  insertIntoOrganizationCollection?: Maybe<OrganizationInsertResponse>
+  /** Adds one or more `Project` records to the collection */
+  insertIntoProjectCollection?: Maybe<ProjectInsertResponse>
+  /** Updates zero or more records in the `AssociatedPerson` collection */
+  updateAssociatedPersonCollection: AssociatedPersonUpdateResponse
+  /** Updates zero or more records in the `Organization` collection */
+  updateOrganizationCollection: OrganizationUpdateResponse
+  /** Updates zero or more records in the `Project` collection */
+  updateProjectCollection: ProjectUpdateResponse
 }
 
 /** The root type for creating and mutating data */
-export type MutationDeleteFromassociated_PersonCollectionArgs = {
+export type MutationDeleteFromAssociatedPersonCollectionArgs = {
   atMost?: Scalars['Int']
-  filter?: InputMaybe<Associated_PersonFilter>
+  filter?: InputMaybe<AssociatedPersonFilter>
 }
 
 /** The root type for creating and mutating data */
-export type MutationDeleteFromorganizationCollectionArgs = {
+export type MutationDeleteFromOrganizationCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<OrganizationFilter>
 }
 
 /** The root type for creating and mutating data */
-export type MutationDeleteFromprojectCollectionArgs = {
+export type MutationDeleteFromProjectCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<ProjectFilter>
 }
 
 /** The root type for creating and mutating data */
-export type MutationInsertIntoassociated_PersonCollectionArgs = {
-  objects: Array<Associated_PersonInsertInput>
+export type MutationInsertIntoAssociatedPersonCollectionArgs = {
+  objects: Array<AssociatedPersonInsertInput>
 }
 
 /** The root type for creating and mutating data */
-export type MutationInsertIntoorganizationCollectionArgs = {
+export type MutationInsertIntoOrganizationCollectionArgs = {
   objects: Array<OrganizationInsertInput>
 }
 
 /** The root type for creating and mutating data */
-export type MutationInsertIntoprojectCollectionArgs = {
+export type MutationInsertIntoProjectCollectionArgs = {
   objects: Array<ProjectInsertInput>
 }
 
 /** The root type for creating and mutating data */
-export type MutationUpdateassociated_PersonCollectionArgs = {
+export type MutationUpdateAssociatedPersonCollectionArgs = {
   atMost?: Scalars['Int']
-  filter?: InputMaybe<Associated_PersonFilter>
-  set: Associated_PersonUpdateInput
+  filter?: InputMaybe<AssociatedPersonFilter>
+  set: AssociatedPersonUpdateInput
 }
 
 /** The root type for creating and mutating data */
-export type MutationUpdateorganizationCollectionArgs = {
+export type MutationUpdateOrganizationCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<OrganizationFilter>
   set: OrganizationUpdateInput
 }
 
 /** The root type for creating and mutating data */
-export type MutationUpdateprojectCollectionArgs = {
+export type MutationUpdateProjectCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<ProjectFilter>
   set: ProjectUpdateInput
@@ -212,6 +378,121 @@ export enum OrderByDirection {
   DescNullsLast = 'DescNullsLast'
 }
 
+export type Organization = Node & {
+  __typename?: 'Organization'
+  avatarUrl?: Maybe<Scalars['String']>
+  createdAt?: Maybe<Scalars['Datetime']>
+  email?: Maybe<Scalars['String']>
+  githubUrl?: Maybe<Scalars['String']>
+  id: Scalars['UUID']
+  login?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']
+  projectCollection?: Maybe<ProjectConnection>
+  repositoryCount?: Maybe<Scalars['Int']>
+  twitterUsername?: Maybe<Scalars['String']>
+  websiteUrl?: Maybe<Scalars['String']>
+}
+
+export type OrganizationProjectCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<ProjectFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<ProjectOrderBy>>
+}
+
+export type OrganizationConnection = {
+  __typename?: 'OrganizationConnection'
+  edges: Array<OrganizationEdge>
+  pageInfo: PageInfo
+}
+
+export type OrganizationDeleteResponse = {
+  __typename?: 'OrganizationDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<Organization>
+}
+
+export type OrganizationEdge = {
+  __typename?: 'OrganizationEdge'
+  cursor: Scalars['String']
+  node: Organization
+}
+
+export type OrganizationFilter = {
+  avatarUrl?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DatetimeFilter>
+  email?: InputMaybe<StringFilter>
+  githubUrl?: InputMaybe<StringFilter>
+  id?: InputMaybe<UuidFilter>
+  login?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
+  nodeId?: InputMaybe<IdFilter>
+  repositoryCount?: InputMaybe<IntFilter>
+  twitterUsername?: InputMaybe<StringFilter>
+  websiteUrl?: InputMaybe<StringFilter>
+}
+
+export type OrganizationInsertInput = {
+  avatarUrl?: InputMaybe<Scalars['String']>
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  email?: InputMaybe<Scalars['String']>
+  githubUrl?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['UUID']>
+  login?: InputMaybe<Scalars['String']>
+  name?: InputMaybe<Scalars['String']>
+  repositoryCount?: InputMaybe<Scalars['Int']>
+  twitterUsername?: InputMaybe<Scalars['String']>
+  websiteUrl?: InputMaybe<Scalars['String']>
+}
+
+export type OrganizationInsertResponse = {
+  __typename?: 'OrganizationInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<Organization>
+}
+
+export type OrganizationOrderBy = {
+  avatarUrl?: InputMaybe<OrderByDirection>
+  createdAt?: InputMaybe<OrderByDirection>
+  email?: InputMaybe<OrderByDirection>
+  githubUrl?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  login?: InputMaybe<OrderByDirection>
+  name?: InputMaybe<OrderByDirection>
+  repositoryCount?: InputMaybe<OrderByDirection>
+  twitterUsername?: InputMaybe<OrderByDirection>
+  websiteUrl?: InputMaybe<OrderByDirection>
+}
+
+export type OrganizationUpdateInput = {
+  avatarUrl?: InputMaybe<Scalars['String']>
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  email?: InputMaybe<Scalars['String']>
+  githubUrl?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['UUID']>
+  login?: InputMaybe<Scalars['String']>
+  name?: InputMaybe<Scalars['String']>
+  repositoryCount?: InputMaybe<Scalars['Int']>
+  twitterUsername?: InputMaybe<Scalars['String']>
+  websiteUrl?: InputMaybe<Scalars['String']>
+}
+
+export type OrganizationUpdateResponse = {
+  __typename?: 'OrganizationUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<Organization>
+}
+
 export type PageInfo = {
   __typename?: 'PageInfo'
   endCursor?: Maybe<Scalars['String']>
@@ -220,36 +501,185 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']>
 }
 
-/** The root type for querying data */
-export type Query = {
-  __typename?: 'Query'
-  /** A pagable collection of type `associated_person` */
-  associated_personCollection?: Maybe<Associated_PersonConnection>
-  /** Retrieve a record by its `ID` */
-  node?: Maybe<Node>
-  /** A pagable collection of type `organization` */
-  organizationCollection?: Maybe<OrganizationConnection>
-  /** A pagable collection of type `project` */
-  projectCollection?: Maybe<ProjectConnection>
-  test: Array<Test>
+export type ProductHuntTopPost = SocialMediaTopPost & {
+  __typename?: 'ProductHuntTopPost'
+  commentCount: Scalars['Int']
+  date: Scalars['String']
+  descriptionPreview: Scalars['String']
+  likeCount: Scalars['Int']
+  link: Scalars['String']
+  platform: Scalars['String']
+  title: Scalars['String']
 }
 
-/** The root type for querying data */
-export type QueryAssociated_PersonCollectionArgs = {
+export type Project = Node & {
+  __typename?: 'Project'
+  about?: Maybe<Scalars['String']>
+  associatedPersonCollection?: Maybe<AssociatedPersonConnection>
+  contributorCount?: Maybe<Scalars['Int']>
+  createdAt?: Maybe<Scalars['Datetime']>
+  eli5?: Maybe<Scalars['String']>
+  forkCount?: Maybe<Scalars['Int']>
+  gitHubInformation: GitHubInformation
+  githubUrl?: Maybe<Scalars['String']>
+  id: Scalars['ID']
+  isBookmarked?: Maybe<Scalars['Boolean']>
+  issueCount?: Maybe<Scalars['Int']>
+  name: Scalars['String']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']
+  organization?: Maybe<Organization>
+  ownedBy: Scalars['UUID']
+  pullRequestCount?: Maybe<Scalars['Int']>
+  socialMediaAccounts: Array<Maybe<SocialMediaPresence>>
+  socialMediaTopPosts: Array<Maybe<SocialMediaTopPost>>
+  starCount?: Maybe<Scalars['Int']>
+  starHistory?: Maybe<Array<Maybe<Scalars['Int']>>>
+  websiteUrl?: Maybe<Scalars['String']>
+}
+
+export type ProjectAssociatedPersonCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
-  filter?: InputMaybe<Associated_PersonFilter>
+  filter?: InputMaybe<AssociatedPersonFilter>
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
-  orderBy?: InputMaybe<Array<Associated_PersonOrderBy>>
+  orderBy?: InputMaybe<Array<AssociatedPersonOrderBy>>
 }
 
-/** The root type for querying data */
+export type ProjectConnection = {
+  __typename?: 'ProjectConnection'
+  edges: Array<ProjectEdge>
+  pageInfo: PageInfo
+}
+
+export type ProjectDeleteResponse = {
+  __typename?: 'ProjectDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<Project>
+}
+
+export type ProjectEdge = {
+  __typename?: 'ProjectEdge'
+  cursor: Scalars['String']
+  node: Project
+}
+
+export type ProjectFilter = {
+  about?: InputMaybe<StringFilter>
+  contributorCount?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DatetimeFilter>
+  eli5?: InputMaybe<StringFilter>
+  forkCount?: InputMaybe<IntFilter>
+  githubUrl?: InputMaybe<StringFilter>
+  id?: InputMaybe<UuidFilter>
+  isBookmarked?: InputMaybe<BooleanFilter>
+  issueCount?: InputMaybe<IntFilter>
+  name?: InputMaybe<StringFilter>
+  nodeId?: InputMaybe<IdFilter>
+  ownedBy?: InputMaybe<UuidFilter>
+  pullRequestCount?: InputMaybe<IntFilter>
+  starCount?: InputMaybe<IntFilter>
+  websiteUrl?: InputMaybe<StringFilter>
+}
+
+export type ProjectInsertInput = {
+  about?: InputMaybe<Scalars['String']>
+  contributorCount?: InputMaybe<Scalars['Int']>
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  eli5?: InputMaybe<Scalars['String']>
+  forkCount?: InputMaybe<Scalars['Int']>
+  githubUrl?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['UUID']>
+  isBookmarked?: InputMaybe<Scalars['Boolean']>
+  issueCount?: InputMaybe<Scalars['Int']>
+  name?: InputMaybe<Scalars['String']>
+  ownedBy?: InputMaybe<Scalars['UUID']>
+  pullRequestCount?: InputMaybe<Scalars['Int']>
+  starCount?: InputMaybe<Scalars['Int']>
+  starHistory?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+  websiteUrl?: InputMaybe<Scalars['String']>
+}
+
+export type ProjectInsertResponse = {
+  __typename?: 'ProjectInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<Project>
+}
+
+export type ProjectOrderBy = {
+  about?: InputMaybe<OrderByDirection>
+  contributorCount?: InputMaybe<OrderByDirection>
+  createdAt?: InputMaybe<OrderByDirection>
+  eli5?: InputMaybe<OrderByDirection>
+  forkCount?: InputMaybe<OrderByDirection>
+  githubUrl?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  isBookmarked?: InputMaybe<OrderByDirection>
+  issueCount?: InputMaybe<OrderByDirection>
+  name?: InputMaybe<OrderByDirection>
+  ownedBy?: InputMaybe<OrderByDirection>
+  pullRequestCount?: InputMaybe<OrderByDirection>
+  starCount?: InputMaybe<OrderByDirection>
+  websiteUrl?: InputMaybe<OrderByDirection>
+}
+
+export type ProjectUpdateInput = {
+  about?: InputMaybe<Scalars['String']>
+  contributorCount?: InputMaybe<Scalars['Int']>
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  eli5?: InputMaybe<Scalars['String']>
+  forkCount?: InputMaybe<Scalars['Int']>
+  githubUrl?: InputMaybe<Scalars['String']>
+  id?: InputMaybe<Scalars['UUID']>
+  isBookmarked?: InputMaybe<Scalars['Boolean']>
+  issueCount?: InputMaybe<Scalars['Int']>
+  name?: InputMaybe<Scalars['String']>
+  ownedBy?: InputMaybe<Scalars['UUID']>
+  pullRequestCount?: InputMaybe<Scalars['Int']>
+  starCount?: InputMaybe<Scalars['Int']>
+  starHistory?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+  websiteUrl?: InputMaybe<Scalars['String']>
+}
+
+export type ProjectUpdateResponse = {
+  __typename?: 'ProjectUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<Project>
+}
+
+export type Query = {
+  __typename?: 'Query'
+  /** A pagable collection of type `AssociatedPerson` */
+  associatedPersonCollection?: Maybe<AssociatedPersonConnection>
+  /** Retrieve a record by its `ID` */
+  node?: Maybe<Node>
+  /** A pagable collection of type `Organization` */
+  organizationCollection?: Maybe<OrganizationConnection>
+  /** A pagable collection of type `Project` */
+  projectCollection?: Maybe<ProjectConnection>
+  projects: Array<Project>
+}
+
+export type QueryAssociatedPersonCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<AssociatedPersonFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<AssociatedPersonOrderBy>>
+}
+
 export type QueryNodeArgs = {
   nodeId: Scalars['ID']
 }
 
-/** The root type for querying data */
 export type QueryOrganizationCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -259,7 +689,6 @@ export type QueryOrganizationCollectionArgs = {
   orderBy?: InputMaybe<Array<OrganizationOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryProjectCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -267,6 +696,26 @@ export type QueryProjectCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   orderBy?: InputMaybe<Array<ProjectOrderBy>>
+}
+
+export type SlackChannel = SocialMediaPresence & {
+  __typename?: 'SlackChannel'
+  accountName: Scalars['String']
+  link: Scalars['String']
+  memberCount: Scalars['Int']
+  platform: Scalars['String']
+}
+
+export type SocialMediaPresence = {
+  accountName: Scalars['String']
+  link: Scalars['String']
+  platform: Scalars['String']
+}
+
+export type SocialMediaTopPost = {
+  link: Scalars['String']
+  platform: Scalars['String']
+  title: Scalars['String']
 }
 
 /** Boolean expression comparing fields on type "String" */
@@ -284,11 +733,6 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>
 }
 
-export type Test = {
-  __typename?: 'Test'
-  id: Scalars['ID']
-}
-
 /** Boolean expression comparing fields on type "Time" */
 export type TimeFilter = {
   eq?: InputMaybe<Scalars['Time']>
@@ -301,377 +745,32 @@ export type TimeFilter = {
   neq?: InputMaybe<Scalars['Time']>
 }
 
+export type TwitterAccount = SocialMediaPresence & {
+  __typename?: 'TwitterAccount'
+  accountName: Scalars['String']
+  followerCount: Scalars['Int']
+  link: Scalars['String']
+  platform: Scalars['String']
+}
+
+export type TwitterTopPost = SocialMediaTopPost & {
+  __typename?: 'TwitterTopPost'
+  commentCount: Scalars['Int']
+  date: Scalars['String']
+  likeCount: Scalars['Int']
+  link: Scalars['String']
+  platform: Scalars['String']
+  retweetCount: Scalars['Int']
+  title: Scalars['String']
+  viewsCount: Scalars['Int']
+}
+
 /** Boolean expression comparing fields on type "UUID" */
 export type UuidFilter = {
   eq?: InputMaybe<Scalars['UUID']>
   in?: InputMaybe<Array<Scalars['UUID']>>
   is?: InputMaybe<FilterIs>
   neq?: InputMaybe<Scalars['UUID']>
-}
-
-export type Associated_Person = Node & {
-  __typename?: 'associated_person'
-  associated_with?: Maybe<Scalars['UUID']>
-  avatar_url?: Maybe<Scalars['String']>
-  created_at?: Maybe<Scalars['Datetime']>
-  email?: Maybe<Scalars['String']>
-  github_url?: Maybe<Scalars['String']>
-  id: Scalars['UUID']
-  login?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
-  /** Globally Unique Record Identifier */
-  nodeId: Scalars['ID']
-  project?: Maybe<Project>
-  repository_count?: Maybe<Scalars['Int']>
-  twitter_username?: Maybe<Scalars['String']>
-  website_url?: Maybe<Scalars['String']>
-}
-
-export type Associated_PersonConnection = {
-  __typename?: 'associated_personConnection'
-  edges: Array<Associated_PersonEdge>
-  pageInfo: PageInfo
-}
-
-export type Associated_PersonDeleteResponse = {
-  __typename?: 'associated_personDeleteResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Associated_Person>
-}
-
-export type Associated_PersonEdge = {
-  __typename?: 'associated_personEdge'
-  cursor: Scalars['String']
-  node: Associated_Person
-}
-
-export type Associated_PersonFilter = {
-  associated_with?: InputMaybe<UuidFilter>
-  avatar_url?: InputMaybe<StringFilter>
-  created_at?: InputMaybe<DatetimeFilter>
-  email?: InputMaybe<StringFilter>
-  github_url?: InputMaybe<StringFilter>
-  id?: InputMaybe<UuidFilter>
-  login?: InputMaybe<StringFilter>
-  name?: InputMaybe<StringFilter>
-  nodeId?: InputMaybe<IdFilter>
-  repository_count?: InputMaybe<IntFilter>
-  twitter_username?: InputMaybe<StringFilter>
-  website_url?: InputMaybe<StringFilter>
-}
-
-export type Associated_PersonInsertInput = {
-  associated_with?: InputMaybe<Scalars['UUID']>
-  avatar_url?: InputMaybe<Scalars['String']>
-  created_at?: InputMaybe<Scalars['Datetime']>
-  email?: InputMaybe<Scalars['String']>
-  github_url?: InputMaybe<Scalars['String']>
-  id?: InputMaybe<Scalars['UUID']>
-  login?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
-  repository_count?: InputMaybe<Scalars['Int']>
-  twitter_username?: InputMaybe<Scalars['String']>
-  website_url?: InputMaybe<Scalars['String']>
-}
-
-export type Associated_PersonInsertResponse = {
-  __typename?: 'associated_personInsertResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Associated_Person>
-}
-
-export type Associated_PersonOrderBy = {
-  associated_with?: InputMaybe<OrderByDirection>
-  avatar_url?: InputMaybe<OrderByDirection>
-  created_at?: InputMaybe<OrderByDirection>
-  email?: InputMaybe<OrderByDirection>
-  github_url?: InputMaybe<OrderByDirection>
-  id?: InputMaybe<OrderByDirection>
-  login?: InputMaybe<OrderByDirection>
-  name?: InputMaybe<OrderByDirection>
-  repository_count?: InputMaybe<OrderByDirection>
-  twitter_username?: InputMaybe<OrderByDirection>
-  website_url?: InputMaybe<OrderByDirection>
-}
-
-export type Associated_PersonUpdateInput = {
-  associated_with?: InputMaybe<Scalars['UUID']>
-  avatar_url?: InputMaybe<Scalars['String']>
-  created_at?: InputMaybe<Scalars['Datetime']>
-  email?: InputMaybe<Scalars['String']>
-  github_url?: InputMaybe<Scalars['String']>
-  id?: InputMaybe<Scalars['UUID']>
-  login?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
-  repository_count?: InputMaybe<Scalars['Int']>
-  twitter_username?: InputMaybe<Scalars['String']>
-  website_url?: InputMaybe<Scalars['String']>
-}
-
-export type Associated_PersonUpdateResponse = {
-  __typename?: 'associated_personUpdateResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Associated_Person>
-}
-
-export type Organization = Node & {
-  __typename?: 'organization'
-  avatar_url?: Maybe<Scalars['String']>
-  created_at?: Maybe<Scalars['Datetime']>
-  email?: Maybe<Scalars['String']>
-  github_url?: Maybe<Scalars['String']>
-  id: Scalars['UUID']
-  login?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
-  /** Globally Unique Record Identifier */
-  nodeId: Scalars['ID']
-  projectCollection?: Maybe<ProjectConnection>
-  repository_count?: Maybe<Scalars['Int']>
-  twitter_username?: Maybe<Scalars['String']>
-  website_url?: Maybe<Scalars['String']>
-}
-
-export type OrganizationProjectCollectionArgs = {
-  after?: InputMaybe<Scalars['Cursor']>
-  before?: InputMaybe<Scalars['Cursor']>
-  filter?: InputMaybe<ProjectFilter>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  orderBy?: InputMaybe<Array<ProjectOrderBy>>
-}
-
-export type OrganizationConnection = {
-  __typename?: 'organizationConnection'
-  edges: Array<OrganizationEdge>
-  pageInfo: PageInfo
-}
-
-export type OrganizationDeleteResponse = {
-  __typename?: 'organizationDeleteResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Organization>
-}
-
-export type OrganizationEdge = {
-  __typename?: 'organizationEdge'
-  cursor: Scalars['String']
-  node: Organization
-}
-
-export type OrganizationFilter = {
-  avatar_url?: InputMaybe<StringFilter>
-  created_at?: InputMaybe<DatetimeFilter>
-  email?: InputMaybe<StringFilter>
-  github_url?: InputMaybe<StringFilter>
-  id?: InputMaybe<UuidFilter>
-  login?: InputMaybe<StringFilter>
-  name?: InputMaybe<StringFilter>
-  nodeId?: InputMaybe<IdFilter>
-  repository_count?: InputMaybe<IntFilter>
-  twitter_username?: InputMaybe<StringFilter>
-  website_url?: InputMaybe<StringFilter>
-}
-
-export type OrganizationInsertInput = {
-  avatar_url?: InputMaybe<Scalars['String']>
-  created_at?: InputMaybe<Scalars['Datetime']>
-  email?: InputMaybe<Scalars['String']>
-  github_url?: InputMaybe<Scalars['String']>
-  id?: InputMaybe<Scalars['UUID']>
-  login?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
-  repository_count?: InputMaybe<Scalars['Int']>
-  twitter_username?: InputMaybe<Scalars['String']>
-  website_url?: InputMaybe<Scalars['String']>
-}
-
-export type OrganizationInsertResponse = {
-  __typename?: 'organizationInsertResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Organization>
-}
-
-export type OrganizationOrderBy = {
-  avatar_url?: InputMaybe<OrderByDirection>
-  created_at?: InputMaybe<OrderByDirection>
-  email?: InputMaybe<OrderByDirection>
-  github_url?: InputMaybe<OrderByDirection>
-  id?: InputMaybe<OrderByDirection>
-  login?: InputMaybe<OrderByDirection>
-  name?: InputMaybe<OrderByDirection>
-  repository_count?: InputMaybe<OrderByDirection>
-  twitter_username?: InputMaybe<OrderByDirection>
-  website_url?: InputMaybe<OrderByDirection>
-}
-
-export type OrganizationUpdateInput = {
-  avatar_url?: InputMaybe<Scalars['String']>
-  created_at?: InputMaybe<Scalars['Datetime']>
-  email?: InputMaybe<Scalars['String']>
-  github_url?: InputMaybe<Scalars['String']>
-  id?: InputMaybe<Scalars['UUID']>
-  login?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
-  repository_count?: InputMaybe<Scalars['Int']>
-  twitter_username?: InputMaybe<Scalars['String']>
-  website_url?: InputMaybe<Scalars['String']>
-}
-
-export type OrganizationUpdateResponse = {
-  __typename?: 'organizationUpdateResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Organization>
-}
-
-export type Project = Node & {
-  __typename?: 'project'
-  about?: Maybe<Scalars['String']>
-  associated_personCollection?: Maybe<Associated_PersonConnection>
-  contributor_count?: Maybe<Scalars['Int']>
-  created_at?: Maybe<Scalars['Datetime']>
-  eli5?: Maybe<Scalars['String']>
-  fork_count?: Maybe<Scalars['Int']>
-  github_url?: Maybe<Scalars['String']>
-  id: Scalars['UUID']
-  is_bookmarked?: Maybe<Scalars['Boolean']>
-  issue_count?: Maybe<Scalars['Int']>
-  name: Scalars['String']
-  /** Globally Unique Record Identifier */
-  nodeId: Scalars['ID']
-  organization?: Maybe<Organization>
-  owned_by: Scalars['UUID']
-  pull_request_count?: Maybe<Scalars['Int']>
-  star_count?: Maybe<Scalars['Int']>
-  star_history?: Maybe<Array<Maybe<Scalars['Int']>>>
-  website_url?: Maybe<Scalars['String']>
-}
-
-export type ProjectAssociated_PersonCollectionArgs = {
-  after?: InputMaybe<Scalars['Cursor']>
-  before?: InputMaybe<Scalars['Cursor']>
-  filter?: InputMaybe<Associated_PersonFilter>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  orderBy?: InputMaybe<Array<Associated_PersonOrderBy>>
-}
-
-export type ProjectConnection = {
-  __typename?: 'projectConnection'
-  edges: Array<ProjectEdge>
-  pageInfo: PageInfo
-}
-
-export type ProjectDeleteResponse = {
-  __typename?: 'projectDeleteResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Project>
-}
-
-export type ProjectEdge = {
-  __typename?: 'projectEdge'
-  cursor: Scalars['String']
-  node: Project
-}
-
-export type ProjectFilter = {
-  about?: InputMaybe<StringFilter>
-  contributor_count?: InputMaybe<IntFilter>
-  created_at?: InputMaybe<DatetimeFilter>
-  eli5?: InputMaybe<StringFilter>
-  fork_count?: InputMaybe<IntFilter>
-  github_url?: InputMaybe<StringFilter>
-  id?: InputMaybe<UuidFilter>
-  is_bookmarked?: InputMaybe<BooleanFilter>
-  issue_count?: InputMaybe<IntFilter>
-  name?: InputMaybe<StringFilter>
-  nodeId?: InputMaybe<IdFilter>
-  owned_by?: InputMaybe<UuidFilter>
-  pull_request_count?: InputMaybe<IntFilter>
-  star_count?: InputMaybe<IntFilter>
-  website_url?: InputMaybe<StringFilter>
-}
-
-export type ProjectInsertInput = {
-  about?: InputMaybe<Scalars['String']>
-  contributor_count?: InputMaybe<Scalars['Int']>
-  created_at?: InputMaybe<Scalars['Datetime']>
-  eli5?: InputMaybe<Scalars['String']>
-  fork_count?: InputMaybe<Scalars['Int']>
-  github_url?: InputMaybe<Scalars['String']>
-  id?: InputMaybe<Scalars['UUID']>
-  is_bookmarked?: InputMaybe<Scalars['Boolean']>
-  issue_count?: InputMaybe<Scalars['Int']>
-  name?: InputMaybe<Scalars['String']>
-  owned_by?: InputMaybe<Scalars['UUID']>
-  pull_request_count?: InputMaybe<Scalars['Int']>
-  star_count?: InputMaybe<Scalars['Int']>
-  star_history?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
-  website_url?: InputMaybe<Scalars['String']>
-}
-
-export type ProjectInsertResponse = {
-  __typename?: 'projectInsertResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Project>
-}
-
-export type ProjectOrderBy = {
-  about?: InputMaybe<OrderByDirection>
-  contributor_count?: InputMaybe<OrderByDirection>
-  created_at?: InputMaybe<OrderByDirection>
-  eli5?: InputMaybe<OrderByDirection>
-  fork_count?: InputMaybe<OrderByDirection>
-  github_url?: InputMaybe<OrderByDirection>
-  id?: InputMaybe<OrderByDirection>
-  is_bookmarked?: InputMaybe<OrderByDirection>
-  issue_count?: InputMaybe<OrderByDirection>
-  name?: InputMaybe<OrderByDirection>
-  owned_by?: InputMaybe<OrderByDirection>
-  pull_request_count?: InputMaybe<OrderByDirection>
-  star_count?: InputMaybe<OrderByDirection>
-  website_url?: InputMaybe<OrderByDirection>
-}
-
-export type ProjectUpdateInput = {
-  about?: InputMaybe<Scalars['String']>
-  contributor_count?: InputMaybe<Scalars['Int']>
-  created_at?: InputMaybe<Scalars['Datetime']>
-  eli5?: InputMaybe<Scalars['String']>
-  fork_count?: InputMaybe<Scalars['Int']>
-  github_url?: InputMaybe<Scalars['String']>
-  id?: InputMaybe<Scalars['UUID']>
-  is_bookmarked?: InputMaybe<Scalars['Boolean']>
-  issue_count?: InputMaybe<Scalars['Int']>
-  name?: InputMaybe<Scalars['String']>
-  owned_by?: InputMaybe<Scalars['UUID']>
-  pull_request_count?: InputMaybe<Scalars['Int']>
-  star_count?: InputMaybe<Scalars['Int']>
-  star_history?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
-  website_url?: InputMaybe<Scalars['String']>
-}
-
-export type ProjectUpdateResponse = {
-  __typename?: 'projectUpdateResponse'
-  /** Count of the records impacted by the mutation */
-  affectedCount: Scalars['Int']
-  /** Array of records impacted by the mutation */
-  records: Array<Project>
 }
 
 export type ProjectDetailsQueryVariables = Exact<{
@@ -681,31 +780,29 @@ export type ProjectDetailsQueryVariables = Exact<{
 export type ProjectDetailsQuery = {
   __typename?: 'Query'
   projectCollection?: {
-    __typename?: 'projectConnection'
+    __typename?: 'ProjectConnection'
     edges: Array<{
-      __typename?: 'projectEdge'
+      __typename?: 'ProjectEdge'
       node: {
-        __typename?: 'project'
-        id: any
+        __typename?: 'Project'
+        id: string
         nodeId: string
         eli5?: string | null
         about?: string | null
         name: string
-        star_count?: number | null
-        issue_count?: number | null
-        fork_count?: number | null
-        pull_request_count?: number | null
-        contributor_count?: number | null
-        github_url?: string | null
-        website_url?: string | null
-        star_history?: Array<number | null> | null
-        owned_by: any
+        starCount?: number | null
+        issueCount?: number | null
+        forkCount?: number | null
+        pullRequestCount?: number | null
+        contributorCount?: number | null
+        githubUrl?: string | null
+        websiteUrl?: string | null
         organization?: {
-          __typename?: 'organization'
+          __typename?: 'Organization'
           id: any
           nodeId: string
           login?: string | null
-          avatar_url?: string | null
+          avatarUrl?: string | null
         } | null
       }
     }>
@@ -717,27 +814,26 @@ export type TrendingProjectsQueryVariables = Exact<{ [key: string]: never }>
 export type TrendingProjectsQuery = {
   __typename?: 'Query'
   projectCollection?: {
-    __typename?: 'projectConnection'
+    __typename?: 'ProjectConnection'
     edges: Array<{
-      __typename?: 'projectEdge'
+      __typename?: 'ProjectEdge'
       node: {
-        __typename?: 'project'
-        id: any
+        __typename?: 'Project'
+        id: string
         nodeId: string
         name: string
-        star_count?: number | null
-        issue_count?: number | null
-        fork_count?: number | null
-        pull_request_count?: number | null
-        contributor_count?: number | null
-        website_url?: string | null
-        owned_by: any
+        starCount?: number | null
+        issueCount?: number | null
+        forkCount?: number | null
+        pullRequestCount?: number | null
+        contributorCount?: number | null
+        websiteUrl?: string | null
         organization?: {
-          __typename?: 'organization'
+          __typename?: 'Organization'
           id: any
           nodeId: string
           login?: string | null
-          avatar_url?: string | null
+          avatarUrl?: string | null
         } | null
       }
     }>
@@ -754,20 +850,18 @@ export const ProjectDetailsDocument = gql`
           eli5
           about
           name
-          star_count
-          issue_count
-          fork_count
-          pull_request_count
-          contributor_count
-          github_url
-          website_url
-          star_history
-          owned_by
+          starCount
+          issueCount
+          forkCount
+          pullRequestCount
+          contributorCount
+          githubUrl
+          websiteUrl
           organization {
             id
             nodeId
             login
-            avatar_url
+            avatarUrl
           }
         }
       }
@@ -791,18 +885,17 @@ export const TrendingProjectsDocument = gql`
           id
           nodeId
           name
-          star_count
-          issue_count
-          fork_count
-          pull_request_count
-          contributor_count
-          website_url
-          owned_by
+          starCount
+          issueCount
+          forkCount
+          pullRequestCount
+          contributorCount
+          websiteUrl
           organization {
             id
             nodeId
             login
-            avatar_url
+            avatarUrl
           }
         }
       }

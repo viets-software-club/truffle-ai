@@ -27,7 +27,7 @@ const Table = ({ table }: TableProps) => (
         <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
           {row.getVisibleCells().map((cell) => (
             <td key={cell.id} className="p-2 text-left">
-              <Link href={`/details/${row?.original?.id as string}`}>
+              <Link href={`/details/${row.original.id}`}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </Link>
             </td>

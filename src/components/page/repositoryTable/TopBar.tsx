@@ -55,9 +55,9 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
             <div className="py-1">
               {timeFrameOptions.map((option) => (
                 <Menu.Item key={option.value}>
+                  {/* @TODO Change time frame */}
                   <button
                     type="button"
-                    onClick={() => console.log('Switch to', option.label)}
                     className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
                   >
                     <p className="text-14 text-gray-100">{option.label}</p>

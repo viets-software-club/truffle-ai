@@ -26,7 +26,6 @@ export type Scalars = {
 
 export type AssociatedPerson = Node & {
   __typename?: 'AssociatedPerson'
-  associatedWith?: Maybe<Scalars['UUID']>
   avatarUrl?: Maybe<Scalars['String']>
   createdAt?: Maybe<Scalars['Datetime']>
   email?: Maybe<Scalars['String']>
@@ -36,10 +35,19 @@ export type AssociatedPerson = Node & {
   name?: Maybe<Scalars['String']>
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']
-  project?: Maybe<Project>
+  projectCollection?: Maybe<ProjectConnection>
   repositoryCount?: Maybe<Scalars['Int']>
   twitterUsername?: Maybe<Scalars['String']>
   websiteUrl?: Maybe<Scalars['String']>
+}
+
+export type AssociatedPersonProjectCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<ProjectFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<ProjectOrderBy>>
 }
 
 export type AssociatedPersonConnection = {
@@ -63,7 +71,6 @@ export type AssociatedPersonEdge = {
 }
 
 export type AssociatedPersonFilter = {
-  associatedWith?: InputMaybe<UuidFilter>
   avatarUrl?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   email?: InputMaybe<StringFilter>
@@ -78,7 +85,6 @@ export type AssociatedPersonFilter = {
 }
 
 export type AssociatedPersonInsertInput = {
-  associatedWith?: InputMaybe<Scalars['UUID']>
   avatarUrl?: InputMaybe<Scalars['String']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   email?: InputMaybe<Scalars['String']>
@@ -100,7 +106,6 @@ export type AssociatedPersonInsertResponse = {
 }
 
 export type AssociatedPersonOrderBy = {
-  associatedWith?: InputMaybe<OrderByDirection>
   avatarUrl?: InputMaybe<OrderByDirection>
   createdAt?: InputMaybe<OrderByDirection>
   email?: InputMaybe<OrderByDirection>
@@ -114,7 +119,6 @@ export type AssociatedPersonOrderBy = {
 }
 
 export type AssociatedPersonUpdateInput = {
-  associatedWith?: InputMaybe<Scalars['UUID']>
   avatarUrl?: InputMaybe<Scalars['String']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   email?: InputMaybe<Scalars['String']>
@@ -189,14 +193,6 @@ export type DatetimeFilter = {
   neq?: InputMaybe<Scalars['Datetime']>
 }
 
-export type DiscordChannel = SocialMediaPresence & {
-  __typename?: 'DiscordChannel'
-  accountName: Scalars['String']
-  link: Scalars['String']
-  memberCount: Scalars['Int']
-  platform: Scalars['String']
-}
-
 export enum FilterIs {
   NotNull = 'NOT_NULL',
   Null = 'NULL'
@@ -214,45 +210,6 @@ export type FloatFilter = {
   neq?: InputMaybe<Scalars['Float']>
 }
 
-export type GitHubInformation = {
-  __typename?: 'GitHubInformation'
-  about: Scalars['String']
-  author: GitHubUser
-  categories: Array<Maybe<Scalars['String']>>
-  contributorsCount: Scalars['Int']
-  eli5: Scalars['String']
-  forkCount: Scalars['Int']
-  issueCount: Scalars['Int']
-  linkToRepo: Scalars['String']
-  name: Scalars['String']
-  programmingLanguages: Array<Maybe<Scalars['String']>>
-  pullRequestCount: Scalars['Int']
-  starCount: Scalars['Int']
-  topThreeContributors: Array<Maybe<GitHubUser>>
-  websiteOfRepo: Scalars['String']
-}
-
-export type GitHubUser = {
-  __typename?: 'GitHubUser'
-  email?: Maybe<Scalars['String']>
-  employedAt?: Maybe<Scalars['String']>
-  gitHubHandle: Scalars['String']
-  name: Scalars['String']
-  personalWebsite?: Maybe<Scalars['String']>
-  repositoryCount: Scalars['Int']
-  starCount: Scalars['Int']
-  twitterHandle?: Maybe<Scalars['String']>
-}
-
-export type HackernewsTopPost = SocialMediaTopPost & {
-  __typename?: 'HackernewsTopPost'
-  commentCount: Scalars['Int']
-  link: Scalars['String']
-  platform: Scalars['String']
-  pointCount: Scalars['Int']
-  title: Scalars['String']
-}
-
 /** Boolean expression comparing fields on type "ID" */
 export type IdFilter = {
   eq?: InputMaybe<Scalars['ID']>
@@ -268,14 +225,6 @@ export type IntFilter = {
   lt?: InputMaybe<Scalars['Int']>
   lte?: InputMaybe<Scalars['Int']>
   neq?: InputMaybe<Scalars['Int']>
-}
-
-export type LinkedInAccount = SocialMediaPresence & {
-  __typename?: 'LinkedInAccount'
-  accountName: Scalars['String']
-  followerCount: Scalars['Int']
-  link: Scalars['String']
-  platform: Scalars['String']
 }
 
 /** The root type for creating and mutating data */
@@ -501,50 +450,32 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']>
 }
 
-export type ProductHuntTopPost = SocialMediaTopPost & {
-  __typename?: 'ProductHuntTopPost'
-  commentCount: Scalars['Int']
-  date: Scalars['String']
-  descriptionPreview: Scalars['String']
-  likeCount: Scalars['Int']
-  link: Scalars['String']
-  platform: Scalars['String']
-  title: Scalars['String']
-}
-
 export type Project = Node & {
   __typename?: 'Project'
   about?: Maybe<Scalars['String']>
-  associatedPersonCollection?: Maybe<AssociatedPersonConnection>
+  associatedPerson?: Maybe<AssociatedPerson>
   contributorCount?: Maybe<Scalars['Int']>
   createdAt?: Maybe<Scalars['Datetime']>
   eli5?: Maybe<Scalars['String']>
   forkCount?: Maybe<Scalars['Int']>
-  gitHubInformation: GitHubInformation
   githubUrl?: Maybe<Scalars['String']>
-  id: Scalars['ID']
+  id: Scalars['UUID']
   isBookmarked?: Maybe<Scalars['Boolean']>
+  isTrendingDaily?: Maybe<Scalars['Boolean']>
+  isTrendingMonthly?: Maybe<Scalars['Boolean']>
+  isTrendingWeekly?: Maybe<Scalars['Boolean']>
   issueCount?: Maybe<Scalars['Int']>
-  name: Scalars['String']
+  languages?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  name?: Maybe<Scalars['String']>
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']
   organization?: Maybe<Organization>
-  ownedBy: Scalars['UUID']
+  owningOrganization?: Maybe<Scalars['UUID']>
+  owningPerson?: Maybe<Scalars['UUID']>
   pullRequestCount?: Maybe<Scalars['Int']>
-  socialMediaAccounts: Array<Maybe<SocialMediaPresence>>
-  socialMediaTopPosts: Array<Maybe<SocialMediaTopPost>>
   starCount?: Maybe<Scalars['Int']>
-  starHistory?: Maybe<Array<Maybe<Scalars['Int']>>>
+  starHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
   websiteUrl?: Maybe<Scalars['String']>
-}
-
-export type ProjectAssociatedPersonCollectionArgs = {
-  after?: InputMaybe<Scalars['Cursor']>
-  before?: InputMaybe<Scalars['Cursor']>
-  filter?: InputMaybe<AssociatedPersonFilter>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  orderBy?: InputMaybe<Array<AssociatedPersonOrderBy>>
 }
 
 export type ProjectConnection = {
@@ -576,10 +507,14 @@ export type ProjectFilter = {
   githubUrl?: InputMaybe<StringFilter>
   id?: InputMaybe<UuidFilter>
   isBookmarked?: InputMaybe<BooleanFilter>
+  isTrendingDaily?: InputMaybe<BooleanFilter>
+  isTrendingMonthly?: InputMaybe<BooleanFilter>
+  isTrendingWeekly?: InputMaybe<BooleanFilter>
   issueCount?: InputMaybe<IntFilter>
   name?: InputMaybe<StringFilter>
   nodeId?: InputMaybe<IdFilter>
-  ownedBy?: InputMaybe<UuidFilter>
+  owningOrganization?: InputMaybe<UuidFilter>
+  owningPerson?: InputMaybe<UuidFilter>
   pullRequestCount?: InputMaybe<IntFilter>
   starCount?: InputMaybe<IntFilter>
   websiteUrl?: InputMaybe<StringFilter>
@@ -594,12 +529,17 @@ export type ProjectInsertInput = {
   githubUrl?: InputMaybe<Scalars['String']>
   id?: InputMaybe<Scalars['UUID']>
   isBookmarked?: InputMaybe<Scalars['Boolean']>
+  isTrendingDaily?: InputMaybe<Scalars['Boolean']>
+  isTrendingMonthly?: InputMaybe<Scalars['Boolean']>
+  isTrendingWeekly?: InputMaybe<Scalars['Boolean']>
   issueCount?: InputMaybe<Scalars['Int']>
+  languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   name?: InputMaybe<Scalars['String']>
-  ownedBy?: InputMaybe<Scalars['UUID']>
+  owningOrganization?: InputMaybe<Scalars['UUID']>
+  owningPerson?: InputMaybe<Scalars['UUID']>
   pullRequestCount?: InputMaybe<Scalars['Int']>
   starCount?: InputMaybe<Scalars['Int']>
-  starHistory?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+  starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
 }
 
@@ -620,9 +560,13 @@ export type ProjectOrderBy = {
   githubUrl?: InputMaybe<OrderByDirection>
   id?: InputMaybe<OrderByDirection>
   isBookmarked?: InputMaybe<OrderByDirection>
+  isTrendingDaily?: InputMaybe<OrderByDirection>
+  isTrendingMonthly?: InputMaybe<OrderByDirection>
+  isTrendingWeekly?: InputMaybe<OrderByDirection>
   issueCount?: InputMaybe<OrderByDirection>
   name?: InputMaybe<OrderByDirection>
-  ownedBy?: InputMaybe<OrderByDirection>
+  owningOrganization?: InputMaybe<OrderByDirection>
+  owningPerson?: InputMaybe<OrderByDirection>
   pullRequestCount?: InputMaybe<OrderByDirection>
   starCount?: InputMaybe<OrderByDirection>
   websiteUrl?: InputMaybe<OrderByDirection>
@@ -637,12 +581,17 @@ export type ProjectUpdateInput = {
   githubUrl?: InputMaybe<Scalars['String']>
   id?: InputMaybe<Scalars['UUID']>
   isBookmarked?: InputMaybe<Scalars['Boolean']>
+  isTrendingDaily?: InputMaybe<Scalars['Boolean']>
+  isTrendingMonthly?: InputMaybe<Scalars['Boolean']>
+  isTrendingWeekly?: InputMaybe<Scalars['Boolean']>
   issueCount?: InputMaybe<Scalars['Int']>
+  languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   name?: InputMaybe<Scalars['String']>
-  ownedBy?: InputMaybe<Scalars['UUID']>
+  owningOrganization?: InputMaybe<Scalars['UUID']>
+  owningPerson?: InputMaybe<Scalars['UUID']>
   pullRequestCount?: InputMaybe<Scalars['Int']>
   starCount?: InputMaybe<Scalars['Int']>
-  starHistory?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+  starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
 }
 
@@ -658,13 +607,13 @@ export type Query = {
   __typename?: 'Query'
   /** A pagable collection of type `AssociatedPerson` */
   associatedPersonCollection?: Maybe<AssociatedPersonConnection>
+  helloWorld: Scalars['String']
   /** Retrieve a record by its `ID` */
   node?: Maybe<Node>
   /** A pagable collection of type `Organization` */
   organizationCollection?: Maybe<OrganizationConnection>
   /** A pagable collection of type `Project` */
   projectCollection?: Maybe<ProjectConnection>
-  projects: Array<Project>
 }
 
 export type QueryAssociatedPersonCollectionArgs = {
@@ -698,26 +647,6 @@ export type QueryProjectCollectionArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>
 }
 
-export type SlackChannel = SocialMediaPresence & {
-  __typename?: 'SlackChannel'
-  accountName: Scalars['String']
-  link: Scalars['String']
-  memberCount: Scalars['Int']
-  platform: Scalars['String']
-}
-
-export type SocialMediaPresence = {
-  accountName: Scalars['String']
-  link: Scalars['String']
-  platform: Scalars['String']
-}
-
-export type SocialMediaTopPost = {
-  link: Scalars['String']
-  platform: Scalars['String']
-  title: Scalars['String']
-}
-
 /** Boolean expression comparing fields on type "String" */
 export type StringFilter = {
   eq?: InputMaybe<Scalars['String']>
@@ -745,26 +674,6 @@ export type TimeFilter = {
   neq?: InputMaybe<Scalars['Time']>
 }
 
-export type TwitterAccount = SocialMediaPresence & {
-  __typename?: 'TwitterAccount'
-  accountName: Scalars['String']
-  followerCount: Scalars['Int']
-  link: Scalars['String']
-  platform: Scalars['String']
-}
-
-export type TwitterTopPost = SocialMediaTopPost & {
-  __typename?: 'TwitterTopPost'
-  commentCount: Scalars['Int']
-  date: Scalars['String']
-  likeCount: Scalars['Int']
-  link: Scalars['String']
-  platform: Scalars['String']
-  retweetCount: Scalars['Int']
-  title: Scalars['String']
-  viewsCount: Scalars['Int']
-}
-
 /** Boolean expression comparing fields on type "UUID" */
 export type UuidFilter = {
   eq?: InputMaybe<Scalars['UUID']>
@@ -785,11 +694,11 @@ export type ProjectDetailsQuery = {
       __typename?: 'ProjectEdge'
       node: {
         __typename?: 'Project'
-        id: string
+        id: any
         nodeId: string
         eli5?: string | null
         about?: string | null
-        name: string
+        name?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -797,6 +706,7 @@ export type ProjectDetailsQuery = {
         contributorCount?: number | null
         githubUrl?: string | null
         websiteUrl?: string | null
+        starHistory?: Array<any | null> | null
         organization?: {
           __typename?: 'Organization'
           id: any
@@ -819,9 +729,9 @@ export type TrendingProjectsQuery = {
       __typename?: 'ProjectEdge'
       node: {
         __typename?: 'Project'
-        id: string
+        id: any
         nodeId: string
-        name: string
+        name?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -857,6 +767,7 @@ export const ProjectDetailsDocument = gql`
           contributorCount
           githubUrl
           websiteUrl
+          starHistory
           organization {
             id
             nodeId

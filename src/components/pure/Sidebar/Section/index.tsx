@@ -3,6 +3,9 @@ import Item from './Item'
 
 type SectionProps = PropsWithChildren<{ title: string }>
 
+/**
+ * Section for main sidebar (includes header and items)
+ */
 const Section = ({ children, title }: SectionProps) => (
   <div
     key="div-2"

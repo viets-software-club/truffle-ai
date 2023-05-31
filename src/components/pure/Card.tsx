@@ -10,6 +10,9 @@ type CardProps = {
   }[]
 }
 
+/**
+ * Card (e.g. for top tweets on detail page)
+ */
 const Card = ({ Icon, name, button, textFields }: CardProps) => (
   <div className="my-4 rounded-lg border border-gray-800">
     <div className="flex flex-row items-center px-4 pt-4">

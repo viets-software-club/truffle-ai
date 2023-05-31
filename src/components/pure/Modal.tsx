@@ -6,6 +6,9 @@ type ModalProps = {
   children: ReactNode
 }
 
+/**
+ * Simple modal (incl. overlay)
+ */
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   if (!isOpen) return null
 

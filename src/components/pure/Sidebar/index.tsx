@@ -15,8 +15,10 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
         <Link href="/">
           <span className="mr-2 text-18 font-medium">{props.title}</span>
         </Link>
+
         <div className="h-[30px] w-[30px] rounded-[5px] bg-gray-500" />
       </div>
+
       {props.children}
     </div>
     <footer className="border-t border-solid border-gray-800">{footer}</footer>

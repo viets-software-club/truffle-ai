@@ -15,6 +15,9 @@ import { data as chartData } from '@/data/detailPageMocks'
 
 const nullFunc = () => null
 
+/**
+ * Compare projects page
+ */
 // @TODO Get id from url, fetch data from API & display real data
 const Compare = () => {
   // Fetch data from Supabase using generated Urql hook

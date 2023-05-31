@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
   LineChart,
   Line,
@@ -7,29 +7,14 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-  TooltipProps
+  ResponsiveContainer
 } from 'recharts'
 import { FiChevronDown as ChevronDown } from 'react-icons/fi'
-import { subMonths } from 'date-fns'
+import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
+import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
-
-type ChartData = {
-  name: string
-  value: number
-  value2: number
-}
-
-type Data = {
-  name: string
-  data: ChartData[]
-}
-
-type ChartProps = {
-  data: Data[]
-}
 
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
@@ -38,35 +23,23 @@ const TimeframeOptions = [
   { value: 12, label: '1 Year' }
 ]
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="rounded border border-gray-800 bg-gray-900 p-2 text-xs text-white">
-        <p>{label}</p>
-        <p className="mt-2 font-bold">{formatNumber(parseFloat(payload[0].value as string))}</p>
-      </div>
-    )
-  }
-
-  return null
+export type ChartProps = {
+  data: {
+    date: string
+    count: number
+  }[]
 }
 
 const Chart = ({ data }: ChartProps) => {
-  const dataTypes = data.map((d) => d.name)
-
-  const [dataType, setDataType] = useState(dataTypes[0])
-
   const [modalValue, setModalValue] = useState('Select Value')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [timeframe, setTimeframe] = useState(1) // 1 month
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
 
   const handleModalValueChange = useCallback((newValue: string) => {
     setModalValue(newValue)
     setIsModalOpen(false)
-    setDataType(newValue)
   }, [])
 
   const handleTimeframeChange = useCallback((newTimeframe: number) => {
@@ -74,36 +47,13 @@ const Chart = ({ data }: ChartProps) => {
 
     setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
     setTimeframeModalOpen(false)
-    setTimeframe(newTimeframe)
   }, [])
 
-  const [chartData, setChartData] = useState<ChartData[]>([])
-
-  useEffect(() => {
-    const filteredData = data.find((d) => d.name === dataType)?.data || []
-    const pastDate = subMonths(new Date(), timeframe)
-
-    // Filter the data based on the timeframe
-    const newFilteredData = filteredData.filter((dataPoint) => {
-      const [day, month, year] = dataPoint.name.split('/').map(Number)
-      const date = new Date(year, month - 1, day)
-      return date >= pastDate
-    })
-
-    setChartData(newFilteredData)
-  }, [dataType, data, timeframe])
+  const [chartData] = useState<ChartProps['data']>(data)
 
   const toggleModal = useCallback(() => {
     setIsModalOpen((prevState) => !prevState)
   }, [])
-
-  const formatDate = (dateString: string) => {
-    const [day, month, year] = dateString.split('/').map((str) => parseInt(str, 10))
-    const date = new Date(year, month - 1, day)
-    const options: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' }
-
-    return date.toLocaleDateString(undefined, options)
-  }
 
   return (
     <div className="flex w-full flex-row px-7 py-8">
@@ -125,13 +75,13 @@ const Chart = ({ data }: ChartProps) => {
               />
 
               <Modal isOpen={isModalOpen} onClose={toggleModal}>
-                {dataTypes.map((item) => (
+                {['Stars', 'Forks', 'Contributors'].map((item) => (
                   <Button
                     key={item}
                     variant="noBorderNoBG"
                     text={item}
                     fullWidth
-                    onClick={() => handleModalValueChange(dataType)}
+                    onClick={() => handleModalValueChange(item)}
                   />
                 ))}
               </Modal>
@@ -176,23 +126,24 @@ const Chart = ({ data }: ChartProps) => {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#2C2D3C" />
 
               <XAxis
-                dataKey="name"
+                dataKey="date"
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 tickFormatter={formatDate}
                 stroke="#858699"
               />
 
               <YAxis
-                label={{ value: dataType, dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
+                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 stroke="#858699"
+                tickFormatter={formatNumber}
               />
 
               <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#858699', strokeWidth: 1 }} />
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
-              <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 6 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

@@ -13,11 +13,11 @@ import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
 import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
-import Chart from '@/components/page/details/Chart'
+import Chart, { ChartProps } from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery } from '@/generated/gql'
-import { data as chartDataMock, hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
+import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
 
 // @TODO Implement handler for navigation
 const handleClick = () => ''
@@ -52,7 +52,7 @@ const Details = ({ id }: DetailsProps) => {
   const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
 
   // Display loading/ error messages conditionally
-  if (fetching) return <Loading />
+  if (fetching) return <Loading message="Fetching project details for you..." />
   if (error || !project) return <Error />
 
   return (
@@ -96,14 +96,14 @@ const Details = ({ id }: DetailsProps) => {
             // @TODO Add actual image URL
             image={project?.organization?.avatarUrl as string}
             // @TODO Adjust for owner (could be user or organization)
-            name={`${project.organization?.login || 'user'} / ${project.name}`}
+            name={`${project.organization?.login || 'user'} / ${project.name as string}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
             // @TODO Replace with actual tags
             tags={['React', 'Static Site Generation', 'TypeScript']}
           />
 
-          <Chart data={chartDataMock} />
+          <Chart data={project.starHistory as ChartProps['data']} />
 
           {/* @TODO Add real data */}
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">

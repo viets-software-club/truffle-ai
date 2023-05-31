@@ -14,12 +14,12 @@
     "serve": "$npm_package_config_env_dev && node dist/index.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.24.0",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "fastify": "^4.17.0",
     "mercurius": "^13.0.0",
-    "showdown": "^2.1.0",
-    "supabase": "^1.62.4"
+    "showdown": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",

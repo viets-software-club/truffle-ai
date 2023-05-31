@@ -1,11 +1,11 @@
-import { cacheExchange, fetchExchange } from 'urql'
-import { withUrqlClient } from 'next-urql'
+import React, { useState } from 'react'
 import { AppProps } from 'next/app'
-import BASE_URL from '@/constants/baseUrl'
-import '@/styles/globals.css'
+import { withUrqlClient } from 'next-urql'
+import { cacheExchange, fetchExchange } from 'urql'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import React, { useState } from 'react'
+import BASE_URL from '@/constants/baseUrl'
+import '@/styles/globals.css'
 
 const App = ({
   Component,
@@ -19,6 +19,7 @@ const App = ({
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     })
   )
+
   return (
     <SessionContextProvider
       supabaseClient={supabaseClient}

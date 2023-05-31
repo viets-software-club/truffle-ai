@@ -35,7 +35,7 @@ const initialSections = [
         id: 2,
         Icon: Bookmark,
         text: 'All bookmarks',
-        path: '/bookmarks',
+        path: '/',
         showIcon: true,
         editable: false
       }

@@ -12,7 +12,10 @@ const Table = ({ table }: TableProps) => (
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>
           {headerGroup.headers.map((header) => (
-            <th key={header.id} className="text-left text-12 font-medium uppercase text-gray-400">
+            <th
+              key={header.id}
+              className="pb-2 text-left text-12 font-medium uppercase text-gray-500"
+            >
               {header.isPlaceholder
                 ? null
                 : flexRender(header.column.columnDef.header, header.getContext())}
@@ -26,7 +29,7 @@ const Table = ({ table }: TableProps) => (
       {table.getRowModel().rows.map((row) => (
         <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
           {row.getVisibleCells().map((cell) => (
-            <td key={cell.id} className="p-2 text-left">
+            <td key={cell.id} className="p-2 pl-0 text-left">
               <Link href={`/details/${row.original.id}`}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </Link>

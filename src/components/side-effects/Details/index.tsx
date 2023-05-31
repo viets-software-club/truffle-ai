@@ -96,7 +96,8 @@ const Details = ({ id }: DetailsProps) => {
             // @TODO Add actual image URL
             image={project?.organization?.avatarUrl as string}
             // @TODO Adjust for owner (could be user or organization)
-            name={`${project.organization?.login || 'No name'}/${project.name}`}
+            name={`${project.organization?.login || 'user'} / ${project.name}`}
+            url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
             // @TODO Replace with actual tags
             tags={['React', 'Static Site Generation', 'TypeScript']}
@@ -114,7 +115,7 @@ const Details = ({ id }: DetailsProps) => {
             />
             <Card
               Icon={FaHackerNews}
-              name="Community sentiment"
+              name="Community Sentiment"
               button={SomeButton}
               textFields={hackerNewsListMock}
             />

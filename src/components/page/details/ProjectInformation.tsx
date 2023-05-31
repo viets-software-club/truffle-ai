@@ -4,6 +4,7 @@ import Button from '@/components/pure/Button'
 type ProjectInformationProps = {
   image?: string
   name: string
+  url: string
   eli5: string
   tags: string[]
 }
@@ -12,14 +13,18 @@ type ProjectInformationProps = {
  * Top part of project detail page (logo, name, tags, bookmark button)
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-const ProjectInformation = ({ image, name, eli5, tags }: ProjectInformationProps) => (
+const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformationProps) => (
   <div className="border-b border-gray-800 px-7 py-6">
     <div className="mb-6 flex flex-row items-center justify-between">
       <div className="flex flex-row items-center">
         {/* @TODO Replace with actual image */}
         <div className="mr-4 h-[30px] w-[30px] rounded-[5px] bg-gray-600" />
 
-        <h1 className="mr-3 text-20 font-medium">{name}</h1>
+        <h1 className="mr-3 text-20 font-medium">
+          <a href={url} target="_blank" rel="noreferrer">
+            {name}
+          </a>
+        </h1>
 
         {tags.length > 0 ? (
           tags.map((text) => (

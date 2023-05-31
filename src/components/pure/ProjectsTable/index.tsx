@@ -29,7 +29,7 @@ const ProjectsTable = () => {
   if (!projects || projects.length === 0 || error) return <Error />
 
   return (
-    <div className="flex w-full flex-col rounded-lg py-3.5">
+    <div className="flex w-full flex-col">
       <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
       <FilterBar />
       <Table table={table} />

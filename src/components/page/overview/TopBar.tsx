@@ -39,14 +39,14 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
 )
 
 const TopBar = ({ columns, nullFunc }: TopBarProps) => (
-  <div className="flex flex-row justify-between border-b border-gray-800 px-6 pb-3.5">
+  <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
     {/* Filter, Sort, Edit Columns buttons */}
     <div className="flex flex-row gap-3">
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-3 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-            <AiOutlineCalendar />
-            <p>Select timeframe</p>
+          <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+            <AiOutlineCalendar color="#858699" />
+            <p className="leading-none">This week</p>
           </Menu.Button>
         </div>
 
@@ -76,7 +76,6 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
           text="Add Filter"
           Icon={AiOutlinePlus}
           order="ltr"
-          iconColor="white"
           textColor="white"
         />
       </div>
@@ -90,19 +89,16 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
           text="Sort"
           Icon={VscSettings}
           order="ltr"
-          iconColor="white"
           textColor="white"
         />
       </div>
 
-      <div className="mb-8 flex flex-row space-x-2">{/* Dropdown */}</div>
-
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-3 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-            <TbColumns2 />
+          <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+            <TbColumns2 color="#858699" />
 
-            <p>Edit Columns</p>
+            <p className="leading-none">Edit Columns</p>
           </Menu.Button>
         </div>
 

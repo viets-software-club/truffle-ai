@@ -24,9 +24,9 @@ export async function getRepoInfo(query: string, authToken: string): Promise<Git
 }
 
 /** Gets a organizations information via GitHub's GraphQL API
- * @param {string} query GraphQL query for the repo (including owner and name)
+ * @param {string} query GraphQL query for the organization (including owner and name)
  * @param {string} authToken personal authorization token
- * @returns {any[]} the json data for the requested repo as by the graphql query; null on error
+ * @returns {any[]} the json data for the requested organization as by the graphql query; null on error
  */
 export async function getOrganizationInfo(
   query: string,
@@ -46,10 +46,10 @@ export async function getOrganizationInfo(
   return response.data.data.organization
 }
 
-/** Gets a organizations information via GitHub's GraphQL API
- * @param {string} query GraphQL query for the repo (including owner and name)
+/** Gets a persons information via GitHub's GraphQL API
+ * @param {string} query GraphQL query for the person (including owner and name)
  * @param {string} authToken personal authorization token
- * @returns {any[]} the json data for the requested repo as by the graphql query; null on error
+ * @returns {any[]} the json data for the requested person as by the graphql query; null on error
  */
 export async function getUserInfo(query: string, authToken: string): Promise<GitHubUser | null> {
   const response: AxiosResponse<{ data: { user: GitHubUser } }> = await axios.post(

@@ -3,18 +3,19 @@ import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { Project, useTrendingProjectsQuery } from '@/generated/gql'
 import Error from '@/components/pure/Error'
-import Loading from '@/components/pure/Loading'
-import TopBar from '@/components/page/overview/TopBar'
-import Table from '@/components/page/overview/Table'
-import FilterBar from '@/components/page/overview/Filterbar'
-import Chart from '@/components/page/details/Chart'
-import Page from '@/components/side-effects/Page'
 import Button from '@/components/pure/Button'
+import Loading from '@/components/pure/Loading'
 import columns from '@/components/pure/ProjectsTable/columns'
+import Chart from '@/components/page/details/Chart'
+import Table from '@/components/page/overview/Table'
+import TopBar from '@/components/page/overview/TopBar'
+import FilterBar from '@/components/page/overview/Filterbar'
+import Page from '@/components/side-effects/Page'
 import { data as chartData } from '@/data/detailPageMocks'
 
 const nullFunc = () => null
 
+// @TODO Get id from url, fetch data from API & display real data
 const Compare = () => {
   // Fetch data from Supabase using generated Urql hook
   const [{ data, fetching, error }] = useTrendingProjectsQuery()
@@ -41,7 +42,8 @@ const Compare = () => {
         <div className="flex flex-row items-center justify-between px-6 py-3.5">
           <div className="flex flex-col">
             <p className="text-12 font-medium uppercase text-gray-400">Compare</p>
-            <h1 className="text-24 font-medium">Dev tools</h1>
+            {/* @TODO Update page title */}
+            <h1 className="text-24 font-medium">Infrastructure</h1>
           </div>
           <div>
             <Button
@@ -81,4 +83,5 @@ const Compare = () => {
     </Page>
   )
 }
+
 export default Compare

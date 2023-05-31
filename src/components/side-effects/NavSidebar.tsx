@@ -1,73 +1,89 @@
-import { withRouter, NextRouter } from 'next/router'
+import { useState } from 'react'
+import { withRouter } from 'next/router'
 import {
   FiBookOpen as BookOpen,
   FiCompass as Compass,
   FiBookmark as Bookmark
 } from 'react-icons/fi'
 import Sidebar from '@/components/pure/Sidebar'
+import sidebarCategories from '@/data/sidebarMock'
 
-// @TODO replace nullFunc with getRedirectFunc
-const nullFunc = () => null
-
-const getRedirectFunction = (router: NextRouter, path: string) => () => {
-  void router.push(`/${path}`)
-}
-
-const renderFooter = (router: NextRouter) => (
+const renderFooter = () => (
   <Sidebar.Section.Item
+    id={0}
     Icon={BookOpen}
     text="Help & Support"
-    onClick={getRedirectFunction(router, '/documentation')}
+    path="docs"
     showIcon
+    editable={false}
   />
 )
+
+const initialSections = [
+  {
+    title: 'Overview',
+    items: [
+      {
+        id: 1,
+        Icon: Compass,
+        text: 'Trending projects',
+        path: '/',
+        showIcon: true,
+        editable: false
+      },
+      {
+        id: 2,
+        Icon: Bookmark,
+        text: 'All bookmarks',
+        path: '/bookmarks',
+        showIcon: true,
+        editable: false
+      }
+    ]
+  },
+  {
+    title: 'Categories',
+    items: sidebarCategories
+  }
+]
 
 /**
  * Main sidebar on the left
  */
-const NavSidebar = ({ router }: { router: NextRouter }) => (
-  <Sidebar title="TruffleAI" footer={renderFooter(router)}>
-    <Sidebar.Section title="Overview">
-      <Sidebar.Section.Item Icon={Compass} text="All projects" onClick={nullFunc} showIcon />
-      <Sidebar.Section.Item Icon={Bookmark} text="Saved projects" onClick={nullFunc} showIcon />
-    </Sidebar.Section>
+const NavSidebar = () => {
+  const [sections] = useState(initialSections)
 
-    <Sidebar.Section title="Saved searches">
-      <Sidebar.Section.Item
-        Icon={Compass}
-        text="JavaScript Frameworks"
-        onClick={nullFunc}
-        showIcon={false}
-      />
-      <Sidebar.Section.Item
-        Icon={Bookmark}
-        text="Static Site Generators"
-        onClick={nullFunc}
-        showIcon={false}
-      />
-      <Sidebar.Section.Item
-        key="menu-3"
-        Icon={Bookmark}
-        text="Infrastructure"
-        onClick={nullFunc}
-        showIcon={false}
-      />
-      <Sidebar.Section.Item
-        key="menu-4"
-        Icon={Bookmark}
-        text="Dev Tools"
-        onClick={nullFunc}
-        showIcon={false}
-      />
-      <Sidebar.Section.Item
-        key="menu-5"
-        Icon={Bookmark}
-        text="Machine Learning"
-        onClick={nullFunc}
-        showIcon={false}
-      />
-    </Sidebar.Section>
-  </Sidebar>
-)
+  const handleSave = () => {
+    // @TODO implement save
+  }
+
+  const handleDelete = () => {
+    // @TODO implement delete
+  }
+
+  return (
+    <Sidebar title="TruffleAI" footer={renderFooter()}>
+      {sections.map((section) => (
+        <Sidebar.Section key={section.title} title={section.title}>
+          {section.items.map((item) => (
+            <Sidebar.Section.Item
+              key={item.id}
+              id={item.id}
+              Icon={item.Icon}
+              text={item.text}
+              onSave={handleSave}
+              onDelete={handleDelete}
+              path={item.path}
+              showIcon={item.showIcon}
+              // @TODO highlight current page in sidebar
+              secondaryItem={item.secondaryItem}
+              editable={item.editable}
+            />
+          ))}
+        </Sidebar.Section>
+      ))}
+    </Sidebar>
+  )
+}
 
 export default withRouter(NavSidebar)

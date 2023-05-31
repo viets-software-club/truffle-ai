@@ -13,6 +13,7 @@ module.exports = {
         'radial-gradient': 'radial-gradient(circle at 50% -70%, #191D3B, #191D3B, #191A23)'
       },
       fontSize: {
+        10: '10px',
         12: '12px',
         14: '14px',
         16: '16px',

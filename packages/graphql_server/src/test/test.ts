@@ -1,8 +1,8 @@
-import { timeMode } from '../types/githubScraping'
-import * as scrape from '../src/scraping/githubScraping'
-import * as github from '../src/api/githubApi'
-import * as eli5 from '../src/api/openAIApi'
-import * as starHistory from '../src/starHistory/starHistory'
+import { timeMode } from '../../types/githubScraping'
+import * as scrape from '../scraping/githubScraping'
+import * as github from '../api/githubApi'
+import * as eli5 from '../api/openAIApi'
+import * as starHistory from '../starHistory/starHistory'
 
 /** Main function to test the functionality of the different methods
  * and how to correctly call them and what the intended workflow is about

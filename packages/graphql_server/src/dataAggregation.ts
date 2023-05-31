@@ -40,21 +40,33 @@ export const turnIntoProjectInsertion = (githubData: GitHubInfo, starHistory: St
  */
 export const getGithubData = async (name: string, owner: string) => {
   // query send to github. If this is changed the corresponding types have to be changed as well
-  const query = `query {
+  const query = `
+    query {
       repository(owner: "${owner}", name: "${name}") {
         name 
         description
         stargazerCount
-        issues(filterBy: {states: [OPEN]}) {totalCount}
+        issues(filterBy: {states: [OPEN]}) {
+          totalCount
+        }
         forkCount
-        pullRequests(states: [OPEN]) {totalCount}
+        pullRequests(states: [OPEN]) {
+          totalCount
+        }
         url
         homepageUrl
-        languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {edges {node {name color}}}
-      owner {
-        login
+        languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
+          edges {
+            node {
+              name 
+              color
+            }
+          }
+        }
+        owner {
+          login
+        }
       }
-    }
     }`
 
   // call github api
@@ -94,7 +106,9 @@ export const getOrganizationID = async (owner: string) => {
         login
         name
         avatarUrl
-        repositories {totalCount}
+        repositories {
+          totalCount
+        }
         email
         websiteUrl
         twitterUsername
@@ -110,31 +124,29 @@ export const getOrganizationID = async (owner: string) => {
   // in the case that the organization does not exist return null
   if (!organizationGHData) return null
 
-  if (organizationGHData !== null) {
-    const organizationDataDBFormat: OrganizationInsertion = {
-      name: organizationGHData.name,
-      login: organizationGHData.login,
-      avatar_url: organizationGHData.avatarUrl,
-      repository_count: organizationGHData?.repositories?.totalCount,
-      email: organizationGHData.email,
-      website_url: organizationGHData.websiteUrl,
-      twitter_username: organizationGHData.twitterUsername,
-      github_url: organizationGHData.url
-    }
+  const organizationDataDBFormat: OrganizationInsertion = {
+    name: organizationGHData.name,
+    login: organizationGHData.login,
+    avatar_url: organizationGHData.avatarUrl,
+    repository_count: organizationGHData?.repositories?.totalCount,
+    email: organizationGHData.email,
+    website_url: organizationGHData.websiteUrl,
+    twitter_username: organizationGHData.twitterUsername,
+    github_url: organizationGHData.url
+  }
 
-    const { error: organizationInsertionError } = await supabase
-      .from('organization')
-      .insert([organizationDataDBFormat])
-    organizationInsertionError &&
-      console.error('Error inserting organization into database: \n', organizationInsertionError)
+  const { error: organizationInsertionError } = await supabase
+    .from('organization')
+    .insert([organizationDataDBFormat])
+  organizationInsertionError &&
+    console.error('Error inserting organization into database: \n', organizationInsertionError)
 
-    const { data: orga } = await supabase.from('organization').select('id').eq('login', owner)
+  const { data: orga } = await supabase.from('organization').select('id').eq('login', owner)
 
-    if (orga?.[0]?.id) {
-      return orga[0].id
-    } else {
-      return null
-    }
+  if (orga?.[0]?.id) {
+    return orga[0].id
+  } else {
+    return null
   }
 }
 
@@ -145,7 +157,7 @@ export const getOrganizationID = async (owner: string) => {
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
 export const getPersonID = async (owner: string) => {
-  const { data: person, error: personRetrievalError } = await supabase
+  const { data: existing_person, error: personRetrievalError } = await supabase
     .from('associated_person')
     .select('id')
     .eq('login', owner)
@@ -153,20 +165,21 @@ export const getPersonID = async (owner: string) => {
     console.error('Error getting organization', owner, 'from database: \n', personRetrievalError)
 
   // if a person with this name is already in the database return the id
-  if (person?.[0]?.id) return person[0].id
+  if (existing_person?.[0]?.id) return existing_person[0].id
 
   // if not get the data from github and insert it into the database
-  const query = `query {
+  const query = `
+    query {
       user(login: "${owner}") {
         login
         name
         avatarUrl
-        repositories {totalCount}
+        repositories { totalCount }
         email
         websiteUrl
         twitterUsername
         url
-    }
+      }
     }`
 
   const userGHData: GitHubUser | null = await getUserInfo(
@@ -177,33 +190,24 @@ export const getPersonID = async (owner: string) => {
   // in the case that the user does not exist return null
   if (!userGHData) return null
 
-  if (userGHData !== null) {
-    const personDataDBFormat: UserInsertion = {
-      name: userGHData.name,
-      login: userGHData.login,
-      avatar_url: userGHData.avatarUrl,
-      repository_count: userGHData?.repositories?.totalCount,
-      email: userGHData.email,
-      website_url: userGHData.websiteUrl,
-      twitter_username: userGHData.twitterUsername,
-      github_url: userGHData.url
-    }
-
-    const { error: personInsertionError } = await supabase
-      .from('associated_person')
-      .insert([personDataDBFormat])
-    personInsertionError &&
-      console.error('Error inserting organization into database: \n', personInsertionError)
-
-    const { data: person } = await supabase
-      .from('associated_person')
-      .select('id')
-      .eq('login', owner)
-
-    if (person?.[0]?.id) {
-      return person[0].id
-    } else {
-      return null
-    }
+  const personDataDBFormat: UserInsertion = {
+    name: userGHData.name,
+    login: userGHData.login,
+    avatar_url: userGHData.avatarUrl,
+    repository_count: userGHData?.repositories?.totalCount,
+    email: userGHData.email,
+    website_url: userGHData.websiteUrl,
+    twitter_username: userGHData.twitterUsername,
+    github_url: userGHData.url
   }
+
+  const { error: personInsertionError } = await supabase
+    .from('associated_person')
+    .insert([personDataDBFormat])
+  personInsertionError &&
+    console.error('Error inserting organization into database: \n', personInsertionError)
+
+  const { data: person } = await supabase.from('associated_person').select('id').eq('login', owner)
+
+  return existing_person?.[0]?.id ? existing_person[0].id : null
 }

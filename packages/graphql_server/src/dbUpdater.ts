@@ -17,7 +17,8 @@ export const dbUpdater = async () => {
   await goThroughListOfRepos(await fetchTrendingRepos('weekly'), 'is_trending_weekly')
   await goThroughListOfRepos(await fetchTrendingRepos('monthly'), 'is_trending_monthly')
 
-  // delete all projects that are not bookmarked and older than 4 days
+  // delete all projects that are not bookmarked and older than 4 days,
+  // this way a repo that is trending on monday and wednesday won't be deleted on tuesday
   const { error: deleteReposError } = await supabase
     .from('project')
     .delete()
@@ -74,11 +75,14 @@ const getCutOffTime: (hours: number, minutes: number) => string = (
 
 /**
  * Sets the trending states of all projects to false.
+ * contributor_count comparison because I want to target all rows but have to specify a filter
  */
 const purgeTrendingState = async () => {
-  await supabase
+  const { error: supabaseError } = await supabase
     .from('project')
     .update({ is_trending_daily: false, is_trending_weekly: false, is_trending_monthly: false })
+    .neq('contributor_count', -1000)
+  supabaseError && console.error('Error while purging trending state: \n', supabaseError)
 }
 
 /**

@@ -39,7 +39,7 @@ export const socialMediaListMock: ({ id: ID } & ComponentProps<
     id: '0',
     icon: 'discord',
     name: 'Discord ',
-    text: 'Followers',
+    text: 'followers',
     value: '101k',
     growth: '+2k',
     onClick: () => {
@@ -50,7 +50,7 @@ export const socialMediaListMock: ({ id: ID } & ComponentProps<
     id: '1',
     icon: 'twitter',
     name: 'Twitter ',
-    text: 'Followers',
+    text: 'followers',
     value: '200k',
     growth: '+1k',
     onClick: () => {

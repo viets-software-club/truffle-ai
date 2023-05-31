@@ -39,7 +39,7 @@ const RightSidebar = ({ project }: Props) => (
     </Sidebar.Box>
 
     {/* @TODO Add real data for social media + founders */}
-    <Sidebar.Box title="SocialMedia">
+    <Sidebar.Box title="Social Media">
       {socialMediaListMock.map(({ id, ...data }) => (
         <Sidebar.Box.SocialMediaItem key={id} {...data} />
       ))}

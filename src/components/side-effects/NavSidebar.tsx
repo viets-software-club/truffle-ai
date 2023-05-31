@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { withRouter, NextRouter } from 'next/router'
+import { withRouter } from 'next/router'
 import {
   FiBookOpen as BookOpen,
   FiCompass as Compass,
@@ -28,7 +28,6 @@ const initialSections = [
         Icon: Compass,
         text: 'Trending projects',
         path: '/',
-        params: '',
         showIcon: true,
         editable: false
       },
@@ -37,7 +36,6 @@ const initialSections = [
         Icon: Bookmark,
         text: 'All bookmarks',
         path: '/bookmarks',
-        params: '',
         showIcon: true,
         editable: false
       }
@@ -49,27 +47,15 @@ const initialSections = [
   }
 ]
 
-const NavSidebar = ({ router }: { router: NextRouter }) => {
+const NavSidebar = () => {
   const [sections] = useState(initialSections)
 
-  const handleSave = (id: number, newText: string) => {
-    // setSections(
-    //   sections.map((section) => ({
-    //     ...section,
-    //     items: section.items.map((item) => (item.id === id ? { ...item, text: newText } : item))
-    //   }))
-    // )
-    alert(`Saved ${newText}`)
+  const handleSave = () => {
+    // @TODO implement save
   }
 
-  const handleDelete = (id: number) => {
-    // setSections(
-    //   sections.map((section) => ({
-    //     ...section,
-    //     items: section.items.filter((item) => item.id !== id)
-    //   }))
-    // )
-    alert(`Deleted ${id}`)
+  const handleDelete = () => {
+    // @TODO implement delete
   }
 
   return (
@@ -85,9 +71,8 @@ const NavSidebar = ({ router }: { router: NextRouter }) => {
               onSave={handleSave}
               onDelete={handleDelete}
               path={item.path}
-              params={item.params}
               showIcon={item.showIcon}
-              highlighted={router.pathname === item.path && router.query.parameters === item.params}
+              // @TODO highlight current page in sidebar
               secondaryItem={item.secondaryItem}
               editable={item.editable}
             />

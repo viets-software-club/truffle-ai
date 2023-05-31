@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { SetStateAction, useState } from 'react'
+import Link from 'next/link'
 import { MdClose, MdCreate } from 'react-icons/md'
 
 type ItemProps = {
@@ -7,12 +7,11 @@ type ItemProps = {
   Icon: IconComponentType
   text: string
   path: string
-  params?: string
   showIcon?: boolean
   secondaryItem?: boolean
   highlighted?: boolean
-  onSave?: (id: number, text: string) => void
-  onDelete?: (id: number) => void
+  onSave?: () => void
+  onDelete?: () => void
   editable: boolean
 }
 
@@ -21,7 +20,6 @@ const Item = ({
   Icon,
   text,
   path,
-  params,
   showIcon,
   secondaryItem,
   highlighted,
@@ -29,9 +27,9 @@ const Item = ({
   onDelete,
   editable
 }: ItemProps) => {
-  const [isEditable, setIsEditable] = useState(false)
   const [value, setValue] = useState(text)
   const [isHovered, setIsHovered] = useState(false)
+  const [isEditable, setIsEditable] = useState(false)
 
   const handleEdit = () => {
     setIsEditable(true)
@@ -43,12 +41,11 @@ const Item = ({
 
   const handleBlur = () => {
     setIsEditable(false)
-    // @TODO
-    if (onSave) onSave(id, value)
+    if (onSave) onSave()
   }
 
   const handleDelete = () => {
-    if (onDelete) onDelete(id)
+    if (onDelete) onDelete()
   }
 
   return (
@@ -59,20 +56,14 @@ const Item = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link
-        href={{
-          pathname: path,
-          query: {
-            parameters: params
-          }
-        }}
-      >
+      <Link href={`${path}/${id}`}>
         <div className="inline-flex w-full items-center justify-between py-2.5 pl-7">
           <div
             className={`flex flex-row items-center justify-center gap-[5px] 
           ${secondaryItem ? 'ml-2' : ''} overflow-hidden`}
           >
             {showIcon && <Icon className="h-[14px] w-[14px] text-gray-500" />}
+
             {isEditable ? (
               <input
                 className="overflow-hidden bg-gray-500 text-left text-xs not-italic leading-3 text-gray-100"
@@ -90,6 +81,7 @@ const Item = ({
               </span>
             )}
           </div>
+
           {isHovered && editable && (
             <div className="flex space-x-1 pr-1">
               <MdCreate onClick={handleEdit} className="cursor-pointer text-gray-500" />
@@ -106,9 +98,8 @@ Item.defaultProps = {
   showIcon: true,
   secondaryItem: false,
   highlighted: false,
-  onSave: undefined,
-  onDelete: undefined,
-  params: undefined
+  onSave: null,
+  onDelete: null
 }
 
 export default Item

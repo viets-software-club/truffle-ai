@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import * as cheerio from 'cheerio'
 import * as showdown from 'showdown'
 
-import { Developer, DeveloperRepo, timeMode, Edge, ContributorResponse } from '../../types/githubScraping'
+import { Developer, DeveloperRepo, timeMode } from '../../types/githubScraping'
 
 /** Get all the information from the GitHub trending page; all the repos and the names of their creators
  * @param {string} timeMode shoud be 'daily', 'weekly' or 'monthly' => timescope of the trending page
@@ -100,70 +100,4 @@ export async function fetchTrendingDevelopers(timeMode: timeMode) {
         return { ...developer, ...(matchingRepo || { repo: '' }) }
       })
     })
-}
-
-/** Retrieves the contributor count for a GitHub repository.
- * This may be smaller than the count on the Github page because only contributors that
- * committed into the main branch are being counted
- * @param owner - The owner of the GitHub repository.
- * @param repo - The name of the GitHub repository.
- * @param authToken - Github API token
- * @returns A Promise that resolves to the total unique contributor count; returns 0 on error
- */
-export async function getContributorCount(
-  owner: string,
-  repo: string,
-  authToken: string
-): Promise<number> {
-  const query = `
-    query($owner: String!, $repo: String!) {
-      repository(owner: $owner, name: $repo) {
-        defaultBranchRef {
-          target {
-            ... on Commit {
-              history {
-                totalCount
-                edges {
-                  node {
-                    author {
-                      user {
-                        login
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `
-
-  const variables = {
-    owner,
-    repo
-  }
-
-  try {
-    const response: AxiosResponse<ContributorResponse> = await axios.post(
-      'https://api.github.com/graphql',
-      { query, variables },
-      {
-        headers: {
-          Authorization: `Bearer ` + authToken
-        }
-      }
-    )
-
-    const contributors: string[] =
-      response.data.data.repository.defaultBranchRef.target.history.edges.map(
-        (edge: Edge) => edge.node.author?.user?.login
-      )
-    const uniqueContributors = Array.from(new Set(contributors))
-
-    return uniqueContributors.length
-  } catch (error) {
-    return 0
-  }
 }

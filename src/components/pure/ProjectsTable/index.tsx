@@ -26,7 +26,7 @@ const ProjectsTable = () => {
 
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Getting trending projects for you..." />
-  if (projects.length === 0 || error) return <Error />
+  if (!projects || projects.length === 0 || error) return <Error />
 
   return (
     <div className="flex w-full flex-col rounded-lg py-3.5">

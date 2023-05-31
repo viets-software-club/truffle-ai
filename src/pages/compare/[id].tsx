@@ -33,7 +33,7 @@ const Compare = () => {
 
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Getting trending projects for you..." />
-  if (projects.length === 0 || error) return <Error />
+  if (!projects || projects.length === 0 || error) return <Error />
 
   return (
     <Page>

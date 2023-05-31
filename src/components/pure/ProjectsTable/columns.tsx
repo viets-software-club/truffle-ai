@@ -21,11 +21,14 @@ const columns = [
     cell: () => <Image src={Logo} alt="logo" className="ml-2 h-5 w-5" />
   }),
   // @TODO Adjust for user owners
-  columnHelper.accessor(({ organization, name }) => `${organization?.login || 'user'} / ${name}`, {
-    id: 'nameWithOwner',
-    header: 'Name',
-    cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
-  }),
+  columnHelper.accessor(
+    ({ organization, name }) => `${organization?.login || 'user'} / ${name as string}`.slice(0, 32),
+    {
+      id: 'nameWithOwner',
+      header: 'Name',
+      cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
+    }
+  ),
   // @TODO Add tags column
   columnHelper.accessor('starCount', {
     header: 'Stars',

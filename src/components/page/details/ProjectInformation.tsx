@@ -22,7 +22,8 @@ const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformation
 
         <h1 className="mr-3 text-20 font-medium">
           <a href={url} target="_blank" rel="noreferrer">
-            {name}
+            {name.slice(0, 32)}
+            {name.length > 32 ? '...' : ''}
           </a>
         </h1>
 

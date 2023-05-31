@@ -60,7 +60,7 @@ const Item = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Only add URL parameter if item links to compare or details page */}
-      <Link href={path + (['details', 'compare'].includes(path) ? `/${id}` : '')}>
+      <Link href={path + (['/details', '/compare'].includes(path) ? `/${id}` : '')}>
         <div className="inline-flex w-full items-center justify-between py-2.5 pl-7">
           <div
             className={`flex flex-row items-center justify-center gap-[5px] 

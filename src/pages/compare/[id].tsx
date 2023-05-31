@@ -42,12 +42,13 @@ const Compare = () => {
 
         <FilterBar />
 
-        <div className="flex flex-row items-center justify-between px-6 py-3.5">
+        <div className="flex flex-row items-center justify-between px-6 pt-3.5">
           <div className="flex flex-col">
-            <p className="text-12 font-medium uppercase text-gray-400">Compare</p>
+            <p className="text-12 font-medium uppercase text-gray-500">Compare</p>
             {/* @TODO Update page title */}
             <h1 className="text-24 font-medium">Infrastructure</h1>
           </div>
+
           <div>
             <Button
               onClick={nullFunc}
@@ -55,7 +56,6 @@ const Compare = () => {
               text="Stars"
               Icon={FiChevronDown}
               order="ltr"
-              iconColor="white"
               textColor="white"
             />
           </div>
@@ -65,7 +65,7 @@ const Compare = () => {
 
         <div className="flex flex-row items-center justify-between px-6 py-3.5">
           <div className="flex flex-col">
-            <p>All projects in this category</p>
+            <p className="font-medium">All projects in this category</p>
           </div>
 
           <div>
@@ -75,7 +75,6 @@ const Compare = () => {
               text="Add project to compare"
               Icon={AiOutlinePlus}
               order="ltr"
-              iconColor="white"
               textColor="white"
             />
           </div>

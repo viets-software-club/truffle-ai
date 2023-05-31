@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import formatNumber from '@/util/formatNumber'
 
 enum Color {
   DEFAULT = 'text-gray-100',
@@ -50,7 +51,7 @@ const GithubStatItem = ({
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
           <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
-            {value}
+            {formatNumber(value)}
           </span>
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}
         </div>

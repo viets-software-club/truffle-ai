@@ -12,7 +12,7 @@ type Props = {
 
 const SidebarBox = ({ title, children }: Props) => (
   <div className={css.sidebarBox}>
-    <h1 className={css.sidebarBox__title}>{title}</h1>
+    <h3 className={css.sidebarBox__title}>{title}</h3>
     {children}
   </div>
 )

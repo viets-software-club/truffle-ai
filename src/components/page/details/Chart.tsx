@@ -14,6 +14,7 @@ import { FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { subMonths } from 'date-fns'
 import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
+import formatNumber from '@/util/formatNumber'
 
 type ChartData = {
   name: string
@@ -42,7 +43,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>)
     return (
       <div className="rounded border border-gray-800 bg-gray-900 p-2 text-xs text-white">
         <p>{label}</p>
-        <p className="mt-2 font-bold">{payload[0].value}</p>
+        <p className="mt-2 font-bold">{formatNumber(parseFloat(payload[0].value as string))}</p>
       </div>
     )
   }
@@ -106,7 +107,7 @@ const Chart = ({ data }: ChartProps) => {
   }
 
   return (
-    <div className="flex w-full flex-row border-b border-gray-800 px-7 py-8">
+    <div className="flex w-full flex-row px-7 py-8">
       {data.length === 0 ? (
         <p>No data</p>
       ) : (
@@ -196,10 +197,7 @@ const Chart = ({ data }: ChartProps) => {
                 stroke="#858699"
               />
 
-              <Tooltip
-                content={<CustomTooltip active={undefined} payload={undefined} label={undefined} />}
-                cursor={{ stroke: '#858699', strokeWidth: 1 }}
-              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#858699', strokeWidth: 1 }} />
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 

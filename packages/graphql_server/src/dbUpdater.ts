@@ -1,15 +1,11 @@
 import { fetchTrendingRepos } from './scraping/githubScraping'
-import {
-  insertProject,
-  updateProjectELI5,
-  updateProjectTrendingState,
-  updateRepo
-} from './processRepo'
+import { insertProject, updateProjectTrendingState, updateProject } from './processRepo'
 import supabase from './supabase'
 import { TrendingState } from '../types/processRepo'
 
 /**
- * Updates the database with the current trending repositories. Also Deletes old projects.
+ * Updates the database with the current trending repositories.
+ * Also Deletes or updates old projects.
  */
 export const dbUpdater = async () => {
   // set all trending states of the repos in the db to false
@@ -43,6 +39,7 @@ export const dbUpdater = async () => {
   organizationsRetrievalError &&
     console.error('Error while getting all organizations: \n', organizationsRetrievalError)
 
+  // get all persons in the database
   const { data: people, error: personsRetrievalError } = await supabase
     .from('associated_person')
     .select('id, name')
@@ -54,7 +51,7 @@ export const dbUpdater = async () => {
     for (const repo of oldRepos) {
       let owner = organizations?.filter((org) => org.id === repo.owning_organization)[0]?.name
       if (!owner) owner = people?.filter((person) => person.id === repo.owning_person)[0]?.name
-      if (owner) await updateRepo(repo.name as string, owner)
+      if (owner) await updateProject(repo.name as string, owner)
     }
   }
 }
@@ -75,6 +72,9 @@ const getCutOffTime: (hours: number, minutes: number) => string = (
   return cutoffTime.toISOString()
 }
 
+/**
+ * Sets the trending states of all projects to false.
+ */
 const purgeTrendingState = async () => {
   await supabase
     .from('project')

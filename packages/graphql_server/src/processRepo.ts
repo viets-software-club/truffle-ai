@@ -12,7 +12,6 @@ import { StarRecord } from '../types/starHistory'
 import { TrendingState } from '../types/processRepo'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { getELI5DescriptionForRepositoryFromText } from './api/openAIApi'
-import { get } from 'http'
 
 /**
  * Adds a repo to the database.
@@ -53,7 +52,7 @@ export const insertProject = async (name: string, owner: string, trendingState: 
  * @param {string} name - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
  */
-export const updateRepo = async (name: string, owner: string) => {
+export const updateProject = async (name: string, owner: string) => {
   // get the github data
   const githubData: GitHubInfo | null = await getGithubData(name, owner)
   if (!githubData) return null
@@ -69,11 +68,17 @@ export const updateRepo = async (name: string, owner: string) => {
     starHistory
   ) as ProjectUpdate
 
-  const updated = await updateProject(name, owner, projectUpdate)
+  const updated = await updateSupabaseProject(name, owner, projectUpdate)
 
   updated ? console.log('updated ', name, 'owned by', owner) : null
 }
 
+/**
+ * Updates the trending state of a repo
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @param {string} trendingState - The trending state that should be set to true
+ */
 export const updateProjectTrendingState = async (
   name: string,
   owner: string,
@@ -82,11 +87,22 @@ export const updateProjectTrendingState = async (
   const projectUpdate: ProjectUpdate = {}
   projectUpdate[trendingState] = true
 
-  const updated = await updateProject(name, owner, projectUpdate)
+  const updated = await updateSupabaseProject(name, owner, projectUpdate)
   updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
 }
 
-export const updateProject = async (name: string, owner: string, updatedProject: ProjectUpdate) => {
+/**
+ * Updates the supabase entry of a repo
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @param {ProjectUpdate} updatedProject - The Changes that should be put on supabase
+ * @returns {boolean} - Whether the update was successful
+ */
+export const updateSupabaseProject = async (
+  name: string,
+  owner: string,
+  updatedProject: ProjectUpdate
+) => {
   const owningOrganizationID = await getOrganizationID(owner)
 
   const { error: ownerUpdateError } = await supabase
@@ -106,6 +122,11 @@ export const updateProject = async (name: string, owner: string, updatedProject:
   return ownerUpdateError2 ? false : true
 }
 
+/**
+ * Updates the eli5 of a repo
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
 export const updateProjectELI5 = async (name: string, owner: string) => {
   try {
     const readMe = (await fetchRepositoryReadme(owner, name)).slice(0, 2500)
@@ -113,11 +134,11 @@ export const updateProjectELI5 = async (name: string, owner: string) => {
       readMe,
       process.env.OPENAI_API_KEY
     )
-    const updated = await updateProject(name, owner, { eli5: description })
-    console.log('updated eli5 of ', name, 'owned by', owner)
+    const updated = await updateSupabaseProject(name, owner, { eli5: description })
+    updated && console.log('updated eli5 of ', name, 'owned by', owner)
   } catch (e) {
     console.error('Error while fetching readme for ', name, 'owned by', owner)
-    await updateProject(name, owner, {
+    await updateSupabaseProject(name, owner, {
       eli5: 'ELI5/description could not be generated for this project'
     })
   }

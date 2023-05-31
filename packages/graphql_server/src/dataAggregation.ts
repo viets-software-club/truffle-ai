@@ -1,14 +1,16 @@
 import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { getOrganizationInfo, getRepoInfo, getUserInfo } from './api/githubApi'
-import {
-  OrganizationInsertion,
-  ProjectInsertion,
-  UserInsertion,
-  ProjectUpdate
-} from '../types/dataAggregation'
+import { OrganizationInsertion, UserInsertion } from '../types/dataAggregation'
 import supabase from './supabase'
 import { StarRecord } from '../types/starHistory'
 
+/**
+ * Formats the github data into a format that can be inserted into the database.
+ * The Format can also be used for database updates.
+ * @param {GitHubInfo} githubData - The github statistics to be formatted
+ * @param {StarRecord} starHistory The starHistory to be formatted.
+ * @returns {ProjectInsertion} The formatted data.
+ */
 export const turnIntoProjectInsertion = (githubData: GitHubInfo, starHistory: StarRecord[]) => {
   const languages = githubData?.languages?.edges?.map((edge) => ({
     name: edge.node?.name || '',
@@ -31,6 +33,11 @@ export const turnIntoProjectInsertion = (githubData: GitHubInfo, starHistory: St
   }
 }
 
+/**
+ * Returns the githubData for the specified repo.
+ * @param {string} name - The name of the repository
+ * @param {string} owner The name of the owner of the repository.
+ */
 export const getGithubData = async (name: string, owner: string) => {
   // query send to github. If this is changed the corresponding types have to be changed as well
   const query = `query {

@@ -157,7 +157,7 @@ export const getOrganizationID = async (owner: string) => {
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
 export const getPersonID = async (owner: string) => {
-  const { data: existing_person, error: personRetrievalError } = await supabase
+  const { data: existingPerson, error: personRetrievalError } = await supabase
     .from('associated_person')
     .select('id')
     .eq('login', owner)
@@ -165,7 +165,7 @@ export const getPersonID = async (owner: string) => {
     console.error('Error getting organization', owner, 'from database: \n', personRetrievalError)
 
   // if a person with this name is already in the database return the id
-  if (existing_person?.[0]?.id) return existing_person[0].id
+  if (existingPerson?.[0]?.id) return existingPerson[0].id
 
   // if not get the data from github and insert it into the database
   const query = `
@@ -209,5 +209,5 @@ export const getPersonID = async (owner: string) => {
 
   const { data: person } = await supabase.from('associated_person').select('id').eq('login', owner)
 
-  return existing_person?.[0]?.id ? existing_person[0].id : null
+  return person?.[0]?.id ? person[0].id : null
 }

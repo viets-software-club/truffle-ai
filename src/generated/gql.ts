@@ -738,6 +738,7 @@ export type TrendingProjectsQuery = {
         pullRequestCount?: number | null
         contributorCount?: number | null
         websiteUrl?: string | null
+        starHistory?: Array<any | null> | null
         organization?: {
           __typename?: 'Organization'
           id: any
@@ -802,6 +803,7 @@ export const TrendingProjectsDocument = gql`
           pullRequestCount
           contributorCount
           websiteUrl
+          starHistory
           organization {
             id
             nodeId

@@ -11,6 +11,7 @@ query TrendingProjects {
         pullRequestCount
         contributorCount
         websiteUrl
+        starHistory
         organization {
           id
           nodeId

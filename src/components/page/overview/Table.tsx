@@ -7,7 +7,7 @@ type TableProps = {
 }
 
 const Table = ({ table }: TableProps) => (
-  <table className="mx-6 my-3.5 w-full">
+  <table className="mx-6 my-3.5">
     <thead>
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>

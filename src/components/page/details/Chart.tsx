@@ -54,7 +54,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>)
 const Chart = ({ data }: ChartProps) => {
   const dataTypes = data.map((d) => d.name)
 
-  const [showSecondLine, setShowSecondLine] = useState(false)
   const [dataType, setDataType] = useState(dataTypes[0])
 
   const [modalValue, setModalValue] = useState('Select Value')
@@ -113,14 +112,6 @@ const Chart = ({ data }: ChartProps) => {
       ) : (
         <div className="flex w-full flex-col gap-3">
           <div className="flex flex-row gap-3 ">
-            <div>
-              <Button
-                variant="normal"
-                text={showSecondLine ? 'Hide Second Line' : 'Show Second Line'}
-                onClick={() => setShowSecondLine(!showSecondLine)}
-              />
-            </div>
-
             <div className="flex flex-col">
               <Button
                 variant="normal"
@@ -202,8 +193,6 @@ const Chart = ({ data }: ChartProps) => {
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
               <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
-
-              {showSecondLine && <Line type="monotone" dataKey="value2" stroke="#82ca9d" />}
             </LineChart>
           </ResponsiveContainer>
         </div>

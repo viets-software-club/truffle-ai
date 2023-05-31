@@ -103,7 +103,14 @@ const Details = ({ id }: DetailsProps) => {
             tags={['React', 'Static Site Generation', 'TypeScript']}
           />
 
-          <Chart data={project.starHistory as ChartProps['data']} />
+          <Chart
+            datasets={[
+              {
+                name: project.name as string,
+                data: project.starHistory as ChartProps['datasets'][0]['data']
+              }
+            ]}
+          />
 
           {/* @TODO Add real data */}
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">

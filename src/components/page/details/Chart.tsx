@@ -24,13 +24,16 @@ const TimeframeOptions = [
 ]
 
 export type ChartProps = {
-  data: {
-    date: string
-    count: number
+  datasets: {
+    name: string
+    data: {
+      date: string
+      count: number
+    }[]
   }[]
 }
 
-const Chart = ({ data }: ChartProps) => {
+const Chart = ({ datasets }: ChartProps) => {
   const [modalValue, setModalValue] = useState('Select Value')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -49,7 +52,7 @@ const Chart = ({ data }: ChartProps) => {
     setTimeframeModalOpen(false)
   }, [])
 
-  const [chartData] = useState<ChartProps['data']>(data)
+  const [chartData] = useState<ChartProps['datasets']>([...datasets])
 
   const toggleModal = useCallback(() => {
     setIsModalOpen((prevState) => !prevState)
@@ -57,7 +60,7 @@ const Chart = ({ data }: ChartProps) => {
 
   return (
     <div className="flex w-full flex-row px-7 py-8">
-      {data.length === 0 ? (
+      {datasets.length === 0 ? (
         <p>No data</p>
       ) : (
         <div className="flex w-full flex-col gap-3">
@@ -115,11 +118,10 @@ const Chart = ({ data }: ChartProps) => {
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
               height={300}
-              data={chartData}
               margin={{
-                top: 30,
-                right: 40,
-                left: -15,
+                top: 25,
+                right: 10,
+                left: -25,
                 bottom: 5
               }}
             >
@@ -127,9 +129,12 @@ const Chart = ({ data }: ChartProps) => {
 
               <XAxis
                 dataKey="date"
+                type="number"
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 tickFormatter={formatDate}
                 stroke="#858699"
+                allowDataOverflow
+                domain={['dataMin', 'dataMax']}
               />
 
               <YAxis
@@ -137,13 +142,28 @@ const Chart = ({ data }: ChartProps) => {
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 stroke="#858699"
                 tickFormatter={formatNumber}
+                domain={[0, 'dataMax']}
               />
 
               <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#858699', strokeWidth: 1 }} />
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
-              <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 6 }} />
+              {chartData.map((dataset) => (
+                <Line
+                  key={dataset.name}
+                  data={dataset.data.map((item) => ({
+                    ...item,
+                    date: new Date(item.date).getTime()
+                  }))}
+                  dataKey="count"
+                  name={dataset.name}
+                  type="monotone"
+                  stroke="#8884d8"
+                  dot={false}
+                  activeDot={{ r: 4 }}
+                />
+              ))}
             </LineChart>
           </ResponsiveContainer>
         </div>

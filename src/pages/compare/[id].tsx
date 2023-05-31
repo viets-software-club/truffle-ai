@@ -6,12 +6,11 @@ import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
 import columns from '@/components/pure/ProjectsTable/columns'
-import Chart from '@/components/page/details/Chart'
+import Chart, { ChartProps } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/Filterbar'
 import Page from '@/components/side-effects/Page'
-import { data as chartData } from '@/data/detailPageMocks'
 
 const nullFunc = () => null
 
@@ -37,7 +36,7 @@ const Compare = () => {
 
   return (
     <Page>
-      <div className="flex w-full flex-col rounded-lg py-3.5">
+      <div className="flex w-full flex-col">
         <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
 
         <FilterBar />
@@ -61,7 +60,15 @@ const Compare = () => {
           </div>
         </div>
 
-        <Chart data={chartData} />
+        {/* @TODO Remove slice to put all projects into chart */}
+        <Chart
+          datasets={projects
+            .map((project) => ({
+              name: project.name as string,
+              data: project.starHistory as ChartProps['datasets'][0]['data']
+            }))
+            .slice(0, 1)}
+        />
 
         <div className="flex flex-row items-center justify-between px-6 py-3.5">
           <div className="flex flex-col">

@@ -8,7 +8,7 @@ const Home = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.ctrlKey && event.key === 'k') {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
         event.preventDefault()
         setOpenModal(true)
       } else if (event.key === 'Escape') {

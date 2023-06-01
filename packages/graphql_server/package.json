@@ -11,15 +11,16 @@
   "scripts": {
     "dev": "concurrently -c 'magenta' 'tsc -w' '$npm_package_config_env_dev && nodemon dist/index.js'",
     "build": "tsc",
-    "serve": "$npm_package_config_env_dev && node dist/index.js"
+    "serve": "$npm_package_config_env_dev && node dist/index.js",
+    "update-types": "$npm_package_config_env_dev && npx supabase gen types typescript --project-id \"$SUPABASE_REFERENCE_ID\" > types/supabase.d.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.23.0",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "fastify": "^4.17.0",
     "mercurius": "^13.0.0",
-    "showdown": "^2.1.0",
-    "supabase": "^1.62.4"
+    "showdown": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",

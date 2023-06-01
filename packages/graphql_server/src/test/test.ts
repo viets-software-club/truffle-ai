@@ -1,8 +1,8 @@
-import { timeMode } from '../src/starHistory/types'
-import * as scrape from '../src/scraping/githubScraping'
-import * as github from '../src/api/githubApi'
-import * as eli5 from '../src/api/openAIApi'
-import * as starHistory from '../src/starHistory/starHistory'
+import { timeMode } from '../../types/githubScraping'
+import * as scrape from '../scraping/githubScraping'
+import * as github from '../api/githubApi'
+import * as eli5 from '../api/openAIApi'
+import * as starHistory from '../starHistory/starHistory'
 
 /** Main function to test the functionality of the different methods
  * and how to correctly call them and what the intended workflow is about
@@ -13,9 +13,9 @@ async function main(timeMode: timeMode) {
   const trendingSplit: string[] | undefined = await scrape.fetchTrendingRepos(timeMode)
 
   // your personal GitHub authToken
-  const authToken: string = process.env.GITHUB_API_KEY as string
+  const authToken: string = process.env.GITHUB_API_TOKEN
   // your personal OpenAI API Key
-  const OPENAI_API_KEY: string = process.env.OPENAI_API_KEY as string
+  const OPENAI_API_KEY: string = process.env.OPENAI_API_KEY
 
   // check if any repos were actually found
   if (!trendingSplit) {

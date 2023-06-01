@@ -10,8 +10,8 @@ export async function getELI5DescriptionForRepositoryFromText(
   OPENAI_API_KEY: string
 ) {
   const question =
-    'The following text describes a prorgamming project that is current in development. Explain to me what the project is trying to archieve without telling me' +
-    "how they are doing so. Please use arround 50 words and don't get too technical" +
+    'The following text describes a prorgamming project that is currently in development. Explain to me what the project is trying to archieve without telling me' +
+    "how they are doing so. Please use arround 80 words and don't get too technical" +
     readME
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {

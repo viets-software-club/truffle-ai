@@ -5,3 +5,4 @@ dist
 .mesh
 .DS_Store
 .eslintcache
+playground.ts

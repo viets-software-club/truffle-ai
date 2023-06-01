@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import * as cheerio from 'cheerio'
 import * as showdown from 'showdown'
-
 import { Developer, DeveloperRepo, timeMode } from '../../types/githubScraping'
 
 /** Get all the information from the GitHub trending page; all the repos and the names of their creators

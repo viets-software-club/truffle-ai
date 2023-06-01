@@ -78,7 +78,7 @@ export async function getUserInfo(query: string, authToken: string): Promise<Git
  * @param owner - The owner of the GitHub repository.
  * @param repo - The name of the GitHub repository.
  * @param authToken - Github API token
- * @returns A Promise that resolves to the total unique contributor count; returns 0 on error
+ * @returns A Promise that resolves to the total unique contributor count
  */
 export async function getContributorCount(
   owner: string,
@@ -115,25 +115,21 @@ export async function getContributorCount(
     repo
   }
 
-  try {
-    const response: AxiosResponse<ContributorResponse> = await axios.post(
-      githubApiUrl,
-      { query, variables },
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
+  const response: AxiosResponse<ContributorResponse> = await axios.post(
+    githubApiUrl,
+    { query, variables },
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`
       }
+    }
+  )
+
+  const contributors: string[] =
+    response.data.data.repository.defaultBranchRef.target.history.edges.map(
+      (edge: Edge) => edge.node.author?.user?.login
     )
+  const uniqueContributors = Array.from(new Set(contributors))
 
-    const contributors: string[] =
-      response.data.data.repository.defaultBranchRef.target.history.edges.map(
-        (edge: Edge) => edge.node.author?.user?.login
-      )
-    const uniqueContributors = Array.from(new Set(contributors))
-
-    return uniqueContributors.length
-  } catch (error) {
-    return 0
-  }
+  return uniqueContributors.length
 }

@@ -106,6 +106,7 @@ const Details = ({ id }: DetailsProps) => {
           <Chart
             datasets={[
               {
+                id: project.id as string,
                 name: project.name as string,
                 data: project.starHistory as React.ComponentProps<
                   typeof Chart

@@ -25,6 +25,7 @@ const TimeframeOptions = [
 
 type ChartProps = {
   datasets: {
+    id: string
     name: string
     data: {
       date: string
@@ -151,7 +152,7 @@ const Chart = ({ datasets }: ChartProps) => {
 
               {chartData.map((dataset) => (
                 <Line
-                  key={dataset.name}
+                  key={dataset.id}
                   data={dataset.data.map((item) => ({
                     ...item,
                     date: new Date(item.date).getTime()

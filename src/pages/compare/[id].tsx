@@ -64,6 +64,7 @@ const Compare = () => {
         <Chart
           datasets={projects
             .map((project) => ({
+              id: project.id as string,
               name: project.name as string,
               data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
             }))

@@ -20,14 +20,14 @@ type ButtonProps = {
 const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
-  ['normal', 'bg-gray-850 border border-gray-800 px-3 py-1.5'],
-  ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-3 py-1.5'],
-  ['noBG', 'border border-gray-800 px-3 py-1.5'],
-  ['noBorderNoBG', 'px-3 py-1.5'],
-  ['highlighted', 'bg-indigo-500 px-3 py-1.5'],
+  ['normal', 'bg-gray-850 border border-gray-800 px-2 py-1.5'],
+  ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-2 py-1.5'],
+  ['noBG', 'border border-gray-800 px-2 py-1.5'],
+  ['noBorderNoBG', 'px-2 py-1.5'],
+  ['highlighted', 'border border-indigo-500 hover:border-gray-800 bg-indigo-500 px-2 py-1.5'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
   ['onlyIconNoBorderNoBG', ''],
-  ['filter', 'border border-dashed border-gray-800 px-3 py-1.5']
+  ['filter', 'border border-dashed border-gray-800 px-2 py-1.5']
 ])
 
 const Button = ({
@@ -44,16 +44,16 @@ const Button = ({
     fullWidth ? 'w-full' : ''
   }`
   const textNode = text && (
-    <span key="1" className={`text-14 ${textColor}`}>
+    <span key="1" className={`text-14 leading-none ${textColor}`}>
       {text}
     </span>
   )
   const iconNode =
     Icon &&
     (variant === 'onlyIcon' || variant === 'onlyIconNoBorderNoBG' ? (
-      <Icon key="2" className={`h-4 w-4 ${iconColor}`} />
+      <Icon key="2" className={iconColor} />
     ) : (
-      <Icon key="2" className={`${order === 'ltr' ? 'mr-2' : 'ml-2'} h-4 w-4 ${iconColor}`} />
+      <Icon key="2" className={`${order === 'ltr' ? 'mr-1.5' : 'ml-1.5'} ${iconColor}`} />
     ))
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
 

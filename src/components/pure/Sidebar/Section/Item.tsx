@@ -15,6 +15,9 @@ type ItemProps = {
   editable: boolean
 }
 
+/**
+ * Item for main sidebar (3 types: overview, category/ folder, project)
+ */
 const Item = ({
   id,
   Icon,
@@ -56,7 +59,8 @@ const Item = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`${path}/${id}`}>
+      {/* Only add URL parameter if item links to compare or details page */}
+      <Link href={path + (['/details', '/compare'].includes(path) ? `/${id}` : '')}>
         <div className="inline-flex w-full items-center justify-between py-2.5 pl-7">
           <div
             className={`flex flex-row items-center justify-center gap-[5px] 

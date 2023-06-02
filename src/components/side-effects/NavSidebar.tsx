@@ -3,20 +3,31 @@ import { withRouter } from 'next/router'
 import {
   FiBookOpen as BookOpen,
   FiCompass as Compass,
-  FiBookmark as Bookmark
+  FiBookmark as Bookmark,
+  FiSettings as Settings
 } from 'react-icons/fi'
 import Sidebar from '@/components/pure/Sidebar'
 import sidebarCategories from '@/data/sidebarMock'
 
 const renderFooter = () => (
-  <Sidebar.Section.Item
-    id={0}
-    Icon={BookOpen}
-    text="Help & Support"
-    path="docs"
-    showIcon
-    editable={false}
-  />
+  <>
+    <Sidebar.Section.Item
+      id={0}
+      Icon={Settings}
+      text="Settings"
+      path="settings"
+      showIcon
+      editable={false}
+    />
+    <Sidebar.Section.Item
+      id={1}
+      Icon={BookOpen}
+      text="Help & Support"
+      path="docs"
+      showIcon
+      editable={false}
+    />
+  </>
 )
 
 const initialSections = [
@@ -35,7 +46,7 @@ const initialSections = [
         id: 2,
         Icon: Bookmark,
         text: 'All bookmarks',
-        path: '/bookmarks',
+        path: '/',
         showIcon: true,
         editable: false
       }
@@ -47,6 +58,9 @@ const initialSections = [
   }
 ]
 
+/**
+ * Main sidebar on the left
+ */
 const NavSidebar = () => {
   const [sections] = useState(initialSections)
 

@@ -33,7 +33,12 @@ const App = ({
 export default withUrqlClient(
   () => ({
     url: BASE_URL,
-    exchanges: [cacheExchange, fetchExchange]
+    exchanges: [cacheExchange, fetchExchange],
+    fetchOptions: () => ({
+      headers: {
+        Authorization: typeof window !== 'undefined' ? document.cookie : ''
+      }
+    })
   }),
   { ssr: false }
 )(App)

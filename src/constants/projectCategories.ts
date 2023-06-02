@@ -1,4 +1,4 @@
-enum RepositoryCategories {
+enum ProjectCategories {
   // Developer Tools subcategories
   CODE_EDITORS = 'Code Editors',
   VERSION_CONTROL = 'Version Control',
@@ -32,4 +32,4 @@ enum RepositoryCategories {
   CYBERSECURITY = 'Cybersecurity'
 }
 
-export default RepositoryCategories
+export default ProjectCategories

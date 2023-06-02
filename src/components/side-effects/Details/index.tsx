@@ -16,7 +16,7 @@ import Error from '@/components/pure/Error'
 import Chart, { ChartProps } from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery } from '@/generated/gql'
+import { Project, useProjectDetailsQuery } from '@/graphql/generated/gql'
 import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
 
 // @TODO Implement handler for navigation

@@ -8,7 +8,7 @@ import {
   StarIcon
 } from '@primer/octicons-react'
 import { founderListMock, socialMediaListMock } from '@/data/detailPageMocks'
-import { Project } from '@/generated/gql'
+import { Project } from '@/graphql/generated/gql'
 import Button from '@/components/pure/Button'
 import Sidebar from '@/components/pure/Sidebar'
 import GitHubMetricIcon from './GitHubMetricIcon'

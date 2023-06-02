@@ -4,7 +4,7 @@ import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
 import { VscIssues } from 'react-icons/vsc'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
-import { Project } from '@/generated/gql'
+import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
 import Logo from '@/assets/logo.svg'
 

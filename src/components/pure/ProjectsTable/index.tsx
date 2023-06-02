@@ -1,5 +1,5 @@
 import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
-import { Project, useTrendingProjectsQuery } from '@/generated/gql'
+import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import Table from '@/components/page/overview/Table'

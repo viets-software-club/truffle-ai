@@ -6,7 +6,7 @@ import { AiOutlinePlus, AiOutlineCalendar } from 'react-icons/ai'
 import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
 import { Menu, Transition } from '@headlessui/react'
 import Button from '@/components/pure/Button'
-import { Project } from '@/generated/gql'
+import { Project } from '@/graphql/generated/gql'
 
 type TopBarProps = {
   columns: Column<Project, unknown>[]

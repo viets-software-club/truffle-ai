@@ -1,7 +1,7 @@
 import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { Project, useTrendingProjectsQuery } from '@/generated/gql'
+import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'

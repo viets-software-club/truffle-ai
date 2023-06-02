@@ -1,6 +1,6 @@
 import { useReactTable, flexRender } from '@tanstack/react-table'
 import Link from 'next/link'
-import { Project } from '@/generated/gql'
+import { Project } from '@/graphql/generated/gql'
 
 type TableProps = {
   table: ReturnType<typeof useReactTable<Project>>

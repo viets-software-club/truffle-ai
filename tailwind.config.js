@@ -13,6 +13,7 @@ module.exports = {
         'radial-gradient': 'radial-gradient(circle at 50% -70%, #191D3B, #191D3B, #191A23)'
       },
       fontSize: {
+        10: '10px',
         12: '12px',
         14: '14px',
         16: '16px',
@@ -44,6 +45,7 @@ module.exports = {
           100: '#EEEFFC',
           300: '#D2D3E0',
           500: '#858699',
+          600: '#2d2e47',
           700: '#26273B',
           800: '#2C2D3C',
           850: '#1F2130',

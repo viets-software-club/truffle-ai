@@ -7,9 +7,13 @@ type InformationRowProps = {
   tags: { id: ID; name: string }[]
 }
 
+/**
+ * Single row of projects table
+ */
 const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
   <div className="flex flex-row items-center p-2 text-14 font-normal transition-colors duration-100 hover:bg-gray-850">
-    <h1 className="text-14">{name}</h1>
+    <h4 className="text-14">{name}</h4>
+
     {tags.map(({ id, name: tagName }) => (
       <span
         key={id}
@@ -18,6 +22,7 @@ const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
         {tagName}
       </span>
     ))}
+
     {githubStats.map((data) => (
       <GithubStatItem
         key={data.id}

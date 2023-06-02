@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
-import Loading from '@/pages/loading'
+import Loading from '@/components/pure/Loading'
 
+/**
+ * HOC for pages that require authentication
+ */
 export default function withAuth<P extends JSX.IntrinsicAttributes>(
   WrappedComponent: React.ComponentType<P>
 ) {

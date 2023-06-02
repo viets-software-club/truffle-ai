@@ -1,8 +1,8 @@
-import RepositoryTable from '@/components/pure/RepositoryTable'
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import { useEffect, useState } from 'react'
 import CommandInterface from '@/components/CommandInterface/CommandInterface'
+import ProjectsTable from '@/components/pure/ProjectsTable'
 
 const Home = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
@@ -27,8 +27,9 @@ const Home = () => {
   return (
     <Page>
       {openModal && <CommandInterface action={closeModel} />}
-      <RepositoryTable />
+      <ProjectsTable />
     </Page>
   )
 }
+
 export default withAuth(Home)

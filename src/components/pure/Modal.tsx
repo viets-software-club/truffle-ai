@@ -6,6 +6,9 @@ type ModalProps = {
   children: ReactNode
 }
 
+/**
+ * Simple modal (incl. overlay)
+ */
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   if (!isOpen) return null
 
@@ -26,7 +29,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
       {/* Modal */}
       <div className="z-50 m-0">
-        <div className="fixed bg-gray-850">{children}</div>
+        <div className="absolute bg-gray-850">{children}</div>
       </div>
     </>
   )

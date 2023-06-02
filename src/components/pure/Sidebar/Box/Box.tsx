@@ -3,6 +3,7 @@ import GithubStatItem from './GithubStatItem'
 import SocialMediaItem from './SocialMediaItem'
 import FounderItem from './FounderItem'
 import CompanyItem from './CompanyItem'
+import css from './Box.module.sass'
 
 type Props = {
   title: string
@@ -10,8 +11,8 @@ type Props = {
 }
 
 const SidebarBox = ({ title, children }: Props) => (
-  <div className="border-y border-solid border-gray-800 py-2.5 text-14 font-normal leading-4">
-    <h1 className="px-7 py-2.5 text-12 uppercase text-gray-300">{title}</h1>
+  <div className={css.sidebarBox}>
+    <h3 className={css.sidebarBox__title}>{title}</h3>
     {children}
   </div>
 )

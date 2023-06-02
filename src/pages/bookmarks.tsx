@@ -1,10 +1,10 @@
-import RepositoryTable from '@/components/pure/RepositoryTable'
+import ProjectsTable from '@/components/pure/ProjectsTable'
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 
 const Bookmarks = () => (
   <Page>
-    <RepositoryTable />
+    <ProjectsTable />
   </Page>
 )
 export default withAuth(Bookmarks)

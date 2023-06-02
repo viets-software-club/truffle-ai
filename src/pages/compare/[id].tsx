@@ -6,7 +6,7 @@ import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
 import columns from '@/components/pure/ProjectsTable/columns'
-import Chart, { ChartProps } from '@/components/page/details/Chart'
+import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/Filterbar'
@@ -65,7 +65,7 @@ const Compare = () => {
           datasets={projects
             .map((project) => ({
               name: project.name as string,
-              data: project.starHistory as ChartProps['datasets'][0]['data']
+              data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
             }))
             .slice(0, 1)}
         />

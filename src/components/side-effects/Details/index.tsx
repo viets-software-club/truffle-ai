@@ -13,7 +13,7 @@ import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
 import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
-import Chart, { ChartProps } from '@/components/page/details/Chart'
+import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery } from '@/graphql/generated/gql'
@@ -107,7 +107,9 @@ const Details = ({ id }: DetailsProps) => {
             datasets={[
               {
                 name: project.name as string,
-                data: project.starHistory as ChartProps['datasets'][0]['data']
+                data: project.starHistory as React.ComponentProps<
+                  typeof Chart
+                >['datasets'][0]['data']
               }
             ]}
           />

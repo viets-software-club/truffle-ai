@@ -23,7 +23,7 @@ const TimeframeOptions = [
   { value: 12, label: '1 Year' }
 ]
 
-export type ChartProps = {
+type ChartProps = {
   datasets: {
     name: string
     data: {

@@ -1,9 +1,6 @@
 # This is a multi-stage Dockerfile
 # run this file only from ../../
 
-# available arguments from --build-arg
-ARG SERVER_PORT
-
 # build stage
 FROM node:18-alpine as build
 ## init envs
@@ -34,8 +31,6 @@ RUN npm run build
 # serve stage
 FROM node:18-alpine as serve
 ## init envs
-ARG SERVER_PORT
-ENV SERVER_PORT=${SERVER_PORT}
 ENV NODE_ENV=production
 ## copy package.json's to setup workspaces
 WORKDIR /app
@@ -47,6 +42,5 @@ COPY --from=build /app/packages/graphql_server/package.json /app/packages/graphq
 COPY --from=build /app/packages/graphql_server/dist /app/packages/graphql_server/dist
 ## install production dependencies
 RUN npm ci --omit=dev -w graphql_server
-## serve on SERVER_PORT
-EXPOSE ${SERVER_PORT}
+## serve
 CMD ["npm", "run", "serve", "-w", "graphql_server"]

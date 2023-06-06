@@ -4,7 +4,6 @@
   "description": "A server with data available over a graphql endpoint",
   "license": "MIT",
   "private": true,
-  "main": "src/index.ts",
   "config": {
     "env_dev": ". ../../env.sh"
   },

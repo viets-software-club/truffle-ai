@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;&display=swap');
 
 :root {
   --bgPrimary: #191a23;
@@ -18,7 +18,7 @@
   --green: #4cb782;
 
   /* Add Inter font-family and size variations */
-  --font-family-inter: 'Inter', sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   --font-size-1: 0.625rem;
   /* 10px */
   --font-size-2: 0.75rem;
@@ -52,5 +52,5 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: var(--bgPrimary);
-  font-family: var(--font-family-inter);
+  font-family: var(--font-family);
 }

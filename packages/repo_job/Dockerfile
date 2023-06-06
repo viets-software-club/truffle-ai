@@ -5,7 +5,6 @@
 FROM node:18-alpine as build
 ## init envs
 ENV NODE_ENV=build
-ENV TZ=Europe/Berlin
 ## copy package.json's to setup workspaces
 WORKDIR /app
 COPY package.json package.json
@@ -29,12 +28,9 @@ RUN npm run build
 
 #########################################################################
 
-# serve stage
-FROM node:18-alpine as serve
+# run stage
+FROM node:18-alpine as run
 ## init envs
-ARG REPO_JOB_PORT
-ENV REPO_JOB_PORT=${REPO_JOB_PORT}
-ENV TZ=Europe/Berlin
 ENV NODE_ENV=production
 ## copy package.json's to setup workspaces
 WORKDIR /app
@@ -45,6 +41,5 @@ COPY env.sh env.sh
 COPY --from=build /app/packages/repo_job/dist /app/packages/repo_job/dist
 ## install production dependencies
 RUN npm ci --omit=dev -w repo_job
-## serve on SERVER_PORT
-EXPOSE ${REPO_JOB_PORT}
+## start
 CMD ["npm", "run", "start", "-w", "repo_job"]

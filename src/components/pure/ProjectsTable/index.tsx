@@ -7,6 +7,7 @@ import columns from '@/components/pure/ProjectsTable/columns'
 import FilterBar from '@/components/page/overview/Filterbar'
 import { useEffect, useState } from 'react'
 import CommandInterface from '@/components/commandinterface/CommandInterface'
+import Table from '@/components/page/overview/Table'
 
 const nullFunc = () => null
 
@@ -54,6 +55,7 @@ const ProjectsTable = () => {
       <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
       <FilterBar />
       {openModal && <CommandInterface action={closeModel} />}
+      <Table table={table} />
     </div>
   )
 }

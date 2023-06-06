@@ -34,6 +34,7 @@ FROM node:18-alpine as serve
 ## init envs
 ARG REPO_JOB_PORT
 ENV REPO_JOB_PORT=${REPO_JOB_PORT}
+ENV TZ=Europe/Berlin
 ENV NODE_ENV=production
 ## copy package.json's to setup workspaces
 WORKDIR /app

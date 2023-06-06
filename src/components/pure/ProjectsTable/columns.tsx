@@ -6,7 +6,7 @@ import { VscIssues } from 'react-icons/vsc'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
-import Logo from '@/assets/logo.svg'
+import * as Logo from '@/assets/logo.svg'
 
 const columnHelper = createColumnHelper<Project>()
 
@@ -17,7 +17,6 @@ const columns = [
     header: 'Logo',
     // @TODO Add real logo
     // @TODO Fix next image types
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     cell: () => <Image src={Logo} alt="logo" className="ml-2 h-5 w-5" />
   }),
   // @TODO Adjust for user owners

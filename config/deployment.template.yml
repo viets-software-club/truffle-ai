@@ -56,5 +56,5 @@ spec:
         spec:
           containers:
             - name: truffle-ai-repo-cronjob
-            image: <IMAGE-TRENDING-JOB>
+              image: <IMAGE-REPO-JOB>
           restartPolicy: OnFailure

@@ -2,7 +2,6 @@
 # run this file only from ../../
 
 # available arguments from --build-arg
-ARG GATEWAY_PORT
 ARG SUPABASE_URL
 ARG SUPABASE_API_KEY
 ARG SUPABASE_GRAPHQL_URL
@@ -49,7 +48,6 @@ RUN npm run build
 # serve stage
 FROM node:18-alpine as serve
 ## init envs
-ARG GATEWAY_PORT
 ARG SUPABASE_URL
 ARG SUPABASE_API_KEY
 ARG SUPABASE_GRAPHQL_URL
@@ -69,6 +67,5 @@ COPY --from=build /app/packages/graphql_gateway/ /app/packages/graphql_gateway/
 COPY --from=build /app/packages/graphql_server/src/graphql/schema.ts /app/packages/graphql_server/src/graphql/schema.ts
 ## install production dependencies
 RUN npm ci --omit=dev -w graphql_gateway
-## serve on GATEWAY_PORT
-EXPOSE ${GATEWAY_PORT}
+## serve
 CMD ["npm", "run", "serve", "-w", "graphql_gateway"]

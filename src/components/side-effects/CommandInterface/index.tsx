@@ -1,5 +1,5 @@
-import CommandInterfaceRecommendationRow, {
-  CommandInterfaceRecommendationRowType
+import RecommendationRow, {
+  RecommendationRowType
 } from '@/components/side-effects/CommandInterface/RecommendationRow'
 import React, { FocusEvent, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { FaCalendar } from 'react-icons/fa'
@@ -11,13 +11,11 @@ type CommandInterfaceProps = {
 }
 const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const [searchWord, setSearchWord] = React.useState<string>('')
-  const [recommendationList, setRecommendationList] = React.useState<
-    CommandInterfaceRecommendationRowType[]
-  >([])
+  const [recommendationList, setRecommendationList] = React.useState<RecommendationRowType[]>([])
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   const commandInterfaceWrapperRef = useRef<HTMLDivElement>(null)
 
-  const defaultList: CommandInterfaceRecommendationRowType[] = [
+  const defaultList: RecommendationRowType[] = [
     {
       Icon: FaCalendar,
       MenuText: 'Calendar',
@@ -66,7 +64,10 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   }
 
   return (
-    <div className="fixed flex h-screen w-full items-start justify-center" id="spotlight_wrapper">
+    <div
+      className="fixed flex h-screen w-full items-start justify-center bg-black bg-opacity-50 shadow-lg"
+      id="spotlight_wrapper"
+    >
       <div ref={commandInterfaceWrapperRef} className="w-1/2 pr-40">
         <input
           className="bg-blue-950 mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-4
@@ -81,7 +82,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
         <div className="h-0.5 bg-gray-600" />
         <ul className=" max-h-48 w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
           {defaultList.map((commandInterfaceRecommendationRowType) => (
-            <CommandInterfaceRecommendationRow
+            <RecommendationRow
               key={commandInterfaceRecommendationRowType.MenuText}
               Icon={commandInterfaceRecommendationRowType.Icon}
               MenuText={commandInterfaceRecommendationRowType.MenuText}

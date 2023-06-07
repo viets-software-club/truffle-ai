@@ -1,6 +1,6 @@
 import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { getOrganizationInfo, getRepoInfo, getUserInfo } from './api/githubApi'
-import { OrganizationInsertion, UserInsertion } from '../types/dataAggregation'
+import { OrganizationInsertion, PersonInsertion } from '../types/dataAggregation'
 import supabase from './supabase'
 import { StarRecord } from '../types/starHistory'
 
@@ -190,7 +190,7 @@ export const getPersonID = async (owner: string) => {
   // in the case that the user does not exist return null
   if (!userGHData) return null
 
-  const personDataDBFormat: UserInsertion = {
+  const personDataDBFormat: PersonInsertion = {
     name: userGHData.name,
     login: userGHData.login,
     avatar_url: userGHData.avatarUrl,

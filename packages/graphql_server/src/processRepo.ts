@@ -12,17 +12,25 @@ import { StarRecord } from '../types/starHistory'
 import { TrendingState } from '../types/processRepo'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { getELI5DescriptionForRepositoryFromText } from './api/openAIApi'
+import { repoIsAlreadyInDB } from './dbUpdater'
 
 /**
  * Adds a repo to the database.
  * This method should only be called when it is certain that a repo is not in the database yet.
  * @param {string} name - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
+ * @returns {boolean} True if the repo was added to the database.
  */
 export const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
+  // hacky solution for now. Only if the trendingState is null is it needed to check if
+  // the repo is already in the database, because right now when this function is called with a trending state
+  // then that call comes from dbUpdater.ts and there it is already checked if the repo is in the database
+  if (!trendingState && (await repoIsAlreadyInDB(name, owner))) {
+    return false
+  }
   // get the github data
   const githubData: GitHubInfo | null = await getGithubData(name, owner)
-  if (!githubData) return null
+  if (!githubData) return false
   // get the starHistory
   const starHistory: StarRecord[] = await getRepoStarRecords(
     owner + '/' + name,
@@ -34,15 +42,20 @@ export const insertProject = async (name: string, owner: string, trendingState: 
 
   projectInsertion.owning_organization = await getOrganizationID(owner)
   projectInsertion.owning_person = await getPersonID(owner)
-
-  projectInsertion[trendingState] = true
+  if (trendingState) {
+    projectInsertion[trendingState] = true
+  }
 
   // insert the repo into the database
   const { error: insertionError } = await supabase.from('project').insert([projectInsertion])
   await updateProjectELI5(name, owner)
-  insertionError &&
-    console.log('Error while inserting ', name, 'owned by', owner, ' \n Error: \n ', insertionError)
-  !insertionError && console.log('Inserted ', name, 'owned by', owner)
+  if (!insertionError) {
+    console.log('Inserted ', name, 'owned by', owner)
+    return true
+  }
+
+  console.log('Error while inserting ', name, 'owned by', owner, ' \n Error: \n ', insertionError)
+  return false
 }
 
 /**
@@ -85,7 +98,9 @@ export const updateProjectTrendingState = async (
   trendingState: TrendingState
 ) => {
   const projectUpdate: ProjectUpdate = {}
-  projectUpdate[trendingState] = true
+  if (trendingState) {
+    projectUpdate[trendingState] = true
+  }
 
   const updated = await updateSupabaseProject(name, owner, projectUpdate)
   updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
@@ -142,4 +157,22 @@ export const updateProjectELI5 = async (name: string, owner: string) => {
       eli5: 'ELI5/description could not be generated for this project'
     })
   }
+}
+
+/**
+ * This function should be put somewhere else later on. Credits to chatGPT for creating it
+ * Parses a GitHub URL and extracts the repository name and owner.
+ * @param {string} url - The GitHub URL.
+ * @returns {{name: string, owner: string} | null} An object containing the owner and repo names, or null if the URL is invalid.
+ */
+export const parseGitHubUrl = (url: string) => {
+  const pattern = /https?:\/\/github\.com\/([^/]+)\/([^/]+)(?:\/[\w.-]+)*$/
+  const match = pattern.exec(url)
+
+  if (match && match.length === 3) {
+    const [, owner, repo] = match
+    return { owner, repo }
+  }
+
+  return null
 }

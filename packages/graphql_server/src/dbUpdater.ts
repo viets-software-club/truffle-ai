@@ -107,10 +107,10 @@ const goThroughListOfRepos = async (repos: string[], trendingState: TrendingStat
 /**
  * Checks if the repo is already in the db.
  * @param {string} name - The name  of the repo.
- * @param {string} b - The name of the owner of the repo.
+ * @param {string} owner - The name of the owner of the repo.
  * @returns {boolean} True if the repo is already in the db.
  */
-const repoIsAlreadyInDB = async (name: string, owner: string) => {
+export const repoIsAlreadyInDB = async (name: string, owner: string) => {
   // check if there are repositories with the same name
   const { data: matchingRepos, error: checkRepoIfRepoInDBError } = await supabase
     .from('project')

@@ -1,5 +1,3 @@
-import CommandIntefaceDivider from '@/components/commandinterface/CommandInterfaceDivider'
-
 export type CommandInterfaceRecommendationRowType = {
   Icon?: IconComponentType | null
   MenuText: string
@@ -14,14 +12,14 @@ const CommandInterfaceRecommendationRow: React.FC<CommandInterfaceRecommendation
   Subtitle
 }: CommandInterfaceRecommendationRowType) => (
   <div className="cursor-pointer">
-    {Subtitle && <h4 className="text-m mt-2 p-4 py-2 text-gray-500">{Subtitle}</h4>}
+    {Subtitle && <h4 className="mt-2 p-4 py-2 text-gray-500">{Subtitle}</h4>}
     <div className="flex cursor-pointer items-center justify-between p-4 py-2">
       <div className="flex items-center px-2 py-1">
         {Icon && <Icon className="mr-8 h-[14px] w-[14px] bg-gray-500" />}
-        <span className="text-m">{MenuText}</span>
+        <span>{MenuText}</span>
       </div>
     </div>
-    {EnableDivider && <CommandIntefaceDivider />}
+    {EnableDivider && <div className="h-0.5 bg-gray-600" />}
   </div>
 )
 CommandInterfaceRecommendationRow.defaultProps = {

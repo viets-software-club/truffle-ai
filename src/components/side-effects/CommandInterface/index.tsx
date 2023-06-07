@@ -1,11 +1,10 @@
-import React, { FocusEvent, RefObject, useLayoutEffect, useRef } from 'react'
 import CommandInterfaceRecommendationRow, {
   CommandInterfaceRecommendationRowType
-} from '@/components/commandinterface/CommandInterfaceRecommendationRow'
+} from '@/components/side-effects/CommandInterface/RecommendationRow'
+import React, { FocusEvent, RefObject, useLayoutEffect, useRef } from 'react'
 import { FaCalendar } from 'react-icons/fa'
 import { IoMdGrid } from 'react-icons/io'
 import { MdArrowForward } from 'react-icons/md'
-import CommandIntefaceDivider from '@/components/commandinterface/CommandInterfaceDivider'
 
 type CommandInterfaceProps = {
   action: (event: FocusEvent<HTMLInputElement>) => void
@@ -40,7 +39,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const searchHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchWord(event.target.value)
     setRecommendationIsOpen(true)
-    // TODO Run search
+    // @TODO Run search
   }
 
   return (
@@ -57,7 +56,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
           onBlur={action}
           placeholder="Type a command or search..."
         />
-        <CommandIntefaceDivider />
+        <div className="h-0.5 bg-gray-600" />
         {recommendationIsOpen && (
           <ul className=" max-h-48 w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
             {defaultList.map((commandInterfaceRecommendationRowType) => (

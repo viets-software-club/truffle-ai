@@ -1,10 +1,17 @@
-import RecommendationRow, {
-  RecommendationRowType
-} from '@/components/side-effects/CommandInterface/RecommendationRow'
+import RecommendationRow from '@/components/side-effects/CommandInterface/RecommendationRow'
 import React, { FocusEvent, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
-import { FaCalendar } from 'react-icons/fa'
 import { IoMdGrid } from 'react-icons/io'
-import { MdArrowForward } from 'react-icons/md'
+import { MdArrowForward, MdEmail } from 'react-icons/md'
+import { useRouter } from 'next/router'
+import TruffleAiCommand from './truffle_ai_command'
+
+type RecommendationRowType = {
+  Icon?: IconComponentType | null
+  MenuText: string
+  EnableDivider?: boolean | false
+  Subtitle?: string | null
+  TruffleAiCommand: TruffleAiCommand
+}
 
 type CommandInterfaceProps = {
   action: (event: FocusEvent<HTMLInputElement> | null) => void
@@ -14,23 +21,28 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const [recommendationList, setRecommendationList] = React.useState<RecommendationRowType[]>([])
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   const commandInterfaceWrapperRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   const defaultList: RecommendationRowType[] = [
     {
-      Icon: FaCalendar,
-      MenuText: 'Calendar',
-      EnableDivider: true
-    },
-    {
-      Icon: IoMdGrid,
-      MenuText: 'Home'
+      Icon: MdEmail,
+      MenuText: 'Send Mail',
+      EnableDivider: true,
+      TruffleAiCommand: TruffleAiCommand.SendMail
     },
     {
       Icon: MdArrowForward,
-      MenuText: 'Navigate',
-      Subtitle: 'View'
+      MenuText: 'Navigate Details',
+      Subtitle: 'View',
+      TruffleAiCommand: TruffleAiCommand.GoDetails
+    },
+    {
+      Icon: IoMdGrid,
+      MenuText: 'Home',
+      TruffleAiCommand: TruffleAiCommand.GoHome
     }
   ]
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -63,14 +75,22 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     // @TODO Run search
   }
 
+  const rowClicked = (command: TruffleAiCommand, searchText: string) => {
+    setSearchWord(searchText)
+    router.push(command).catch((exception) => {
+      // @TODO show a message to user
+      console.log(exception)
+    })
+  }
+
   return (
     <div
-      className="fixed flex h-screen w-full items-start justify-center bg-black bg-opacity-50 shadow-lg"
+      className="fixed flex h-screen w-full items-start justify-center bg-black/50 shadow-lg"
       id="spotlight_wrapper"
     >
       <div ref={commandInterfaceWrapperRef} className="w-1/2 pr-40">
         <input
-          className="bg-blue-950 mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-4
+          className="bg-blue-950 mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-6
             py-10 shadow-lg outline-none placeholder:text-gray-600"
           onChange={(event) => searchHandler(event)}
           value={searchWord}
@@ -83,6 +103,12 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
         <ul className=" max-h-48 w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
           {defaultList.map((commandInterfaceRecommendationRowType) => (
             <RecommendationRow
+              rowClicked={() =>
+                rowClicked(
+                  commandInterfaceRecommendationRowType.TruffleAiCommand,
+                  commandInterfaceRecommendationRowType.MenuText
+                )
+              }
               key={commandInterfaceRecommendationRowType.MenuText}
               Icon={commandInterfaceRecommendationRowType.Icon}
               MenuText={commandInterfaceRecommendationRowType.MenuText}

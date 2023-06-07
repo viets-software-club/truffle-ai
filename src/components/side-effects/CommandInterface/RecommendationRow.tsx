@@ -15,8 +15,8 @@ const CommandInterfaceRecommendationRow: React.FC<CommandInterfaceRecommendation
     {Subtitle && <h4 className="mt-2 p-4 py-2 text-gray-500">{Subtitle}</h4>}
     <div className="flex cursor-pointer items-center justify-between p-4 py-2">
       <div className="flex items-center px-2 py-1">
-        {Icon && <Icon className="mr-8 h-[14px] w-[14px] bg-gray-500" />}
-        <span>{MenuText}</span>
+        {Icon && <Icon className="mr-8 h-[14px] w-[14px] text-gray-500" />}
+        <span className="text-gray-500">{MenuText}</span>
       </div>
     </div>
     {EnableDivider && <div className="h-0.5 bg-gray-600" />}

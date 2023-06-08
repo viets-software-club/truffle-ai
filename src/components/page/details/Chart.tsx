@@ -81,7 +81,7 @@ const Chart = ({ datasets }: ChartProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
-  const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
+  const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
 
   const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
   const [chartData, setChartData] = useState(chartDataOriginal)

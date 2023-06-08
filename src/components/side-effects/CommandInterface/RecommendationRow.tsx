@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react'
-
 type RecommendationRowCommandType = {
   Icon?: IconComponentType | null
   MenuText: string
@@ -14,22 +12,10 @@ const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
   EnableDivider,
   Subtitle,
   rowClicked
-}: RecommendationRowCommandType) => {
-  const commandInterfaceWrapperRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    function handleClickOutside() {
-      rowClicked()
-    }
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
-
-  return (
-    <div className="cursor-pointer" ref={commandInterfaceWrapperRef}>
-      {Subtitle && <h4 className="mt-2 px-6 py-2 text-sm text-gray-500">{Subtitle}</h4>}
+}: RecommendationRowCommandType) => (
+  <div className="cursor-pointer">
+    {Subtitle && <h4 className="mt-2 px-6 py-2 text-sm text-gray-500">{Subtitle}</h4>}
+    <button type="button" className="w-full" onClick={rowClicked}>
       <div className="flex cursor-pointer items-center justify-between p-4 py-2">
         <div className="flex items-center px-2 py-1">
           {Icon && <Icon className="mr-8 h-[14px] w-[14px] text-gray-500" />}
@@ -37,9 +23,9 @@ const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
         </div>
       </div>
       {EnableDivider && <div className="h-0.5 bg-gray-600" />}
-    </div>
-  )
-}
+    </button>
+  </div>
+)
 
 RecommendationRow.defaultProps = {
   Icon: null,

@@ -1,5 +1,5 @@
 import RecommendationRow from '@/components/side-effects/CommandInterface/RecommendationRow'
-import React, { FocusEvent, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { FocusEvent, FormEvent, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { IoMdGrid } from 'react-icons/io'
 import { MdArrowForward, MdEmail } from 'react-icons/md'
 import { useRouter } from 'next/router'
@@ -8,6 +8,7 @@ import TruffleAiCommand from './truffle_ai_command'
 type RecommendationRowType = {
   Icon?: IconComponentType | null
   MenuText: string
+  IsIdPrimary?: boolean | false
   EnableDivider?: boolean | false
   Subtitle?: string | null
   TruffleAiCommand: TruffleAiCommand
@@ -31,15 +32,42 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
       TruffleAiCommand: TruffleAiCommand.SendMail
     },
     {
-      Icon: MdArrowForward,
-      MenuText: 'Navigate Details',
-      Subtitle: 'View',
-      TruffleAiCommand: TruffleAiCommand.GoDetails
-    },
-    {
       Icon: IoMdGrid,
       MenuText: 'Home',
+      Subtitle: 'View',
       TruffleAiCommand: TruffleAiCommand.GoHome
+    },
+    {
+      Icon: MdArrowForward,
+      MenuText: 'Settings',
+      TruffleAiCommand: TruffleAiCommand.Settings
+    },
+    {
+      Icon: MdArrowForward,
+      MenuText: 'Bookmarks',
+      TruffleAiCommand: TruffleAiCommand.Bookmarks
+    },
+    {
+      Icon: MdArrowForward,
+      MenuText: 'Documentation',
+      TruffleAiCommand: TruffleAiCommand.Documentation
+    },
+    {
+      Icon: MdArrowForward,
+      MenuText: 'Compare Projects',
+      TruffleAiCommand: TruffleAiCommand.CompareProjects,
+      IsIdPrimary: true
+    },
+    {
+      Icon: MdArrowForward,
+      MenuText: 'Project Details',
+      TruffleAiCommand: TruffleAiCommand.ProjectDetails,
+      IsIdPrimary: true
+    },
+    {
+      Icon: MdArrowForward,
+      MenuText: 'Logout',
+      TruffleAiCommand: TruffleAiCommand.Logout
     }
   ]
 
@@ -52,17 +80,12 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
         action(null)
       }
     }
+    setRecommendationList(defaultList)
     document.addEventListener('click', handleClickOutside)
     return () => {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [])
-
-  useEffect(() => {
-    if (recommendationList.length === 0) {
-      setRecommendationList(defaultList)
-    }
-  }, [recommendationList])
 
   useLayoutEffect(() => {
     if (inputRef?.current) {
@@ -71,16 +94,46 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   }, [])
 
   const searchHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchWord(event.target.value)
-    // @TODO Run search
+    const search = event.target.value
+    setSearchWord(search)
+    if (search.trim() !== '') {
+      setRecommendationList(
+        defaultList.filter((rowItem) =>
+          rowItem.MenuText.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())
+        )
+      )
+    } else {
+      setRecommendationList(defaultList)
+    }
   }
 
-  const rowClicked = (command: TruffleAiCommand, searchText: string) => {
-    setSearchWord(searchText)
-    router.push(command).catch((exception) => {
+  const navigateTo = (path: string) => {
+    router.push(path).catch((exception) => {
       // @TODO show a message to user
       console.log(exception)
     })
+  }
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const searchWordAsArray = searchWord.split(' ')
+    const id = searchWord.split(' ')[searchWordAsArray.length - 1]
+    const commandName = searchWordAsArray.slice(0, 2).join(' ')
+    navigateTo(
+      defaultList
+        .filter((row) => row.MenuText.includes(commandName))[0]
+        .TruffleAiCommand.replaceAll(' ', '/')
+        .replace(':id', id)
+    )
+  }
+
+  const rowClicked = (command: TruffleAiCommand, searchText: string, isIdPrimary: boolean) => {
+    setSearchWord(searchText)
+    if (!isIdPrimary) {
+      navigateTo(command)
+    } else {
+      setSearchWord(`${searchText} <project id>`)
+    }
   }
 
   return (
@@ -89,31 +142,34 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
       id="spotlight_wrapper"
     >
       <div ref={commandInterfaceWrapperRef} className="w-1/2 pr-40">
-        <input
-          className="bg-blue-950 mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-6
+        <form onSubmit={handleSubmit}>
+          <input
+            className="bg-blue-950 mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-6
             py-10 shadow-lg outline-none placeholder:text-gray-600"
-          onChange={(event) => searchHandler(event)}
-          value={searchWord}
-          type="text"
-          id="spotlight"
-          ref={inputRef}
-          placeholder="Type a command or search..."
-        />
+            onChange={(event) => searchHandler(event)}
+            value={searchWord}
+            type="text"
+            id="spotlight"
+            ref={inputRef}
+            placeholder="Type a command or search..."
+          />
+        </form>
         <div className="h-0.5 bg-gray-600" />
         <ul className=" max-h-48 w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
-          {defaultList.map((commandInterfaceRecommendationRowType) => (
+          {recommendationList.map((commandInterfaceRecommendationRowType) => (
             <RecommendationRow
-              rowClicked={() =>
-                rowClicked(
-                  commandInterfaceRecommendationRowType.TruffleAiCommand,
-                  commandInterfaceRecommendationRowType.MenuText
-                )
-              }
               key={commandInterfaceRecommendationRowType.MenuText}
               Icon={commandInterfaceRecommendationRowType.Icon}
               MenuText={commandInterfaceRecommendationRowType.MenuText}
               EnableDivider={commandInterfaceRecommendationRowType.EnableDivider}
               Subtitle={commandInterfaceRecommendationRowType.Subtitle}
+              rowClicked={() =>
+                rowClicked(
+                  commandInterfaceRecommendationRowType.TruffleAiCommand,
+                  commandInterfaceRecommendationRowType.MenuText,
+                  commandInterfaceRecommendationRowType.IsIdPrimary ?? false
+                )
+              }
             />
           ))}
         </ul>

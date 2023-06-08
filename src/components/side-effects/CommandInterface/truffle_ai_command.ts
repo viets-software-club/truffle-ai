@@ -1,7 +1,13 @@
 enum TruffleAiCommand {
   GoHome = '/',
   GoDetails = '/details',
-  SendMail = '/mail'
+  SendMail = '/mail',
+  Bookmarks = '/bookmarks',
+  Settings = '/settings',
+  Documentation = '/docs',
+  Logout = '/logout',
+  CompareProjects = '/compare/:id',
+  ProjectDetails = '/details/:id'
 }
 
 export default TruffleAiCommand

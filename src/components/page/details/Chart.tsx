@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import resolveConfig from 'tailwindcss/resolveConfig'
 import {
   LineChart,
   Line,
@@ -15,6 +16,16 @@ import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
+import tailwindConfig from '../../../../tailwind.config'
+
+// The following 3 statements are needed in order to be able to use our Tailwind classes inside JS objects of the recharts library
+const fullConfig = resolveConfig(tailwindConfig)
+
+type ColorObject = {
+  [key: string]: string
+}
+
+const grayColors = fullConfig.theme?.colors?.gray as ColorObject
 
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
@@ -126,27 +137,30 @@ const Chart = ({ datasets }: ChartProps) => {
                 bottom: 5
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#2C2D3C" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={grayColors['800']} />
 
               <XAxis
                 dataKey="date"
                 type="number"
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 tickFormatter={formatDate}
-                stroke="#858699"
+                stroke={grayColors['500']}
                 allowDataOverflow
                 domain={['dataMin', 'dataMax']}
               />
 
               <YAxis
-                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
+                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
                 tick={{ fontSize: '12', fontWeight: 'light' }}
-                stroke="#858699"
+                stroke={grayColors['500']}
                 tickFormatter={formatNumber}
                 domain={[0, 'dataMax']}
               />
 
-              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#858699', strokeWidth: 1 }} />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
+              />
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
@@ -160,7 +174,7 @@ const Chart = ({ datasets }: ChartProps) => {
                   dataKey="count"
                   name={dataset.name}
                   type="monotone"
-                  stroke="#8884d8"
+                  stroke={grayColors['100']}
                   dot={false}
                   activeDot={{ r: 4 }}
                 />

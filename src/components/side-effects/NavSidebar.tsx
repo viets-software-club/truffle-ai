@@ -15,7 +15,7 @@ const renderFooter = () => (
       id={0}
       Icon={Settings}
       text="Settings"
-      path="settings"
+      path="/settings"
       showIcon
       editable={false}
     />
@@ -23,7 +23,7 @@ const renderFooter = () => (
       id={1}
       Icon={BookOpen}
       text="Help & Support"
-      path="docs"
+      path="/docs"
       showIcon
       editable={false}
     />

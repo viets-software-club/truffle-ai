@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import resolveConfig from 'tailwindcss/resolveConfig'
 import {
   LineChart,
   Line,
@@ -15,17 +16,36 @@ import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
+import tailwindConfig from '../../../../tailwind.config'
 
-const colors = [
-  '#8884d8',
-  '#82ca9d',
-  '#ffc658',
-  '#a4de6c',
-  '#d0ed57',
-  '#ffc658',
-  '#8884d8',
-  '#413ea0'
-]
+// The following 3 statements are needed in order to be able to use our Tailwind classes inside JS objects of the recharts library
+const fullConfig = resolveConfig(tailwindConfig)
+
+type ColorObject = {
+  [key: string]: string
+}
+
+const singleColors = ['teal', 'red', 'mustard', 'yellow', 'orange', 'purple', 'blue', 'green']
+const multiColors = ['indigo', 'gray']
+const grayColors = fullConfig.theme?.colors?.gray as ColorObject
+
+let colors: string[] = []
+
+// Add single colors to the array
+singleColors.forEach((colorName) => {
+  const colorValue = fullConfig.theme?.colors?.[colorName] as string
+  if (colorValue) {
+    colors.push(colorValue)
+  }
+})
+
+// Add multiple colors to the array
+multiColors.forEach((colorName) => {
+  const colorValues = fullConfig.theme?.colors?.[colorName] as ColorObject
+  if (colorValues) {
+    colors = [...colors, ...Object.values(colorValues)]
+  }
+})
 
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
@@ -193,27 +213,30 @@ const Chart = ({ datasets }: ChartProps) => {
                 bottom: 5
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#2C2D3C" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={grayColors['800']} />
 
               <XAxis
                 dataKey="date"
                 type="number"
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 tickFormatter={formatDate}
-                stroke="#858699"
+                stroke={grayColors['500']}
                 allowDataOverflow
                 domain={['dataMin', 'dataMax']}
               />
 
               <YAxis
-                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: '#858699' }}
+                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
                 tick={{ fontSize: '12', fontWeight: 'light' }}
-                stroke="#858699"
+                stroke={grayColors['500']}
                 tickFormatter={formatNumber}
                 domain={[0, 'dataMax']}
               />
 
-              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#858699', strokeWidth: 1 }} />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
+              />
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 

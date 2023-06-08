@@ -25,15 +25,13 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
 
         <Menu as="div" className="relative inline-block text-left">
           <div>
-            <div className="" />
-
             <Menu.Button className="flex h-[30px] w-[30px] flex-row items-center rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-              <AiFillSmile color="#858699" />
+              <AiFillSmile color="#A5B4FC" />
             </Menu.Button>
           </div>
 
           <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
+            <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
               <div className="py-1">
                 <Section.Item
                   id={0}

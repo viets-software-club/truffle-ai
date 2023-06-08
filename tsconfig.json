@@ -29,7 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     "index.d.ts"
-  ],
+, "src/pages/api/sendToAffinity.js"  ],
   "exclude": [
     "node_modules"
   ]

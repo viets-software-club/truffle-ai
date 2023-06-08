@@ -7,7 +7,7 @@ type ApiResponse = {
 }
 
 const SlackNotificationSender = () => {
-  const [webhookURL, setWebhookURL] = useState('')
+  const [webhookURL, setWebhookURL] = useState('') // @TODO Store the webhook URL in a secure way, backend
   const [message, setMessage] = useState('')
 
   const sendNotification = () => {

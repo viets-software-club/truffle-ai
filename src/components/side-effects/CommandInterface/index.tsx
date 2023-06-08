@@ -117,14 +117,23 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const searchWordAsArray = searchWord.split(' ')
-    const id = searchWord.split(' ')[searchWordAsArray.length - 1]
-    const commandName = searchWordAsArray.slice(0, 2).join(' ')
-    navigateTo(
-      defaultList
-        .filter((row) => row.MenuText.includes(commandName))[0]
-        .TruffleAiCommand.replaceAll(' ', '/')
-        .replace(':id', id)
-    )
+    if (searchWordAsArray.length > 1) {
+      const id = searchWord.split(' ')[searchWordAsArray.length - 1]
+      const commandName = searchWordAsArray.slice(0, 2).join(' ')
+      navigateTo(
+        defaultList
+          .filter((row) =>
+            row.MenuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
+          )[0]
+          .TruffleAiCommand.replace(':id', id)
+      )
+    } else {
+      navigateTo(
+        defaultList.filter((row) =>
+          row.MenuText.toLocaleLowerCase().includes(searchWord.toLocaleLowerCase())
+        )[0].TruffleAiCommand
+      )
+    }
   }
 
   const rowClicked = (command: TruffleAiCommand, searchText: string, isIdPrimary: boolean) => {

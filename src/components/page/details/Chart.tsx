@@ -16,6 +16,17 @@ import Modal from '@/components/pure/Modal'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
 
+const colors = [
+  '#8884d8',
+  '#82ca9d',
+  '#ffc658',
+  '#a4de6c',
+  '#d0ed57',
+  '#ffc658',
+  '#8884d8',
+  '#413ea0'
+]
+
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
   { value: 3, label: '3 Months' },
@@ -34,6 +45,17 @@ type ChartProps = {
   }[]
 }
 
+type DataPoint = {
+  date: string
+  count: number
+}
+
+const filterDataByTimeframe = (data: DataPoint[], months: number) => {
+  const now = new Date()
+  const pastDate = now.setMonth(now.getMonth() - months)
+  return data.filter((d) => new Date(d.date).getTime() >= pastDate)
+}
+
 const Chart = ({ datasets }: ChartProps) => {
   const [modalValue, setModalValue] = useState('Select Value')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -41,23 +63,60 @@ const Chart = ({ datasets }: ChartProps) => {
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
 
+  const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
+  const [chartData, setChartData] = useState(chartDataOriginal)
+
+  const [isDataNormalized, setIsDataNormalized] = useState(false)
+
+  const handleDataNormalization = () => {
+    if (isDataNormalized) {
+      setChartData(chartDataOriginal)
+      setIsDataNormalized(false)
+      return
+    }
+    setIsDataNormalized(true)
+    const earliestDate = Math.min(
+      ...datasets.flatMap((dataset) => dataset.data.map((point) => new Date(point.date).getTime()))
+    )
+
+    const normalizedData = chartData.map((dataset) => ({
+      ...dataset,
+      data: dataset.data.map((point) => ({
+        ...point,
+        date: new Date(
+          new Date(point.date).getTime() -
+            (Math.min(...dataset.data.map((p) => new Date(p.date).getTime())) - earliestDate)
+        ).toISOString()
+      }))
+    }))
+
+    setChartData(normalizedData)
+  }
+
+  const toggleModal = useCallback(() => {
+    setIsModalOpen((prevState) => !prevState)
+  }, [])
+
   const handleModalValueChange = useCallback((newValue: string) => {
     setModalValue(newValue)
     setIsModalOpen(false)
   }, [])
 
-  const handleTimeframeChange = useCallback((newTimeframe: number) => {
-    const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
+  const handleTimeframeChange = useCallback(
+    (newTimeframe: number) => {
+      const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
+      setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
+      setTimeframeModalOpen(false)
 
-    setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
-    setTimeframeModalOpen(false)
-  }, [])
+      const filteredData = chartDataOriginal.map((dataset) => ({
+        ...dataset,
+        data: filterDataByTimeframe(dataset.data, newTimeframe)
+      }))
 
-  const [chartData] = useState<ChartProps['datasets']>([...datasets])
-
-  const toggleModal = useCallback(() => {
-    setIsModalOpen((prevState) => !prevState)
-  }, [])
+      setChartData(filteredData)
+    },
+    [chartData]
+  )
 
   return (
     <div className="flex w-full flex-row px-7 py-8">
@@ -114,6 +173,14 @@ const Chart = ({ datasets }: ChartProps) => {
                 ))}
               </Modal>
             </div>
+            <div>
+              <Button
+                variant="normal"
+                text="Normalize Data"
+                fullWidth
+                onClick={handleDataNormalization}
+              />
+            </div>
           </div>
 
           <ResponsiveContainer width="100%" height={300}>
@@ -150,7 +217,7 @@ const Chart = ({ datasets }: ChartProps) => {
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
-              {chartData.map((dataset) => (
+              {chartData.map((dataset, index) => (
                 <Line
                   key={dataset.id}
                   data={dataset.data.map((item) => ({
@@ -160,7 +227,7 @@ const Chart = ({ datasets }: ChartProps) => {
                   dataKey="count"
                   name={dataset.name}
                   type="monotone"
-                  stroke="#8884d8"
+                  stroke={colors[index % colors.length]}
                   dot={false}
                   activeDot={{ r: 4 }}
                 />

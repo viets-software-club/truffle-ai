@@ -26,24 +26,29 @@ type ColorObject = {
 }
 
 const singleColors = ['teal', 'red', 'mustard', 'yellow', 'orange', 'purple', 'blue', 'green']
-const multiColors = ['indigo', 'gray']
 const grayColors = fullConfig.theme?.colors?.gray as ColorObject
+const indigoColors = fullConfig.theme?.colors?.indigo as ColorObject
+const colorValues = ['100', '300', '500']
 
-let colors: string[] = []
+const colors: string[] = []
+
+// Add multiple colors to the array
+colorValues.forEach((value) => {
+  const grayValue = grayColors?.[value]
+  const indigoValue = indigoColors?.[value]
+  if (grayValue) {
+    colors.push(grayValue)
+  }
+  if (indigoValue) {
+    colors.push(indigoValue)
+  }
+})
 
 // Add single colors to the array
 singleColors.forEach((colorName) => {
   const colorValue = fullConfig.theme?.colors?.[colorName] as string
   if (colorValue) {
     colors.push(colorValue)
-  }
-})
-
-// Add multiple colors to the array
-multiColors.forEach((colorName) => {
-  const colorValues = fullConfig.theme?.colors?.[colorName] as ColorObject
-  if (colorValues) {
-    colors = [...colors, ...Object.values(colorValues)]
   }
 })
 
@@ -63,6 +68,7 @@ type ChartProps = {
       count: number
     }[]
   }[]
+  multipleLines: boolean
 }
 
 type DataPoint = {
@@ -76,9 +82,9 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
   return data.filter((d) => new Date(d.date).getTime() >= pastDate)
 }
 
-const Chart = ({ datasets }: ChartProps) => {
-  const [modalValue, setModalValue] = useState('Select Value')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+const Chart = ({ datasets, multipleLines }: ChartProps) => {
+  // const [modalValue, setModalValue] = useState('Select Value')
+  // const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
@@ -113,14 +119,14 @@ const Chart = ({ datasets }: ChartProps) => {
     setChartData(normalizedData)
   }
 
-  const toggleModal = useCallback(() => {
-    setIsModalOpen((prevState) => !prevState)
-  }, [])
+  // const toggleModal = useCallback(() => {
+  //   setIsModalOpen((prevState) => !prevState)
+  // }, [])
 
-  const handleModalValueChange = useCallback((newValue: string) => {
-    setModalValue(newValue)
-    setIsModalOpen(false)
-  }, [])
+  // const handleModalValueChange = useCallback((newValue: string) => {
+  //   setModalValue(newValue)
+  //   setIsModalOpen(false)
+  // }, [])
 
   const handleTimeframeChange = useCallback(
     (newTimeframe: number) => {
@@ -144,64 +150,66 @@ const Chart = ({ datasets }: ChartProps) => {
         <p>No data</p>
       ) : (
         <div className="flex w-full flex-col gap-3">
-          <div className="flex flex-row gap-3 ">
-            <div className="flex flex-col">
-              <Button
-                variant="normal"
-                text={modalValue}
-                Icon={ChevronDown}
-                order="rtl"
-                fullWidth
-                onClick={() => {
-                  toggleModal()
-                }}
-              />
+          {multipleLines && (
+            <div className="flex flex-row gap-3 ">
+              {/* <div className="flex flex-col">
+            <Button
+              variant="normal"
+              text={modalValue}
+              Icon={ChevronDown}
+              order="rtl"
+              fullWidth
+              onClick={() => {
+                toggleModal()
+              }}
+            />
 
-              <Modal isOpen={isModalOpen} onClose={toggleModal}>
-                {['Stars', 'Forks', 'Contributors'].map((item) => (
-                  <Button
-                    key={item}
-                    variant="noBorderNoBG"
-                    text={item}
-                    fullWidth
-                    onClick={() => handleModalValueChange(item)}
-                  />
-                ))}
-              </Modal>
-            </div>
+            <Modal isOpen={isModalOpen} onClose={toggleModal}>
+              {['Stars', 'Forks', 'Contributors'].map((item) => (
+                <Button
+                  key={item}
+                  variant="noBorderNoBG"
+                  text={item}
+                  fullWidth
+                  onClick={() => handleModalValueChange(item)}
+                />
+              ))}
+            </Modal>
+          </div> */}
 
-            <div className="flex flex-col">
-              <Button
-                variant="normal"
-                text={timeframeModalValue}
-                Icon={ChevronDown}
-                order="rtl"
-                onClick={() => {
-                  setTimeframeModalOpen(true)
-                }}
-              />
+              <div className="flex flex-col">
+                <Button
+                  variant="normal"
+                  text={timeframeModalValue}
+                  Icon={ChevronDown}
+                  order="rtl"
+                  onClick={() => {
+                    setTimeframeModalOpen(true)
+                  }}
+                />
 
-              <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
-                {TimeframeOptions.map((option) => (
-                  <Button
-                    key={option.label}
-                    variant="noBorderNoBG"
-                    text={option.label}
-                    fullWidth
-                    onClick={() => handleTimeframeChange(option.value)}
-                  />
-                ))}
-              </Modal>
+                <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
+                  {TimeframeOptions.map((option) => (
+                    <Button
+                      key={option.label}
+                      variant="noBorderNoBG"
+                      text={option.label}
+                      fullWidth
+                      onClick={() => handleTimeframeChange(option.value)}
+                    />
+                  ))}
+                </Modal>
+              </div>
+              <div>
+                <Button
+                  variant="normal"
+                  text="Normalize Data"
+                  fullWidth
+                  onClick={handleDataNormalization}
+                />
+              </div>
             </div>
-            <div>
-              <Button
-                variant="normal"
-                text="Normalize Data"
-                fullWidth
-                onClick={handleDataNormalization}
-              />
-            </div>
-          </div>
+          )}
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart

@@ -65,6 +65,7 @@ const Compare = () => {
           name: project.name as string,
           data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
         }))}
+        multipleLines
       />
 
       <div className="flex flex-row items-center justify-between px-6 py-3.5">

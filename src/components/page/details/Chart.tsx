@@ -241,10 +241,12 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
                 domain={[0, 'dataMax']}
               />
 
-              <Tooltip
-                content={<CustomTooltip />}
-                cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
-              />
+              {!multipleLines && (
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
+                />
+              )}
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 

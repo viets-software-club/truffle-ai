@@ -1,6 +1,7 @@
 // Any React component
 import { useState } from 'react'
 import axios from 'axios'
+import css from './Input.module.sass'
 
 type ApiResponse = {
   success: boolean
@@ -24,27 +25,32 @@ const SlackNotificationSender = () => {
   }
 
   return (
-    <div className="p-7">
-      <div className="flex flex-col gap-10 px-12">
-        <div>
-          <input
-            className="text-gray-500"
-            type="text"
-            placeholder="Enter Slack Webhook URL"
-            value={webhookURL}
-            onChange={(e) => setWebhookURL(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            className="text-gray-500"
-            type="text"
-            placeholder="Enter message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </div>
-        <button type="button" onClick={sendNotification}>
+    <div className="flex flex-col items-start gap-[15px] px-7">
+      <h2>Slack</h2>
+      <div>
+        <input
+          className={css.inputModule}
+          type="text"
+          placeholder="Enter Slack Webhook URL"
+          value={webhookURL}
+          onChange={(e) => setWebhookURL(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          className={css.inputModule}
+          type="text"
+          placeholder="Enter message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+      </div>
+      <div>
+        <button
+          className="rounded-lg bg-indigo-500 px-2 py-1"
+          type="button"
+          onClick={sendNotification}
+        >
           Send Notification
         </button>
       </div>

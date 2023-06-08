@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { MouseEventHandler, useState } from 'react'
+import css from './Input.module.sass'
 
 interface CRMProps {
   name: string
@@ -27,18 +28,26 @@ const CRM = ({ name, stars }: CRMProps) => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-start gap-[15px] px-7">
       <h1>{name}</h1>
-      <p>{stars} stars</p>
-      <input
-        type="text"
-        placeholder="Enter Affinity API Key"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-      />
-      <button type="button" onClick={sendToAffinity}>
-        Send to Affinity
-      </button>
+      <div>
+        <input
+          className={css.inputModule}
+          type="text"
+          placeholder="Enter Affinity API Key"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+        />
+      </div>
+      <div>
+        <button
+          className="rounded-lg bg-indigo-500 px-2 py-1"
+          type="button"
+          onClick={sendToAffinity}
+        >
+          Send to Affinity
+        </button>
+      </div>
     </div>
   )
 }

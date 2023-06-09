@@ -22,18 +22,22 @@ spec:
       containers:
         - name: truffle-ai-graphql-gateway
           image: <IMAGE-GRAPHQL-GATEWAY>
-          env:
-            - name: TZ
-              value: $TZ
           ports:
             - containerPort: $GATEWAY_PORT
+          envFrom:
+            - configMapRef:
+                name: graphql-gateway-config
+            - secretRef:
+                name: graphql-gateway-secret
         - name: truffle-ai-graphql-server
           image: <IMAGE-GRAPHQL-SERVER>
-          env:
-            - name: TZ
-              value: $TZ
           ports:
             - containerPort: $SERVER_PORT
+          envFrom:
+            - configMapRef:
+                name: graphql-server-config
+            - secretRef:
+                name: graphql-server-secret
 ---
 apiVersion: v1
 kind: Service

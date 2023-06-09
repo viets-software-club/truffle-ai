@@ -4,13 +4,11 @@ import {
   FiX as X,
   FiChevronUp as ChevronUp,
   FiChevronDown as ChevronDown,
-  FiCalendar as Calendar,
   FiArrowUpRight
 } from 'react-icons/fi'
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
-import Modal from '@/components/pure/Modal'
 import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
@@ -34,42 +32,36 @@ type DetailsProps = {
  * Project detail component
  */
 const Details = ({ id }: DetailsProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, etc.). Can probably be achieved by passing a parameter indicating which of the mentioned pages came last according to the browser history
+  // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
   const [{ data: tpData }] = useTrendingProjectsQuery()
+
   const projects = tpData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+
   const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
   const [previousProjectId, setPreviousProjectId] = useState<string>()
   const [nextProjectId, setNextProjectId] = useState<string>()
 
+  const updateProjectIndices = (currentId: string, projectList: Project[]) => {
+    const currentIndex = projectList.findIndex((project) => project.id === currentId)
+
+    const newPreviousProjectId =
+      currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
+
+    const newNextProjectId =
+      currentIndex < projectList.length - 1
+        ? (projectList[currentIndex + 1].id as string)
+        : undefined
+
+    setCurrentProjectIndex(currentIndex)
+    setPreviousProjectId(newPreviousProjectId)
+    setNextProjectId(newNextProjectId)
+  }
+
   useEffect(() => {
-    const updateProjectIndices = (currentId: string, projectList: Project[]) => {
-      const currentIndex = projectList.findIndex((project) => project.id === currentId)
-
-      const newPreviousProjectId =
-        currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
-      const newNextProjectId =
-        currentIndex < projectList.length - 1
-          ? (projectList[currentIndex + 1].id as string)
-          : undefined
-
-      setCurrentProjectIndex(currentIndex)
-      setPreviousProjectId(newPreviousProjectId)
-      setNextProjectId(newNextProjectId)
-    }
-
     if (projects) {
       updateProjectIndices(id, projects)
     }
   }, [projects, id])
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
 
   // Get project details data using generated hook (returns array with 1 project if successful)
   const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
@@ -107,22 +99,6 @@ const Details = ({ id }: DetailsProps) => {
             </p>
             <p className="text-14 text-gray-500">/&nbsp;{projects?.length}</p>
           </div>
-        </div>
-
-        <div className="flex flex-col">
-          <Button
-            variant="normal"
-            onClick={handleOpenModal}
-            text="This week"
-            Icon={Calendar}
-            order="ltr"
-          />
-
-          <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <Button variant="noBorderNoBG" text="Today" fullWidth onClick={handleClick} />
-            <Button variant="noBorderNoBG" text="This Week" fullWidth onClick={handleClick} />
-            <Button variant="noBorderNoBG" text="This Month" fullWidth onClick={handleClick} />
-          </Modal>
         </div>
       </div>
 

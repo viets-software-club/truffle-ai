@@ -28,8 +28,8 @@
   ],
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint ./packages/** --cache --fix",
-      "prettier --write"
+      "prettier --write",
+      "eslint"
     ],
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },

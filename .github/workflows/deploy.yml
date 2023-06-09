@@ -7,10 +7,6 @@ on:
       - 'packages/**'
       - '.github/workflows/**'
       - 'config/deployment.template.yml'
-env:
-  SERVER_PORT: ${{ vars.SERVER_PORT }}
-  GATEWAY_PORT: ${{ vars.GATEWAY_PORT }}
-  TZ: ${{ vars.TZ }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,9 +19,9 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Build truffle-ai-graphql-gateway image
-        run: docker build --build-arg GATEWAY_PORT=${{ vars.GATEWAY_PORT }} --build-arg SERVER_GRAPHQL_URL=${{ vars.SERVER_GRAPHQL_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }} --build-arg SUPABASE_API_KEY=${{ secrets.SUPABASE_API_KEY }} --build-arg SUPABASE_GRAPHQL_URL=${{ vars.SUPABASE_GRAPHQL_URL }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_gateway/Dockerfile .
+        run: docker build --build-arg SERVER_GRAPHQL_URL=${{ vars.SERVER_GRAPHQL_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }} --build-arg SUPABASE_API_KEY=${{ secrets.SUPABASE_API_KEY }} --build-arg SUPABASE_GRAPHQL_URL=${{ vars.SUPABASE_GRAPHQL_URL }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_gateway/Dockerfile .
       - name: Build truffle-ai-graphql-server image
-        run: docker build --build-arg SERVER_PORT=${{ vars.SERVER_PORT }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_server/Dockerfile .
+        run: docker build -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_server/Dockerfile .
       - name: Build truffle-ai-repo-job image
         run: docker build -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:$(echo $GITHUB_SHA | head -c7) -f ./packages/repo_job/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
@@ -36,17 +32,28 @@ jobs:
         run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7)
       - name: Push truffle-ai-repo-job image to DigitalOcean Container Registry
         run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:$(echo $GITHUB_SHA | head -c7)
-      - name: Create deployment.yml from deployment.template.yml and add environment variables
-        run: envsubst < $GITHUB_WORKSPACE/config/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
-      - name: Update truffle-ai-graphql-gateway in deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE-GRAPHQL-GATEWAY>|registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
-      - name: Update truffle-ai-graphql-server in deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE-GRAPHQL-SERVER>|registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
-      - name: Update truffle-ai-repo-job in deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE-REPO-JOB>|registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 truffle-ai-cluster
+      - name: Create deployment.yml from deployment.template.yml and add environment variables
+        run: envsubst < $GITHUB_WORKSPACE/config/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
+      - name: Update values in deployment file
+        run: >
+          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7) && 
+          GRAPHQL_GATEWAY_PORT=$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d) && 
+          GRAPHQL_SERVER_PORT=$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d) && 
+          CHANGE_CAUSE=${{github.event.head_commit.message}} && 
+          GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG} && 
+          GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} && 
+          REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} && 
+          sed -i '
+          s|<GRAPHQL-SERVER-IMAGE>|'${GRAPHQL_SERVER_IMAGE}'|;
+          s|<GRAPHQL-GATEWAY-IMAGE>|'${GRAPHQL_GATEWAY_IMAGE}'|;
+          s|<REPO-JOB-IMAGE>|'${REPO_JOB_IMAGE}'|;
+          s|<GRAPHQL-GATEWAY-PORT>|'${GRAPHQL_GATEWAY_PORT}'|;
+          s|<GRAPHQL-SERVER-PORT>|'${GRAPHQL_SERVER_PORT}'|;
+          s|<CHANGE_CAUSE>|'${CHANGE_CAUSE}'|
+          ' $GITHUB_WORKSPACE/config/deployment.yml
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
       - name: Verify deployment
-        run: kubectl rollout status --timeout 180s deployment/truffle-ai-deployment
+        run: kubectl rollout status --timeout 240s deployment/truffle-ai-deployment

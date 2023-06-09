@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: truffle-ai-deployment
+  annotations:
+    kubernetes.io/change-cause: <CHANGE-CAUSE>
   labels:
     app: truffle-ai-deployment
 spec:
@@ -21,18 +23,18 @@ spec:
     spec:
       containers:
         - name: truffle-ai-graphql-gateway
-          image: <IMAGE-GRAPHQL-GATEWAY>
+          image: <GRAPHQL-GATEWAY-IMAGE>
           ports:
-            - containerPort: $GATEWAY_PORT
+            - containerPort: <GRAPHQL-GATEWAY-PORT>
           envFrom:
             - configMapRef:
                 name: graphql-gateway-config
             - secretRef:
                 name: graphql-gateway-secret
         - name: truffle-ai-graphql-server
-          image: <IMAGE-GRAPHQL-SERVER>
+          image: <GRAPHQL-SERVER-IMAGE>
           ports:
-            - containerPort: $SERVER_PORT
+            - containerPort: <GRAPHQL-SERVER-PORT>
           envFrom:
             - configMapRef:
                 name: graphql-server-config

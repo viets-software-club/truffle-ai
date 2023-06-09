@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   FiX as X,
@@ -16,10 +16,9 @@ import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery } from '@/graphql/generated/gql'
+import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
 
-// @TODO Implement handler for navigation
 const handleClick = () => ''
 
 // @TODO Update social media buttons
@@ -36,6 +35,33 @@ type DetailsProps = {
  */
 const Details = ({ id }: DetailsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, etc.). Can probably be achieved by passing a parameter indicating which of the mentioned pages came last according to the browser history
+  const [{ data: tpData }] = useTrendingProjectsQuery()
+  const projects = tpData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
+  const [previousProjectId, setPreviousProjectId] = useState<string>()
+  const [nextProjectId, setNextProjectId] = useState<string>()
+
+  useEffect(() => {
+    const updateProjectIndices = (currentId: string, projectList: Project[]) => {
+      const currentIndex = projectList.findIndex((project) => project.id === currentId)
+
+      const newPreviousProjectId =
+        currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
+      const newNextProjectId =
+        currentIndex < projectList.length - 1
+          ? (projectList[currentIndex + 1].id as string)
+          : undefined
+
+      setCurrentProjectIndex(currentIndex)
+      setPreviousProjectId(newPreviousProjectId)
+      setNextProjectId(newNextProjectId)
+    }
+
+    if (projects) {
+      updateProjectIndices(id, projects)
+    }
+  }, [projects, id])
 
   const handleOpenModal = () => {
     setIsModalOpen(true)
@@ -63,13 +89,23 @@ const Details = ({ id }: DetailsProps) => {
             <X key="2" className="h-4 w-4 text-gray-500" />
           </Link>
 
-          <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
-          <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
+          {nextProjectId && (
+            <Link href={`/details/${nextProjectId}`}>
+              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
+            </Link>
+          )}
 
-          {/* @TODO Make values dynamic */}
+          {previousProjectId && (
+            <Link href={`/details/${previousProjectId}`}>
+              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
+            </Link>
+          )}
+
           <div className="flex flex-row items-center">
-            <p className="text-14 text-white">10&nbsp;</p>
-            <p className="text-14 text-gray-500">/&nbsp;25</p>
+            <p className="text-14 text-white">
+              {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
+            </p>
+            <p className="text-14 text-gray-500">/&nbsp;{projects?.length}</p>
           </div>
         </div>
 

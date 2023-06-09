@@ -1,75 +1,28 @@
-import RecommendationRow from '@/components/side-effects/CommandInterface/RecommendationRow'
-import React, { FocusEvent, FormEvent, RefObject, useEffect, useLayoutEffect, useRef } from 'react'
-import { IoMdGrid } from 'react-icons/io'
-import { MdArrowForward, MdEmail } from 'react-icons/md'
+import React, {
+  FocusEvent,
+  FormEvent,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react'
 import { useRouter } from 'next/router'
-import TruffleAiCommand from './truffle_ai_command'
-
-type RecommendationRowType = {
-  Icon?: IconComponentType | null
-  MenuText: string
-  IsIdPrimary?: boolean | false
-  EnableDivider?: boolean | false
-  Subtitle?: string | null
-  TruffleAiCommand: TruffleAiCommand
-}
+import RecommendationRow from '@/components/side-effects/CommandInterface/RecommendationRow'
+import CommandInterfaceOptions from './CommandInterfaceOptions'
+import defaultList from './DefaultRecommendationList'
+import RecommendationRowType from './RecommendationRowType'
 
 type CommandInterfaceProps = {
   action: (event: FocusEvent<HTMLInputElement> | null) => void
 }
+
 const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
-  const [searchWord, setSearchWord] = React.useState<string>('')
-  const [recommendationList, setRecommendationList] = React.useState<RecommendationRowType[]>([])
+  const [searchWord, setSearchWord] = useState<string>('')
+  const [recommendationList, setRecommendationList] = useState<RecommendationRowType[]>([])
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   const commandInterfaceWrapperRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
-
-  const defaultList: RecommendationRowType[] = [
-    {
-      Icon: MdEmail,
-      MenuText: 'Send Mail',
-      EnableDivider: true,
-      TruffleAiCommand: TruffleAiCommand.SendMail
-    },
-    {
-      Icon: IoMdGrid,
-      MenuText: 'Home',
-      Subtitle: 'View',
-      TruffleAiCommand: TruffleAiCommand.GoHome
-    },
-    {
-      Icon: MdArrowForward,
-      MenuText: 'Settings',
-      TruffleAiCommand: TruffleAiCommand.Settings
-    },
-    {
-      Icon: MdArrowForward,
-      MenuText: 'Bookmarks',
-      TruffleAiCommand: TruffleAiCommand.Bookmarks
-    },
-    {
-      Icon: MdArrowForward,
-      MenuText: 'Documentation',
-      TruffleAiCommand: TruffleAiCommand.Documentation
-    },
-    {
-      Icon: MdArrowForward,
-      MenuText: 'Compare Projects',
-      TruffleAiCommand: TruffleAiCommand.CompareProjects,
-      IsIdPrimary: true
-    },
-    {
-      Icon: MdArrowForward,
-      MenuText: 'Project Details',
-      TruffleAiCommand: TruffleAiCommand.ProjectDetails,
-      IsIdPrimary: true
-    },
-    {
-      Icon: MdArrowForward,
-      MenuText: 'Logout',
-      TruffleAiCommand: TruffleAiCommand.Logout
-    }
-  ]
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -99,7 +52,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     if (search.trim() !== '') {
       setRecommendationList(
         defaultList.filter((rowItem) =>
-          rowItem.MenuText.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())
+          rowItem.menuText.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())
         )
       )
     } else {
@@ -108,9 +61,8 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   }
 
   const navigateTo = (path: string) => {
-    router.push(path).catch((exception) => {
+    router.push(path).catch(() => {
       // @TODO show a message to user
-      console.log(exception)
     })
   }
 
@@ -123,20 +75,24 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
       navigateTo(
         defaultList
           .filter((row) =>
-            row.MenuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
+            row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
           )[0]
-          .TruffleAiCommand.replace(':id', id)
+          .truffleAiCommand.replace(':id', id)
       )
     } else {
       navigateTo(
         defaultList.filter((row) =>
-          row.MenuText.toLocaleLowerCase().includes(searchWord.toLocaleLowerCase())
-        )[0].TruffleAiCommand
+          row.menuText.toLocaleLowerCase().includes(searchWord.toLocaleLowerCase())
+        )[0].truffleAiCommand
       )
     }
   }
 
-  const rowClicked = (command: TruffleAiCommand, searchText: string, isIdPrimary: boolean) => {
+  const rowClicked = (
+    command: CommandInterfaceOptions,
+    searchText: string,
+    isIdPrimary: boolean
+  ) => {
     setSearchWord(searchText)
     if (!isIdPrimary) {
       navigateTo(command)
@@ -165,19 +121,15 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
         </form>
         <div className="h-0.5 bg-gray-600" />
         <ul className=" max-h-48 w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
-          {recommendationList.map((commandInterfaceRecommendationRowType) => (
+          {recommendationList.map((item) => (
             <RecommendationRow
-              key={commandInterfaceRecommendationRowType.MenuText}
-              Icon={commandInterfaceRecommendationRowType.Icon}
-              MenuText={commandInterfaceRecommendationRowType.MenuText}
-              EnableDivider={commandInterfaceRecommendationRowType.EnableDivider}
-              Subtitle={commandInterfaceRecommendationRowType.Subtitle}
+              key={item.menuText}
+              Icon={item.Icon}
+              menuText={item.menuText}
+              enableDivider={item.enableDivider}
+              subtitle={item.subtitle}
               rowClicked={() =>
-                rowClicked(
-                  commandInterfaceRecommendationRowType.TruffleAiCommand,
-                  commandInterfaceRecommendationRowType.MenuText,
-                  commandInterfaceRecommendationRowType.IsIdPrimary ?? false
-                )
+                rowClicked(item.truffleAiCommand, item.menuText, item.isIdPrimary ?? false)
               }
             />
           ))}

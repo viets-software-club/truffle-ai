@@ -1,4 +1,4 @@
-enum TruffleAiCommand {
+enum CommandInterfaceOptions {
   GoHome = '/',
   GoDetails = '/details',
   SendMail = '/mail',
@@ -10,4 +10,4 @@ enum TruffleAiCommand {
   ProjectDetails = '/details/:id'
 }
 
-export default TruffleAiCommand
+export default CommandInterfaceOptions

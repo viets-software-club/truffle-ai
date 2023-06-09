@@ -88,16 +88,24 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     }
   }
 
+  const isProjectSelected = (): boolean => {
+    const pathSegments = router.pathname.split('/').filter((segment) => segment !== '')
+    return pathSegments[pathSegments.length - 1] === '[id]'
+  }
+
   const rowClicked = (
     command: CommandInterfaceOptions,
     searchText: string,
-    isIdPrimary: boolean
+    isIdPrimary: boolean,
+    isProjectPrimary: boolean
   ) => {
     setSearchWord(searchText)
-    if (!isIdPrimary) {
+    if (!isIdPrimary && (!isProjectPrimary || (isProjectPrimary && isProjectSelected()))) {
       navigateTo(command)
-    } else {
+    } else if (isIdPrimary) {
       setSearchWord(`${searchText} <project id>`)
+    } else {
+      setSearchWord('Please choose a project first.')
     }
   }
 
@@ -132,7 +140,12 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
               enableDivider={item.enableDivider}
               subtitle={item.subtitle}
               rowClicked={() =>
-                rowClicked(item.commandInterfaceOptions, item.menuText, item.isIdPrimary ?? false)
+                rowClicked(
+                  item.commandInterfaceOptions,
+                  item.menuText,
+                  item.isIdPrimary ?? false,
+                  item.isProjectPrimary ?? false
+                )
               }
             />
           ))}

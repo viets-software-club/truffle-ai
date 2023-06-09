@@ -8,7 +8,8 @@ const defaultList: RecommendationRowType[] = [
     Icon: MdEmail,
     menuText: 'Send Mail',
     enableDivider: true,
-    commandInterfaceOptions: CommandInterfaceOptions.SendMail
+    commandInterfaceOptions: CommandInterfaceOptions.SendMail,
+    isProjectPrimary: true
   },
   {
     Icon: IoMdGrid,

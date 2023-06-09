@@ -6,6 +6,7 @@ type RecommendationRowType = {
   isIdPrimary?: boolean | false
   enableDivider?: boolean | false
   subtitle?: string | null
+  isProjectPrimary?: boolean | false
   commandInterfaceOptions: CommandInterfaceOptions
 }
 

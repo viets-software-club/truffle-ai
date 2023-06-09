@@ -10,7 +10,6 @@ on:
 env:
   SERVER_PORT: ${{ vars.SERVER_PORT }}
   GATEWAY_PORT: ${{ vars.GATEWAY_PORT }}
-  TZ: ${{ vars.TZ }}
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1,17 +1,13 @@
-// import { useState } from 'react'
-
 import Link from 'next/link'
 import {
   FiX as X,
   FiChevronUp as ChevronUp,
   FiChevronDown as ChevronDown,
-  // FiCalendar as Calendar,
   FiArrowUpRight
 } from 'react-icons/fi'
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
-// import Modal from '@/components/pure/Modal'
 import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
@@ -36,16 +32,6 @@ type DetailsProps = {
  * Project detail component
  */
 const Details = ({ id }: DetailsProps) => {
-  /* const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-  } */
-
   // Get project details data using generated hook (returns array with 1 project if successful)
   const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
 
@@ -73,23 +59,6 @@ const Details = ({ id }: DetailsProps) => {
             <p className="text-14 text-gray-500">/&nbsp;25</p>
           </div>
         </div>
-
-        {/* <div className="flex flex-col">
-          <Button
-            variant="normal"
-            onClick={handleOpenModal}
-            text="This week"
-            Icon={Calendar}
-            order="ltr"
-          />
-          
-
-          <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <Button variant="noBorderNoBG" text="Today" fullWidth onClick={handleClick} />
-            <Button variant="noBorderNoBG" text="This Week" fullWidth onClick={handleClick} />
-            <Button variant="noBorderNoBG" text="This Month" fullWidth onClick={handleClick} />
-          </Modal>
-  </div> */}
       </div>
 
       <div className="flex grow">

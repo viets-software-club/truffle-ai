@@ -68,8 +68,10 @@ spec:
         spec:
           containers:
             - name: truffle-ai-repo-cronjob
-              image: <IMAGE-REPO-JOB>
-              env:
-                - name: TZ
-                  value: $TZ
+              image: <REPO-JOB-IMAGE>
+              envFrom:
+                - configMapRef:
+                    name: repo-job-config
+                - secretRef:
+                    name: repo-job-secret
           restartPolicy: OnFailure

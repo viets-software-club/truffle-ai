@@ -12,6 +12,7 @@
     "serve": "concurrently -c 'gray,magenta' 'sleep 3 && npm run serve:graphql_gateway' 'npm run serve:graphql_server'",
     "serve:graphql_gateway": "npm run serve -w graphql_gateway",
     "serve:graphql_server": "npm run serve -w graphql_server",
+    "job:repo": "npm run start -w repo_job",
     "test": "npm run format:check && npm run lint",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
     "lint": "eslint ./packages/**",
@@ -22,7 +23,8 @@
   },
   "workspaces": [
     "packages/graphql_server",
-    "packages/graphql_gateway"
+    "packages/graphql_gateway",
+    "packages/repo_job"
   ],
   "lint-staged": {
     "*.{js,ts}": [

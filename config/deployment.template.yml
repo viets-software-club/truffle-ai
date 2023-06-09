@@ -54,3 +54,22 @@ spec:
       targetPort: 3000
   selector:
     app: truffle-ai-deployment
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: truffle-ai-repo-cronjob
+spec:
+  timeZone: 'Europe/Berlin'
+  schedule: '0 2 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: truffle-ai-repo-cronjob
+              image: <IMAGE-REPO-JOB>
+              env:
+                - name: TZ
+                  value: $TZ
+          restartPolicy: OnFailure

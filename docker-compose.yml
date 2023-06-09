@@ -22,3 +22,13 @@ services:
       - ${GATEWAY_PORT}:${GATEWAY_PORT}
     env_file:
       - .env
+  repo-job:
+    build:
+      context: ./
+      dockerfile: ./packages/repo_job/Dockerfile
+      args:
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_API_KEY=${SUPABASE_API_KEY}
+        - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
+    env_file:
+      - .env

@@ -1,0 +1,14 @@
+{
+  "name": "repo_job",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "config": {
+    "env_dev": ". ../../env.sh"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "$npm_package_config_env_dev && tsc",
+    "start": "$npm_package_config_env_dev && node dist/index.js"
+  }
+}

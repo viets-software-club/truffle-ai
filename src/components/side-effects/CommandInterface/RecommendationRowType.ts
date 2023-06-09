@@ -1,4 +1,4 @@
-import TruffleAiCommand from './CommandInterfaceOptions'
+import CommandInterfaceOptions from './CommandInterfaceOptions'
 
 type RecommendationRowType = {
   Icon?: IconComponentType | null
@@ -6,7 +6,7 @@ type RecommendationRowType = {
   isIdPrimary?: boolean | false
   enableDivider?: boolean | false
   subtitle?: string | null
-  truffleAiCommand: TruffleAiCommand
+  commandInterfaceOptions: CommandInterfaceOptions
 }
 
 export default RecommendationRowType

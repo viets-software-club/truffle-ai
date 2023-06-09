@@ -8,45 +8,45 @@ const defaultList: RecommendationRowType[] = [
     Icon: MdEmail,
     menuText: 'Send Mail',
     enableDivider: true,
-    truffleAiCommand: CommandInterfaceOptions.SendMail
+    commandInterfaceOptions: CommandInterfaceOptions.SendMail
   },
   {
     Icon: IoMdGrid,
     menuText: 'Home',
     subtitle: 'View',
-    truffleAiCommand: CommandInterfaceOptions.GoHome
+    commandInterfaceOptions: CommandInterfaceOptions.GoHome
   },
   {
     Icon: MdArrowForward,
     menuText: 'Settings',
-    truffleAiCommand: CommandInterfaceOptions.Settings
+    commandInterfaceOptions: CommandInterfaceOptions.Settings
   },
   {
     Icon: MdArrowForward,
     menuText: 'Bookmarks',
-    truffleAiCommand: CommandInterfaceOptions.Bookmarks
+    commandInterfaceOptions: CommandInterfaceOptions.Bookmarks
   },
   {
     Icon: MdArrowForward,
     menuText: 'Documentation',
-    truffleAiCommand: CommandInterfaceOptions.Documentation
+    commandInterfaceOptions: CommandInterfaceOptions.Documentation
   },
   {
     Icon: MdArrowForward,
     menuText: 'Compare Projects',
-    truffleAiCommand: CommandInterfaceOptions.CompareProjects,
+    commandInterfaceOptions: CommandInterfaceOptions.CompareProjects,
     isIdPrimary: true
   },
   {
     Icon: MdArrowForward,
     menuText: 'Project Details',
-    truffleAiCommand: CommandInterfaceOptions.ProjectDetails,
+    commandInterfaceOptions: CommandInterfaceOptions.ProjectDetails,
     isIdPrimary: true
   },
   {
     Icon: MdArrowForward,
     menuText: 'Logout',
-    truffleAiCommand: CommandInterfaceOptions.Logout
+    commandInterfaceOptions: CommandInterfaceOptions.Logout
   }
 ]
 

@@ -1,7 +1,7 @@
 enum CommandInterfaceOptions {
   GoHome = '/',
+  SendMail = 'mailto:',
   GoDetails = '/details',
-  SendMail = '/mail',
   Bookmarks = '/bookmarks',
   Settings = '/settings',
   Documentation = '/docs',

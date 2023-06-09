@@ -77,13 +77,13 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
           .filter((row) =>
             row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
           )[0]
-          .truffleAiCommand.replace(':id', id)
+          .commandInterfaceOptions?.replace(':id', id)
       )
     } else {
       navigateTo(
         defaultList.filter((row) =>
           row.menuText.toLocaleLowerCase().includes(searchWord.toLocaleLowerCase())
-        )[0].truffleAiCommand
+        )[0].commandInterfaceOptions
       )
     }
   }
@@ -106,13 +106,15 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
       className="fixed flex h-screen w-full items-start justify-center bg-black/50 shadow-lg"
       id="spotlight_wrapper"
     >
-      <div ref={commandInterfaceWrapperRef} className="w-1/2 pr-40">
+      <div ref={commandInterfaceWrapperRef} className="h-96 w-1/2">
         <form onSubmit={handleSubmit}>
           <input
-            className="bg-blue-950 mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-6
+            className="mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-6
             py-10 shadow-lg outline-none placeholder:text-gray-600"
             onChange={(event) => searchHandler(event)}
             value={searchWord}
+            autoComplete="off"
+            spellCheck="false"
             type="text"
             id="spotlight"
             ref={inputRef}
@@ -120,7 +122,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
           />
         </form>
         <div className="h-0.5 bg-gray-600" />
-        <ul className=" max-h-48 w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
+        <ul className="h-full w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
           {recommendationList.map((item) => (
             <RecommendationRow
               key={item.menuText}
@@ -129,7 +131,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
               enableDivider={item.enableDivider}
               subtitle={item.subtitle}
               rowClicked={() =>
-                rowClicked(item.truffleAiCommand, item.menuText, item.isIdPrimary ?? false)
+                rowClicked(item.commandInterfaceOptions, item.menuText, item.isIdPrimary ?? false)
               }
             />
           ))}

@@ -2,12 +2,12 @@ import axios from 'axios'
 import { MouseEventHandler, useState } from 'react'
 import css from './Input.module.sass'
 
-interface CRMProps {
+type CRMProps = {
   name: string
   stars: number
 }
 
-interface ApiResponse {
+type ApiResponse = {
   success: boolean
 }
 

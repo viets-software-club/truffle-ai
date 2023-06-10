@@ -26,11 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     })
     if (response.status === 200) {
-      console.log('Affinity response:', response.data)
       res.status(200).json({ success: true })
     }
   } catch (err) {
-    console.log('ERROR:', err)
     res.status(500).json({ success: false })
   }
 }

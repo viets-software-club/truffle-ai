@@ -8,6 +8,7 @@ type ButtonProps = {
     | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
     | 'filter'
+    | 'red'
   onClick: () => void
   text?: string
   Icon?: IconComponentType
@@ -27,7 +28,8 @@ const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>
   ['highlighted', 'border border-indigo-500 hover:border-gray-800 bg-indigo-500 px-2 py-1.5'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
   ['onlyIconNoBorderNoBG', ''],
-  ['filter', 'border border-dashed border-gray-800 px-2 py-1.5']
+  ['filter', 'border border-dashed border-gray-800 px-2 py-1.5'],
+  ['red', 'bg-red px-2 py-1.5']
 ])
 
 const Button = ({

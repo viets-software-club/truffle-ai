@@ -13,22 +13,24 @@ interface ApiResponse {
 
 const CRM = ({ name, stars }: CRMProps) => {
   const [apiKey, setApiKey] = useState('') // @TODO Store the API key in a secure way, backend
+  const [message, setMessage] = useState('')
 
+  // @TODO Send data to Affinity, implement functionality
   const sendToAffinity: MouseEventHandler<HTMLButtonElement> = () => {
     axios
       .post<ApiResponse>('/api/sendToAffinity', { name, stars, apiKey })
       .then((response) => {
         if (response.data.success) {
-          console.log('Data sent to Affinity successfully!')
+          setMessage('Success!')
         }
       })
       .catch((err) => {
-        console.log('Error sending data to Affinity:', err)
+        setMessage(err as string)
       })
   }
 
   return (
-    <div className="flex flex-col items-start gap-[15px] px-7">
+    <div className="flex flex-col items-start gap-[15px]">
       <h1>{name}</h1>
       <div>
         <input
@@ -47,6 +49,7 @@ const CRM = ({ name, stars }: CRMProps) => {
         >
           Send to Affinity
         </button>
+        <p>{message}</p>
       </div>
     </div>
   )

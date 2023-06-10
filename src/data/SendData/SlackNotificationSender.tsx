@@ -1,4 +1,3 @@
-// Any React component
 import { useState } from 'react'
 import axios from 'axios'
 import css from './Input.module.sass'

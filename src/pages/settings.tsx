@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
-import CRM from '@/data/SendData/CRM'
-import SlackNotificationSender from '@/data/SendData/SlackNotificationSender'
+import CRM from '@/components/page/settings/SendData/CRM'
+import SlackNotificationSender from '@/components/page/settings/SendData/SlackNotificationSender'
 import Sidebar from '@/components/page/settings/Sidebar'
 import withAuth from '@/components/side-effects/withAuth'
 import { useEffect, useRef, useState } from 'react'

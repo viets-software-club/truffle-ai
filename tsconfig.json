@@ -28,8 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "index.d.ts"
-, "src/pages/api/sendToAffinity.js"  ],
+    "index.d.ts",],
   "exclude": [
     "node_modules"
   ]

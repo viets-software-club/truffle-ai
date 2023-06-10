@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { MouseEventHandler, useState } from 'react'
 import css from './Input.module.sass'
 
@@ -17,15 +16,31 @@ const CRM = ({ name, stars }: CRMProps) => {
 
   // @TODO Send data to Affinity, implement functionality
   const sendToAffinity: MouseEventHandler<HTMLButtonElement> = () => {
-    axios
-      .post<ApiResponse>('/api/sendToAffinity', { name, stars, apiKey })
-      .then((response) => {
-        if (response.data.success) {
-          setMessage('Success!')
+    fetch('/api/sendToAffinity', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, stars, apiKey })
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Failed to connect to server.')
+        }
+        try {
+          const jsonData = await response.text()
+          const parsedJSON = JSON.parse(jsonData) as ApiResponse
+          if (parsedJSON.success) {
+            setMessage('Successfully sent data to Affinity.')
+          } else {
+            setMessage('Failed to send data to Affinity.')
+          }
+        } catch (error) {
+          setMessage('Failed to send data to Affinity.')
         }
       })
-      .catch((err) => {
-        setMessage(err as string)
+      .catch((error: Error) => {
+        setMessage(error.message)
       })
   }
 

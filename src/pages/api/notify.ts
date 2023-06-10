@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 type SlackData = {
@@ -14,9 +13,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const response = await axios.post(url, slackData)
-    if (response.status === 200) {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(slackData)
+    })
+    if (response.ok) {
       res.status(200).json({ success: true })
+    } else {
+      throw new Error('Request failed')
     }
   } catch (err) {
     res.status(500).json({ success: false })

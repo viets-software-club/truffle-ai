@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import axios from 'axios'
 import css from './Input.module.sass'
 
 type ApiResponse = {
@@ -12,16 +11,24 @@ const SlackNotificationSender = () => {
   const [userResponse, setUserResponse] = useState('')
 
   const sendNotification = () => {
-    axios
-      .post<ApiResponse>('/api/notify', { text: message, url: webhookURL })
-      .then((response) => {
-        if (response.data.success) {
+    fetch('/api/notify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: message, url: webhookURL })
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = (await response.json()) as ApiResponse
+        if (data.success) {
           setUserResponse('Success!')
         }
       })
-      .catch((err) => {
-        const error = err as Error
-        setUserResponse(`Error sending notification:${error.message}`)
+      .catch((error: Error) => {
+        setUserResponse(`Error sending notification: ${error.message}`)
       })
   }
 

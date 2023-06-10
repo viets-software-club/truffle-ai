@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 type AffinityData = {
@@ -19,14 +18,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const response = await axios.post('https://api.affinity.co/organizations', affinityData, {
+    const response = await fetch('https://api.affinity.co/organizations', {
+      method: 'POST',
       headers: {
         'API-KEY': apiKey, // Use the API key from the request body
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify(affinityData)
     })
-    if (response.status === 200) {
+
+    if (response.ok) {
       res.status(200).json({ success: true })
+    } else {
+      throw new Error('Request failed')
     }
   } catch (err) {
     res.status(500).json({ success: false })

@@ -91,6 +91,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
 
   const [isDataNormalized, setIsDataNormalized] = useState(false)
 
+  // Mehtod to handle the click on the "Normalize data" button
   const handleDataNormalization = () => {
     if (isDataNormalized) {
       setChartData(chartDataOriginal)

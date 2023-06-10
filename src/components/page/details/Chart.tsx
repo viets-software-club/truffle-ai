@@ -28,7 +28,7 @@ type ColorObject = {
 const singleColors = ['teal', 'red', 'mustard', 'yellow', 'orange', 'purple', 'blue', 'green']
 const grayColors = fullConfig.theme?.colors?.gray as ColorObject
 const indigoColors = fullConfig.theme?.colors?.indigo as ColorObject
-const colorValues = ['100', '300', '500']
+const colorValues = ['300', '500']
 
 const colors: string[] = []
 
@@ -83,9 +83,6 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
 }
 
 const Chart = ({ datasets, multipleLines }: ChartProps) => {
-  // const [modalValue, setModalValue] = useState('Select Value')
-  // const [isModalOpen, setIsModalOpen] = useState(false)
-
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
 
@@ -119,15 +116,6 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
     setChartData(normalizedData)
   }
 
-  // const toggleModal = useCallback(() => {
-  //   setIsModalOpen((prevState) => !prevState)
-  // }, [])
-
-  // const handleModalValueChange = useCallback((newValue: string) => {
-  //   setModalValue(newValue)
-  //   setIsModalOpen(false)
-  // }, [])
-
   const handleTimeframeChange = useCallback(
     (newTimeframe: number) => {
       const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
@@ -152,31 +140,6 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
         <div className="flex w-full flex-col gap-3">
           {multipleLines && (
             <div className="flex flex-row gap-3 ">
-              {/* <div className="flex flex-col">
-            <Button
-              variant="normal"
-              text={modalValue}
-              Icon={ChevronDown}
-              order="rtl"
-              fullWidth
-              onClick={() => {
-                toggleModal()
-              }}
-            />
-
-            <Modal isOpen={isModalOpen} onClose={toggleModal}>
-              {['Stars', 'Forks', 'Contributors'].map((item) => (
-                <Button
-                  key={item}
-                  variant="noBorderNoBG"
-                  text={item}
-                  fullWidth
-                  onClick={() => handleModalValueChange(item)}
-                />
-              ))}
-            </Modal>
-          </div> */}
-
               <div className="flex flex-col">
                 <Button
                   variant="normal"
@@ -250,21 +213,27 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
-              {chartData.map((dataset, index) => (
-                <Line
-                  key={dataset.id}
-                  data={dataset.data.map((item) => ({
-                    ...item,
-                    date: new Date(item.date).getTime()
-                  }))}
-                  dataKey="count"
-                  name={dataset.name}
-                  type="monotone"
-                  stroke={colors[index % colors.length]}
-                  dot={false}
-                  activeDot={{ r: 4 }}
-                />
-              ))}
+              {chartData
+                .sort((a, b) => {
+                  const lastDataPointA = a.data[a.data.length - 1]?.count || 0
+                  const lastDataPointB = b.data[b.data.length - 1]?.count || 0
+                  return lastDataPointB - lastDataPointA
+                })
+                .map((dataset, index) => (
+                  <Line
+                    key={dataset.id}
+                    data={dataset.data.map((item) => ({
+                      ...item,
+                      date: new Date(item.date).getTime()
+                    }))}
+                    dataKey="count"
+                    name={dataset.name}
+                    type="monotone"
+                    stroke={colors[index % colors.length]}
+                    dot={false}
+                    activeDot={{ r: 4 }}
+                  />
+                ))}
             </LineChart>
           </ResponsiveContainer>
         </div>

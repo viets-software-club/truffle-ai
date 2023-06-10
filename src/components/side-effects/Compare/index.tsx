@@ -72,7 +72,6 @@ const Compare = () => {
         <div className="flex flex-col">
           <p className="font-medium">All projects in this category</p>
         </div>
-
         <div>
           <Button
             onClick={nullFunc}

@@ -113,6 +113,7 @@ const Settings = () => {
 
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Account</h2>
 
+        {/* @TODO add functionality, save data in backend */}
         <Section title="Account" subtitle="Profile" refs={refs}>
           <p className="pb-2 text-14 font-normal">Name</p>
           <input
@@ -132,6 +133,8 @@ const Settings = () => {
           />
         </Section>
         <div className="h-1 border-b border-gray-800" />
+
+        {/* @TODO add functionality, save data in backend */}
         <Section title="Account" subtitle="Linked Accounts" refs={refs}>
           <p className="pb-2 text-14 font-normal">GitHub access token</p>
           <input
@@ -152,6 +155,7 @@ const Settings = () => {
           <p className="text-14 font-normal">Your API keys</p>
         </Section>
         <div className="h-1 border-b border-gray-800" />
+        {/* @TODO add functionality */}
         <Section title="Account" subtitle="Delete account" refs={refs}>
           <p className="pb-6 text-14 font-normal text-gray-300">
             If you delete your account, all your data will be lost.

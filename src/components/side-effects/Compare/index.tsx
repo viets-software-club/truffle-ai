@@ -9,8 +9,9 @@ import defaultColumns from '@/components/pure/ProjectsTable/columns'
 import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
-import FilterBar from '@/components/page/overview/Filterbar'
+import FilterBar from '@/components/page/overview/FilterBar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { TableFilter } from '@/components/page/overview/TableFilter'
 
 const nullFunc = () => null
 
@@ -23,6 +24,7 @@ const Compare = () => {
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
+  const [filters, setFilters] = useState<TableFilter[]>([])
 
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery()
@@ -47,15 +49,36 @@ const Compare = () => {
     getCoreRowModel: getCoreRowModel()
   })
 
+  const addFilter = (filter: TableFilter) => {
+    setFilters([...filters, filter])
+  }
+
+  const updateFilter = (filter: TableFilter) => {
+    setFilters(
+      filters.map((f) =>
+        f.column.columnDef.header === filter.column.columnDef.header ? filter : f
+      )
+    )
+  }
+
+  const removeFilter = (filter: TableFilter) => {
+    setFilters(filters.filter((f) => f !== filter))
+  }
+
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Getting saved projects for you..." />
   if (data.length === 0 || error) return <Error />
 
   return (
     <div className="flex w-full flex-col">
-      <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
+      <TopBar
+        columns={table.getAllLeafColumns()}
+        nullFunc={nullFunc}
+        addFilter={addFilter}
+        filters={filters}
+      />
 
-      <FilterBar />
+      <FilterBar filters={filters} removeFilter={removeFilter} updateFilter={updateFilter} />
 
       <div className="flex flex-row items-center justify-between px-6 pt-3.5">
         <div className="flex flex-col">
@@ -104,7 +127,7 @@ const Compare = () => {
         </div>
       </div>
 
-      <Table table={table} />
+      <Table table={table} filters={filters} />
     </div>
   )
 }

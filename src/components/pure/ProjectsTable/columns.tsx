@@ -9,12 +9,13 @@ import formatNumber from '@/util/formatNumber'
 
 const columnHelper = createColumnHelper<Project>()
 
-// @TODO Make columns sortable, filterable, dynamic
+// @TODO Make columns sortable, filterable
 const columns = [
   columnHelper.accessor(
     ({ organization, associatedPerson }) => organization?.avatarUrl || associatedPerson?.avatarUrl,
     {
       header: 'Logo',
+      enableColumnFilter: false,
       cell: (info) => (
         <div className="relative ml-2 h-6 w-6 overflow-hidden rounded-[5px]">
           <Image src={info.getValue() as string} alt="logo" fill sizes="24px" />
@@ -32,12 +33,14 @@ const columns = [
     {
       id: 'nameWithOwner',
       header: 'Name',
+      enableColumnFilter: true,
       cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
     }
   ),
   // @TODO Add tags column
   columnHelper.accessor('starCount', {
     header: 'Stars',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineStar}
@@ -50,6 +53,7 @@ const columns = [
   }),
   columnHelper.accessor('issueCount', {
     header: 'Issues',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={VscIssues}
@@ -62,6 +66,7 @@ const columns = [
   }),
   columnHelper.accessor('forkCount', {
     header: 'Forks',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineFork}
@@ -74,6 +79,7 @@ const columns = [
   }),
   columnHelper.accessor('contributorCount', {
     header: 'Contrib.',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={BsPeople}
@@ -86,12 +92,14 @@ const columns = [
   }),
   columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
     id: 'forksPerContributor',
-    header: 'Forks/ Contr.',
+    header: 'Forks/Contrib.',
+    enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   }),
   columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
     id: 'issuesPerContributor',
-    header: 'Issues/ Contr.',
+    header: 'Issues/Contrib.',
+    enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   })
 ]

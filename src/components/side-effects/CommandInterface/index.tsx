@@ -31,7 +31,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const [prevProjectRecommendationList, setPrevProjectRecommendationList] = useState<
     RecommendationRowType[]
   >([])
-  const [isProjectListOn, setIsProjectListOn] = useState<boolean>()
+  const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -88,6 +88,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
         )
       }
     } else if (search.trim() === '') {
+      setIsProjectListOn(false)
       setRecommendationList(defaultList)
     }
   }
@@ -191,6 +192,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
               menuText={item.menuText}
               enableDivider={item.enableDivider}
               subtitle={item.subtitle}
+              isProjectItem={isProjectListOn}
               rowClicked={() =>
                 rowClicked(item.commandInterfaceOptions, item.menuText, item.isIdPrimary ?? false)
               }

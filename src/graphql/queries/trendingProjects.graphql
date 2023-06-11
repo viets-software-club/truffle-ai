@@ -3,21 +3,30 @@ query TrendingProjects {
     edges {
       node {
         id
-        nodeId
         name
         starCount
         issueCount
         forkCount
         pullRequestCount
         contributorCount
+        githubUrl
         websiteUrl
         starHistory
-        organization {
+        owningPerson
+        owningOrganization
+        associatedPerson {
           id
-          nodeId
           login
           avatarUrl
         }
+        organization {
+          id
+          login
+          avatarUrl
+        }
+        isTrendingDaily
+        isTrendingWeekly
+        isTrendingMonthly
       }
     }
   }

@@ -49,9 +49,7 @@ const Page = ({ children }: PageProps) => {
   return (
     <div className={`min-h-screen w-full ${inter.className} bg-gray-900 text-gray-100`}>
       <div className="flex">
-        <div className="fixed flex-initial">
-          <NavSidebar />
-        </div>
+        <NavSidebar />
         {openModal && <CommandInterface action={closeModel} />}
         <main className="ml-56 w-full text-gray-100">{children}</main>
       </div>

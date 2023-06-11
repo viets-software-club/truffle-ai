@@ -13,6 +13,9 @@ type TopBarProps = {
   nullFunc: () => void
 }
 
+/**
+ * Time frame options for the time selection button on the top bar.
+ */
 const timeFrameOptions = [
   { value: '1_week', label: '1 Week' },
   { value: '4_weeks', label: '4 Weeks' },
@@ -37,6 +40,11 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
     {children}
   </Transition>
 )
+
+/**
+ * TopBar component for the table view.
+ * Displays filter, sort, edit columns, and add project buttons.
+ */
 
 const TopBar = ({ columns, nullFunc }: TopBarProps) => (
   <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">

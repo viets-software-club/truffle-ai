@@ -15,7 +15,9 @@ import Button from '@/components/pure/Button'
 import Modal from '@/components/pure/Modal'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
-
+/**
+ * time frame modal has 4 options
+ */
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
   { value: 3, label: '3 Months' },
@@ -23,6 +25,9 @@ const TimeframeOptions = [
   { value: 12, label: '1 Year' }
 ]
 
+/**
+ * Define Props for chart component
+ */
 type ChartProps = {
   datasets: {
     id: string
@@ -33,14 +38,23 @@ type ChartProps = {
     }[]
   }[]
 }
-
+/**
+ * Chart component displays a chart with customizable datasets.
+ * @param {ChartProps} datasets - The datasets to be displayed on the chart.
+ */
 const Chart = ({ datasets }: ChartProps) => {
+  /**
+   * state variable for modal and time frame modal
+   */
   const [modalValue, setModalValue] = useState('Select Value')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
 
+  /**
+   * handler for modal value change. When new value come in, state will change to new value.
+   */
   const handleModalValueChange = useCallback((newValue: string) => {
     setModalValue(newValue)
     setIsModalOpen(false)
@@ -48,13 +62,16 @@ const Chart = ({ datasets }: ChartProps) => {
 
   const handleTimeframeChange = useCallback((newTimeframe: number) => {
     const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
-
     setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
     setTimeframeModalOpen(false)
   }, [])
-
+  /**
+   * initialize chart data with props
+   */
   const [chartData] = useState<ChartProps['datasets']>([...datasets])
-
+  /**
+   * function that toggles the value of the "isModalOpen" state variable between true and false
+   */
   const toggleModal = useCallback(() => {
     setIsModalOpen((prevState) => !prevState)
   }, [])

@@ -2,6 +2,7 @@ import { TooltipProps } from 'recharts'
 import formatNumber from '@/util/formatNumber'
 import formatDate from '@/util/formatDate'
 
+// Component that renders a custom tooltip for a chart
 const CustomTooltip = ({ active, payload, label }: TooltipProps<string, string>) => {
   if (active && payload && payload.length) {
     return (

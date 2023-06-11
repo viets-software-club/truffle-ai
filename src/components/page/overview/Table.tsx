@@ -6,6 +6,11 @@ type TableProps = {
   table: ReturnType<typeof useReactTable<Project>>
 }
 
+/**
+ * Table component for displaying data.
+ * Uses @tanstack/react-table library for table functionality.
+ */
+
 const Table = ({ table }: TableProps) => (
   <table className="mx-6 my-3.5">
     <thead>

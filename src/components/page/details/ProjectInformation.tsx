@@ -11,6 +11,7 @@ type ProjectInformationProps = {
 
 /**
  * Top part of project detail page (logo, name, tags, bookmark button)
+ * When name is clicked, the page will jump to url.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformationProps) => (

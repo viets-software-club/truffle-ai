@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import { FiBookmark as Bookmark } from 'react-icons/fi'
 import Button from '@/components/pure/Button'
 
 type ProjectInformationProps = {
-  image?: string
+  image: string
   name: string
   url: string
   eli5: string
@@ -18,15 +19,16 @@ const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformation
   <div className="border-b border-gray-800 px-7 py-6">
     <div className="mb-6 flex flex-row items-center justify-between">
       <div className="flex flex-row items-center">
-        {/* @TODO Replace with actual image */}
-        <div className="mr-4 h-[30px] w-[30px] rounded-[5px] bg-gray-600" />
+        <div className="relative mr-4 h-8 w-8 overflow-hidden rounded-[5px] bg-gray-600">
+          <Image src={image} alt="logo" fill sizes="32px" />
+        </div>
 
-        <h1 className="mr-3 text-20 font-medium">
-          <a href={url} target="_blank" rel="noreferrer">
+        <a href={url} target="_blank" rel="noreferrer">
+          <h1 className="mr-3 text-20 font-medium">
             {name.slice(0, 32)}
             {name.length > 32 ? '...' : ''}
-          </a>
-        </h1>
+          </h1>
+        </a>
 
         {tags.length > 0 ? (
           tags.map((text) => (
@@ -57,9 +59,5 @@ const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformation
     <p className="text-14 font-light">{eli5}</p>
   </div>
 )
-
-ProjectInformation.defaultProps = {
-  image: null
-}
 
 export default ProjectInformation

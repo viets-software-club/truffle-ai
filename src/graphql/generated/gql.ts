@@ -695,10 +695,9 @@ export type ProjectDetailsQuery = {
       node: {
         __typename?: 'Project'
         id: any
-        nodeId: string
-        eli5?: string | null
-        about?: string | null
         name?: string | null
+        about?: string | null
+        eli5?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -707,10 +706,21 @@ export type ProjectDetailsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
+        owningPerson?: any | null
+        owningOrganization?: any | null
+        associatedPerson?: {
+          __typename?: 'AssociatedPerson'
+          id: any
+          name?: string | null
+          login?: string | null
+          avatarUrl?: string | null
+          email?: string | null
+          githubUrl?: string | null
+          twitterUsername?: string | null
+        } | null
         organization?: {
           __typename?: 'Organization'
           id: any
-          nodeId: string
           login?: string | null
           avatarUrl?: string | null
         } | null
@@ -730,19 +740,29 @@ export type TrendingProjectsQuery = {
       node: {
         __typename?: 'Project'
         id: any
-        nodeId: string
         name?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
         pullRequestCount?: number | null
         contributorCount?: number | null
+        githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
+        owningPerson?: any | null
+        owningOrganization?: any | null
+        isTrendingDaily?: boolean | null
+        isTrendingWeekly?: boolean | null
+        isTrendingMonthly?: boolean | null
+        associatedPerson?: {
+          __typename?: 'AssociatedPerson'
+          id: any
+          login?: string | null
+          avatarUrl?: string | null
+        } | null
         organization?: {
           __typename?: 'Organization'
           id: any
-          nodeId: string
           login?: string | null
           avatarUrl?: string | null
         } | null
@@ -757,10 +777,9 @@ export const ProjectDetailsDocument = gql`
       edges {
         node {
           id
-          nodeId
-          eli5
-          about
           name
+          about
+          eli5
           starCount
           issueCount
           forkCount
@@ -769,9 +788,19 @@ export const ProjectDetailsDocument = gql`
           githubUrl
           websiteUrl
           starHistory
+          owningPerson
+          owningOrganization
+          associatedPerson {
+            id
+            name
+            login
+            avatarUrl
+            email
+            githubUrl
+            twitterUsername
+          }
           organization {
             id
-            nodeId
             login
             avatarUrl
           }
@@ -795,21 +824,30 @@ export const TrendingProjectsDocument = gql`
       edges {
         node {
           id
-          nodeId
           name
           starCount
           issueCount
           forkCount
           pullRequestCount
           contributorCount
+          githubUrl
           websiteUrl
           starHistory
-          organization {
+          owningPerson
+          owningOrganization
+          associatedPerson {
             id
-            nodeId
             login
             avatarUrl
           }
+          organization {
+            id
+            login
+            avatarUrl
+          }
+          isTrendingDaily
+          isTrendingWeekly
+          isTrendingMonthly
         }
       }
     }

@@ -38,9 +38,7 @@ const Page = ({ children }: PageProps) => {
         setOpenModal(false)
       }
     }
-
     document.addEventListener('keydown', handleKeyDown)
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }

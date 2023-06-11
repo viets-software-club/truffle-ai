@@ -1,5 +1,3 @@
-import CommandInterfaceOptions from './CommandInterfaceOptions'
-
 type RecommendationRowType = {
   Icon?: IconComponentType | null
   menuText: string
@@ -7,7 +5,7 @@ type RecommendationRowType = {
   enableDivider?: boolean | false
   subtitle?: string | null
   isProjectPrimary?: boolean | false
-  commandInterfaceOptions: CommandInterfaceOptions
+  commandInterfaceOptions: string
 }
 
 export default RecommendationRowType

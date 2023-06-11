@@ -9,7 +9,8 @@ const defaultList: RecommendationRowType[] = [
     menuText: 'Send Mail',
     enableDivider: true,
     commandInterfaceOptions: CommandInterfaceOptions.SendMail,
-    isProjectPrimary: true
+    isProjectPrimary: true,
+    isIdPrimary: true
   },
   {
     Icon: IoMdGrid,
@@ -36,13 +37,15 @@ const defaultList: RecommendationRowType[] = [
     Icon: MdArrowForward,
     menuText: 'Compare Projects',
     commandInterfaceOptions: CommandInterfaceOptions.CompareProjects,
-    isIdPrimary: true
+    isIdPrimary: true,
+    isProjectPrimary: true
   },
   {
     Icon: MdArrowForward,
     menuText: 'Project Details',
     commandInterfaceOptions: CommandInterfaceOptions.ProjectDetails,
-    isIdPrimary: true
+    isIdPrimary: true,
+    isProjectPrimary: true
   },
   {
     Icon: MdArrowForward,

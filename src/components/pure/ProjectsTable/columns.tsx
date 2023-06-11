@@ -1,12 +1,11 @@
-import Image from 'next/image'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
 import { VscIssues } from 'react-icons/vsc'
+import Logo from '@/components/pure/Icons/Logo'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
-import * as Logo from '@/assets/logo.svg'
 
 const columnHelper = createColumnHelper<Project>()
 
@@ -17,7 +16,7 @@ const columns = [
     header: 'Logo',
     // @TODO Add real logo
     // @TODO Fix next image types
-    cell: () => <Image src={Logo} alt="logo" className="ml-2 h-5 w-5" />
+    cell: () => <Logo className="ml-2 h-5 w-5" />
   }),
   // @TODO Adjust for user owners
   columnHelper.accessor(

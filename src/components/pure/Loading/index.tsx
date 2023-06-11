@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
+// This loading component is displayed while the app is getting trending projects.
 const Loading = () => (
   <main className={`${inter.className} flex min-h-screen flex-col`}>
     <div className="flex grow flex-col items-center justify-between bg-radial-gradient">

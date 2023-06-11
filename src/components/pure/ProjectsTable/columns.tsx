@@ -12,7 +12,9 @@ const columnHelper = createColumnHelper<Project>()
 
 // @TODO Format large numbers
 // @TODO Make columns sortable, filterable, dynamic
+// Define column definitions for a Project table
 const columns = [
+  // Logo column definition
   columnHelper.accessor(() => '', {
     header: 'Logo',
     // @TODO Add real logo
@@ -21,6 +23,7 @@ const columns = [
     cell: () => <Image src={Logo} alt="logo" className="ml-2 h-5 w-5" />
   }),
   // @TODO Adjust for user owners
+  // Name column definition
   columnHelper.accessor(
     ({ organization, name }) => `${organization?.login || 'user'} / ${name as string}`.slice(0, 32),
     {
@@ -30,6 +33,7 @@ const columns = [
     }
   ),
   // @TODO Add tags column
+  // Stars column definition
   columnHelper.accessor('starCount', {
     header: 'Stars',
     cell: (info) => (
@@ -42,6 +46,7 @@ const columns = [
       />
     )
   }),
+  // Issues column definition
   columnHelper.accessor('issueCount', {
     header: 'Issues',
     cell: (info) => (
@@ -54,6 +59,7 @@ const columns = [
       />
     )
   }),
+  // Forks column definition
   columnHelper.accessor('forkCount', {
     header: 'Forks',
     cell: (info) => (
@@ -66,6 +72,7 @@ const columns = [
       />
     )
   }),
+  // Contributors column definition
   columnHelper.accessor('contributorCount', {
     header: 'Contrib.',
     cell: (info) => (
@@ -78,11 +85,13 @@ const columns = [
       />
     )
   }),
+  // Forks per Contributor column definition
   columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
     id: 'forksPerContributor',
     header: 'Forks/ Contr.',
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   }),
+  // Issues per Contributor column definition
   columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
     id: 'issuesPerContributor',
     header: 'Issues/ Contr.',

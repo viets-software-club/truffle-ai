@@ -9,6 +9,10 @@ import Loading from '@/components/pure/Loading'
 
 const inter = Inter({ subsets: ['latin'] })
 
+/**
+ * Get the correct URL based on the environment
+ * @returns {string} The correct base URL for the application
+ */
 const getURL = () => {
   let url =
     process?.env?.NEXT_PUBLIC_SITE_URL ?? // prod URL
@@ -26,6 +30,10 @@ const getURL = () => {
 
 const redirectURL = getURL()
 
+/**
+ * Login component. Displays a Google login button and handles the Google OAuth login flow.
+ * @returns {JSX.Element} The rendered component
+ */
 const Login = () => {
   const [isError, setIsError] = useState(false)
   const user = useUser()
@@ -33,6 +41,11 @@ const Login = () => {
   const supabaseClient = useSupabaseClient()
   const { isLoading } = useSessionContext()
 
+  /**
+   * Handle sign-in with Google.
+   * @async
+   * @returns {Promise<void>} A promise that resolves when the sign-in attempt is complete.
+   */
   async function signInWithGoogle() {
     const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
@@ -50,8 +63,10 @@ const Login = () => {
     signInWithGoogle().catch(() => setIsError(true))
   }
 
+  // If a user is logged in, redirect them to the home page
   if (user) void router.replace('/')
 
+  // Show loading spinner if session state is still loading
   if (isLoading) return <Loading />
 
   return (

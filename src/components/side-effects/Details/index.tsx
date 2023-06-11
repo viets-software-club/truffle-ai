@@ -105,10 +105,12 @@ const Details = ({ id }: DetailsProps) => {
       <div className="flex grow">
         <div className="w-4/5 flex-row border-t border-solid border-gray-800">
           <ProjectInformation
-            // @TODO Add actual image URL
-            image={project?.organization?.avatarUrl as string}
-            // @TODO Adjust for owner (could be user or organization)
-            name={`${project.organization?.login || 'user'} / ${project.name as string}`}
+            image={
+              (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
+            }
+            name={`${
+              (project.organization?.login || project.associatedPerson?.login) as string
+            } / ${project.name as string}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
             // @TODO Replace with actual tags

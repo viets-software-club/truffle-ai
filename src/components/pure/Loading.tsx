@@ -1,10 +1,8 @@
-import Image from 'next/image'
-import Logo from '@/assets/logo.svg'
+import Logo from '@/components/pure/Icons/Logo'
 
 type LoadingProps = {
   message?: string
 }
-
 /**
  * A simple loading component that displays a logo and a customizable message.
  * @param {LoadingProps} props - The properties for this component.
@@ -15,8 +13,7 @@ const Loading = ({ message }: LoadingProps) => (
     <div />
 
     <div className="flex flex-col items-center">
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-      <Image src={Logo} alt="logo" className="h-10 w-10" />
+      <Logo className="h-10 w-10" />
       <p className="pt-6">{message || 'Loading...'}</p>
     </div>
 

@@ -108,7 +108,7 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
                 <Menu.Item key={column.id}>
                   <button
                     type="button"
-                    onClick={() => column.toggleVisibility()}
+                    onClick={column.getToggleVisibilityHandler()}
                     className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
                   >
                     {column.getIsVisible() ? (

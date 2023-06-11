@@ -17,7 +17,7 @@ const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
     {tags.map(({ id, name: tagName }) => (
       <span
         key={id}
-        className="mx-1 block rounded-lg bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
+        className="mx-1 block rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
       >
         {tagName}
       </span>

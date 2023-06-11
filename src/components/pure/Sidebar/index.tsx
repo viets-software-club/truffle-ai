@@ -1,14 +1,11 @@
 import { PropsWithChildren, ReactNode } from 'react'
 import Link from 'next/link'
-
-import { AiFillSmile } from 'react-icons/ai'
 import { Menu } from '@headlessui/react'
 import { TransitionMenuItems } from '@/components/page/overview/TopBar'
-import { FiSettings as Settings, FiLogOut as LogOut } from 'react-icons/fi'
-
+import { FiUser as UserIcon } from 'react-icons/fi'
 import Box from './Box/Box'
-import SmallSidebar from './Small'
 import Section from './Section'
+import SmallSidebar from './Small'
 
 type SidebarProps = PropsWithChildren<{
   title: string
@@ -16,7 +13,7 @@ type SidebarProps = PropsWithChildren<{
 }>
 
 const Sidebar = ({ footer, ...props }: SidebarProps) => (
-  <aside className="flex h-screen w-56 flex-col justify-between border-r border-gray-800">
+  <aside className="fixed z-20 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800">
     <div>
       <div className="flex h-[59px] w-full items-center justify-between px-7 text-gray-100">
         <Link href="/">
@@ -26,32 +23,32 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
         <Menu as="div" className="relative inline-block text-left">
           <div>
             <Menu.Button className="flex h-[30px] w-[30px] flex-row items-center rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-              <AiFillSmile color="#A5B4FC" />
+              <UserIcon className="text-gray-500" />
             </Menu.Button>
           </div>
 
           <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
-              <div className="py-1">
-                <Section.Item
-                  id={0}
-                  Icon={Settings}
-                  text="Settings"
-                  path="/settings"
-                  showIcon
-                  editable={false}
-                />
-                <hr className="my-1 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
-                <Section.Item
-                  id={1}
-                  Icon={LogOut}
-                  text="Logout"
-                  path="/logout"
-                  showIcon
-                  editable={false}
-                />
-              </div>
-            </Menu.Items>
+            <div className="absolute left-0 z-20 mt-2 flex flex-col rounded-md bg-gray-700 p-1 text-14 shadow-md focus:outline-none">
+              <Link
+                href="/settings"
+                className="min-w-[150px] rounded-[5px] px-4 py-2 hover:bg-gray-600"
+              >
+                Settings
+              </Link>
+              <Link
+                href="/docs"
+                className="min-w-[150px] rounded-[5px] px-4 py-2 hover:bg-gray-600"
+              >
+                Documentation
+              </Link>
+              <hr className="my-1 h-px border-t border-gray-500 opacity-25" />
+              <Link
+                href="/logout"
+                className="min-w-[150px] rounded-[5px] px-4 py-2 hover:bg-gray-600"
+              >
+                Log out
+              </Link>
+            </div>
           </TransitionMenuItems>
         </Menu>
       </div>

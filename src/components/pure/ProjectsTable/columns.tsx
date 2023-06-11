@@ -6,23 +6,29 @@ import { VscIssues } from 'react-icons/vsc'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
-import Logo from '@/assets/logo.svg'
 
 const columnHelper = createColumnHelper<Project>()
 
-// @TODO Format large numbers
 // @TODO Make columns sortable, filterable, dynamic
 const columns = [
-  columnHelper.accessor(() => '', {
-    header: 'Logo',
-    // @TODO Add real logo
-    // @TODO Fix next image types
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    cell: () => <Image src={Logo} alt="logo" className="ml-2 h-5 w-5" />
-  }),
+  columnHelper.accessor(
+    ({ organization, associatedPerson }) => organization?.avatarUrl || associatedPerson?.avatarUrl,
+    {
+      header: 'Logo',
+      cell: (info) => (
+        <div className="relative ml-2 h-6 w-6 overflow-hidden rounded-[5px]">
+          <Image src={info.getValue() as string} alt="logo" fill sizes="24px" />
+        </div>
+      )
+    }
+  ),
   // @TODO Adjust for user owners
   columnHelper.accessor(
-    ({ organization, name }) => `${organization?.login || 'user'} / ${name as string}`.slice(0, 32),
+    ({ organization, associatedPerson, name }) =>
+      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`.slice(
+        0,
+        32
+      ),
     {
       id: 'nameWithOwner',
       header: 'Name',

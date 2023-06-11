@@ -1,3 +1,5 @@
+import { MouseEventHandler } from 'react'
+
 type ButtonProps = {
   variant:
     | 'normal'
@@ -9,7 +11,7 @@ type ButtonProps = {
     | 'normalHighlighted'
     | 'filter'
     | 'red'
-  onClick: () => void
+  onClick?: MouseEventHandler<HTMLButtonElement>
   text?: string
   Icon?: IconComponentType
   order?: 'ltr' | 'rtl'
@@ -72,7 +74,8 @@ Button.defaultProps = {
   order: 'rtl',
   iconColor: 'text-gray-500',
   textColor: 'text-gray-300',
-  fullWidth: false
+  fullWidth: false,
+  onClick: () => ''
 }
 
 export default Button

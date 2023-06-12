@@ -7,8 +7,7 @@ type TableProps = {
 }
 
 /**
- * Table component for displaying data.
- * Uses @tanstack/react-table library for table functionality.
+ * Generic table component using @tanstack/react-table
  */
 
 const Table = ({ table }: TableProps) => (

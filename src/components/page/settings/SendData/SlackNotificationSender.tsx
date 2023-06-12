@@ -14,7 +14,10 @@ const SlackNotificationSender = () => {
   const [userResponse, setUserResponse] = useState('')
 
   const sendNotification = async () => {
+    // console.log('Sending notification to Slack...')
+
     try {
+      // console.log('Sending notification to Slack...')
       const response = await fetch('/api/notify', {
         method: 'POST',
         headers: {

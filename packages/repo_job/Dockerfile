@@ -38,6 +38,7 @@ COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY env.sh env.sh
 ## copy build 'build' stage
+COPY --from=build /app/packages/repo_job/package.json /app/packages/repo_job/package.json
 COPY --from=build /app/packages/repo_job/dist /app/packages/repo_job/dist
 ## install production dependencies
 RUN npm ci --omit=dev -w repo_job

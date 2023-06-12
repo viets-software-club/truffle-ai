@@ -47,7 +47,7 @@ const matchesFilter = (cell: Cell<Project, unknown>, filter: TableFilter) => {
       case NumberTableFilterOperator.EQUALS:
         return cellValueNum === Number(value)
       case NumberTableFilterOperator.NOT_EQUALS:
-        return cellValueNum !== value
+        return cellValueNum !== Number(value)
       case NumberTableFilterOperator.GREATER_THAN:
         return cellValueNum > value
       case NumberTableFilterOperator.LESS_THAN:

@@ -66,9 +66,7 @@ const Chart = ({ datasets }: ChartProps) => {
     setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
     setTimeframeModalOpen(false)
   }, [])
-  /**
-   * initialize chart data with props
-   */
+  // Initialize chart data
   const [chartData] = useState<ChartProps['datasets']>([...datasets])
   /**
    * function that toggles the value of the "isModalOpen" state variable between true and false

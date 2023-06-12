@@ -27,6 +27,7 @@ export const dbUpdater = async () => {
   deleteReposError && console.error('Error while deleting old projects: \n', deleteReposError)
 
   // get all projects that have been added to the database before the cut off time
+  // @Todo: repo update should not depend on insertion date but rather on something like a last updated date
   const { data: oldRepos, error: repoRetrievalError } = await supabase
     .from('project')
     .select('name, owning_organization, owning_person')

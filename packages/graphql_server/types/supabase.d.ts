@@ -40,6 +40,41 @@ export interface Database {
           twitter_username?: string | null
           website_url?: string | null
         }
+        Relationships: []
+      }
+      bookmark: {
+        Row: {
+          created_at: string | null
+          id: string
+          project_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          project_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          project_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'bookmark_project_id_fkey'
+            columns: ['project_id']
+            referencedRelation: 'project'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'bookmark_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
       organization: {
         Row: {
@@ -78,6 +113,7 @@ export interface Database {
           twitter_username?: string | null
           website_url?: string | null
         }
+        Relationships: []
       }
       project: {
         Row: {
@@ -87,6 +123,8 @@ export interface Database {
           eli5: string | null
           fork_count: number | null
           github_url: string | null
+          hackernews_sentiment: string | null
+          hackernews_stories: string[] | null
           id: string
           is_bookmarked: boolean | null
           is_trending_daily: boolean | null
@@ -109,6 +147,8 @@ export interface Database {
           eli5?: string | null
           fork_count?: number | null
           github_url?: string | null
+          hackernews_sentiment?: string | null
+          hackernews_stories?: string[] | null
           id?: string
           is_bookmarked?: boolean | null
           is_trending_daily?: boolean | null
@@ -131,6 +171,8 @@ export interface Database {
           eli5?: string | null
           fork_count?: number | null
           github_url?: string | null
+          hackernews_sentiment?: string | null
+          hackernews_stories?: string[] | null
           id?: string
           is_bookmarked?: boolean | null
           is_trending_daily?: boolean | null
@@ -146,6 +188,48 @@ export interface Database {
           star_history?: Json[] | null
           website_url?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: 'project_owning_organization_fkey'
+            columns: ['owning_organization']
+            referencedRelation: 'organization'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'project_owning_person_fkey'
+            columns: ['owning_person']
+            referencedRelation: 'associated_person'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      testTable: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'testTable_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
     Views: {

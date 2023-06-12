@@ -104,7 +104,7 @@ export async function fetchTrendingDevelopers(timeMode: timeMode) {
 
 /**
  * Retrieves an array with all contributors for a given
- *repository and the number of contributions they have made (total count of contributors = length of array)
+ * repository and the number of contributions they have made (total count of contributors = length of array)
  * @param owner
  * @param repo
  * @returns array of strings containing the name of the contributor and the number of commits done by that perso

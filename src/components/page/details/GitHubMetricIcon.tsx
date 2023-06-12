@@ -6,7 +6,7 @@ type GitHubMetricIconProps = {
 }
 
 /**
- * Component that displays two icons representing GitHub metrics.
+ * Combined icon for GitHub metrics
  * @param {React.ElementType} Icon - The first icon component to display.
  * @param {React.ElementType} Icon2 - The second icon component to display.
  */

@@ -13,9 +13,6 @@ type TopBarProps = {
   nullFunc: () => void
 }
 
-/**
- * Time frame options for the time selection button on the top bar.
- */
 const timeFrameOptions = [
   { value: '1_week', label: '1 Week' },
   { value: '4_weeks', label: '4 Weeks' },

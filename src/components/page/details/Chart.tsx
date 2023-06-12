@@ -49,9 +49,6 @@ type ChartProps = {
  * @param {ChartProps} datasets - The datasets to be displayed on the chart.
  */
 const Chart = ({ datasets }: ChartProps) => {
-  /**
-   * state variable for modal and time frame modal
-   */
   const [modalValue, setModalValue] = useState('Select Value')
   const [isModalOpen, setIsModalOpen] = useState(false)
 

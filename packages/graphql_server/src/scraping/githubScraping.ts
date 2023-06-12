@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import * as cheerio from 'cheerio'
 import * as showdown from 'showdown'
-import { Developer, DeveloperRepo, timeMode } from '../../types/githubScraping'
+import { Developer, DeveloperRepo, timeMode, Contributor } from '../../types/githubScraping'
 
 /** Get all the information from the GitHub trending page; all the repos and the names of their creators
  * @param {string} timeMode shoud be 'daily', 'weekly' or 'monthly' => timescope of the trending page
@@ -100,4 +100,23 @@ export async function fetchTrendingDevelopers(timeMode: timeMode) {
         return { ...developer, ...(matchingRepo || { repo: '' }) }
       })
     })
+}
+
+/**
+ * Method that retreives and array filled with all contributors for a given array
+ * das Array kann so empfangen werden  contributors.forEach((contributor, index) => {...)
+ * Um die Anzahl an Contributors zu erhalten kann man einfach die Länge des Arrays nehmen
+ * @param owner
+ * @param repo
+ * @returns Each Index consts of a string that contains the name of the contributor and the number of commits done by the person
+ */
+
+export async function getContributors(owner: string, repo: string) {
+  try {
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`)
+    return response.data as Contributor[]
+  } catch (error) {
+    console.log('could not find any repos')
+    return []
+  }
 }

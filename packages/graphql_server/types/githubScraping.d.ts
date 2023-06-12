@@ -8,4 +8,9 @@ export type DeveloperRepo = {
   repo: string
 }
 
+export type Contributor = {
+  login: string
+  contributions: number
+}
+
 export type timeMode = 'daily' | 'weekly' | 'monthly'

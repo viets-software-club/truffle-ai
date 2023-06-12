@@ -34,9 +34,6 @@ const TimeframeOptions = [
   { value: 12, label: '1 Year' }
 ]
 
-/**
- * Define Props for chart component
- */
 type ChartProps = {
   datasets: {
     id: string

@@ -68,9 +68,6 @@ const Chart = ({ datasets }: ChartProps) => {
   }, [])
   // Initialize chart data
   const [chartData] = useState<ChartProps['datasets']>([...datasets])
-  /**
-   * function that toggles the value of the "isModalOpen" state variable between true and false
-   */
   const toggleModal = useCallback(() => {
     setIsModalOpen((prevState) => !prevState)
   }, [])

@@ -30,27 +30,16 @@ const grayColors = fullConfig.theme?.colors?.gray as ColorObject
 const indigoColors = fullConfig.theme?.colors?.indigo as ColorObject
 const colorValues = ['300', '500']
 
-const colors: string[] = []
-
-// Add multiple colors to the array
-colorValues.forEach((value) => {
-  const grayValue = grayColors?.[value]
-  const indigoValue = indigoColors?.[value]
-  if (grayValue) {
-    colors.push(grayValue)
-  }
-  if (indigoValue) {
-    colors.push(indigoValue)
-  }
-})
+let colors = colorValues.flatMap((value) =>
+  [grayColors?.[value], indigoColors?.[value]].filter(Boolean)
+)
 
 // Add single colors to the array
-singleColors.forEach((colorName) => {
-  const colorValue = fullConfig.theme?.colors?.[colorName] as string
-  if (colorValue) {
-    colors.push(colorValue)
-  }
-})
+const singleColorValues = singleColors
+  .map((colorName) => fullConfig.theme?.colors?.[colorName] as string)
+  .filter(Boolean)
+
+colors = colors.concat(singleColorValues)
 
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
@@ -118,19 +107,19 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
   }
 
   const handleTimeframeChange = useCallback(
-    (newTimeframe: number) => {
-      const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
+    (value: number) => () => {
+      const selectedOption = TimeframeOptions.find((option) => option.value === value)
       setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
       setTimeframeModalOpen(false)
 
       const filteredData = chartDataOriginal.map((dataset) => ({
         ...dataset,
-        data: filterDataByTimeframe(dataset.data, newTimeframe)
+        data: filterDataByTimeframe(dataset.data, value)
       }))
 
       setChartData(filteredData)
     },
-    [chartData]
+    [chartDataOriginal]
   )
 
   return (
@@ -159,7 +148,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
                       variant="noBorderNoBG"
                       text={option.label}
                       fullWidth
-                      onClick={() => handleTimeframeChange(option.value)}
+                      onClick={handleTimeframeChange(option.value)}
                     />
                   ))}
                 </Modal>

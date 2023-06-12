@@ -11,7 +11,7 @@ import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'
 import { TrendingState } from '../types/processRepo'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
-import { getELI5DescriptionForRepositoryFromText } from './api/openAIApi'
+import { getELI5FromReadMe } from './api/openAIApi'
 import { repoIsAlreadyInDB } from './dbUpdater'
 
 /**
@@ -145,10 +145,7 @@ export const updateSupabaseProject = async (
 export const updateProjectELI5 = async (name: string, owner: string) => {
   try {
     const readMe = (await fetchRepositoryReadme(owner, name)).slice(0, 2500)
-    const description = await getELI5DescriptionForRepositoryFromText(
-      readMe,
-      process.env.OPENAI_API_KEY
-    )
+    const description = await getELI5FromReadMe(readMe)
     const updated = await updateSupabaseProject(name, owner, { eli5: description })
     updated && console.log('updated eli5 of ', name, 'owned by', owner)
   } catch (e) {

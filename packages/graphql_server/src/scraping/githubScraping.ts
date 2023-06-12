@@ -61,7 +61,8 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
       continue
     }
   }
-  throw new Error("ReadMe couldn't be found")
+  console.log("ReadMe couldn't be found")
+  return ' '
 }
 
 /** Get trending developers (and their trending repos) from the github page

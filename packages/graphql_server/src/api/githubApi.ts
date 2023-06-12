@@ -6,7 +6,8 @@ import {
   Edge,
   ContributorResponse,
   GitHubCommitHistory,
-  ProjectFounder
+  ProjectFounder,
+  RepositoryTopicsResponse
 } from '../../types/githubApi'
 
 const githubApiUrl = process.env.GITHUB_API_URL || ''
@@ -205,4 +206,59 @@ export async function getRepoFounders(owner: string, name: string): Promise<Proj
   }
 
   return distinctCommiters
+}
+
+/**
+ * Retrieves the repository topics from GitHub API for the specified repository.
+ * @param repositoryOwner - The owner of the repository.
+ * @param repositoryName - The name of the repository.
+ * @returns A Promise that resolves to a string representing the repository topics.
+ * @throws Error if the repository topics cannot be retrieved.
+ * //returns topics defined by the founder
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getRepositoryTopics(
+  repositoryOwner: string, //these need to be passed as parameter
+  repositoryName: string,
+  tokenGithub: string
+) {
+  const apiUrl = 'https://api.github.com/graphql'
+
+  const query = `
+    query {
+      repository(owner: "${repositoryOwner}", name: "${repositoryName}") {
+        repositoryTopics(first: 15) {
+          nodes {
+            topic {
+              name
+            }
+          }
+        }
+      }
+    }
+  `
+
+  const headers = {
+    Authorization: `Bearer ${tokenGithub}`
+  }
+
+  try {
+    const response: AxiosResponse<RepositoryTopicsResponse> = await axios.post(
+      apiUrl,
+      { query },
+      { headers }
+    )
+    const data = response?.data?.data?.repository
+    if (data.repositoryTopics.nodes.length > 0) {
+      const topics: string[] = data.repositoryTopics.nodes.map(
+        (node: { topic: { name: string } }) => node.topic.name
+      )
+      return topics.join(' ') //return the openai response as a string
+    } else {
+      throw new Error('No repository topics found.')
+    }
+  } catch (error) {
+    console.log('Could not retrieve the categories')
+    return ' '
+  }
 }

@@ -11,6 +11,20 @@ export type GitHubInfo = {
   languages?: { edges?: { node?: { name?: string; color?: string } }[] }
 }
 
+export type RepositoryTopicsResponse = {
+  data: {
+    repository: {
+      repositoryTopics: {
+        nodes: {
+          topic: {
+            name: string
+          }
+        }[]
+      }
+    }
+  }
+}
+
 // Github organization info type as returned by GraphQL API
 export type GitHubOrganization = {
   name?: string

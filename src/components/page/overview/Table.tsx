@@ -9,7 +9,6 @@ type TableProps = {
 /**
  * Generic table component using @tanstack/react-table
  */
-
 const Table = ({ table }: TableProps) => (
   <table className="mx-6 my-3.5">
     <thead>

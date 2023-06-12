@@ -42,8 +42,7 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
 )
 
 /**
- * TopBar component for the table view.
- * Displays filter, sort, edit columns, and add project buttons.
+ * Top navigation for the table view, including filter, sort, edit columns and add project buttons
  */
 
 const TopBar = ({ columns, nullFunc }: TopBarProps) => (

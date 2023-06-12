@@ -11,8 +11,9 @@ import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'
 import { TrendingState } from '../types/processRepo'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
-import { getELI5FromReadMe } from './api/openAIApi'
+import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { repoIsAlreadyInDB } from './dbUpdater'
+import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 
 /**
  * Adds a repo to the database.
@@ -48,8 +49,11 @@ export const insertProject = async (name: string, owner: string, trendingState: 
 
   // insert the repo into the database
   const { error: insertionError } = await supabase.from('project').insert([projectInsertion])
-  await updateProjectELI5(name, owner)
+
   if (!insertionError) {
+    // if it got inserted, then add the other data sources
+    await updateProjectSentiment(name, owner)
+    await updateProjectELI5(name, owner)
     console.log('Inserted ', name, 'owned by', owner)
     return true
   }
@@ -118,6 +122,10 @@ export const updateSupabaseProject = async (
   owner: string,
   updatedProject: ProjectUpdate
 ) => {
+  //check whether the repo is in the db
+  if (!(await repoIsAlreadyInDB(name, owner))) {
+    return false
+  }
   const owningOrganizationID = await getOrganizationID(owner)
 
   const { error: ownerUpdateError } = await supabase
@@ -153,6 +161,40 @@ export const updateProjectELI5 = async (name: string, owner: string) => {
     await updateSupabaseProject(name, owner, {
       eli5: 'ELI5/description could not be generated for this project'
     })
+  }
+}
+
+export const updateProjectSentiment = async (repoName: string, owner: string) => {
+  let allComments = ''
+  const allLinks: string[] = []
+
+  let currentStory = await searchHackerNewsStories(owner + '/' + repoName)
+  if (currentStory) {
+    allComments += '\n Next group of comments: \n' + currentStory.comments.join('\n')
+    allLinks.push(...currentStory.linksToPosts)
+  }
+
+  currentStory = await searchHackerNewsStories(repoName)
+  if (currentStory) {
+    allComments += '\n Next group of comments: \n' + currentStory.comments.join('\n')
+    allLinks.push(...currentStory.linksToPosts)
+  }
+
+  if (!allComments) {
+    console.log('No comments found for ', repoName, 'owned by', owner)
+    return
+  }
+
+  const sentimentSummary = await getHackernewsSentiment(allComments)
+  if (
+    await updateSupabaseProject(repoName, owner, {
+      hackernews_sentiment: sentimentSummary,
+      hackernews_stories: allLinks
+    })
+  ) {
+    console.log('updated sentiment for ', repoName, 'owned by', owner)
+  } else {
+    console.log('Error while updating sentiment for ', repoName, 'owned by', owner)
   }
 }
 

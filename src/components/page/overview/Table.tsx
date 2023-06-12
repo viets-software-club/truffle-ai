@@ -28,13 +28,22 @@ const Table = ({ table }: TableProps) => (
     <tbody>
       {table.getRowModel().rows.map((row) => (
         <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
-          {row.getVisibleCells().map((cell) => (
-            <td key={cell.id} className="p-2 pl-0 text-left">
-              <Link href={`/details/${row.original.id as string}`}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </Link>
-            </td>
-          ))}
+          {row.getVisibleCells().map((cell, cellIndex) => {
+            const isFirstChild = cellIndex === 0
+            const isLastChild = cellIndex === row.getVisibleCells().length - 1
+            return (
+              <td
+                key={cell.id}
+                className={`p-2 pl-0 text-left ${isFirstChild ? 'rounded-l-lg' : ''} ${
+                  isLastChild ? 'rounded-r-lg' : ''
+                }`}
+              >
+                <Link href={`/details/${row.original.id as string}`}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Link>
+              </td>
+            )
+          })}
         </tr>
       ))}
     </tbody>

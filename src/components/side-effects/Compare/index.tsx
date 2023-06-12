@@ -1,10 +1,11 @@
-import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
+import { useEffect, useState } from 'react'
+import { useReactTable, getCoreRowModel, ColumnOrderState } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
-import columns from '@/components/pure/ProjectsTable/columns'
+import defaultColumns from '@/components/pure/ProjectsTable/columns'
 import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
@@ -18,20 +19,37 @@ const nullFunc = () => null
  */
 // @TODO Get id from props to fetch category title & projects from DB
 const Compare = () => {
+  const [data, setData] = useState<Project[]>([])
+  const [columns] = useState(() => [...defaultColumns])
+  const [columnVisibility, setColumnVisibility] = useState({})
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
+
   // Fetch data from Supabase using generated Urql hook
-  const [{ data, fetching, error }] = useTrendingProjectsQuery()
-  const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery()
+
+  // Only update table data when urql data changes
+  useEffect(() => {
+    if (urqlData) {
+      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+    }
+  }, [urqlData])
 
   // Initialize TanStack table
   const table = useReactTable({
-    data: projects,
+    data,
     columns,
+    state: {
+      columnVisibility,
+      columnOrder
+    },
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel()
   })
 
   // Display loading/ error messages conditionally
-  if (fetching) return <Loading message="Getting trending projects for you..." />
-  if (!projects || projects.length === 0 || error) return <Error />
+  if (fetching) return <Loading message="Getting saved projects for you..." />
+  if (data.length === 0 || error) return <Error />
 
   return (
     <div className="flex w-full flex-col">
@@ -60,12 +78,13 @@ const Compare = () => {
 
       {/* @TODO Remove slice to put all projects into chart */}
       <Chart
-        datasets={projects.map((project) => ({
-          id: project.id as string,
-          name: project.name as string,
-          data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
-        }))}
-        multipleLines
+        datasets={data
+          .map((project) => ({
+            id: project.id as string,
+            name: project.name as string,
+            data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
+          }))
+          .slice(0, 1)}
       />
 
       <div className="flex flex-row items-center justify-between px-6 py-3.5">

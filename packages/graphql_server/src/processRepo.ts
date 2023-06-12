@@ -35,7 +35,7 @@ export const insertProject = async (name: string, owner: string, trendingState: 
   const starHistory: StarRecord[] = await getRepoStarRecords(
     owner + '/' + name,
     process.env.GITHUB_API_TOKEN,
-    10
+    25
   )
   // convert the github data into a format that can be inserted into the database
   const projectInsertion: ProjectInsertion = turnIntoProjectInsertion(githubData, starHistory)
@@ -73,7 +73,7 @@ export const updateProject = async (name: string, owner: string) => {
   const starHistory: StarRecord[] = await getRepoStarRecords(
     owner + '/' + name,
     process.env.GITHUB_API_TOKEN,
-    10
+    25
   )
   // convert the github data into a format that can be inserted into the database. ProjectUpdate and ProjectInsertion are virtually  the same
   const projectUpdate: ProjectUpdate = turnIntoProjectInsertion(

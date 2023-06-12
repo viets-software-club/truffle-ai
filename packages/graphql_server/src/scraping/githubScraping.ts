@@ -103,12 +103,11 @@ export async function fetchTrendingDevelopers(timeMode: timeMode) {
 }
 
 /**
- * Method that retreives and array filled with all contributors for a given array
- * das Array kann so empfangen werden  contributors.forEach((contributor, index) => {...)
- * Um die Anzahl an Contributors zu erhalten kann man einfach die Länge des Arrays nehmen
+ * Retrieves an array with all contributors for a given
+ *repository and the number of contributions they have made (total count of contributors = length of array)
  * @param owner
  * @param repo
- * @returns Each Index consts of a string that contains the name of the contributor and the number of commits done by the person
+ * @returns array of strings containing the name of the contributor and the number of commits done by that perso
  */
 
 export async function getContributors(owner: string, repo: string) {

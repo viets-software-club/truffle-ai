@@ -9,7 +9,7 @@ export async function testGetRepositoryTopics(repoFounder: string, repoName: str
 
 //test function that calls the method and prints out all contributors
 export async function testGetContributorCount(owner: string, repo: string) {
-  getContributors(owner, repo)
+  await getContributors(owner, repo)
     .then((contributors) => {
       console.log(`Contributors für das Repository ${owner}/${repo}:`)
       contributors.forEach((contributor, index) => {

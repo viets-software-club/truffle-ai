@@ -55,9 +55,7 @@ const Chart = ({ datasets }: ChartProps) => {
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
 
-  /**
-   * handler for modal value change. When new value come in, state will change to new value.
-   */
+  // Updates state when modal value changes
   const handleModalValueChange = useCallback((newValue: string) => {
     setModalValue(newValue)
     setIsModalOpen(false)

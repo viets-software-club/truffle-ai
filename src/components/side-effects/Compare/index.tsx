@@ -85,6 +85,7 @@ const Compare = () => {
             data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
           }))
           .slice(0, 1)}
+        multipleLines
       />
 
       <div className="flex flex-row items-center justify-between px-6 py-3.5">

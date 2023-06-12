@@ -45,7 +45,7 @@ type ChartProps = {
   }[]
 }
 /**
- * Chart component displays a chart with customizable datasets.
+ * Linechart with one or more datasets
  * @param {ChartProps} datasets - The datasets to be displayed on the chart.
  */
 const Chart = ({ datasets }: ChartProps) => {

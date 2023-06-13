@@ -47,7 +47,7 @@ jobs:
           GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} &&
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
-          sed -i
+          sed -i ''
           's|<GRAPHQL-SERVER-IMAGE>|'${GRAPHQL_SERVER_IMAGE}'|;
           s|<GRAPHQL-GATEWAY-IMAGE>|'${GRAPHQL_GATEWAY_IMAGE}'|;
           s|<REPO-JOB-IMAGE>|'${REPO_JOB_IMAGE}'|;

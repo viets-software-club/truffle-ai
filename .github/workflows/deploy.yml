@@ -47,14 +47,14 @@ jobs:
           GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} &&
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
-          sed -i ''
+          sed -i
           's|<GRAPHQL-SERVER-IMAGE>|'${GRAPHQL_SERVER_IMAGE}'|;
           s|<GRAPHQL-GATEWAY-IMAGE>|'${GRAPHQL_GATEWAY_IMAGE}'|;
           s|<REPO-JOB-IMAGE>|'${REPO_JOB_IMAGE}'|;
           s|<GRAPHQL-GATEWAY-PORT>|'${GRAPHQL_GATEWAY_PORT}'|;
           s|<GRAPHQL-SERVER-PORT>|'${GRAPHQL_SERVER_PORT}'|;
           s|<CHANGE-CAUSE>|'${CHANGE_CAUSE}'|;
-          s|<CERTIFICATE-ID>|'${CERTIFICATE_ID}'|'
+          s|<CERTIFICATE-ID>|'${CERTIFICATE_ID}'|;'
           $GITHUB_WORKSPACE/config/deployment.yml
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml

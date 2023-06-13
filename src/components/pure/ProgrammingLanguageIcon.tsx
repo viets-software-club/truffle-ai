@@ -18,7 +18,7 @@ const programmingLangToComp = new Map([
 ])
 
 /**
- * A functional component that renders an icon corresponding to a given programming language.
+ * Functional component that renders an icon corresponding to a given programming language
  * @param {Props} props - The properties passed to this component.
  * @returns {React.Element|null} The icon component for the given programming language, or null if no matching icon is found.
  */

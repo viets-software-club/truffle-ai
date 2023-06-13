@@ -4,7 +4,7 @@ type LoadingProps = {
   message?: string
 }
 /**
- * A simple loading component that displays a logo and a customizable message.
+ * Simple loading component that displays a logo and a customizable message
  * @param {LoadingProps} props - The properties for this component.
  * @returns {React.Element} The loading element.
  */

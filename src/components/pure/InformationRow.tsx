@@ -8,7 +8,7 @@ type InformationRowProps = {
 }
 
 /**
- * A single row of a projects table, displaying a name, tags, and Github statistics.
+ * Single row of a projects table, displaying a name, tags, and Github statistics
  *
  * @param {InformationRowProps} props - The properties for this component.
  * @returns {React.Element} The information row element.
@@ -29,6 +29,7 @@ const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
     {githubStats.map((data) => (
       <GithubStatItem
         key={data.id}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         Icon={data.Icon}
         IconMetric={data.IconMetric}
         value={data.value}

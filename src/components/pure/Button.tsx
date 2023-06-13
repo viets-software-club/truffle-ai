@@ -31,7 +31,7 @@ const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>
 ])
 
 /**
- * A customizable button component.
+ * Generic button with several variants
  *
  * @param {ButtonProps} props - The properties for this component.
  * @returns {React.Element} The button element.

@@ -3,7 +3,6 @@ import withAuth from '@/components/side-effects/withAuth'
 
 /**
  * Docs component that renders the documentation page.
- * @returns {JSX.Element} The rendered component
  */
 const Docs = () => (
   <Page>

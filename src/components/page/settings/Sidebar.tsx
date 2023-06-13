@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { FiSettings, FiUser, FiHash, FiChevronLeft } from 'react-icons/fi'
-// import
+import { FiUser, FiHash, FiChevronLeft, FiSettings } from 'react-icons/fi'
 
 type SidebarProps = {
   sections: Record<string, string[]>
@@ -30,6 +29,7 @@ const Sidebar = ({ sections, activeSection, onClick }: SidebarProps) => {
             <div className="mr-2">{icons[heading]}</div>
             <h2 className="font-medium uppercase">{heading}</h2>
           </div>
+
           {subSections.map((subSection) => {
             const id = `${heading} - ${subSection}`
             return (

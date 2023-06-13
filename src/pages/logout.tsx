@@ -9,7 +9,6 @@ const Logout = () => {
   const router = useRouter()
 
   useEffect(() => {
-    // The void operator discards any value returned by the promise. It ensures we are not expecting any return value from the Promise
     // Sign the user out using the Supabase client
     // Upon successful signout, replace the current page with the login page
 

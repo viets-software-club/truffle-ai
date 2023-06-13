@@ -63,7 +63,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
       <div className="flex flex-row gap-3">
         <Menu as="div" className="relative inline-block text-left">
           <div>
-            <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+            <Menu.Button className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
               <AiOutlineCalendar className="text-gray-500" />
               <p className="leading-none">This week</p>
             </Menu.Button>
@@ -90,7 +90,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
 
         <Menu as="div" className="relative inline-block text-left">
           <div>
-            <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+            <Menu.Button className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
               {filters.length > 0 ? (
                 <AiFillFilter className="text-indigo-300" />
               ) : (
@@ -170,7 +170,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button
             onClick={() => setOpen(!open)}
-            className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700"
+            className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700"
           >
             <TbColumns2 className="text-gray-500" />
             <p className="leading-none">Edit Columns</p>

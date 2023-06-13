@@ -53,21 +53,23 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
     </Menu.Item>
   ))
 
-  const filterAppliedClassNames = `${value.length > 0 ? 'text-indigo-300' : 'text-gray-500'}`
+  const filterAppliedClassNames = `flex flex-row h-[30px]  items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
+    value.length > 0 ? 'bg-gray-850 ' : ''
+  }`
 
   return (
     <div>
       <Disclosure as="div" className="relative inline-block text-left">
         {({ open }) => (
           <>
-            <Disclosure.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+            <Disclosure.Button className={filterAppliedClassNames}>
               <div className="flex flex-row items-center space-x-1">
                 {filter.column.columnDef.header === 'Name' ? (
-                  <IoTextOutline className={filterAppliedClassNames} />
+                  <IoTextOutline className="text-gray-500" />
                 ) : (
-                  <AiOutlineNumber className={filterAppliedClassNames} />
+                  <AiOutlineNumber className="text-gray-500" />
                 )}
-                <p className={`text-14 ${value.length > 0 ? 'text-indigo-300' : 'text-gray-500'}`}>
+                <p className={`text-14 ${value.length > 0 ? '' : 'text-gray-500'}`}>
                   {typeof filter.column.columnDef.header === 'string'
                     ? filter.column.columnDef.header
                     : ''}

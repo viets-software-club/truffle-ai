@@ -2,7 +2,6 @@ import { Fragment, ReactNode, useState } from 'react'
 import { Column } from '@tanstack/react-table'
 import { TbColumns2 } from 'react-icons/tb'
 import {
-  AiFillFilter,
   AiOutlineCalendar,
   AiOutlineFilter,
   AiOutlineNumber,
@@ -90,15 +89,13 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
 
         <Menu as="div" className="relative inline-block text-left">
           <div>
-            <Menu.Button className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-              {filters.length > 0 ? (
-                <AiFillFilter className="text-indigo-300" />
-              ) : (
-                <AiOutlineFilter className="text-gray-500" />
-              )}
-              <p className={`leading-none ${filters.length > 0 ? 'text-indigo-300' : ''}`}>
-                Filters
-              </p>
+            <Menu.Button
+              className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
+                filters.length > 0 ? 'bg-gray-850' : ''
+              }`}
+            >
+              <AiOutlineFilter className="text-gray-500" />
+              <p className={`leading-none ${filters.length > 0 ? '' : 'text-gray-500'}`}>Filters</p>
             </Menu.Button>
           </div>
 

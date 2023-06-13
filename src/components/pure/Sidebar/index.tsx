@@ -18,7 +18,6 @@ type SidebarProps = PropsWithChildren<{
  * @param {string} props.title - The title for the sidebar.
  * @returns {ReactNode} Returns a sidebar component with provided footer and title, and children elements.
  */
-
 const Sidebar = ({ footer, ...props }: SidebarProps) => (
   <aside className="fixed z-20 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800">
     <div>

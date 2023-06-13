@@ -102,6 +102,9 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
           <TransitionMenuItems>
             <Menu.Items className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
               <div className="py-1">
+                {filters.length === 7 && (
+                  <p className="py-1 pl-2 text-14">No more filters can be applied.</p>
+                )}
                 {columns
                   .filter(
                     (column) =>

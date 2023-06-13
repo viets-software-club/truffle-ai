@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - META-80
     paths:
       - 'packages/**'
       - '.github/workflows/**'

@@ -2,9 +2,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 /**
- * This is a React functional component called Logout.
- * It uses the Supabase authentication client to sign out the current user and then redirects them to the login page.
- * The action is wrapped in a useEffect React hook to ensure it's executed when the component mounts.
+ * Logs out user and redirects them to the login page
  */
 const Logout = () => {
   const supabaseClient = useSupabaseClient()

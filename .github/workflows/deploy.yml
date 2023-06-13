@@ -42,7 +42,7 @@ jobs:
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7) &&
           GRAPHQL_GATEWAY_PORT=$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d) &&
           GRAPHQL_SERVER_PORT=$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d) &&
-          CHANGE_CAUSE="$(echo $COMMIT_TAG): $(echo ${{ toJSON(github.event.head_commit.message) }} | tr -d '"' | tr '\n' ' ' | xargs)" &&
+          CHANGE_CAUSE="$(echo $COMMIT_TAG): $(echo ${{ toJSON(github.event.head_commit.message) }} | tr '\n ' '\ ' | tr -d \'\"\| | xargs)" &&
           GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG} &&
           GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} &&
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&

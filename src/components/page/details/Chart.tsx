@@ -44,7 +44,10 @@ type ChartProps = {
     }[]
   }[]
 }
-
+/**
+ * Linechart with one or more datasets
+ * @param {ChartProps} datasets - The datasets to be displayed on the chart.
+ */
 const Chart = ({ datasets }: ChartProps) => {
   const [modalValue, setModalValue] = useState('Select Value')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -52,6 +55,7 @@ const Chart = ({ datasets }: ChartProps) => {
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
 
+  // Updates state when modal value changes
   const handleModalValueChange = useCallback((newValue: string) => {
     setModalValue(newValue)
     setIsModalOpen(false)
@@ -59,13 +63,11 @@ const Chart = ({ datasets }: ChartProps) => {
 
   const handleTimeframeChange = useCallback((newTimeframe: number) => {
     const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
-
     setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
     setTimeframeModalOpen(false)
   }, [])
-
+  // Initialize chart data
   const [chartData] = useState<ChartProps['datasets']>([...datasets])
-
   const toggleModal = useCallback(() => {
     setIsModalOpen((prevState) => !prevState)
   }, [])

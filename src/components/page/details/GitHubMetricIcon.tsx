@@ -5,6 +5,11 @@ type GitHubMetricIconProps = {
   Icon2: ComponentType<{ className?: string }>
 }
 
+/**
+ * Combined icon for GitHub metrics
+ * @param {React.ElementType} Icon - The first icon component to display.
+ * @param {React.ElementType} Icon2 - The second icon component to display.
+ */
 const GitHubMetricIcon = ({ Icon, Icon2 }: GitHubMetricIconProps) => (
   <div className="relative h-4 w-4">
     <Icon className="absolute left-0 top-0 z-10 h-2 w-2 text-white" />

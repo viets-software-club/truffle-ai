@@ -62,6 +62,9 @@ const matchesFilter = (cell: Cell<Project, unknown>, filter: TableFilter) => {
   } else return true
 }
 
+/**
+ * Generic table component using @tanstack/react-table
+ */
 const Table = ({ table, filters }: TableProps) => (
   <table className="mx-6 my-3.5">
     <thead>

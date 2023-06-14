@@ -50,9 +50,8 @@ jobs:
           CHANGE_CAUSE="test\ test" &&
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
           echo $GRAPHQL_SERVER_IMAGE && echo $GRAPHQL_GATEWAY_IMAGE && echo $REPO_JOB_IMAGE && echo $GRAPHQL_GATEWAY_PORT && echo $GRAPHQL_SERVER_PORT && echo $CHANGE_CAUSE &&
-          sed -e '
-          s|<CHANGE-CAUSE>|'${CHANGE_CAUSE}'|;
-          s|<GRAPHQL-SERVER-IMAGE>|'${GRAPHQL_SERVER_IMAGE}'|;
+          sed -e
+          's|<GRAPHQL-SERVER-IMAGE>|'${GRAPHQL_SERVER_IMAGE}'|;
           s|<GRAPHQL-GATEWAY-IMAGE>|'${GRAPHQL_GATEWAY_IMAGE}'|;
           s|<REPO-JOB-IMAGE>|'${REPO_JOB_IMAGE}'|;
           s|<GRAPHQL-GATEWAY-PORT>|'${GRAPHQL_GATEWAY_PORT}'|;

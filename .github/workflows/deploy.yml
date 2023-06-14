@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - META-80-fix-double-quotes
     paths:
       - 'packages/**'
       - '.github/workflows/**'

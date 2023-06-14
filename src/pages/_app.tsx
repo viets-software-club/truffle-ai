@@ -8,7 +8,7 @@ import BASE_URL from '@/constants/baseUrl'
 import '@/styles/globals.css'
 
 /**
- * The root component of the application.
+ * Default component to initialize every page
  * @param {AppProps<{ initialSession: Session }>} props - The component props.
  * @returns {JSX.Element} The rendered component.
  */

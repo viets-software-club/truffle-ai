@@ -47,7 +47,7 @@ jobs:
           GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG} &&
           GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} &&
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&
-          CHANGE_CAUSE="$(echo $COMMIT_TAG) $(echo ${{ toJSON(github.event.head_commit.message) }} | tr -d \'\"\| | tr '\n' ' ' | sed 's| *$||g')" &&
+          CHANGE_CAUSE='$(echo $COMMIT_TAG) $(echo ${{ toJSON(github.event.head_commit.message) }} | tr -d \'\"\| | tr '\n' ' ' | sed 's| *$||g')' &&
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
           echo $GRAPHQL_SERVER_IMAGE && echo $GRAPHQL_GATEWAY_IMAGE && echo $REPO_JOB_IMAGE && echo $GRAPHQL_GATEWAY_PORT && echo $GRAPHQL_SERVER_PORT && echo $CHANGE_CAUSE &&
           sed -e

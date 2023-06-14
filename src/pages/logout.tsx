@@ -1,6 +1,7 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+
 /**
  * Logs out user and redirects them to the login page
  */

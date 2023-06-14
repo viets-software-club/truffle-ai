@@ -33,6 +33,8 @@ jobs:
       #   run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7)
       # - name: Push truffle-ai-repo-job image to DigitalOcean Container Registry
       #   run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:$(echo $GITHUB_SHA | head -c7)
+      #   CHANGE_CAUSE="$(echo $COMMIT_TAG)\ $(echo ${{ toJSON(github.event.head_commit.message) }} | tr -d \'\"\| | tr '\n' ' ' | sed 's| *$||g' | sed 's| |\\ |g' | sed 's|\.|\\.|g')" &&
+
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 truffle-ai-cluster
       - name: Create deployment.yml from deployment.template.yml and add environment variables
@@ -42,10 +44,10 @@ jobs:
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7) &&
           GRAPHQL_GATEWAY_PORT=$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d) &&
           GRAPHQL_SERVER_PORT=$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d) &&
-          CHANGE_CAUSE="$(echo $COMMIT_TAG)\ $(echo ${{ toJSON(github.event.head_commit.message) }} | tr -d \'\"\| | tr '\n' ' ' | sed 's| *$||g' | sed 's| |\\ |g' | sed 's|\.|\\.|g')" &&
           GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG} &&
           GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} &&
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&
+          CHANGE_CAUSE="test test" &&
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
           echo $GRAPHQL_SERVER_IMAGE && echo $GRAPHQL_GATEWAY_IMAGE && echo $REPO_JOB_IMAGE && echo $GRAPHQL_GATEWAY_PORT && echo $GRAPHQL_SERVER_PORT && echo $CHANGE_CAUSE &&
           sed -e '

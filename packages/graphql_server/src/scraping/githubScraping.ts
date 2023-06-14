@@ -112,10 +112,35 @@ export async function fetchTrendingDevelopers(timeMode: timeMode) {
 
 export async function getContributors(owner: string, repo: string) {
   try {
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`)
-    return response.data as Contributor[]
+    let page = 1
+    let contributors: Contributor[] = []
+
+    while (true) {
+      const response = await axios.get(
+        `https://api.github.com/repos/${owner}/${repo}/contributors`,
+        {
+          params: {
+            page: page,
+            per_page: 100
+          }
+        }
+      )
+
+      const pageContributors = response.data as Contributor[]
+      if (pageContributors.length === 0) {
+        break
+      }
+
+      contributors = contributors.concat(pageContributors)
+      page++
+    }
+
+    return contributors
   } catch (error) {
-    console.log('could not find any repos')
-    return []
+    console.error('Could not find any contributors')
+    return {
+      count: 0,
+      contributors: []
+    }
   }
 }

@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: truffle-ai-deployment
   annotations:
-    kubernetes.io/change-cause: >
-      <CHANGE-CAUSE>
+    kubernetes.io/change-cause: <CHANGE-CAUSE>
   labels:
     app: truffle-ai-deployment
 spec:

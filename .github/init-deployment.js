@@ -10,7 +10,7 @@ try {
     .replace('<REPO-JOB-IMAGE>', process.env.REPO_JOB_IMAGE)
     .replace(
       '<CHANGE-CAUSE>',
-      `${process.env.COMMIT_TAG}: ${process.env.COMMIT_MESSAGE.replaceAll("'", '')}`
+      `'${process.env.COMMIT_TAG}: ${process.env.COMMIT_MESSAGE.replaceAll("'", '')}'`
     )
     .replace('<GRAPHQL-GATEWAY-PORT>', process.env.GRAPHQL_GATEWAY_PORT)
     .replace('<GRAPHQL-SERVER-PORT>', process.env.GRAPHQL_SERVER_PORT)

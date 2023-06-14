@@ -80,36 +80,69 @@ export interface Database {
         Row: {
           avatar_url: string | null
           created_at: string | null
+          crunchbase: string | null
           email: string | null
+          founded: number | null
           github_url: string | null
+          hq_location: string | null
           id: string
+          industries: string | null
+          linkedin_about: string | null
+          linkedin_followers: number | null
+          linkedin_updates: Json[] | null
+          linkedin_url: string | null
+          linkedin_website_url: string | null
           login: string | null
           name: string | null
+          number_of_employees: number | null
           repository_count: number | null
+          specialties: string | null
           twitter_username: string | null
           website_url: string | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
+          crunchbase?: string | null
           email?: string | null
+          founded?: number | null
           github_url?: string | null
+          hq_location?: string | null
           id?: string
+          industries?: string | null
+          linkedin_about?: string | null
+          linkedin_followers?: number | null
+          linkedin_updates?: Json[] | null
+          linkedin_url?: string | null
+          linkedin_website_url?: string | null
           login?: string | null
           name?: string | null
+          number_of_employees?: number | null
           repository_count?: number | null
+          specialties?: string | null
           twitter_username?: string | null
           website_url?: string | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string | null
+          crunchbase?: string | null
           email?: string | null
+          founded?: number | null
           github_url?: string | null
+          hq_location?: string | null
           id?: string
+          industries?: string | null
+          linkedin_about?: string | null
+          linkedin_followers?: number | null
+          linkedin_updates?: Json[] | null
+          linkedin_url?: string | null
+          linkedin_website_url?: string | null
           login?: string | null
           name?: string | null
+          number_of_employees?: number | null
           repository_count?: number | null
+          specialties?: string | null
           twitter_username?: string | null
           website_url?: string | null
         }

@@ -22,6 +22,7 @@ function sleep(ms: number): Promise<void> {
  * @param linkedInHandle
  * @returns the specified LinkedInCompanyProfileType including the most important data
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity -- don't kow why this is "too complex"  - @thomas-woehrle
 export async function getCompanyInfosFromLinkedIn(
   linkedInHandle: string,
   maximumWaitingTimeInMs = 30000
@@ -63,13 +64,14 @@ export async function getCompanyInfosFromLinkedIn(
     if (!finalData) throw new Error('finalData is falsy')
 
     return {
+      url: finalData.url ?? '',
       name: finalData.name ?? '',
       founded: finalData.founded ?? '',
-      sphere: finalData.sphere ?? '',
       followers: finalData.followers ?? '',
       employeesAmountInLinkedin: finalData.employeesAmountInLinkedin ?? 0,
       about: finalData.about ?? '',
       website: finalData.website ?? '',
+      updates: finalData.updates ?? [],
       crunchbaseUrl: finalData.crunchbase_url ?? '',
       industries: finalData.Industries ?? '',
       hqLocation: finalData.Headquarters ?? '',

@@ -5,7 +5,7 @@ import {
   getPersonID,
   turnIntoProjectInsertion
 } from './dataAggregation'
-import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
+import { OrganizationUpdate, ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
 import { GitHubInfo } from '../types/githubApi'
 import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'
@@ -14,6 +14,8 @@ import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { repoIsAlreadyInDB } from './dbUpdater'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
+import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
+import { LinkedInCompanyProfile } from '../types/linkedInScraping'
 
 /**
  * Adds a repo to the database.
@@ -198,6 +200,40 @@ export const updateProjectSentiment = async (repoName: string, owner: string) =>
   }
 }
 
+export const updateProjectLinkedInData = async (organizationHandle: string) => {
+  // check if repo is owned by an organization
+  const { data: supabaseOrga } = await supabase
+    .from('organization')
+    .select('id, linkedin_url')
+    .eq('login', organizationHandle)
+  // if owning_organization is null then the project is owned by an user and no linkedIn data is fetched
+  // if the linkedIn url is not null then this means that the linkedIn data was already fetched
+  // we need to save API tokens so we don't want to fetch the data again
+  if (!supabaseOrga || supabaseOrga?.[0].linkedin_url) {
+    return false
+  }
+
+  // otherwise get the linkedIn data
+  // please leave the console.log for now. We have to be super cautious with API tokens and I
+  // want to see whenever this function is called
+  console.log('Fetching linlkedIn data for organization', organizationHandle, '...')
+  const linkedinData = await getCompanyInfosFromLinkedIn(organizationHandle)
+  if (!linkedinData?.name) {
+    console.log('No linkedIn data found for organization', organizationHandle)
+    return false
+  }
+
+  // insert the formatted info
+  const { error: updateError } = await supabase
+    .from('organization')
+    .update(formatLinkedInCompanyData(linkedinData))
+    .eq('login', organizationHandle)
+
+  // if no error occured the insert was successful
+  console.log('Updated linkedIn data for ', organizationHandle)
+  return !updateError
+}
+
 /**
  * This function should be put somewhere else later on. Credits to chatGPT for creating it
  * Parses a GitHub URL and extracts the repository name and owner.
@@ -214,4 +250,20 @@ export const parseGitHubUrl = (url: string) => {
   }
 
   return null
+}
+
+const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): OrganizationUpdate => {
+  return {
+    crunchbase: linkedInData.crunchbaseUrl,
+    founded: parseInt(linkedInData.founded, 10),
+    hq_location: linkedInData.hqLocation,
+    industries: linkedInData.industries,
+    linkedin_about: linkedInData.about,
+    linkedin_followers: linkedInData.followers,
+    linkedin_updates: linkedInData.updates,
+    linkedin_url: linkedInData.url,
+    linkedin_website_url: linkedInData.website,
+    number_of_employees: parseInt(linkedInData.employeesAmountInLinkedin),
+    specialties: linkedInData.specialties
+  }
 }

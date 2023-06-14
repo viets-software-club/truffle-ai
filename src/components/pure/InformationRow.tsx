@@ -29,7 +29,6 @@ const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
     {githubStats.map((data) => (
       <GithubStatItem
         key={data.id}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         Icon={data.Icon}
         IconMetric={data.IconMetric}
         value={data.value}

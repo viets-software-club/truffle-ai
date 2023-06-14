@@ -10,6 +10,8 @@ import {
   RepositoryTopicsResponse
 } from '../../types/githubApi'
 
+import { Contributor } from '../../types/githubScraping'
+
 const githubApiUrl = process.env.GITHUB_API_URL || ''
 /** Gets the repo's information via GitHub's GraphQL API
  * @param {string} query GraphQL query for the repo (including owner and name)
@@ -81,7 +83,7 @@ export async function getUserInfo(query: string, authToken: string): Promise<Git
  * @param repo - The name of the GitHub repository.
  * @param authToken - Github API token
  * @returns A Promise that resolves to the total unique contributor count
- */
+ */ //old one by @Max
 export async function getContributorCount(
   owner: string,
   repo: string,
@@ -260,5 +262,46 @@ export async function getRepositoryTopics(
   } catch (error) {
     console.log('Could not retrieve the categories')
     return ' '
+  }
+}
+
+/**
+ * Retrieves an array with all contributors for a given
+ * repository and the number of contributions they have made (total count of contributors = length of array)
+ * @param owner
+ * @param repo
+ * @returns array of strings containing the name of the contributor and the number of commits done by that perso
+ */
+
+export async function getContributors(owner: string, repo: string) {
+  let contributors: Contributor[] = []
+  try {
+    let page = 1
+    let contributors: Contributor[] = []
+
+    while (true) {
+      const response = await axios.get(
+        `https://api.github.com/repos/${owner}/${repo}/contributors`,
+        {
+          params: {
+            page: page,
+            per_page: 100
+          }
+        }
+      )
+
+      const pageContributors = response.data as Contributor[]
+      if (pageContributors.length === 0) {
+        break
+      }
+
+      contributors = contributors.concat(pageContributors)
+      page++
+    }
+
+    return contributors
+  } catch (error) {
+    console.error('Could not find any contributors')
+    return contributors
   }
 }

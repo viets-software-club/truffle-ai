@@ -277,8 +277,6 @@ export async function getContributors(owner: string, repo: string) {
   let contributors: Contributor[] = []
   try {
     let page = 1
-    let contributors: Contributor[] = []
-
     while (true) {
       const response = await axios.get(
         `https://api.github.com/repos/${owner}/${repo}/contributors`,

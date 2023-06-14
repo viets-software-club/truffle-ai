@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const deploymentFile = path.join(__dirname, '../config/deployment.yml')
 try {
   const data = fs

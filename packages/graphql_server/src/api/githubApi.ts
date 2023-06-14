@@ -277,7 +277,8 @@ export async function getContributors(owner: string, repo: string) {
   let contributors: Contributor[] = []
   try {
     let page = 1
-    while (true) {
+    let notemptfy = true
+    while (notemptfy) {
       const response = await axios.get(
         `https://api.github.com/repos/${owner}/${repo}/contributors`,
         {
@@ -290,7 +291,7 @@ export async function getContributors(owner: string, repo: string) {
 
       const pageContributors = response.data as Contributor[]
       if (pageContributors.length === 0) {
-        break
+        notemptfy = false
       }
 
       contributors = contributors.concat(pageContributors)

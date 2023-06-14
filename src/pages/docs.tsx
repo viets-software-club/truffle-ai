@@ -2,7 +2,7 @@ import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 
 /**
- * Docs component that renders the documentation page.
+ * Documentation page
  */
 const Docs = () => (
   <Page>

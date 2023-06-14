@@ -47,7 +47,7 @@ jobs:
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&
           CHANGE_CAUSE='$(echo $COMMIT_TAG)\ $(echo ${{ toJSON(github.event.head_commit.message) }})' &&
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
-          node ../init-deployment.js
+          node $GITHUB_WORKSPACE/.github/init-deployment.js
 
       # - name: Update values in deployment file
       #   run: >

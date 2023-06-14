@@ -1,3 +1,3 @@
 import { getCompanyInfosFromLinkedIn } from '../scraping/linkedInScraping'
 
-void getCompanyInfosFromLinkedIn('google').then((r) => console.log(r))
+void getCompanyInfosFromLinkedIn('huggingface', 15000).then((r) => console.log(r))

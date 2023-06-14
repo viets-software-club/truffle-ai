@@ -40,14 +40,15 @@ jobs:
         run: envsubst < $GITHUB_WORKSPACE/config/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
       - uses: actions/setup-node@v3
       - name: Update values in deployment file
-        run: COMMIT_TAG=$(echo $GITHUB_SHA | head -c7) &&
-          GRAPHQL_GATEWAY_PORT=$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d) &&
-          GRAPHQL_SERVER_PORT=$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d) &&
-          GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG} &&
-          GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} &&
-          REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} &&
-          CHANGE_CAUSE='$(echo $COMMIT_TAG)\ $(echo ${{ toJSON(github.event.head_commit.message) }})' &&
-          CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header) &&
+        run: >
+          COMMIT_TAG='$(echo $GITHUB_SHA | head -c7)'
+          GRAPHQL_GATEWAY_PORT='$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d)'
+          GRAPHQL_SERVER_PORT='$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d)'
+          GRAPHQL_SERVER_IMAGE='registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG}'
+          GRAPHQL_GATEWAY_IMAGE='registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG}'
+          REPO_JOB_IMAGE='registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG}'
+          CHANGE_CAUSE='$(echo $COMMIT_TAG)\ $(echo ${{ toJSON(github.event.head_commit.message) }})'
+          CERTIFICATE_ID='$(doctl compute certificate list --format ID --no-header)'
           node $GITHUB_WORKSPACE/.github/init-deployment.js
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml

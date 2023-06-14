@@ -1,8 +1,9 @@
-import { insertProject, parseGitHubUrl } from '../processRepo'
+import { insertProject, parseGitHubUrl, exposeProjectsData } from '../processRepo'
 
 const resolvers = {
   Query: {
-    helloWorld: () => 'Hello world!'
+    helloWorld: () => 'Hello world!',
+    allProjects:() => exposeProjectsData()
   },
   Mutation: {
     // takes in variables. Parent object _ is never used

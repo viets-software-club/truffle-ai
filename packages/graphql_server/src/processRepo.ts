@@ -5,7 +5,7 @@ import {
   getPersonID,
   turnIntoProjectInsertion
 } from './dataAggregation'
-import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
+import { ProjectInsertion, ProjectUpdate, Project } from '../types/dataAggregation'
 import { GitHubInfo } from '../types/githubApi'
 import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'
@@ -172,4 +172,15 @@ export const parseGitHubUrl = (url: string) => {
   }
 
   return null
+}
+
+
+export const exposeProjectsData = async () => {
+
+  const {data,error:projectsRetrievalError} = await supabase
+    .from('projects')
+    .select("*")
+  projectsRetrievalError &&
+  console.error('Error while getting all projects: \n', projectsRetrievalError)
+  return data
 }

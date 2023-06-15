@@ -10,7 +10,9 @@ import Image from 'next/image'
 const columnHelper = createColumnHelper<Project>()
 
 // @TODO Make columns sortable, filterable, dynamic
+// Define column definitions for a Project table
 const columns = [
+  // Logo column definition
   columnHelper.accessor(
     ({ organization, associatedPerson }) => organization?.avatarUrl || associatedPerson?.avatarUrl,
     {
@@ -22,20 +24,30 @@ const columns = [
       )
     }
   ),
+
   // @TODO Adjust for user owners
+  // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`.slice(
-        0,
-        32
-      ),
+      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
     {
       id: 'nameWithOwner',
       header: 'Name',
-      cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
+      cell: (info) => {
+        const [owner, name] = info.getValue().split(' / ')
+        return (
+          <div>
+            <span className="text-14 font-medium text-gray-500">{owner.slice(0, 15)} /&nbsp;</span>
+            {owner.length > 16 && <span className="text-14 text-gray-500">...</span>}
+            <span className="text-14 font-bold">{name.slice(0, 31)}</span>
+            {name.length > 32 && <span className="text-14">...</span>}
+          </div>
+        )
+      }
     }
   ),
   // @TODO Add tags column
+  // Stars column definition
   columnHelper.accessor('starCount', {
     header: 'Stars',
     cell: (info) => (
@@ -48,6 +60,7 @@ const columns = [
       />
     )
   }),
+  // Issues column definition
   columnHelper.accessor('issueCount', {
     header: 'Issues',
     cell: (info) => (
@@ -60,6 +73,7 @@ const columns = [
       />
     )
   }),
+  // Forks column definition
   columnHelper.accessor('forkCount', {
     header: 'Forks',
     cell: (info) => (
@@ -72,6 +86,7 @@ const columns = [
       />
     )
   }),
+  // Contributors column definition
   columnHelper.accessor('contributorCount', {
     header: 'Contrib.',
     cell: (info) => (
@@ -84,11 +99,13 @@ const columns = [
       />
     )
   }),
+  // Forks per Contributor column definition
   columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
     id: 'forksPerContributor',
     header: 'Forks/ Contr.',
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   }),
+  // Issues per Contributor column definition
   columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
     id: 'issuesPerContributor',
     header: 'Issues/ Contr.',

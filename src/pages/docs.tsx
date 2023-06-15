@@ -1,6 +1,9 @@
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 
+/**
+ * Documentation page
+ */
 const Docs = () => (
   <Page>
     <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">

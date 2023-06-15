@@ -30,14 +30,21 @@ const columns = [
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`.slice(
-        0,
-        32
-      ),
+      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
     {
       id: 'nameWithOwner',
       header: 'Name',
-      cell: (info) => <p className="text-14 font-bold">{info.getValue()}</p>
+      cell: (info) => {
+        const [owner, name] = info.getValue().split(' / ')
+        return (
+          <div>
+            <span className="text-14 font-medium text-gray-500">{owner.slice(0, 15)} /&nbsp;</span>
+            {owner.length > 16 && <span className="text-14 text-gray-500">...</span>}
+            <span className="text-14 font-bold">{name.slice(0, 31)}</span>
+            {name.length > 32 && <span className="text-14">...</span>}
+          </div>
+        )
+      }
     }
   ),
   // @TODO Add tags column

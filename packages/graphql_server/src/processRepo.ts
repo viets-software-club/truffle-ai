@@ -5,14 +5,14 @@ import {
   getPersonID,
   turnIntoProjectInsertion
 } from './dataAggregation'
-import {ProjectInsertion, ProjectUpdate} from '../types/dataAggregation'
-import {GitHubInfo} from '../types/githubApi'
-import {getRepoStarRecords} from './starHistory/starHistory'
-import {StarRecord} from '../types/starHistory'
-import {TrendingState} from '../types/processRepo'
-import {fetchRepositoryReadme} from './scraping/githubScraping'
-import {getELI5FromReadMe} from './api/openAIApi'
-import {repoIsAlreadyInDB} from './dbUpdater'
+import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
+import { GitHubInfo } from '../types/githubApi'
+import { getRepoStarRecords } from './starHistory/starHistory'
+import { StarRecord } from '../types/starHistory'
+import { TrendingState } from '../types/processRepo'
+import { fetchRepositoryReadme } from './scraping/githubScraping'
+import { getELI5FromReadMe } from './api/openAIApi'
+import { repoIsAlreadyInDB } from './dbUpdater'
 
 /**
  * Adds a repo to the database.
@@ -47,7 +47,7 @@ export const insertProject = async (name: string, owner: string, trendingState: 
   }
 
   // insert the repo into the database
-  const {error: insertionError} = await supabase.from('project').insert([projectInsertion])
+  const { error: insertionError } = await supabase.from('project').insert([projectInsertion])
   await updateProjectELI5(name, owner)
   if (!insertionError) {
     console.log('Inserted ', name, 'owned by', owner)
@@ -120,7 +120,7 @@ export const updateSupabaseProject = async (
 ) => {
   const owningOrganizationID = await getOrganizationID(owner)
 
-  const {error: ownerUpdateError} = await supabase
+  const { error: ownerUpdateError } = await supabase
     .from('project')
     .update(updatedProject)
     .eq('name', name)
@@ -128,7 +128,7 @@ export const updateSupabaseProject = async (
 
   if (!ownerUpdateError) return true
   const owningPersonID = await getPersonID(owner)
-  const {error: ownerUpdateError2} = await supabase
+  const { error: ownerUpdateError2 } = await supabase
     .from('project')
     .update(updatedProject)
     .eq('name', name)
@@ -146,7 +146,7 @@ export const updateProjectELI5 = async (name: string, owner: string) => {
   try {
     const readMe = (await fetchRepositoryReadme(owner, name)).slice(0, 2500)
     const description = await getELI5FromReadMe(readMe)
-    const updated = await updateSupabaseProject(name, owner, {eli5: description})
+    const updated = await updateSupabaseProject(name, owner, { eli5: description })
     updated && console.log('updated eli5 of ', name, 'owned by', owner)
   } catch (e) {
     console.error('Error while fetching readme for ', name, 'owned by', owner)
@@ -168,17 +168,15 @@ export const parseGitHubUrl = (url: string) => {
 
   if (match && match.length === 3) {
     const [, owner, repo] = match
-    return {owner, repo}
+    return { owner, repo }
   }
 
   return null
 }
 
 export const exposeProjectsData = async () => {
-  const { data, error: projectsRetrievalError } = await supabase
-    .from('projects')
-    .select("*")
+  const { data, error: projectsRetrievalError } = await supabase.from('projects').select('*')
   projectsRetrievalError &&
-  console.error('Error while getting all projects: \n', projectsRetrievalError)
+    console.error('Error while getting all projects: \n', projectsRetrievalError)
   return data
 }

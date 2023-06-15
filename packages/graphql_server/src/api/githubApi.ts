@@ -11,6 +11,7 @@ import {
 } from '../../types/githubApi'
 
 import { Contributor } from '../../types/githubScraping'
+import { link } from 'fs'
 
 const githubApiUrl = process.env.GITHUB_API_URL || ''
 /** Gets the repo's information via GitHub's GraphQL API
@@ -273,7 +274,7 @@ export async function getRepositoryTopics(
  * @returns array of strings containing the name of the contributor and the number of commits done by that perso
  */
 
-export async function getContributorsCount(owner: string, repo: string) {
+export async function getContributorsCount(owner: string, repo: string): Promise<number> {
   try {
     const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
       params: {
@@ -281,9 +282,11 @@ export async function getContributorsCount(owner: string, repo: string) {
       }
     })
 
-    const linkHeader = response.headers.link
-    const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/)
-    const lastPage = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const linkHeader: string = response?.headers?.link
+    console.log(linkHeader)
+    const lastPageMatch = linkHeader?.match(/page=(\d+)>; rel="last"/)
+    const lastPage: number = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
 
     console.log(repo, owner)
     console.log(lastPage)

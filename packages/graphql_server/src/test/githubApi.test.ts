@@ -9,11 +9,12 @@ export async function testGetRepositoryTopics(repoFounder: string, repoName: str
 
 //test function that calls the method and prints out all contributors
 export async function testGetContributorCount(owner: string, repo: string) {
+  console.log(await getContributorsCount(owner, repo))
+}
+
+/*
   getContributorsCount('iv-org', 'invidious') //268
   getContributorsCount('microsoft', 'guidance') //98
   getContributorsCount('smol-ai', 'developer') //14
   getContributorsCount('sunner', 'ChatALL') //15
-  getContributorsCount('google', 'comprehensive-rust') //155
-}
-
-testGetContributorCount(' ', ' ')
+  getContributorsCount('google', 'comprehensive-rust') //155*/

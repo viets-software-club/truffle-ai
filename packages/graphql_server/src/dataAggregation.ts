@@ -211,3 +211,32 @@ export const getPersonID = async (owner: string) => {
 
   return person?.[0]?.id ? person[0].id : null
 }
+
+// @Todo: documentation
+export const getProjectID = async (name: string, owner: string) => {
+  // try to get a organization id
+  let ownerID = await getOrganizationID(owner)
+  if (!ownerID) {
+    // if that does not work try to get a person id
+    ownerID = await getPersonID(owner)
+    if (!ownerID) {
+      // if that fails as well return null
+      return null
+    }
+
+    const { data: projects } = await supabase
+      .from('project')
+      .select('id')
+      .eq('owning_person', ownerID)
+      .eq('name', name)
+    return projects?.[0]?.id ?? null
+  }
+
+  // if the organization id is not null try to get the project id
+  const { data: projects } = await supabase
+    .from('project')
+    .select('id')
+    .eq('owning_organization', ownerID)
+    .eq('name', name)
+  return projects?.[0]?.id ?? null
+}

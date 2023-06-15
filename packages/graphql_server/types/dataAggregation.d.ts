@@ -7,3 +7,5 @@ export type OrganizationInsertion = Database['public']['Tables']['organization']
 export type OrganizationUpdate = Database['public']['Tables']['organization']['Update']
 
 export type PersonInsertion = Database['public']['Tables']['associated_person']['Insert']
+
+export type FoundedByInsertion = Database['public']['Tables']['founded_by']['Insert']

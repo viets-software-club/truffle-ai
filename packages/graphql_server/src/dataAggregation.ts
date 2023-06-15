@@ -212,7 +212,12 @@ export const getPersonID = async (owner: string) => {
   return person?.[0]?.id ? person[0].id : null
 }
 
-// @Todo: documentation
+/**
+ * Returns the project id for the given repoName and owner.
+ * @param {string} name - The name of the project.
+ * @param {string} owner - The name of the owner of the project.
+ * @returns {string} The id of the project or null if the project does not exist.
+ */
 export const getProjectID = async (name: string, owner: string) => {
   // try to get a organization id
   let ownerID = await getOrganizationID(owner)

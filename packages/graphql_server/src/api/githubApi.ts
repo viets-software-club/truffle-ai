@@ -227,8 +227,6 @@ export async function getRepositoryTopics(
     const linkHeader: string = response?.headers['link'] as string
     const lastPageMatch: RegExpMatchArray | null = linkHeader.match(/page=(\d+)>; rel="last"/)
     const lastPage: number = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
-
-    console.log(lastPage)
     return lastPage
   } catch (error) {
     console.error(error)

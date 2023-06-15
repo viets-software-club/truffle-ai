@@ -97,7 +97,7 @@ export async function main(timeMode: timeMode, firstNRepos: number) {
     console.log(await starHistory.getRepoStarRecords(owner + '/' + name, authToken, 10))
 
     // get the contributor count of the repo
-    console.log(await github.getContributorCount(owner, name))
+    console.log(await github.getContributorCount(owner, name, authToken))
   }
   // get the developers
   // console.log(scrape.fetchTrendingDevelopers(timeMode))

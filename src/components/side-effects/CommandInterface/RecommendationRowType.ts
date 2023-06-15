@@ -6,6 +6,9 @@ type RecommendationRowType = {
   subtitle?: string | null
   isProjectPrimary?: boolean | false
   commandInterfaceOptions: string
+  shortcutKey: string
+  shortcutKeyIcon: IconComponentType | null
+  needConfirmation?: boolean | false
 }
 
 export default RecommendationRowType

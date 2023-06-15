@@ -1,5 +1,6 @@
 type RecommendationRowCommandType = {
   Icon?: IconComponentType | null
+  ShortcutIcon?: IconComponentType | null
   menuText: string
   enableDivider?: boolean | false
   subtitle?: string | null
@@ -15,6 +16,7 @@ const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
   subtitle,
   isHighlighted,
   isProjectItem,
+  ShortcutIcon,
   rowClicked
 }: RecommendationRowCommandType) => {
   const classNameForWrapper = `flex cursor-pointer items-center h-14 justify-between p-4 py-2 ${
@@ -26,11 +28,13 @@ const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
       <button type="button" className="w-full" onClick={rowClicked}>
         <div className={classNameForWrapper}>
           <div className="flex w-full items-center px-2 py-1">
-            {Icon && <Icon className="mr-8  w-[14px] text-gray-500" />}
-            <span className="w-48 text-left text-gray-200">{menuText}</span>
-            <span className="w-full text-right">
-              {!isProjectItem && <>CMD/Ctrl & {menuText.charAt(0)}</>}
-            </span>
+            {Icon && <Icon className="mr-8  w-[24px] text-gray-500" />}
+            <span className="w-60 text-left text-gray-200">{menuText}</span>
+            <div className="flex w-full justify-end">
+              {!isProjectItem && ShortcutIcon && (
+                <ShortcutIcon className="mr-8 h-8 w-[24px] text-gray-500" />
+              )}{' '}
+            </div>
           </div>
         </div>
         {enableDivider && <div className="h-0.5 bg-gray-600" />}
@@ -42,7 +46,8 @@ const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
 RecommendationRow.defaultProps = {
   Icon: null,
   enableDivider: false,
-  subtitle: null
+  subtitle: null,
+  ShortcutIcon: null
 }
 
 export default RecommendationRow

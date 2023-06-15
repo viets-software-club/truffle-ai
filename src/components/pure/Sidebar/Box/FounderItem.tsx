@@ -1,6 +1,6 @@
 import { AiFillMail } from 'react-icons/ai'
 import { FaLinkedin } from 'react-icons/fa'
-import emailTemplate from './EmailTemplate'
+import emailTemplate from '../../../../util/emailTemplate'
 
 type FounderProps = {
   name: string

@@ -11,10 +11,11 @@ import { useRouter } from 'next/router'
 import RecommendationRow from '@/components/side-effects/CommandInterface/RecommendationRow'
 import { MdArrowForward } from 'react-icons/md'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import emailTemplate from '@/components/pure/Sidebar/Box/EmailTemplate'
+import emailTemplate from '@/util/emailTemplate'
 import { founderListMock } from '@/data/detailPageMocks'
 import RecommendationRowType from './RecommendationRowType'
 import defaultList from './DefaultRecommendationList'
+import CommandInterfaceOptions from './CommandInterfaceOptions'
 
 type CommandInterfaceProps = {
   action: (event: FocusEvent<HTMLInputElement> | null) => void
@@ -135,22 +136,56 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   }
 
   const setProjectNamesAsRow = (commandInterfaceOption: string) => {
-    const newRecommendationList: RecommendationRowType[] = projects.map((item) => {
-      const recommendationRow: RecommendationRowType = {
-        Icon: MdArrowForward,
-        menuText: (item.name as string) ?? (item.id as string),
-        commandInterfaceOptions: updateCommandInterface(commandInterfaceOption, item)
-      }
-      return recommendationRow
-    })
-    setIsProjectListOn(true)
-    setPrevProjectRecommendationList(newRecommendationList)
-    setRecommendationList(newRecommendationList)
+    if (projects !== undefined) {
+      const newRecommendationList: RecommendationRowType[] = projects.map(
+        (item: Project, index: number) => {
+          const recommendationRow: RecommendationRowType = {
+            Icon: MdArrowForward,
+            menuText: (item.name as string) ?? (item.id as string),
+            commandInterfaceOptions: updateCommandInterface(commandInterfaceOption, item),
+            shortcutKey: index.toString(),
+            shortcutKeyIcon: null
+          }
+          return recommendationRow
+        }
+      )
+      setIsProjectListOn(true)
+      setPrevProjectRecommendationList(newRecommendationList)
+      setRecommendationList(newRecommendationList)
+    }
   }
 
-  const rowClicked = (command: string, searchText: string, isIdPrimary: boolean) => {
+  const showConfirmationLines = () => {
+    setSearchWord('Are you sure?')
+    const yesLine: RecommendationRowType = {
+      Icon: MdArrowForward,
+      menuText: 'Yes',
+      commandInterfaceOptions: CommandInterfaceOptions.Logout,
+      isIdPrimary: false,
+      shortcutKey: 'Yes',
+      shortcutKeyIcon: null
+    }
+    const noLine: RecommendationRowType = {
+      Icon: MdArrowForward,
+      menuText: 'No',
+      commandInterfaceOptions: CommandInterfaceOptions.GoHome,
+      isIdPrimary: false,
+      shortcutKey: 'No',
+      shortcutKeyIcon: null
+    }
+    setRecommendationList([yesLine, noLine])
+  }
+
+  const rowClicked = (
+    command: string,
+    searchText: string,
+    isIdPrimary: boolean,
+    needConfirmation: boolean
+  ) => {
     setSearchWord(searchText)
-    if (!isIdPrimary) {
+    if (needConfirmation) {
+      showConfirmationLines()
+    } else if (!isIdPrimary) {
       navigateTo(command)
       setIsProjectListOn(false)
       action(null)
@@ -193,8 +228,14 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
               enableDivider={item.enableDivider}
               subtitle={item.subtitle}
               isProjectItem={isProjectListOn}
+              ShortcutIcon={item.shortcutKeyIcon}
               rowClicked={() =>
-                rowClicked(item.commandInterfaceOptions, item.menuText, item.isIdPrimary ?? false)
+                rowClicked(
+                  item.commandInterfaceOptions,
+                  item.menuText,
+                  item.isIdPrimary ?? false,
+                  item.needConfirmation ?? false
+                )
               }
             />
           ))}

@@ -25,8 +25,12 @@ const Page = ({ children }: PageProps) => {
           event.preventDefault()
           setOpenModal(true)
         }
+      } else if (event.key === 'Escape') {
+        setOpenModal(false)
+      }
+      if (openModal) {
         const shortcutsForPages = defaultList.filter(
-          (item) => item.menuText.toLocaleLowerCase().charAt(0) === event.key
+          (item) => item.shortcutKey.toLocaleLowerCase() === event.key.toLocaleLowerCase()
         )
         if (shortcutsForPages.length > 0) {
           event.preventDefault()
@@ -34,15 +38,13 @@ const Page = ({ children }: PageProps) => {
             // @TODO show a message to user
           })
         }
-      } else if (event.key === 'Escape') {
-        setOpenModal(false)
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [openModal])
   const closeModel = () => {
     setOpenModal(false)
   }

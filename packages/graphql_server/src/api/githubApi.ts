@@ -266,41 +266,30 @@ export async function getRepositoryTopics(
 }
 
 /**
- * Retrieves an array with all contributors for a given
- * repository and the number of contributions they have made (total count of contributors = length of array)
+ * returns the amount of contribtuors. Not 100% accurate since the gitHub API does not return certain contributors and on the other hand
+ * sometimes shows new contribtuors that can not be seen on the github page.
  * @param owner
  * @param repo
  * @returns array of strings containing the name of the contributor and the number of commits done by that perso
  */
 
-export async function getContributors(owner: string, repo: string) {
-  let contributors: Contributor[] = []
+export async function getContributorsCount(owner: string, repo: string) {
   try {
-    let page = 1
-    let notemptfy = true
-    while (notemptfy) {
-      const response = await axios.get(
-        `https://api.github.com/repos/${owner}/${repo}/contributors`,
-        {
-          params: {
-            page: page,
-            per_page: 100
-          }
-        }
-      )
-
-      const pageContributors = response.data as Contributor[]
-      if (pageContributors.length === 0) {
-        notemptfy = false
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
+      params: {
+        per_page: 1
       }
+    })
 
-      contributors = contributors.concat(pageContributors)
-      page++
-    }
+    const linkHeader = response.headers.link
+    const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/)
+    const lastPage = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
 
-    return contributors
+    console.log(repo, owner)
+    console.log(lastPage)
+    return lastPage
   } catch (error) {
     console.error('Could not find any contributors')
-    return contributors
+    return 0
   }
 }

@@ -1,4 +1,4 @@
-import { getRepositoryTopics, getContributors } from '../api/githubApi'
+import { getRepositoryTopics, getContributorsCount } from '../api/githubApi'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function testGetRepositoryTopics(repoFounder: string, repoName: string) {
@@ -9,16 +9,11 @@ export async function testGetRepositoryTopics(repoFounder: string, repoName: str
 
 //test function that calls the method and prints out all contributors
 export async function testGetContributorCount(owner: string, repo: string) {
-  await getContributors(owner, repo)
-    .then((contributors) => {
-      console.log(`Contributors für das Repository ${owner}/${repo}:`)
-      contributors.forEach((contributor, index) => {
-        console.log(
-          `${index + 1}. ${contributor.login} (${contributor.contributions} Beitrag/Beträge)`
-        )
-      })
-    })
-    .catch((error) => {
-      console.error('Fehler:', error)
-    })
+  getContributorsCount('iv-org', 'invidious') //268
+  getContributorsCount('microsoft', 'guidance') //98
+  getContributorsCount('smol-ai', 'developer') //14
+  getContributorsCount('sunner', 'ChatALL') //15
+  getContributorsCount('google', 'comprehensive-rust') //155
 }
+
+testGetContributorCount(' ', ' ')

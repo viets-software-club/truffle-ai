@@ -3,7 +3,7 @@ import { insertProject, parseGitHubUrl, exposeProjectsData } from '../processRep
 const resolvers = {
   Query: {
     helloWorld: () => 'Hello world!',
-    allProjects:() => exposeProjectsData()
+    allProjects: () => exposeProjectsData()
   },
   Mutation: {
     // takes in variables. Parent object _ is never used

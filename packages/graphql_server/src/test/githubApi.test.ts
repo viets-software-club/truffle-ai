@@ -13,8 +13,8 @@ export async function testGetContributorCount(owner: string, repo: string) {
 }
 
 /*
-  getContributorsCount('iv-org', 'invidious') //268
-  getContributorsCount('microsoft', 'guidance') //98
-  getContributorsCount('smol-ai', 'developer') //14
-  getContributorsCount('sunner', 'ChatALL') //15
-  getContributorsCount('google', 'comprehensive-rust') //155*/
+testGetContributorCount('iv-org', 'invidious') //268
+testGetContributorCount('microsoft', 'guidance') //98
+testGetContributorCount('smol-ai', 'developer') //14
+testGetContributorCount('sunner', 'ChatALL') //15
+testGetContributorCount('google', 'comprehensive-rust') //155*/

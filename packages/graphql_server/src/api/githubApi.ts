@@ -216,7 +216,8 @@ export async function getRepositoryTopics(
       `https://api.github.com/repos/${owner}/${repo}/contributors`,
       {
         params: {
-          per_page: 1
+          per_page: 1,
+          anon: true
         },
         headers: {
           Authorization: `Bearer ${authToken}`

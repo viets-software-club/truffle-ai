@@ -1,4 +1,4 @@
-import { getRepositoryTopics, getContributorsCount } from '../api/githubApi'
+import { getRepositoryTopics, getContributorCount } from '../api/githubApi'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function testGetRepositoryTopics(repoFounder: string, repoName: string) {
@@ -9,7 +9,7 @@ export async function testGetRepositoryTopics(repoFounder: string, repoName: str
 
 //test function that calls the method and prints out all contributors
 export async function testGetContributorCount(owner: string, repo: string) {
-  console.log(await getContributorsCount(owner, repo))
+  console.log(await getContributorCount(owner, repo))
 }
 
 /*

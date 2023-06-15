@@ -63,7 +63,13 @@ const Details = ({ id }: DetailsProps) => {
     }
   }, [projects, id])
 
-  // Get project details data using generated hook (returns array with 1 project if successful)
+  /**
+   * Get project details data using generated hook (returns array with 1 project if successful).
+   * @param {string} id - The ID of the project for which to fetch details.
+   * @returns {[{ data: any, fetching: boolean, error: any }]} Data is the data containing trending projects.
+   * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
+   * Error contains any error information if the query encounters an error during the fetch.
+   */
   const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
 
   // Get first entry of returned collection

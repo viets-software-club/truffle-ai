@@ -78,13 +78,11 @@ const Compare = () => {
 
       {/* @TODO Remove slice to put all projects into chart */}
       <Chart
-        datasets={data
-          .map((project) => ({
-            id: project.id as string,
-            name: project.name as string,
-            data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
-          }))
-          .slice(0, 1)}
+        datasets={data.map((project) => ({
+          id: project.id as string,
+          name: project.name as string,
+          data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
+        }))}
         multipleLines
       />
 

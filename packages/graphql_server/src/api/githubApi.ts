@@ -3,15 +3,11 @@ import {
   GitHubOrganization,
   GitHubUser,
   GitHubInfo,
-  Edge,
-  ContributorResponse,
   GitHubCommitHistory,
   ProjectFounder,
-  RepositoryTopicsResponse
+  RepositoryTopicsResponse,
+  ContributorData
 } from '../../types/githubApi'
-
-import { Contributor } from '../../types/githubScraping'
-import { link } from 'fs'
 
 const githubApiUrl = process.env.GITHUB_API_URL || ''
 /** Gets the repo's information via GitHub's GraphQL API
@@ -210,24 +206,33 @@ export async function getRepositoryTopics(
  * @param owner
  * @param repo
  * @returns array of strings containing the name of the contributor and the number of commits done by that perso
- */
-
-export async function getContributorCount(owner: string, repo: string): Promise<number> {
+ */ export async function getContributorCount(
+  owner: string,
+  repo: string,
+  authToken: string
+): Promise<number> {
   try {
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
-      params: {
-        per_page: 1
+    const response: AxiosResponse<ContributorData> = await axios.get(
+      `https://api.github.com/repos/${owner}/${repo}/contributors`,
+      {
+        params: {
+          per_page: 1
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
       }
-    })
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const linkHeader: string = response?.headers?.link
-    const lastPageMatch = linkHeader?.match(/page=(\d+)>; rel="last"/)
+    )
+    // console.log(response.headers)
+    const linkHeader: string = response?.headers['link'] as string
+    const lastPageMatch: RegExpMatchArray | null = linkHeader.match(/page=(\d+)>; rel="last"/)
     const lastPage: number = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
 
+    console.log(lastPage)
     return lastPage
   } catch (error) {
-    console.error('Could not find any contributors')
+    console.error(error)
+    console.error('Error in getContributors')
     return 0
   }
 }

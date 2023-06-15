@@ -20,6 +20,7 @@ const nullFunc = () => null
  */
 // @TODO Get id from props to fetch category title & projects from DB
 const Compare = () => {
+  const [filteredRowCount, setFilteredRowCount] = useState(0)
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
@@ -77,8 +78,15 @@ const Compare = () => {
         addFilter={addFilter}
         filters={filters}
       />
-
-      <FilterBar filters={filters} removeFilter={removeFilter} updateFilter={updateFilter} />
+      {filters.length > 0 && (
+        <FilterBar
+          filters={filters}
+          removeFilter={removeFilter}
+          updateFilter={updateFilter}
+          currentEntries={filteredRowCount}
+          totalEntries={data.length}
+        />
+      )}
 
       <div className="flex flex-row items-center justify-between px-6 pt-3.5">
         <div className="flex flex-col">
@@ -127,7 +135,7 @@ const Compare = () => {
         </div>
       </div>
 
-      <Table table={table} filters={filters} />
+      <Table table={table} filters={filters} setFilteredRowCount={setFilteredRowCount} />
     </div>
   )
 }

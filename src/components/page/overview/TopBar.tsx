@@ -160,7 +160,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
           <Button
             onClick={nullFunc}
             variant="normal"
-            text="Sorts"
+            text="Sorting"
             Icon={AiOutlineSortAscending}
             order="ltr"
             textColor="white"

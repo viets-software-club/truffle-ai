@@ -20,6 +20,7 @@ const nullFunc = () => null
  * Table for displaying trending projects
  */
 const ProjectsTable = () => {
+  const [filteredRowCount, setFilteredRowCount] = useState(0)
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
@@ -80,9 +81,15 @@ const ProjectsTable = () => {
         filters={filters}
       />
       {filters.length > 0 && (
-        <FilterBar filters={filters} removeFilter={removeFilter} updateFilter={updateFilter} />
+        <FilterBar
+          filters={filters}
+          removeFilter={removeFilter}
+          updateFilter={updateFilter}
+          currentEntries={filteredRowCount}
+          totalEntries={data.length}
+        />
       )}
-      <Table table={table} filters={filters} />
+      <Table table={table} filters={filters} setFilteredRowCount={setFilteredRowCount} />
     </div>
   )
 }

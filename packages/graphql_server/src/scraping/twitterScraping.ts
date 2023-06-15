@@ -39,10 +39,11 @@ function mapToInternalType(tweets: TwitterSearchResponse['tweets']): TwitterPost
     userId: tweet.user_id ?? '',
     conversationId: tweet.conversation_id ?? '',
     // the URL given from the API call is wrongly formatted, so we have to build the url to the post here
-    tweetUrl: 'https://twitter.com/' + tweet.user_name ?? '' + '/status/' + tweet.conversation_id ?? '',
+    tweetUrl:
+      'https://twitter.com/' + tweet.user_name ?? '' + '/status/' + tweet.conversation_id ?? '',
     text: tweet.text ?? '',
     retweetCount: tweet.retweets ?? 0,
     likeCount: 0, // Unfortunately this API does not deliver like counts, but we will need this count for the other issues
-    replies: tweet.replies?? 0
+    replies: tweet.replies ?? 0
   }))
 }

@@ -168,6 +168,11 @@ export const updateProjectELI5 = async (name: string, owner: string) => {
   }
 }
 
+/**
+ * Updates the HNsentiment and the corresponding links towards a repo
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
 export const updateProjectSentiment = async (repoName: string, owner: string) => {
   let allComments = ''
   const allLinks: string[] = []
@@ -202,6 +207,10 @@ export const updateProjectSentiment = async (repoName: string, owner: string) =>
   }
 }
 
+/**
+ * Updates all columns of organization that are populated with data that come from linkedIN
+ * @param {string} organizationHandle - The login of the organization.
+ */
 export const updateProjectLinkedInData = async (organizationHandle: string) => {
   // check if repo is owned by an organization
   const { data: supabaseOrga } = await supabase
@@ -236,6 +245,12 @@ export const updateProjectLinkedInData = async (organizationHandle: string) => {
   return !updateError
 }
 
+/**
+ * Updates the founders of a repo. That means that it inserts the founders into the db if they are not already there
+ * Actually the founders will not change over time with how we get them right now (first committers)
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
 export const updateProjectFounders = async (repoName: string, owner: string) => {
   const founders: ProjectFounder[] = await getRepoFounders(owner, repoName)
   const projectID: string | null = await getProjectID(repoName, owner)
@@ -297,6 +312,10 @@ export const parseGitHubUrl = (url: string) => {
   return null
 }
 
+/**
+ * Formats the linkedInData to the format that is used in the db
+ * @param {LinkedInCompanyProfile} linkedInData - The companny linkedIn data
+ */
 const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): OrganizationUpdate => {
   return {
     crunchbase: linkedInData.crunchbaseUrl,

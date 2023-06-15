@@ -175,7 +175,7 @@ export const parseGitHubUrl = (url: string) => {
 }
 
 export const exposeProjectsData = async () => {
-  const {data, error: projectsRetrievalError} = await supabase
+  const { data, error: projectsRetrievalError } = await supabase
     .from('projects')
     .select("*")
   projectsRetrievalError &&

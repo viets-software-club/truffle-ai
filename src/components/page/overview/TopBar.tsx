@@ -38,6 +38,9 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
   </Transition>
 )
 
+/**
+ * Top navigation for the table view, including filter, sort, edit columns and add project buttons
+ */
 const TopBar = ({ columns, nullFunc }: TopBarProps) => (
   <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
     {/* Filter, Sort, Edit Columns buttons */}
@@ -51,7 +54,7 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
         </div>
 
         <TransitionMenuItems>
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
+          <Menu.Items className="absolute right-0 z-20 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
             <div className="py-1">
               {timeFrameOptions.map((option) => (
                 <Menu.Item key={option.value}>

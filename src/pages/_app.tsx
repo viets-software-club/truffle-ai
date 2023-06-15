@@ -7,12 +7,18 @@ import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import BASE_URL from '@/constants/baseUrl'
 import '@/styles/globals.css'
 
+/**
+ * Default component to initialize every page
+ * @param {AppProps<{ initialSession: Session }>} props - The component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 const App = ({
   Component,
   pageProps
 }: AppProps<{
   initialSession: Session
 }>) => {
+  // Create the Supabase client using browser authentication helper
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient({
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -21,6 +27,7 @@ const App = ({
   )
 
   return (
+    // Provide the Supabase client and initial session using SessionContextProvider
     <SessionContextProvider
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}

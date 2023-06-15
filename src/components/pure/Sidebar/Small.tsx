@@ -4,6 +4,12 @@ type SmallSidebarProps = {
   children: ReactNode
 }
 
+/**
+ * A sidebar component with a predefined width.
+ *
+ * @param {SmallSidebarProps} props - The properties for this component.
+ * @returns {React.Element} The sidebar element.
+ */
 const SmallSidebar = ({ children }: SmallSidebarProps) => (
   <div className="h-full w-1/5 border-l border-solid border-gray-800">{children}</div>
 )

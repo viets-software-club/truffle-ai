@@ -4,3 +4,4 @@ dist
 .env*
 env.sh
 .dockerignore
+.meshrc.yaml

@@ -1,0 +1,17 @@
+name: 'PR Checks'
+on:
+  pull_request:
+    types: [opened, edited, ready_for_review, reopened, synchronize]
+permissions: write-all
+jobs:
+  pr-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR Check
+        uses: pczern/verify-pr-action@v0.0.3-alpha.39
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          titleRegex: "\\[(META|BACK|FRONT)\\-\\d+\\]\\s.+"
+          descriptionRegex: "[\\s\\S]*Description[\\s\\S]{35,}How I implemented[\\s\\S]{45,}"
+          titleMinLength: 20
+          descriptionMinLength: 60

@@ -38,6 +38,9 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
   </Transition>
 )
 
+/**
+ * Top navigation for the table view, including filter, sort, edit columns and add project buttons
+ */
 const TopBar = ({ columns, nullFunc }: TopBarProps) => (
   <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
     {/* Filter, Sort, Edit Columns buttons */}
@@ -45,7 +48,7 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-            <AiOutlineCalendar color="#858699" />
+            <AiOutlineCalendar className="text-gray-500" />
             <p className="leading-none">This week</p>
           </Menu.Button>
         </div>
@@ -96,8 +99,7 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="flex flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-            <TbColumns2 color="#858699" />
-
+            <TbColumns2 className="text-gray-500" />
             <p className="leading-none">Edit Columns</p>
           </Menu.Button>
         </div>
@@ -109,7 +111,7 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
                 <Menu.Item key={column.id}>
                   <button
                     type="button"
-                    onClick={() => column.toggleVisibility()}
+                    onClick={column.getToggleVisibilityHandler()}
                     className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
                   >
                     {column.getIsVisible() ? (
@@ -149,3 +151,4 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
 )
 
 export default TopBar
+export { TransitionMenuItems }

@@ -3,10 +3,9 @@ query ProjectDetails($id: UUID) {
     edges {
       node {
         id
-        nodeId
-        eli5
-        about
         name
+        about
+        eli5
         starCount
         issueCount
         forkCount
@@ -15,9 +14,19 @@ query ProjectDetails($id: UUID) {
         githubUrl
         websiteUrl
         starHistory
+        owningPerson
+        owningOrganization
+        associatedPerson {
+          id
+          name
+          login
+          avatarUrl
+          email
+          githubUrl
+          twitterUsername
+        }
         organization {
           id
-          nodeId
           login
           avatarUrl
         }

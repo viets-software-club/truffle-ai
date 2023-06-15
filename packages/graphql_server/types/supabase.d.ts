@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json } | Json[]
 
 export interface Database {
   public: {
@@ -87,16 +81,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "bookmark_project_id_fkey"
-            columns: ["project_id"]
-            referencedRelation: "project"
-            referencedColumns: ["id"]
+            foreignKeyName: 'bookmark_project_id_fkey'
+            columns: ['project_id']
+            referencedRelation: 'project'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "bookmark_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: 'bookmark_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -121,16 +115,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "founded_by_founder_id_fkey"
-            columns: ["founder_id"]
-            referencedRelation: "associated_person"
-            referencedColumns: ["id"]
+            foreignKeyName: 'founded_by_founder_id_fkey'
+            columns: ['founder_id']
+            referencedRelation: 'associated_person'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "founded_by_project_id_fkey"
-            columns: ["project_id"]
-            referencedRelation: "project"
-            referencedColumns: ["id"]
+            foreignKeyName: 'founded_by_project_id_fkey'
+            columns: ['project_id']
+            referencedRelation: 'project'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -281,16 +275,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "project_owning_organization_fkey"
-            columns: ["owning_organization"]
-            referencedRelation: "organization"
-            referencedColumns: ["id"]
+            foreignKeyName: 'project_owning_organization_fkey'
+            columns: ['owning_organization']
+            referencedRelation: 'organization'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "project_owning_person_fkey"
-            columns: ["owning_person"]
-            referencedRelation: "associated_person"
-            referencedColumns: ["id"]
+            foreignKeyName: 'project_owning_person_fkey'
+            columns: ['owning_person']
+            referencedRelation: 'associated_person'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -315,10 +309,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "testTable_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: 'testTable_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           }
         ]
       }

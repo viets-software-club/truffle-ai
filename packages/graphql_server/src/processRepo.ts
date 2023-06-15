@@ -5,7 +5,7 @@ import {
   getPersonID,
   turnIntoProjectInsertion
 } from './dataAggregation'
-import { ProjectInsertion, ProjectUpdate, Project } from '../types/dataAggregation'
+import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
 import { GitHubInfo } from '../types/githubApi'
 import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'

@@ -3,10 +3,11 @@ import {
   getOrganizationID,
   getGithubData,
   getPersonID,
-  turnIntoProjectInsertion
+  turnIntoProjectInsertion,
+  getProjectID
 } from './dataAggregation'
 import { OrganizationUpdate, ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
-import { GitHubInfo } from '../types/githubApi'
+import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { getRepoStarRecords } from './starHistory/starHistory'
 import { StarRecord } from '../types/starHistory'
 import { TrendingState } from '../types/processRepo'
@@ -16,6 +17,7 @@ import { repoIsAlreadyInDB } from './dbUpdater'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { LinkedInCompanyProfile } from '../types/linkedInScraping'
+import { getRepoFounders } from './api/githubApi'
 
 /**
  * Adds a repo to the database.
@@ -232,6 +234,49 @@ export const updateProjectLinkedInData = async (organizationHandle: string) => {
   // if no error occured the insert was successful
   console.log('Updated linkedIn data for ', organizationHandle)
   return !updateError
+}
+
+export const updateProjectFounders = async (repoName: string, owner: string) => {
+  const founders: ProjectFounder[] = await getRepoFounders(owner, repoName)
+  const projectID: string | null = await getProjectID(repoName, owner)
+
+  //if the projectID is falsy return
+  if (!projectID) {
+    return
+  }
+
+  for (const founder of founders) {
+    const founderID: string | null = await getPersonID(founder.login)
+    if (!founderID) {
+      // getPersonID inserts the user if they don't exist yet,
+      // so founderID being null means that the user is not on the db and was not inserted
+      continue
+    }
+    const { data: alreadyExists } = await supabase
+      .from('founded_by')
+      .select()
+      .eq('founder_id', founderID)
+      .eq('project_id', projectID)
+
+    if (alreadyExists?.[0]) {
+      continue
+    }
+
+    const { error: insertError } = await supabase
+      .from('founded_by')
+      .insert({ founder_id: founderID, project_id: projectID })
+
+    !insertError
+      ? console.log('Added', founder.login, 'as founder for', repoName, 'owned by', owner)
+      : console.log(
+          'Error while adding',
+          founder.login,
+          'as founder for',
+          repoName,
+          'owned by',
+          owner
+        )
+  }
 }
 
 /**

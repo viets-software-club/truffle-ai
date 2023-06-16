@@ -2,6 +2,8 @@ import axios from 'axios'
 import { TwitterPost, TwitterSearchResponse } from '../../types/twitterScraping'
 
 const apiKey = process.env.SCRAPER_API_API_KEY || ''
+const SORT_BY_RETWEETS = 'retweets'
+const SORT_BY_REPLIES = 'replies'
 
 /**
  * Gets first page of twitter posts for a given hashtag
@@ -22,6 +24,34 @@ export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]
     )
     result = response.data
     return mapToInternalType(result.tweets)
+  } catch (error) {
+    console.log('Could not fetch twitter search results for: ' + hashtag)
+    return []
+  }
+}
+
+/**
+ * Gets first page of twitter posts for a given hashtag and sorts the tweets by given criterion
+ * @param hashtag - the hashtag to search for
+ * @param sortBy - the sorting criterion
+ * @returns An sorted array of the TwitterPosts
+ */
+export async function getPostsForHashtagSortedBy(
+  hashtag: string,
+  sortBy: string
+): Promise<TwitterPost[]> {
+  try {
+    const tweets = await getPostsForHashtag(hashtag)
+
+    return tweets.sort((a, b) => {
+      if (sortBy === SORT_BY_REPLIES) {
+        return b.replies - a.replies
+      }
+      if (sortBy === SORT_BY_RETWEETS) {
+        return b.retweetCount - a.retweetCount
+      }
+      return 0
+    })
   } catch (error) {
     console.log('Could not fetch twitter search results for: ' + hashtag)
     return []

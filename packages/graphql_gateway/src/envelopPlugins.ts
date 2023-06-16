@@ -1,7 +1,7 @@
-import { useGenericAuth, ResolveUserFn } from '@envelop/generic-auth'
-import { createClient, User } from '@supabase/supabase-js'
-import { IncomingMessage } from 'http'
+import { ResolveUserFn, useGenericAuth } from '@envelop/generic-auth'
+import { User, createClient } from '@supabase/supabase-js'
 import { parse } from 'cookie'
+import { IncomingMessage } from 'http'
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY)
 
@@ -10,23 +10,29 @@ type Context = {
 }
 
 const resolveUserFn: ResolveUserFn<User, Context> = async (context: Context) => {
-  if (!context?.req?.headers?.cookie) {
-    console.error('All Cookies missing')
+  // Get cookies from authorization header (temporary workaround)
+  const cookies = parse(context?.req?.headers?.authorization as string)
+
+  if (!cookies?.['supabase-auth-token']) {
+    console.error('Auth token missing')
     return null
   }
-  const cookies = parse(context.req.headers.cookie)
-  if (!cookies?.jwt) {
-    console.error('Jwt cookie missing')
-    return null
-  }
+
+  // Get JWT from cookie (cookie set by Supabase is array of tokens)
+  const tokenArray: string[] = JSON.parse(cookies?.['supabase-auth-token']) as string[]
+  const jwt = tokenArray?.[0]
+
+  // Get user from Supabase if JWT is valid
   const {
     data: { user },
     error
-  } = await supabase.auth.getUser(cookies?.jwt)
+  } = await supabase.auth.getUser(jwt)
+
   if (error) {
-    console.error('Error when getting user from Supabase', error)
+    console.error('Error while trying to get user from Supabase', error)
     return null
   }
+
   return user
 }
 
@@ -36,4 +42,5 @@ const plugins = [
     mode: 'protect-all'
   })
 ]
+
 export default plugins

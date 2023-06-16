@@ -18,6 +18,7 @@ import {
 Exports:
 */
 export {
+  deleteNotTrendingAndNotBookmarkedProjects,
   formatLinkedInCompanyData,
   getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
@@ -27,6 +28,23 @@ export {
   repoIsAlreadyInDB,
   turnIntoProjectInsertion,
   updateSupabaseProject
+}
+
+const deleteNotTrendingAndNotBookmarkedProjects = async () => {
+  const { error: deletionError } = await supabase
+    .from('project')
+    .delete()
+    .eq('is_bookmarked', false)
+    .eq('is_trending_daily', false)
+    .eq('is_trending_weekly', false)
+    .eq('is_trending_monthly', false)
+
+  if (deletionError) {
+    console.error(
+      'Error deleting not trending and not bookmarked projects. Error: \n',
+      deletionError
+    )
+  }
 }
 
 /**

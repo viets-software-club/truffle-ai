@@ -18,6 +18,7 @@ type ButtonProps = {
   type?: 'submit' | 'button'
   name?: string
   value?: string
+  className?: string
 }
 
 const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
@@ -50,13 +51,14 @@ const Button = ({
   fullWidth,
   type,
   name,
-  value
+  value,
+  className = ''
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
 
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
-  }`
+  }  ${className}`
 
   // create a text node if text is provided
   const textNode = text && (
@@ -97,7 +99,8 @@ Button.defaultProps = {
   type: 'button',
   onClick: null,
   name: null,
-  value: null
+  value: null,
+  className: null
 }
 
 export default Button

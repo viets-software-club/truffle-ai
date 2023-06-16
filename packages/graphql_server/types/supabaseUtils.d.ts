@@ -10,7 +10,8 @@ export type PersonInsertion = Database['public']['Tables']['associated_person'][
 
 export type FoundedByInsertion = Database['public']['Tables']['founded_by']['Insert']
 
-export type Repo = {
+// has to be named ProjectInfo because otherwise there could be name conflict with supabaseType
+export type ProjectInfo = {
   name: string
   owner: string
 }

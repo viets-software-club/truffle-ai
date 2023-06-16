@@ -1,7 +1,5 @@
-/* eslint-disable tailwindcss/migration-from-tailwind-2 */
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Inter } from 'next/font/google'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { BiLogInCircle } from 'react-icons/bi'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
@@ -9,8 +7,6 @@ import Button from '@/components/pure/Button'
 import ErrorComponent from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import { signInWithGoogle, signInWithPassword } from '@/util/login'
-
-const inter = Inter({ subsets: ['latin'] })
 
 /**
  * Login component. Displays a Google login button and handles the Google OAuth login flow.
@@ -33,11 +29,11 @@ const Login = () => {
       email: HTMLInputElement
       password: HTMLInputElement
     }
-    if (nativeEvent.submitter.value === 'google')
+    if (nativeEvent.submitter.value === 'google') {
       signInWithGoogle(supabaseClient).catch(() => {
         setIsError(true)
       })
-    else if (nativeEvent.submitter.value === 'email') {
+    } else if (nativeEvent.submitter.value === 'email') {
       signInWithPassword(
         supabaseClient,
         formElements.email.value,
@@ -55,7 +51,7 @@ const Login = () => {
   if (isLoading) return <Loading />
 
   return (
-    <main className={`${inter.className} flex min-h-screen flex-col bg-radial-gradient`}>
+    <main className="flex min-h-screen flex-col bg-radial-gradient">
       {isError ? (
         <ErrorComponent title="Error" message="Something went wrong. Please try again." />
       ) : (
@@ -69,13 +65,13 @@ const Login = () => {
               <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
               <div className="flex w-[13rem] flex-col justify-center">
                 <input
-                  className="mb-4 block w-full border-b border-solid border-b-indigo-500 bg-transparent font-inter text-gray-100 placeholder-[#8c8fd9]/70 outline-none"
+                  className="mb-4 block w-full border-b border-solid border-b-indigo-500 bg-transparent text-gray-100 placeholder-[#8c8fd9]/70 outline-none"
                   placeholder="your-name@lafamiglia.vc"
                   name="email"
                   type="email"
                 />
                 <input
-                  className="mb-6 block w-full border-b border-solid border-b-indigo-500 bg-transparent font-inter text-gray-100 placeholder-[#8c8fd9]/70 outline-none"
+                  className="mb-6 block w-full border-b border-solid border-b-indigo-500 bg-transparent text-gray-100 placeholder-[#8c8fd9]/70 outline-none"
                   placeholder="password"
                   name="password"
                   type="password"

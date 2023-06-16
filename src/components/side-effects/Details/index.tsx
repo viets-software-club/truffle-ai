@@ -16,6 +16,8 @@ import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
+import { handleNotification } from '@/components/page/settings/SendData/SlackNotificationSender'
+import Banner from '@/components/page/settings/Banner'
 
 const handleClick = () => ''
 
@@ -40,6 +42,9 @@ const Details = ({ id }: DetailsProps) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
   const [previousProjectId, setPreviousProjectId] = useState<string>()
   const [nextProjectId, setNextProjectId] = useState<string>()
+
+  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [slackLoading, setSlackLoading] = useState(false)
 
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
     const currentIndex = projectList.findIndex((project) => project.id === currentId)
@@ -78,6 +83,18 @@ const Details = ({ id }: DetailsProps) => {
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Fetching project details for you..." />
   if (error || !project) return <Error />
+
+  const handleNotificationWrapper = async (message: string) => {
+    const response = await handleNotification(message)
+    setNotificationStatus(response)
+  }
+  const sendSlackMessage = () => {
+    setSlackLoading(true)
+    const savedMessage = localStorage.getItem('slackMessage') || ''
+    const message = `${savedMessage}: <${project?.githubUrl as string}|${project?.name as string}>`
+    void handleNotificationWrapper(message)
+    setSlackLoading(false)
+  }
 
   return (
     <>
@@ -121,7 +138,16 @@ const Details = ({ id }: DetailsProps) => {
             eli5={project.eli5 || project.about || 'No description'}
             // @TODO Replace with actual tags
             tags={['React', 'Static Site Generation', 'TypeScript']}
+            sendSlackMessage={sendSlackMessage}
           />
+          {notificationStatus === 'success' && (
+            <Banner variant="success" message="Notification sent!" />
+          )}
+
+          {notificationStatus === 'error' && (
+            <Banner variant="error" message="Error sending notification." />
+          )}
+          {slackLoading && <p>Loading</p>}
 
           <Chart
             datasets={[

@@ -10,7 +10,7 @@ const Banner = ({ message, variant }: BannerProps) => {
 
   const variantClasses = {
     error: 'border-red bg-red/50 ',
-    success: 'border-green bg-green/50 '
+    success: 'border-green bg-green/70 '
   }
 
   // Hide banner after 5 seconds (5000 ms)

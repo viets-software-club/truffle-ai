@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { FiBookmark as Bookmark } from 'react-icons/fi'
 import Button from '@/components/pure/Button'
+import { FaSlack } from 'react-icons/fa'
 
 type ProjectInformationProps = {
   image: string
@@ -8,13 +9,21 @@ type ProjectInformationProps = {
   url: string
   eli5: string
   tags: string[]
+  sendSlackMessage: () => void
 }
 
 /**
  * Top part of project detail page (logo, name, tags, bookmark button)
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformationProps) => (
+const ProjectInformation = ({
+  image,
+  url,
+  name,
+  eli5,
+  tags,
+  sendSlackMessage
+}: ProjectInformationProps) => (
   <div className="border-b border-gray-800 px-7 py-6">
     <div className="mb-6 flex flex-row items-center justify-between">
       <div className="flex flex-row items-center">
@@ -43,16 +52,22 @@ const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformation
         )}
       </div>
 
-      <Button
-        variant="normal"
-        text="Bookmark"
-        Icon={Bookmark}
-        onClick={() => {
-          // @TODO Implement bookmark functionality
-        }}
-        order="ltr"
-        textColor="text-gray-100"
-      />
+      <div className="flex flex-row items-center justify-end gap-2">
+        <button type="button" onClick={sendSlackMessage}>
+          <FaSlack className=" h-[14px] w-[14px]" />
+        </button>
+
+        <Button
+          variant="normal"
+          text="Bookmark"
+          Icon={Bookmark}
+          onClick={() => {
+            // @TODO Implement bookmark functionality
+          }}
+          order="ltr"
+          textColor="text-gray-100"
+        />
+      </div>
     </div>
 
     <p className="text-14 font-light">{eli5}</p>

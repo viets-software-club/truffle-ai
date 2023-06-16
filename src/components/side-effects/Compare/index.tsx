@@ -13,6 +13,7 @@ import FilterBar from '@/components/page/overview/Filterbar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { FaSlack } from 'react-icons/fa'
 import { handleNotification } from '@/components/page/settings/SendData/SlackNotificationSender'
+import Banner from '@/components/page/settings/Banner'
 
 const nullFunc = () => null
 
@@ -25,6 +26,8 @@ const Compare = () => {
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
+  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [slackLoading, setSlackLoading] = useState(false)
 
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery()
@@ -53,7 +56,13 @@ const Compare = () => {
   if (fetching) return <Loading message="Getting saved projects for you..." />
   if (data.length === 0 || error) return <Error />
 
+  const handleNotificationWrapper = async (message: string) => {
+    const response = await handleNotification(message)
+    setNotificationStatus(response)
+  }
+
   const sendSlackMessage = () => {
+    setSlackLoading(true)
     const savedMessage = localStorage.getItem('slackMessageMultiple') || ''
     const message = `${savedMessage}\n${table
       .getRowModel()
@@ -65,7 +74,8 @@ const Compare = () => {
       )
       .join('\n')}\n`
 
-    void handleNotification(message)
+    void handleNotificationWrapper(message)
+    setSlackLoading(false)
   }
 
   return (
@@ -112,11 +122,18 @@ const Compare = () => {
           <Button
             onClick={sendSlackMessage}
             variant="normal"
-            text="Send to Slack"
+            text={slackLoading ? 'Loading...' : 'Send to Slack'}
             Icon={FaSlack}
             order="ltr"
             textColor="white"
           />
+          {notificationStatus === 'success' && (
+            <Banner variant="success" message="Notification sent!" />
+          )}
+
+          {notificationStatus === 'error' && (
+            <Banner variant="error" message="Error sending notification." />
+          )}
 
           <div>
             <Button

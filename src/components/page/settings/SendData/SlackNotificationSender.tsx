@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Input from '@/components/pure/Input'
 import Button from '@/components/pure/Button'
-import Textarea from '@/components/pure/Textarea'
 import Banner from '@/components/page/settings/Banner'
 
 type ApiResponse = {
@@ -36,9 +35,7 @@ const sendNotification = async (message: string) => {
   }
 }
 
-export const handleNotification = async (message: string) => {
-  await sendNotification(message)
-}
+export const handleNotification = async (message: string) => sendNotification(message)
 
 const SlackNotificationSender = () => {
   const savedSlackWebhookURL = localStorage.getItem('slackWebhookURL')
@@ -46,6 +43,7 @@ const SlackNotificationSender = () => {
   const [webhookURL, setWebhookURL] = useState(savedSlackWebhookURL || '')
   const [message, setMessage] = useState(savedSlackMessage || '')
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [slackLoading, setSlackLoading] = useState(false)
 
   // Update local storage whenever webhookURL or message changes
   useEffect(() => {
@@ -58,8 +56,10 @@ const SlackNotificationSender = () => {
   }, [webhookURL, message])
 
   const handleClick = async () => {
+    setSlackLoading(true)
     const response = await sendNotification(message)
     setNotificationStatus(response)
+    setSlackLoading(false)
   }
 
   const handleClickWrapper = () => {
@@ -74,15 +74,19 @@ const SlackNotificationSender = () => {
         value={webhookURL}
         onChange={(e) => setWebhookURL(e.target.value)}
       />
-
-      <Textarea
-        placeholder={savedSlackMessage || 'Enter message'}
+      <Input
+        type="text"
+        placeholder={savedSlackMessage || 'Enter Slack Message'}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
 
       <div>
-        <Button variant="highlighted" text="Send test message" onClick={handleClickWrapper} />
+        <Button
+          variant="highlighted"
+          text={slackLoading ? 'Loading...' : 'Send test message'}
+          onClick={handleClickWrapper}
+        />
       </div>
 
       {notificationStatus === 'success' && (

@@ -11,23 +11,16 @@ const SORT_BY_REPLIES = 'replies'
  * @returns An array of the TwitterPosts
  */
 export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]> {
-  let result: TwitterSearchResponse
-  try {
-    const response = await axios.get<TwitterSearchResponse>(
-      'https://api.scraperapi.com/structured/twitter/v2/search',
-      {
-        params: {
-          api_key: apiKey,
-          query: hashtag
-        }
+  const { data } = await axios.get<TwitterSearchResponse>(
+    'https://api.scraperapi.com/structured/twitter/v2/search',
+    {
+      params: {
+        api_key: apiKey,
+        query: hashtag
       }
-    )
-    result = response.data
-    return mapToInternalType(result.tweets)
-  } catch (error) {
-    console.log('Could not fetch twitter search results for: ' + hashtag)
-    return []
-  }
+    }
+  )
+  return mapToInternalType(data.tweets)
 }
 
 /**
@@ -40,22 +33,17 @@ export async function getPostsForHashtagSortedBy(
   hashtag: string,
   sortBy: string
 ): Promise<TwitterPost[]> {
-  try {
-    const tweets = await getPostsForHashtag(hashtag)
+  const tweets = await getPostsForHashtag(hashtag)
 
-    return tweets.sort((a, b) => {
-      if (sortBy === SORT_BY_REPLIES) {
-        return b.replies - a.replies
-      }
-      if (sortBy === SORT_BY_RETWEETS) {
-        return b.retweetCount - a.retweetCount
-      }
-      return 0
-    })
-  } catch (error) {
-    console.log('Could not fetch twitter search results for: ' + hashtag)
-    return []
-  }
+  return tweets.sort((a, b) => {
+    if (sortBy === SORT_BY_REPLIES) {
+      return b.replies - a.replies
+    }
+    if (sortBy === SORT_BY_RETWEETS) {
+      return b.retweetCount - a.retweetCount
+    }
+    return 0
+  })
 }
 
 /**
@@ -67,6 +55,9 @@ function mapToInternalType(tweets: TwitterSearchResponse['tweets']): TwitterPost
   return tweets.map((tweet) => ({
     id: tweet.tweet_id ?? '',
     userId: tweet.user_id ?? '',
+    userName: tweet.user_name ?? '',
+    realName: tweet.real_name ?? '',
+    userVerified: tweet.user_verified ?? false,
     conversationId: tweet.conversation_id ?? '',
     // the URL given from the API call is wrongly formatted, so we have to build the url to the post here
     tweetUrl:

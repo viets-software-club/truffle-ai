@@ -1,6 +1,9 @@
 export type TwitterPost = {
   id: string
   userId: string
+  userName: string
+  realName: string
+  userVerified: boolean
   conversationId: string
   tweetUrl: string
   text: string

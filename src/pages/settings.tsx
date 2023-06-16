@@ -6,6 +6,8 @@ import withAuth from '@/components/side-effects/withAuth'
 import SlackNotificationSender from '@/components/page/settings/SendData/SlackNotificationSender'
 import { useEffect, useRef, useState } from 'react'
 import { FiTrash2 } from 'react-icons/fi'
+import EmailTemplate from '@/components/page/settings/EmailTemplate'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 // @TODO prefill inputs, add action handlers, success/ error banner, loading spinners
 
@@ -14,8 +16,8 @@ import { FiTrash2 } from 'react-icons/fi'
  */
 const Settings = () => {
   const sections = {
-    General: ['Filters'],
-    Account: ['Linked Accounts', 'Notifications', 'Delete account'],
+    General: ['Filters', 'Email template'],
+    Account: ['Notifications', 'Delete account'], // 'Linked Accounts',
     Integrations: ['Affinity']
   }
 
@@ -76,6 +78,22 @@ const Settings = () => {
     }))
   }
 
+  const supabaseClient = useSupabaseClient()
+
+  /**
+   * Handle account deletion.
+   * @async
+   * @returns {Promise<void>} A promise that resolves when the account deletion attempt is complete.
+   */
+  async function handleDeleteAccount() {
+    console.log('Deleting account')
+    await supabaseClient.rpc('delete_user')
+  }
+
+  const delteAccount = () => {
+    void handleDeleteAccount()
+  }
+
   return (
     <div className="flex">
       <Sidebar sections={sections} activeSection={activeSection} onClick={scrollTo} />
@@ -104,9 +122,16 @@ const Settings = () => {
           </div>
         </Section>
 
+        <div className="h-1 border-b border-gray-800" />
+
+        <Section title="General" subtitle="Email template" refs={refs}>
+          <p className="pb-2 text-14 font-normal">Email template</p>
+          <EmailTemplate />
+        </Section>
+
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Account</h2>
 
-        <Section title="Account" subtitle="Linked Accounts" refs={refs}>
+        {/* <Section title="Account" subtitle="Linked Accounts" refs={refs}>
           <p className="pb-2 text-14 font-normal">GitHub access token</p>
 
           <Input type="password" id="github" name="github" placeholder="•••••••••••••••••" />
@@ -114,9 +139,7 @@ const Settings = () => {
           <div className="mt-4">
             <Button variant="highlighted" text="Update" onClick={() => ''} />
           </div>
-        </Section>
-
-        <div className="h-1 border-b border-gray-800" />
+        </Section> */}
 
         <Section title="Account" subtitle="Notifications" refs={refs}>
           <p className="mb-4 text-14 font-normal">Slack notifications</p>
@@ -124,12 +147,14 @@ const Settings = () => {
           <SlackNotificationSender />
         </Section>
 
+        <div className="h-1 border-b border-gray-800" />
+
         <Section title="Account" subtitle="Delete account" refs={refs}>
           <p className="pb-6 text-14 font-normal text-gray-300">
             If you delete your account, all your data will be lost.
           </p>
           <Button
-            onClick={() => alert('Not implemented yet!')}
+            onClick={delteAccount}
             text="Delete account"
             variant="red"
             Icon={FiTrash2}

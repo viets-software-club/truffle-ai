@@ -17,24 +17,15 @@ import { ProjectUpdate } from '../types/dataAggregation'
 import { ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/processRepo'
 
-/**
- * Updates the trending state of a repo
- * @param {string} name - The name of the repo.
- * @param {string} owner - The name of the owner of the repo.
- * @param {string} trendingState - The trending state that should be set to true
- */
-export const updateProjectTrendingState = async (
-  name: string,
-  owner: string,
-  trendingState: TrendingState
-) => {
-  const projectUpdate: ProjectUpdate = {}
-  if (trendingState) {
-    projectUpdate[trendingState] = true
-  }
-
-  const updated = await updateSupabaseProject(name, owner, projectUpdate)
-  updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
+/*
+Exports:
+*/
+export {
+  updateProjectELI5,
+  updateProjectFounders,
+  updateProjectLinkedInData,
+  updateProjectSentiment,
+  updateProjectTrendingState
 }
 
 /**
@@ -42,7 +33,7 @@ export const updateProjectTrendingState = async (
  * @param {string} name - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
  */
-export const updateProjectELI5 = async (name: string, owner: string) => {
+const updateProjectELI5 = async (name: string, owner: string) => {
   try {
     const readMe = (await fetchRepositoryReadme(owner, name)).slice(0, 2500)
     const description = await getELI5FromReadMe(readMe)
@@ -57,89 +48,12 @@ export const updateProjectELI5 = async (name: string, owner: string) => {
 }
 
 /**
- * Updates the HNsentiment and the corresponding links towards a repo
- * @param {string} repoName - The name of the repo.
- * @param {string} owner - The name of the owner of the repo.
- */
-export const updateProjectSentiment = async (repoName: string, owner: string) => {
-  let allComments = ''
-  const allLinks: string[] = []
-
-  let currentStory = await searchHackerNewsStories(owner + '/' + repoName)
-  if (currentStory) {
-    allComments += '\n Next group of comments: \n' + currentStory.comments.join('\n')
-    allLinks.push(...currentStory.linksToPosts)
-  }
-
-  currentStory = await searchHackerNewsStories(repoName)
-  if (currentStory) {
-    allComments += '\n Next group of comments: \n' + currentStory.comments.join('\n')
-    allLinks.push(...currentStory.linksToPosts)
-  }
-
-  if (!allComments) {
-    console.log('No comments found for ', repoName, 'owned by', owner)
-    return
-  }
-
-  const sentimentSummary = await getHackernewsSentiment(allComments)
-  if (
-    await updateSupabaseProject(repoName, owner, {
-      hackernews_sentiment: sentimentSummary,
-      hackernews_stories: allLinks
-    })
-  ) {
-    console.log('updated sentiment for ', repoName, 'owned by', owner)
-  } else {
-    console.log('Error while updating sentiment for ', repoName, 'owned by', owner)
-  }
-}
-
-/**
- * Updates all columns of organization that are populated with data that come from linkedIN
- * @param {string} organizationHandle - The login of the organization.
- */
-export const updateProjectLinkedInData = async (organizationHandle: string) => {
-  // check if repo is owned by an organization
-  const { data: supabaseOrga } = await supabase
-    .from('organization')
-    .select('id, linkedin_url')
-    .eq('login', organizationHandle)
-  // if owning_organization is null then the project is owned by an user and no linkedIn data is fetched
-  // if the linkedIn url is not null then this means that the linkedIn data was already fetched
-  // we need to save API tokens so we don't want to fetch the data again
-  if (!supabaseOrga || supabaseOrga?.[0].linkedin_url) {
-    return false
-  }
-
-  // otherwise get the linkedIn data
-  // please leave the console.log for now. We have to be super cautious with API tokens and I
-  // want to see whenever this function is called
-  console.log('Fetching linlkedIn data for organization', organizationHandle, '...')
-  const linkedinData = await getCompanyInfosFromLinkedIn(organizationHandle)
-  if (!linkedinData?.name) {
-    console.log('No linkedIn data found for organization', organizationHandle)
-    return false
-  }
-
-  // insert the formatted info
-  const { error: updateError } = await supabase
-    .from('organization')
-    .update(formatLinkedInCompanyData(linkedinData))
-    .eq('login', organizationHandle)
-
-  // if no error occured the insert was successful
-  console.log('Updated linkedIn data for ', organizationHandle)
-  return !updateError
-}
-
-/**
  * Updates the founders of a repo. That means that it inserts the founders into the db if they are not already there
  * Actually the founders will not change over time with how we get them right now (first committers)
  * @param {string} repoName - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
  */
-export const updateProjectFounders = async (repoName: string, owner: string) => {
+const updateProjectFounders = async (repoName: string, owner: string) => {
   const founders: ProjectFounder[] = await getRepoFounders(owner, repoName)
   const projectID: string | null = await getProjectID(repoName, owner)
 
@@ -180,4 +94,101 @@ export const updateProjectFounders = async (repoName: string, owner: string) => 
           owner
         )
   }
+}
+
+/**
+ * Updates all columns of organization that are populated with data that come from linkedIN
+ * @param {string} organizationHandle - The login of the organization.
+ */
+const updateProjectLinkedInData = async (organizationHandle: string) => {
+  // check if repo is owned by an organization
+  const { data: supabaseOrga } = await supabase
+    .from('organization')
+    .select('id, linkedin_url')
+    .eq('login', organizationHandle)
+  // if owning_organization is null then the project is owned by an user and no linkedIn data is fetched
+  // if the linkedIn url is not null then this means that the linkedIn data was already fetched
+  // we need to save API tokens so we don't want to fetch the data again
+  if (!supabaseOrga || supabaseOrga?.[0].linkedin_url) {
+    return false
+  }
+
+  // otherwise get the linkedIn data
+  // please leave the console.log for now. We have to be super cautious with API tokens and I
+  // want to see whenever this function is called
+  console.log('Fetching linlkedIn data for organization', organizationHandle, '...')
+  const linkedinData = await getCompanyInfosFromLinkedIn(organizationHandle)
+  if (!linkedinData?.name) {
+    console.log('No linkedIn data found for organization', organizationHandle)
+    return false
+  }
+
+  // insert the formatted info
+  const { error: updateError } = await supabase
+    .from('organization')
+    .update(formatLinkedInCompanyData(linkedinData))
+    .eq('login', organizationHandle)
+
+  // if no error occured the insert was successful
+  console.log('Updated linkedIn data for ', organizationHandle)
+  return !updateError
+}
+
+/**
+ * Updates the HNsentiment and the corresponding links towards a repo
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
+const updateProjectSentiment = async (repoName: string, owner: string) => {
+  let allComments = ''
+  const allLinks: string[] = []
+
+  let currentStory = await searchHackerNewsStories(owner + '/' + repoName)
+  if (currentStory) {
+    allComments += '\n Next group of comments: \n' + currentStory.comments.join('\n')
+    allLinks.push(...currentStory.linksToPosts)
+  }
+
+  currentStory = await searchHackerNewsStories(repoName)
+  if (currentStory) {
+    allComments += '\n Next group of comments: \n' + currentStory.comments.join('\n')
+    allLinks.push(...currentStory.linksToPosts)
+  }
+
+  if (!allComments) {
+    console.log('No comments found for ', repoName, 'owned by', owner)
+    return
+  }
+
+  const sentimentSummary = await getHackernewsSentiment(allComments)
+  if (
+    await updateSupabaseProject(repoName, owner, {
+      hackernews_sentiment: sentimentSummary,
+      hackernews_stories: allLinks
+    })
+  ) {
+    console.log('updated sentiment for ', repoName, 'owned by', owner)
+  } else {
+    console.log('Error while updating sentiment for ', repoName, 'owned by', owner)
+  }
+}
+
+/**
+ * Updates the trending state of a repo
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @param {string} trendingState - The trending state that should be set to true
+ */
+const updateProjectTrendingState = async (
+  name: string,
+  owner: string,
+  trendingState: TrendingState
+) => {
+  const projectUpdate: ProjectUpdate = {}
+  if (trendingState) {
+    projectUpdate[trendingState] = true
+  }
+
+  const updated = await updateSupabaseProject(name, owner, projectUpdate)
+  updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
 }

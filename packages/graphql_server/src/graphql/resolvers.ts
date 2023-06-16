@@ -1,4 +1,5 @@
-import { insertProject, parseGitHubUrl } from '../processRepo'
+import { insertProject } from '../dbUpdater'
+import { parseGitHubUrl } from '../utils'
 
 const resolvers = {
   Query: {

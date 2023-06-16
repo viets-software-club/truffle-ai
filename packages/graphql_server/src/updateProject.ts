@@ -3,7 +3,8 @@ import {
   getPersonID,
   getProjectID,
   updateSupabaseProject,
-  formatLinkedInCompanyData
+  formatLinkedInCompanyData,
+  repoIsAlreadyInDB
 } from './supabaseUtils'
 import { getRepoFounders } from './api/githubApi'
 import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
@@ -184,11 +185,21 @@ const updateProjectTrendingState = async (
   owner: string,
   trendingState: TrendingState
 ) => {
+  if (!trendingState) return
+  if (!(await repoIsAlreadyInDB(name, owner))) return
+
   const projectUpdate: ProjectUpdate = {}
-  if (trendingState) {
-    projectUpdate[trendingState] = true
-  }
+  projectUpdate[trendingState] = true
 
   const updated = await updateSupabaseProject(name, owner, projectUpdate)
   updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
+}
+
+// @Todo: documentation
+const updateTrendingStateForListOfRepos = async (repos: string[], trendingState: TrendingState) => {
+  for (let i = 0; i < repos.length / 2; i++) {
+    const owner = repos[2 * i]
+    const repoName = repos[2 * i + 1]
+    await updateProjectTrendingState(repoName, owner, trendingState)
+  }
 }

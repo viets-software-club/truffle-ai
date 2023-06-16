@@ -1,10 +1,5 @@
 import supabase from './supabase'
 import {
-  updateProjectELI5,
-  updateProjectSentiment,
-  updateProjectTrendingState
-} from './processRepo'
-import {
   getOrganizationID,
   getPersonID,
   turnIntoProjectInsertion,
@@ -12,6 +7,11 @@ import {
   purgeTrendingState,
   repoIsAlreadyInDB
 } from './supabaseUtils'
+import {
+  updateProjectELI5,
+  updateProjectSentiment,
+  updateProjectTrendingState
+} from './updateProject'
 import { getGithubData, getCutOffTime } from './utils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'

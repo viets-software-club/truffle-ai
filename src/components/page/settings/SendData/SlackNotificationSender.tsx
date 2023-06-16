@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import Input from '@/components/pure/Input'
 import Button from '@/components/pure/Button'
-import Banner from '../Banner'
+import Textarea from '@/components/pure/Textarea'
+import Banner from '@/components/page/settings/Banner'
 
 type ApiResponse = {
   success: boolean
@@ -46,7 +47,7 @@ const SlackNotificationSender = () => {
   const [message, setMessage] = useState(savedSlackMessage || '')
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
 
-  // update local storage whenever webhookURL or message changes
+  // Update local storage whenever webhookURL or message changes
   useEffect(() => {
     if (webhookURL) {
       localStorage.setItem('slackWebhookURL', webhookURL)
@@ -73,8 +74,8 @@ const SlackNotificationSender = () => {
         value={webhookURL}
         onChange={(e) => setWebhookURL(e.target.value)}
       />
-      <textarea
-        className="h-64 w-full rounded border border-gray-800 bg-gray-900 p-2 text-gray-300"
+
+      <Textarea
         placeholder={savedSlackMessage || 'Enter message'}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -83,9 +84,11 @@ const SlackNotificationSender = () => {
       <div>
         <Button variant="highlighted" text="Send test message" onClick={handleClickWrapper} />
       </div>
+
       {notificationStatus === 'success' && (
         <Banner variant="success" message="Notification sent!" />
       )}
+
       {notificationStatus === 'error' && (
         <Banner variant="error" message="Error sending notification." />
       )}

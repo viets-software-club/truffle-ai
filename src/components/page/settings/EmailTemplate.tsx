@@ -1,8 +1,9 @@
+import Textarea from '@/components/pure/Textarea'
 import { useEffect, useState } from 'react'
 
-const body = `Dear founderName,
+const initialTemplate = `Dear {founderName},
 
-I hope you're well. I saw you're the mastermind behind companyName, and I had to reach out.
+I hope you're well. I saw you're the mastermind behind {companyName}, and I had to reach out.
 
 I'm a former ML researcher (in federated learning) + data scientist at Amazon turned VC at La Famiglia (early-stage investor of Deel, Personio, Applied Intuition, Groq, Abacus AI, Stripe, etc.).
 
@@ -15,9 +16,8 @@ Viet
 
 PS: if you have time, please check out my blog post on Building a Defensible ML company here: https://vietle.substack.com/p/defensible-machine-learning`
 
-const EmailTemplate = () => {
-  const savedEmailMessage = localStorage.getItem('emailMessage') || body
-  const [email, setEmail] = useState(savedEmailMessage)
+const UpdateEmailTemplate = () => {
+  const [email, setEmail] = useState(localStorage.getItem('emailMessage') || initialTemplate)
 
   useEffect(() => {
     localStorage.setItem('emailMessage', email)
@@ -25,12 +25,11 @@ const EmailTemplate = () => {
 
   return (
     <>
-      <p className="pb-2 text-14 font-normal text-gray-400">
-        Make sure to include founderName and companyName
+      <p className="mb-4 text-14 font-normal text-gray-400">
+        Use {'{founderName}'} and {'{companyName}'} as placeholders for the actual values
       </p>
-      <textarea
-        className="h-64 w-full rounded border border-gray-800 bg-gray-900 p-2 text-gray-300"
-        placeholder={savedEmailMessage}
+      <Textarea
+        placeholder="Hi {founderName}, ..."
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -38,4 +37,4 @@ const EmailTemplate = () => {
   )
 }
 
-export default EmailTemplate
+export default UpdateEmailTemplate

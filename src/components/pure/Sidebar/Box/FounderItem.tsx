@@ -12,8 +12,9 @@ const emailTemplate = (email: string, founderName: string, companyName: string) 
   const subject = `La Famiglia x ${companyName}`
 
   let body = localStorage.getItem('emailMessage') || ''
-  body = body.replace('founderName', founderName)
-  body = body.replace('companyName', companyName)
+  body = body.replace('{founderName}', founderName)
+  body = body.replace('{companyName}', companyName)
+
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 

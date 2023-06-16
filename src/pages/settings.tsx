@@ -124,7 +124,6 @@ const Settings = () => {
         <div className="h-1 border-b border-gray-800" />
 
         <Section title="General" subtitle="Email template" refs={refs}>
-          <p className="pb-2 text-14 font-normal">Email template</p>
           <EmailTemplate />
         </Section>
 

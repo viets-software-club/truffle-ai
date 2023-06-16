@@ -4,4 +4,5 @@ try {
   void dailyDbUpdater(false)
 } catch (error) {
   console.log('error occured')
+  console.error(error)
 }

@@ -47,6 +47,8 @@ const deleteNotTrendingAndNotBookmarkedProjects = async () => {
       'Error deleting not trending and not bookmarked projects. Error: \n',
       deletionError
     )
+  } else {
+    console.log('Deleted not trending and not bookmarked projects.')
   }
 }
 

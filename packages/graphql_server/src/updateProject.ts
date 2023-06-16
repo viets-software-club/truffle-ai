@@ -24,7 +24,7 @@ import { ProjectUpdate } from '../types/supabaseUtils'
 Exports:
 */
 export {
-  updateAllProjectInfo as updateAllProjectStats,
+  updateAllProjectInfo,
   updateProjectELI5,
   updateProjectFounders,
   updateProjectGithubStats,
@@ -150,14 +150,14 @@ const updateProjectLinkedInData = async (organizationHandle: string) => {
   // if owning_organization is null then the project is owned by an user and no linkedIn data is fetched
   // if the linkedIn url is not null then this means that the linkedIn data was already fetched
   // we need to save API tokens so we don't want to fetch the data again
-  if (!supabaseOrga || supabaseOrga?.[0].linkedin_url) {
+  if (!supabaseOrga || supabaseOrga?.[0]?.linkedin_url) {
     return false
   }
 
   // otherwise get the linkedIn data
   // please leave the console.log for now. We have to be super cautious with API tokens and I
   // want to see whenever this function is called
-  console.log('Fetching linlkedIn data for organization', organizationHandle, '...')
+  console.log('Fetching linkedIn data for organization', organizationHandle, '...')
   const linkedinData = await getCompanyInfosFromLinkedIn(organizationHandle)
   if (!linkedinData?.name) {
     console.log('No linkedIn data found for organization', organizationHandle)

@@ -24,13 +24,20 @@ const app = Fastify({
   logger: envToLogger[ENV]
 })
 
-void app.register(fastifyCookies, {
-  hook: 'onRequest',
-  parseOptions: {}
-})
+const getJWTFromRequest = (request: FastifyRequest) => {
+  const authorizationHeader = request?.headers?.authorization
+  if (
+    typeof authorizationHeader !== 'string' ||
+    !authorizationHeader.includes('Bearer') ||
+    authorizationHeader.length < 7
+  )
+    return null
+  return authorizationHeader?.substring(7)
+}
 
 const buildContext = async (request: FastifyRequest, reply: FastifyReply) => {
-  const jwt = request?.cookies?.jwt
+  const jwt = getJWTFromRequest(request)
+
   if (jwt) {
     const response: void | UserResponse = await supbaseClient.auth.getUser(jwt).catch((error) => {
       reply.log.error(error)
@@ -38,7 +45,6 @@ const buildContext = async (request: FastifyRequest, reply: FastifyReply) => {
     if (response?.error) {
       reply.log.error(response?.error)
     }
-
     return {
       user: response?.data?.user
     }

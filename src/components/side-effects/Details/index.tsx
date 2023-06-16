@@ -120,7 +120,7 @@ const Details = ({ id }: DetailsProps) => {
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
             // @TODO Replace with actual tags
-            tags={['React', 'Static Site Generation', 'TypeScript']}
+            tags={project.languages || []}
           />
 
           <Chart

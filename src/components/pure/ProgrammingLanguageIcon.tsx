@@ -17,6 +17,11 @@ const programmingLangToComp = new Map([
   [ProgrammingLanguage.TYPESCRIPT, TbBrandTypescript]
 ])
 
+/**
+ * Functional component that renders an icon corresponding to a given programming language
+ * @param {Props} props - The properties passed to this component.
+ * @returns {React.Element|null} The icon component for the given programming language, or null if no matching icon is found.
+ */
 const ProgrammingLanguageIcon = ({ programmingLang, ...rest }: Props) => {
   const Component = programmingLangToComp.get(programmingLang)
   if (!Component) return null

@@ -216,7 +216,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
           />
         </form>
         <div className="h-0.5 bg-gray-600" />
-        <ul className="h-full w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow">
+        <ul className="h-full w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow scrollbar-hide">
           {recommendationList.map((item, index) => (
             <RecommendationRow
               key={item.menuText}

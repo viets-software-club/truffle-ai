@@ -53,6 +53,44 @@ const newDbUpdater = async (includeDeletion: boolean) => {
 }
 
 /**
+ * Goes through the list of repos inserts them and updates all data sources for them.
+ * @param {string[]} repos - The repos to go through
+ * @param {TrendingState} trendingState - The trending state to set
+ */
+const processTrendingRepos = async (repos: string[], trendingState: TrendingState) => {
+  for (let i = 0; i < repos.length / 2; i++) {
+    const owner = repos[2 * i]
+    const name = repos[2 * i + 1]
+    console.log(
+      '###################### Processing',
+      name,
+      'owned by',
+      owner,
+      '######################'
+    )
+    // if it is in the database already only the trending state has to be updated
+    if (await repoIsAlreadyInDB(name, owner)) {
+      continue
+    } else {
+      const { error: insertionError } = await supabase.from('project').insert({ name: name })
+      if (insertionError) {
+        console.log(
+          'Error while inserting project',
+          name,
+          'owned by',
+          owner,
+          ': \n',
+          insertionError
+        )
+        continue
+      } else {
+        console.log('inserted project', name, 'owned by', owner)
+      }
+    }
+  }
+}
+
+/**
  * Updates the database with the current trending repositories.
  * Also Deletes or updates old projects.
  */

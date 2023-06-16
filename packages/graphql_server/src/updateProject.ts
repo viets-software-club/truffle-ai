@@ -24,6 +24,7 @@ import { ProjectUpdate } from '../types/supabaseUtils'
 Exports:
 */
 export {
+  updateAllProjectInfo as updateAllProjectStats,
   updateProjectELI5,
   updateProjectFounders,
   updateProjectGithubStats,
@@ -31,6 +32,25 @@ export {
   updateProjectSentiment,
   updateProjectTrendingState,
   updateProjectTrendingStatesForListOfRepos
+}
+
+// @Todo: documentation
+const updateAllProjectInfo = async (
+  repoName: string,
+  owner: string,
+  trendingState: TrendingState
+) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  await updateProjectELI5(repoName, owner)
+  await updateProjectFounders(repoName, owner)
+  await updateProjectGithubStats(repoName, owner)
+  await updateProjectLinkedInData(owner)
+  await updateProjectSentiment(repoName, owner)
+  if (trendingState) {
+    await updateProjectTrendingState(repoName, owner, trendingState)
+  }
 }
 
 /**

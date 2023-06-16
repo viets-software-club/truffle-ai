@@ -24,11 +24,80 @@ export type Scalars = {
   UUID: any
 }
 
+export type AllowedUsers = Node & {
+  __typename?: 'AllowedUsers'
+  createdAt?: Maybe<Scalars['Datetime']>
+  email?: Maybe<Scalars['String']>
+  id: Scalars['BigInt']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']
+}
+
+export type AllowedUsersConnection = {
+  __typename?: 'AllowedUsersConnection'
+  edges: Array<AllowedUsersEdge>
+  pageInfo: PageInfo
+}
+
+export type AllowedUsersDeleteResponse = {
+  __typename?: 'AllowedUsersDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<AllowedUsers>
+}
+
+export type AllowedUsersEdge = {
+  __typename?: 'AllowedUsersEdge'
+  cursor: Scalars['String']
+  node: AllowedUsers
+}
+
+export type AllowedUsersFilter = {
+  createdAt?: InputMaybe<DatetimeFilter>
+  email?: InputMaybe<StringFilter>
+  id?: InputMaybe<BigIntFilter>
+  nodeId?: InputMaybe<IdFilter>
+}
+
+export type AllowedUsersInsertInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  email?: InputMaybe<Scalars['String']>
+}
+
+export type AllowedUsersInsertResponse = {
+  __typename?: 'AllowedUsersInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<AllowedUsers>
+}
+
+export type AllowedUsersOrderBy = {
+  createdAt?: InputMaybe<OrderByDirection>
+  email?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+}
+
+export type AllowedUsersUpdateInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  email?: InputMaybe<Scalars['String']>
+}
+
+export type AllowedUsersUpdateResponse = {
+  __typename?: 'AllowedUsersUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<AllowedUsers>
+}
+
 export type AssociatedPerson = Node & {
   __typename?: 'AssociatedPerson'
   avatarUrl?: Maybe<Scalars['String']>
   createdAt?: Maybe<Scalars['Datetime']>
   email?: Maybe<Scalars['String']>
+  foundedByCollection?: Maybe<FoundedByConnection>
   githubUrl?: Maybe<Scalars['String']>
   id: Scalars['UUID']
   login?: Maybe<Scalars['String']>
@@ -39,6 +108,15 @@ export type AssociatedPerson = Node & {
   repositoryCount?: Maybe<Scalars['Int']>
   twitterUsername?: Maybe<Scalars['String']>
   websiteUrl?: Maybe<Scalars['String']>
+}
+
+export type AssociatedPersonFoundedByCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<FoundedByFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<FoundedByOrderBy>>
 }
 
 export type AssociatedPersonProjectCollectionArgs = {
@@ -286,6 +364,81 @@ export type FloatFilter = {
   neq?: InputMaybe<Scalars['Float']>
 }
 
+export type FoundedBy = Node & {
+  __typename?: 'FoundedBy'
+  createdAt?: Maybe<Scalars['Datetime']>
+  founder?: Maybe<AssociatedPerson>
+  founderId: Scalars['UUID']
+  id: Scalars['BigInt']
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']
+  project?: Maybe<Project>
+  projectId: Scalars['UUID']
+}
+
+export type FoundedByConnection = {
+  __typename?: 'FoundedByConnection'
+  edges: Array<FoundedByEdge>
+  pageInfo: PageInfo
+}
+
+export type FoundedByDeleteResponse = {
+  __typename?: 'FoundedByDeleteResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<FoundedBy>
+}
+
+export type FoundedByEdge = {
+  __typename?: 'FoundedByEdge'
+  cursor: Scalars['String']
+  node: FoundedBy
+}
+
+export type FoundedByFilter = {
+  createdAt?: InputMaybe<DatetimeFilter>
+  founderId?: InputMaybe<UuidFilter>
+  id?: InputMaybe<BigIntFilter>
+  nodeId?: InputMaybe<IdFilter>
+  projectId?: InputMaybe<UuidFilter>
+}
+
+export type FoundedByInsertInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  founderId?: InputMaybe<Scalars['UUID']>
+  projectId?: InputMaybe<Scalars['UUID']>
+}
+
+export type FoundedByInsertResponse = {
+  __typename?: 'FoundedByInsertResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<FoundedBy>
+}
+
+export type FoundedByOrderBy = {
+  createdAt?: InputMaybe<OrderByDirection>
+  founderId?: InputMaybe<OrderByDirection>
+  id?: InputMaybe<OrderByDirection>
+  projectId?: InputMaybe<OrderByDirection>
+}
+
+export type FoundedByUpdateInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>
+  founderId?: InputMaybe<Scalars['UUID']>
+  projectId?: InputMaybe<Scalars['UUID']>
+}
+
+export type FoundedByUpdateResponse = {
+  __typename?: 'FoundedByUpdateResponse'
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']
+  /** Array of records impacted by the mutation */
+  records: Array<FoundedBy>
+}
+
 /** Boolean expression comparing fields on type "ID" */
 export type IdFilter = {
   eq?: InputMaybe<Scalars['ID']>
@@ -308,30 +461,42 @@ export type Mutation = {
   __typename?: 'Mutation'
   addProjectByName: Scalars['Boolean']
   addProjectByUrl: Scalars['Boolean']
+  /** Deletes zero or more records from the `AllowedUsers` collection */
+  deleteFromAllowedUsersCollection: AllowedUsersDeleteResponse
   /** Deletes zero or more records from the `AssociatedPerson` collection */
   deleteFromAssociatedPersonCollection: AssociatedPersonDeleteResponse
   /** Deletes zero or more records from the `Bookmark` collection */
   deleteFromBookmarkCollection: BookmarkDeleteResponse
+  /** Deletes zero or more records from the `FoundedBy` collection */
+  deleteFromFoundedByCollection: FoundedByDeleteResponse
   /** Deletes zero or more records from the `Organization` collection */
   deleteFromOrganizationCollection: OrganizationDeleteResponse
   /** Deletes zero or more records from the `Project` collection */
   deleteFromProjectCollection: ProjectDeleteResponse
   /** Deletes zero or more records from the `TestTable` collection */
   deleteFromTestTableCollection: TestTableDeleteResponse
+  /** Adds one or more `AllowedUsers` records to the collection */
+  insertIntoAllowedUsersCollection?: Maybe<AllowedUsersInsertResponse>
   /** Adds one or more `AssociatedPerson` records to the collection */
   insertIntoAssociatedPersonCollection?: Maybe<AssociatedPersonInsertResponse>
   /** Adds one or more `Bookmark` records to the collection */
   insertIntoBookmarkCollection?: Maybe<BookmarkInsertResponse>
+  /** Adds one or more `FoundedBy` records to the collection */
+  insertIntoFoundedByCollection?: Maybe<FoundedByInsertResponse>
   /** Adds one or more `Organization` records to the collection */
   insertIntoOrganizationCollection?: Maybe<OrganizationInsertResponse>
   /** Adds one or more `Project` records to the collection */
   insertIntoProjectCollection?: Maybe<ProjectInsertResponse>
   /** Adds one or more `TestTable` records to the collection */
   insertIntoTestTableCollection?: Maybe<TestTableInsertResponse>
+  /** Updates zero or more records in the `AllowedUsers` collection */
+  updateAllowedUsersCollection: AllowedUsersUpdateResponse
   /** Updates zero or more records in the `AssociatedPerson` collection */
   updateAssociatedPersonCollection: AssociatedPersonUpdateResponse
   /** Updates zero or more records in the `Bookmark` collection */
   updateBookmarkCollection: BookmarkUpdateResponse
+  /** Updates zero or more records in the `FoundedBy` collection */
+  updateFoundedByCollection: FoundedByUpdateResponse
   /** Updates zero or more records in the `Organization` collection */
   updateOrganizationCollection: OrganizationUpdateResponse
   /** Updates zero or more records in the `Project` collection */
@@ -352,6 +517,12 @@ export type MutationAddProjectByUrlArgs = {
 }
 
 /** The root type for creating and mutating data */
+export type MutationDeleteFromAllowedUsersCollectionArgs = {
+  atMost?: Scalars['Int']
+  filter?: InputMaybe<AllowedUsersFilter>
+}
+
+/** The root type for creating and mutating data */
 export type MutationDeleteFromAssociatedPersonCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<AssociatedPersonFilter>
@@ -361,6 +532,12 @@ export type MutationDeleteFromAssociatedPersonCollectionArgs = {
 export type MutationDeleteFromBookmarkCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<BookmarkFilter>
+}
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromFoundedByCollectionArgs = {
+  atMost?: Scalars['Int']
+  filter?: InputMaybe<FoundedByFilter>
 }
 
 /** The root type for creating and mutating data */
@@ -382,6 +559,11 @@ export type MutationDeleteFromTestTableCollectionArgs = {
 }
 
 /** The root type for creating and mutating data */
+export type MutationInsertIntoAllowedUsersCollectionArgs = {
+  objects: Array<AllowedUsersInsertInput>
+}
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntoAssociatedPersonCollectionArgs = {
   objects: Array<AssociatedPersonInsertInput>
 }
@@ -389,6 +571,11 @@ export type MutationInsertIntoAssociatedPersonCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntoBookmarkCollectionArgs = {
   objects: Array<BookmarkInsertInput>
+}
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntoFoundedByCollectionArgs = {
+  objects: Array<FoundedByInsertInput>
 }
 
 /** The root type for creating and mutating data */
@@ -407,6 +594,13 @@ export type MutationInsertIntoTestTableCollectionArgs = {
 }
 
 /** The root type for creating and mutating data */
+export type MutationUpdateAllowedUsersCollectionArgs = {
+  atMost?: Scalars['Int']
+  filter?: InputMaybe<AllowedUsersFilter>
+  set: AllowedUsersUpdateInput
+}
+
+/** The root type for creating and mutating data */
 export type MutationUpdateAssociatedPersonCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<AssociatedPersonFilter>
@@ -418,6 +612,13 @@ export type MutationUpdateBookmarkCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<BookmarkFilter>
   set: BookmarkUpdateInput
+}
+
+/** The root type for creating and mutating data */
+export type MutationUpdateFoundedByCollectionArgs = {
+  atMost?: Scalars['Int']
+  filter?: InputMaybe<FoundedByFilter>
+  set: FoundedByUpdateInput
 }
 
 /** The root type for creating and mutating data */
@@ -649,6 +850,7 @@ export type Project = Node & {
   createdAt?: Maybe<Scalars['Datetime']>
   eli5?: Maybe<Scalars['String']>
   forkCount?: Maybe<Scalars['Int']>
+  foundedByCollection?: Maybe<FoundedByConnection>
   githubUrl?: Maybe<Scalars['String']>
   hackernewsSentiment?: Maybe<Scalars['String']>
   hackernewsStories?: Maybe<Array<Maybe<Scalars['String']>>>
@@ -678,6 +880,15 @@ export type ProjectBookmarkCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   orderBy?: InputMaybe<Array<BookmarkOrderBy>>
+}
+
+export type ProjectFoundedByCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<FoundedByFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<FoundedByOrderBy>>
 }
 
 export type ProjectConnection = {
@@ -814,10 +1025,14 @@ export type ProjectUpdateResponse = {
 /** The root type for querying data */
 export type Query = {
   __typename?: 'Query'
+  /** A pagable collection of type `AllowedUsers` */
+  allowedUsersCollection?: Maybe<AllowedUsersConnection>
   /** A pagable collection of type `AssociatedPerson` */
   associatedPersonCollection?: Maybe<AssociatedPersonConnection>
   /** A pagable collection of type `Bookmark` */
   bookmarkCollection?: Maybe<BookmarkConnection>
+  /** A pagable collection of type `FoundedBy` */
+  foundedByCollection?: Maybe<FoundedByConnection>
   helloWorld: Scalars['String']
   /** Retrieve a record by its `ID` */
   node?: Maybe<Node>
@@ -827,6 +1042,16 @@ export type Query = {
   projectCollection?: Maybe<ProjectConnection>
   /** A pagable collection of type `TestTable` */
   testTableCollection?: Maybe<TestTableConnection>
+}
+
+/** The root type for querying data */
+export type QueryAllowedUsersCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<AllowedUsersFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<AllowedUsersOrderBy>>
 }
 
 /** The root type for querying data */
@@ -847,6 +1072,16 @@ export type QueryBookmarkCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   orderBy?: InputMaybe<Array<BookmarkOrderBy>>
+}
+
+/** The root type for querying data */
+export type QueryFoundedByCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
+  filter?: InputMaybe<FoundedByFilter>
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Array<FoundedByOrderBy>>
 }
 
 /** The root type for querying data */

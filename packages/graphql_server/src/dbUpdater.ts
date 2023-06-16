@@ -23,6 +23,11 @@ import { StarRecord } from '../types/starHistory'
 import { ProjectInsertion, ProjectUpdate } from '../types/supabaseUtils'
 import { TrendingState } from '../types/updateProject'
 
+const newDbUpdater = async () => {
+  // set all trending states of the repos in the db to false
+  await purgeTrendingState()
+}
+
 /**
  * Updates the database with the current trending repositories.
  * Also Deletes or updates old projects.
@@ -86,6 +91,13 @@ const goThroughListOfRepos = async (repos: string[], trendingState: TrendingStat
   for (let i = 0; i < repos.length / 2; i++) {
     const owner = repos[2 * i]
     const name = repos[2 * i + 1]
+    console.log(
+      '###################### Processing',
+      name,
+      'owned by',
+      owner,
+      '######################'
+    )
     // if it is in the database already only the trending state has to be updated
     if (await repoIsAlreadyInDB(name, owner)) {
       console.log(name, 'owned by', owner, 'is already in the database')
@@ -169,5 +181,5 @@ const updateProject = async (name: string, owner: string) => {
 
   const updated = await updateSupabaseProject(name, owner, projectUpdate)
 
-  updated ? console.log('updated ', name, 'owned by', owner) : null
+  updated ? console.log('updated', name, 'owned by', owner) : null
 }

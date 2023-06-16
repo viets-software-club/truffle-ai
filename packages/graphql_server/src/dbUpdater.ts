@@ -104,7 +104,7 @@ const goThroughListOfRepos = async (repos: string[], trendingState: TrendingStat
  * @param {string} owner - The name of the owner of the repo.
  * @returns {boolean} True if the repo was added to the database.
  */
-const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
+export const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
   // hacky solution for now. Only if the trendingState is null is it needed to check if
   // the repo is already in the database, because right now when this function is called with a trending state
   // then that call comes from dbUpdater.ts and there it is already checked if the repo is in the database

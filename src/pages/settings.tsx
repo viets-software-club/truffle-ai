@@ -90,7 +90,7 @@ const Settings = () => {
     await supabaseClient.rpc('delete_user')
   }
 
-  const delteAccount = () => {
+  const deleteAccount = () => {
     void handleDeleteAccount()
   }
 
@@ -155,7 +155,7 @@ const Settings = () => {
           </p>
           <Link href="/logout">
             <Button
-              onClick={delteAccount}
+              onClick={deleteAccount}
               text="Delete account"
               variant="red"
               Icon={FiTrash2}

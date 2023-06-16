@@ -88,7 +88,7 @@ async function getHackernewsSentiment(comments: string) {
     }
   } catch (error) {
     console.log('OpenAI request did not work out: ', error)
-    return null
+    return null // eslint-disable-next-line @typescript-eslint/no-unused-vars
   }
 }
 
@@ -98,60 +98,80 @@ async function getHackernewsSentiment(comments: string) {
  * @param categoryGeneral - The general category of the project (1 for developer tools, 2 for infrastructure, 3 for ML/AI).
  * @returns The two best-fitting specific categories for the project.
  */
+enum Categories {
+  // Developer Tools
+  CodeEditors = 'Code Editors', // Developer tool
+  VersionControl = 'Version Control', // Developer tool
+  IDEs = 'Integrated Development Environments (IDEs)', // Developer tool
+  TestingFrameworks = 'Testing Frameworks', // Developer tool
+  PackageManagers = 'Package Managers', // Developer tool
+  BuildTools = 'Build Tools', // Developer tool
+
+  // Infrastructure
+  CloudComputing = 'Cloud Computing', // Infrastructure
+  Orchestration = 'Orchestration', // Infrastructure
+  Monitoring = 'Monitoring', // Infrastructure
+  Networking = 'Networking', // Infrastructure
+  Databases = 'Databases', // Infrastructure
+
+  // ML/AI
+  MachineLearning = 'Machine Learning', // ML/AI
+  NaturalLanguageProcessing = 'Natural Language Processing', // ML/AI
+  ComputerVision = 'Computer Vision' // ML/AI
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function categorizeProjectSpecific(readMeOrCategory: string, categoryGeneral: number) {
-  //The following 3 variables are the lists of categories used to define the project
-  const listOfCategoriesDeveloperTools: string[] = [
-    'Code Editors',
-    'Version Control',
-    'Continuous Integration',
-    'Testing Frameworks',
-    'Package Managers',
-    'Integrated Development Environments',
-    'Debuggers',
-    'Profilers',
-    'Build Tools',
-    'Code Quality'
-  ]
+  // The following 3 variables are the lists of categories used to define the project
 
-  const listOfCategoriesInfrastructure: string[] = [
-    'Cloud Computing',
-    'Virtualization',
-    'Containerization',
-    'Orchestration',
-    'Monitoring',
-    'Networking',
-    'Databases',
-    'Load Balancing',
-    'Content Delivery Networks',
-    'Identity Management'
-  ]
+  const questionCategoriesSpecific =
+    'These categories should be used to categorize a software engineering project. Please choose two of the categories from the list that describe this project the best based on these words or readme (Your response should only consist of the two words you choose, separated by a comma and inside an enum, so like this: [ "Web Development", "Data Analysis"] ) nothing else should be in your answer!: '
 
-  const listOfCategoriesMLAI: string[] = [
-    'Machine Learning',
-    'Deep Learning',
-    'Natural Language Processing',
-    'Computer Vision',
-    'Cybersecurity'
-  ]
-
-  const questionCategoriesSpecific = //this is the question send to openAI
-    'These categories should be used to categorize a software engineering project. Please choose two of the categories from the list that describe this project the best based on these words or readme (Your response should only consist of the two words you choose, separated by a comma): '
-
-  let categoriesSpecific: string[] //checks which general category it is
+  let categoriesSpecific: Categories[] // checks which general category it is
   switch (categoryGeneral) {
     case 1:
-      categoriesSpecific = listOfCategoriesDeveloperTools
+      categoriesSpecific = [
+        Categories.CodeEditors,
+        Categories.VersionControl,
+        Categories.IDEs,
+        Categories.TestingFrameworks,
+        Categories.PackageManagers,
+        Categories.BuildTools
+      ]
       break
     case 2:
-      categoriesSpecific = listOfCategoriesInfrastructure
+      categoriesSpecific = [
+        Categories.CloudComputing,
+        Categories.Orchestration,
+        Categories.Monitoring,
+        Categories.Networking,
+        Categories.Databases
+      ]
       break
     case 3:
-      categoriesSpecific = listOfCategoriesMLAI
+      categoriesSpecific = [
+        Categories.MachineLearning,
+        Categories.NaturalLanguageProcessing,
+        Categories.ComputerVision
+      ]
       break
-    case 4: //if chatgtp says the categories are not specific enough we need t use the readme file to put it into two of the categories
-      categoriesSpecific = listOfCategoriesDeveloperTools.concat(listOfCategoriesInfrastructure)
-      categoriesSpecific = categoriesSpecific.concat(listOfCategoriesMLAI)
+    case 4: // if chatgpt says categories are not specifc enough we just return two of them
+      categoriesSpecific = [
+        Categories.CodeEditors,
+        Categories.VersionControl,
+        Categories.IDEs,
+        Categories.TestingFrameworks,
+        Categories.PackageManagers,
+        Categories.BuildTools,
+        Categories.CloudComputing,
+        Categories.Orchestration,
+        Categories.Monitoring,
+        Categories.Networking,
+        Categories.Databases,
+        Categories.MachineLearning,
+        Categories.NaturalLanguageProcessing,
+        Categories.ComputerVision
+      ]
       break
     default:
       console.log('Invalid categoryGeneral value')
@@ -168,7 +188,8 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
       },
       {
         role: 'user',
-        content: categoriesSpecific.join(' ,') + questionCategoriesSpecific + readMeOrCategory
+        content:
+          categoriesSpecific.join(', ') + '\n' + questionCategoriesSpecific + readMeOrCategory //turns the array into a string where all categories are seperated by a comma
       }
     ]
   }
@@ -230,7 +251,7 @@ async function categorizeProjectGeneral(categories: string, readme: string) {
       const content: string = data?.choices[0]?.message?.content
       const num = parseInt(content)
       if (num !== 1 && num !== 2 && num !== 3) {
-        return categorizeProjectSpecific(readme, 4)
+        return categorizeProjectSpecific(readme, 4) //if the categories are not good enough
       } else {
         return categorizeProjectSpecific(categories, num)
       }

@@ -25,7 +25,7 @@ const schema = `
     is_trending_monthly: Boolean!
     star_history: String!
     name: String!
-    languages: String!
+    languages: [String!]!
     owning_person: String!
     hackernews_sentiment: String!
     hackernews_stories: [String!]!

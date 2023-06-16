@@ -81,10 +81,13 @@ const SlackNotificationSender = () => {
         onChange={(e) => setMessage(e.target.value)}
       />
 
+      <p className="mb-4 text-14 font-normal text-gray-400">
+        This message is the prefix, after it the project name will be appended.
+      </p>
       <div>
         <Button
           variant="highlighted"
-          text={slackLoading ? 'Loading...' : 'Send test message'}
+          text={slackLoading ? 'Loading...' : 'Save & Update'}
           onClick={handleClickWrapper}
         />
       </div>

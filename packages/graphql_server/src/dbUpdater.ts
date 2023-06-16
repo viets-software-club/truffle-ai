@@ -26,6 +26,7 @@ import { GitHubInfo } from '../types/githubApi'
 import { StarRecord } from '../types/starHistory'
 import { ProjectInsertion, ProjectUpdate } from '../types/supabaseUtils'
 import { TrendingState } from '../types/updateProject'
+import { create } from 'domain'
 
 const newDbUpdater = async (includeDeletion: boolean) => {
   // set all trending states of the repos in the db to false
@@ -69,23 +70,28 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
       '######################'
     )
     // if it is in the database already only the trending state has to be updated
-    if (await repoIsAlreadyInDB(name, owner)) {
-      continue
+    await createProject(name, owner)
+  }
+}
+
+// @Todo: documentation
+const createProject = async (repoName: string, owner: string) => {
+  if (await repoIsAlreadyInDB(repoName, owner)) {
+    return
+  } else {
+    const { error: insertionError } = await supabase.from('project').insert({ name: repoName })
+    if (insertionError) {
+      console.log(
+        'Error while inserting project',
+        repoName,
+        'owned by',
+        owner,
+        ': \n',
+        insertionError
+      )
+      return
     } else {
-      const { error: insertionError } = await supabase.from('project').insert({ name: name })
-      if (insertionError) {
-        console.log(
-          'Error while inserting project',
-          name,
-          'owned by',
-          owner,
-          ': \n',
-          insertionError
-        )
-        continue
-      } else {
-        console.log('inserted project', name, 'owned by', owner)
-      }
+      console.log('inserted project', repoName, 'owned by', owner)
     }
   }
 }

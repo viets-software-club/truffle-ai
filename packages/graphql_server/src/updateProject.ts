@@ -19,6 +19,7 @@ Types:
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
+import { getRepoStarRecords } from './starHistory/starHistory'
 
 /*
 Exports:
@@ -30,6 +31,7 @@ export {
   updateProjectGithubStats,
   updateProjectLinkedInData,
   updateProjectSentiment,
+  updateProjectStarHistory,
   updateProjectTrendingState,
   updateProjectTrendingStatesForListOfRepos
 }
@@ -53,6 +55,7 @@ const updateAllProjectInfo = async (
   await updateProjectGithubStats(repoName, owner)
   await updateProjectLinkedInData(owner)
   await updateProjectSentiment(repoName, owner)
+  await updateProjectStarHistory(repoName, owner)
   if (trendingState) {
     await updateProjectTrendingState(repoName, owner, trendingState)
   }
@@ -221,6 +224,29 @@ const updateProjectSentiment = async (repoName: string, owner: string) => {
     console.log('updated sentiment for ', repoName, 'owned by', owner)
   } else {
     console.log('Error while updating sentiment for ', repoName, 'owned by', owner)
+  }
+}
+
+/**
+ * Updates the Star history of a repo.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
+const updateProjectStarHistory = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  const MAX_NUMBER_OF_REQUESTS = 25 // this is also roughly the number of star history data points
+  const starHistory = await getRepoStarRecords(
+    owner + '/' + repoName,
+    process.env.GITHUB_API_TOKEN,
+    MAX_NUMBER_OF_REQUESTS
+  )
+  if (!starHistory) {
+    console.log('No star history found for ', repoName, 'owned by', owner)
+  } else {
+    const updated = await updateSupabaseProject(repoName, owner, { star_history: starHistory })
+    if (updated) console.log('updated star history for ', repoName, 'owned by', owner)
   }
 }
 

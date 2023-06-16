@@ -11,6 +11,8 @@ import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/Filterbar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { FaSlack } from 'react-icons/fa'
+import { handleNotification } from '@/components/page/settings/SendData/SlackNotificationSender'
 
 const nullFunc = () => null
 
@@ -51,6 +53,21 @@ const Compare = () => {
   if (fetching) return <Loading message="Getting saved projects for you..." />
   if (data.length === 0 || error) return <Error />
 
+  const sendSlackMessage = () => {
+    const savedMessage = localStorage.getItem('slackMessageMultiple') || ''
+    const message = `${savedMessage}\n${table
+      .getRowModel()
+      .rows.map(
+        (row) =>
+          `- <${row.original.githubUrl as string}|${row.original.name as string}>, ${
+            row.original.starCount as number
+          } stars`
+      )
+      .join('\n')}\n`
+
+    void handleNotification(message)
+  }
+
   return (
     <div className="flex w-full flex-col">
       <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
@@ -90,15 +107,27 @@ const Compare = () => {
         <div className="flex flex-col">
           <p className="font-medium">All projects in this category</p>
         </div>
-        <div>
+
+        <div className="flex flex-row items-center justify-end gap-2">
           <Button
-            onClick={nullFunc}
+            onClick={sendSlackMessage}
             variant="normal"
-            text="Add project to compare"
-            Icon={AiOutlinePlus}
+            text="Send to Slack"
+            Icon={FaSlack}
             order="ltr"
             textColor="white"
           />
+
+          <div>
+            <Button
+              onClick={nullFunc}
+              variant="normal"
+              text="Add project to compare"
+              Icon={AiOutlinePlus}
+              order="ltr"
+              textColor="white"
+            />
+          </div>
         </div>
       </div>
 

@@ -34,7 +34,12 @@ export {
   updateProjectTrendingStatesForListOfRepos
 }
 
-// @Todo: documentation
+/**
+ * Runs all data gathering functions for a repo
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @param {TrendingState} trendingState - The trending state of the repo. Can be null as well.
+ */
 const updateAllProjectInfo = async (
   repoName: string,
   owner: string,
@@ -72,7 +77,12 @@ const updateProjectELI5 = async (name: string, owner: string) => {
   }
 }
 
-// @Todo: documenatation
+/**
+ * Updates the github stats of a repo.
+ * Not the star-history though.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
 const updateProjectGithubStats = async (name: string, owner: string) => {
   const githubStats: GitHubInfo | null = await getGithubData(name, owner)
   if (!githubStats) {
@@ -235,8 +245,12 @@ const updateProjectTrendingState = async (
   updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
 }
 
-// @Todo: documentation
-const updateProjectTrendingStatesForListOfRepos = async (
+/**
+ * Updates the trendingStates for a list of repos as it comes from the fetchTrendingRepos function.
+ * Should be adapted once the fetchTrendingRepos function is changed.
+ * @param {string[]} repos - The list of repos.
+ * @param {TrendingState} trendingState - The trending state that should be set to true
+ */ const updateProjectTrendingStatesForListOfRepos = async (
   repos: string[],
   trendingState: TrendingState
 ) => {

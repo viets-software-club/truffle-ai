@@ -11,7 +11,7 @@ import {
   OrganizationUpdate,
   PersonInsertion,
   ProjectUpdate,
-  Repo
+  ProjectInfo
 } from '../types/supabaseUtils'
 
 /*
@@ -69,9 +69,9 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
   }
 }
 
-// @
+// @Todo: documentation
 const getNotTrendingAndNotBookmarkedProjects = async () => {
-  const { data: staleRepos } = await supabase
+  const { data: staleProjects } = await supabase
     .from('project')
     .select('*')
     .eq('is_bookmarked', false)
@@ -79,18 +79,18 @@ const getNotTrendingAndNotBookmarkedProjects = async () => {
     .eq('is_trending_weekly', false)
     .eq('is_trending_monthly', false)
 
-  // the returned repos will reside in here
-  const staleReposFormatted: Repo[] = []
+  // the returned projects will reside in here
+  const staleProjectsFormatted: ProjectInfo[] = []
 
-  // if there are no stale repos return an empty array
-  if (!staleRepos) return staleReposFormatted
+  // if there are no stale projects return an empty array
+  if (!staleProjects) return staleProjectsFormatted
 
-  for (const staleRepo of staleRepos) {
+  for (const staleProject of staleProjects) {
     let ownerLogin = ''
-    let ownerID = staleRepo.owning_organization
+    let ownerID = staleProject.owning_organization
     // if the owner is no organization it must be a person
     if (!ownerID) {
-      ownerID = staleRepo.owning_person
+      ownerID = staleProject.owning_person
 
       //get the personName from the database
       const { data: owningPerson } = await supabase
@@ -107,13 +107,13 @@ const getNotTrendingAndNotBookmarkedProjects = async () => {
       ownerLogin = owningOrga?.[0]?.login || ''
     }
 
-    if (!staleRepo.name || !ownerID) {
+    if (!staleProject.name || !ownerID) {
       continue
     }
-    staleReposFormatted.push({ name: staleRepo.name, owner: ownerLogin })
+    staleProjectsFormatted.push({ name: staleProject.name, owner: ownerLogin })
   }
 
-  return staleReposFormatted
+  return staleProjectsFormatted
 }
 
 /**
@@ -286,25 +286,24 @@ const getProjectID = async (name: string, owner: string) => {
 
 const getTrendingAndBookmarkedProjects = async () => {
   // or syntax see here: https://supabase.com/docs/reference/javascript/or
-  const { data: validRepos } = await supabase
+  const { data: validProjects } = await supabase
     .from('project')
     .select('*')
     .or(
       'is_bookmarked.eq.true, is_trending_daily.eq.true, is_trending_weekly.eq.true, is_trending_monthly.eq.true'
     )
 
-  // have to use Repo type because otherwise there are problems with the schema since, supabase shows a Project type
-  const validReposFormatted: Repo[] = []
+  const validProjectsFormatted: ProjectInfo[] = []
 
   // if there are no stale repos return an empty array
-  if (!validRepos) return validReposFormatted
+  if (!validProjects) return validProjectsFormatted
 
-  for (const validRepo of validRepos) {
+  for (const validProject of validProjects) {
     let ownerLogin = ''
-    let ownerID = validRepo.owning_organization
+    let ownerID = validProject.owning_organization
     // if the owner is no organization it must be a person
     if (!ownerID) {
-      ownerID = validRepo.owning_person
+      ownerID = validProject.owning_person
 
       //get the personName from the database
       const { data: owningPerson } = await supabase
@@ -321,13 +320,13 @@ const getTrendingAndBookmarkedProjects = async () => {
       ownerLogin = owningOrga?.[0]?.login || ''
     }
 
-    if (!validRepo.name || !ownerID) {
+    if (!validProject.name || !ownerID) {
       continue
     }
-    validReposFormatted.push({ name: validRepo.name, owner: ownerLogin })
+    validProjectsFormatted.push({ name: validProject.name, owner: ownerLogin })
   }
 
-  return validReposFormatted
+  return validProjectsFormatted
 }
 
 /**

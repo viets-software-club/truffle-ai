@@ -11,7 +11,9 @@ import {
   turnIntoProjectInsertion,
   updateSupabaseProject,
   purgeTrendingState,
-  repoIsAlreadyInDB
+  repoIsAlreadyInDB,
+  deleteNotTrendingAndNotBookmarkedProjects,
+  getTrendingAndBookmarkedProjects
 } from './supabaseUtils'
 import { getGithubData, getCutOffTime } from './utils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
@@ -39,8 +41,10 @@ const newDbUpdater = async (includeDeletion: boolean) => {
   await updateProjectTrendingStatesForListOfRepos(monthlyTrendingRepos, 'is_trending_monthly')
 
   if (includeDeletion) {
-    console.log('need to implement')
+    await deleteNotTrendingAndNotBookmarkedProjects()
   }
+
+  const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
 }
 
 /**

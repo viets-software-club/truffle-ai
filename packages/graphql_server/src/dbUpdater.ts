@@ -1,5 +1,6 @@
 import supabase from './supabase'
 import {
+  updateAllProjectInfo,
   updateProjectELI5,
   updateProjectGithubStats,
   updateProjectSentiment,
@@ -26,9 +27,9 @@ import { GitHubInfo } from '../types/githubApi'
 import { StarRecord } from '../types/starHistory'
 import { ProjectInsertion, ProjectUpdate } from '../types/supabaseUtils'
 import { TrendingState } from '../types/updateProject'
-import { create } from 'domain'
+import { get } from 'http'
 
-const newDbUpdater = async (includeDeletion: boolean) => {
+export const newDbUpdater = async (includeDeletion: boolean) => {
   // set all trending states of the repos in the db to false
   await purgeTrendingState()
 
@@ -42,15 +43,23 @@ const newDbUpdater = async (includeDeletion: boolean) => {
   await updateProjectTrendingStatesForListOfRepos(weeklyTrendingRepos, 'is_trending_weekly')
   await updateProjectTrendingStatesForListOfRepos(monthlyTrendingRepos, 'is_trending_monthly')
 
+  // if includeDeletion is true all repos that are not trending and not bookmarked are deleted
   if (includeDeletion) {
     await deleteNotTrendingAndNotBookmarkedProjects()
   }
 
+  // update the trending or bookmarked repos
   const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
   // here everything that should be updated daily is updated. atm this is just github stats
   for (const project of projectsToBeUpdated) {
     await updateProjectGithubStats(project.name, project.owner)
   }
+
+  // insert and enrich with data the trending repos
+  // it is checked whether they are in the db already
+  await processTrendingRepos(dailyTrendingRepos, 'is_trending_daily')
+  await processTrendingRepos(weeklyTrendingRepos, 'is_trending_weekly')
+  await processTrendingRepos(monthlyTrendingRepos, 'is_trending_monthly')
 }
 
 /**
@@ -70,16 +79,20 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
       '######################'
     )
     // if it is in the database already only the trending state has to be updated
-    await createProject(name, owner)
+    await createProject(name, owner, trendingState)
   }
 }
 
 // @Todo: documentation
-const createProject = async (repoName: string, owner: string) => {
+const createProject = async (repoName: string, owner: string, trendingState: TrendingState) => {
   if (await repoIsAlreadyInDB(repoName, owner)) {
     return
   } else {
-    const { error: insertionError } = await supabase.from('project').insert({ name: repoName })
+    const { error: insertionError } = await supabase.from('project').insert({
+      name: repoName,
+      owning_organization: await getOrganizationID(owner),
+      owning_person: await getPersonID(owner)
+    })
     if (insertionError) {
       console.log(
         'Error while inserting project',
@@ -92,6 +105,8 @@ const createProject = async (repoName: string, owner: string) => {
       return
     } else {
       console.log('inserted project', repoName, 'owned by', owner)
+      // update all the data sources. trending state may be null
+      await updateAllProjectInfo(repoName, owner, trendingState)
     }
   }
 }

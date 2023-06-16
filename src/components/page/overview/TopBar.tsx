@@ -176,7 +176,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
             <p className="leading-none">Edit Columns</p>
           </Menu.Button>
 
-          <Transition show={open}>
+          <TransitionMenuItems>
             <Menu.Items
               static
               className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none"
@@ -207,7 +207,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
                 ))}
               </div>
             </Menu.Items>
-          </Transition>
+          </TransitionMenuItems>
         </Menu>
 
         <div className="inline-block">

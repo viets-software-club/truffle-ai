@@ -7,7 +7,7 @@ import {
 import { IoTextOutline } from 'react-icons/io5'
 import { AiOutlineNumber } from 'react-icons/ai'
 import { ChevronDownIcon } from '@primer/octicons-react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { Menu, Popover, Transition } from '@headlessui/react'
 import { TransitionMenuItems } from '@/components/page/overview/TopBar'
 import Button from '@/components/pure/Button'
 import { TbTrash } from 'react-icons/tb'
@@ -59,10 +59,10 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
 
   return (
     <div>
-      <Disclosure as="div" className="relative inline-block text-left">
+      <Popover as="div" className="relative inline-block text-left">
         {({ open }) => (
           <>
-            <Disclosure.Button className={filterAppliedClassNames}>
+            <Popover.Button className={filterAppliedClassNames}>
               <div className="flex flex-row items-center space-x-1">
                 {filter.column.columnDef.header === 'Name' ? (
                   <IoTextOutline className="text-gray-500" />
@@ -80,10 +80,10 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
                   }`}
                 />
               </div>
-            </Disclosure.Button>
+            </Popover.Button>
 
             <TransitionMenuItems>
-              <Disclosure.Panel
+              <Popover.Panel
                 className={`absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none ${
                   open ? 'block' : 'hidden'
                 }`}
@@ -142,11 +142,11 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
                     />
                   </div>
                 </div>
-              </Disclosure.Panel>
+              </Popover.Panel>
             </TransitionMenuItems>
           </>
         )}
-      </Disclosure>
+      </Popover>
     </div>
   )
 }

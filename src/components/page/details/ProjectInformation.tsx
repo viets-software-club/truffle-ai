@@ -8,14 +8,13 @@ type ProjectInformationProps = {
   name: string
   url: string
   eli5: string
-  tags: string[]
+  tags: Array<{ name: string; color: string }>
   sendSlackMessage: () => void
 }
 
 /**
  * Top part of project detail page (logo, name, tags, bookmark button)
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 const ProjectInformation = ({
   image,
   url,
@@ -39,12 +38,13 @@ const ProjectInformation = ({
         </a>
 
         {tags.length > 0 ? (
-          tags.map((text) => (
+          tags.map((tag) => (
             <p
-              key={text}
-              className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
+              key={tag.name}
+              className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
+              style={{ color: tag.color }}
             >
-              {text}
+              {tag.name}
             </p>
           ))
         ) : (

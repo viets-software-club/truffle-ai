@@ -9,8 +9,9 @@ import defaultColumns from '@/components/pure/ProjectsTable/columns'
 import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
-import FilterBar from '@/components/page/overview/Filterbar'
+import FilterBar from '@/components/page/overview/FilterBar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { TableFilter } from '@/components/page/overview/TableFilter'
 import { FaSlack } from 'react-icons/fa'
 import { handleNotification } from '@/components/page/settings/SendData/SlackNotificationSender'
 import Banner from '@/components/page/settings/Banner'
@@ -22,10 +23,12 @@ const nullFunc = () => null
  */
 // @TODO Get id from props to fetch category title & projects from DB
 const Compare = () => {
+  const [filteredRowCount, setFilteredRowCount] = useState(0)
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
+  const [filters, setFilters] = useState<TableFilter[]>([])
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [slackLoading, setSlackLoading] = useState(false)
 
@@ -51,6 +54,22 @@ const Compare = () => {
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel()
   })
+
+  const addFilter = (filter: TableFilter) => {
+    setFilters([...filters, filter])
+  }
+
+  const updateFilter = (filter: TableFilter) => {
+    setFilters(
+      filters.map((f) =>
+        f.column.columnDef.header === filter.column.columnDef.header ? filter : f
+      )
+    )
+  }
+
+  const removeFilter = (filter: TableFilter) => {
+    setFilters(filters.filter((f) => f !== filter))
+  }
 
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Getting saved projects for you..." />
@@ -80,9 +99,22 @@ const Compare = () => {
 
   return (
     <div className="flex w-full flex-col">
-      <TopBar columns={table.getAllLeafColumns()} nullFunc={nullFunc} />
-
-      <FilterBar />
+      <TopBar
+        columns={table.getAllLeafColumns()}
+        nullFunc={nullFunc}
+        addFilter={addFilter}
+        filters={filters}
+        comparePage
+      />
+      {filters.length > 0 && (
+        <FilterBar
+          filters={filters}
+          removeFilter={removeFilter}
+          updateFilter={updateFilter}
+          currentEntries={filteredRowCount}
+          totalEntries={data.length}
+        />
+      )}
 
       <div className="flex flex-row items-center justify-between px-6 pt-3.5">
         <div className="flex flex-col">
@@ -148,7 +180,7 @@ const Compare = () => {
         </div>
       </div>
 
-      <Table table={table} />
+      <Table table={table} filters={filters} setFilteredRowCount={setFilteredRowCount} />
     </div>
   )
 }

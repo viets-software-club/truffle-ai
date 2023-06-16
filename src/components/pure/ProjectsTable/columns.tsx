@@ -9,14 +9,14 @@ import Image from 'next/image'
 
 const columnHelper = createColumnHelper<Project>()
 
-// @TODO Make columns sortable, filterable, dynamic
-// Define column definitions for a Project table
+// @TODO Make columns sortable, filterable
 const columns = [
   // Logo column definition
   columnHelper.accessor(
     ({ organization, associatedPerson }) => organization?.avatarUrl || associatedPerson?.avatarUrl,
     {
       header: 'Logo',
+      enableColumnFilter: false,
       cell: (info) => (
         <div className="relative ml-2 h-6 w-6 overflow-hidden rounded-[5px]">
           <Image src={info.getValue() as string} alt="logo" fill sizes="24px" />
@@ -33,6 +33,7 @@ const columns = [
     {
       id: 'nameWithOwner',
       header: 'Name',
+      enableColumnFilter: true,
       cell: (info) => {
         const [owner, name] = info.getValue().split(' / ')
         return (
@@ -49,7 +50,9 @@ const columns = [
   // @TODO Add tags column
   // Stars column definition
   columnHelper.accessor('starCount', {
+    id: 'Stars',
     header: 'Stars',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineStar}
@@ -63,6 +66,7 @@ const columns = [
   // Issues column definition
   columnHelper.accessor('issueCount', {
     header: 'Issues',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={VscIssues}
@@ -76,6 +80,7 @@ const columns = [
   // Forks column definition
   columnHelper.accessor('forkCount', {
     header: 'Forks',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={AiOutlineFork}
@@ -89,6 +94,7 @@ const columns = [
   // Contributors column definition
   columnHelper.accessor('contributorCount', {
     header: 'Contrib.',
+    enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={BsPeople}
@@ -102,13 +108,15 @@ const columns = [
   // Forks per Contributor column definition
   columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
     id: 'forksPerContributor',
-    header: 'Forks/ Contr.',
+    header: 'Forks/Contrib.',
+    enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   }),
   // Issues per Contributor column definition
   columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
     id: 'issuesPerContributor',
-    header: 'Issues/ Contr.',
+    header: 'Issues/Contrib.',
+    enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   })
 ]

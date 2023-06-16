@@ -119,8 +119,7 @@ const Details = ({ id }: DetailsProps) => {
             } / ${project.name as string}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
-            // @TODO Replace with actual tags
-            tags={['React', 'Static Site Generation', 'TypeScript']}
+            tags={project.languages || []}
           />
 
           <Chart
@@ -133,6 +132,7 @@ const Details = ({ id }: DetailsProps) => {
                 >['datasets'][0]['data']
               }
             ]}
+            multipleLines={false}
           />
 
           {/* @TODO Add real data */}

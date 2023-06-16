@@ -25,7 +25,21 @@ type ColorObject = {
   [key: string]: string
 }
 
+const singleColors = ['teal', 'red', 'mustard', 'yellow', 'orange', 'purple', 'blue', 'green']
 const grayColors = fullConfig.theme?.colors?.gray as ColorObject
+const indigoColors = fullConfig.theme?.colors?.indigo as ColorObject
+const colorValues = ['300', '500']
+
+let colors = colorValues.flatMap((value) =>
+  [grayColors?.[value], indigoColors?.[value]].filter(Boolean)
+)
+
+// Add single colors to the array
+const singleColorValues = singleColors
+  .map((colorName) => fullConfig.theme?.colors?.[colorName] as string)
+  .filter(Boolean)
+
+colors = colors.concat(singleColorValues)
 
 const TimeframeOptions = [
   { value: 1, label: '1 Month' },
@@ -43,34 +57,82 @@ type ChartProps = {
       count: number
     }[]
   }[]
+  multipleLines: boolean
 }
+
+type DataPoint = {
+  date: string
+  count: number
+}
+
+const filterDataByTimeframe = (data: DataPoint[], months: number) => {
+  const now = new Date()
+  const pastDate = now.setMonth(now.getMonth() - months)
+  return data.filter((d) => new Date(d.date).getTime() >= pastDate)
+}
+
 /**
  * Linechart with one or more datasets
  * @param {ChartProps} datasets - The datasets to be displayed on the chart.
  */
-const Chart = ({ datasets }: ChartProps) => {
-  const [modalValue, setModalValue] = useState('Select Value')
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
+const Chart = ({ datasets, multipleLines }: ChartProps) => {
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
-  const [timeframeModalValue, setTimeframeModalValue] = useState(TimeframeOptions[0].label)
+  const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
+  //   const [modalValue, setModalValue] = useState('Select Value')
+  //   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Updates state when modal value changes
-  const handleModalValueChange = useCallback((newValue: string) => {
-    setModalValue(newValue)
-    setIsModalOpen(false)
-  }, [])
+  const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
+  const [chartData, setChartData] = useState(chartDataOriginal)
 
-  const handleTimeframeChange = useCallback((newTimeframe: number) => {
-    const selectedOption = TimeframeOptions.find((option) => option.value === newTimeframe)
-    setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
-    setTimeframeModalOpen(false)
-  }, [])
-  // Initialize chart data
-  const [chartData] = useState<ChartProps['datasets']>([...datasets])
-  const toggleModal = useCallback(() => {
-    setIsModalOpen((prevState) => !prevState)
-  }, [])
+  const [isDataNormalized, setIsDataNormalized] = useState(false)
+
+  // Mehtod to handle the click on the "Normalize data" button
+  const handleDataNormalization = () => {
+    if (isDataNormalized) {
+      setChartData(chartDataOriginal)
+      setIsDataNormalized(false)
+      return
+    }
+    setIsDataNormalized(true)
+    const earliestDate = Math.min(
+      ...datasets.flatMap((dataset) => dataset.data.map((point) => new Date(point.date).getTime()))
+    )
+
+    const normalizedData = chartData.map((dataset) => ({
+      ...dataset,
+      data: dataset.data.map((point) => ({
+        ...point,
+        date: new Date(
+          new Date(point.date).getTime() -
+            (Math.min(...dataset.data.map((p) => new Date(p.date).getTime())) - earliestDate)
+        ).toISOString()
+      }))
+    }))
+    // Updates state when modal value changes
+    // const handleModalValueChange = useCallback((newValue: string) => {
+    //   setModalValue(newValue)
+    //   setIsModalOpen(false)
+    // }, [])
+
+    setChartData(normalizedData)
+  }
+
+  const handleTimeframeChange = useCallback(
+    (value: number) => () => {
+      const selectedOption = TimeframeOptions.find((option) => option.value === value)
+      setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
+      setTimeframeModalOpen(false)
+
+      const filteredData = chartDataOriginal.map((dataset) => ({
+        ...dataset,
+        data: filterDataByTimeframe(dataset.data, value)
+      }))
+
+      setChartData(filteredData)
+    },
+    [chartDataOriginal]
+  )
 
   return (
     <div className="flex w-full flex-row px-7 py-8">
@@ -78,56 +140,41 @@ const Chart = ({ datasets }: ChartProps) => {
         <p>No data</p>
       ) : (
         <div className="flex w-full flex-col gap-3">
-          <div className="flex flex-row gap-3 ">
-            <div className="flex flex-col">
-              <Button
-                variant="normal"
-                text={modalValue}
-                Icon={ChevronDown}
-                order="rtl"
-                fullWidth
-                onClick={() => {
-                  toggleModal()
-                }}
-              />
+          {multipleLines && (
+            <div className="flex flex-row gap-3 ">
+              <div className="flex flex-col">
+                <Button
+                  variant="normal"
+                  text={timeframeModalValue}
+                  Icon={ChevronDown}
+                  order="rtl"
+                  onClick={() => {
+                    setTimeframeModalOpen(true)
+                  }}
+                />
 
-              <Modal isOpen={isModalOpen} onClose={toggleModal}>
-                {['Stars', 'Forks', 'Contributors'].map((item) => (
-                  <Button
-                    key={item}
-                    variant="noBorderNoBG"
-                    text={item}
-                    fullWidth
-                    onClick={() => handleModalValueChange(item)}
-                  />
-                ))}
-              </Modal>
+                <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
+                  {TimeframeOptions.map((option) => (
+                    <Button
+                      key={option.label}
+                      variant="noBorderNoBG"
+                      text={option.label}
+                      fullWidth
+                      onClick={handleTimeframeChange(option.value)}
+                    />
+                  ))}
+                </Modal>
+              </div>
+              <div>
+                <Button
+                  variant="normal"
+                  text="Normalize Data"
+                  fullWidth
+                  onClick={handleDataNormalization}
+                />
+              </div>
             </div>
-
-            <div className="flex flex-col">
-              <Button
-                variant="normal"
-                text={timeframeModalValue}
-                Icon={ChevronDown}
-                order="rtl"
-                onClick={() => {
-                  setTimeframeModalOpen(true)
-                }}
-              />
-
-              <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
-                {TimeframeOptions.map((option) => (
-                  <Button
-                    key={option.label}
-                    variant="noBorderNoBG"
-                    text={option.label}
-                    fullWidth
-                    onClick={() => handleTimeframeChange(option.value)}
-                  />
-                ))}
-              </Modal>
-            </div>
-          </div>
+          )}
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
@@ -159,28 +206,36 @@ const Chart = ({ datasets }: ChartProps) => {
                 domain={[0, 'dataMax']}
               />
 
-              <Tooltip
-                content={<CustomTooltip />}
-                cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
-              />
+              {!multipleLines && (
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
+                />
+              )}
 
               <Legend wrapperStyle={{ fontSize: '12px' }} />
 
-              {chartData.map((dataset) => (
-                <Line
-                  key={dataset.id}
-                  data={dataset.data.map((item) => ({
-                    ...item,
-                    date: new Date(item.date).getTime()
-                  }))}
-                  dataKey="count"
-                  name={dataset.name}
-                  type="monotone"
-                  stroke={grayColors['100']}
-                  dot={false}
-                  activeDot={{ r: 4 }}
-                />
-              ))}
+              {chartData
+                .sort((a, b) => {
+                  const lastDataPointA = a.data[a.data.length - 1]?.count || 0
+                  const lastDataPointB = b.data[b.data.length - 1]?.count || 0
+                  return lastDataPointB - lastDataPointA
+                })
+                .map((dataset, index) => (
+                  <Line
+                    key={dataset.id}
+                    data={dataset.data.map((item) => ({
+                      ...item,
+                      date: new Date(item.date).getTime()
+                    }))}
+                    dataKey="count"
+                    name={dataset.name}
+                    type="monotone"
+                    stroke={colors[index % colors.length]}
+                    dot={false}
+                    activeDot={{ r: 4 }}
+                  />
+                ))}
             </LineChart>
           </ResponsiveContainer>
         </div>

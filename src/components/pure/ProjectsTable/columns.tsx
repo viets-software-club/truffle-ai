@@ -50,6 +50,7 @@ const columns = [
   // @TODO Add tags column
   // Stars column definition
   columnHelper.accessor('starCount', {
+    id: 'Stars',
     header: 'Stars',
     enableColumnFilter: true,
     cell: (info) => (

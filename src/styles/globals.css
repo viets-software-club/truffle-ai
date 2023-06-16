@@ -52,6 +52,6 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: var(--bgPrimary);
-  font-family: var(--font-family);
   font-display: swap;
+  @apply font-inter;
 }

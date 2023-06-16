@@ -131,16 +131,6 @@ const Settings = () => {
 
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Account</h2>
 
-        {/* <Section title="Account" subtitle="Linked Accounts" refs={refs}>
-          <p className="pb-2 text-14 font-normal">GitHub access token</p>
-
-          <Input type="password" id="github" name="github" placeholder="•••••••••••••••••" />
-
-          <div className="mt-4">
-            <Button variant="highlighted" text="Update" onClick={() => ''} />
-          </div>
-        </Section> */}
-
         <Section title="Account" subtitle="Notifications" refs={refs}>
           <p className="mb-4 text-14 font-normal">Slack notifications</p>
 

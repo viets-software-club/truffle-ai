@@ -5,7 +5,6 @@ import {
   updateProjectTrendingState
 } from './processRepo'
 import {
-  getGithubData,
   getOrganizationID,
   getPersonID,
   turnIntoProjectInsertion,
@@ -13,6 +12,7 @@ import {
   purgeTrendingState,
   repoIsAlreadyInDB
 } from './supabaseUtils'
+import { getGithubData, getCutOffTime } from './utils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
 /* 
@@ -22,7 +22,6 @@ import { TrendingState } from '../types/processRepo'
 import { GitHubInfo } from '../types/githubApi'
 import { StarRecord } from '../types/starHistory'
 import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
-import { getCutOffTime } from './utils'
 
 /**
  * Updates the database with the current trending repositories.

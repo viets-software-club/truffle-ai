@@ -32,7 +32,9 @@ export {
   updateSupabaseProject
 }
 
-// @Todo: documentation
+/**
+ * Deletes all projects that are neither trending nor bookmarked.
+ */
 const deleteNotTrendingAndNotBookmarkedProjects = async () => {
   const { error: deletionError } = await supabase
     .from('project')
@@ -99,7 +101,10 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
   }
 }
 
-// @Todo: documentation
+/**
+ * Gets the repositories that are not trending and not bookmarked
+ * @returns {ProjectInfo[]} staleProjectsFormatted - A list of stale projects that are either trending or bookmarked
+ */
 const getNotTrendingAndNotBookmarkedProjects = async () => {
   const { data: staleProjects } = await supabase
     .from('project')
@@ -314,6 +319,10 @@ const getProjectID = async (name: string, owner: string) => {
   return projects?.[0]?.id ?? null
 }
 
+/**
+ * Gets the repositories that are either trending or bookmarked
+ * @returns {ProjectInfo[]} validProjectsFormatted - A list of projects that are either trending or bookmarked.
+ */
 const getTrendingAndBookmarkedProjects = async () => {
   // or syntax see here: https://supabase.com/docs/reference/javascript/or
   const { data: validProjects } = await supabase

@@ -84,9 +84,13 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
 }
 
 // @Todo: documentation
-const createProject = async (repoName: string, owner: string, trendingState: TrendingState) => {
+export const createProject = async (
+  repoName: string,
+  owner: string,
+  trendingState: TrendingState
+) => {
   if (await repoIsAlreadyInDB(repoName, owner)) {
-    return
+    return false
   } else {
     const { error: insertionError } = await supabase.from('project').insert({
       name: repoName,
@@ -102,11 +106,12 @@ const createProject = async (repoName: string, owner: string, trendingState: Tre
         ': \n',
         insertionError
       )
-      return
+      return false
     } else {
       console.log('inserted project', repoName, 'owned by', owner)
       // update all the data sources. trending state may be null
       await updateAllProjectInfo(repoName, owner, trendingState)
+      return true
     }
   }
 }

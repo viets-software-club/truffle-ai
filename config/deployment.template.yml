@@ -58,11 +58,11 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: <GRAPHQL-GATEWAY-PORT>
     - name: https
       protocol: TCP
       port: 443
-      targetPort: 3000
+      targetPort: <GRAPHQL-GATEWAY-PORT>
   selector:
     app: truffle-ai-deployment
 ---

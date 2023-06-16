@@ -11,7 +11,7 @@ try {
       '<CHANGE-CAUSE>',
       `'${process.env.COMMIT_TAG}: ${process.env.COMMIT_MESSAGE.replaceAll("'", '')}'`
     )
-    .replace('<GRAPHQL-GATEWAY-PORT>', process.env.GRAPHQL_GATEWAY_PORT)
+    .replaceAll('<GRAPHQL-GATEWAY-PORT>', process.env.GRAPHQL_GATEWAY_PORT)
     .replace('<GRAPHQL-SERVER-PORT>', process.env.GRAPHQL_SERVER_PORT)
     .replace('<CERTIFICATE-ID>', process.env.CERTIFICATE_ID)
   fs.writeFileSync(deploymentFile, data)

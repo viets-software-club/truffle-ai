@@ -4,7 +4,7 @@ import {
   getProjectID,
   updateSupabaseProject,
   formatLinkedInCompanyData
-} from './dataAggregation'
+} from './supabaseUtils'
 import { getRepoFounders } from './api/githubApi'
 import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'

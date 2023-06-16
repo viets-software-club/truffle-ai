@@ -18,6 +18,11 @@ Types:
 */
 import { TrendingState } from '../types/updateProject'
 
+/**
+ * This is the function could be called daily to update the db.
+ * It updates old projecst and inserts new trending ones.
+ * @param {boolean} includeDeletion - If true all repos that are not trending and not bookmarked are deleted.
+ */
 export const dailyDbUpdater = async (includeDeletion: boolean) => {
   // set all trending states of the repos in the db to false
   await purgeTrendingState()
@@ -72,7 +77,12 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
   }
 }
 
-// @Todo: documentation
+/**
+ * Creates a project in the database.
+ * Inserts it then callsall data gathering services for it.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
 export const createProject = async (
   repoName: string,
   owner: string,

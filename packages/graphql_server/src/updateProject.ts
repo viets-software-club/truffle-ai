@@ -26,7 +26,8 @@ export {
   updateProjectFounders,
   updateProjectLinkedInData,
   updateProjectSentiment,
-  updateProjectTrendingState
+  updateProjectTrendingState,
+  updateProjectTrendingStatesForListOfRepos
 }
 
 /**
@@ -196,7 +197,10 @@ const updateProjectTrendingState = async (
 }
 
 // @Todo: documentation
-const updateTrendingStateForListOfRepos = async (repos: string[], trendingState: TrendingState) => {
+const updateProjectTrendingStatesForListOfRepos = async (
+  repos: string[],
+  trendingState: TrendingState
+) => {
   for (let i = 0; i < repos.length / 2; i++) {
     const owner = repos[2 * i]
     const repoName = repos[2 * i + 1]

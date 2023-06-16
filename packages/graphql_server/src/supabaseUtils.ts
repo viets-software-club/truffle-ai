@@ -10,7 +10,8 @@ import {
   OrganizationInsertion,
   OrganizationUpdate,
   PersonInsertion,
-  ProjectUpdate
+  ProjectUpdate,
+  Repo
 } from '../types/supabaseUtils'
 
 /*
@@ -18,6 +19,7 @@ Exports:
 */
 export {
   formatLinkedInCompanyData,
+  getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
   getPersonID,
   getProjectID,
@@ -45,6 +47,52 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
     number_of_employees: parseInt(linkedInData.employeesAmountInLinkedin),
     specialties: linkedInData.specialties
   }
+}
+
+const getNotTrendingAndNotBookmarkedProjects = async () => {
+  const { data: staleRepos } = await supabase
+    .from('project')
+    .select('*')
+    .eq('is_bookmarked', false)
+    .eq('is_trending_daily', false)
+    .eq('is_trending_weekly', false)
+    .eq('is_trending_monthly', false)
+
+  // the returned repos will reside in here
+  const staleReposFormatted: Repo[] = []
+
+  // if there are no stale repos return an empty array
+  if (!staleRepos) return staleReposFormatted
+
+  for (const staleRepo of staleRepos) {
+    let ownerLogin = ''
+    let ownerID = staleRepo.owning_organization
+    // if the owner is no organization it must be a person
+    if (!ownerID) {
+      ownerID = staleRepo.owning_person
+
+      //get the personName from the database
+      const { data: owningPerson } = await supabase
+        .from('associated_person')
+        .select('login')
+        .eq('id', ownerID)
+      ownerLogin = owningPerson?.[0]?.login || ''
+    } else {
+      // if it is a organization get the name from the database
+      const { data: owningOrga } = await supabase
+        .from('organization')
+        .select('login')
+        .eq('id', ownerID)
+      ownerLogin = owningOrga?.[0]?.login || ''
+    }
+
+    if (!staleRepo.name || !ownerID) {
+      continue
+    }
+    staleReposFormatted.push({ name: staleRepo.name, owner: ownerLogin })
+  }
+
+  return staleReposFormatted
 }
 
 /**

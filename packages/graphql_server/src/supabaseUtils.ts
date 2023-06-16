@@ -20,6 +20,7 @@ Exports:
 export {
   deleteNotTrendingAndNotBookmarkedProjects,
   formatLinkedInCompanyData,
+  formatGithubStats,
   getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
   getPersonID,
@@ -46,6 +47,33 @@ const deleteNotTrendingAndNotBookmarkedProjects = async () => {
       'Error deleting not trending and not bookmarked projects. Error: \n',
       deletionError
     )
+  }
+}
+
+/**
+ * Formats the github data into a format that can be inserted into the database.
+ * @param {GitHubInfo} githubData - The github statistics to be formatted
+ * @param {StarRecord} starHistory The starHistory to be formatted.
+ * @returns {ProjectUpdate} The formatted data.
+ */
+const formatGithubStats = (githubData: GitHubInfo) => {
+  const languages = githubData?.languages?.edges?.map((edge) => ({
+    name: edge.node?.name || '',
+    color: edge.node?.color || ''
+  }))
+
+  return {
+    name: githubData?.name,
+    about: githubData?.description,
+    star_count: githubData?.stargazerCount,
+    issue_count: githubData?.issues?.totalCount,
+    fork_count: githubData?.forkCount,
+    pull_request_count: githubData?.pullRequests?.totalCount,
+    contributor_count: 1,
+    github_url: githubData?.url,
+    website_url: githubData?.homepageUrl,
+    languages: languages,
+    is_bookmarked: false
   }
 }
 

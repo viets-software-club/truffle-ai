@@ -13,42 +13,26 @@ import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { LinkedInCompanyProfile } from '../types/linkedInScraping'
 import { StarRecord } from '../types/starHistory'
 
-/**
- * Formats the github data into a format that can be inserted into the database.
- * The Format can also be used for database updates.
- * @param {GitHubInfo} githubData - The github statistics to be formatted
- * @param {StarRecord} starHistory The starHistory to be formatted.
- * @returns {ProjectInsertion} The formatted data.
- */
-export const turnIntoProjectInsertion = (githubData: GitHubInfo, starHistory: StarRecord[]) => {
-  const languages = githubData?.languages?.edges?.map((edge) => ({
-    name: edge.node?.name || '',
-    color: edge.node?.color || ''
-  }))
-
-  return {
-    name: githubData?.name,
-    about: githubData?.description,
-    star_count: githubData?.stargazerCount,
-    issue_count: githubData?.issues?.totalCount,
-    fork_count: githubData?.forkCount,
-    pull_request_count: githubData?.pullRequests?.totalCount,
-    contributor_count: 1,
-    github_url: githubData?.url,
-    website_url: githubData?.homepageUrl,
-    languages: languages,
-    star_history: starHistory,
-    is_bookmarked: false
-  }
+/*
+Exports:
+*/
+export {
+  formatLinkedInCompanyData,
+  getGithubData,
+  getOrganizationID,
+  getPersonID,
+  getProjectID,
+  purgeTrendingState,
+  repoIsAlreadyInDB,
+  turnIntoProjectInsertion,
+  updateSupabaseProject
 }
 
 /**
  * Formats the linkedInData to the format that is used in the db
  * @param {LinkedInCompanyProfile} linkedInData - The companny linkedIn data
  */
-export const formatLinkedInCompanyData = (
-  linkedInData: LinkedInCompanyProfile
-): OrganizationUpdate => {
+const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): OrganizationUpdate => {
   return {
     crunchbase: linkedInData.crunchbaseUrl,
     founded: parseInt(linkedInData.founded, 10),
@@ -65,105 +49,11 @@ export const formatLinkedInCompanyData = (
 }
 
 /**
- * Updates the supabase entry of a repo
- * @param {string} name - The name of the repo.
- * @param {string} owner - The name of the owner of the repo.
- * @param {ProjectUpdate} updatedProject - The Changes that should be put on supabase
- * @returns {boolean} - Whether the update was successful
- */
-export const updateSupabaseProject = async (
-  name: string,
-  owner: string,
-  updatedProject: ProjectUpdate
-) => {
-  //check whether the repo is in the db
-  if (!(await repoIsAlreadyInDB(name, owner))) {
-    return false
-  }
-  const owningOrganizationID = await getOrganizationID(owner)
-
-  const { error: ownerUpdateError } = await supabase
-    .from('project')
-    .update(updatedProject)
-    .eq('name', name)
-    .eq('owning_organization', owningOrganizationID)
-
-  if (!ownerUpdateError) return true
-  const owningPersonID = await getPersonID(owner)
-  const { error: ownerUpdateError2 } = await supabase
-    .from('project')
-    .update(updatedProject)
-    .eq('name', name)
-    .eq('owning_person', owningPersonID)
-
-  return ownerUpdateError2 ? false : true
-}
-
-/**
- * Sets the trending states of all projects to false.
- * contributor_count comparison because I want to target all rows but have to specify a filter
- */
-export const purgeTrendingState = async () => {
-  const { error: supabaseError } = await supabase
-    .from('project')
-    .update({ is_trending_daily: false, is_trending_weekly: false, is_trending_monthly: false })
-    .neq('contributor_count', -1000)
-  supabaseError && console.error('Error while purging trending state: \n', supabaseError)
-}
-
-/**
- * Checks if the repo is already in the db.
- * @param {string} name - The name  of the repo.
- * @param {string} owner - The name of the owner of the repo.
- * @returns {boolean} True if the repo is already in the db.
- */
-export const repoIsAlreadyInDB = async (name: string, owner: string) => {
-  // check if there are repositories with the same name
-  const { data: matchingRepos, error: checkRepoIfRepoInDBError } = await supabase
-    .from('project')
-    .select('*')
-    .eq('name', name)
-  checkRepoIfRepoInDBError &&
-    console.error(
-      'Error while checking if',
-      name,
-      'is in the database: \n',
-      checkRepoIfRepoInDBError
-    )
-  // if there are no repositories with the same name return false
-  if (!matchingRepos) return false
-
-  // for each of those with the same name check if the owner has the same name
-  for (const repo of matchingRepos) {
-    // if the owner is an organization
-    if (repo.owning_organization) {
-      const { data: owning_organization } = await supabase
-        .from('organization')
-        .select('*')
-        .eq('id', repo.owning_organization)
-
-      // the owner has the same name -> the repo is already in the database
-      if (owning_organization?.[0]?.login === owner) return true
-    } else {
-      const { data: owning_person } = await supabase
-        .from('associated_person')
-        .select('*')
-        .eq('id', repo.owning_person)
-
-      // the owner has the same name -> the repo is already in the database
-      if (owning_person?.[0]?.login === owner) return true
-    }
-  }
-
-  return false
-}
-
-/**
  * Returns the githubData for the specified repo.
  * @param {string} name - The name of the repository
  * @param {string} owner The name of the owner of the repository.
  */
-export const getGithubData = async (name: string, owner: string) => {
+const getGithubData = async (name: string, owner: string) => {
   // query send to github. If this is changed the corresponding types have to be changed as well
   const query = `
     query {
@@ -209,7 +99,7 @@ export const getGithubData = async (name: string, owner: string) => {
  * @param {string} owner - The name of a github entity - either organization or person.
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
-export const getOrganizationID = async (owner: string) => {
+const getOrganizationID = async (owner: string) => {
   const { data: organization, error: organizationRetrievalError } = await supabase
     .from('organization')
     .select('id')
@@ -281,7 +171,7 @@ export const getOrganizationID = async (owner: string) => {
  * @param {string} owner - The name of a github entity - either organization or person.
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
-export const getPersonID = async (owner: string) => {
+const getPersonID = async (owner: string) => {
   const { data: existingPerson, error: personRetrievalError } = await supabase
     .from('associated_person')
     .select('id')
@@ -294,18 +184,18 @@ export const getPersonID = async (owner: string) => {
 
   // if not get the data from github and insert it into the database
   const query = `
-    query {
-      user(login: "${owner}") {
-        login
-        name
-        avatarUrl
-        repositories { totalCount }
-        email
-        websiteUrl
-        twitterUsername
-        url
-      }
-    }`
+  query {
+    user(login: "${owner}") {
+      login
+      name
+      avatarUrl
+      repositories { totalCount }
+      email
+      websiteUrl
+      twitterUsername
+      url
+    }
+  }`
 
   const userGHData: GitHubUser | null = await getUserInfo(
     query,
@@ -343,7 +233,7 @@ export const getPersonID = async (owner: string) => {
  * @param {string} owner - The name of the owner of the project.
  * @returns {string} The id of the project or null if the project does not exist.
  */
-export const getProjectID = async (name: string, owner: string) => {
+const getProjectID = async (name: string, owner: string) => {
   // try to get a organization id
   let ownerID = await getOrganizationID(owner)
   if (!ownerID) {
@@ -369,4 +259,127 @@ export const getProjectID = async (name: string, owner: string) => {
     .eq('owning_organization', ownerID)
     .eq('name', name)
   return projects?.[0]?.id ?? null
+}
+
+/**
+ * Sets the trending states of all projects to false.
+ * contributor_count comparison because I want to target all rows but have to specify a filter
+ */
+const purgeTrendingState = async () => {
+  const { error: supabaseError } = await supabase
+    .from('project')
+    .update({ is_trending_daily: false, is_trending_weekly: false, is_trending_monthly: false })
+    .neq('contributor_count', -1000)
+  supabaseError && console.error('Error while purging trending state: \n', supabaseError)
+}
+
+/**
+ * Checks if the repo is already in the db.
+ * @param {string} name - The name  of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @returns {boolean} True if the repo is already in the db.
+ */
+const repoIsAlreadyInDB = async (name: string, owner: string) => {
+  // check if there are repositories with the same name
+  const { data: matchingRepos, error: checkRepoIfRepoInDBError } = await supabase
+    .from('project')
+    .select('*')
+    .eq('name', name)
+  checkRepoIfRepoInDBError &&
+    console.error(
+      'Error while checking if',
+      name,
+      'is in the database: \n',
+      checkRepoIfRepoInDBError
+    )
+  // if there are no repositories with the same name return false
+  if (!matchingRepos) return false
+
+  // for each of those with the same name check if the owner has the same name
+  for (const repo of matchingRepos) {
+    // if the owner is an organization
+    if (repo.owning_organization) {
+      const { data: owning_organization } = await supabase
+        .from('organization')
+        .select('*')
+        .eq('id', repo.owning_organization)
+
+      // the owner has the same name -> the repo is already in the database
+      if (owning_organization?.[0]?.login === owner) return true
+    } else {
+      const { data: owning_person } = await supabase
+        .from('associated_person')
+        .select('*')
+        .eq('id', repo.owning_person)
+
+      // the owner has the same name -> the repo is already in the database
+      if (owning_person?.[0]?.login === owner) return true
+    }
+  }
+
+  return false
+}
+
+/**
+ * Formats the github data into a format that can be inserted into the database.
+ * The Format can also be used for database updates.
+ * @param {GitHubInfo} githubData - The github statistics to be formatted
+ * @param {StarRecord} starHistory The starHistory to be formatted.
+ * @returns {ProjectInsertion} The formatted data.
+ */
+const turnIntoProjectInsertion = (githubData: GitHubInfo, starHistory: StarRecord[]) => {
+  const languages = githubData?.languages?.edges?.map((edge) => ({
+    name: edge.node?.name || '',
+    color: edge.node?.color || ''
+  }))
+
+  return {
+    name: githubData?.name,
+    about: githubData?.description,
+    star_count: githubData?.stargazerCount,
+    issue_count: githubData?.issues?.totalCount,
+    fork_count: githubData?.forkCount,
+    pull_request_count: githubData?.pullRequests?.totalCount,
+    contributor_count: 1,
+    github_url: githubData?.url,
+    website_url: githubData?.homepageUrl,
+    languages: languages,
+    star_history: starHistory,
+    is_bookmarked: false
+  }
+}
+
+/**
+ * Updates the supabase entry of a repo
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @param {ProjectUpdate} updatedProject - The Changes that should be put on supabase
+ * @returns {boolean} - Whether the update was successful
+ */
+const updateSupabaseProject = async (
+  name: string,
+  owner: string,
+  updatedProject: ProjectUpdate
+) => {
+  //check whether the repo is in the db
+  if (!(await repoIsAlreadyInDB(name, owner))) {
+    return false
+  }
+  const owningOrganizationID = await getOrganizationID(owner)
+
+  const { error: ownerUpdateError } = await supabase
+    .from('project')
+    .update(updatedProject)
+    .eq('name', name)
+    .eq('owning_organization', owningOrganizationID)
+
+  if (!ownerUpdateError) return true
+  const owningPersonID = await getPersonID(owner)
+  const { error: ownerUpdateError2 } = await supabase
+    .from('project')
+    .update(updatedProject)
+    .eq('name', name)
+    .eq('owning_person', owningPersonID)
+
+  return ownerUpdateError2 ? false : true
 }

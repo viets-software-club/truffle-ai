@@ -2,42 +2,9 @@ import { useEffect, useState } from 'react'
 import Input from '@/components/pure/Input'
 import Button from '@/components/pure/Button'
 import Banner from '@/components/page/settings/Banner'
+import sendSlackNotification from '@/util/sendSlackNotification'
 
-type ApiResponse = {
-  success: boolean
-}
-
-const sendNotification = async (message: string) => {
-  const webhookURL = localStorage.getItem('slackWebhookURL')
-
-  try {
-    const response = await fetch('/api/notify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text: message, url: webhookURL })
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-
-    const data = (await response.json()) as ApiResponse
-
-    if (!data.success) {
-      return 'error'
-    }
-
-    return 'success'
-  } catch (e) {
-    return 'error'
-  }
-}
-
-export const handleNotification = async (message: string) => sendNotification(message)
-
-const SlackNotificationSender = () => {
+const SlackSettings = () => {
   const savedSlackWebhookURL = localStorage.getItem('slackWebhookURL')
   const savedSlackMessage = localStorage.getItem('slackMessage')
   const [webhookURL, setWebhookURL] = useState(savedSlackWebhookURL || '')
@@ -57,7 +24,7 @@ const SlackNotificationSender = () => {
 
   const handleClick = async () => {
     setSlackLoading(true)
-    const response = await sendNotification(message)
+    const response = await sendSlackNotification(message)
     setNotificationStatus(response)
     setSlackLoading(false)
   }
@@ -70,37 +37,33 @@ const SlackNotificationSender = () => {
     <div className="flex flex-col items-start gap-[15px]">
       <Input
         type="text"
-        placeholder={savedSlackWebhookURL || 'Enter Slack Webhook URL'}
+        placeholder={savedSlackWebhookURL || 'Slack channel webhook URL'}
         value={webhookURL}
         onChange={(e) => setWebhookURL(e.target.value)}
       />
+
       <Input
         type="text"
-        placeholder={savedSlackMessage || 'Enter Slack Message'}
+        placeholder={savedSlackMessage || 'Message prefix'}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
 
-      <p className="mb-4 text-14 font-normal text-gray-400">
-        This message is the prefix, after it the project name will be appended.
-      </p>
-      <div>
-        <Button
-          variant="highlighted"
-          text={slackLoading ? 'Loading...' : 'Save & Update'}
-          onClick={handleClickWrapper}
-        />
-      </div>
+      <Button
+        variant="highlighted"
+        text={slackLoading ? 'Loading...' : 'Update'}
+        onClick={handleClickWrapper}
+      />
 
       {notificationStatus === 'success' && (
-        <Banner variant="success" message="Notification sent!" />
+        <Banner variant="success" message="Slack notification sent" />
       )}
 
       {notificationStatus === 'error' && (
-        <Banner variant="error" message="Error sending notification." />
+        <Banner variant="error" message="Error sending notification" />
       )}
     </div>
   )
 }
 
-export default SlackNotificationSender
+export default SlackSettings

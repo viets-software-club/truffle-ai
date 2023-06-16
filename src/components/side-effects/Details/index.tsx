@@ -14,10 +14,8 @@ import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
-import { handleNotification } from '@/components/page/settings/SendData/SlackNotificationSender'
-import Banner from '@/components/page/settings/Banner'
+import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 
 const handleClick = () => ''
 
@@ -42,9 +40,6 @@ const Details = ({ id }: DetailsProps) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
   const [previousProjectId, setPreviousProjectId] = useState<string>()
   const [nextProjectId, setNextProjectId] = useState<string>()
-
-  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
-  const [slackLoading, setSlackLoading] = useState(false)
 
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
     const currentIndex = projectList.findIndex((project) => project.id === currentId)
@@ -84,18 +79,6 @@ const Details = ({ id }: DetailsProps) => {
   if (fetching) return <Loading message="Fetching project details for you..." />
   if (error || !project) return <Error />
 
-  const handleNotificationWrapper = async (message: string) => {
-    const response = await handleNotification(message)
-    setNotificationStatus(response)
-  }
-  const sendSlackMessage = () => {
-    setSlackLoading(true)
-    const savedMessage = localStorage.getItem('slackMessage') || ''
-    const message = `${savedMessage}: <${project?.githubUrl as string}|${project?.name as string}>`
-    void handleNotificationWrapper(message)
-    setSlackLoading(false)
-  }
-
   return (
     <>
       <div className="flex h-[59px] w-full items-center justify-between px-3 pl-7 text-gray-500">
@@ -128,6 +111,7 @@ const Details = ({ id }: DetailsProps) => {
       <div className="flex grow">
         <div className="w-4/5 flex-row border-t border-solid border-gray-800">
           <ProjectInformation
+            githubUrl={project.githubUrl as string}
             image={
               (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
             }
@@ -137,16 +121,7 @@ const Details = ({ id }: DetailsProps) => {
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
             tags={project.languages || []}
-            sendSlackMessage={sendSlackMessage}
           />
-          {notificationStatus === 'success' && (
-            <Banner variant="success" message="Notification sent!" />
-          )}
-
-          {notificationStatus === 'error' && (
-            <Banner variant="error" message="Error sending notification." />
-          )}
-          {slackLoading && <p>Loading</p>}
 
           <Chart
             datasets={[

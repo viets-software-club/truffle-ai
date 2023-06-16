@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useReactTable, getCoreRowModel, ColumnOrderState } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
@@ -10,11 +11,10 @@ import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { TableFilter } from '@/components/page/overview/TableFilter'
-import { FaSlack } from 'react-icons/fa'
-import { handleNotification } from '@/components/page/settings/SendData/SlackNotificationSender'
 import Banner from '@/components/page/settings/Banner'
+import { TableFilter } from '@/components/page/overview/TableFilter'
+import sendSlackNotification from '@/util/sendSlackNotification'
+import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 
 const nullFunc = () => null
 
@@ -23,14 +23,14 @@ const nullFunc = () => null
  */
 // @TODO Get id from props to fetch category title & projects from DB
 const Compare = () => {
-  const [filteredRowCount, setFilteredRowCount] = useState(0)
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
-  const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<TableFilter[]>([])
-  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [filteredRowCount, setFilteredRowCount] = useState(0)
+  const [columnVisibility, setColumnVisibility] = useState({})
   const [slackLoading, setSlackLoading] = useState(false)
+  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
 
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery()
@@ -76,8 +76,7 @@ const Compare = () => {
   if (data.length === 0 || error) return <Error />
 
   const handleNotificationWrapper = async (message: string) => {
-    const response = await handleNotification(message)
-    setNotificationStatus(response)
+    setNotificationStatus(await sendSlackNotification(message))
   }
 
   const sendSlackMessage = () => {
@@ -94,6 +93,7 @@ const Compare = () => {
       .join('\n')}\n`
 
     void handleNotificationWrapper(message)
+
     setSlackLoading(false)
   }
 
@@ -159,12 +159,13 @@ const Compare = () => {
             order="ltr"
             textColor="white"
           />
+
           {notificationStatus === 'success' && (
-            <Banner variant="success" message="Notification sent!" />
+            <Banner variant="success" message="Slack notification sent" />
           )}
 
           {notificationStatus === 'error' && (
-            <Banner variant="error" message="Error sending notification." />
+            <Banner variant="error" message="Error sending notification" />
           )}
 
           <div>

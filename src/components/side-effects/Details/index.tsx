@@ -133,6 +133,7 @@ const Details = ({ id }: DetailsProps) => {
                 >['datasets'][0]['data']
               }
             ]}
+            multipleLines={false}
           />
 
           {/* @TODO Add real data */}

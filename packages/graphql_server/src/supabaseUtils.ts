@@ -24,12 +24,14 @@ export {
   getOrganizationID,
   getPersonID,
   getProjectID,
+  getTrendingAndBookmarkedProjects,
   purgeTrendingState,
   repoIsAlreadyInDB,
   turnIntoProjectInsertion,
   updateSupabaseProject
 }
 
+// @Todo: documentation
 const deleteNotTrendingAndNotBookmarkedProjects = async () => {
   const { error: deletionError } = await supabase
     .from('project')
@@ -67,6 +69,7 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
   }
 }
 
+// @
 const getNotTrendingAndNotBookmarkedProjects = async () => {
   const { data: staleRepos } = await supabase
     .from('project')
@@ -279,6 +282,52 @@ const getProjectID = async (name: string, owner: string) => {
     .eq('owning_organization', ownerID)
     .eq('name', name)
   return projects?.[0]?.id ?? null
+}
+
+const getTrendingAndBookmarkedProjects = async () => {
+  // or syntax see here: https://supabase.com/docs/reference/javascript/or
+  const { data: validRepos } = await supabase
+    .from('project')
+    .select('*')
+    .or(
+      'is_bookmarked.eq.true, is_trending_daily.eq.true, is_trending_weekly.eq.true, is_trending_monthly.eq.true'
+    )
+
+  // have to use Repo type because otherwise there are problems with the schema since, supabase shows a Project type
+  const validReposFormatted: Repo[] = []
+
+  // if there are no stale repos return an empty array
+  if (!validRepos) return validReposFormatted
+
+  for (const validRepo of validRepos) {
+    let ownerLogin = ''
+    let ownerID = validRepo.owning_organization
+    // if the owner is no organization it must be a person
+    if (!ownerID) {
+      ownerID = validRepo.owning_person
+
+      //get the personName from the database
+      const { data: owningPerson } = await supabase
+        .from('associated_person')
+        .select('login')
+        .eq('id', ownerID)
+      ownerLogin = owningPerson?.[0]?.login || ''
+    } else {
+      // if it is a organization get the name from the database
+      const { data: owningOrga } = await supabase
+        .from('organization')
+        .select('login')
+        .eq('id', ownerID)
+      ownerLogin = owningOrga?.[0]?.login || ''
+    }
+
+    if (!validRepo.name || !ownerID) {
+      continue
+    }
+    validReposFormatted.push({ name: validRepo.name, owner: ownerLogin })
+  }
+
+  return validReposFormatted
 }
 
 /**

@@ -89,7 +89,7 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
                 }`}
               >
                 {/* Whole expanded dropdown */}
-                <div className="p-1">
+                <div className="p-2">
                   {/* Top bar */}
                   <div className="flex flex-row justify-between">
                     {/* Column + Operator */}
@@ -132,8 +132,8 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
                   <div className="mt-2">
                     <input
                       placeholder="Type a value..."
-                      type={filter.operator in NumberTableFilterOperator ? 'number' : 'text'}
-                      className="w-full rounded border px-2 py-1 text-14 text-gray-500"
+                      type={filter.column.columnDef.header === 'Name' ? 'text' : 'number'}
+                      className="w-full rounded bg-gray-850 px-2 py-1 text-14 text-gray-300 focus:outline-none"
                       value={value}
                       onChange={(e) => {
                         setValue(e.target.value)

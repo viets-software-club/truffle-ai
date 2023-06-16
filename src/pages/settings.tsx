@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FiTrash2 } from 'react-icons/fi'
 import EmailTemplate from '@/components/page/settings/EmailTemplate'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import Link from 'next/link'
 
 // @TODO prefill inputs, add action handlers, success/ error banner, loading spinners
 
@@ -86,7 +87,6 @@ const Settings = () => {
    * @returns {Promise<void>} A promise that resolves when the account deletion attempt is complete.
    */
   async function handleDeleteAccount() {
-    console.log('Deleting account')
     await supabaseClient.rpc('delete_user')
   }
 
@@ -153,15 +153,17 @@ const Settings = () => {
           <p className="pb-6 text-14 font-normal text-gray-300">
             If you delete your account, all your data will be lost.
           </p>
-          <Button
-            onClick={delteAccount}
-            text="Delete account"
-            variant="red"
-            Icon={FiTrash2}
-            order="ltr"
-            textColor="white"
-            iconColor="white"
-          />
+          <Link href="/logout">
+            <Button
+              onClick={delteAccount}
+              text="Delete account"
+              variant="red"
+              Icon={FiTrash2}
+              order="ltr"
+              textColor="white"
+              iconColor="white"
+            />
+          </Link>
         </Section>
 
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Integrations</h2>

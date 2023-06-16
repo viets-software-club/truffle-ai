@@ -1,7 +1,9 @@
+/* eslint-disable tailwindcss/migration-from-tailwind-2 */
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import { AiOutlineGoogle } from 'react-icons/ai'
+import { BiLogInCircle } from 'react-icons/bi'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import Button from '@/components/pure/Button'
 import ErrorComponent from '@/components/pure/Error'
@@ -53,40 +55,61 @@ const Login = () => {
   if (isLoading) return <Loading />
 
   return (
-    <main className={`${inter.className} flex min-h-screen flex-col`}>
+    <main className={`${inter.className} flex min-h-screen flex-col bg-radial-gradient`}>
       {isError ? (
         <ErrorComponent title="Error" message="Something went wrong. Please try again." />
       ) : (
-        <div className="flex grow flex-col items-center justify-between bg-radial-gradient">
-          <form
-            method="post"
-            onSubmit={handleSubmit}
-            className="flex flex-col items-center space-y-4"
-          >
-            <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
-            <Button
-              name="provider"
-              value="google"
-              type="submit"
-              text="Continue with Google"
-              Icon={AiOutlineGoogle}
-              order="ltr"
-              iconColor="white"
-              textColor="white"
-              variant="highlighted"
-            />
-            <input placeholder="email" name="email" type="email" />
-            <input placeholder="password" name="password" type="password" />
-            <Button
-              text="Login"
-              variant="highlighted"
-              type="submit"
-              name="provider"
-              value="email"
-            />
-          </form>
+        <>
+          <div className="flex w-full grow justify-center">
+            <form
+              method="post"
+              onSubmit={handleSubmit}
+              className="flex flex-col items-center justify-center space-y-4"
+            >
+              <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
+              <div className="flex w-[13rem] flex-col justify-center">
+                <input
+                  className="mb-4 block w-full border-b border-solid border-b-indigo-500 bg-transparent font-inter text-gray-100 placeholder-[#8c8fd9]/70 outline-none"
+                  placeholder="your-name@lafamiglia.vc"
+                  name="email"
+                  type="email"
+                />
+                <input
+                  className="mb-6 block w-full border-b border-solid border-b-indigo-500 bg-transparent font-inter text-gray-100 placeholder-[#8c8fd9]/70 outline-none"
+                  placeholder="password"
+                  name="password"
+                  type="password"
+                />
+                <div className="flex">
+                  <Button
+                    Icon={BiLogInCircle}
+                    order="ltr"
+                    text="Login"
+                    variant="highlighted"
+                    type="submit"
+                    name="provider"
+                    value="email"
+                    textColor="text-white"
+                    iconColor="text-white"
+                    className="px-3 font-normal"
+                  />
+                  <span className="mx-2 mt-1 align-middle text-sm text-gray-200">or</span>
+                  <Button
+                    name="provider"
+                    value="google"
+                    type="submit"
+                    Icon={AiOutlineGoogle}
+                    order="ltr"
+                    iconColor="text-white"
+                    textColor="text-white"
+                    variant="onlyIcon"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
           <div className="self-center pb-4 text-12 text-gray-300">© 2023 La Famiglia x Rostlab</div>
-        </div>
+        </>
       )}
     </main>
   )

@@ -84,7 +84,7 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
 
             <TransitionMenuItems>
               <Popover.Panel
-                className={`absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none ${
+                className={`absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none ${
                   open ? 'block' : 'hidden'
                 }`}
               >
@@ -113,7 +113,7 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute right-0 z-40 mt-2 w-48 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
+                          <Menu.Items className="absolute right-0 z-40 mt-2 w-48 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
                             <div className="py-1">
                               {filter.column.columnDef.header === 'Name'
                                 ? stringFilterOptions

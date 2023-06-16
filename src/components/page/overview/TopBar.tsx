@@ -71,7 +71,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
             </div>
 
             <TransitionMenuItems>
-              <Menu.Items className="absolute right-0 z-30 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
+              <Menu.Items className="absolute right-0 z-30 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
                 <div className="py-1">
                   {timeFrameOptions.map((option) => (
                     <Menu.Item key={option.value}>
@@ -92,6 +92,49 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
         )}
 
         <Menu as="div" className="relative inline-block text-left">
+          <Menu.Button
+            onClick={() => setOpen(!open)}
+            className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700"
+          >
+            <TbColumns2 className="text-gray-500" />
+            <p className="leading-none">Edit Columns</p>
+          </Menu.Button>
+
+          <TransitionMenuItems>
+            <Menu.Items
+              static
+              className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none"
+            >
+              <div className="py-1">
+                {columns.map((column) => (
+                  <Menu.Item key={column.id}>
+                    <button
+                      type="button"
+                      onClick={column.getToggleVisibilityHandler()}
+                      className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                    >
+                      {column.getIsVisible() ? (
+                        <RiCheckboxFill className="text-indigo-600" />
+                      ) : (
+                        <RiCheckboxBlankLine />
+                      )}
+
+                      <p
+                        className={
+                          column.getIsVisible() ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
+                        }
+                      >
+                        {typeof column.columnDef.header === 'string' ? column.columnDef.header : ''}
+                      </p>
+                    </button>
+                  </Menu.Item>
+                ))}
+              </div>
+            </Menu.Items>
+          </TransitionMenuItems>
+        </Menu>
+
+        <Menu as="div" className="relative inline-block text-left">
           <div>
             <Menu.Button
               className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
@@ -104,7 +147,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
           </div>
 
           <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
+            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
               <div className="py-1">
                 {filters.length === 7 && (
                   <p className="py-1 pl-2 text-14">No more filters can be applied.</p>
@@ -157,9 +200,6 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
             </Menu.Items>
           </TransitionMenuItems>
         </Menu>
-      </div>
-
-      <div className="flex flex-row gap-3">
         <div className="inline-block">
           <Button
             onClick={nullFunc}
@@ -170,50 +210,9 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
             textColor="white"
           />
         </div>
+      </div>
 
-        <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button
-            onClick={() => setOpen(!open)}
-            className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700"
-          >
-            <TbColumns2 className="text-gray-500" />
-            <p className="leading-none">Edit Columns</p>
-          </Menu.Button>
-
-          <TransitionMenuItems>
-            <Menu.Items
-              static
-              className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none"
-            >
-              <div className="py-1">
-                {columns.map((column) => (
-                  <Menu.Item key={column.id}>
-                    <button
-                      type="button"
-                      onClick={column.getToggleVisibilityHandler()}
-                      className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                    >
-                      {column.getIsVisible() ? (
-                        <RiCheckboxFill className="text-indigo-600" />
-                      ) : (
-                        <RiCheckboxBlankLine />
-                      )}
-
-                      <p
-                        className={
-                          column.getIsVisible() ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
-                        }
-                      >
-                        {typeof column.columnDef.header === 'string' ? column.columnDef.header : ''}
-                      </p>
-                    </button>
-                  </Menu.Item>
-                ))}
-              </div>
-            </Menu.Items>
-          </TransitionMenuItems>
-        </Menu>
-
+      <div className="flex flex-row gap-3">
         <div className="inline-block">
           <Button
             onClick={nullFunc}

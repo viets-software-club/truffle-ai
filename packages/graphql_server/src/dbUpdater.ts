@@ -1,5 +1,4 @@
 import supabase from './supabase'
-import { fetchTrendingRepos } from './scraping/githubScraping'
 import {
   updateProjectELI5,
   updateProjectSentiment,
@@ -13,7 +12,8 @@ import {
   updateSupabaseProject,
   purgeTrendingState,
   repoIsAlreadyInDB
-} from './dataAggregation'
+} from './supabaseUtils'
+import { fetchTrendingRepos } from './scraping/githubScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
 /* 
 Types: 

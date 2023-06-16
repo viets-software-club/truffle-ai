@@ -1,14 +1,14 @@
+import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { FiTrash2 } from 'react-icons/fi'
 import Input from '@/components/pure/Input'
 import Button from '@/components/pure/Button'
 import Sidebar from '@/components/page/settings/Sidebar'
 import Section from '@/components/page/settings/Section'
 import withAuth from '@/components/side-effects/withAuth'
 import SlackNotificationSender from '@/components/page/settings/SendData/SlackNotificationSender'
-import { useEffect, useRef, useState } from 'react'
-import { FiTrash2 } from 'react-icons/fi'
 import EmailTemplate from '@/components/page/settings/EmailTemplate'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import Link from 'next/link'
 
 // @TODO prefill inputs, add action handlers, success/ error banner, loading spinners
 

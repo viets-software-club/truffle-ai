@@ -142,8 +142,8 @@ const TopBar = ({ columns, nullFunc }: TopBarProps) => (
           text="Add Project"
           Icon={AiOutlinePlus}
           order="ltr"
-          iconColor="white"
-          textColor="white"
+          iconColor="text-white"
+          textColor="text-white"
         />
       </div>
     </div>

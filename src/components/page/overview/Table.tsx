@@ -38,21 +38,15 @@ const matchesFilter = (cell: Cell<Project, unknown>, filter: TableFilter) => {
       default:
         return true
     }
-  } else if (value !== undefined) {
+  } else if (value !== undefined && value !== '') {
     const cellValueNum = cellValue as number
     switch (operator) {
       case NumberTableFilterOperator.EQUALS:
         return cellValueNum === Number(value)
-      case NumberTableFilterOperator.NOT_EQUALS:
-        return cellValueNum !== Number(value)
       case NumberTableFilterOperator.GREATER_THAN:
         return cellValueNum > value
       case NumberTableFilterOperator.LESS_THAN:
         return cellValueNum < value
-      case NumberTableFilterOperator.GREATER_THAN_OR_EQUAL:
-        return cellValueNum >= value
-      case NumberTableFilterOperator.LESS_THAN_OR_EQUAL:
-        return cellValueNum <= value
       default:
         return true
     }

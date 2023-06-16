@@ -24,13 +24,13 @@ type TopBarProps = {
   nullFunc: () => void
   addFilter: (filter: TableFilter) => void
   filters: TableFilter[]
+  comparePage: boolean
 }
 
 const timeFrameOptions = [
-  { value: '1_week', label: '1 Week' },
-  { value: '4_weeks', label: '4 Weeks' },
-  { value: '4_months', label: '4 Months' },
-  { value: '1_year', label: '1 Year' }
+  { value: 'day', label: 'Today' },
+  { value: 'week', label: 'This Week' },
+  { value: 'month', label: 'This Month' }
 ]
 
 type TransitionMenuItemsProps = {
@@ -54,38 +54,42 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
 /**
  * Top navigation for the table view, including filter, sort, edit columns and add project buttons
  */
-const TopBar = ({ columns, nullFunc, addFilter, filters }: TopBarProps) => {
+const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarProps) => {
   const [open, setOpen] = useState(false)
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState(timeFrameOptions[1])
   return (
     <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
       {/* Filter, Sort, Edit Columns buttons */}
       <div className="flex flex-row gap-3">
-        <Menu as="div" className="relative inline-block text-left">
-          <div>
-            <Menu.Button className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-              <AiOutlineCalendar className="text-gray-500" />
-              <p className="leading-none">This week</p>
-            </Menu.Button>
-          </div>
+        {!comparePage && (
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <Menu.Button className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+                <AiOutlineCalendar className="text-gray-500" />
+                <p className="leading-none">{selectedTimeFrame.label}</p>
+              </Menu.Button>
+            </div>
 
-          <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-30 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
-              <div className="py-1">
-                {timeFrameOptions.map((option) => (
-                  <Menu.Item key={option.value}>
-                    {/* @TODO Change time frame */}
-                    <button
-                      type="button"
-                      className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                    >
-                      <p className="text-14 text-gray-100">{option.label}</p>
-                    </button>
-                  </Menu.Item>
-                ))}
-              </div>
-            </Menu.Items>
-          </TransitionMenuItems>
-        </Menu>
+            <TransitionMenuItems>
+              <Menu.Items className="absolute right-0 z-30 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg ring-1 focus:outline-none">
+                <div className="py-1">
+                  {timeFrameOptions.map((option) => (
+                    <Menu.Item key={option.value}>
+                      {/* @TODO Change time frame */}
+                      <button
+                        type="button"
+                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                        onClick={() => setSelectedTimeFrame(option)}
+                      >
+                        <p className="text-14 text-gray-100">{option.label}</p>
+                      </button>
+                    </Menu.Item>
+                  ))}
+                </div>
+              </Menu.Items>
+            </TransitionMenuItems>
+          </Menu>
+        )}
 
         <Menu as="div" className="relative inline-block text-left">
           <div>

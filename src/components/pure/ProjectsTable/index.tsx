@@ -79,6 +79,7 @@ const ProjectsTable = () => {
         nullFunc={nullFunc}
         addFilter={addFilter}
         filters={filters}
+        comparePage={false}
       />
       {filters.length > 0 && (
         <FilterBar

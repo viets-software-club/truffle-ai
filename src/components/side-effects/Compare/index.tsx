@@ -77,6 +77,7 @@ const Compare = () => {
         nullFunc={nullFunc}
         addFilter={addFilter}
         filters={filters}
+        comparePage
       />
       {filters.length > 0 && (
         <FilterBar

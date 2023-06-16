@@ -33,6 +33,12 @@ const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>
   ['filter', 'border border-dashed border-gray-800 px-2 py-1.5']
 ])
 
+/**
+ * Generic button with several variants
+ *
+ * @param {ButtonProps} props - The properties for this component.
+ * @returns {React.Element} The button element.
+ */
 const Button = ({
   variant,
   onClick,
@@ -46,14 +52,20 @@ const Button = ({
   name,
   value
 }: ButtonProps) => {
+  // Determine the class names to apply to the button based on the variant and whether it is full width
+
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
   }`
+
+  // create a text node if text is provided
   const textNode = text && (
     <span key="1" className={`text-14 leading-none ${textColor}`}>
       {text}
     </span>
   )
+
+  // Create an icon node if an Icon is provided
   const iconNode =
     Icon &&
     (variant === 'onlyIcon' || variant === 'onlyIconNoBorderNoBG' ? (

@@ -8,7 +8,10 @@ type InformationRowProps = {
 }
 
 /**
- * Single row of projects table
+ * Single row of a projects table, displaying a name, tags, and Github statistics
+ *
+ * @param {InformationRowProps} props - The properties for this component.
+ * @returns {React.Element} The information row element.
  */
 const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
   <div className="flex flex-row items-center p-2 text-14 font-normal transition-colors duration-100 hover:bg-gray-850">

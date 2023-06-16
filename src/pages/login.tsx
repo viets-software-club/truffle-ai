@@ -10,6 +10,10 @@ import { signInWithGoogle, signInWithPassword } from '@/util/login'
 
 const inter = Inter({ subsets: ['latin'] })
 
+/**
+ * Login component. Displays a Google login button and handles the Google OAuth login flow.
+ * @returns {JSX.Element} The rendered component
+ */
 const Login = () => {
   const [isError, setIsError] = useState(false)
   const user = useUser()
@@ -42,8 +46,10 @@ const Login = () => {
     }
   }
 
+  // If a user is logged in, redirect them to the home page
   if (user) void router.replace('/')
 
+  // Show loading spinner if session state is still loading
   if (isLoading) return <Loading />
 
   return (
@@ -52,8 +58,6 @@ const Login = () => {
         <ErrorComponent title="Error" message="Something went wrong. Please try again." />
       ) : (
         <div className="flex grow flex-col items-center justify-between bg-radial-gradient">
-          <div />
-
           <form
             method="post"
             onSubmit={handleSubmit}
@@ -81,7 +85,6 @@ const Login = () => {
               value="email"
             />
           </form>
-
           <div className="self-center pb-4 text-12 text-gray-300">© 2023 La Famiglia x Rostlab</div>
         </div>
       )}

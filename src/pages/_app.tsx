@@ -7,6 +7,11 @@ import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import { getCookie } from '@/util/cookie'
 import '@/styles/globals.css'
 
+/**
+ * Default component to initialize every page
+ * @param {AppProps<{ initialSession: Session }>} props - The component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 const App = ({
   Component,
   pageProps
@@ -16,6 +21,7 @@ const App = ({
   const [supabaseClient] = useState(() => createPagesBrowserClient())
 
   return (
+    // Provide the Supabase client and initial session using SessionContextProvider
     <SessionContextProvider
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}

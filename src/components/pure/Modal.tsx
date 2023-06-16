@@ -14,7 +14,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay: a semi-transparent black background that covers the whole page */}
       <div
         className="fixed inset-0 z-40 bg-black opacity-10"
         onClick={onClose}
@@ -24,6 +24,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           }
         }}
         tabIndex={0}
+        // Treat the overlay as a button for accessibility purposes
         role="button"
       />
 

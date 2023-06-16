@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import { createElement, useState } from 'react'
 import { AppProps } from 'next/app'
-import { withUrqlClient } from 'next-urql'
-import { cacheExchange, fetchExchange } from 'urql'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import { getCookie } from '@/util/cookie'
+import withUrql from '@/components/side-effects/withUrql'
 import '@/styles/globals.css'
 
 /**
@@ -19,33 +17,15 @@ const App = ({
   initialSession: Session
 }>) => {
   const [supabaseClient] = useState(() => createPagesBrowserClient())
-
+  const ComponentWithUrql = withUrql(Component)
+  // Provide the Supabase client and initial session using SessionContextProvider
   return (
-    // Provide the Supabase client and initial session using SessionContextProvider
     <SessionContextProvider
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      {React.createElement(Component, pageProps)}
+      {createElement(ComponentWithUrql, pageProps)}
     </SessionContextProvider>
   )
 }
-
-export default withUrqlClient(
-  () => ({
-    url: process.env.NEXT_PUBLIC_API_GRAPHQL_URL,
-    exchanges: [cacheExchange, fetchExchange],
-    fetchOptions: () => {
-      if (typeof window !== 'undefined') return {}
-      const cookie = getCookie(process.env.NEXT_PUBLIC_SUPABASE_AUTH_COOKIE_NAME)
-      if (cookie)
-        return {
-          headers: {
-            Authorization: `Bearer ${cookie}`
-          }
-        }
-      return {}
-    }
-  }),
-  { ssr: false }
-)(App)
+export default App

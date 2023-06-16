@@ -1,22 +1,21 @@
 import supabase from './supabase'
 import {
-  getOrganizationID,
-  getGithubData,
   getPersonID,
-  turnIntoProjectInsertion,
   getProjectID,
-  updateSupabaseProject
+  updateSupabaseProject,
+  formatLinkedInCompanyData
 } from './dataAggregation'
-import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
-import { GitHubInfo, ProjectFounder } from '../types/githubApi'
-import { TrendingState } from '../types/processRepo'
-import { fetchRepositoryReadme } from './scraping/githubScraping'
+import { getRepoFounders } from './api/githubApi'
 import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
-import { repoIsAlreadyInDB } from './dataAggregation'
+import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
-import { formatLinkedInCompanyData } from './dataAggregation'
-import { getRepoFounders } from './api/githubApi'
+/*
+Types:
+*/
+import { ProjectUpdate } from '../types/dataAggregation'
+import { ProjectFounder } from '../types/githubApi'
+import { TrendingState } from '../types/processRepo'
 
 /**
  * Updates the trending state of a repo

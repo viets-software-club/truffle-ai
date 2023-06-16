@@ -1,22 +1,27 @@
+import supabase from './supabase'
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import {
   updateProjectELI5,
   updateProjectSentiment,
   updateProjectTrendingState
 } from './processRepo'
-import supabase from './supabase'
-import { TrendingState } from '../types/processRepo'
-import { GitHubInfo } from '../types/githubApi'
 import {
   getGithubData,
   getOrganizationID,
   getPersonID,
-  turnIntoProjectInsertion
+  turnIntoProjectInsertion,
+  updateSupabaseProject,
+  purgeTrendingState,
+  repoIsAlreadyInDB
 } from './dataAggregation'
 import { getRepoStarRecords } from './starHistory/starHistory'
+/* 
+Types: 
+*/
+import { TrendingState } from '../types/processRepo'
+import { GitHubInfo } from '../types/githubApi'
 import { StarRecord } from '../types/starHistory'
 import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
-import { updateSupabaseProject, purgeTrendingState, repoIsAlreadyInDB } from './dataAggregation'
 import { getCutOffTime } from './utils'
 
 /**

@@ -1,5 +1,10 @@
 import supabase from './supabase'
 import {
+  updateProjectELI5,
+  updateProjectSentiment,
+  updateProjectTrendingState
+} from './updateProject'
+import {
   getOrganizationID,
   getPersonID,
   turnIntoProjectInsertion,
@@ -7,21 +12,16 @@ import {
   purgeTrendingState,
   repoIsAlreadyInDB
 } from './supabaseUtils'
-import {
-  updateProjectELI5,
-  updateProjectSentiment,
-  updateProjectTrendingState
-} from './updateProject'
 import { getGithubData, getCutOffTime } from './utils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
 /* 
 Types: 
 */
-import { TrendingState } from '../types/processRepo'
 import { GitHubInfo } from '../types/githubApi'
 import { StarRecord } from '../types/starHistory'
-import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
+import { ProjectInsertion, ProjectUpdate } from '../types/supabaseUtils'
+import { TrendingState } from '../types/updateProject'
 
 /**
  * Updates the database with the current trending repositories.
@@ -104,7 +104,7 @@ const goThroughListOfRepos = async (repos: string[], trendingState: TrendingStat
  * @param {string} owner - The name of the owner of the repo.
  * @returns {boolean} True if the repo was added to the database.
  */
-export const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
+const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
   // hacky solution for now. Only if the trendingState is null is it needed to check if
   // the repo is already in the database, because right now when this function is called with a trending state
   // then that call comes from dbUpdater.ts and there it is already checked if the repo is in the database
@@ -151,7 +151,7 @@ export const insertProject = async (name: string, owner: string, trendingState: 
  * @param {string} name - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
  */
-export const updateProject = async (name: string, owner: string) => {
+const updateProject = async (name: string, owner: string) => {
   // get the github data
   const githubData: GitHubInfo | null = await getGithubData(name, owner)
   if (!githubData) return null

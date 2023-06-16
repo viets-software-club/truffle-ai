@@ -13,9 +13,9 @@ import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 /*
 Types:
 */
-import { ProjectUpdate } from '../types/dataAggregation'
 import { ProjectFounder } from '../types/githubApi'
-import { TrendingState } from '../types/processRepo'
+import { TrendingState } from '../types/updateProject'
+import { ProjectUpdate } from '../types/supabaseUtils'
 
 /*
 Exports:

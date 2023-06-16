@@ -3,15 +3,15 @@ import { getOrganizationInfo, getUserInfo } from './api/githubApi'
 /*
 Types:
 */
+import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
+import { LinkedInCompanyProfile } from '../types/linkedInScraping'
+import { StarRecord } from '../types/starHistory'
 import {
   OrganizationInsertion,
   OrganizationUpdate,
   PersonInsertion,
   ProjectUpdate
-} from '../types/dataAggregation'
-import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
-import { LinkedInCompanyProfile } from '../types/linkedInScraping'
-import { StarRecord } from '../types/starHistory'
+} from '../types/supabaseUtils'
 
 /*
 Exports:

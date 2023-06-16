@@ -29,8 +29,8 @@ const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
         <div className={classNameForWrapper}>
           <div className="flex w-full items-center px-2 py-1">
             {Icon && <Icon className="mr-8  w-[24px] text-gray-500" />}
-            <span className="w-60 text-left text-gray-200">{menuText}</span>
-            <div className="flex w-full justify-end">
+            <span className="w-full text-left text-gray-200">{menuText}</span>
+            <div className="flex justify-end">
               {!isProjectItem && ShortcutIcon && (
                 <ShortcutIcon className="mr-8 h-8 w-[24px] text-gray-500" />
               )}{' '}

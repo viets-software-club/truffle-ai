@@ -95,9 +95,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   }
 
   const navigateTo = (path: string) => {
-    router.push(path).catch(() => {
-      // @TODO show a message to user
-    })
+    void router.push(path)
   }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -199,7 +197,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
 
   return (
     <div
-      className="fixed flex h-screen w-full items-start justify-center bg-black/50 shadow-lg"
+      className="fixed z-10 flex h-screen w-full items-start justify-center bg-black/50 shadow-lg"
       id="spotlight_wrapper"
     >
       <div ref={commandInterfaceWrapperRef} className="h-96 w-1/2">

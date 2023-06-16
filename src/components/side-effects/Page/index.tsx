@@ -34,9 +34,7 @@ const Page = ({ children }: PageProps) => {
         )
         if (shortcutsForPages.length > 0) {
           event.preventDefault()
-          router.push(shortcutsForPages[0].commandInterfaceOptions).catch(() => {
-            // @TODO show a message to user
-          })
+          void router.push(shortcutsForPages[0].commandInterfaceOptions)
         }
       }
     }

@@ -1,4 +1,9 @@
-import { IoMdGrid } from 'react-icons/io'
+import {
+  FiBookOpen as BookOpen,
+  FiCompass as Compass,
+  FiBookmark as Bookmark,
+  FiSettings as Settings
+} from 'react-icons/fi'
 import { MdEmail, MdArrowForward } from 'react-icons/md'
 import {
   TbSquareRoundedLetterB,
@@ -25,29 +30,29 @@ const defaultList: RecommendationRowType[] = [
     shortcutKeyIcon: TbSquareRoundedLetterM
   },
   {
-    Icon: IoMdGrid,
-    menuText: 'Home',
+    Icon: Compass,
+    menuText: 'Trending Projects',
     subtitle: 'View',
     commandInterfaceOptions: CommandInterfaceOptions.GoHome,
     shortcutKey: 'H',
     shortcutKeyIcon: TbSquareRoundedLetterH
   },
   {
-    Icon: MdArrowForward,
+    Icon: Settings,
     menuText: 'Settings',
     commandInterfaceOptions: CommandInterfaceOptions.Settings,
     shortcutKey: 'S',
     shortcutKeyIcon: TbSquareRoundedLetterS
   },
   {
-    Icon: MdArrowForward,
+    Icon: Bookmark,
     menuText: 'Bookmarks',
     commandInterfaceOptions: CommandInterfaceOptions.Bookmarks,
     shortcutKey: 'B',
     shortcutKeyIcon: TbSquareRoundedLetterB
   },
   {
-    Icon: MdArrowForward,
+    Icon: BookOpen,
     menuText: 'Documentation',
     commandInterfaceOptions: CommandInterfaceOptions.Documentation,
     shortcutKey: 'D',

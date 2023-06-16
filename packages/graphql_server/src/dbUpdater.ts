@@ -1,6 +1,7 @@
 import supabase from './supabase'
 import {
   updateProjectELI5,
+  updateProjectGithubStats,
   updateProjectSentiment,
   updateProjectTrendingState,
   updateProjectTrendingStatesForListOfRepos
@@ -45,6 +46,10 @@ const newDbUpdater = async (includeDeletion: boolean) => {
   }
 
   const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
+  // here everything that should be updated daily is updated. atm this is just github stats
+  for (const project of projectsToBeUpdated) {
+    await updateProjectGithubStats(project.name, project.owner)
+  }
 }
 
 /**

@@ -4,17 +4,19 @@ import {
   getProjectID,
   updateSupabaseProject,
   formatLinkedInCompanyData,
-  repoIsAlreadyInDB
+  repoIsAlreadyInDB,
+  formatGithubStats
 } from './supabaseUtils'
 import { getRepoFounders } from './api/githubApi'
 import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
+import { getGithubData } from './utils'
 /*
 Types:
 */
-import { ProjectFounder } from '../types/githubApi'
+import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
 
@@ -24,6 +26,7 @@ Exports:
 export {
   updateProjectELI5,
   updateProjectFounders,
+  updateProjectGithubStats,
   updateProjectLinkedInData,
   updateProjectSentiment,
   updateProjectTrendingState,
@@ -46,6 +49,22 @@ const updateProjectELI5 = async (name: string, owner: string) => {
     await updateSupabaseProject(name, owner, {
       eli5: 'ELI5/description could not be generated for this project'
     })
+  }
+}
+
+// @Todo: documenatation
+const updateProjectGithubStats = async (name: string, owner: string) => {
+  const githubStats: GitHubInfo | null = await getGithubData(name, owner)
+  if (!githubStats) {
+    console.log('Could not get github stats for ', name, 'owned by', owner)
+    return
+  }
+  const updated = await updateSupabaseProject(name, owner, formatGithubStats(githubStats))
+
+  if (!updated) {
+    console.log('Could not update github stats for ', name, 'owned by', owner)
+  } else {
+    console.log('Updated github stats for ', name, 'owned by', owner)
   }
 }
 

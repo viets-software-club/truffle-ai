@@ -1,7 +1,23 @@
 import { fetchTrendingRepos } from './scraping/githubScraping'
-import { insertProject, updateProjectTrendingState, updateProject } from './processRepo'
+import {
+  updateProjectELI5,
+  updateProjectSentiment,
+  updateProjectTrendingState
+} from './processRepo'
 import supabase from './supabase'
 import { TrendingState } from '../types/processRepo'
+import { GitHubInfo } from '../types/githubApi'
+import {
+  getGithubData,
+  getOrganizationID,
+  getPersonID,
+  turnIntoProjectInsertion
+} from './dataAggregation'
+import { getRepoStarRecords } from './starHistory/starHistory'
+import { StarRecord } from '../types/starHistory'
+import { ProjectInsertion, ProjectUpdate } from '../types/dataAggregation'
+import { updateSupabaseProject, purgeTrendingState, repoIsAlreadyInDB } from './dataAggregation'
+import { getCutOffTime } from './utils'
 
 /**
  * Updates the database with the current trending repositories.
@@ -59,34 +75,6 @@ export const dbUpdater = async () => {
 }
 
 /**
- * Calculates time specified by the parameters
- * @param {number} hours - The number of hours to subtract.
- * @param {number} minutes - The number of minutes to subtract.
- * @returns {string} The specified time in ISO format.
- */
-const getCutOffTime: (hours: number, minutes: number) => string = (
-  hours: number,
-  minutes: number
-) => {
-  const cutoffTime = new Date()
-  cutoffTime.setHours(cutoffTime.getHours() - hours)
-  cutoffTime.setMinutes(cutoffTime.getMinutes() - minutes)
-  return cutoffTime.toISOString()
-}
-
-/**
- * Sets the trending states of all projects to false.
- * contributor_count comparison because I want to target all rows but have to specify a filter
- */
-const purgeTrendingState = async () => {
-  const { error: supabaseError } = await supabase
-    .from('project')
-    .update({ is_trending_daily: false, is_trending_weekly: false, is_trending_monthly: false })
-    .neq('contributor_count', -1000)
-  supabaseError && console.error('Error while purging trending state: \n', supabaseError)
-}
-
-/**
  * Goes through the list of repos and processes them one by one.
  * @param {string[]} repos - The repos to go through
  */
@@ -106,48 +94,76 @@ const goThroughListOfRepos = async (repos: string[], trendingState: TrendingStat
 }
 
 /**
- * Checks if the repo is already in the db.
- * @param {string} name - The name  of the repo.
+ * Adds a repo to the database.
+ * This method should only be called when it is certain that a repo is not in the database yet.
+ * @param {string} name - The name of the repo.
  * @param {string} owner - The name of the owner of the repo.
- * @returns {boolean} True if the repo is already in the db.
+ * @returns {boolean} True if the repo was added to the database.
  */
-export const repoIsAlreadyInDB = async (name: string, owner: string) => {
-  // check if there are repositories with the same name
-  const { data: matchingRepos, error: checkRepoIfRepoInDBError } = await supabase
-    .from('project')
-    .select('*')
-    .eq('name', name)
-  checkRepoIfRepoInDBError &&
-    console.error(
-      'Error while checking if',
-      name,
-      'is in the database: \n',
-      checkRepoIfRepoInDBError
-    )
-  // if there are no repositories with the same name return false
-  if (!matchingRepos) return false
+export const insertProject = async (name: string, owner: string, trendingState: TrendingState) => {
+  // hacky solution for now. Only if the trendingState is null is it needed to check if
+  // the repo is already in the database, because right now when this function is called with a trending state
+  // then that call comes from dbUpdater.ts and there it is already checked if the repo is in the database
+  if (!trendingState && (await repoIsAlreadyInDB(name, owner))) {
+    return false
+  }
+  // get the github data
+  const githubData: GitHubInfo | null = await getGithubData(name, owner)
+  if (!githubData) return false
+  // get the starHistory
+  const starHistory: StarRecord[] = await getRepoStarRecords(
+    owner + '/' + name,
+    process.env.GITHUB_API_TOKEN,
+    25
+  )
+  // convert the github data into a format that can be inserted into the database
+  const projectInsertion: ProjectInsertion = turnIntoProjectInsertion(githubData, starHistory)
 
-  // for each of those with the same name check if the owner has the same name
-  for (const repo of matchingRepos) {
-    // if the owner is an organization
-    if (repo.owning_organization) {
-      const { data: owning_organization } = await supabase
-        .from('organization')
-        .select('*')
-        .eq('id', repo.owning_organization)
-
-      // the owner has the same name -> the repo is already in the database
-      if (owning_organization?.[0]?.login === owner) return true
-    } else {
-      const { data: owning_person } = await supabase
-        .from('associated_person')
-        .select('*')
-        .eq('id', repo.owning_person)
-
-      // the owner has the same name -> the repo is already in the database
-      if (owning_person?.[0]?.login === owner) return true
-    }
+  projectInsertion.owning_organization = await getOrganizationID(owner)
+  projectInsertion.owning_person = await getPersonID(owner)
+  if (trendingState) {
+    projectInsertion[trendingState] = true
   }
 
+  // insert the repo into the database
+  const { error: insertionError } = await supabase.from('project').insert([projectInsertion])
+
+  if (!insertionError) {
+    // if it got inserted, then add the other data sources
+    await updateProjectSentiment(name, owner)
+    await updateProjectELI5(name, owner)
+    console.log('Inserted ', name, 'owned by', owner)
+    return true
+  }
+
+  console.log('Error while inserting ', name, 'owned by', owner, ' \n Error: \n ', insertionError)
   return false
+}
+
+/**
+ * Updates a repo that is currently in the db.
+ * Ath the moment this method only updates the github stats and star history.
+ * In the future it will update gh stats + twitter on a daily and everything else on a weekly basis
+ * @param {string} name - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
+export const updateProject = async (name: string, owner: string) => {
+  // get the github data
+  const githubData: GitHubInfo | null = await getGithubData(name, owner)
+  if (!githubData) return null
+  // get the starHistory
+  const starHistory: StarRecord[] = await getRepoStarRecords(
+    owner + '/' + name,
+    process.env.GITHUB_API_TOKEN,
+    25
+  )
+  // convert the github data into a format that can be inserted into the database. ProjectUpdate and ProjectInsertion are virtually  the same
+  const projectUpdate: ProjectUpdate = turnIntoProjectInsertion(
+    githubData,
+    starHistory
+  ) as ProjectUpdate
+
+  const updated = await updateSupabaseProject(name, owner, projectUpdate)
+
+  updated ? console.log('updated ', name, 'owned by', owner) : null
 }

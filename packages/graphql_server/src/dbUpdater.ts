@@ -2,7 +2,8 @@ import supabase from './supabase'
 import {
   updateProjectELI5,
   updateProjectSentiment,
-  updateProjectTrendingState
+  updateProjectTrendingState,
+  updateProjectTrendingStatesForListOfRepos
 } from './updateProject'
 import {
   getOrganizationID,
@@ -23,9 +24,23 @@ import { StarRecord } from '../types/starHistory'
 import { ProjectInsertion, ProjectUpdate } from '../types/supabaseUtils'
 import { TrendingState } from '../types/updateProject'
 
-const newDbUpdater = async () => {
+const newDbUpdater = async (includeDeletion: boolean) => {
   // set all trending states of the repos in the db to false
   await purgeTrendingState()
+
+  // get the trending repos
+  const dailyTrendingRepos = await fetchTrendingRepos('daily')
+  const weeklyTrendingRepos = await fetchTrendingRepos('weekly')
+  const monthlyTrendingRepos = await fetchTrendingRepos('monthly')
+
+  // update the trending states of the repos currently on the db
+  await updateProjectTrendingStatesForListOfRepos(dailyTrendingRepos, 'is_trending_daily')
+  await updateProjectTrendingStatesForListOfRepos(weeklyTrendingRepos, 'is_trending_weekly')
+  await updateProjectTrendingStatesForListOfRepos(monthlyTrendingRepos, 'is_trending_monthly')
+
+  if (includeDeletion) {
+    console.log('need to implement')
+  }
 }
 
 /**

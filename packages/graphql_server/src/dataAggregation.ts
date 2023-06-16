@@ -1,4 +1,4 @@
-import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
+import supabase from './supabase'
 import { getOrganizationInfo, getRepoInfo, getUserInfo } from './api/githubApi'
 import {
   OrganizationInsertion,
@@ -6,9 +6,12 @@ import {
   PersonInsertion,
   ProjectUpdate
 } from '../types/dataAggregation'
-import supabase from './supabase'
-import { StarRecord } from '../types/starHistory'
+/*
+Types:
+*/
+import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { LinkedInCompanyProfile } from '../types/linkedInScraping'
+import { StarRecord } from '../types/starHistory'
 
 /**
  * Formats the github data into a format that can be inserted into the database.

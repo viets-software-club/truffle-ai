@@ -108,13 +108,12 @@ const Settings = () => {
                 <label htmlFor={key} className="mb-2 text-14 font-normal">
                   {key}
                 </label>
-                <input
+                <Input
                   type="number"
                   id={key}
                   name={key}
                   value={value}
                   onChange={handleInputChange}
-                  className="rounded border border-gray-800 bg-gray-900 p-2 text-white"
                   placeholder="100"
                 />
               </div>

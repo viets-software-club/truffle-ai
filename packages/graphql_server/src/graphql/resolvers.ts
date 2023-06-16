@@ -1,9 +1,12 @@
-import { insertProject, parseGitHubUrl, exposeProjectsData } from '../processRepo'
+import { insertProject, parseGitHubUrl } from '../processRepo'
+import { exposeProjectsData } from '../resolver/projects';
 
 const resolvers = {
   Query: {
     helloWorld: () => 'Hello world!',
-    allProjects: () => exposeProjectsData()
+    allProjects: async () => {
+      return await exposeProjectsData()
+    }
   },
   Mutation: {
     // takes in variables. Parent object _ is never used

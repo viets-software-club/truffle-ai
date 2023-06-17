@@ -33,13 +33,13 @@ to install all dependencies.<br /><br />
 To run the application in development mode, run
 
 ```zsh
-npm run dev # dev mode
+npm run dev:services # dev mode
 ```
 
 To build and serve the application with NodeJS run
 
 ```zsh
-npm run build # builds the app
+npm run build:services # builds the app
 npm run serve # serve the app
 ```
 
@@ -71,14 +71,20 @@ To work with all services simultaneously you can use [NPM workspaces](https://do
 
 ## List of Commands
 
+Note: Services are served continuously and Jobs are run once.
+
 ```zsh
 npm ci # install all dependencies from package-lock.json
 
 npm run prepare # installs pre-commit hook (running lint-staged on staged files)
-npm run dev # start services in dev mode
+npm run dev # start services and jobs in dev mode
+npm run dev:jobs # start jobs in dev mode
+npm run dev:services # start services in dev mode
 npm run build # build services and jobs
+npm run build:jobs # build jobs
+npm run build:services # build services
 npm run serve # serve the built services (excluding jobs)
-npm run start -w <job> # starts the built job
+npm run job # starts all jobs
 
 npm run test # check your files format and lint them
 npm run format # format all your files with Pettier

@@ -1,1 +1,1 @@
-console.log('Job run at ', new Date().toLocaleDateString())
+console.log('Job run at', new Date().toLocaleString())

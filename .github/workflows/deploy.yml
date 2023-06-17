@@ -6,6 +6,7 @@ on:
     paths:
       - 'packages/**'
       - '.github/workflows/**'
+      - '.github/init-deployment.js'
       - 'config/deployment.template.yml'
 jobs:
   build:
@@ -36,23 +37,18 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 truffle-ai-cluster
       - name: Create deployment.yml from deployment.template.yml and add environment variables
         run: envsubst < $GITHUB_WORKSPACE/config/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
+      - uses: actions/setup-node@v3
       - name: Update values in deployment file
         run: >
-          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7) && 
-          GRAPHQL_GATEWAY_PORT=$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d) && 
-          GRAPHQL_SERVER_PORT=$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d) && 
-          CHANGE_CAUSE=${{github.event.head_commit.message}} && 
-          GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG} && 
-          GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG} && 
-          REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG} && 
-          sed -i '
-          s|<GRAPHQL-SERVER-IMAGE>|'${GRAPHQL_SERVER_IMAGE}'|;
-          s|<GRAPHQL-GATEWAY-IMAGE>|'${GRAPHQL_GATEWAY_IMAGE}'|;
-          s|<REPO-JOB-IMAGE>|'${REPO_JOB_IMAGE}'|;
-          s|<GRAPHQL-GATEWAY-PORT>|'${GRAPHQL_GATEWAY_PORT}'|;
-          s|<GRAPHQL-SERVER-PORT>|'${GRAPHQL_SERVER_PORT}'|;
-          s|<CHANGE_CAUSE>|'${CHANGE_CAUSE}'|
-          ' $GITHUB_WORKSPACE/config/deployment.yml
+          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+          GRAPHQL_GATEWAY_PORT=$(kubectl get secret graphql-gateway-secret --template='{{.data.GATEWAY_PORT}}' | base64 -d)
+          GRAPHQL_SERVER_PORT=$(kubectl get secret graphql-server-secret --template='{{.data.SERVER_PORT}}' | base64 -d)
+          GRAPHQL_SERVER_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:${COMMIT_TAG}
+          GRAPHQL_GATEWAY_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:${COMMIT_TAG}
+          REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG}
+          COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
+          CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header)
+          node $GITHUB_WORKSPACE/.github/init-deployment.js
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
       - name: Verify deployment

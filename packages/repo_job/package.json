@@ -6,9 +6,13 @@
   "config": {
     "env_dev": ". ../../env.sh"
   },
-  "devDependencies": {},
   "scripts": {
+    "dev": "$npm_package_config_env_dev && ts-node index.ts",
     "build": "$npm_package_config_env_dev && tsc",
     "start": "$npm_package_config_env_dev && node dist/index.js"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
   }
 }

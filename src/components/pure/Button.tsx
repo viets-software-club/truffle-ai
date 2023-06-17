@@ -1,3 +1,7 @@
+// @TODO refactor component
+
+import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+
 type ButtonProps = {
   variant:
     | 'normal'
@@ -8,14 +12,13 @@ type ButtonProps = {
     | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
     | 'filter'
-  onClick: () => void
   text?: string
   Icon?: IconComponentType
   order?: 'ltr' | 'rtl'
   iconColor?: string
   textColor?: string
   fullWidth?: boolean
-}
+} & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 
 const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
 
@@ -44,7 +47,9 @@ const Button = ({
   order,
   iconColor = 'text-gray-500',
   textColor = 'text-gray-300',
-  fullWidth
+  fullWidth,
+  disabled,
+  type = 'button'
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
 
@@ -70,7 +75,8 @@ const Button = ({
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
 
   return (
-    <button type="button" onClick={onClick} className={classNames}>
+    // eslint-disable-next-line react/button-has-type
+    <button type={type} disabled={disabled} onClick={onClick} className={classNames}>
       {contentNode}
     </button>
   )

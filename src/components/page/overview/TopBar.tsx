@@ -1,23 +1,23 @@
 import { Fragment, ReactNode, useState } from 'react'
+import { Menu, Transition } from '@headlessui/react'
 import { Column } from '@tanstack/react-table'
 import { TbColumns2 } from 'react-icons/tb'
 import {
   AiOutlineCalendar,
   AiOutlineFilter,
   AiOutlineNumber,
-  AiOutlinePlus,
   AiOutlineSortAscending
 } from 'react-icons/ai'
 import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
-import { Menu, Transition } from '@headlessui/react'
-import Button from '@/components/pure/Button'
-import { Project } from '@/graphql/generated/gql'
 import { IoTextOutline } from 'react-icons/io5'
+import Button from '@/components/pure/Button'
 import {
   NumberTableFilterOperator,
   StringTableFilterOperator,
   TableFilter
 } from '@/components/page/overview/TableFilter'
+import AddProject from '@/components/side-effects/AddProject'
+import { Project } from '@/graphql/generated/gql'
 
 type TopBarProps = {
   columns: Column<Project, unknown>[]
@@ -57,6 +57,7 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
 const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarProps) => {
   const [open, setOpen] = useState(false)
   const [selectedTimeFrame, setSelectedTimeFrame] = useState(timeFrameOptions[1])
+
   return (
     <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
       {/* Filter, Sort, Edit Columns buttons */}
@@ -200,6 +201,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
             </Menu.Items>
           </TransitionMenuItems>
         </Menu>
+
         <div className="inline-block">
           <Button
             onClick={nullFunc}
@@ -212,19 +214,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
         </div>
       </div>
 
-      <div className="flex flex-row gap-3">
-        <div className="inline-block">
-          <Button
-            onClick={nullFunc}
-            variant="highlighted"
-            text="Add Project"
-            Icon={AiOutlinePlus}
-            order="ltr"
-            iconColor="white"
-            textColor="white"
-          />
-        </div>
-      </div>
+      <AddProject />
     </div>
   )
 }

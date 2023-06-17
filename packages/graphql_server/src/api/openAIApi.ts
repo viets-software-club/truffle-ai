@@ -12,7 +12,7 @@ const errorMessage =
 const headers = {
   'Content-Type': 'application/json',
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  Authorization: 'Bearer ' + process.env.OPENAI_API_KEY
+  Authorization: 'Bearer ' + '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' //process.env.OPENAI_API_KEY
 }
 
 /**
@@ -163,7 +163,7 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
         Categories.ComputerVision
       ]
       break
-    case 4: // if chatgpt says categories are not specifc enough we just return two of them
+    default: // if chatgpt says categories are not specifc enough we just return two of them
       categoriesSpecific = [
         Categories.CodeEditors,
         Categories.VersionControl,
@@ -181,9 +181,6 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
         Categories.ComputerVision
       ]
       break
-    default:
-      console.log('Invalid categoryGeneral value')
-      return null
   }
 
   //defines the request. Adding the readMe or categories and the correct categories
@@ -229,8 +226,9 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function categorizeProjectGeneral(categories: string, readme: string) {
+  console.log(categories)
   const questionCategoriesGeneral =
-    'These 3 categroies should be used to categorize a software engineering project. 1 for developer tools, 2 for Infrastructure, 3 for Machine Learning and Artifical Inteligence. Apart from the number do not respond with anything): '
+    'These 3 categroies should be used to categorize a software engineering project. 1 for developer tools, 2 for Infrastructure, 3 for Machine Learning and Artifical Inteligence. just decide on the categories and only return the numbers. So your number for example should be: 3. Only return one number! If you did not find any categories at the beginning of the question just tell me:  '
 
   const request_body_Categories = {
     model: model,
@@ -238,7 +236,7 @@ async function categorizeProjectGeneral(categories: string, readme: string) {
       {
         role: 'system',
         content:
-          'You are a professor trying to categorize a project. You have to read something about the project and then give it two of the categories according to your evaluation. Even if you do not think that you can evaluate it. Just do it to the best of your abilities'
+          'You are a professor trying to categorize a project. You have to read something about the project and then give it two of the categories according to your evaluation. Even if you do not think that you can evaluate it. If you do not think you can evaluate it just tell me'
       },
       { role: 'user', content: '' }
     ]
@@ -251,7 +249,7 @@ async function categorizeProjectGeneral(categories: string, readme: string) {
     'Machine Learning and Aritfical Inteligence'
   ]
   request_body_Categories.messages[1].content = //adds the categories to the question and then adds them to the request that is going to be send
-    listOfCategories.join(' ,') + questionCategoriesGeneral + categories
+    listOfCategories.join(' ,') + questionCategoriesGeneral + categories + readme
   try {
     const response = await axios.post(openAIapiUrl, request_body_Categories, { headers })
     //returns a number that decides which general categorie we are using
@@ -261,13 +259,23 @@ async function categorizeProjectGeneral(categories: string, readme: string) {
       return null
     } else {
       const content: string = data?.choices[0]?.message?.content
+      //I want to filter out the numbers from the gpt response
+      const numberRegex = /\d/g
+      const numbers: number[] = content.match(numberRegex)?.map(Number) || [] //takes the numbers out of the response
+      if (numbers.length != 0) {
+        return categorizeProjectSpecific(readme, numbers[0])
+      } else {
+        return "['could not','evaluate categories]"
+      }
+      /*
       const num = parseInt(content) //parses the returned string into a number
+      console.log(num)
       if (num !== 1 && num !== 2 && num !== 3) {
         return categorizeProjectSpecific(readme, 4) //if chatGPT does not think that the categories are good enough it does not return a number
       } else {
         //If there is no number we specify the categories based on the readme and we take into consideration all categories
         return categorizeProjectSpecific(categories, num) //if the number is correct we only pick the specifc categories which are predetermined inside the specfic method
-      }
+      }*/
     }
   } catch (error) {
     console.log('AI request did not work: ', error)

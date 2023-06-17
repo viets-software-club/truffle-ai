@@ -497,6 +497,22 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
 }
 
 /**
+ * Renames a bookmark category.
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const renameBookmarkCategory = async (userID: string, oldCategory: string, newCategory: string) => {
+  const { error } = await supabase
+    .from('bookmark')
+    .update({ category: newCategory })
+    .eq('user_id', userID)
+    .eq('category', oldCategory)
+
+  return error
+}
+
+/**
  * Formats the github data into a format that can be inserted into the database.
  * The Format can also be used for database updates.
  * @param {GitHubInfo} githubData - The github statistics to be formatted

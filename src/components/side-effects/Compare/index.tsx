@@ -12,6 +12,7 @@ import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { TableFilter } from '@/components/page/overview/TableFilter'
+import { TableSort } from '@/components/page/overview/TableSort'
 
 const nullFunc = () => null
 
@@ -26,6 +27,7 @@ const Compare = () => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<TableFilter[]>([])
+  const [tableSort, setTableSort] = useState<TableSort | null>(null)
 
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery()
@@ -78,6 +80,8 @@ const Compare = () => {
         addFilter={addFilter}
         filters={filters}
         comparePage
+        tableSort={tableSort}
+        setTableSort={setTableSort}
       />
       {filters.length > 0 && (
         <FilterBar
@@ -134,7 +138,12 @@ const Compare = () => {
         </div>
       </div>
 
-      <Table table={table} filters={filters} setFilteredRowCount={setFilteredRowCount} />
+      <Table
+        table={table}
+        filters={filters}
+        setFilteredRowCount={setFilteredRowCount}
+        tableSort={tableSort}
+      />
     </div>
   )
 }

@@ -2,21 +2,24 @@
 const schema = `
   type Query {
     helloWorld: String!
-    allProjects(first: Int, after: String):[Project!]! {
-      edges{
-        cursor
-        node{
-          Project!
-        }
-      }
-      pageInfo{
-        hasNextPage
-      }
-    }
+    allProjects(first: Int, after: String): ProjectConnection!
   }
   type Mutation {
     addProjectByName(name: String!, owner: String!): Boolean!
     addProjectByUrl(url: String!): Boolean!
+  }
+  type ProjectConnection {
+    edges: [ProjectEdge!]!
+    pageInfo: PageInfo!
+  }
+  
+  type ProjectEdge {
+    cursor: String!
+    node: Project!
+  }
+  
+  type PageInfo {
+    hasNextPage: Boolean!
   }
   type Project {
     id: ID!

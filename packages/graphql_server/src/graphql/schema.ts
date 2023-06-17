@@ -6,14 +6,14 @@ const schema = `
   type Mutation {
     addProjectByName(name: String!, owner: String!): Boolean!
     addProjectByUrl(url: String!): Boolean!
-    addBookmark(projectID: String!, category: String!): Error!
+    addBookmark(projectID: String!, category: String!): Response!
+    deleteBookmark(projectID: String!): Response!
   }
   type Response {
       message: String
       details: String
       hint: String
       code: String!
-  }
   }
 `
 

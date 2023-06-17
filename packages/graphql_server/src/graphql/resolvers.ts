@@ -1,5 +1,5 @@
 import { createProject } from '../dbUpdater'
-import { bookmarkIsAlreadyInDB, insertBookmark } from '../supabaseUtils'
+import { bookmarkIsAlreadyInDB, deleteBookmark, insertBookmark } from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
 
@@ -46,8 +46,33 @@ const resolvers = {
       return insertionError
         ? insertionError
         : {
-            code: '201'
+            code: '204'
           }
+    },
+    deleteBookmark: async (
+      _parent: unknown,
+      { projectID }: { projectID: string },
+      context: MercuriusContext
+    ) => {
+      if (!context.user) {
+        return {
+          message: 'The graphQL resolver did not receive a valid user.',
+          code: '400',
+          hint: 'Are you loggedIn?'
+        }
+      }
+
+      const userID = context.user?.id
+
+      if (!(await bookmarkIsAlreadyInDB(userID, projectID))) {
+        return {
+          message: 'This bookmark does not exist on the database.',
+          code: '409'
+        }
+      }
+
+      const deletionError = await deleteBookmark(userID, projectID)
+      return deletionError ? deletionError : { code: '204' }
     }
   }
 }

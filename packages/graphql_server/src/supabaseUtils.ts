@@ -20,6 +20,7 @@ Exports:
 */
 export {
   bookmarkIsAlreadyInDB,
+  deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
   formatLinkedInCompanyData,
   formatGithubStats,

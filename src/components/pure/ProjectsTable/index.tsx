@@ -92,6 +92,8 @@ const ProjectsTable = () => {
           updateFilter={updateFilter}
           currentEntries={filteredRowCount}
           totalEntries={data.length}
+          tableSort={tableSort}
+          setTableSort={setTableSort}
         />
       )}
       <Table

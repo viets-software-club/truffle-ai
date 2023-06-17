@@ -13,7 +13,6 @@ import {
   TableFilter
 } from '@/components/page/overview/TableFilter'
 import { TableSort } from '@/components/page/overview/TableSort'
-import TableSortModal from '@/components/page/overview/TableSortModal'
 
 type TopBarProps = {
   columns: Column<Project, unknown>[]
@@ -224,49 +223,43 @@ const TopBar = ({
           <TransitionMenuItems>
             <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
               <div className="py-1">
-                {tableSort ? (
-                  <TableSortModal sort={tableSort} setSort={setTableSort} />
-                ) : (
-                  <>
-                    {columns
-                      .filter(
-                        (column) => column.getIsVisible() && column.columnDef.header !== 'Logo'
-                      )
-                      .map((column) => (
-                        <Menu.Item key={column.id}>
-                          <button
-                            type="button"
-                            className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                            onClick={() => {
-                              setTableSort({
-                                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                                column: column.columnDef.header!.toString(),
-                                direction: 'desc'
-                              })
-                            }}
-                          >
-                            {column.columnDef.header === 'Name' ? (
-                              <IoTextOutline className="text-gray-500" />
-                            ) : (
-                              <AiOutlineNumber className="text-gray-500" />
-                            )}
+                {columns
+                  .filter(
+                    (column) =>
+                      column.getIsVisible() &&
+                      column.columnDef.header !== 'Logo' &&
+                      column.columnDef.header !== tableSort?.column
+                  )
+                  .map((column) => (
+                    <Menu.Item key={column.id}>
+                      <button
+                        type="button"
+                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                        onClick={() => {
+                          setTableSort({
+                            column: column.columnDef.header as string,
+                            direction: 'desc'
+                          })
+                        }}
+                      >
+                        {column.columnDef.header === 'Name' ? (
+                          <IoTextOutline className="text-gray-500" />
+                        ) : (
+                          <AiOutlineNumber className="text-gray-500" />
+                        )}
 
-                            <p
-                              className={
-                                column.getIsVisible()
-                                  ? visibleColumnTextStyle
-                                  : hiddenColumnTextStyle
-                              }
-                            >
-                              {typeof column.columnDef.header === 'string'
-                                ? column.columnDef.header
-                                : ''}
-                            </p>
-                          </button>
-                        </Menu.Item>
-                      ))}
-                  </>
-                )}
+                        <p
+                          className={
+                            column.getIsVisible() ? visibleColumnTextStyle : hiddenColumnTextStyle
+                          }
+                        >
+                          {typeof column.columnDef.header === 'string'
+                            ? column.columnDef.header
+                            : ''}
+                        </p>
+                      </button>
+                    </Menu.Item>
+                  ))}
               </div>
             </Menu.Items>
           </TransitionMenuItems>

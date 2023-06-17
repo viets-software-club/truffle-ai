@@ -4,11 +4,13 @@ import {
   GitHubUser,
   GitHubInfo,
   Edge,
-  ContributorResponse
+  ContributorResponse,
+  GitHubCommitHistory,
+  ProjectFounder,
+  RepositoryTopicsResponse
 } from '../../types/githubApi'
 
-const githubApiUrl = 'https://api.github.com/graphql'
-
+const githubApiUrl = process.env.GITHUB_API_URL || ''
 /** Gets the repo's information via GitHub's GraphQL API
  * @param {string} query GraphQL query for the repo (including owner and name)
  * @param {string} authToken personal authorization token
@@ -132,4 +134,131 @@ export async function getContributorCount(
   const uniqueContributors = Array.from(new Set(contributors))
 
   return uniqueContributors.length
+}
+
+/**
+ * Returns a Array of Founders with their names, login names and twitter handles. This method goes trough the commit history of a specific repo
+ * and fetches teh first 5 commits, which are most likley the initiators of a project. It then removes duplicates, because several commits can be from the
+ * same person, but shouldn't be returned within the Array
+ * @param owner: name of the owner of the github repo
+ * @param name: name of the github repo
+ * @returns An Array of the project founders
+ */
+export async function getRepoFounders(owner: string, name: string): Promise<ProjectFounder[]> {
+  if (!owner || !name) {
+    throw new Error('Not able to fetch repository to get founders of the project')
+  }
+
+  const query = `query {
+        repository(owner: "${owner}", name: "${name}") {
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history(first: 5) {
+                  edges {
+                    node {
+                      author {
+                        user {
+                          name
+                          login
+                          twitterUsername
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`
+
+  // Building the AxiosRequest and initiate the post request
+  const authToken = 'Bearer ' + (process.env.GITHUB_API_TOKEN || '')
+  const response: AxiosResponse<{ data: { repository: GitHubCommitHistory } }> = await axios.post(
+    'https://api.github.com/graphql',
+    {
+      query
+    },
+    {
+      headers: {
+        Authorization: authToken
+      }
+    }
+  )
+
+  const distinctCommiters: ProjectFounder[] = []
+
+  // checks, whether a login name appears twice and only pushes distinct founders into the array
+  if (response?.data?.data?.repository?.defaultBranchRef?.target?.history?.edges) {
+    response.data.data.repository.defaultBranchRef.target.history.edges.forEach((node) => {
+      const loginName = node.node.author.user.login
+      if (!distinctCommiters.find((c) => c.login === loginName)) {
+        distinctCommiters.push({
+          name: node.node.author.user.name ?? '',
+          login: node.node.author.user.login ?? '',
+          twitterUsername: node.node.author.user.twitterUsername ?? ''
+        })
+      }
+    })
+  } else {
+    throw new Error(`No edges found in the commit history of the following repo: ${name}`)
+  }
+
+  return distinctCommiters
+}
+
+/**
+ * Retrieves the repository topics from GitHub API for the specified repository.
+ * @param repositoryOwner - The owner of the repository.
+ * @param repositoryName - The name of the repository.
+ * @returns A Promise that resolves to a string representing the repository topics.
+ * @throws Error if the repository topics cannot be retrieved.
+ * //returns topics defined by the founder
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getRepositoryTopics(
+  repositoryOwner: string, //these need to be passed as parameter
+  repositoryName: string,
+  tokenGithub: string
+) {
+  const apiUrl = 'https://api.github.com/graphql'
+
+  const query = `
+    query {
+      repository(owner: "${repositoryOwner}", name: "${repositoryName}") {
+        repositoryTopics(first: 15) {
+          nodes {
+            topic {
+              name
+            }
+          }
+        }
+      }
+    }
+  `
+
+  const headers = {
+    Authorization: `Bearer ${tokenGithub}`
+  }
+
+  try {
+    const response: AxiosResponse<RepositoryTopicsResponse> = await axios.post(
+      apiUrl,
+      { query },
+      { headers }
+    )
+    const data = response?.data?.data?.repository
+    if (data.repositoryTopics.nodes.length > 0) {
+      const topics: string[] = data.repositoryTopics.nodes.map(
+        (node: { topic: { name: string } }) => node.topic.name
+      )
+      return topics.join(' ') //return the openai response as a string
+    } else {
+      throw new Error('No repository topics found.')
+    }
+  } catch (error) {
+    console.log('Could not retrieve the categories')
+    return ' '
+  }
 }

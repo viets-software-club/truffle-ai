@@ -1,13 +1,6 @@
 # This is a multi-stage Dockerfile
 # run this file only from ../../
 
-# available arguments from --build-arg
-ARG GATEWAY_PORT
-ARG SUPABASE_URL
-ARG SUPABASE_API_KEY
-ARG SUPABASE_GRAPHQL_URL
-ARG SERVER_GRAPHQL_URL
-
 # build stage 
 FROM node:18-alpine as build
 ## init envs
@@ -49,16 +42,7 @@ RUN npm run build
 # serve stage
 FROM node:18-alpine as serve
 ## init envs
-ARG GATEWAY_PORT
-ARG SUPABASE_URL
-ARG SUPABASE_API_KEY
-ARG SUPABASE_GRAPHQL_URL
-ARG SERVER_GRAPHQL_URL
 ENV NODE_ENV=production
-ENV SUPABASE_URL=${SUPABASE_URL}
-ENV SUPABASE_API_KEY=${SUPABASE_API_KEY}
-ENV SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
-ENV SERVER_GRAPHQL_URL=${SERVER_GRAPHQL_URL}
 ## copy package.json's to setup workspaces
 WORKDIR /app
 COPY package.json package.json
@@ -69,6 +53,5 @@ COPY --from=build /app/packages/graphql_gateway/ /app/packages/graphql_gateway/
 COPY --from=build /app/packages/graphql_server/src/graphql/schema.ts /app/packages/graphql_server/src/graphql/schema.ts
 ## install production dependencies
 RUN npm ci --omit=dev -w graphql_gateway
-## serve on GATEWAY_PORT
-EXPOSE ${GATEWAY_PORT}
+## serve
 CMD ["npm", "run", "serve", "-w", "graphql_gateway"]

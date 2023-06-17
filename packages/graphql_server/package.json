@@ -4,12 +4,11 @@
   "description": "A server with data available over a graphql endpoint",
   "license": "MIT",
   "private": true,
-  "main": "src/index.ts",
   "config": {
     "env_dev": ". ../../env.sh"
   },
   "scripts": {
-    "dev": "concurrently -c 'magenta' 'tsc -w' '$npm_package_config_env_dev && nodemon dist/index.js'",
+    "dev": "concurrently -c magenta 'tsc -w --preserveWatchOutput' '$npm_package_config_env_dev && sleep 3.3 && nodemon dist/index.js'",
     "build": "tsc",
     "serve": "$npm_package_config_env_dev && node dist/index.js",
     "update-types": "$npm_package_config_env_dev && npx supabase gen types typescript --project-id \"$SUPABASE_REFERENCE_ID\" > types/supabase.d.ts"
@@ -28,7 +27,6 @@
     "concurrently": "^8.0.1",
     "nodemon": "^2.0.22",
     "pino-pretty": "^10.0.0",
-    "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
 }

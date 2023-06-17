@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: truffle-ai-deployment
+  annotations:
+    kubernetes.io/change-cause: <CHANGE-CAUSE>
   labels:
     app: truffle-ai-deployment
 spec:
@@ -21,18 +23,35 @@ spec:
     spec:
       containers:
         - name: truffle-ai-graphql-gateway
-          image: <IMAGE-GRAPHQL-GATEWAY>
+          image: <GRAPHQL-GATEWAY-IMAGE>
           ports:
-            - containerPort: $GATEWAY_PORT
+            - containerPort: <GRAPHQL-GATEWAY-PORT>
+          envFrom:
+            - configMapRef:
+                name: graphql-gateway-config
+            - secretRef:
+                name: graphql-gateway-secret
         - name: truffle-ai-graphql-server
-          image: <IMAGE-GRAPHQL-SERVER>
+          image: <GRAPHQL-SERVER-IMAGE>
           ports:
-            - containerPort: $SERVER_PORT
+            - containerPort: <GRAPHQL-SERVER-PORT>
+          envFrom:
+            - configMapRef:
+                name: graphql-server-config
+            - secretRef:
+                name: graphql-server-secret
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: truffle-ai-load-balancer
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-name: 'truffle-ai-load-balancer'
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: '<CERTIFICATE-ID>'
+    service.beta.kubernetes.io/do-loadbalancer-protocol: 'https'
+    service.beta.kubernetes.io/do-loadbalancer-size-unit: '1'
+    service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: 'false'
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: 'true'
 spec:
   type: LoadBalancer
   ports:
@@ -40,5 +59,30 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 3000
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 3000
   selector:
     app: truffle-ai-deployment
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: truffle-ai-repo-cronjob
+spec:
+  timeZone: 'Europe/Berlin'
+  schedule: '0 2 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: truffle-ai-repo-cronjob
+              image: <REPO-JOB-IMAGE>
+              envFrom:
+                - configMapRef:
+                    name: repo-job-config
+                - secretRef:
+                    name: repo-job-secret
+          restartPolicy: OnFailure

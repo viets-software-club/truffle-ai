@@ -1,3 +1,7 @@
 import { dbUpdater } from '../dbUpdater'
 
-void dbUpdater()
+try {
+  void dbUpdater()
+} catch (error) {
+  console.log('error occured')
+}

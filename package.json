@@ -3,15 +3,24 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "concurrently -c 'gray,magenta' 'npm run dev:graphql_gateway' 'npm run dev:graphql_server'",
+    "dev": "concurrently -n gateway,server,repo_job -c 'yellow,magenta,blue' 'npm run dev:graphql_gateway' 'npm run dev:graphql_server' 'npm run dev:repo_job'",
+    "dev:jobs": "concurrently -n repo_job -c 'blue' 'npm run dev:repo_job'",
+    "dev:services": "concurrently -n gateway,server -c 'yellow,magenta' 'npm run dev:graphql_gateway' 'npm run dev:graphql_server'",
+    "dev:s": "npm run dev:services",
     "dev:graphql_gateway": "npm run dev -w graphql_gateway",
     "dev:graphql_server": "npm run dev -w graphql_server",
-    "build": "concurrently -c 'gray,magenta' 'npm run build:graphql_gateway' 'npm run build:graphql_server'",
+    "dev:repo_job": "npm run dev -w repo_job",
+    "build": "concurrently -n gateway,server,repo_job -c 'yellow,magenta,blue' 'npm run build:graphql_gateway' 'npm run build:graphql_server' 'npm run build:repo_job'",
+    "build:jobs": "concurrently -n repo_job -c 'blue' 'npm run build:repo_job'",
+    "build:services": "concurrently -n gateway,server -c 'yellow,magenta' 'npm run build:graphql_gateway' 'npm run build:graphql_server'",
     "build:graphql_gateway": "npm run build -w graphql_gateway",
     "build:graphql_server": "npm run build -w graphql_server",
-    "serve": "concurrently -c 'gray,magenta' 'sleep 3 && npm run serve:graphql_gateway' 'npm run serve:graphql_server'",
+    "build:repo_job": "npm run build -w repo_job",
+    "serve": "concurrently -n gateway,server -c 'yellow,magenta' 'sleep 2 && npm run serve:graphql_gateway' 'npm run serve:graphql_server'",
     "serve:graphql_gateway": "npm run serve -w graphql_gateway",
     "serve:graphql_server": "npm run serve -w graphql_server",
+    "job": "concurrently -n repo_job -c blue 'npm run job:repo_job'",
+    "job:repo_job": "npm run start -w repo_job",
     "test": "npm run format:check && npm run lint",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
     "lint": "eslint ./packages/**",
@@ -22,12 +31,13 @@
   },
   "workspaces": [
     "packages/graphql_server",
-    "packages/graphql_gateway"
+    "packages/graphql_gateway",
+    "packages/repo_job"
   ],
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint ./packages/** --cache --fix",
-      "prettier --write"
+      "prettier --write",
+      "eslint"
     ],
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },
@@ -43,5 +53,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "axios": "^1.4.0"
   }
 }

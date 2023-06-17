@@ -9,23 +9,29 @@ import Section from '@/components/page/settings/Section'
 import withAuth from '@/components/side-effects/withAuth'
 import SlackNotificationSender from '@/components/page/settings/SendData/SlackNotificationSender'
 import EmailTemplate from '@/components/page/settings/EmailTemplate'
+import FilterInput, { defaultFilters } from '@/components/page/settings/FilterInput'
 
-// @TODO prefill inputs, add action handlers, success/ error banner, loading spinners
+// Helper function to get the default filter value from local storage
+const getStoredValue = (filterType: string) =>
+  Number(localStorage.getItem(`${filterType}DefaultFilter`))
+
+const sections = {
+  General: ['Filters', 'Email template'],
+  Account: ['Notifications', 'Delete account'], // 'Linked Accounts',
+  Integrations: ['Affinity']
+}
 
 /**
  * Settings page
  */
 const Settings = () => {
-  const sections = {
-    General: ['Filters', 'Email template'],
-    Account: ['Notifications', 'Delete account'], // 'Linked Accounts',
-    Integrations: ['Affinity']
-  }
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   // Saves the section that is currently in view
   const [activeSection, setActiveSection] = useState(sections.General[0])
   const refs = useRef<Record<string, HTMLDivElement | null>>({})
 
+  // Observer to detect when a section is in view
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -63,22 +69,6 @@ const Settings = () => {
     refs.current[id]?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // for the filters: threshold values @TODO save in backend
-  const [values, setValues] = useState({
-    Stars: '',
-    Forks: '',
-    Issues: '',
-    Contributors: ''
-  })
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setValues((prevValues) => ({
-      ...prevValues,
-      [name]: value
-    }))
-  }
-
   const supabaseClient = useSupabaseClient()
 
   /**
@@ -94,6 +84,19 @@ const Settings = () => {
     void handleDeleteAccount()
   }
 
+  // Save settings to local storage
+  const saveSettings = (value: number, filterType: string) => {
+    const storageKey = `${filterType}DefaultFilter`
+    localStorage.setItem(storageKey, JSON.stringify(value))
+  }
+
+  const [filters, setFilters] = useState<defaultFilters>({
+    stars: getStoredValue('stars'),
+    forks: getStoredValue('forks'),
+    issues: getStoredValue('issues'),
+    contributors: getStoredValue('contributors')
+  })
+
   return (
     <div className="flex">
       <Sidebar sections={sections} activeSection={activeSection} onClick={scrollTo} />
@@ -102,23 +105,37 @@ const Settings = () => {
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">General</h2>
 
         <Section title="General" subtitle="Filters" refs={refs}>
-          <div className="flex">
-            {Object.entries(values).map(([key, value]) => (
-              <div className="flex flex-col rounded pr-4 text-white" key={key}>
-                <label htmlFor={key} className="mb-2 text-14 font-normal">
-                  {key}
-                </label>
-                <Input
-                  type="number"
-                  id={key}
-                  name={key}
-                  value={value}
-                  onChange={handleInputChange}
-                  placeholder="100"
-                />
-              </div>
+          <div className="flex flex-row">
+            {Object.keys(filters).map((filterType) => (
+              <FilterInput
+                key={filterType}
+                filterType={filterType}
+                filters={filters}
+                setFilters={setFilters}
+                saveSettings={saveSettings}
+              />
+              //   <div className="flex flex-col rounded pr-4 text-white">
+              //   <p className="mb-2 text-14 font-normal">
+              //     {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+              //   </p>
+              //   <input
+              //     type="number"
+              //     value={filters[filterType as keyof defaultFilters]}
+              //     className="rounded-[5px] border border-gray-800 bg-gray-900 px-3 py-2 text-14 text-white focus:outline focus:outline-indigo-500"
+              //     onChange={(e) => {
+              //       const num = Number(e.target.value);
+              //       setFilters({ ...filters, [filterType]: num });
+              //       saveSettings(num, filterType);
+              //     }
+              //     }
+              //     placeholder={`${filters[filterType as keyof defaultFilters]}`}
+              //   />
+              // </div>
             ))}
           </div>
+          <p className="my-4 text-14 font-normal text-gray-400">
+            Anything below these values will be filtered out of your results.
+          </p>
         </Section>
 
         <div className="h-1 border-b border-gray-800" />
@@ -141,9 +158,9 @@ const Settings = () => {
           <p className="pb-6 text-14 font-normal text-gray-300">
             If you delete your account, all your data will be lost.
           </p>
-          <Link href="/logout">
+          {!confirmDelete ? (
             <Button
-              onClick={deleteAccount}
+              onClick={() => setConfirmDelete(true)}
               text="Delete account"
               variant="red"
               Icon={FiTrash2}
@@ -151,16 +168,28 @@ const Settings = () => {
               textColor="white"
               iconColor="white"
             />
-          </Link>
+          ) : (
+            <>
+              <p className="pb-6 text-14 font-normal text-red">Are you sure?</p>
+              <Link href="/logout">
+                <Button
+                  onClick={deleteAccount}
+                  text="Yes, delete"
+                  variant="red"
+                  Icon={FiTrash2}
+                  order="ltr"
+                  textColor="white"
+                  iconColor="white"
+                />
+              </Link>
+            </>
+          )}
         </Section>
 
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Integrations</h2>
-
         <Section title="Integrations" subtitle="Affinity" refs={refs}>
           <p className="pb-2 text-14 font-normal">Affinity API token</p>
-
           <Input type="password" id="affinity" name="affinity" placeholder="•••••••••••••••••" />
-
           <div className="mb-64 mt-4">
             <Button variant="highlighted" text="Update" onClick={() => ''} />
           </div>

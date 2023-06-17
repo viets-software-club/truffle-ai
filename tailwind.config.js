@@ -28,6 +28,9 @@ module.exports = {
         36: '36px'
       },
       colors: {
+        lila: {
+          400: '#8c8fd9'
+        },
         teal: '#01B3C0',
         red: '#EC5858',
         mustard: '#988300',
@@ -56,14 +59,6 @@ module.exports = {
         }
       }
     }
-  },
-  corePlugins: {
-    textOpacity: false,
-    backgroundOpacity: false,
-    borderOpacity: false,
-    divideOpacity: false,
-    placeholderOpacity: false,
-    ringOpacity: false
   },
   plugins: []
 }

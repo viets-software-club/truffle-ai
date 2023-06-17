@@ -2,7 +2,7 @@
 const schema = `
   type Query {
     helloWorld: String!
-    allProjects(first: Int, after: String) {
+    allProjects(first: Int, after: String):[Project!]! {
       edges{
         cursor
         node{

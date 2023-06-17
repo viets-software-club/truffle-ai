@@ -11,6 +11,7 @@ const errorMessage =
 //The Header for all requests
 const headers = {
   'Content-Type': 'application/json',
+  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   Authorization: 'Bearer ' + process.env.OPENAI_API_KEY
 }
 
@@ -45,6 +46,7 @@ async function getELI5FromReadMe(readMe: string) {
       return null
     } else {
       const content: string = data.choices[0].message.content
+      console.log(content)
       return content
     }
   } catch (error) {
@@ -88,7 +90,7 @@ async function getHackernewsSentiment(comments: string) {
     }
   } catch (error) {
     console.log('OpenAI request did not work out: ', error)
-    return null // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return null
   }
 }
 

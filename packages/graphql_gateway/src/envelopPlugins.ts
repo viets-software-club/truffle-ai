@@ -19,7 +19,7 @@ const resolveUserFn: ResolveUserFn<object, Context> = async (context: Context) =
   const authorizationHeader = context?.req?.headers?.authorization
   if (
     typeof authorizationHeader !== 'string' ||
-    !authorizationHeader.includes('Bearer') ||
+    !authorizationHeader.startsWith('Bearer') ||
     authorizationHeader.length < 7
   )
     return null

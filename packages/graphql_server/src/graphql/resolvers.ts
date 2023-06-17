@@ -1,3 +1,4 @@
+import { IFieldResolver, MercuriusContext } from 'mercurius'
 import { insertProject, parseGitHubUrl } from '../processRepo'
 
 const resolvers = {
@@ -17,6 +18,14 @@ const resolvers = {
       } else {
         return await insertProject(urlParts.repo, urlParts.owner, null)
       }
+    },
+    bookmarkProject: (
+      _parent: unknown,
+      { projectID, category }: { projectID: string; category: string },
+      context: MercuriusContext
+    ) => {
+      console.log('hallo')
+      context.user
     }
   }
 }

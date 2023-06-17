@@ -94,7 +94,12 @@ const ProjectsTable = () => {
           totalEntries={data.length}
         />
       )}
-      <Table table={table} filters={filters} setFilteredRowCount={setFilteredRowCount} />
+      <Table
+        table={table}
+        filters={filters}
+        setFilteredRowCount={setFilteredRowCount}
+        tableSort={tableSort}
+      />
     </div>
   )
 }

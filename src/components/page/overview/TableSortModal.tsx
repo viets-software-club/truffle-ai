@@ -1,6 +1,7 @@
 import { TableSort } from '@/components/page/overview/TableSort'
 import Button from '@/components/pure/Button'
-import { ArrowDownIcon, ArrowUpIcon, ChevronLeftIcon } from '@primer/octicons-react'
+import { ArrowDownIcon, ArrowUpIcon } from '@primer/octicons-react'
+import { RxCross2 } from 'react-icons/rx'
 
 type TableSortModalProps = {
   sort: TableSort
@@ -13,11 +14,7 @@ const TableSortModal = ({ sort, setSort }: TableSortModalProps) => {
   return (
     <div className="flex flex-col space-y-3 p-2">
       <div className="flex flex-row space-x-1">
-        <Button
-          onClick={() => setSort(null)}
-          variant="onlyIconNoBorderNoBG"
-          Icon={ChevronLeftIcon}
-        />
+        <Button onClick={() => setSort(null)} variant="onlyIconNoBorderNoBG" Icon={RxCross2} />
         <p className="text-14 text-gray-100">{sort.column}</p>
       </div>
       <div className="flex flex-row space-x-1">

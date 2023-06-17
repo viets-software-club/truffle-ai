@@ -31,7 +31,7 @@ const columns = [
     ({ organization, associatedPerson, name }) =>
       `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
     {
-      id: 'nameWithOwner',
+      id: 'Name',
       header: 'Name',
       enableColumnFilter: true,
       cell: (info) => {
@@ -95,7 +95,7 @@ const columns = [
   }),
   // Contributors column definition
   columnHelper.accessor('contributorCount', {
-    id: 'Contributors',
+    id: 'Contrib.',
     header: 'Contrib.',
     enableColumnFilter: true,
     cell: (info) => (
@@ -110,14 +110,14 @@ const columns = [
   }),
   // Forks per Contributor column definition
   columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
-    id: 'forksPerContributor',
+    id: 'Forks/Contrib.',
     header: 'Forks/Contrib.',
     enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
   }),
   // Issues per Contributor column definition
   columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
-    id: 'issuesPerContributor',
+    id: 'Issues/Contrib.',
     header: 'Issues/Contrib.',
     enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>

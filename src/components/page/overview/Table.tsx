@@ -1,4 +1,4 @@
-import { useReactTable, flexRender, Cell } from '@tanstack/react-table'
+import { useReactTable, flexRender, Cell, Row } from '@tanstack/react-table'
 import Link from 'next/link'
 import { Project } from '@/graphql/generated/gql'
 import {
@@ -7,11 +7,13 @@ import {
   TableFilter
 } from '@/components/page/overview/TableFilter'
 import { useEffect, useMemo } from 'react'
+import { TableSort } from '@/components/page/overview/TableSort'
 
 type TableProps = {
   table: ReturnType<typeof useReactTable<Project>>
   filters: TableFilter[]
   setFilteredRowCount: React.Dispatch<React.SetStateAction<number>>
+  tableSort: TableSort | null
 }
 
 const matchesFilter = (cell: Cell<Project, unknown>, filter: TableFilter) => {
@@ -53,10 +55,29 @@ const matchesFilter = (cell: Cell<Project, unknown>, filter: TableFilter) => {
   } else return true
 }
 
+const getSortComparator = (sort: TableSort | null) => (r1: Row<Project>, r2: Row<Project>) => {
+  if (!sort) {
+    return Number(r2.getValue('Stars')) - Number(r1.getValue('Stars'))
+  }
+
+  const value1 = r1.getValue(sort.column)
+  const value2 = r2.getValue(sort.column)
+
+  if (typeof value1 === 'number' && typeof value2 === 'number') {
+    return sort.direction === 'desc' ? value2 - value1 : value1 - value2
+  }
+
+  if (typeof value1 === 'string' && typeof value2 === 'string') {
+    return sort.direction === 'desc' ? value2.localeCompare(value1) : value1.localeCompare(value2)
+  }
+
+  return 0
+}
+
 /**
  * Generic table component using @tanstack/react-table
  */
-const Table = ({ table, filters, setFilteredRowCount }: TableProps) => {
+const Table = ({ table, filters, setFilteredRowCount, tableSort }: TableProps) => {
   const filteredRows = useMemo(
     () =>
       table.getRowModel().rows.filter(
@@ -70,7 +91,7 @@ const Table = ({ table, filters, setFilteredRowCount }: TableProps) => {
             })
           )
       ),
-    [table, filters]
+    [table, filters, tableSort]
   )
 
   useEffect(() => {
@@ -97,28 +118,26 @@ const Table = ({ table, filters, setFilteredRowCount }: TableProps) => {
       </thead>
 
       <tbody>
-        {filteredRows
-          .sort((r1, r2) => Number(r2.getValue('Stars')) - Number(r1.getValue('Stars')))
-          .map((row) => (
-            <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
-              {row.getVisibleCells().map((cell, cellIndex) => {
-                const isFirstChild = cellIndex === 0
-                const isLastChild = cellIndex === row.getVisibleCells().length - 1
-                return (
-                  <td
-                    key={cell.id}
-                    className={`p-2 pl-0 text-left ${isFirstChild ? 'rounded-l-lg' : ''} ${
-                      isLastChild ? 'rounded-r-lg' : ''
-                    }`}
-                  >
-                    <Link href={`/details/${row.original.id as string}`}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </Link>
-                  </td>
-                )
-              })}
-            </tr>
-          ))}
+        {filteredRows.sort(getSortComparator(tableSort)).map((row) => (
+          <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
+            {row.getVisibleCells().map((cell, cellIndex) => {
+              const isFirstChild = cellIndex === 0
+              const isLastChild = cellIndex === row.getVisibleCells().length - 1
+              return (
+                <td
+                  key={cell.id}
+                  className={`p-2 pl-0 text-left ${isFirstChild ? 'rounded-l-lg' : ''} ${
+                    isLastChild ? 'rounded-r-lg' : ''
+                  }`}
+                >
+                  <Link href={`/details/${row.original.id as string}`}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Link>
+                </td>
+              )
+            })}
+          </tr>
+        ))}
       </tbody>
     </table>
   )

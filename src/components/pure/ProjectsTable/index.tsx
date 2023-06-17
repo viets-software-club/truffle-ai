@@ -85,7 +85,7 @@ const ProjectsTable = () => {
         tableSort={tableSort}
         setTableSort={setTableSort}
       />
-      {filters.length > 0 && (
+      {(filters.length > 0 || tableSort) && (
         <FilterBar
           filters={filters}
           removeFilter={removeFilter}

@@ -145,6 +145,63 @@ const TopBar = ({
           <div>
             <Menu.Button
               className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
+                tableSort ? 'bg-gray-850' : ''
+              }`}
+            >
+              <TbArrowsSort className="text-gray-500" />
+              <p className={`leading-none ${tableSort ? '' : 'text-gray-500'}`}>Sorting</p>
+            </Menu.Button>
+          </div>
+
+          <TransitionMenuItems>
+            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
+              <div className="py-1">
+                {columns
+                  .filter(
+                    (column) =>
+                      column.getIsVisible() &&
+                      column.columnDef.header !== 'Logo' &&
+                      column.columnDef.header !== tableSort?.column
+                  )
+                  .map((column) => (
+                    <Menu.Item key={column.id}>
+                      <button
+                        type="button"
+                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                        onClick={() => {
+                          setTableSort({
+                            column: column.columnDef.header as string,
+                            direction: 'desc'
+                          })
+                        }}
+                      >
+                        {column.columnDef.header === 'Name' ? (
+                          <IoTextOutline className="text-gray-500" />
+                        ) : (
+                          <AiOutlineNumber className="text-gray-500" />
+                        )}
+
+                        <p
+                          className={
+                            column.getIsVisible() ? visibleColumnTextStyle : hiddenColumnTextStyle
+                          }
+                        >
+                          {typeof column.columnDef.header === 'string'
+                            ? column.columnDef.header
+                            : ''}
+                        </p>
+                      </button>
+                    </Menu.Item>
+                  ))}
+              </div>
+            </Menu.Items>
+          </TransitionMenuItems>
+        </Menu>
+
+        <Menu as="div" className="relative inline-block text-left">
+          <div>
+            <Menu.Button
+              className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
                 filters.length > 0 ? 'bg-gray-850' : ''
               }`}
             >
@@ -194,63 +251,6 @@ const TopBar = ({
                             column.getIsVisible()
                               ? 'text-14 text-gray-100'
                               : 'text-14 text-gray-400'
-                          }
-                        >
-                          {typeof column.columnDef.header === 'string'
-                            ? column.columnDef.header
-                            : ''}
-                        </p>
-                      </button>
-                    </Menu.Item>
-                  ))}
-              </div>
-            </Menu.Items>
-          </TransitionMenuItems>
-        </Menu>
-
-        <Menu as="div" className="relative inline-block text-left">
-          <div>
-            <Menu.Button
-              className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
-                tableSort ? 'bg-gray-850' : ''
-              }`}
-            >
-              <TbArrowsSort className="text-gray-500" />
-              <p className={`leading-none ${tableSort ? '' : 'text-gray-500'}`}>Sorting</p>
-            </Menu.Button>
-          </div>
-
-          <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
-              <div className="py-1">
-                {columns
-                  .filter(
-                    (column) =>
-                      column.getIsVisible() &&
-                      column.columnDef.header !== 'Logo' &&
-                      column.columnDef.header !== tableSort?.column
-                  )
-                  .map((column) => (
-                    <Menu.Item key={column.id}>
-                      <button
-                        type="button"
-                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                        onClick={() => {
-                          setTableSort({
-                            column: column.columnDef.header as string,
-                            direction: 'desc'
-                          })
-                        }}
-                      >
-                        {column.columnDef.header === 'Name' ? (
-                          <IoTextOutline className="text-gray-500" />
-                        ) : (
-                          <AiOutlineNumber className="text-gray-500" />
-                        )}
-
-                        <p
-                          className={
-                            column.getIsVisible() ? visibleColumnTextStyle : hiddenColumnTextStyle
                           }
                         >
                           {typeof column.columnDef.header === 'string'

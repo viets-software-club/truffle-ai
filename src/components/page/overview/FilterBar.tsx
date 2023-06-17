@@ -25,7 +25,7 @@ const FilterBar = ({
   <div className="flex flex-row justify-between border-b border-gray-800 px-6 py-2.5">
     <div className="flex flex-row gap-3">
       {tableSort && <TableSortModal tableSort={tableSort} setTableSort={setTableSort} />}
-      {tableSort && <div className="mx-3 h-full border-l border-gray-800" />}
+      {tableSort && filters.length > 0 && <div className="mx-3 h-full border-l border-gray-800" />}
       {filters.map((filter: TableFilter) => (
         <FilterFormModal filter={filter} removeFilter={removeFilter} updateFilter={updateFilter} />
       ))}

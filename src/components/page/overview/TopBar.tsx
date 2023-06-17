@@ -1,13 +1,7 @@
 import { Fragment, ReactNode, useState } from 'react'
 import { Column } from '@tanstack/react-table'
-import { TbColumns2 } from 'react-icons/tb'
-import {
-  AiOutlineCalendar,
-  AiOutlineFilter,
-  AiOutlineNumber,
-  AiOutlinePlus,
-  AiOutlineSortAscending
-} from 'react-icons/ai'
+import { TbArrowsSort, TbColumns2 } from 'react-icons/tb'
+import { AiOutlineCalendar, AiOutlineFilter, AiOutlineNumber, AiOutlinePlus } from 'react-icons/ai'
 import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
 import { Menu, Transition } from '@headlessui/react'
 import Button from '@/components/pure/Button'
@@ -222,7 +216,7 @@ const TopBar = ({
                 tableSort ? 'bg-gray-850' : ''
               }`}
             >
-              <AiOutlineSortAscending className="text-gray-500" />
+              <TbArrowsSort className="text-gray-500" />
               <p className={`leading-none ${tableSort ? '' : 'text-gray-500'}`}>Sorting</p>
             </Menu.Button>
           </div>

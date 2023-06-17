@@ -1,7 +1,12 @@
 import { TableSort } from '@/components/page/overview/TableSort'
 import Button from '@/components/pure/Button'
-import { ArrowDownIcon, ArrowUpIcon } from '@primer/octicons-react'
 import { RxCross2 } from 'react-icons/rx'
+import {
+  BsSortAlphaDown,
+  BsSortAlphaUpAlt,
+  BsSortNumericDownAlt,
+  BsSortNumericUp
+} from 'react-icons/bs'
 
 type TableSortModalProps = {
   sort: TableSort
@@ -22,7 +27,7 @@ const TableSortModal = ({ sort, setSort }: TableSortModalProps) => {
           onClick={() => setSort({ ...sort, direction: 'asc' })}
           variant={sort.direction === 'asc' ? 'highlighted' : 'normal'}
           text="Asc."
-          Icon={ArrowUpIcon}
+          Icon={sort.column === 'Name' ? BsSortAlphaUpAlt : BsSortNumericUp}
           order="ltr"
           iconColor={sort.direction === 'asc' ? textGray100 : textGray500}
           textColor={sort.direction === 'asc' ? textGray100 : textGray500}
@@ -31,7 +36,7 @@ const TableSortModal = ({ sort, setSort }: TableSortModalProps) => {
           onClick={() => setSort({ ...sort, direction: 'desc' })}
           variant={sort.direction === 'desc' ? 'highlighted' : 'normal'}
           text="Desc."
-          Icon={ArrowDownIcon}
+          Icon={sort.column === 'Name' ? BsSortAlphaDown : BsSortNumericDownAlt}
           order="ltr"
           iconColor={sort.direction === 'desc' ? textGray100 : textGray500}
           textColor={sort.direction === 'desc' ? textGray100 : textGray500}

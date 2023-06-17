@@ -35,6 +35,21 @@ export {
 }
 
 /**
+ * Checks whether a bookmark is already on the database.
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ */
+const bookmarkIsAlreadyInDB = async (userID: string, projectID: string) => {
+  const { data } = await supabase
+    .from('bookmark')
+    .select()
+    .eq('user_id', userID)
+    .eq('project_id', projectID)
+
+  return data ? true : false
+}
+
+/**
  * Deletes all projects that are neither trending nor bookmarked.
  */
 const deleteNotTrendingAndNotBookmarkedProjects = async () => {

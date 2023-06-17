@@ -13,6 +13,7 @@ import {
   ProjectUpdate,
   ProjectInfo
 } from '../types/supabaseUtils'
+import { PostgrestError } from '@supabase/supabase-js'
 
 /*
 Exports:
@@ -26,6 +27,7 @@ export {
   getPersonID,
   getProjectID,
   getTrendingAndBookmarkedProjects,
+  insertBookmark,
   purgeTrendingState,
   repoIsAlreadyInDB,
   turnIntoProjectInsertion,
@@ -366,6 +368,23 @@ const getTrendingAndBookmarkedProjects = async () => {
   }
 
   return validProjectsFormatted
+}
+
+/**
+ * Inserts a bookmark into supabase
+ * @param {string} projectID - The projectID to be inserted
+ * @param {string} userID - The userID to be inserted.
+ * @param {string} category - The category to be inserted.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const insertBookmark = async (projectID: string, userID: string, category: string) => {
+  const { error } = await supabase.from('bookmark').insert({
+    project_id: projectID,
+    user_id: userID,
+    category: category
+  })
+
+  return error
 }
 
 /**

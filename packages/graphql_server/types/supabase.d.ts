@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[]
 
 export interface Database {
   public: {
@@ -62,18 +68,21 @@ export interface Database {
       }
       bookmark: {
         Row: {
+          category: string | null
           created_at: string | null
           id: string
           project_id: string
           user_id: string
         }
         Insert: {
+          category?: string | null
           created_at?: string | null
           id?: string
           project_id: string
           user_id: string
         }
         Update: {
+          category?: string | null
           created_at?: string | null
           id?: string
           project_id?: string
@@ -81,16 +90,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'bookmark_project_id_fkey'
-            columns: ['project_id']
-            referencedRelation: 'project'
-            referencedColumns: ['id']
+            foreignKeyName: "bookmark_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'bookmark_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
+            foreignKeyName: "bookmark_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -115,16 +124,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'founded_by_founder_id_fkey'
-            columns: ['founder_id']
-            referencedRelation: 'associated_person'
-            referencedColumns: ['id']
+            foreignKeyName: "founded_by_founder_id_fkey"
+            columns: ["founder_id"]
+            referencedRelation: "associated_person"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'founded_by_project_id_fkey'
-            columns: ['project_id']
-            referencedRelation: 'project'
-            referencedColumns: ['id']
+            foreignKeyName: "founded_by_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -275,16 +284,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'project_owning_organization_fkey'
-            columns: ['owning_organization']
-            referencedRelation: 'organization'
-            referencedColumns: ['id']
+            foreignKeyName: "project_owning_organization_fkey"
+            columns: ["owning_organization"]
+            referencedRelation: "organization"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'project_owning_person_fkey'
-            columns: ['owning_person']
-            referencedRelation: 'associated_person'
-            referencedColumns: ['id']
+            foreignKeyName: "project_owning_person_fkey"
+            columns: ["owning_person"]
+            referencedRelation: "associated_person"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -293,26 +302,29 @@ export interface Database {
           created_at: string | null
           id: string
           name: string | null
+          testColumn: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
           name?: string | null
+          testColumn?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
           name?: string | null
+          testColumn?: string | null
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: 'testTable_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'users'
-            referencedColumns: ['id']
+            foreignKeyName: "testTable_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -321,7 +333,32 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_user:
+        | {
+            Args: {
+              algo: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: boolean
+          }
+      delete_user2:
+        | {
+            Args: {
+              algo: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: boolean
+          }
+      test: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

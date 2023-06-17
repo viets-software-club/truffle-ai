@@ -29,7 +29,6 @@ const resolvers = {
         return false
       }
       const userID = context.user?.id
-      // @Todo: add bookmark
     }
   }
 }

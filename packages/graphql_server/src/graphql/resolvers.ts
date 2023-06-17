@@ -1,7 +1,14 @@
 import { createProject } from '../dbUpdater'
-import { bookmarkIsAlreadyInDB, deleteBookmark, insertBookmark } from '../supabaseUtils'
+import {
+  bookmarkIsAlreadyInDB,
+  deleteBookmark,
+  editBookmarkCategory,
+  insertBookmark
+} from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
+
+//@Todo: refine and refactor response types
 
 const resolvers = {
   Query: {
@@ -27,11 +34,7 @@ const resolvers = {
       context: MercuriusContext
     ) => {
       if (!context.user) {
-        return {
-          message: 'The graphQL resolver did not receive a valid user.',
-          code: '400',
-          hint: 'Are you loggedIn?'
-        }
+        return BAD_USER_RESPONSE
       }
       const userID = context.user?.id
 
@@ -55,26 +58,48 @@ const resolvers = {
       context: MercuriusContext
     ) => {
       if (!context.user) {
-        return {
-          message: 'The graphQL resolver did not receive a valid user.',
-          code: '400',
-          hint: 'Are you loggedIn?'
-        }
+        return BAD_USER_RESPONSE
       }
 
       const userID = context.user?.id
 
       if (!(await bookmarkIsAlreadyInDB(userID, projectID))) {
-        return {
-          message: 'This bookmark does not exist on the database.',
-          code: '409'
-        }
+        return BOOKMARK_DOES_NOT_EXIST_RESPONSE
       }
 
       const deletionError = await deleteBookmark(userID, projectID)
       return deletionError ? deletionError : { code: '204' }
+    },
+    editBookmarkCategory: async (
+      _parent: unknown,
+      { projectID, newCategory }: { projectID: string; newCategory: string },
+      context: MercuriusContext
+    ) => {
+      if (!context.user) {
+        return BAD_USER_RESPONSE
+      }
+
+      const userID = context.user?.id
+
+      if (!(await bookmarkIsAlreadyInDB(userID, projectID))) {
+        return BOOKMARK_DOES_NOT_EXIST_RESPONSE
+      }
+
+      const editError = await editBookmarkCategory(userID, projectID, newCategory)
+      return editError ? editError : { code: '204' }
     }
   }
 }
 
 export default resolvers
+
+const BAD_USER_RESPONSE = {
+  message: 'The graphQL resolver did not receive a valid user.',
+  code: '400',
+  hint: 'Are you loggedIn?'
+}
+
+const BOOKMARK_DOES_NOT_EXIST_RESPONSE = {
+  message: 'This bookmark does not exist on the database.',
+  code: '409'
+}

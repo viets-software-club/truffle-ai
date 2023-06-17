@@ -8,6 +8,7 @@ const schema = `
     addProjectByUrl(url: String!): Boolean!
     addBookmark(projectID: String!, category: String!): Response!
     deleteBookmark(projectID: String!): Response!
+    editBookmarkCategory(projectID: String!, newCategory: String!): Response!
   }
   type Response {
       message: String

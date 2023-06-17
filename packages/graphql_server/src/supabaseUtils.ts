@@ -22,6 +22,7 @@ export {
   bookmarkIsAlreadyInDB,
   deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
+  editBookmarkCategory,
   formatLinkedInCompanyData,
   formatGithubStats,
   getNotTrendingAndNotBookmarkedProjects,
@@ -73,10 +74,32 @@ const deleteNotTrendingAndNotBookmarkedProjects = async () => {
   }
 }
 
+/**
+ * Deletes a bookmark from the database
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
 const deleteBookmark = async (userID: string, projectID: string) => {
   const { error } = await supabase
     .from('bookmark')
     .delete()
+    .eq('user_id', userID)
+    .eq('project_id', projectID)
+
+  return error
+}
+
+/**
+ * Edits the category for a bookmark on the database
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const editBookmarkCategory = async (userID: string, projectID: string, newCategory: string) => {
+  const { error } = await supabase
+    .from('bookmark')
+    .update({ category: newCategory })
     .eq('user_id', userID)
     .eq('project_id', projectID)
 

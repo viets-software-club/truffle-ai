@@ -34,13 +34,20 @@ const resolvers = {
         }
       }
       const userID = context.user?.id
+
       if (await bookmarkIsAlreadyInDB(userID, projectID)) {
         return {
           message: 'This bookmark is already in the database.',
           code: '409'
         }
       }
-      return await insertBookmark(userID, projectID, category)
+
+      const insertionError = await insertBookmark(userID, projectID, category)
+      return insertionError
+        ? insertionError
+        : {
+            code: '201'
+          }
     }
   }
 }

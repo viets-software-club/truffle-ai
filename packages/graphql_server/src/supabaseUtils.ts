@@ -72,6 +72,16 @@ const deleteNotTrendingAndNotBookmarkedProjects = async () => {
   }
 }
 
+const deleteBookmark = async (userID: string, projectID: string) => {
+  const { error } = await supabase
+    .from('bookmark')
+    .delete()
+    .eq('user_id', userID)
+    .eq('project_id', projectID)
+
+  return error
+}
+
 /**
  * Formats the github data into a format that can be inserted into the database.
  * @param {GitHubInfo} githubData - The github statistics to be formatted

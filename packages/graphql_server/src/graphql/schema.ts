@@ -8,7 +8,7 @@ const schema = `
     addProjectByUrl(url: String!): Boolean!
     addBookmark(projectID: String!, category: String!): Error!
   }
-  type Error {
+  type Response {
       message: String
       details: String
       hint: String

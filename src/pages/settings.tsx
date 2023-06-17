@@ -7,8 +7,9 @@ import Button from '@/components/pure/Button'
 import Sidebar from '@/components/page/settings/Sidebar'
 import Section from '@/components/page/settings/Section'
 import withAuth from '@/components/side-effects/withAuth'
-import SlackNotificationSender from '@/components/page/settings/SendData/SlackNotificationSender'
+import SlackSettings from '@/components/page/settings/SendData/SlackSettings'
 import EmailTemplate from '@/components/page/settings/EmailTemplate'
+import deleteAccount from '@/util/deleteAccount'
 import FilterInput, { defaultFilters } from '@/components/page/settings/FilterInput'
 
 // Helper function to get the default filter value from local storage
@@ -17,7 +18,7 @@ const getStoredValue = (filterType: string) =>
 
 const sections = {
   General: ['Filters', 'Email template'],
-  Account: ['Notifications', 'Delete account'], // 'Linked Accounts',
+  Account: ['Notifications', 'Delete account'],
   Integrations: ['Affinity']
 }
 
@@ -26,9 +27,11 @@ const sections = {
  */
 const Settings = () => {
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const supabaseClient = useSupabaseClient()
 
   // Saves the section that is currently in view
   const [activeSection, setActiveSection] = useState(sections.General[0])
+
   const refs = useRef<Record<string, HTMLDivElement | null>>({})
 
   // Observer to detect when a section is in view
@@ -69,19 +72,8 @@ const Settings = () => {
     refs.current[id]?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const supabaseClient = useSupabaseClient()
-
-  /**
-   * Handle account deletion.
-   * @async
-   * @returns {Promise<void>} A promise that resolves when the account deletion attempt is complete.
-   */
-  async function handleDeleteAccount() {
-    await supabaseClient.rpc('delete_user')
-  }
-
-  const deleteAccount = () => {
-    void handleDeleteAccount()
+  const handleDeleteAccount = () => {
+    void deleteAccount(supabaseClient)
   }
 
   // Save settings to local storage
@@ -114,23 +106,6 @@ const Settings = () => {
                 setFilters={setFilters}
                 saveSettings={saveSettings}
               />
-              //   <div className="flex flex-col rounded pr-4 text-white">
-              //   <p className="mb-2 text-14 font-normal">
-              //     {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
-              //   </p>
-              //   <input
-              //     type="number"
-              //     value={filters[filterType as keyof defaultFilters]}
-              //     className="rounded-[5px] border border-gray-800 bg-gray-900 px-3 py-2 text-14 text-white focus:outline focus:outline-indigo-500"
-              //     onChange={(e) => {
-              //       const num = Number(e.target.value);
-              //       setFilters({ ...filters, [filterType]: num });
-              //       saveSettings(num, filterType);
-              //     }
-              //     }
-              //     placeholder={`${filters[filterType as keyof defaultFilters]}`}
-              //   />
-              // </div>
             ))}
           </div>
           <p className="my-4 text-14 font-normal text-gray-400">
@@ -149,7 +124,7 @@ const Settings = () => {
         <Section title="Account" subtitle="Notifications" refs={refs}>
           <p className="mb-4 text-14 font-normal">Slack notifications</p>
 
-          <SlackNotificationSender />
+          <SlackSettings />
         </Section>
 
         <div className="h-1 border-b border-gray-800" />
@@ -173,7 +148,7 @@ const Settings = () => {
               <p className="pb-6 text-14 font-normal text-red">Are you sure?</p>
               <Link href="/logout">
                 <Button
-                  onClick={deleteAccount}
+                  onClick={handleDeleteAccount}
                   text="Yes, delete"
                   variant="red"
                   Icon={FiTrash2}

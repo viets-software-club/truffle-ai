@@ -20,14 +20,15 @@ type ButtonProps = {
   fullWidth?: boolean
 }
 
-const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
+const baseClassNames =
+  'flex items-center rounded-[5px] transition-all duration-200 hover:bg-opacity-80'
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
   ['normal', 'bg-gray-850 border border-gray-800 px-2 py-1.5'],
   ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-2 py-1.5'],
   ['noBG', 'border border-gray-800 px-2 py-1.5'],
   ['noBorderNoBG', 'px-2 py-1.5'],
-  ['highlighted', 'border border-indigo-500 hover:border-gray-800 bg-indigo-500 px-2 py-1.5'],
+  ['highlighted', 'border border-indigo-500 bg-indigo-500 px-2 py-1.5'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
   ['onlyIconNoBorderNoBG', ''],
   ['filter', 'border border-dashed border-gray-800 px-2 py-1.5'],
@@ -51,12 +52,11 @@ const Button = ({
   fullWidth
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
-
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
   }`
 
-  // create a text node if text is provided
+  // Create a text node if text is provided
   const textNode = text && (
     <span key="1" className={`text-14 leading-none ${textColor}`}>
       {text}
@@ -71,6 +71,7 @@ const Button = ({
     ) : (
       <Icon key="2" className={`${order === 'ltr' ? 'mr-1.5' : 'ml-1.5'} ${iconColor}`} />
     ))
+
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
 
   return (

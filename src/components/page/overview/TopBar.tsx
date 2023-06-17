@@ -18,6 +18,8 @@ import {
   StringTableFilterOperator,
   TableFilter
 } from '@/components/page/overview/TableFilter'
+import { TableSort } from '@/components/page/overview/TableSort'
+import TableSortModal from '@/components/page/overview/TableSortModal'
 
 type TopBarProps = {
   columns: Column<Project, unknown>[]
@@ -25,6 +27,8 @@ type TopBarProps = {
   addFilter: (filter: TableFilter) => void
   filters: TableFilter[]
   comparePage: boolean
+  tableSort: TableSort | null
+  setTableSort: (sort: TableSort | null) => void
 }
 
 const timeFrameOptions = [
@@ -54,9 +58,19 @@ const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
 /**
  * Top navigation for the table view, including filter, sort, edit columns and add project buttons
  */
-const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarProps) => {
+const TopBar = ({
+  columns,
+  nullFunc,
+  addFilter,
+  filters,
+  comparePage,
+  tableSort,
+  setTableSort
+}: TopBarProps) => {
   const [open, setOpen] = useState(false)
   const [selectedTimeFrame, setSelectedTimeFrame] = useState(timeFrameOptions[1])
+  const visibleColumnTextStyle = 'text-14 text-gray-100'
+  const hiddenColumnTextStyle = 'text-14 text-gray-500'
   return (
     <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
       {/* Filter, Sort, Edit Columns buttons */}
@@ -121,7 +135,7 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
 
                       <p
                         className={
-                          column.getIsVisible() ? 'text-14 text-gray-100' : 'text-14 text-gray-400'
+                          column.getIsVisible() ? visibleColumnTextStyle : hiddenColumnTextStyle
                         }
                       >
                         {typeof column.columnDef.header === 'string' ? column.columnDef.header : ''}
@@ -200,16 +214,69 @@ const TopBar = ({ columns, nullFunc, addFilter, filters, comparePage }: TopBarPr
             </Menu.Items>
           </TransitionMenuItems>
         </Menu>
-        <div className="inline-block">
-          <Button
-            onClick={nullFunc}
-            variant="normal"
-            text="Sorting"
-            Icon={AiOutlineSortAscending}
-            order="ltr"
-            textColor="white"
-          />
-        </div>
+
+        <Menu as="div" className="relative inline-block text-left">
+          <div>
+            <Menu.Button
+              className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
+                tableSort ? 'bg-gray-850' : ''
+              }`}
+            >
+              <AiOutlineSortAscending className="text-gray-500" />
+              <p className={`leading-none ${tableSort ? '' : 'text-gray-500'}`}>Sorting</p>
+            </Menu.Button>
+          </div>
+
+          <TransitionMenuItems>
+            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
+              <div className="py-1">
+                {tableSort ? (
+                  <TableSortModal sort={tableSort} setSort={setTableSort} />
+                ) : (
+                  <>
+                    {columns
+                      .filter(
+                        (column) => column.getIsVisible() && column.columnDef.header !== 'Logo'
+                      )
+                      .map((column) => (
+                        <Menu.Item key={column.id}>
+                          <button
+                            type="button"
+                            className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                            onClick={() => {
+                              setTableSort({
+                                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                                column: column.columnDef.header!.toString(),
+                                direction: 'desc'
+                              })
+                            }}
+                          >
+                            {column.columnDef.header === 'Name' ? (
+                              <IoTextOutline className="text-gray-500" />
+                            ) : (
+                              <AiOutlineNumber className="text-gray-500" />
+                            )}
+
+                            <p
+                              className={
+                                column.getIsVisible()
+                                  ? visibleColumnTextStyle
+                                  : hiddenColumnTextStyle
+                              }
+                            >
+                              {typeof column.columnDef.header === 'string'
+                                ? column.columnDef.header
+                                : ''}
+                            </p>
+                          </button>
+                        </Menu.Item>
+                      ))}
+                  </>
+                )}
+              </div>
+            </Menu.Items>
+          </TransitionMenuItems>
+        </Menu>
       </div>
 
       <div className="flex flex-row gap-3">

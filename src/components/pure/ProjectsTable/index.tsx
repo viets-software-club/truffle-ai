@@ -13,6 +13,7 @@ import defaultColumns from '@/components/pure/ProjectsTable/columns'
 import FilterBar from '@/components/page/overview/FilterBar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { TableFilter } from '@/components/page/overview/TableFilter'
+import { TableSort } from '@/components/page/overview/TableSort'
 
 const nullFunc = () => null
 
@@ -26,6 +27,7 @@ const ProjectsTable = () => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<TableFilter[]>([])
+  const [tableSort, setTableSort] = useState<TableSort | null>(null)
 
   const addFilter = (filter: TableFilter) => {
     setFilters([...filters, filter])
@@ -80,6 +82,8 @@ const ProjectsTable = () => {
         addFilter={addFilter}
         filters={filters}
         comparePage={false}
+        tableSort={tableSort}
+        setTableSort={setTableSort}
       />
       {filters.length > 0 && (
         <FilterBar

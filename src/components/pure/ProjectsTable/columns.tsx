@@ -65,6 +65,7 @@ const columns = [
   }),
   // Issues column definition
   columnHelper.accessor('issueCount', {
+    id: 'Issues',
     header: 'Issues',
     enableColumnFilter: true,
     cell: (info) => (
@@ -79,6 +80,7 @@ const columns = [
   }),
   // Forks column definition
   columnHelper.accessor('forkCount', {
+    id: 'Forks',
     header: 'Forks',
     enableColumnFilter: true,
     cell: (info) => (
@@ -93,6 +95,7 @@ const columns = [
   }),
   // Contributors column definition
   columnHelper.accessor('contributorCount', {
+    id: 'Contributors',
     header: 'Contrib.',
     enableColumnFilter: true,
     cell: (info) => (

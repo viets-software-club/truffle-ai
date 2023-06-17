@@ -1,4 +1,5 @@
 import { createProject } from '../dbUpdater'
+import { insertBookmark } from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
 
@@ -20,15 +21,20 @@ const resolvers = {
         return await createProject(urlParts.repo, urlParts.owner, null)
       }
     },
-    addBookmark: (
+    addBookmark: async (
       _parent: unknown,
       { projectID, category }: { projectID: string; category: string },
       context: MercuriusContext
     ) => {
       if (!context.user) {
-        return false
+        return {
+          message: 'The graphQL resolver did not receive a valid user.',
+          code: '400',
+          hint: 'Are you loggedIn?'
+        }
       }
       const userID = context.user?.id
+      return await insertBookmark(userID, projectID, category)
     }
   }
 }

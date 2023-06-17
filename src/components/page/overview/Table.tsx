@@ -55,9 +55,60 @@ const matchesFilter = (cell: Cell<Project, unknown>, filter: TableFilter) => {
   } else return true
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const getSortComparator = (sort: TableSort | null) => (r1: Row<Project>, r2: Row<Project>) => {
   if (!sort) {
     return Number(r2.getValue('Stars')) - Number(r1.getValue('Stars'))
+  }
+
+  if (sort.column === 'Name') {
+    const v1 = r1.original.name
+    const v2 = r2.original.name
+    if (typeof v1 === 'string' && typeof v2 === 'string') {
+      return sort.direction === 'asc' ? v2.localeCompare(v1) : v1.localeCompare(v2)
+    }
+  }
+
+  if (sort.column === 'Contrib.') {
+    const v1 = r1.original.contributorCount
+    const v2 = r2.original.contributorCount
+    if (typeof v1 === 'number' && typeof v2 === 'number') {
+      return sort.direction === 'desc' ? v2 - v1 : v1 - v2
+    }
+  }
+
+  if (sort.column === 'Forks/Contrib.') {
+    const v1forks = r1.original.forkCount
+    const v1contrib = r1.original.contributorCount
+    const v2forks = r2.original.forkCount
+    const v2contrib = r2.original.contributorCount
+    if (
+      typeof v1forks === 'number' &&
+      typeof v1contrib === 'number' &&
+      typeof v2forks === 'number' &&
+      typeof v2contrib === 'number'
+    ) {
+      const v1 = v1forks / v1contrib
+      const v2 = v2forks / v2contrib
+      return sort.direction === 'desc' ? v2 - v1 : v1 - v2
+    }
+  }
+
+  if (sort.column === 'Issues/Contrib.') {
+    const v1issues = r1.original.issueCount
+    const v1contrib = r1.original.contributorCount
+    const v2issues = r2.original.issueCount
+    const v2contrib = r2.original.contributorCount
+    if (
+      typeof v1issues === 'number' &&
+      typeof v1contrib === 'number' &&
+      typeof v2issues === 'number' &&
+      typeof v2contrib === 'number'
+    ) {
+      const v1 = v1issues / v1contrib
+      const v2 = v2issues / v2contrib
+      return sort.direction === 'desc' ? v2 - v1 : v1 - v2
+    }
   }
 
   const value1 = r1.getValue(sort.column)
@@ -65,10 +116,6 @@ const getSortComparator = (sort: TableSort | null) => (r1: Row<Project>, r2: Row
 
   if (typeof value1 === 'number' && typeof value2 === 'number') {
     return sort.direction === 'desc' ? value2 - value1 : value1 - value2
-  }
-
-  if (typeof value1 === 'string' && typeof value2 === 'string') {
-    return sort.direction === 'desc' ? value2.localeCompare(value1) : value1.localeCompare(value2)
   }
 
   return 0

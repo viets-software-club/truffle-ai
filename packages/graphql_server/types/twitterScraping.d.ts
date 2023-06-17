@@ -1,11 +1,10 @@
 export type TwitterPost = {
   id: string
-  userId: string
   userName: string
   realName: string
   userVerified: boolean
-  conversationId: string
   tweetUrl: string
+  date: string
   text: string
   retweetCount: number
   likeCount: number
@@ -27,6 +26,7 @@ export type TwitterSearchResponse = {
     user_description: string
     tweet_id: string
     conversation_id: string
+    date: string
     text: string
     is_reply: boolean
     replies: number

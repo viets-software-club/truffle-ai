@@ -20,7 +20,7 @@ export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]
       }
     }
   )
-  return mapToInternalType(data.tweets)
+  return mapToTwitterPosts(data.tweets)
 }
 
 /**
@@ -51,20 +51,19 @@ export async function getPostsForHashtagSortedBy(
  * @param tweets - The array of tweets to be mapped.
  * @returns An array of mapped TwitterPost objects.
  */
-function mapToInternalType(tweets: TwitterSearchResponse['tweets']): TwitterPost[] {
+function mapToTwitterPosts(tweets: TwitterSearchResponse['tweets']): TwitterPost[] {
   return tweets.map((tweet) => ({
     id: tweet.tweet_id ?? '',
-    userId: tweet.user_id ?? '',
-    userName: tweet.user_name ?? '',
-    realName: tweet.real_name ?? '',
+    userName: tweet.user_name ?? 'twitter handle not included',
+    realName: tweet.real_name ?? 'real name of user not included',
     userVerified: tweet.user_verified ?? false,
-    conversationId: tweet.conversation_id ?? '',
     // the URL given from the API call is wrongly formatted, so we have to build the url to the post here
     tweetUrl:
       'https://twitter.com/' + tweet.user_name ?? '' + '/status/' + tweet.conversation_id ?? '',
-    text: tweet.text ?? '',
-    retweetCount: tweet.retweets ?? 0,
-    likeCount: 0, // Unfortunately this API does not deliver like counts, but we will need this count for the other issues
-    replies: tweet.replies ?? 0
+    date: tweet.date ?? 'date not included',
+    text: tweet.text ?? 'text not included',
+    retweetCount: tweet.retweets ?? -1,
+    likeCount: -1, // Unfortunately this API does not deliver like counts, but we will need this count for the other issues
+    replies: tweet.replies ?? -1
   }))
 }

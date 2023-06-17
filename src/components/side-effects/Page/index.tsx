@@ -25,10 +25,6 @@ const Page = ({ children }: PageProps) => {
           event.preventDefault()
           setOpenModal(true)
         }
-      } else if (event.key === 'Escape') {
-        setOpenModal(false)
-      }
-      if (openModal) {
         const shortcutsForPages = defaultList.filter(
           (item) => item.shortcutKey.toLocaleLowerCase() === event.key.toLocaleLowerCase()
         )
@@ -36,13 +32,15 @@ const Page = ({ children }: PageProps) => {
           event.preventDefault()
           void router.push(shortcutsForPages[0].commandInterfaceOptions)
         }
+      } else if (event.key === 'Escape') {
+        setOpenModal(false)
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [openModal])
+  }, [])
   const closeModel = () => {
     setOpenModal(false)
   }

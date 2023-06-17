@@ -12,7 +12,6 @@ import RecommendationRow from '@/components/side-effects/CommandInterface/Recomm
 import { MdArrowForward } from 'react-icons/md'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import emailTemplate from '@/util/emailTemplate'
-import { founderListMock } from '@/data/detailPageMocks'
 import RecommendationRowType from './RecommendationRowType'
 import defaultList from './DefaultRecommendationList'
 import CommandInterfaceOptions from './CommandInterfaceOptions'
@@ -27,12 +26,13 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   const commandInterfaceWrapperRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const [{ data }] = useTrendingProjectsQuery()
-  const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
   const [prevProjectRecommendationList, setPrevProjectRecommendationList] = useState<
     RecommendationRowType[]
   >([])
   const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
+
+  const [{ data }] = useTrendingProjectsQuery()
+  const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -119,15 +119,15 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     }
   }
 
-  const updateCommandInterface = (commandInterfaceOption: string, item: Project): string => {
+  const setCommandInterface = (commandInterfaceOption: string, item: Project): string => {
     if (commandInterfaceOption.includes(':id')) {
       return commandInterfaceOption.replace(':id', item.id as string)
     }
     if (commandInterfaceOption.includes('mailto:')) {
       return emailTemplate(
-        founderListMock[0].mail,
-        founderListMock[0].name,
-        founderListMock[0].company
+        item.associatedPerson?.email ?? '',
+        item.associatedPerson?.name ?? '',
+        item.name ?? ''
       )
     }
     return '/' as string
@@ -140,7 +140,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
           const recommendationRow: RecommendationRowType = {
             Icon: MdArrowForward,
             menuText: (item.name as string) ?? (item.id as string),
-            commandInterfaceOptions: updateCommandInterface(commandInterfaceOption, item),
+            commandInterfaceOptions: setCommandInterface(commandInterfaceOption, item),
             shortcutKey: index.toString(),
             shortcutKeyIcon: null
           }

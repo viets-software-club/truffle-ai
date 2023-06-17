@@ -1,17 +1,15 @@
-import { IFieldResolver, MercuriusContext } from 'mercurius'
-import { insertProject, parseGitHubUrl } from '../processRepo'
+import { createProject } from '../dbUpdater'
+import { parseGitHubUrl } from '../utils'
+import { MercuriusContext } from 'mercurius'
 
 const resolvers = {
   Query: {
     helloWorld: () => 'Hello world!'
   },
   Mutation: {
-    // takes in variables. Parent object _parent is never used
-    addProjectByName: async (
-      _parent: unknown,
-      { name, owner }: { name: string; owner: string }
-    ) => {
-      return await insertProject(name, owner, null)
+    // takes in variables. Parent object _ is never used
+    addProjectByName: async (_: unknown, { name, owner }: { name: string; owner: string }) => {
+      return await createProject(name, owner, null)
     },
     // takes in variables. Parent object _parent is never used
     addProjectByUrl: async (_parent: unknown, { url }: { url: string }) => {
@@ -19,7 +17,7 @@ const resolvers = {
       if (urlParts === null) {
         return false
       } else {
-        return await insertProject(urlParts.repo, urlParts.owner, null)
+        return await createProject(urlParts.repo, urlParts.owner, null)
       }
     },
     addBookmark: (

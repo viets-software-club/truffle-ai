@@ -5,6 +5,7 @@ const username = process.env.SCRAPING_BOT_USER_NAME || ''
 const apiKey = process.env.SCRAPING_BOT_API_KEY || ''
 const apiEndPoint = process.env.SCRAPING_BOT_API_ENDPOINT || ''
 const auth = 'Basic ' + Buffer.from(username + ':' + apiKey).toString('base64')
+const SLEEPING_TIME_IN_MS = 5000
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -21,9 +22,11 @@ function sleep(ms: number): Promise<void> {
  * @param linkedInHandle
  * @returns the specified LinkedInCompanyProfileType including the most important data
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity -- don't kow why this is "too complex"  - @thomas-woehrle
 export async function getCompanyInfosFromLinkedIn(
-  linkedInHandle: string
-): Promise<LinkedInCompanyProfile> {
+  linkedInHandle: string,
+  maximumWaitingTimeInMs = 30000
+): Promise<LinkedInCompanyProfile | null> {
   try {
     // builds the axios request configuration
     const requestConfig: AxiosRequestConfig = {
@@ -45,29 +48,38 @@ export async function getCompanyInfosFromLinkedIn(
     )
 
     let finalData: CompanyDataResponse | null = null
+
+    const maximumNumberOfRuns = Math.floor(maximumWaitingTimeInMs / SLEEPING_TIME_IN_MS)
+
+    let numberOfRuns = 0 // counts the number of runs depending on the maximumWaitingTimeInMs
     // sends the request until finalData is received
     do {
-      await sleep(5000)
+      numberOfRuns++
+      await sleep(SLEEPING_TIME_IN_MS)
       const responseUrl = `http://api.scraping-bot.io/scrape/data-scraper-response?scraper=linkedinCompanyProfile&responseId=${response.data.responseId}`
       const finalDataResponse = await axios.get<CompanyDataResponse[]>(responseUrl, requestConfig)
       finalData = finalDataResponse.data[0]
-    } while (finalData === null)
+    } while (!finalData && numberOfRuns < maximumNumberOfRuns)
+
+    if (!finalData) throw new Error('finalData is falsy')
 
     return {
+      url: finalData.url ?? '',
       name: finalData.name ?? '',
       founded: finalData.founded ?? '',
-      sphere: finalData.sphere ?? '',
       followers: finalData.followers ?? '',
       employeesAmountInLinkedin: finalData.employeesAmountInLinkedin ?? 0,
       about: finalData.about ?? '',
       website: finalData.website ?? '',
+      updates: finalData.updates ?? [],
       crunchbaseUrl: finalData.crunchbase_url ?? '',
       industries: finalData.Industries ?? '',
       hqLocation: finalData.Headquarters ?? '',
       specialties: finalData.Specialties ?? ''
     }
   } catch (error) {
+    console.error("Error in getCompanyInfosFromLinkedIn for company '" + linkedInHandle + "'")
     console.log(error)
-    throw new Error('Was not able to scrape company info for ' + linkedInHandle)
+    return null
   }
 }

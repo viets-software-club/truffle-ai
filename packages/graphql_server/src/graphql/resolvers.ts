@@ -1,5 +1,5 @@
 import { createProject } from '../dbUpdater'
-import { insertBookmark } from '../supabaseUtils'
+import { bookmarkIsAlreadyInDB, insertBookmark } from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
 
@@ -34,6 +34,12 @@ const resolvers = {
         }
       }
       const userID = context.user?.id
+      if (await bookmarkIsAlreadyInDB(userID, projectID)) {
+        return {
+          message: 'This bookmark is already in the database.',
+          code: '409'
+        }
+      }
       return await insertBookmark(userID, projectID, category)
     }
   }

@@ -19,6 +19,7 @@ import { PostgrestError } from '@supabase/supabase-js'
 Exports:
 */
 export {
+  bookmarkIsAlreadyInDB,
   deleteNotTrendingAndNotBookmarkedProjects,
   formatLinkedInCompanyData,
   formatGithubStats,

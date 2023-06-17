@@ -27,7 +27,7 @@ const getJWTFromRequest = (request: FastifyRequest) => {
   const authorizationHeader = request?.headers?.authorization
   if (
     typeof authorizationHeader !== 'string' ||
-    !authorizationHeader.includes('Bearer') ||
+    !authorizationHeader.startsWith('Bearer') ||
     authorizationHeader.length < 7
   )
     return null
@@ -36,7 +36,6 @@ const getJWTFromRequest = (request: FastifyRequest) => {
 
 const buildContext = async (request: FastifyRequest, reply: FastifyReply) => {
   const jwt = getJWTFromRequest(request)
-
   if (jwt) {
     const response: void | UserResponse = await supbaseClient.auth.getUser(jwt).catch((error) => {
       reply.log.error(error)
@@ -48,7 +47,7 @@ const buildContext = async (request: FastifyRequest, reply: FastifyReply) => {
       user: response?.data?.user
     }
   }
-  return null
+  return {}
 }
 
 // https://github.com/mercurius-js/mercurius-typescript/tree/master/examples

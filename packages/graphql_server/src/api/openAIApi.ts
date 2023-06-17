@@ -96,6 +96,12 @@ async function getHackernewsSentiment(comments: string) {
 
 /**
  * Categorizes a software engineering project based on its README or category.
+ * This method takes a number 1,2,3 or 4. This number was determined by the categorizeGeneral Method
+ * based on this number the list variable categoriesspecfic gets filled with different categories out of the Categories ENUM.
+ * If it is a 4 which means that the categories were not good enough to determine a general type then we just
+ * put all the available categories inside the variable.
+ * After the the correct categories are assigned we call ChatGPT with a prompt to tell us
+ * which categories fit the best. These categories are then returned in an enum string
  * @param readMeOrCategory - The project's README or category.
  * @param categoryGeneral - The general category of the project (1 for developer tools, 2 for infrastructure, 3 for ML/AI).
  * @returns The two best-fitting specific categories for the project.
@@ -180,6 +186,7 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
       return null
   }
 
+  //defines the request. Adding the readMe or categories and the correct categories
   const requestBodyCategories: RequestBodyOpenAI = {
     model: model,
     messages: [
@@ -196,6 +203,7 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
     ]
   }
 
+  //sends the request and returns the content which should look like this  [ "Web Development", "Data Analysis"]
   try {
     const response = await axios.post(openAIapiUrl, requestBodyCategories, { headers })
     const data = response.data as ResponseBodyOpenAi
@@ -215,8 +223,9 @@ async function categorizeProjectSpecific(readMeOrCategory: string, categoryGener
 
 /**
  * Categorizes a software engineering project into a general category based on its README or provided category.
- * @param readMeOrCategory - The project's README or category.
- * @returns The two best-fitting specific categories for the project, based on the general category.
+ * This method takes the categories and the readme of a repo as parameters. Then it asks chatgpt to categorize
+ * it into one three categories. Please see below the variable: listOfCategories
+ * ChatGPT returns the numbers 1,2 or 3. Each number represents one of the categories.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function categorizeProjectGeneral(categories: string, readme: string) {
@@ -236,11 +245,12 @@ async function categorizeProjectGeneral(categories: string, readme: string) {
   }
 
   const listOfCategories: string[] = [
+    //The three categories
     'Developer Tools',
     'Infrastrcuture',
     'Machine Learning and Aritfical Inteligence'
   ]
-  request_body_Categories.messages[1].content =
+  request_body_Categories.messages[1].content = //adds the categories to the question and then adds them to the request that is going to be send
     listOfCategories.join(' ,') + questionCategoriesGeneral + categories
   try {
     const response = await axios.post(openAIapiUrl, request_body_Categories, { headers })
@@ -251,11 +261,12 @@ async function categorizeProjectGeneral(categories: string, readme: string) {
       return null
     } else {
       const content: string = data?.choices[0]?.message?.content
-      const num = parseInt(content)
+      const num = parseInt(content) //parses the returned string into a number
       if (num !== 1 && num !== 2 && num !== 3) {
-        return categorizeProjectSpecific(readme, 4) //if the categories are not good enough
+        return categorizeProjectSpecific(readme, 4) //if chatGPT does not think that the categories are good enough it does not return a number
       } else {
-        return categorizeProjectSpecific(categories, num)
+        //If there is no number we specify the categories based on the readme and we take into consideration all categories
+        return categorizeProjectSpecific(categories, num) //if the number is correct we only pick the specifc categories which are predetermined inside the specfic method
       }
     }
   } catch (error) {

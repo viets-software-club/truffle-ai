@@ -9,6 +9,7 @@ const schema = `
     addBookmark(projectID: String!, category: String!): Response!
     deleteBookmark(projectID: String!): Response!
     editBookmarkCategory(projectID: String!, newCategory: String!): Response!
+    renameBookmarkCategory(oldCategory: String!, newCategory: String!): Response!
   }
   type Response {
       message: String

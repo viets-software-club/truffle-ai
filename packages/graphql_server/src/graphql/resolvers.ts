@@ -87,6 +87,20 @@ const resolvers = {
 
       const editError = await editBookmarkCategory(userID, projectID, newCategory)
       return editError ? editError : { code: '204' }
+    },
+    renameBookmarkCategory: async (
+      _parent: unknown,
+      { oldCategory, newCategory }: { oldCategory: string; newCategory: string },
+      context: MercuriusContext
+    ) => {
+      if (!context.user) {
+        return BAD_USER_RESPONSE
+      }
+
+      const userID = context.user?.id
+
+      const renameError = await editBookmarkCategory(userID, oldCategory, newCategory)
+      return renameError ? renameError : { code: '204' }
     }
   }
 }

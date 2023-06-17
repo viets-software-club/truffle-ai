@@ -56,6 +56,7 @@ const buildContext = async (request: FastifyRequest, reply: FastifyReply) => {
 // had to adjust the return of buildContext to be static to be in accordance
 type PromiseType<T> = T extends PromiseLike<infer U> ? U : T
 
+// extends the MercuriusContext with the return type of buildContext
 // I feel like the linting error is a bug
 declare module 'mercurius' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

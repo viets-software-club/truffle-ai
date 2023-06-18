@@ -26,7 +26,7 @@ const Page = ({ children }: PageProps) => {
           setOpenModal(true)
         }
         const shortcutsForPages = defaultList.filter(
-          (item) => item.shortcutKey.toLocaleLowerCase() === event.key.toLocaleLowerCase()
+          (item) => item.shortcutKey?.toLocaleLowerCase() === event.key.toLocaleLowerCase()
         )
         if (shortcutsForPages.length > 0) {
           event.preventDefault()

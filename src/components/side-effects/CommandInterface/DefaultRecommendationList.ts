@@ -7,12 +7,9 @@ import {
 import { MdEmail, MdArrowForward } from 'react-icons/md'
 import {
   TbSquareRoundedLetterB,
-  TbSquareRoundedLetterC,
   TbSquareRoundedLetterD,
   TbSquareRoundedLetterH,
   TbSquareRoundedLetterL,
-  TbSquareRoundedLetterM,
-  TbSquareRoundedLetterP,
   TbSquareRoundedLetterS
 } from 'react-icons/tb'
 import CommandInterfaceOptions from './CommandInterfaceOptions'
@@ -26,8 +23,8 @@ const defaultList: RecommendationRowType[] = [
     commandInterfaceOptions: CommandInterfaceOptions.SendMail,
     isProjectPrimary: true,
     isIdPrimary: true,
-    shortcutKey: 'M',
-    shortcutKeyIcon: TbSquareRoundedLetterM
+    shortcutKey: null,
+    shortcutKeyIcon: null
   },
   {
     Icon: Compass,
@@ -64,8 +61,8 @@ const defaultList: RecommendationRowType[] = [
     commandInterfaceOptions: CommandInterfaceOptions.CompareProjects,
     isIdPrimary: true,
     isProjectPrimary: true,
-    shortcutKey: 'C',
-    shortcutKeyIcon: TbSquareRoundedLetterC
+    shortcutKey: null,
+    shortcutKeyIcon: null
   },
   {
     Icon: MdArrowForward,
@@ -73,8 +70,8 @@ const defaultList: RecommendationRowType[] = [
     commandInterfaceOptions: CommandInterfaceOptions.ProjectDetails,
     isIdPrimary: true,
     isProjectPrimary: true,
-    shortcutKey: 'P',
-    shortcutKeyIcon: TbSquareRoundedLetterP
+    shortcutKey: null,
+    shortcutKeyIcon: null
   },
   {
     Icon: MdArrowForward,

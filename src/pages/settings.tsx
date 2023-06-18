@@ -11,6 +11,7 @@ import EmailTemplate from '@/components/page/settings/EmailTemplate'
 import deleteAccount from '@/util/deleteAccount'
 import FilterInput, { defaultFilters } from '@/components/page/settings/FilterInput'
 import AffinitySettings from '@/components/page/settings/AffinitySettings'
+import Banner from '@/components/page/settings/Banner'
 
 // @TODO use backend rather than local storage for Email template, slack webhook, affinity api key
 
@@ -19,9 +20,9 @@ const getStoredValue = (filterType: string) =>
   Number(localStorage.getItem(`${filterType}DefaultFilter`))
 
 const sections = {
-  General: ['Filters', 'Email template'],
-  Account: ['Notifications', 'Log out', 'Delete account'],
-  Integrations: ['Affinity']
+  General: ['Default filters', 'Email template'],
+  Account: ['Log out', 'Delete account'],
+  Integrations: ['Notifications', 'Affinity']
 }
 
 /**
@@ -40,7 +41,8 @@ const Settings = () => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        // Check if the top of the element is visible
+        if (entry.isIntersecting && entry.boundingClientRect.top >= 0) {
           setActiveSection(entry.target.id)
         }
       })
@@ -91,15 +93,24 @@ const Settings = () => {
     contributors: getStoredValue('contributors')
   })
 
+  const [showBanner, setShowBanner] = useState(false)
+
+  const showBannerFunc = () => {
+    setShowBanner(true)
+  }
+
   return (
     <div className="flex">
       <Sidebar sections={sections} activeSection={activeSection} onClick={scrollTo} />
 
       <div className="ml-64 w-full overflow-auto px-20 py-10 text-white">
-        <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">General</h2>
+        <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">General</h2>
 
-        <Section title="General" subtitle="Filters" refs={refs}>
-          <div className="flex flex-row">
+        <Section title="General" subtitle="Default filters" refs={refs}>
+          <p className="my-4 text-14 font-normal text-gray-400">
+            Anything below these values will be filtered out of your results.
+          </p>
+          <div className="mb-4 flex flex-row">
             {Object.keys(filters).map((filterType) => (
               <FilterInput
                 key={filterType}
@@ -110,9 +121,8 @@ const Settings = () => {
               />
             ))}
           </div>
-          <p className="my-4 text-14 font-normal text-gray-400">
-            Anything below these values will be filtered out of your results.
-          </p>
+          <Button variant="highlighted" text="Update" onClick={showBannerFunc} />
+          {showBanner && <Banner variant="success" message="Filters updated" />}
         </Section>
 
         <div className="h-1 border-b border-gray-800" />
@@ -121,25 +131,20 @@ const Settings = () => {
           <EmailTemplate />
         </Section>
 
-        <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Account</h2>
-
-        <Section title="Account" subtitle="Notifications" refs={refs}>
-          <p className="mb-4 text-14 font-normal">Slack notifications</p>
-
-          <SlackSettings />
-        </Section>
-        <div className="h-1 border-b border-gray-800" />
+        <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">Account</h2>
 
         <Section title="Account" subtitle="Log out" refs={refs}>
-          <Link href="/logout">
-            <Button
-              text="Log out"
-              variant="highlighted"
-              order="ltr"
-              textColor="white"
-              iconColor="white"
-            />
-          </Link>
+          <div className="flex">
+            <Link href="/logout">
+              <Button
+                text="Log out"
+                variant="highlighted"
+                order="ltr"
+                textColor="white"
+                iconColor="white"
+              />
+            </Link>
+          </div>
         </Section>
 
         <div className="h-1 border-b border-gray-800" />
@@ -176,7 +181,14 @@ const Settings = () => {
           )}
         </Section>
 
-        <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Integrations</h2>
+        <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">Integrations</h2>
+        <Section title="Integrations" subtitle="Notifications" refs={refs}>
+          <p className="mb-4 text-14 font-normal">Slack notifications</p>
+
+          <SlackSettings />
+        </Section>
+        <div className="h-1 border-b border-gray-800" />
+
         <Section title="Integrations" subtitle="Affinity" refs={refs}>
           <AffinitySettings />
         </Section>

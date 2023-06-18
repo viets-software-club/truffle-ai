@@ -88,7 +88,7 @@ const AddProject = () => {
           >
             <Dialog.Panel
               as="form"
-              className="flex w-[400px] flex-col items-stretch gap-4 rounded-lg border border-gray-900/20 bg-gray-700 p-4 text-left shadow-lg shadow-gray-950/10"
+              className="flex w-[350px] flex-col items-stretch gap-4 rounded-lg border border-gray-900/20 bg-gray-700 p-4 text-left shadow-lg shadow-gray-950/10"
               onSubmit={handleSubmit}
             >
               <Dialog.Title className="text-base font-semibold text-white">

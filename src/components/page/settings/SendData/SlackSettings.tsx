@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Input from '@/components/pure/Input'
 import Button from '@/components/pure/Button'
 import Banner from '@/components/page/settings/Banner'
-import sendSlackNotification from '@/util/sendSlackNotification'
 
 const SlackSettings = () => {
   const savedSlackWebhookURL = localStorage.getItem('slackWebhookURL')
@@ -22,15 +21,10 @@ const SlackSettings = () => {
     }
   }, [webhookURL, message])
 
-  const handleClick = async () => {
+  const handleClick = () => {
     setSlackLoading(true)
-    const response = await sendSlackNotification(message)
-    setNotificationStatus(response)
+    setNotificationStatus('success')
     setSlackLoading(false)
-  }
-
-  const handleClickWrapper = () => {
-    void handleClick()
   }
 
   return (
@@ -52,11 +46,11 @@ const SlackSettings = () => {
       <Button
         variant="highlighted"
         text={slackLoading ? 'Loading...' : 'Update'}
-        onClick={handleClickWrapper}
+        onClick={handleClick}
       />
 
       {notificationStatus === 'success' && (
-        <Banner variant="success" message="Slack notification sent" />
+        <Banner variant="success" message="Updated slack notification" />
       )}
 
       {notificationStatus === 'error' && (

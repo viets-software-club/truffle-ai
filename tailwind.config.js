@@ -28,15 +28,15 @@ module.exports = {
         36: '36px'
       },
       colors: {
-        lila: {
-          400: '#8c8fd9'
-        },
         teal: '#01B3C0',
         red: '#EC5858',
         mustard: '#988300',
         yellow: '#F3CA4D',
         orange: '#F3A04B',
-        purple: '#BC88FD',
+        purple: {
+          300: '#BC88FD',
+          500: '#8c8fd9'
+        },
         blue: '#4FA8FD',
         green: '#4DB783',
         indigo: {

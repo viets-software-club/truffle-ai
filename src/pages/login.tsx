@@ -69,13 +69,13 @@ const Login = () => {
               <div className="mb-4 text-36 font-semibold text-gray-100">Welcome to TruffleAI</div>
               <div className="flex w-[13rem] flex-col justify-center">
                 <input
-                  className="mb-4 block w-full border-b border-solid border-b-indigo-500 bg-transparent text-gray-100 outline-none placeholder:text-lila-400/70"
+                  className="mb-4 block w-full border-b border-solid border-b-indigo-500 bg-transparent text-gray-100 outline-none placeholder:text-purple-500/70"
                   placeholder="your-name@lafamiglia.vc"
                   name="email"
                   type="email"
                 />
                 <input
-                  className="mb-6 block w-full border-b border-solid border-b-indigo-500 bg-transparent text-gray-100 outline-none placeholder:text-lila-400/70"
+                  className="mb-6 block w-full border-b border-solid border-b-indigo-500 bg-transparent text-gray-100 outline-none placeholder:text-purple-500/70"
                   placeholder="password"
                   name="password"
                   type="password"

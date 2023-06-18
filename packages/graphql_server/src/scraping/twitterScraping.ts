@@ -58,8 +58,7 @@ function mapToTwitterPosts(tweets: TwitterSearchResponse['tweets']): TwitterPost
     realName: tweet.real_name ?? 'real name of user not included',
     userVerified: tweet.user_verified ?? false,
     // the URL given from the API call is wrongly formatted, so we have to build the url to the post here
-    tweetUrl:
-      'https://twitter.com/' + tweet.user_name ?? '' + '/status/' + tweet.conversation_id ?? '',
+    tweetUrl: 'https://twitter.com/' + tweet.user_name + '/status/' + tweet.conversation_id,
     date: tweet.date ?? 'date not included',
     text: tweet.text ?? 'text not included',
     retweetCount: tweet.retweets ?? -1,

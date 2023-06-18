@@ -1330,7 +1330,9 @@ export type TrendingProjectsQuery = {
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
+          name?: string | null
           login?: string | null
+          email?: string | null
           avatarUrl?: string | null
         } | null
         organization?: {
@@ -1431,7 +1433,9 @@ export const TrendingProjectsDocument = gql`
           owningOrganization
           associatedPerson {
             id
+            name
             login
+            email
             avatarUrl
           }
           organization {

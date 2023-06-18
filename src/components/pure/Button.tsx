@@ -1,4 +1,8 @@
-type ButtonProps = {
+// @TODO refactor component
+
+import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+
+type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   variant:
     | 'normal'
     | 'highlighted'
@@ -15,10 +19,6 @@ type ButtonProps = {
   iconColor?: string
   textColor?: string
   fullWidth?: boolean
-  type?: 'submit' | 'button'
-  name?: string
-  value?: string
-  className?: string
 }
 
 const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
@@ -49,10 +49,11 @@ const Button = ({
   iconColor = 'text-gray-500',
   textColor = 'text-gray-300',
   fullWidth,
-  type,
   name,
   value,
-  className = ''
+  className = '',
+  disabled,
+  type = 'button'
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
 
@@ -83,6 +84,7 @@ const Button = ({
       name={name}
       value={value}
       className={classNames}
+      disabled={disabled}
     >
       {contentNode}
     </button>
@@ -96,11 +98,7 @@ Button.defaultProps = {
   iconColor: 'text-gray-500',
   textColor: 'text-gray-300',
   fullWidth: false,
-  type: 'button',
-  onClick: null,
-  name: null,
-  value: null,
-  className: null
+  onClick: null
 }
 
 export default Button

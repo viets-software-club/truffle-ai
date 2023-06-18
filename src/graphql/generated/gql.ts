@@ -243,6 +243,7 @@ export type BigIntFilter = {
 
 export type Bookmark = Node & {
   __typename?: 'Bookmark'
+  category?: Maybe<Scalars['String']>
   createdAt?: Maybe<Scalars['Datetime']>
   id: Scalars['UUID']
   /** Globally Unique Record Identifier */
@@ -273,6 +274,7 @@ export type BookmarkEdge = {
 }
 
 export type BookmarkFilter = {
+  category?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   id?: InputMaybe<UuidFilter>
   nodeId?: InputMaybe<IdFilter>
@@ -281,6 +283,7 @@ export type BookmarkFilter = {
 }
 
 export type BookmarkInsertInput = {
+  category?: InputMaybe<Scalars['String']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   id?: InputMaybe<Scalars['UUID']>
   projectId?: InputMaybe<Scalars['UUID']>
@@ -296,6 +299,7 @@ export type BookmarkInsertResponse = {
 }
 
 export type BookmarkOrderBy = {
+  category?: InputMaybe<OrderByDirection>
   createdAt?: InputMaybe<OrderByDirection>
   id?: InputMaybe<OrderByDirection>
   projectId?: InputMaybe<OrderByDirection>
@@ -303,6 +307,7 @@ export type BookmarkOrderBy = {
 }
 
 export type BookmarkUpdateInput = {
+  category?: InputMaybe<Scalars['String']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   id?: InputMaybe<Scalars['UUID']>
   projectId?: InputMaybe<Scalars['UUID']>
@@ -1141,6 +1146,7 @@ export type TestTable = Node & {
   name?: Maybe<Scalars['String']>
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']
+  testColumn?: Maybe<Scalars['String']>
   userId?: Maybe<Scalars['UUID']>
 }
 
@@ -1169,6 +1175,7 @@ export type TestTableFilter = {
   id?: InputMaybe<UuidFilter>
   name?: InputMaybe<StringFilter>
   nodeId?: InputMaybe<IdFilter>
+  testColumn?: InputMaybe<StringFilter>
   userId?: InputMaybe<UuidFilter>
 }
 
@@ -1176,6 +1183,7 @@ export type TestTableInsertInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>
   id?: InputMaybe<Scalars['UUID']>
   name?: InputMaybe<Scalars['String']>
+  testColumn?: InputMaybe<Scalars['String']>
   userId?: InputMaybe<Scalars['UUID']>
 }
 
@@ -1191,6 +1199,7 @@ export type TestTableOrderBy = {
   createdAt?: InputMaybe<OrderByDirection>
   id?: InputMaybe<OrderByDirection>
   name?: InputMaybe<OrderByDirection>
+  testColumn?: InputMaybe<OrderByDirection>
   userId?: InputMaybe<OrderByDirection>
 }
 
@@ -1198,6 +1207,7 @@ export type TestTableUpdateInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>
   id?: InputMaybe<Scalars['UUID']>
   name?: InputMaybe<Scalars['String']>
+  testColumn?: InputMaybe<Scalars['String']>
   userId?: InputMaybe<Scalars['UUID']>
 }
 
@@ -1228,6 +1238,12 @@ export type UuidFilter = {
   is?: InputMaybe<FilterIs>
   neq?: InputMaybe<Scalars['UUID']>
 }
+
+export type AddProjectByUrlMutationVariables = Exact<{
+  url: Scalars['String']
+}>
+
+export type AddProjectByUrlMutation = { __typename?: 'Mutation'; addProjectByUrl: boolean }
 
 export type ProjectDetailsQueryVariables = Exact<{
   id?: InputMaybe<Scalars['UUID']>
@@ -1319,6 +1335,17 @@ export type TrendingProjectsQuery = {
   } | null
 }
 
+export const AddProjectByUrlDocument = gql`
+  mutation AddProjectByUrl($url: String!) {
+    addProjectByUrl(url: $url)
+  }
+`
+
+export function useAddProjectByUrlMutation() {
+  return Urql.useMutation<AddProjectByUrlMutation, AddProjectByUrlMutationVariables>(
+    AddProjectByUrlDocument
+  )
+}
 export const ProjectDetailsDocument = gql`
   query ProjectDetails($id: UUID) {
     projectCollection(filter: { id: { eq: $id } }) {

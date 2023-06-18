@@ -10,6 +10,7 @@ export const signInWithGoogle = async (supabaseClient: SupabaseClient) => {
       redirectTo: redirectUrl
     }
   })
+
   if (error) throw error
 }
 
@@ -20,9 +21,11 @@ export const signInWithPassword = async (
 ) => {
   if (!validateEmail(email)) throw new Error("Couldn't validate email")
   if (!validatePassword(password)) throw new Error("Couldn't validate password")
+
   const { error } = await supabaseClient.auth.signInWithPassword({
     email,
     password
   })
+
   if (error) throw error
 }

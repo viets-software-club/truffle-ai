@@ -17,15 +17,16 @@ const App = ({
   initialSession: Session
 }>) => {
   const [supabaseClient] = useState(() => createPagesBrowserClient())
-  const ComponentWithUrql = withUrql(Component)
+
   // Provide the Supabase client and initial session using SessionContextProvider
   return (
     <SessionContextProvider
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      {createElement(ComponentWithUrql, pageProps)}
+      {createElement(withUrql(Component), pageProps)}
     </SessionContextProvider>
   )
 }
+
 export default App

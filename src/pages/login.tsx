@@ -3,32 +3,35 @@ import { useRouter } from 'next/router'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { BiLogInCircle } from 'react-icons/bi'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
-import Button from '@/components/pure/Button'
 import ErrorComponent from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
+import Button from '@/components/pure/Button'
 import { signInWithGoogle, signInWithPassword } from '@/util/login'
 
 /**
  * Login component. Displays a Google login button and handles the Google OAuth login flow.
- * @returns {JSX.Element} The rendered component
  */
 const Login = () => {
   const [isError, setIsError] = useState(false)
+
   const user = useUser()
   const router = useRouter()
-  const supabaseClient = useSupabaseClient()
   const { isLoading } = useSessionContext()
+  const supabaseClient = useSupabaseClient()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
     const nativeEvent = e.nativeEvent as typeof e.nativeEvent & {
       submitter: HTMLButtonElement
     }
+
     const formElements = e.currentTarget.elements as typeof e.currentTarget.elements & {
       provider: HTMLButtonElement
       email: HTMLInputElement
       password: HTMLInputElement
     }
+
     if (nativeEvent.submitter.value === 'google') {
       signInWithGoogle(supabaseClient).catch(() => {
         setIsError(true)

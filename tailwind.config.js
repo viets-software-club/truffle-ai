@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
@@ -30,14 +33,16 @@ module.exports = {
         mustard: '#988300',
         yellow: '#F3CA4D',
         orange: '#F3A04B',
-        purple: '#BC88FD',
+        purple: {
+          300: '#BC88FD',
+          500: '#8c8fd9'
+        },
         blue: '#4FA8FD',
         green: '#4DB783',
-
         indigo: {
           100: '#E1E8FF',
           300: '#A6B5FD',
-          500: '#586CC8',
+          500: '#585cc8',
           700: '#4439CB',
           900: '#322F82'
         },

@@ -13,8 +13,7 @@ import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { TableFilter } from '@/components/page/overview/TableFilter'
-
-const nullFunc = () => null
+import { TableSort } from '@/components/page/overview/TableSort'
 
 /**
  * Table for displaying trending projects
@@ -26,6 +25,7 @@ const ProjectsTable = () => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<TableFilter[]>([])
+  const [tableSort, setTableSort] = useState<TableSort | null>(null)
 
   const addFilter = (filter: TableFilter) => {
     setFilters([...filters, filter])
@@ -75,21 +75,29 @@ const ProjectsTable = () => {
     <div className="flex w-full flex-col">
       <TopBar
         columns={table.getAllLeafColumns()}
-        nullFunc={nullFunc}
         addFilter={addFilter}
         filters={filters}
         comparePage={false}
+        tableSort={tableSort}
+        setTableSort={setTableSort}
       />
-      {filters.length > 0 && (
+      {(filters.length > 0 || tableSort) && (
         <FilterBar
           filters={filters}
           removeFilter={removeFilter}
           updateFilter={updateFilter}
           currentEntries={filteredRowCount}
           totalEntries={data.length}
+          tableSort={tableSort}
+          setTableSort={setTableSort}
         />
       )}
-      <Table table={table} filters={filters} setFilteredRowCount={setFilteredRowCount} />
+      <Table
+        table={table}
+        filters={filters}
+        setFilteredRowCount={setFilteredRowCount}
+        tableSort={tableSort}
+      />
     </div>
   )
 }

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "codegen": "graphql-codegen --config codegen.config.ts",
+    "codegen": "export $(cat .env.local | grep -v \"#\" | xargs) && graphql-codegen --config codegen.config.ts",
     "lint": "eslint ./src",
     "lint:debug": "eslint ./src --debug",
     "lint:fix": "eslint ./src --fix",
@@ -18,7 +18,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@primer/octicons-react": "^19.1.0",
-    "@supabase/auth-helpers-nextjs": "^0.6.1",
+    "@supabase/auth-helpers-nextjs": "^0.7.2",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@tanstack/react-table": "^8.9.1",
     "@types/node": "18.16.3",

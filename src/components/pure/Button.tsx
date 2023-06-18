@@ -1,4 +1,8 @@
-type ButtonProps = {
+// @TODO refactor component
+
+import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+
+type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   variant:
     | 'normal'
     | 'highlighted'
@@ -8,7 +12,6 @@ type ButtonProps = {
     | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
     | 'filter'
-  onClick: () => void
   text?: string
   Icon?: IconComponentType
   order?: 'ltr' | 'rtl'
@@ -44,13 +47,18 @@ const Button = ({
   order,
   iconColor = 'text-gray-500',
   textColor = 'text-gray-300',
-  fullWidth
+  fullWidth,
+  name,
+  value,
+  className = '',
+  disabled,
+  type = 'button'
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
 
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
-  }`
+  }  ${className}`
 
   // create a text node if text is provided
   const textNode = text && (
@@ -68,9 +76,15 @@ const Button = ({
       <Icon key="2" className={`${order === 'ltr' ? 'mr-1.5' : 'ml-1.5'} ${iconColor}`} />
     ))
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
-
   return (
-    <button type="button" onClick={onClick} className={classNames}>
+    <button
+      type={type === 'button' ? 'button' : 'submit'}
+      onClick={onClick}
+      name={name}
+      value={value}
+      className={classNames}
+      disabled={disabled}
+    >
       {contentNode}
     </button>
   )

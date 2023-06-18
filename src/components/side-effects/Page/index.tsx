@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useState } from 'react'
-import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router'
 import NavSidebar from '@/components/side-effects/NavSidebar'
 import CommandInterface from '@/components/side-effects/CommandInterface'
@@ -8,8 +7,6 @@ import defaultList from '../CommandInterface/DefaultRecommendationList'
 type PageProps = {
   children: ReactNode
 }
-
-const inter = Inter({ subsets: ['latin'] })
 
 /**
  * Standard page wrapper with sidebar and main element
@@ -36,7 +33,9 @@ const Page = ({ children }: PageProps) => {
         setOpenModal(false)
       }
     }
+
     document.addEventListener('keydown', handleKeyDown)
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
@@ -44,8 +43,9 @@ const Page = ({ children }: PageProps) => {
   const closeModel = () => {
     setOpenModal(false)
   }
+
   return (
-    <div className={`min-h-screen w-full ${inter.className} bg-gray-900 text-gray-100`}>
+    <div className="min-h-screen w-full bg-gray-900 text-gray-100">
       <div className="flex">
         <NavSidebar />
         {openModal && <CommandInterface action={closeModel} />}

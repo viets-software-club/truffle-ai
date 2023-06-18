@@ -12,7 +12,6 @@ type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HT
     | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
     | 'filter'
-  onClick?: () => void
   text?: string
   Icon?: IconComponentType
   order?: 'ltr' | 'rtl'
@@ -97,8 +96,7 @@ Button.defaultProps = {
   order: 'rtl',
   iconColor: 'text-gray-500',
   textColor: 'text-gray-300',
-  fullWidth: false,
-  onClick: null
+  fullWidth: false
 }
 
 export default Button

@@ -1,8 +1,5 @@
 import supabase from './supabase'
 import { getOrganizationInfo, getUserInfo } from './api/githubApi'
-/*
-Types:
-*/
 import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { LinkedInCompanyProfile } from '../types/linkedInScraping'
 import { StarRecord } from '../types/starHistory'

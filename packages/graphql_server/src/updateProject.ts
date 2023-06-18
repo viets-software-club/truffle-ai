@@ -12,18 +12,12 @@ import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
+import { getRepoStarRecords } from './starHistory/starHistory'
 import { getGithubData } from './utils'
-/*
-Types:
-*/
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
-import { getRepoStarRecords } from './starHistory/starHistory'
 
-/*
-Exports:
-*/
 export {
   updateAllProjectInfo,
   updateProjectELI5,

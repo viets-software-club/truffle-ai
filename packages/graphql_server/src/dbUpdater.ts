@@ -13,14 +13,10 @@ import {
   getTrendingAndBookmarkedProjects
 } from './supabaseUtils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
-/* 
-Types: 
-*/
 import { TrendingState } from '../types/updateProject'
 
 /**
- * This is the function could be called daily to update the db.
- * It updates old projecst and inserts new trending ones.
+ * Updates (and deletes) existing projects and inserts new trending ones.
  * @param {boolean} includeDeletion - If true all repos that are not trending and not bookmarked are deleted.
  */
 export const dailyDbUpdater = async (includeDeletion: boolean) => {

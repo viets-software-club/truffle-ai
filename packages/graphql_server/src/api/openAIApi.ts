@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { RequestBodyOpenAI, ResponseBodyOpenAi } from '../../types/openAIApi'
+import { getRepositoryTopics } from './githubApi'
 
 export { getELI5FromReadMe, getHackernewsSentiment }
 
@@ -288,21 +289,15 @@ const getCategoryNumberFromGPT = async (categories: string[]) => {
       {
         role: 'system',
         content: `You are a machine that can only answer with number separated by commas. 
-        You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.`
+        You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.
+        Answer with 1 for Machine Learning, 2 for Dev Tools or 3 for Other to recategorize the project.
+        `
       },
       {
         role: 'user',
-        content: `
-        Answer with 1 for Machine Learning, 2 for Dev Tools or 3 for Other to recategorize the project.
-        [
-        'deepfake',
-        'real-time',
-        'faceswap',
-        'webcam',
-        'streaming',
-        'videocall',
-        'machine-learning'
-      ]`
+        content: `        
+        Topics related to the repository: ${categories.toString()}
+        `
       }
     ]
   }
@@ -313,7 +308,14 @@ const getCategoryNumberFromGPT = async (categories: string[]) => {
   return response?.data?.choices
 }
 
-void getCategoryNumberFromGPT([]).then((res) => console.log(res))
+const testForRepo = async (repoName: string, owner: string) => {
+  const repoTopics = await getRepositoryTopics(owner, repoName, process.env.GITHUB_API_TOKEN)
+  console.log(repoTopics)
+  const categoryNumbers = await getCategoryNumberFromGPT(repoTopics)
+  console.log(categoryNumbers)
+}
+
+void testForRepo('react', 'facebook')
 
 type OpenAIResponse = {
   id: string

@@ -98,27 +98,6 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     void router.push(path)
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const searchWordAsArray = searchWord.split(' ')
-    if (searchWordAsArray.length > 1) {
-      const commandName = isProjectListOn
-        ? searchWordAsArray[searchWordAsArray.length - 1]
-        : searchWordAsArray.slice(0, 2).join(' ')
-      navigateTo(
-        recommendationList.filter((row) =>
-          row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
-        )[0].commandInterfaceOptions
-      )
-    } else {
-      navigateTo(
-        recommendationList.filter((row) =>
-          row.menuText.toLocaleLowerCase().includes(searchWord.toLocaleLowerCase())
-        )[0].commandInterfaceOptions
-      )
-    }
-  }
-
   const setCommandInterface = (commandInterfaceOption: string, item: Project): string => {
     if (commandInterfaceOption.includes(':id')) {
       return commandInterfaceOption.replace(':id', item.id as string)
@@ -174,13 +153,12 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     setRecommendationList([yesLine, noLine])
   }
 
-  const rowClicked = (
+  const decideNavigation = (
     command: string,
     searchText: string,
     isIdPrimary: boolean,
     needConfirmation: boolean
   ) => {
-    setSearchWord(searchText)
     if (needConfirmation) {
       showConfirmationLines()
     } else if (!isIdPrimary) {
@@ -193,6 +171,36 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     } else {
       setSearchWord('Please choose a project first.')
     }
+  }
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const searchWordAsArray = searchWord.split(' ')
+    let commandName = ''.concat(searchWord)
+    if (searchWordAsArray.length > 1) {
+      commandName = isProjectListOn
+        ? searchWordAsArray[searchWordAsArray.length - 1]
+        : searchWordAsArray.slice(0, 2).join(' ')
+    }
+    const command = recommendationList.filter((row) =>
+      row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
+    )[0]
+    decideNavigation(
+      command.commandInterfaceOptions,
+      command.menuText,
+      command.isIdPrimary ?? false,
+      command.needConfirmation ?? false
+    )
+  }
+
+  const rowClicked = (
+    command: string,
+    searchText: string,
+    isIdPrimary: boolean,
+    needConfirmation: boolean
+  ) => {
+    setSearchWord(searchText)
+    decideNavigation(command, searchText, isIdPrimary, needConfirmation)
   }
 
   return (

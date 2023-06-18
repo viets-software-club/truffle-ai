@@ -307,9 +307,27 @@ const getCategoryNumberFromGPT = async (categories: string[]) => {
     ]
   }
 
-  const response = await axios.post(openAIapiUrl, request_body_Categories, { headers })
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-  return response?.data?.choices?.[0]?.message?.content
+  const response = await axios.post<OpenAIResponse>(openAIapiUrl, request_body_Categories, {
+    headers
+  })
+  return response?.data?.choices
 }
 
 void getCategoryNumberFromGPT([]).then((res) => console.log(res))
+
+type OpenAIResponse = {
+  id: string
+  object: string
+  created: number
+  model: string
+  choices: OpenAIChoice[]
+}
+
+type OpenAIChoice = {
+  message: {
+    role: string
+    content: string
+  }
+  finish_reason: string
+  index: number
+}

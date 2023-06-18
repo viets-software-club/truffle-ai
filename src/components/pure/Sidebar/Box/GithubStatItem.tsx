@@ -9,7 +9,7 @@ enum Color {
 type GithubStatItemProps = {
   Icon?: IconComponentType
   IconMetric?: ReactNode
-  value: number
+  value?: number
   growth?: string
   paddingOn?: boolean
   outerPaddingOn?: boolean
@@ -17,6 +17,7 @@ type GithubStatItemProps = {
   greenValue?: number
   redValue?: number
   largeGap?: boolean
+  link?: string
 }
 
 const GithubStatItem = ({
@@ -29,12 +30,13 @@ const GithubStatItem = ({
   hoverOn,
   greenValue,
   redValue,
-  largeGap
+  largeGap,
+  link
 }: GithubStatItemProps) => {
   let color = Color.DEFAULT
-  if (greenValue !== undefined && value > greenValue) {
+  if (greenValue !== undefined && value !== undefined && value > greenValue) {
     color = Color.GREEN
-  } else if (redValue !== undefined && value < redValue) {
+  } else if (redValue !== undefined && value !== undefined && value < redValue) {
     color = Color.RED
   }
 
@@ -50,9 +52,16 @@ const GithubStatItem = ({
         <div className={`flex flex-row items-center justify-center ${gap}`}>
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
-          <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
-            {formatNumber(value)}
-          </span>
+          {value && (
+            <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
+              {formatNumber(value)}
+            </span>
+          )}
+          {link && (
+            <a href={link} target="_blank" rel="noreferrer">
+              Go to repo
+            </a>
+          )}
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}
         </div>
       </div>
@@ -62,6 +71,7 @@ const GithubStatItem = ({
 
 GithubStatItem.defaultProps = {
   Icon: undefined,
+  value: undefined,
   IconMetric: undefined,
   growth: undefined,
   outerPaddingOn: true,
@@ -69,7 +79,8 @@ GithubStatItem.defaultProps = {
   hoverOn: true,
   greenValue: 100,
   redValue: 0,
-  largeGap: false
+  largeGap: false,
+  link: undefined
 }
 
 export default GithubStatItem

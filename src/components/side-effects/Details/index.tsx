@@ -1,28 +1,17 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {
-  FiX as X,
-  FiChevronUp as ChevronUp,
-  FiChevronDown as ChevronDown,
-  FiArrowUpRight
-} from 'react-icons/fi'
-import { FaTwitter, FaHackerNews } from 'react-icons/fa'
+import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
+import { FaHackerNews } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
-import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
+import HackernewsCard from '@/components/pure/HackernewsCard'
 
 const handleClick = () => ''
-
-// @TODO Update social media buttons
-const SomeButton = (
-  <Button Icon={FiArrowUpRight} variant="normal" onClick={handleClick} text="Open" order="ltr" />
-)
 
 type DetailsProps = {
   id: string
@@ -137,17 +126,23 @@ const Details = ({ id }: DetailsProps) => {
 
           {/* @TODO Add real data */}
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            <Card
+            {/* <Card
               Icon={FaTwitter}
               name="Top Tweets"
               button={SomeButton}
-              textFields={tweetListMock}
-            />
-            <Card
+              textFields={project.hackernewsSentiment as string}
+            /> */}
+            {/* <Card
               Icon={FaHackerNews}
               name="Community Sentiment"
               button={SomeButton}
               textFields={hackerNewsListMock}
+            /> */}
+            <HackernewsCard
+              Icon={FaHackerNews}
+              name="Community Sentiment"
+              communitySentiment={project.hackernewsSentiment as string}
+              links={project.hackernewsStories as string[]}
             />
           </div>
         </div>

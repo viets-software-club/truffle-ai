@@ -10,21 +10,3 @@ const Settings = () => (
 )
 
 export default withAuth(Settings)
-
-// SUPABASE
-
-// project:
-// hackernews sentiment (string) / stories (array of links)
-
-// gql:
-// overview:
-// github url
-// website url
-// PR count
-
-// details:
-// github url
-// website url
-// PR count
-
-// founder/orga: email, gitub url, twitter, website, repositoryCount

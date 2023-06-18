@@ -1,11 +1,15 @@
 import { AiFillMail } from 'react-icons/ai'
-import { FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaTwitter, FaGlobe } from 'react-icons/fa'
 
 type FounderProps = {
   name: string
   mail?: string
-  linkedin?: string
+  // linkedin?: string
   company: string
+  twitter?: string
+  github?: string
+  website?: string
+  repositoryCount?: number
 }
 
 const emailTemplate = (email: string, founderName: string, companyName: string) => {
@@ -28,29 +32,61 @@ PS: if you have time, please check out my blog post on Building a Defensible ML 
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
-const FounderItem = ({ name, mail, linkedin, company }: FounderProps) => (
+const FounderItem = ({
+  name,
+  mail,
+  company,
+  github,
+  repositoryCount,
+  twitter,
+  website
+}: FounderProps) => (
   <div className="flex flex-col justify-between">
-    <div className="inline-flex px-7 py-2.5">
-      <div className="flex flex-row items-center justify-center gap-[15px]">
-        <span className="text-xs not-italic leading-3 text-gray-500">{name}</span>
-        {linkedin && (
-          <a href={linkedin} target="_blank" rel="noreferrer">
-            <FaLinkedin className="h-[14px] w-[14px] text-gray-500" />
-          </a>
-        )}
-        {mail && (
-          <a href={emailTemplate(mail, name, company)} target="_blank" rel="noreferrer">
-            <AiFillMail className="h-[14px] w-[14px] text-gray-500" />
-          </a>
-        )}
+    <div className="px-7 py-2.5 text-gray-500">
+      <div className="inline-flex pb-2">
+        <div className="flex flex-row items-center justify-center gap-[15px]">
+          <span className="text-xs not-italic leading-3">{name}</span>
+          {/* {linkedin && (
+            <a href={linkedin} target="_blank" rel="noreferrer">
+              <FaLinkedin className="h-[14px] w-[14px] text-gray-500" />
+            </a>
+          )} */}
+          {mail && (
+            <a href={emailTemplate(mail, name, company)} target="_blank" rel="noreferrer">
+              <AiFillMail className="h-[14px] w-[14px] text-gray-500" />
+            </a>
+          )}
+          {twitter && (
+            <a href={twitter} target="_blank" rel="noreferrer">
+              <FaTwitter className="h-[14px] w-[14px] text-gray-500" />
+            </a>
+          )}
+          {website && (
+            <a href={website} target="_blank" rel="noreferrer">
+              <FaGlobe className="h-[14px] w-[14px] text-gray-500" />
+            </a>
+          )}
+          {github && (
+            <a href={github} target="_blank" rel="noreferrer">
+              <FaGithub className="h-[14px] w-[14px] text-gray-500" />
+            </a>
+          )}
+        </div>
       </div>
+      {repositoryCount && (
+        <span className="text-xs not-italic leading-3">Repository count: {repositoryCount}</span>
+      )}
     </div>
   </div>
 )
 
 FounderItem.defaultProps = {
   mail: null,
-  linkedin: null
+  // linkedin: null,
+  twitter: null,
+  github: null,
+  website: null,
+  repositoryCount: null
 }
 
 export default FounderItem

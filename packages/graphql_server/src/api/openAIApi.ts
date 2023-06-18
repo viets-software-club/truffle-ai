@@ -288,9 +288,10 @@ const getCategoryNumberFromGPT = async (categories: string[]) => {
     messages: [
       {
         role: 'system',
-        content: `You are a machine that can only answer with number separated by commas. 
+        content: `You are a machine that can only answer with numbers separated by commas.
         You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.
-        Answer with 1 for Machine Learning, 2 for Dev Tools or 3 for Other to recategorize the project.
+        Your answer may only contain numbers separated by commas.
+        ${createCategorizationPrompt()}
         `
       },
       {
@@ -301,16 +302,40 @@ const getCategoryNumberFromGPT = async (categories: string[]) => {
       }
     ]
   }
+  try {
+    const response = await axios.post<OpenAIResponse>(openAIapiUrl, request_body_Categories, {
+      headers
+    })
 
-  const response = await axios.post<OpenAIResponse>(openAIapiUrl, request_body_Categories, {
-    headers
-  })
-  return response?.data?.choices
+    const answer = response?.data?.choices?.[0]?.message?.content
+    return answer ? answer : '9'
+  } catch (error) {
+    return '9'
+  }
+}
+
+const topicsMap = {
+  1: 'Machine Learning',
+  2: 'Dev Tools',
+  3: 'Infrastructure',
+  8: 'Other',
+  9: 'CategorizationError'
+}
+
+const createCategorizationPrompt = () => {
+  let prompt = 'Answer with '
+  console.log(Object.entries(topicsMap))
+  for (const [key, value] of Object.entries(topicsMap)) {
+    if (key === '9') continue
+    prompt += `${key} for ${value}, `
+  }
+  return prompt
 }
 
 const testForRepo = async (repoName: string, owner: string) => {
   const repoTopics = await getRepositoryTopics(owner, repoName, process.env.GITHUB_API_TOKEN)
   console.log(repoTopics)
+  console.log(createCategorizationPrompt())
   const categoryNumbers = await getCategoryNumberFromGPT(repoTopics)
   console.log(categoryNumbers)
 }

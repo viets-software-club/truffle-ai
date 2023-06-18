@@ -20,14 +20,15 @@ type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HT
   fullWidth?: boolean
 }
 
-const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
+const baseClassNames =
+  'flex items-center rounded-[5px] transition-all duration-200 hover:bg-opacity-80'
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
   ['normal', 'bg-gray-850 border border-gray-800 px-2 py-1.5'],
   ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-2 py-1.5'],
   ['noBG', 'border border-gray-800 px-2 py-1.5'],
   ['noBorderNoBG', 'px-2 py-1.5'],
-  ['highlighted', 'border border-indigo-500 hover:border-gray-800 bg-indigo-500 px-2 py-1.5'],
+  ['highlighted', 'border border-indigo-500 bg-indigo-500 px-2 py-1.5'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
   ['onlyIconNoBorderNoBG', ''],
   ['filter', 'border border-dashed border-gray-800 px-2 py-1.5']

@@ -179,24 +179,20 @@ export async function getRepositoryTopics(
     Authorization: `Bearer ${tokenGithub}`
   }
 
-  try {
-    const response: AxiosResponse<RepositoryTopicsResponse> = await axios.post(
-      apiUrl,
-      { query },
-      { headers }
+  const response: AxiosResponse<RepositoryTopicsResponse> = await axios.post(
+    apiUrl,
+    { query },
+    { headers }
+  )
+
+  const repositoryTopics = response?.data?.data?.repository?.repositoryTopics?.nodes
+  if (repositoryTopics && repositoryTopics?.length > 0) {
+    const topics: string[] = repositoryTopics.map(
+      (node: { topic: { name: string } }) => node.topic.name
     )
-    const data = response?.data?.data?.repository
-    if (data.repositoryTopics.nodes.length > 0) {
-      const topics: string[] = data.repositoryTopics.nodes.map(
-        (node: { topic: { name: string } }) => node.topic.name
-      )
-      return topics.join(' ') //return the openai response as a string
-    } else {
-      throw new Error('No repository topics found.')
-    }
-  } catch (error) {
-    console.log('Could not retrieve the categories')
-    return ' '
+    return topics
+  } else {
+    return [] as string[]
   }
 }
 

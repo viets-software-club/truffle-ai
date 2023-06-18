@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { FiTrash2 } from 'react-icons/fi'
-import Input from '@/components/pure/Input'
 import Button from '@/components/pure/Button'
 import Sidebar from '@/components/page/settings/Sidebar'
 import Section from '@/components/page/settings/Section'
@@ -11,6 +10,9 @@ import SlackSettings from '@/components/page/settings/SendData/SlackSettings'
 import EmailTemplate from '@/components/page/settings/EmailTemplate'
 import deleteAccount from '@/util/deleteAccount'
 import FilterInput, { defaultFilters } from '@/components/page/settings/FilterInput'
+import AffinitySettings from '@/components/page/settings/AffinitySettings'
+
+// @TODO use backend rather than local storage for Email template, slack webhook, affinity api key
 
 // Helper function to get the default filter value from local storage
 const getStoredValue = (filterType: string) =>
@@ -18,7 +20,7 @@ const getStoredValue = (filterType: string) =>
 
 const sections = {
   General: ['Filters', 'Email template'],
-  Account: ['Notifications', 'Delete account'],
+  Account: ['Notifications', 'Log out', 'Delete account'],
   Integrations: ['Affinity']
 }
 
@@ -126,6 +128,19 @@ const Settings = () => {
 
           <SlackSettings />
         </Section>
+        <div className="h-1 border-b border-gray-800" />
+
+        <Section title="Account" subtitle="Log out" refs={refs}>
+          <Link href="/logout">
+            <Button
+              text="Log out"
+              variant="highlighted"
+              order="ltr"
+              textColor="white"
+              iconColor="white"
+            />
+          </Link>
+        </Section>
 
         <div className="h-1 border-b border-gray-800" />
 
@@ -163,11 +178,7 @@ const Settings = () => {
 
         <h2 className="border-b border-gray-800 pb-4 text-20 font-medium">Integrations</h2>
         <Section title="Integrations" subtitle="Affinity" refs={refs}>
-          <p className="pb-2 text-14 font-normal">Affinity API token</p>
-          <Input type="password" id="affinity" name="affinity" placeholder="•••••••••••••••••" />
-          <div className="mb-64 mt-4">
-            <Button variant="highlighted" text="Update" onClick={() => ''} />
-          </div>
+          <AffinitySettings />
         </Section>
       </div>
     </div>

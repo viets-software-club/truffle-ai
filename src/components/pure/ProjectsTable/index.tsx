@@ -49,42 +49,43 @@ const ProjectsTable = () => {
       .getAllLeafColumns()
       .find((c) => c.columnDef.header === 'Contrib.')
 
-    if (!starsColumn || !forksColumn || !issuesColumn || !contributorsColumn) {
-      return []
+    if (starsColumn && forksColumn && issuesColumn && contributorsColumn) {
+      const savedStarsDefaultFilter = Number(localStorage.getItem('starsDefaultFilter'))
+      const savedForksDefaultFilter = Number(localStorage.getItem('forksDefaultFilter'))
+      const savedIssuesDefaultFilter = Number(localStorage.getItem('issuesDefaultFilter'))
+      const savedContributorsDefaultFilter = Number(
+        localStorage.getItem('contributorsDefaultFilter')
+      )
+
+      const preFilters = [
+        {
+          column: starsColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedStarsDefaultFilter
+        },
+        {
+          column: forksColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedForksDefaultFilter
+        },
+        {
+          column: issuesColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedIssuesDefaultFilter
+        },
+        {
+          column: contributorsColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedContributorsDefaultFilter
+        }
+      ]
+
+      return preFilters.filter((filter) => filter.value !== 0)
     }
-
-    const savedStarsDefaultFilter = Number(localStorage.getItem('starsDefaultFilter'))
-    const savedForksDefaultFilter = Number(localStorage.getItem('forksDefaultFilter'))
-    const savedIssuesDefaultFilter = Number(localStorage.getItem('issuesDefaultFilter'))
-    const savedContributorsDefaultFilter = Number(localStorage.getItem('contributorsDefaultFilter'))
-
-    return [
-      {
-        column: starsColumn,
-        operator: NumberTableFilterOperator.GREATER_THAN,
-        value: savedStarsDefaultFilter
-      },
-      {
-        column: forksColumn,
-        operator: NumberTableFilterOperator.GREATER_THAN,
-        value: savedForksDefaultFilter
-      },
-      {
-        column: issuesColumn,
-        operator: NumberTableFilterOperator.GREATER_THAN,
-        value: savedIssuesDefaultFilter
-      },
-      {
-        column: contributorsColumn,
-        operator: NumberTableFilterOperator.GREATER_THAN,
-        value: savedContributorsDefaultFilter
-      }
-    ]
+    return []
   }
 
-  const [filters, setFilters] = useState<TableFilter[]>(
-    defaultFilters().length > 0 ? defaultFilters() : []
-  )
+  const [filters, setFilters] = useState<TableFilter[]>(defaultFilters())
 
   const addFilter = (filter: TableFilter) => {
     setFilters([...filters, filter])

@@ -1,27 +1,37 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
+// @TODO adapt actual columns to list in Affinity
+
 type AffinityData = {
   name: string
   stars: number
+  forks: number
+  contributors: number
+  githubUrl: string
   apiKey: string
+  listId: string
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { name, stars, apiKey }: AffinityData = req.body as AffinityData
+  const { name, stars, forks, contributors, githubUrl, apiKey, listId }: AffinityData =
+    req.body as AffinityData
 
   const affinityData = {
-    // Assuming "name" is the organization name and "stars" is a custom field
+    // "name" is the organization name and others are custom fields
     name,
     custom_field_values: {
-      'GitHub Stars': stars
+      'GitHub Stars': stars,
+      'GitHub Forks': forks,
+      'GitHub Contributors': contributors,
+      'GitHub URL': githubUrl
     }
   }
 
   try {
-    const response = await fetch('https://api.affinity.co/organizations', {
+    const response = await fetch(`https://api.affinity.co/lists/${listId}/list-entries`, {
       method: 'POST',
       headers: {
-        'API-KEY': apiKey, // Use the API key from the request body
+        'API-KEY': apiKey,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(affinityData)

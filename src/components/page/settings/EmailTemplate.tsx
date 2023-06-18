@@ -33,7 +33,9 @@ const UpdateEmailTemplate = () => {
   return (
     <>
       <p className="mb-4 text-14 font-normal text-gray-400">
-        Use {'{founderName}'} and {'{companyName}'} as placeholders for the actual values
+        Here, you have the option to customize the email template that will be automatically sent to
+        the founders of a project on its detail page.
+        <br /> Use {'{founderName}'} and {'{companyName}'} as placeholders for the actual values.
       </p>
       <Textarea
         placeholder="Hi {founderName}, ..."

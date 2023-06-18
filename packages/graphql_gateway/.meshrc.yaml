@@ -1,7 +1,7 @@
 serve:
   endpoint: /graphql
   playground: true
-  port: 3000
+  port: 3001
 sources:
   - name: Supabase
     handler:
@@ -18,4 +18,8 @@ sources:
       graphql:
         endpoint: '{env.SERVER_GRAPHQL_URL}'
         source: ./../graphql_server/src/graphql/schema.ts
+        operationHeaders:
+          Authorization: '{context.headers["Authorization"]}'
+        schemaHeaders:
+          Authorization: '{context.headers["Authorization"]}'
 additionalEnvelopPlugins: './src/envelopPlugins'

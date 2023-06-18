@@ -102,3 +102,9 @@ export type ContributorResponse = {
     }
   }
 }
+
+export type ContributorData = {
+  headers: {
+    link?: string
+  }
+}

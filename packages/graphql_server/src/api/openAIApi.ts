@@ -58,8 +58,11 @@ async function getELI5FromReadMe(readMe: string) {
  * @param comments - The comments discussing the project.Scraped from Hackernews
  * @returns The general sentiment about the project including a percentage.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function getHackernewsSentiment(comments: string) {
+  // limit length of name to 5000 characters, because it might cause problems with GPT otherwise
+  if (comments.length > 5000) {
+    comments = comments.substring(0, 5000)
+  }
   const questionHackernews = //this is the question send to openAI
     'The following comments are discussing a new software project. Please get general sentiment regarding the project and use a percentage on whether people like it or not. Please stay around 50 words'
 

@@ -79,17 +79,17 @@ export async function main(timeMode: timeMode, firstNRepos: number) {
     console.log('hackernewsstories:\n')
 
     //receives the scraped hackernews
-    const commentsAndLinks: string[] | undefined = await hackernews.searchHackerNewsStories(name)
+    const commentsAndLinks = await hackernews.searchHackerNewsStories(name)
 
     if (commentsAndLinks != undefined) {
-      if (commentsAndLinks[0] == ' ' && commentsAndLinks[1] == ' ') {
+      if (commentsAndLinks == null) {
         console.log('no comments were found')
       } else {
         //summs them up for the sentiment
         console.log('sentiment and links:\n')
-        console.log(await eli5.getHackernewsSentiment(commentsAndLinks[0]))
+        console.log(await eli5.getHackernewsSentiment(commentsAndLinks.comments.join('\n')))
         console.log('\n')
-        console.log(commentsAndLinks[1])
+        console.log(commentsAndLinks.linksToPosts)
       }
     }
 

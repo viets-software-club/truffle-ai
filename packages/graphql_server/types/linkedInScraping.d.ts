@@ -1,15 +1,23 @@
 export type LinkedInCompanyProfile = {
+  url: string
   name: string
   founded: string
-  sphere: string
   followers: number
   employeesAmountInLinkedin: string
   about: string
   website: string
+  updates: LinkedInUpdate[]
   crunchbaseUrl: string
   industries: string
   hqLocation: string
   specialties: string
+}
+
+export type LinkedInUpdate = {
+  time: string
+  text: string
+  likes_count: number
+  comments_count: number
 }
 
 export type CompanyDataResponse = {

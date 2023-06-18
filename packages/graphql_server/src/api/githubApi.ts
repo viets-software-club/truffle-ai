@@ -3,11 +3,10 @@ import {
   GitHubOrganization,
   GitHubUser,
   GitHubInfo,
-  Edge,
-  ContributorResponse,
   GitHubCommitHistory,
   ProjectFounder,
-  RepositoryTopicsResponse
+  RepositoryTopicsResponse,
+  ContributorData
 } from '../../types/githubApi'
 
 const githubApiUrl = process.env.GITHUB_API_URL || ''
@@ -74,68 +73,6 @@ export async function getUserInfo(query: string, authToken: string): Promise<Git
   return response.data.data.user
 }
 
-/** Retrieves the contributor count for a GitHub repository.
- * This may be smaller than the count on the Github page because only contributors that
- * committed into the main branch are being counted
- * @param owner - The owner of the GitHub repository.
- * @param repo - The name of the GitHub repository.
- * @param authToken - Github API token
- * @returns A Promise that resolves to the total unique contributor count
- */
-export async function getContributorCount(
-  owner: string,
-  repo: string,
-  authToken: string
-): Promise<number> {
-  const query = `
-    query($owner: String!, $repo: String!) {
-      repository(owner: $owner, name: $repo) {
-        defaultBranchRef {
-          target {
-            ... on Commit {
-              history {
-                totalCount
-                edges {
-                  node {
-                    author {
-                      user {
-                        login
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `
-
-  const variables = {
-    owner,
-    repo
-  }
-
-  const response: AxiosResponse<ContributorResponse> = await axios.post(
-    githubApiUrl,
-    { query, variables },
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`
-      }
-    }
-  )
-
-  const contributors: string[] =
-    response.data.data.repository.defaultBranchRef.target.history.edges.map(
-      (edge: Edge) => edge.node.author?.user?.login
-    )
-  const uniqueContributors = Array.from(new Set(contributors))
-
-  return uniqueContributors.length
-}
-
 /**
  * Returns a Array of Founders with their names, login names and twitter handles. This method goes trough the commit history of a specific repo
  * and fetches teh first 5 commits, which are most likley the initiators of a project. It then removes duplicates, because several commits can be from the
@@ -192,12 +129,12 @@ export async function getRepoFounders(owner: string, name: string): Promise<Proj
   // checks, whether a login name appears twice and only pushes distinct founders into the array
   if (response?.data?.data?.repository?.defaultBranchRef?.target?.history?.edges) {
     response.data.data.repository.defaultBranchRef.target.history.edges.forEach((node) => {
-      const loginName = node.node.author.user.login
+      const loginName = node?.node?.author?.user?.login
       if (!distinctCommiters.find((c) => c.login === loginName)) {
         distinctCommiters.push({
-          name: node.node.author.user.name ?? '',
-          login: node.node.author.user.login ?? '',
-          twitterUsername: node.node.author.user.twitterUsername ?? ''
+          name: node?.node?.author?.user?.name ?? '',
+          login: node?.node?.author?.user?.login ?? '',
+          twitterUsername: node?.node?.author?.user?.twitterUsername ?? ''
         })
       }
     })
@@ -260,5 +197,41 @@ export async function getRepositoryTopics(
   } catch (error) {
     console.log('Could not retrieve the categories')
     return ' '
+  }
+}
+
+/**
+ * returns the amount of contribtuors. Not 100% accurate since the gitHub API does not return certain contributors and on the other hand
+ * sometimes shows new contribtuors that can not be seen on the github page.
+ * @param owner
+ * @param repo
+ * @returns array of strings containing the name of the contributor and the number of commits done by that perso
+ */ export async function getContributorCount(
+  owner: string,
+  repo: string,
+  authToken: string
+): Promise<number> {
+  try {
+    const response: AxiosResponse<ContributorData> = await axios.get(
+      `https://api.github.com/repos/${owner}/${repo}/contributors`,
+      {
+        params: {
+          per_page: 1,
+          anon: true
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      }
+    )
+    // console.log(response.headers)
+    const linkHeader: string = response?.headers['link'] as string
+    const lastPageMatch: RegExpMatchArray | null = linkHeader.match(/page=(\d+)>; rel="last"/)
+    const lastPage: number = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
+    return lastPage
+  } catch (error) {
+    console.error(error)
+    console.error('Error in getContributors')
+    return 0
   }
 }

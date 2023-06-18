@@ -1,7 +1,8 @@
-import { dbUpdater } from '../dbUpdater'
+import { dailyDbUpdater } from '../dbUpdater'
 
 try {
-  void dbUpdater()
+  void dailyDbUpdater(false)
 } catch (error) {
-  console.log('error occured')
+  console.error(error)
+  console.error(error)
 }

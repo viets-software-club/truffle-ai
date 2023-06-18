@@ -7,10 +7,8 @@ declare namespace NodeJS {
   interface ProcessEnv {
     NEXT_PUBLIC_SUPABASE_URL: string
     NEXT_PUBLIC_SUPABASE_ANON_KEY: string
-    NEXT_PUBLIC_SUPABASE_AUTH_COOKIE_NAME: string
-    NEXT_PUBLIC_API_DOMAIN: string
+    NEXT_PUBLIC_SITE_URL: string
     NEXT_PUBLIC_API_URL: string
     NEXT_PUBLIC_API_GRAPHQL_URL: string
-    NEXT_PUBLIC_SITE_URL: string
   }
 }

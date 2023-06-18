@@ -1,4 +1,3 @@
-import { insertProject, parseGitHubUrl } from '../processRepo'
 import { exposeProjectsData } from '../resolver/projects'
 import { createProject } from '../dbUpdater'
 import { parseGitHubUrl } from '../utils'

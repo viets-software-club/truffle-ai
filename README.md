@@ -67,10 +67,9 @@ Same as `prettier:check` but automatically fixes problems.
 
 Removes redundant import statements of `react` in components.
 
-## NextJS Environment Variables
+## Environment Variables
 
-`NEXT_PUBLIC_SUPABASE_URL`
-`NEXT_PUBLIC_SUPABASE_ANON_KEY`
+Create .env.local in the root directory with the variables given in .env.local.example
 
 ## Learn more
 

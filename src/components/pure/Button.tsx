@@ -2,7 +2,7 @@
 
 import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
 
-type ButtonProps = {
+type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   variant:
     | 'normal'
     | 'highlighted'
@@ -18,7 +18,7 @@ type ButtonProps = {
   iconColor?: string
   textColor?: string
   fullWidth?: boolean
-} & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+}
 
 const baseClassNames = `flex items-center rounded-[5px] transition-colors duration-100 hover:bg-gray-700`
 
@@ -48,6 +48,9 @@ const Button = ({
   iconColor = 'text-gray-500',
   textColor = 'text-gray-300',
   fullWidth,
+  name,
+  value,
+  className = '',
   disabled,
   type = 'button'
 }: ButtonProps) => {
@@ -55,7 +58,7 @@ const Button = ({
 
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
-  }`
+  }  ${className}`
 
   // create a text node if text is provided
   const textNode = text && (
@@ -73,10 +76,15 @@ const Button = ({
       <Icon key="2" className={`${order === 'ltr' ? 'mr-1.5' : 'ml-1.5'} ${iconColor}`} />
     ))
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
-
   return (
-    // eslint-disable-next-line react/button-has-type
-    <button type={type} disabled={disabled} onClick={onClick} className={classNames}>
+    <button
+      type={type === 'button' ? 'button' : 'submit'}
+      onClick={onClick}
+      name={name}
+      value={value}
+      className={classNames}
+      disabled={disabled}
+    >
       {contentNode}
     </button>
   )

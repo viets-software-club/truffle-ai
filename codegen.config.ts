@@ -3,10 +3,9 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 const config: CodegenConfig = {
   schema: [
     {
-      // @TODO figure out how to use env variables here
-      'http://157.245.24.200/graphql': {
+      [process.env.NEXT_PUBLIC_API_GRAPHQL_URL]: {
         headers: {
-          Authorization: '<your-auth-token>' // log document.cookie in console and copy/ paste the result
+          Authorization: `Bearer development`
         }
       }
     }

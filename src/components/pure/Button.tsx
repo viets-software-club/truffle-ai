@@ -1,6 +1,8 @@
-import { MouseEventHandler } from 'react'
+// @TODO refactor component
 
-type ButtonProps = {
+import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+
+type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   variant:
     | 'normal'
     | 'highlighted'
@@ -11,7 +13,6 @@ type ButtonProps = {
     | 'normalHighlighted'
     | 'filter'
     | 'red'
-  onClick?: MouseEventHandler<HTMLButtonElement>
   text?: string
   Icon?: IconComponentType
   order?: 'ltr' | 'rtl'
@@ -49,12 +50,17 @@ const Button = ({
   order,
   iconColor = 'text-gray-500',
   textColor = 'text-gray-300',
-  fullWidth
+  fullWidth,
+  name,
+  value,
+  className = '',
+  disabled,
+  type = 'button'
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
-  }`
+  }  ${className}`
 
   // Create a text node if text is provided
   const textNode = text && (
@@ -73,9 +79,15 @@ const Button = ({
     ))
 
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
-
   return (
-    <button type="button" onClick={onClick} className={classNames}>
+    <button
+      type={type === 'button' ? 'button' : 'submit'}
+      onClick={onClick}
+      name={name}
+      value={value}
+      className={classNames}
+      disabled={disabled}
+    >
       {contentNode}
     </button>
   )
@@ -87,8 +99,7 @@ Button.defaultProps = {
   order: 'rtl',
   iconColor: 'text-gray-500',
   textColor: 'text-gray-300',
-  fullWidth: false,
-  onClick: () => ''
+  fullWidth: false
 }
 
 export default Button

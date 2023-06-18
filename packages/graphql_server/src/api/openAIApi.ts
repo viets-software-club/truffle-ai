@@ -133,7 +133,7 @@ export const getCategoryNumberFromGPT = async (categories: string[]) => {
     ]
   }
   try {
-    const response = await axios.post<OpenAIResponse>(openAIapiUrl, request_body_Categories, {
+    const response = await axios.post<ResponseBodyOpenAi>(openAIapiUrl, request_body_Categories, {
       headers
     })
 
@@ -142,21 +142,4 @@ export const getCategoryNumberFromGPT = async (categories: string[]) => {
   } catch (error) {
     return '9'
   }
-}
-
-type OpenAIResponse = {
-  id: string
-  object: string
-  created: number
-  model: string
-  choices: OpenAIChoice[]
-}
-
-type OpenAIChoice = {
-  message: {
-    role: string
-    content: string
-  }
-  finish_reason: string
-  index: number
 }

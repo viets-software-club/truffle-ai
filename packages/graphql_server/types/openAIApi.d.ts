@@ -1,11 +1,3 @@
-export type OpenAIResponse = {
-  choices: {
-    message: {
-      content: string
-    }
-  }[]
-}
-
 export type RequestBodyOpenAI = {
   model: string
   messages: {
@@ -25,7 +17,10 @@ export type ResponseBodyOpenAi = {
     total_tokens: number
   }
   choices: {
-    message: Record<string, string>
+    message: {
+      role: string
+      content: string
+    }
     finish_reason: string
     index: number
   }[]

@@ -1,37 +1,40 @@
 import { ResolveUserFn, useGenericAuth } from '@envelop/generic-auth'
-import { User, createClient } from '@supabase/supabase-js'
-import { parse } from 'cookie'
+import { createClient } from '@supabase/supabase-js'
 import { IncomingMessage } from 'http'
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY)
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+    detectSessionInUrl: false
+  }
+})
 
 type Context = {
   req: IncomingMessage
 }
 
-const resolveUserFn: ResolveUserFn<User, Context> = async (context: Context) => {
-  // Get cookies from authorization header (temporary workaround)
-  const cookies = parse(context?.req?.headers?.authorization as string)
-
-  if (!cookies?.['supabase-auth-token']) {
-    console.error('Auth token missing')
+const resolveUserFn: ResolveUserFn<object, Context> = async (context: Context) => {
+  // read jwt from Authorization Bearer header
+  const authorizationHeader = context?.req?.headers?.authorization
+  if (
+    typeof authorizationHeader !== 'string' ||
+    !authorizationHeader.startsWith('Bearer') ||
+    authorizationHeader.length < 7
+  )
     return null
-  }
+  const jwt = authorizationHeader?.substring(7)
+  if (!jwt) return null
 
-  // Get JWT from cookie (cookie set by Supabase is array of tokens)
-  const tokenArray: string[] = JSON.parse(cookies?.['supabase-auth-token']) as string[]
-  const jwt = tokenArray?.[0]
+  // if not run in production, and jwt equals 'development' allow acccess
+  if (process.env.NODE_ENV !== 'production' && jwt === 'development') return {}
 
   // Get user from Supabase if JWT is valid
   const {
     data: { user },
     error
   } = await supabase.auth.getUser(jwt)
-
-  if (error) {
-    console.error('Error while trying to get user from Supabase', error)
-    return null
-  }
+  if (error) return null
 
   return user
 }

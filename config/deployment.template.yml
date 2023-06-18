@@ -50,7 +50,7 @@ metadata:
     service.beta.kubernetes.io/do-loadbalancer-certificate-id: '<CERTIFICATE-ID>'
     service.beta.kubernetes.io/do-loadbalancer-protocol: 'https'
     service.beta.kubernetes.io/do-loadbalancer-size-unit: '1'
-    service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: 'false'
+    service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: 'true'
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: 'true'
 spec:
   type: LoadBalancer
@@ -58,11 +58,11 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: <GRAPHQL-GATEWAY-PORT>
     - name: https
       protocol: TCP
       port: 443
-      targetPort: 3000
+      targetPort: <GRAPHQL-GATEWAY-PORT>
   selector:
     app: truffle-ai-deployment
 ---

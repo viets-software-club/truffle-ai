@@ -11,8 +11,7 @@ const errorMessage =
 //The Header for all requests
 const headers = {
   'Content-Type': 'application/json',
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  Authorization: 'Bearer ' + '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' //process.env.OPENAI_API_KEY
+  Authorization: 'Bearer ' + process.env.OPENAI_API_KEY //process.env.OPENAI_API_KEY
 }
 
 /**
@@ -225,8 +224,7 @@ async function getHackernewsSentiment(comments: string) {
 //  * ChatGPT returns the numbers 1,2 or 3. Each number represents one of the categories.
 //  */
 // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// async function categorizeProjectGeneral(categories: string, readme: string) {
-//   console.log(categories)
+// async function categorizeProjectGeneral(categories: string[]) {
 //   const questionCategoriesGeneral =
 //     'These 3 categroies should be used to categorize a software engineering project. 1 for developer tools, 2 for Infrastructure, 3 for Machine Learning and Artifical Inteligence. just decide on the categories and only return the numbers. So your number for example should be: 3. Only return one number! If you did not find any categories at the beginning of the question just tell me:  '
 
@@ -235,8 +233,8 @@ async function getHackernewsSentiment(comments: string) {
 //     messages: [
 //       {
 //         role: 'system',
-//         content:
-//           'You are a professor trying to categorize a project. You have to read something about the project and then give it two of the categories according to your evaluation. Even if you do not think that you can evaluate it. If you do not think you can evaluate it just tell me'
+//         content: `You are a machine that can only answer with number separated by commas.
+//         You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.`
 //       },
 //       { role: 'user', content: '' }
 //     ]
@@ -248,8 +246,8 @@ async function getHackernewsSentiment(comments: string) {
 //     'Infrastrcuture',
 //     'Machine Learning and Aritfical Inteligence'
 //   ]
-//   request_body_Categories.messages[1].content = //adds the categories to the question and then adds them to the request that is going to be send
-//     listOfCategories.join(' ,') + questionCategoriesGeneral + categories + readme
+//   // request_body_Categories.messages[1].content = //adds the categories to the question and then adds them to the request that is going to be send
+//   //   listOfCategories.join(' ,') + questionCategoriesGeneral + categories + readme
 //   try {
 //     const response = await axios.post(openAIapiUrl, request_body_Categories, { headers })
 //     //returns a number that decides which general categorie we are using
@@ -282,3 +280,36 @@ async function getHackernewsSentiment(comments: string) {
 //     return null
 //   }
 // }
+
+const getCategoryNumberFromGPT = async (categories: string[]) => {
+  const request_body_Categories = {
+    model: model,
+    messages: [
+      {
+        role: 'system',
+        content: `You are a machine that can only answer with number separated by commas. 
+        You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.`
+      },
+      {
+        role: 'user',
+        content: `
+        Answer with 1 for Machine Learning, 2 for Dev Tools or 3 for Other to recategorize the project.
+        [
+        'deepfake',
+        'real-time',
+        'faceswap',
+        'webcam',
+        'streaming',
+        'videocall',
+        'machine-learning'
+      ]`
+      }
+    ]
+  }
+
+  const response = await axios.post(openAIapiUrl, request_body_Categories, { headers })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+  return response?.data?.choices?.[0]?.message?.content
+}
+
+void getCategoryNumberFromGPT([]).then((res) => console.log(res))

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { RequestBodyOpenAI, ResponseBodyOpenAi } from '../../types/openAIApi'
-import { getRepositoryTopics } from './githubApi'
 
 export { getELI5FromReadMe, getHackernewsSentiment }
 
@@ -12,7 +11,7 @@ const errorMessage =
 //The Header for all requests
 const headers = {
   'Content-Type': 'application/json',
-  Authorization: 'Bearer ' + process.env.OPENAI_API_KEY //process.env.OPENAI_API_KEY
+  Authorization: 'Bearer ' + process.env.OPENAI_API_KEY
 }
 
 /**
@@ -46,7 +45,6 @@ async function getELI5FromReadMe(readMe: string) {
       return null
     } else {
       const content: string = data.choices[0].message.content
-      console.log(content)
       return content
     }
   } catch (error) {
@@ -104,7 +102,6 @@ const topicsMap = {
 
 const createCategorizationPrompt = () => {
   let prompt = 'Answer with '
-  console.log(Object.entries(topicsMap))
   for (const [key, value] of Object.entries(topicsMap)) {
     if (key === '9') continue
     prompt += `${key} for ${value}, `

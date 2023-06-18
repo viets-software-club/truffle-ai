@@ -192,7 +192,7 @@ export async function getRepositoryTopics(
     )
     return topics
   } else {
-    return [] as string[]
+    return null
   }
 }
 

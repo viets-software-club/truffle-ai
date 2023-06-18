@@ -15,8 +15,6 @@ import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { TableFilter } from '@/components/page/overview/TableFilter'
 import { TableSort } from '@/components/page/overview/TableSort'
 
-const nullFunc = () => null
-
 /**
  * Table for displaying trending projects
  */
@@ -78,7 +76,6 @@ const ProjectsTable = () => {
     <div className="flex w-full flex-col">
       <TopBar
         columns={table.getAllLeafColumns()}
-        nullFunc={nullFunc}
         addFilter={addFilter}
         filters={filters}
         comparePage={false}

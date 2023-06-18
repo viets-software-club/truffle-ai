@@ -14,8 +14,6 @@ import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { TableFilter } from '@/components/page/overview/TableFilter'
 import { TableSort } from '@/components/page/overview/TableSort'
 
-const nullFunc = () => null
-
 /**
  * Compare projects component
  */
@@ -76,7 +74,6 @@ const Compare = () => {
     <div className="flex w-full flex-col">
       <TopBar
         columns={table.getAllLeafColumns()}
-        nullFunc={nullFunc}
         addFilter={addFilter}
         filters={filters}
         comparePage
@@ -104,7 +101,6 @@ const Compare = () => {
 
         <div>
           <Button
-            onClick={nullFunc}
             variant="normal"
             text="Stars"
             Icon={FiChevronDown}
@@ -130,7 +126,6 @@ const Compare = () => {
         </div>
         <div>
           <Button
-            onClick={nullFunc}
             variant="normal"
             text="Add project to compare"
             Icon={AiOutlinePlus}

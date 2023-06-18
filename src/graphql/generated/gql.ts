@@ -1272,6 +1272,8 @@ export type ProjectDetailsQuery = {
         languages?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
+        hackernewsSentiment?: string | null
+        hackernewsStories?: Array<any | null> | null
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
@@ -1281,12 +1283,19 @@ export type ProjectDetailsQuery = {
           email?: string | null
           githubUrl?: string | null
           twitterUsername?: string | null
+          repositoryCount?: number | null
+          websiteUrl?: string | null
         } | null
         organization?: {
           __typename?: 'Organization'
           id: any
           login?: string | null
           avatarUrl?: string | null
+          email?: string | null
+          githubUrl?: string | null
+          twitterUsername?: string | null
+          repositoryCount?: number | null
+          websiteUrl?: string | null
         } | null
       }
     }>
@@ -1366,6 +1375,8 @@ export const ProjectDetailsDocument = gql`
           languages
           owningPerson
           owningOrganization
+          hackernewsSentiment
+          hackernewsStories
           associatedPerson {
             id
             name
@@ -1374,11 +1385,18 @@ export const ProjectDetailsDocument = gql`
             email
             githubUrl
             twitterUsername
+            repositoryCount
+            websiteUrl
           }
           organization {
             id
             login
             avatarUrl
+            email
+            githubUrl
+            twitterUsername
+            repositoryCount
+            websiteUrl
           }
         }
       }

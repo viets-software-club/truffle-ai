@@ -17,6 +17,8 @@ query ProjectDetails($id: UUID) {
         languages
         owningPerson
         owningOrganization
+        hackernewsSentiment
+        hackernewsStories
         associatedPerson {
           id
           name
@@ -25,11 +27,18 @@ query ProjectDetails($id: UUID) {
           email
           githubUrl
           twitterUsername
+          repositoryCount
+          websiteUrl
         }
         organization {
           id
           login
           avatarUrl
+          email
+          githubUrl
+          twitterUsername
+          repositoryCount
+          websiteUrl
         }
       }
     }

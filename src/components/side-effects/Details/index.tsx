@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
-import { FaHackerNews } from 'react-icons/fa'
+import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
@@ -10,6 +10,7 @@ import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import HackernewsCard from '@/components/pure/HackernewsCard'
+import TwitterCard from '@/components/pure/TwitterCard'
 
 const handleClick = () => ''
 
@@ -126,12 +127,13 @@ const Details = ({ id }: DetailsProps) => {
 
           {/* @TODO Add real data */}
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            {/* <Card
-              Icon={FaTwitter}
-              name="Top Tweets"
-              button={SomeButton}
-              textFields={project.hackernewsSentiment as string}
-            /> */}
+            {project.relatedTwitterPosts && (
+              <TwitterCard
+                Icon={FaTwitter}
+                name="Top Tweets"
+                tweets={project.relatedTwitterPosts}
+              />
+            )}
             {project.hackernewsSentiment && (
               <HackernewsCard
                 Icon={FaHackerNews}

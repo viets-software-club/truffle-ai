@@ -876,6 +876,9 @@ export type Project = Node & {
   starCount?: Maybe<Scalars['Int']>
   starHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
   websiteUrl?: Maybe<Scalars['String']>
+  relatedTwitterPosts?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  forkHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  categories?: Maybe<Array<Maybe<Scalars['String']>>>
 }
 
 export type ProjectBookmarkCollectionArgs = {
@@ -937,6 +940,8 @@ export type ProjectFilter = {
   pullRequestCount?: InputMaybe<IntFilter>
   starCount?: InputMaybe<IntFilter>
   websiteUrl?: InputMaybe<StringFilter>
+  forkHistory?: InputMaybe<IntFilter>
+  categories?: InputMaybe<StringFilter>
 }
 
 export type ProjectInsertInput = {
@@ -962,6 +967,9 @@ export type ProjectInsertInput = {
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
+  relatedTwitterPosts?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 }
 
 export type ProjectInsertResponse = {
@@ -992,6 +1000,8 @@ export type ProjectOrderBy = {
   pullRequestCount?: InputMaybe<OrderByDirection>
   starCount?: InputMaybe<OrderByDirection>
   websiteUrl?: InputMaybe<OrderByDirection>
+  forkHistory?: InputMaybe<OrderByDirection>
+  categories?: InputMaybe<OrderByDirection>
 }
 
 export type ProjectUpdateInput = {
@@ -1017,6 +1027,9 @@ export type ProjectUpdateInput = {
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
+  relatedTwitterPosts?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 }
 
 export type ProjectUpdateResponse = {
@@ -1274,6 +1287,9 @@ export type ProjectDetailsQuery = {
         owningOrganization?: any | null
         hackernewsSentiment?: string | null
         hackernewsStories?: Array<any | null> | null
+        relatedTwitterPosts?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
+        categories?: Array<any | null> | null
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
@@ -1378,6 +1394,9 @@ export const ProjectDetailsDocument = gql`
           owningOrganization
           hackernewsSentiment
           hackernewsStories
+          relatedTwitterPosts
+          forkHistory
+          categories
           associatedPerson {
             id
             name

@@ -18,6 +18,9 @@ query ProjectDetails($id: UUID) {
         owningOrganization
         hackernewsSentiment
         hackernewsStories
+        relatedTwitterPosts
+        forkHistory
+        categories
         associatedPerson {
           id
           name

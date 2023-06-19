@@ -19,6 +19,7 @@ export {
   getOrganizationID,
   getPersonID,
   getProjectID,
+  getProjectAbout,
   getTrendingAndBookmarkedProjects,
   purgeTrendingState,
   repoIsAlreadyInDB,
@@ -311,6 +312,27 @@ const getProjectID = async (name: string, owner: string) => {
     .eq('owning_organization', ownerID)
     .eq('name', name)
   return projects?.[0]?.id ?? null
+}
+
+const getProjectAbout = async (repoName: string, owner: string) => {
+  const owningPersonID = await getPersonID(owner)
+  if (owningPersonID) {
+    const { data: repoAbout } = await supabase
+      .from('project')
+      .select('about')
+      .eq('name', repoName)
+      .eq('owning_person', owningPersonID)
+    return repoAbout?.[0]?.about ?? null
+  }
+  const owningOrganizationID = await getOrganizationID(owner)
+  if (owningOrganizationID) {
+    const { data: repoAbout } = await supabase
+      .from('project')
+      .select('about')
+      .eq('name', repoName)
+      .eq('owningOrganization', owningOrganizationID)
+    return repoAbout?.[0]?.about ?? null
+  }
 }
 
 /**

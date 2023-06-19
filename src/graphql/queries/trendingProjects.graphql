@@ -1,5 +1,5 @@
-query TrendingProjects {
-  projectCollection {
+query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
+  projectCollection(filter: $filter, orderBy: [$orderBy]) {
     edges {
       node {
         id

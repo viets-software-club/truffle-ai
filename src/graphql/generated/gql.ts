@@ -461,7 +461,6 @@ export type IntFilter = {
   neq?: InputMaybe<Scalars['Int']>
 }
 
-/** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation'
   addProjectByName: Scalars['Boolean']
@@ -510,137 +509,114 @@ export type Mutation = {
   updateTestTableCollection: TestTableUpdateResponse
 }
 
-/** The root type for creating and mutating data */
 export type MutationAddProjectByNameArgs = {
   name: Scalars['String']
   owner: Scalars['String']
 }
 
-/** The root type for creating and mutating data */
 export type MutationAddProjectByUrlArgs = {
   url: Scalars['String']
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromAllowedUsersCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<AllowedUsersFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromAssociatedPersonCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<AssociatedPersonFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromBookmarkCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<BookmarkFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromFoundedByCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<FoundedByFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromOrganizationCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<OrganizationFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromProjectCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<ProjectFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationDeleteFromTestTableCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<TestTableFilter>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoAllowedUsersCollectionArgs = {
   objects: Array<AllowedUsersInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoAssociatedPersonCollectionArgs = {
   objects: Array<AssociatedPersonInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoBookmarkCollectionArgs = {
   objects: Array<BookmarkInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoFoundedByCollectionArgs = {
   objects: Array<FoundedByInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoOrganizationCollectionArgs = {
   objects: Array<OrganizationInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoProjectCollectionArgs = {
   objects: Array<ProjectInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationInsertIntoTestTableCollectionArgs = {
   objects: Array<TestTableInsertInput>
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateAllowedUsersCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<AllowedUsersFilter>
   set: AllowedUsersUpdateInput
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateAssociatedPersonCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<AssociatedPersonFilter>
   set: AssociatedPersonUpdateInput
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateBookmarkCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<BookmarkFilter>
   set: BookmarkUpdateInput
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateFoundedByCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<FoundedByFilter>
   set: FoundedByUpdateInput
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateOrganizationCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<OrganizationFilter>
   set: OrganizationUpdateInput
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateProjectCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<ProjectFilter>
   set: ProjectUpdateInput
 }
 
-/** The root type for creating and mutating data */
 export type MutationUpdateTestTableCollectionArgs = {
   atMost?: Scalars['Int']
   filter?: InputMaybe<TestTableFilter>
@@ -848,34 +824,50 @@ export type PageInfo = {
 
 export type Project = Node & {
   __typename?: 'Project'
-  about?: Maybe<Scalars['String']>
+  about: Scalars['String']
   associatedPerson?: Maybe<AssociatedPerson>
   bookmarkCollection?: Maybe<BookmarkConnection>
   contributorCount?: Maybe<Scalars['Int']>
+  contributor_count: Scalars['Int']
   createdAt?: Maybe<Scalars['Datetime']>
-  eli5?: Maybe<Scalars['String']>
+  eli5: Scalars['String']
   forkCount?: Maybe<Scalars['Int']>
+  fork_count: Scalars['Int']
   foundedByCollection?: Maybe<FoundedByConnection>
   githubUrl?: Maybe<Scalars['String']>
+  github_url: Scalars['String']
   hackernewsSentiment?: Maybe<Scalars['String']>
   hackernewsStories?: Maybe<Array<Maybe<Scalars['String']>>>
-  id: Scalars['UUID']
+  hackernews_sentiment: Scalars['String']
+  hackernews_stories: Array<Scalars['String']>
+  id: Scalars['ID']
   isBookmarked?: Maybe<Scalars['Boolean']>
   isTrendingDaily?: Maybe<Scalars['Boolean']>
   isTrendingMonthly?: Maybe<Scalars['Boolean']>
   isTrendingWeekly?: Maybe<Scalars['Boolean']>
+  is_bookmarked: Scalars['Boolean']
+  is_trending_daily: Scalars['Boolean']
+  is_trending_monthly: Scalars['Boolean']
+  is_trending_weekly: Scalars['Boolean']
   issueCount?: Maybe<Scalars['Int']>
-  languages?: Maybe<Array<Maybe<Scalars['JSON']>>>
-  name?: Maybe<Scalars['String']>
+  issue_count: Scalars['Int']
+  languages: Array<Scalars['String']>
+  name: Scalars['String']
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']
   organization?: Maybe<Organization>
   owningOrganization?: Maybe<Scalars['UUID']>
   owningPerson?: Maybe<Scalars['UUID']>
+  owning_organization: Scalars['ID']
+  owning_person: Scalars['String']
   pullRequestCount?: Maybe<Scalars['Int']>
+  pull_request_count: Scalars['Int']
   starCount?: Maybe<Scalars['Int']>
   starHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  star_count: Scalars['Int']
+  star_history: Scalars['String']
   websiteUrl?: Maybe<Scalars['String']>
+  website_url: Scalars['String']
 }
 
 export type ProjectBookmarkCollectionArgs = {
@@ -1027,9 +1019,9 @@ export type ProjectUpdateResponse = {
   records: Array<Project>
 }
 
-/** The root type for querying data */
 export type Query = {
   __typename?: 'Query'
+  allProjects: ProjectConnection
   /** A pagable collection of type `AllowedUsers` */
   allowedUsersCollection?: Maybe<AllowedUsersConnection>
   /** A pagable collection of type `AssociatedPerson` */
@@ -1049,7 +1041,11 @@ export type Query = {
   testTableCollection?: Maybe<TestTableConnection>
 }
 
-/** The root type for querying data */
+export type QueryAllProjectsArgs = {
+  after?: InputMaybe<Scalars['String']>
+  first?: InputMaybe<Scalars['Int']>
+}
+
 export type QueryAllowedUsersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1059,7 +1055,6 @@ export type QueryAllowedUsersCollectionArgs = {
   orderBy?: InputMaybe<Array<AllowedUsersOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryAssociatedPersonCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1069,7 +1064,6 @@ export type QueryAssociatedPersonCollectionArgs = {
   orderBy?: InputMaybe<Array<AssociatedPersonOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryBookmarkCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1079,7 +1073,6 @@ export type QueryBookmarkCollectionArgs = {
   orderBy?: InputMaybe<Array<BookmarkOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryFoundedByCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1089,12 +1082,10 @@ export type QueryFoundedByCollectionArgs = {
   orderBy?: InputMaybe<Array<FoundedByOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryNodeArgs = {
   nodeId: Scalars['ID']
 }
 
-/** The root type for querying data */
 export type QueryOrganizationCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1104,7 +1095,6 @@ export type QueryOrganizationCollectionArgs = {
   orderBy?: InputMaybe<Array<OrganizationOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryProjectCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1114,7 +1104,6 @@ export type QueryProjectCollectionArgs = {
   orderBy?: InputMaybe<Array<ProjectOrderBy>>
 }
 
-/** The root type for querying data */
 export type QueryTestTableCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']>
   before?: InputMaybe<Scalars['Cursor']>
@@ -1257,10 +1246,10 @@ export type ProjectDetailsQuery = {
       __typename?: 'ProjectEdge'
       node: {
         __typename?: 'Project'
-        id: any
-        name?: string | null
-        about?: string | null
-        eli5?: string | null
+        id: string
+        name: string
+        about: string
+        eli5: string
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -1269,7 +1258,7 @@ export type ProjectDetailsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
-        languages?: Array<any | null> | null
+        languages: Array<string>
         owningPerson?: any | null
         owningOrganization?: any | null
         associatedPerson?: {
@@ -1293,7 +1282,10 @@ export type ProjectDetailsQuery = {
   } | null
 }
 
-export type TrendingProjectsQueryVariables = Exact<{ [key: string]: never }>
+export type TrendingProjectsQueryVariables = Exact<{
+  orderBy: ProjectOrderBy
+  filter: ProjectFilter
+}>
 
 export type TrendingProjectsQuery = {
   __typename?: 'Query'
@@ -1303,8 +1295,8 @@ export type TrendingProjectsQuery = {
       __typename?: 'ProjectEdge'
       node: {
         __typename?: 'Project'
-        id: any
-        name?: string | null
+        id: string
+        name: string
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -1395,8 +1387,8 @@ export function useProjectDetailsQuery(
   })
 }
 export const TrendingProjectsDocument = gql`
-  query TrendingProjects {
-    projectCollection {
+  query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
+    projectCollection(filter: $filter, orderBy: [$orderBy]) {
       edges {
         node {
           id
@@ -1431,7 +1423,7 @@ export const TrendingProjectsDocument = gql`
 `
 
 export function useTrendingProjectsQuery(
-  options?: Omit<Urql.UseQueryArgs<TrendingProjectsQueryVariables>, 'query'>
+  options: Omit<Urql.UseQueryArgs<TrendingProjectsQueryVariables>, 'query'>
 ) {
   return Urql.useQuery<TrendingProjectsQuery, TrendingProjectsQueryVariables>({
     query: TrendingProjectsDocument,

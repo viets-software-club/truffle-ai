@@ -25,6 +25,7 @@ const SlackSettings = () => {
     setSlackLoading(true)
     setNotificationStatus('success')
     setSlackLoading(false)
+    setTimeout(() => setNotificationStatus(''), 4000)
   }
 
   return (
@@ -43,11 +44,13 @@ const SlackSettings = () => {
         onChange={(e) => setMessage(e.target.value)}
       />
 
-      <Button
-        variant="highlighted"
-        text={slackLoading ? 'Loading...' : 'Update'}
-        onClick={handleClick}
-      />
+      <div className="mt-2">
+        <Button
+          variant="highlighted"
+          text={slackLoading ? 'Loading...' : 'Update'}
+          onClick={handleClick}
+        />
+      </div>
 
       {notificationStatus === 'success' && (
         <Banner variant="success" message="Updated slack notification" />

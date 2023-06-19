@@ -15,6 +15,7 @@ const AffinitySettings = () => {
 
   const showBannerFunc = () => {
     setShowBanner(true)
+    setTimeout(() => setShowBanner(false), 4000)
   }
 
   return (
@@ -37,7 +38,7 @@ const AffinitySettings = () => {
         value={listId}
         onChange={(e) => setListId(e.target.value)}
       />
-      <div className="mb-64 mt-4">
+      <div className="mb-64 mt-6">
         <Button variant="highlighted" text="Update" onClick={showBannerFunc} />
         {showBanner && <Banner variant="success" message="Values updated" />}
       </div>

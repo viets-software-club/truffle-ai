@@ -97,6 +97,7 @@ const Settings = () => {
 
   const showBannerFunc = () => {
     setShowBanner(true)
+    setTimeout(() => setShowBanner(false), 4000)
   }
 
   return (
@@ -107,10 +108,10 @@ const Settings = () => {
         <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">General</h2>
 
         <Section title="General" subtitle="Default filters" refs={refs}>
-          <p className="my-4 text-14 font-normal text-gray-400">
+          <p className="mb-6 text-14 font-normal text-gray-400">
             Anything below these values will be filtered out of your results.
           </p>
-          <div className="mb-4 flex flex-row">
+          <div className="mb-6 flex flex-row">
             {Object.keys(filters).map((filterType) => (
               <FilterInput
                 key={filterType}

@@ -14,7 +14,7 @@ import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
-import { getGithubData } from './utils'
+import { getGithubData, mockTwitterPosts } from './utils'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
@@ -29,7 +29,8 @@ export {
   updateProjectSentiment,
   updateProjectStarHistory,
   updateProjectTrendingState,
-  updateProjectTrendingStatesForListOfRepos
+  updateProjectTrendingStatesForListOfRepos,
+  updateProjectTweets
 }
 
 /**
@@ -75,7 +76,7 @@ const updateProjectTweets = async (repoName: string, owner: string) => {
     return
   }
 
-  const tweets = [{ date: 'today', text: 'This is a tweet' }]
+  const tweets = mockTwitterPosts
 
   await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })
 }

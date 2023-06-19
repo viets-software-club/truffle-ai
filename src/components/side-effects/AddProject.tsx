@@ -95,7 +95,11 @@ const AddProject = () => {
                 Add project
               </Dialog.Title>
 
-              <Input placeholder="vercel/next.js" value={projectUrl} onChange={handleChange} />
+              <Input
+                placeholder="github.com/vercel/next.js"
+                value={projectUrl}
+                onChange={handleChange}
+              />
 
               {success && (
                 <p className="text-sm text-green">
@@ -105,7 +109,7 @@ const AddProject = () => {
 
               {error && (
                 <p className="text-sm text-red">
-                  Failed to add project. Please check the URL and try again.
+                  Failed to add project. Please make sure to provide a valid GitHub URL.
                 </p>
               )}
 

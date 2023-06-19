@@ -52,6 +52,7 @@ const updateAllProjectInfo = async (
     return
   }
   await updateProjectGithubStats(repoName, owner)
+  await updateProjectContributorCount(repoName, owner)
   await updateProjectELI5(repoName, owner)
   await updateProjectFounders(repoName, owner)
   await updateProjectLinkedInData(owner)

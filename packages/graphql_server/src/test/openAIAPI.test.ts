@@ -1,7 +1,10 @@
+import { getRepositoryTopics } from '../api/githubApi'
 import {
+  Topic,
+  getCategoryFromGPT,
   getELI5FromReadMe,
-  getHackernewsSentiment,
-  categorizeProjectGeneral
+  getHackernewsSentiment
+  // categorizeProjectGeneral
 } from '../api/openAIApi'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,13 +25,11 @@ export async function testHackerNewsSentiment() {
   console.log(await getHackernewsSentiment(comments))
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function testCategorizeProject() {
-  //get realcomments using githubscraping
-  const readMe = `
-    SuperAGI logo, Open-source framework to build, manage and run useful Autonomous AI Agents. SuperAGI forks SuperAGI stars SuperAGI pull-requests SuperAGI Commits. Follow SuperAGI. Follow _superAGI Join SuperAGI Discord Community. Share SuperAGI Repository. Follow _superAGI Share on Telegram Share on Reddit Buy Me A Coffee. bulb Features Provision, Spawn & Deploy Autonomous AI Agents. Extend Agent Capabilities with Tools. Run Concurrent Agents Seamlessly. Graphical User Interface. Action Console. Multiple Vector DBs. Multi-Modal Agents. Agent Trajectory Fine-Tuning. Performance Telemetry. Optimized Token Usage. Agent Memory Storage. Looping Detection Heuristics. Concurrent Agents. Resource Manager. hammer_and_wrench Tools Slack Email Jira File Manager Google Search Dall-E Github Web Interaction Zapier Instagram Trello Google Analytics Duckduckgo Discord. computer Screenshots GUI. SuperAGI logo. motorway Roadmap Click here to checkout the latest roadmap link. gear Setting up Download the repo using git clone https://github.com/TransformerOptimus/SuperAGI.git in your terminal or directly from github page in zip format. Navigate to the directory using cd SuperAGI and create a copy of config_template.yaml and name it config.yaml. Enter your unique OpenAI API Key, Google key, Custom search engine ID without any quotes or spaces in config.yaml file. Follow the links below to get your keys: Keys Accessing the keys OpenAI API Key Sign up and create an API key at OpenAI Developer Google API key Create a project in the Google Cloud Console and enable the API you need (for example: Google Custom Search JSON API). Then, create an API key in the "Credentials" section. Custom search engine ID Visit Google Programmable Search Engine to create a custom search engine for your application and obtain the search engine ID. Ensure that Docker is installed in your system, if not, Install it from here. Once you have Docker Desktop running, run command : docker-compose up --build in SuperAGI directory. Open your browser and go to localhost:3000 to see SuperAGI running. warning Under Development! This project is under active development and may still have issues. We appreciate your understanding and patience. If you encounter any problems, please first check the open issues. If your issue is not listed, kindly create a new issue detailing the error or problem you experienced. Thank you for your support! film_projector Curated Videos How To Install SuperAGI on: Github Codespaces Windows/MacOS/Linux woman_technologist Contributors TransformerOptimus Cptsnowcrasher vectorcrow Akki-jain Autocop-AgentCOLONAYUSHluciferlinx101mukundans89Fluder-ParadynenborthynihirrTarraann starStar History Star History Chart
-    `
-  const categories =
-    'python ai nextjs agi artificial-intelligence openai artificial-general-intelligence agents autonomous-agents pinecone gpt-4 llm llmops superagi'
-  console.log(await categorizeProjectGeneral(categories, readMe))
+const testCategorization = async (repoName: string, owner: string) => {
+  const repoTopics = await getRepositoryTopics(owner, repoName, process.env.GITHUB_API_TOKEN)
+  console.log('topics', repoTopics)
+  const categoryNumbers = await getCategoryFromGPT(repoTopics, null)
+  console.log('Categories:', categoryNumbers)
 }
+
+void testCategorization('next.js', 'vercel')

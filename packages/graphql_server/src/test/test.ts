@@ -74,7 +74,7 @@ export async function main(timeMode: timeMode, firstNRepos: number) {
     const categories = await github.getRepositoryTopics(owner, name, authToken)
     //Categorizes the project
     console.log('Categories:\n')
-    console.log(await eli5.categorizeProjectGeneral(categories, readme))
+    //console.log(await eli5.categorizeProjectGeneral(categories, readme))
     console.log('\n')
     console.log('hackernewsstories:\n')
 

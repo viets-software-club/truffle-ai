@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { RequestBodyOpenAI, ResponseBodyOpenAi } from '../../types/openAIApi'
 
-export { getELI5FromReadMe, getHackernewsSentiment, categorizeProjectGeneral }
+export { getELI5FromReadMe, getHackernewsSentiment }
 
 const model = 'gpt-3.5-turbo'
 const openAIapiUrl = 'https://api.openai.com/v1/chat/completions'
@@ -95,151 +95,72 @@ async function getHackernewsSentiment(comments: string) {
   }
 }
 
-/**
- * Categorizes a software engineering project based on its README or category.
- * @param readMeOrCategory - The project's README or category.
- * @param categoryGeneral - The general category of the project (1 for developer tools, 2 for infrastructure, 3 for ML/AI).
- * @returns The two best-fitting specific categories for the project.
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function categorizeProjectSpecific(readMeOrCategory: string, categoryGeneral: number) {
-  //The following 3 variables are the lists of categories used to define the project
-  const listOfCategoriesDeveloperTools: string[] = [
-    'Code Editors',
-    'Version Control',
-    'Continuous Integration',
-    'Testing Frameworks',
-    'Package Managers',
-    'Integrated Development Environments',
-    'Debuggers',
-    'Profilers',
-    'Build Tools',
-    'Code Quality'
-  ]
-
-  const listOfCategoriesInfrastructure: string[] = [
-    'Cloud Computing',
-    'Virtualization',
-    'Containerization',
-    'Orchestration',
-    'Monitoring',
-    'Networking',
-    'Databases',
-    'Load Balancing',
-    'Content Delivery Networks',
-    'Identity Management'
-  ]
-
-  const listOfCategoriesMLAI: string[] = [
-    'Machine Learning',
-    'Deep Learning',
-    'Natural Language Processing',
-    'Computer Vision',
-    'Cybersecurity'
-  ]
-
-  const questionCategoriesSpecific = //this is the question send to openAI
-    'These categories should be used to categorize a software engineering project. Please choose two of the categories from the list that describe this project the best based on these words or readme (Your response should only consist of the two words you choose, separated by a comma): '
-
-  let categoriesSpecific: string[] //checks which general category it is
-  switch (categoryGeneral) {
-    case 1:
-      categoriesSpecific = listOfCategoriesDeveloperTools
-      break
-    case 2:
-      categoriesSpecific = listOfCategoriesInfrastructure
-      break
-    case 3:
-      categoriesSpecific = listOfCategoriesMLAI
-      break
-    case 4: //if chatgtp says the categories are not specific enough we need t use the readme file to put it into two of the categories
-      categoriesSpecific = listOfCategoriesDeveloperTools.concat(listOfCategoriesInfrastructure)
-      categoriesSpecific = categoriesSpecific.concat(listOfCategoriesMLAI)
-      break
-    default:
-      console.log('Invalid categoryGeneral value')
-      return null
-  }
-
-  const requestBodyCategories: RequestBodyOpenAI = {
-    model: model,
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a professor trying to categorize a project. You have to read something about the project and then give it two of the categories according to your evaluation. Even if you do not think that you can evaluate it. Just do it to the best of your abilities'
-      },
-      {
-        role: 'user',
-        content: categoriesSpecific.join(' ,') + questionCategoriesSpecific + readMeOrCategory
-      }
-    ]
-  }
-
-  try {
-    const response = await axios.post(openAIapiUrl, requestBodyCategories, { headers })
-    const data = response.data as ResponseBodyOpenAi
-
-    if (!data?.choices[0]?.message?.content) {
-      console.log(errorMessage)
-      return null
-    } else {
-      const content: string = data.choices[0].message.content
-      return content
-    }
-  } catch (error) {
-    console.log('AI request did not work: ', error)
-    return null
-  }
+export enum Topic {
+  MachineLearning = 1,
+  DevTools = 2,
+  Infrastructure = 3,
+  Miscellaneous = 8,
+  CategorizationError = 9
 }
 
 /**
- * Categorizes a software engineering project into a general category based on its README or provided category.
- * @param readMeOrCategory - The project's README or category.
- * @returns The two best-fitting specific categories for the project, based on the general category.
+ * Calls GPT and get categories for a project.
+ * @param {string[]} topics - The topics of a repo, probably fetched from github
+ * @param {string} description - The description of a repo, probably fetched from github
+ * @returns The categories a repo fits into as a list of strings.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function categorizeProjectGeneral(categories: string, readme: string) {
-  const questionCategoriesGeneral =
-    'These 3 categroies should be used to categorize a software engineering project. 1 for developer tools, 2 for Infrastructure, 3 for Machine Learning and Artifical Inteligence. Apart from the number do not respond with anything): '
+export const getCategoryFromGPT = async (topics: string[] | null, description: string | null) => {
+  if (topics === null && description === null) return Topic['9']
 
   const request_body_Categories = {
     model: model,
     messages: [
       {
         role: 'system',
-        content:
-          'You are a professor trying to categorize a project. You have to read something about the project and then give it two of the categories according to your evaluation. Even if you do not think that you can evaluate it. Just do it to the best of your abilities'
+        content: `You are a machine that can only answer with numbers separated by commas.
+        You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.
+        Your answer may only contain numbers separated by commas.
+        ${createCategorizationPrompt()}
+        Only answer with 8 if no other category fits.
+        `
       },
-      { role: 'user', content: '' }
+      {
+        role: 'user',
+        content: `        
+        ${topics ? 'topics related to the respository:' + topics.toString() : ''}
+        ${description ? 'description of the repository:' + description : ''}
+        `
+      }
     ]
   }
-
-  const listOfCategories: string[] = [
-    'Developer Tools',
-    'Infrastrcuture',
-    'Machine Learning and Aritfical Inteligence'
-  ]
-  request_body_Categories.messages[1].content =
-    listOfCategories.join(' ,') + questionCategoriesGeneral + categories
   try {
-    const response = await axios.post(openAIapiUrl, request_body_Categories, { headers })
-    //returns a number that decides which general categorie we are using
-    const data = response.data as ResponseBodyOpenAi
-    if (!data?.choices[0]?.message?.content) {
-      console.log(errorMessage)
-      return null
-    } else {
-      const content: string = data?.choices[0]?.message?.content
-      const num = parseInt(content)
-      if (num !== 1 && num !== 2 && num !== 3) {
-        return categorizeProjectSpecific(readme, 4)
-      } else {
-        return categorizeProjectSpecific(categories, num)
-      }
-    }
+    const response = await axios.post<ResponseBodyOpenAi>(openAIapiUrl, request_body_Categories, {
+      headers
+    })
+
+    const answer = response?.data?.choices?.[0]?.message?.content
+    const categoryNumbers = answer ? convertNumbersStringToList(answer) : ['9']
+    return categoryNumbers.map((categoryNumber) => {
+      return Topic[Number(categoryNumber)]
+    })
   } catch (error) {
-    console.log('AI request did not work: ', error)
-    return null
+    return Topic['9']
   }
+}
+
+// iterating through enums needs to be done like that
+const createCategorizationPrompt = () => {
+  let prompt = 'Answer with '
+  for (const key in Topic) {
+    if (isNaN(Number(key))) continue
+    if (key === '9') continue
+    prompt += `${key} for ${Topic[key]}, `
+  }
+  return prompt
+}
+
+function convertNumbersStringToList(str: string): string[] {
+  const numbersRegex = /\d+/g
+  const numbers = str.match(numbersRegex)
+  return numbers ? numbers : []
 }

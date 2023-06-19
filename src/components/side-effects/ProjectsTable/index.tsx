@@ -7,9 +7,9 @@ import {
 } from '@tanstack/react-table'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
-import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
+import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
 import {
   Project,

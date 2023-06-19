@@ -16,7 +16,9 @@ query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
         owningOrganization
         associatedPerson {
           id
+          name
           login
+          email
           avatarUrl
         }
         organization {

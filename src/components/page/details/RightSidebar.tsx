@@ -59,7 +59,11 @@ const RightSidebar = ({ project }: Props) => {
 
       <Sidebar.Box title="Languages">
         <Sidebar.Box.LanguagesItem
-          languages={project?.languages as Array<{ name: string; color: string }>}
+          // languages={project?.languages as Array<{ name: string; color: string }>}
+          languages={[
+            { name: 'JavaScript', color: '#f1e05a' },
+            { name: 'TypeScript', color: '#2b7489' }
+          ]}
         />
       </Sidebar.Box>
 

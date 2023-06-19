@@ -143,19 +143,23 @@ const Details = ({ id }: DetailsProps) => {
           />
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
             {project.relatedTwitterPosts && (
-              <TwitterCard
-                Icon={FaTwitter}
-                name="Top Tweets"
-                tweets={project.relatedTwitterPosts}
-              />
+              <div className="flex-1 overflow-auto">
+                <TwitterCard
+                  Icon={FaTwitter}
+                  name="Top Tweets"
+                  tweets={project.relatedTwitterPosts}
+                />
+              </div>
             )}
             {project.hackernewsSentiment && (
-              <HackernewsCard
-                Icon={FaHackerNews}
-                name="Community Sentiment"
-                communitySentiment={project.hackernewsSentiment}
-                links={project.hackernewsStories as string[]}
-              />
+              <div className="flex-1 overflow-auto">
+                <HackernewsCard
+                  Icon={FaHackerNews}
+                  name="Community Sentiment"
+                  communitySentiment={project.hackernewsSentiment}
+                  links={project.hackernewsStories as string[]}
+                />
+              </div>
             )}
           </div>
         </div>

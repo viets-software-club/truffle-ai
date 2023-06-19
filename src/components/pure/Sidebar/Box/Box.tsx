@@ -3,6 +3,7 @@ import GithubStatItem from './GithubStatItem'
 import SocialMediaItem from './SocialMediaItem'
 import FounderItem from './FounderItem'
 import CompanyItem from './CompanyItem'
+import LanguagesItem from './LanguagesItem'
 
 type Props = {
   title: string
@@ -18,6 +19,7 @@ const SidebarBox = ({ title, children }: Props) => (
 
 export default Object.assign(SidebarBox, {
   GithubStatItem,
+  LanguagesItem,
   FounderItem,
   CompanyItem,
   SocialMediaItem

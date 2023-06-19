@@ -9,7 +9,7 @@ type HackernewsCardProps = {
 }
 
 const HackernewsCard = ({ Icon, name, communitySentiment, links }: HackernewsCardProps) => (
-  <div className="my-4 rounded-lg border border-gray-800">
+  <div className="my-4 overflow-hidden rounded-lg border border-gray-800">
     <div className="flex flex-row items-center px-4 pt-4">
       <Icon className="mr-2 h-6 w-6 text-indigo-500" />
       <h3 className="text-20">{name}</h3>
@@ -19,7 +19,7 @@ const HackernewsCard = ({ Icon, name, communitySentiment, links }: HackernewsCar
       {communitySentiment}
     </p>
 
-    <div className="flex flex-row gap-3 p-4">
+    <div className="flex flex-wrap gap-3 overflow-auto p-4">
       {links !== null &&
         links.map((link, index) => (
           <a href={link} target="_blank" rel="noreferrer">

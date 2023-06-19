@@ -865,7 +865,7 @@ export type Project = Node & {
   isTrendingMonthly?: Maybe<Scalars['Boolean']>
   isTrendingWeekly?: Maybe<Scalars['Boolean']>
   issueCount?: Maybe<Scalars['Int']>
-  languages?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  // languages?: Maybe<Array<Maybe<Scalars['JSON']>>>
   name?: Maybe<Scalars['String']>
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']
@@ -959,7 +959,7 @@ export type ProjectInsertInput = {
   isTrendingMonthly?: InputMaybe<Scalars['Boolean']>
   isTrendingWeekly?: InputMaybe<Scalars['Boolean']>
   issueCount?: InputMaybe<Scalars['Int']>
-  languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  // languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   name?: InputMaybe<Scalars['String']>
   owningOrganization?: InputMaybe<Scalars['UUID']>
   owningPerson?: InputMaybe<Scalars['UUID']>
@@ -1019,7 +1019,7 @@ export type ProjectUpdateInput = {
   isTrendingMonthly?: InputMaybe<Scalars['Boolean']>
   isTrendingWeekly?: InputMaybe<Scalars['Boolean']>
   issueCount?: InputMaybe<Scalars['Int']>
-  languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  // languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   name?: InputMaybe<Scalars['String']>
   owningOrganization?: InputMaybe<Scalars['UUID']>
   owningPerson?: InputMaybe<Scalars['UUID']>
@@ -1282,7 +1282,7 @@ export type ProjectDetailsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
-        languages?: Array<any | null> | null
+        // languages?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
         hackernewsSentiment?: string | null
@@ -1395,7 +1395,6 @@ export const ProjectDetailsDocument = gql`
           hackernewsSentiment
           hackernewsStories
           relatedTwitterPosts
-          languages
           forkHistory
           categories
           associatedPerson {

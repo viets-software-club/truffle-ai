@@ -18,7 +18,6 @@ query ProjectDetails($id: UUID) {
         owningOrganization
         hackernewsSentiment
         hackernewsStories
-        languages
         relatedTwitterPosts
         forkHistory
         categories

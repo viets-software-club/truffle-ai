@@ -1,12 +1,21 @@
 import { AiFillMail } from 'react-icons/ai'
 import { FaLinkedin } from 'react-icons/fa'
-import emailTemplate from '../../../../util/emailTemplate'
 
 type FounderProps = {
   name: string
   mail?: string
   linkedin?: string
   company: string
+}
+
+const emailTemplate = (email: string, founderName: string, companyName: string) => {
+  const subject = `La Famiglia x ${companyName}`
+
+  let body = localStorage.getItem('emailMessage') || ''
+  body = body.replace('{founderName}', founderName)
+  body = body.replace('{companyName}', companyName)
+
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 const FounderItem = ({ name, mail, linkedin, company }: FounderProps) => (

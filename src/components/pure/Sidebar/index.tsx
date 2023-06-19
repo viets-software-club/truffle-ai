@@ -36,7 +36,7 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
           </div>
           {/* Dropdown menu with options */}
           <TransitionMenuItems>
-            <div className="absolute left-0 z-20 mt-2 flex flex-col rounded-md bg-gray-700 p-1 text-14 shadow-md focus:outline-none">
+            <div className="absolute left-0 z-20 mt-2 flex flex-col rounded-[5px] bg-gray-700 p-1 text-14 shadow-md focus:outline-none">
               <Link
                 href="/settings"
                 className="min-w-[150px] rounded-[5px] px-4 py-2 hover:bg-gray-600"

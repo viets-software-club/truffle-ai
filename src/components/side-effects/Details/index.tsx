@@ -14,8 +14,8 @@ import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
+import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 
 const handleClick = () => ''
 
@@ -127,6 +127,7 @@ const Details = ({ id }: DetailsProps) => {
       <div className="flex grow">
         <div className="w-4/5 flex-row border-t border-solid border-gray-800">
           <ProjectInformation
+            githubUrl={project.githubUrl as string}
             image={
               (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
             }

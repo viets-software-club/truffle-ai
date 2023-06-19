@@ -27,7 +27,12 @@ const FilterBar = ({
       {tableSort && <TableSortModal tableSort={tableSort} setTableSort={setTableSort} />}
       {tableSort && filters.length > 0 && <div className="mx-3 h-full border-l border-gray-800" />}
       {filters.map((filter: TableFilter) => (
-        <FilterFormModal filter={filter} removeFilter={removeFilter} updateFilter={updateFilter} />
+        <FilterFormModal
+          filter={filter}
+          removeFilter={removeFilter}
+          updateFilter={updateFilter}
+          defaultValue={filter.value as number}
+        />
       ))}
     </div>
 

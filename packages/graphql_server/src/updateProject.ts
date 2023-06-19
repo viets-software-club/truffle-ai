@@ -5,10 +5,11 @@ import {
   updateSupabaseProject,
   formatLinkedInCompanyData,
   repoIsAlreadyInDB,
-  formatGithubStats
+  formatGithubStats,
+  getOrganizationID
 } from './supabaseUtils'
-import { getRepoFounders } from './api/githubApi'
-import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
+import { getRepoFounders, getRepositoryTopics } from './api/githubApi'
+import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
@@ -20,6 +21,7 @@ import { ProjectUpdate } from '../types/supabaseUtils'
 
 export {
   updateAllProjectInfo,
+  updateProjectCategories,
   updateProjectELI5,
   updateProjectFounders,
   updateProjectGithubStats,
@@ -53,6 +55,28 @@ const updateAllProjectInfo = async (
   if (trendingState) {
     await updateProjectTrendingState(repoName, owner, trendingState)
   }
+}
+
+const updateProjectCategories = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  const repoGithubTopics = await getRepositoryTopics(repoName, owner, process.env.GITHUB_API_TOKEN)
+
+  const owningPersonID = await getPersonID(owner)
+  const owningOrganizationID = await getOrganizationID(owner)
+  console.log(owningPersonID, owningOrganizationID)
+  const { data: repoAbout } = await supabase
+    .from('project')
+    .select()
+    .eq('name', repoName)
+    .eq('owning_organization', owningOrganizationID)
+    .eq('owning_person', owningPersonID)
+  console.log(repoAbout)
+
+  const categories = await getCategoriesFromGPT(repoGithubTopics, repoAbout?.[0]?.about ?? null)
+
+  await updateSupabaseProject(repoName, owner, { categories: categories })
 }
 
 /**

@@ -92,7 +92,7 @@ async function getHackernewsSentiment(comments: string) {
   }
 }
 
-enum Topic {
+export enum Topic {
   MachineLearning = 1,
   DevTools = 2,
   Infrastructure = 3,
@@ -111,8 +111,9 @@ const createCategorizationPrompt = () => {
   return prompt
 }
 
-export const getCategoryFromGPT = async (topics: string[] | null) => {
-  if (topics === null) return Topic['9']
+export const getCategoryFromGPT = async (topics: string[] | null, description: string | null) => {
+  if (topics === null && description === null) return Topic['9']
+
   const request_body_Categories = {
     model: model,
     messages: [
@@ -128,7 +129,8 @@ export const getCategoryFromGPT = async (topics: string[] | null) => {
       {
         role: 'user',
         content: `        
-        Topics related to the repository: ${topics.toString()}
+        ${topics ? 'topics related to the respository:' + topics.toString() : ''}
+        ${description ? 'description of the repository:' + description : ''}
         `
       }
     ]
@@ -141,7 +143,7 @@ export const getCategoryFromGPT = async (topics: string[] | null) => {
     const answer = response?.data?.choices?.[0]?.message?.content
     const categoryNumbers = answer ? convertNumbersStringToList(answer) : ['9']
     return categoryNumbers.map((categoryNumber) => {
-      Topic[Number(categoryNumber)]
+      return Topic[Number(categoryNumber)]
     })
   } catch (error) {
     return Topic['9']

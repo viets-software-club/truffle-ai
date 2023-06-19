@@ -273,11 +273,32 @@ const getPersonID = async (owner: string) => {
     .from('associated_person')
     .insert([personDataDBFormat])
   personInsertionError &&
-    console.error('Error inserting organization into database: \n', personInsertionError)
+    console.error('Error inserting person into database: \n', personInsertionError)
 
   const { data: person } = await supabase.from('associated_person').select('id').eq('login', owner)
 
   return person?.[0]?.id ? person[0].id : null
+}
+
+const getProjectAbout = async (repoName: string, owner: string) => {
+  const owningPersonID = await getPersonID(owner)
+  if (owningPersonID) {
+    const { data: repoAbout } = await supabase
+      .from('project')
+      .select('about')
+      .eq('name', repoName)
+      .eq('owning_person', owningPersonID)
+    return repoAbout?.[0]?.about ?? null
+  }
+  const owningOrganizationID = await getOrganizationID(owner)
+  if (owningOrganizationID) {
+    const { data: repoAbout } = await supabase
+      .from('project')
+      .select('about')
+      .eq('name', repoName)
+      .eq('owningOrganization', owningOrganizationID)
+    return repoAbout?.[0]?.about ?? null
+  }
 }
 
 /**
@@ -312,27 +333,6 @@ const getProjectID = async (name: string, owner: string) => {
     .eq('owning_organization', ownerID)
     .eq('name', name)
   return projects?.[0]?.id ?? null
-}
-
-const getProjectAbout = async (repoName: string, owner: string) => {
-  const owningPersonID = await getPersonID(owner)
-  if (owningPersonID) {
-    const { data: repoAbout } = await supabase
-      .from('project')
-      .select('about')
-      .eq('name', repoName)
-      .eq('owning_person', owningPersonID)
-    return repoAbout?.[0]?.about ?? null
-  }
-  const owningOrganizationID = await getOrganizationID(owner)
-  if (owningOrganizationID) {
-    const { data: repoAbout } = await supabase
-      .from('project')
-      .select('about')
-      .eq('name', repoName)
-      .eq('owningOrganization', owningOrganizationID)
-    return repoAbout?.[0]?.about ?? null
-  }
 }
 
 /**

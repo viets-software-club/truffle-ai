@@ -6,7 +6,7 @@ import {
   formatLinkedInCompanyData,
   repoIsAlreadyInDB,
   formatGithubStats,
-  getOrganizationID
+  getProjectAbout
 } from './supabaseUtils'
 import { getRepoFounders, getRepositoryTopics } from './api/githubApi'
 import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
@@ -63,18 +63,9 @@ const updateProjectCategories = async (repoName: string, owner: string) => {
   }
   const repoGithubTopics = await getRepositoryTopics(repoName, owner, process.env.GITHUB_API_TOKEN)
 
-  const owningPersonID = await getPersonID(owner)
-  const owningOrganizationID = await getOrganizationID(owner)
-  console.log(owningPersonID, owningOrganizationID)
-  const { data: repoAbout } = await supabase
-    .from('project')
-    .select()
-    .eq('name', repoName)
-    .eq('owning_organization', owningOrganizationID)
-    .eq('owning_person', owningPersonID)
-  console.log(repoAbout)
+  const repoAbout = await getProjectAbout(repoName, owner)
 
-  const categories = await getCategoriesFromGPT(repoGithubTopics, repoAbout?.[0]?.about ?? null)
+  const categories = await getCategoriesFromGPT(repoGithubTopics, repoAbout ?? null)
 
   await updateSupabaseProject(repoName, owner, { categories: categories })
 }

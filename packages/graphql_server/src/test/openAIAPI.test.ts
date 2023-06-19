@@ -1,6 +1,5 @@
 import { getRepositoryTopics } from '../api/githubApi'
 import {
-  Topic,
   getCategoriesFromGPT,
   getELI5FromReadMe,
   getHackernewsSentiment

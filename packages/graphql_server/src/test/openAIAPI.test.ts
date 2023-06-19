@@ -33,4 +33,4 @@ const testCategorization = async (repoName: string, owner: string) => {
   }
 }
 
-void testCategorization('react', 'facebook')
+void testCategorization('next.js', 'vercel')

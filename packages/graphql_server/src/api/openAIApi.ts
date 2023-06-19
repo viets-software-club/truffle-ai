@@ -92,19 +92,21 @@ async function getHackernewsSentiment(comments: string) {
   }
 }
 
-const topicsMap = {
-  1: 'Machine Learning',
-  2: 'Dev Tools',
-  3: 'Infrastructure',
-  8: 'Other',
-  9: 'CategorizationError'
+enum Topic {
+  MachineLearning = 1,
+  DevTools = 2,
+  Infrastructure = 3,
+  Miscellaneous = 8,
+  CategorizationError = 9
 }
 
+// iterating through enums needs to be done like that
 const createCategorizationPrompt = () => {
   let prompt = 'Answer with '
-  for (const [key, value] of Object.entries(topicsMap)) {
+  for (const key in Topic) {
+    if (isNaN(Number(key))) continue
     if (key === '9') continue
-    prompt += `${key} for ${value}, `
+    prompt += `${key} for ${Topic[key]}, `
   }
   return prompt
 }
@@ -119,6 +121,7 @@ export const getCategoryNumberFromGPT = async (topics: string[]) => {
         You take in infos about a repository that is hosted on github and reply with numbers separated by commas to categorize the project.
         Your answer may only contain numbers separated by commas.
         ${createCategorizationPrompt()}
+        Only answer with 8 if no other category fits.
         `
       },
       {
@@ -135,8 +138,16 @@ export const getCategoryNumberFromGPT = async (topics: string[]) => {
     })
 
     const answer = response?.data?.choices?.[0]?.message?.content
-    return answer ? answer : '9'
+    return answer ? convertNumbersStringToList(answer) : ['9']
   } catch (error) {
-    return '9'
+    return ['9']
   }
 }
+
+function convertNumbersStringToList(str: string): string[] {
+  const numbersRegex = /\d+/g
+  const numbers = str.match(numbersRegex)
+  return numbers ? numbers : []
+}
+
+console.log(createCategorizationPrompt())

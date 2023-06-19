@@ -14,7 +14,7 @@ import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
-import { getGithubData, mockTwitterPosts } from './utils'
+import { getGithubData, mockForkHistory, mockTwitterPosts } from './utils'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
@@ -23,6 +23,7 @@ export {
   updateAllProjectInfo,
   updateProjectCategories,
   updateProjectELI5,
+  updateProjectForkHistory,
   updateProjectFounders,
   updateProjectGithubStats,
   updateProjectLinkedInData,
@@ -69,16 +70,6 @@ const updateProjectCategories = async (repoName: string, owner: string) => {
   const categories = await getCategoriesFromGPT(repoGithubTopics, repoAbout ?? null)
 
   await updateSupabaseProject(repoName, owner, { categories: categories })
-}
-
-const updateProjectTweets = async (repoName: string, owner: string) => {
-  if (!(await repoIsAlreadyInDB(repoName, owner))) {
-    return
-  }
-
-  const tweets = mockTwitterPosts
-
-  await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })
 }
 
 /**
@@ -168,6 +159,16 @@ const updateProjectFounders = async (repoName: string, owner: string) => {
           owner
         )
   }
+}
+
+const updateProjectForkHistory = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  //@Todo: get real fork history -> waiting for maxis PR
+  const forkHistory = mockForkHistory
+
+  await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
 }
 
 /**
@@ -305,4 +306,15 @@ const updateProjectTrendingState = async (
     const repoName = repos[2 * i + 1]
     await updateProjectTrendingState(repoName, owner, trendingState)
   }
+}
+
+const updateProjectTweets = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+
+  //@Todo: get real fork history -> waiting for jonas' PR to be merged
+  const tweets = mockTwitterPosts
+
+  await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })
 }

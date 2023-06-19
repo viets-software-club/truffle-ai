@@ -211,6 +211,7 @@ export interface Database {
           created_at: string | null
           eli5: string | null
           fork_count: number | null
+          fork_history: Json[] | null
           github_url: string | null
           hackernews_sentiment: string | null
           hackernews_stories: string[] | null
@@ -237,6 +238,7 @@ export interface Database {
           created_at?: string | null
           eli5?: string | null
           fork_count?: number | null
+          fork_history?: Json[] | null
           github_url?: string | null
           hackernews_sentiment?: string | null
           hackernews_stories?: string[] | null
@@ -263,6 +265,7 @@ export interface Database {
           created_at?: string | null
           eli5?: string | null
           fork_count?: number | null
+          fork_history?: Json[] | null
           github_url?: string | null
           hackernews_sentiment?: string | null
           hackernews_stories?: string[] | null

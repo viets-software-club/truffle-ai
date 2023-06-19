@@ -111,7 +111,8 @@ const createCategorizationPrompt = () => {
   return prompt
 }
 
-export const getCategoryNumberFromGPT = async (topics: string[]) => {
+export const getCategoryFromGPT = async (topics: string[] | null) => {
+  if (topics === null) return Topic['9']
   const request_body_Categories = {
     model: model,
     messages: [
@@ -138,9 +139,12 @@ export const getCategoryNumberFromGPT = async (topics: string[]) => {
     })
 
     const answer = response?.data?.choices?.[0]?.message?.content
-    return answer ? convertNumbersStringToList(answer) : ['9']
+    const categoryNumbers = answer ? convertNumbersStringToList(answer) : ['9']
+    return categoryNumbers.map((categoryNumber) => {
+      Topic[Number(categoryNumber)]
+    })
   } catch (error) {
-    return ['9']
+    return Topic['9']
   }
 }
 

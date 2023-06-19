@@ -55,7 +55,7 @@ const Item = ({
     <div
       className={`relative flex flex-col justify-between ${
         highlighted ? 'bg-gray-700' : ''
-      } rounded-md hover:bg-gray-800`}
+      } rounded-[5px] hover:bg-gray-800`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

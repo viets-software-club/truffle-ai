@@ -9,7 +9,6 @@ import Image from 'next/image'
 
 const columnHelper = createColumnHelper<Project>()
 
-// @TODO Make columns sortable, filterable
 const columns = [
   // Logo column definition
   columnHelper.accessor(
@@ -24,12 +23,10 @@ const columns = [
       )
     }
   ),
-
-  // @TODO Adjust for user owners
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
+      `${(organization?.login || associatedPerson?.login) as string} / ${name}`,
     {
       id: 'Name',
       header: 'Name',
@@ -47,7 +44,6 @@ const columns = [
       }
     }
   ),
-  // @TODO Add tags column
   // Stars column definition
   columnHelper.accessor('starCount', {
     id: 'Stars',

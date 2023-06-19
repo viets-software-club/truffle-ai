@@ -21,7 +21,6 @@ type Props = {
  * Right sidebar for project details page
  */
 const RightSidebar = ({ project }: Props) => (
-  // @TODO Add historical data for showing growth
   <Sidebar.Small>
     <Sidebar.Box title="GitHub Stats">
       <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project?.starCount as number} />

@@ -9,42 +9,38 @@ import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
-import defaultColumns from '@/components/pure/ProjectsTable/columns'
+import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { TableFilter } from '@/components/page/overview/TableFilter'
-import { TableSort } from '@/components/page/overview/TableSort'
+import {
+  Project,
+  ProjectFilter,
+  ProjectOrderBy,
+  useTrendingProjectsQuery
+} from '@/graphql/generated/gql'
+import { defaultFilters, defaultSort } from '@/components/page/overview/types'
 
 /**
  * Table for displaying trending projects
  */
 const ProjectsTable = () => {
-  const [filteredRowCount, setFilteredRowCount] = useState(0)
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
-  const [filters, setFilters] = useState<TableFilter[]>([])
-  const [tableSort, setTableSort] = useState<TableSort | null>(null)
+  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
+  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
 
-  const addFilter = (filter: TableFilter) => {
-    setFilters([...filters, filter])
-  }
-
-  const updateFilter = (filter: TableFilter) => {
-    setFilters(
-      filters.map((f) =>
-        f.column.columnDef.header === filter.column.columnDef.header ? filter : f
-      )
-    )
-  }
-
-  const removeFilter = (filter: TableFilter) => {
-    setFilters(filters.filter((f) => f !== filter))
+  const updateFilters = (filter: ProjectFilter) => {
+    setFilters(filter)
   }
 
   // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery()
+  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: sorting || defaultSort,
+      filter: filters || defaultFilters
+    }
+  })
 
   // Only update table data when urql data changes
   useEffect(() => {
@@ -68,37 +64,37 @@ const ProjectsTable = () => {
     getFilteredRowModel: getFilteredRowModel()
   })
 
-  // Display loading/ error messages conditionally
-  if (fetching) return <Loading message="Getting trending projects for you..." />
-  if (data.length === 0 || error) return <Error />
-
   return (
     <div className="flex w-full flex-col">
       <TopBar
         columns={table.getAllLeafColumns()}
-        addFilter={addFilter}
         filters={filters}
         comparePage={false}
-        tableSort={tableSort}
-        setTableSort={setTableSort}
+        sorting={sorting}
+        setSorting={setSorting}
+        updateFilters={updateFilters}
       />
-      {(filters.length > 0 || tableSort) && (
+
+      {(Object.keys(filters).length > 0 || sorting) && (
         <FilterBar
           filters={filters}
-          removeFilter={removeFilter}
-          updateFilter={updateFilter}
-          currentEntries={filteredRowCount}
-          totalEntries={data.length}
-          tableSort={tableSort}
-          setTableSort={setTableSort}
+          updateFilters={updateFilters}
+          currentEntries={data.length}
+          totalEntries={data.length} // @TODO get total entries from DB
+          sorting={sorting}
+          setSorting={setSorting}
         />
       )}
-      <Table
-        table={table}
-        filters={filters}
-        setFilteredRowCount={setFilteredRowCount}
-        tableSort={tableSort}
-      />
+
+      {fetching && <Loading message="Getting trending projects for you..." />}
+
+      {error && <Error />}
+
+      {data.length === 0 && !error && !fetching && (
+        <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
+      )}
+
+      {data.length > 0 && !error && <Table table={table} />}
     </div>
   )
 }

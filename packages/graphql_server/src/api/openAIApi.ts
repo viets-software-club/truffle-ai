@@ -100,17 +100,12 @@ export enum Topic {
   CategorizationError = 9
 }
 
-// iterating through enums needs to be done like that
-const createCategorizationPrompt = () => {
-  let prompt = 'Answer with '
-  for (const key in Topic) {
-    if (isNaN(Number(key))) continue
-    if (key === '9') continue
-    prompt += `${key} for ${Topic[key]}, `
-  }
-  return prompt
-}
-
+/**
+ * Calls GPT and get categories for a project.
+ * @param {string[]} topics - The topics of a repo, probably fetched from github
+ * @param {string} description - The description of a repo, probably fetched from github
+ * @returns The categories a repo fits into as a list of strings.
+ */
 export const getCategoryFromGPT = async (topics: string[] | null, description: string | null) => {
   if (topics === null && description === null) return Topic['9']
 
@@ -150,10 +145,19 @@ export const getCategoryFromGPT = async (topics: string[] | null, description: s
   }
 }
 
+// iterating through enums needs to be done like that
+const createCategorizationPrompt = () => {
+  let prompt = 'Answer with '
+  for (const key in Topic) {
+    if (isNaN(Number(key))) continue
+    if (key === '9') continue
+    prompt += `${key} for ${Topic[key]}, `
+  }
+  return prompt
+}
+
 function convertNumbersStringToList(str: string): string[] {
   const numbersRegex = /\d+/g
   const numbers = str.match(numbersRegex)
   return numbers ? numbers : []
 }
-
-console.log(createCategorizationPrompt())

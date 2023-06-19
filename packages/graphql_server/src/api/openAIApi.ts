@@ -96,10 +96,10 @@ async function getHackernewsSentiment(comments: string) {
 }
 
 export enum Topic {
-  MachineLearning = 1,
+  AI_ML = 1,
   DevTools = 2,
   Infrastructure = 3,
-  Miscellaneous = 8,
+  Other = 8,
   CategorizationError = 9
 }
 

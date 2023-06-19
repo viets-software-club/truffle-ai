@@ -92,14 +92,12 @@ export async function getRepoFounders(owner: string, name: string): Promise<Proj
             target {
               ... on Commit {
                 history(first: 5) {
-                  edges {
-                    node {
-                      author {
-                        user {
-                          name
-                          login
-                          twitterUsername
-                        }
+                  nodes {
+                    author {
+                      user {
+                        name
+                        login
+                        twitterUsername
                       }
                     }
                   }

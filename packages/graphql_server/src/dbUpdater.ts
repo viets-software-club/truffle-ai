@@ -2,7 +2,8 @@ import supabase from './supabase'
 import {
   updateAllProjectInfo,
   updateProjectGithubStats,
-  updateProjectTrendingStatesForListOfRepos
+  updateProjectTrendingStatesForListOfRepos,
+  updateProjectTweets
 } from './updateProject'
 import {
   getOrganizationID,
@@ -43,6 +44,7 @@ export const dailyDbUpdater = async (includeDeletion: boolean) => {
   // here everything that should be updated daily is updated. atm this is just github stats
   for (const project of projectsToBeUpdated) {
     await updateProjectGithubStats(project.name, project.owner)
+    await updateProjectTweets(project.name, project.owner)
   }
 
   // insert and enrich with data the trending repos

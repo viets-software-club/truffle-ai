@@ -48,12 +48,15 @@ const updateAllProjectInfo = async (
   if (!(await repoIsAlreadyInDB(repoName, owner))) {
     return
   }
+  await updateProjectGithubStats(repoName, owner)
   await updateProjectELI5(repoName, owner)
   await updateProjectFounders(repoName, owner)
-  await updateProjectGithubStats(repoName, owner)
   await updateProjectLinkedInData(owner)
   await updateProjectSentiment(repoName, owner)
   await updateProjectStarHistory(repoName, owner)
+  await updateProjectForkHistory(repoName, owner)
+  await updateProjectTweets(repoName, owner)
+  await updateProjectCategories(repoName, owner)
   if (trendingState) {
     await updateProjectTrendingState(repoName, owner, trendingState)
   }

@@ -126,7 +126,7 @@ const Details = ({ id }: DetailsProps) => {
             } / ${project.name as string}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
-            tags={[]} // project.languages ||
+            categories={(project.categories as string[]) || []}
           />
 
           <Chart
@@ -141,8 +141,6 @@ const Details = ({ id }: DetailsProps) => {
             ]}
             multipleLines={false}
           />
-
-          {/* @TODO Add real data */}
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
             {project.relatedTwitterPosts && (
               <TwitterCard

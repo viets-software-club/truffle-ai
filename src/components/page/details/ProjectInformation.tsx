@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { FaSlack } from 'react-icons/fa'
+import { FiBookmark as Bookmark } from 'react-icons/fi'
 import Banner from '@/components/page/settings/Banner'
 import Button from '@/components/pure/Button'
 import sendSlackNotification from '@/util/sendSlackNotification'
@@ -11,7 +12,7 @@ type ProjectInformationProps = {
   name: string
   url: string
   eli5: string
-  tags: Array<{ name: string; color: string }>
+  categories: string[]
 }
 
 /**
@@ -23,7 +24,7 @@ const ProjectInformation = ({
   url,
   name,
   eli5,
-  tags
+  categories
 }: ProjectInformationProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [slackLoading, setSlackLoading] = useState(false)
@@ -58,19 +59,16 @@ const ProjectInformation = ({
             </h1>
           </a>
 
-          {tags.length > 0 ? (
-            tags.map((tag) => (
+          {categories.length > 0 &&
+            categories[0] !== 'CategorizationError' &&
+            categories.map((category) => (
               <p
-                key={tag.name}
+                key={category}
                 className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
-                style={{ color: tag.color }}
               >
-                {tag.name}
+                {category}
               </p>
-            ))
-          ) : (
-            <p className="text-12 font-light text-gray-300">No tags available</p>
-          )}
+            ))}
         </div>
 
         <div className="flex flex-row items-center justify-end gap-2">
@@ -83,31 +81,28 @@ const ProjectInformation = ({
             textColor="white"
           />
 
-          {tags !== null && tags.length > 0 ? (
-            tags.map((tag) => (
-              <p
-                key={tag.name}
-                className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
-                style={{ color: tag.color }}
-              >
-                {tag.name}
-              </p>
-            ))
-          ) : (
-            <p className="text-12 font-light text-gray-300">No tags available</p>
-          )}
+          <Button
+            variant="normal"
+            text="Bookmark"
+            Icon={Bookmark}
+            onClick={() => {
+              // @TODO Implement bookmark functionality
+            }}
+            order="ltr"
+            textColor="text-gray-100"
+          />
         </div>
-
-        <p className="text-14 font-light">{eli5}</p>
-
-        {notificationStatus === 'success' && (
-          <Banner variant="success" message="Slack notification sent" />
-        )}
-
-        {notificationStatus === 'error' && (
-          <Banner variant="error" message="Error sending notification" />
-        )}
       </div>
+
+      <p className="text-14 font-light">{eli5}</p>
+
+      {notificationStatus === 'success' && (
+        <Banner variant="success" message="Slack notification sent" />
+      )}
+
+      {notificationStatus === 'error' && (
+        <Banner variant="error" message="Error sending notification" />
+      )}
     </div>
   )
 }

@@ -57,7 +57,12 @@ const RightSidebar = ({ project }: Props) => {
         <Sidebar.Box.GithubStatItem Icon={LinkIcon} link={project.githubUrl as string} />
       </Sidebar.Box>
 
-      {/* @TODO Add real data for social media + founders */}
+      <Sidebar.Box title="Languages">
+        <Sidebar.Box.LanguagesItem
+          languages={project?.languages as Array<{ name: string; color: string }>}
+        />
+      </Sidebar.Box>
+
       {(project?.organization?.twitterUsername || project?.organization?.websiteUrl) && (
         <Sidebar.Box title="Company">
           <Sidebar.Box.CompanyItem

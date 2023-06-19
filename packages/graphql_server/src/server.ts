@@ -1,5 +1,5 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
-import mercurius from 'mercurius'
+import mercurius, { MercuriusContext } from 'mercurius'
 import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
 import supbaseClient from './supabase'
@@ -47,7 +47,20 @@ const buildContext = async (request: FastifyRequest, reply: FastifyReply) => {
       user: response?.data?.user
     }
   }
-  return {}
+  return {
+    user: null
+  }
+}
+
+// see: https://github.com/mercurius-js/mercurius/blob/master/docs/typescript.md
+// had to adjust the return of buildContext to be static to be in accordance
+type PromiseType<T> = T extends PromiseLike<infer U> ? U : T
+
+// extends the MercuriusContext with the return type of buildContext
+// I feel like the linting error is a bug
+declare module 'mercurius' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface MercuriusContext extends PromiseType<ReturnType<typeof buildContext>> {}
 }
 
 // https://github.com/mercurius-js/mercurius-typescript/tree/master/examples

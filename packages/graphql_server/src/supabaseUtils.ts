@@ -10,9 +10,16 @@ import {
   ProjectUpdate,
   ProjectInfo
 } from '../types/supabaseUtils'
+import { PostgrestError } from '@supabase/supabase-js'
 
+/*
+Exports:
+*/
 export {
+  bookmarkIsAlreadyInDB,
+  deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
+  editBookmarkCategory,
   formatLinkedInCompanyData,
   formatGithubStats,
   getNotTrendingAndNotBookmarkedProjects,
@@ -21,10 +28,27 @@ export {
   getProjectID,
   getProjectAbout,
   getTrendingAndBookmarkedProjects,
+  insertBookmark,
   purgeTrendingState,
+  renameBookmarkCategory,
   repoIsAlreadyInDB,
   turnIntoProjectInsertion,
   updateSupabaseProject
+}
+
+/**
+ * Checks whether a bookmark is already on the database.
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ */
+const bookmarkIsAlreadyInDB = async (userID: string, projectID: string) => {
+  const { data } = await supabase
+    .from('bookmark')
+    .select()
+    .eq('user_id', userID)
+    .eq('project_id', projectID)
+  console.log(data?.length ? true : false)
+  return data?.length ? true : false
 }
 
 /**
@@ -47,6 +71,38 @@ const deleteNotTrendingAndNotBookmarkedProjects = async () => {
   } else {
     console.log('Deleted not trending and not bookmarked projects.')
   }
+}
+
+/**
+ * Deletes a bookmark from the database
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const deleteBookmark = async (userID: string, projectID: string) => {
+  const { error } = await supabase
+    .from('bookmark')
+    .delete()
+    .eq('user_id', userID)
+    .eq('project_id', projectID)
+
+  return error
+}
+
+/**
+ * Edits the category for a bookmark on the database
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const editBookmarkCategory = async (userID: string, projectID: string, newCategory: string) => {
+  const { error } = await supabase
+    .from('bookmark')
+    .update({ category: newCategory })
+    .eq('user_id', userID)
+    .eq('project_id', projectID)
+
+  return error
 }
 
 /**
@@ -384,6 +440,23 @@ const getTrendingAndBookmarkedProjects = async () => {
 }
 
 /**
+ * Inserts a bookmark into supabase
+ * @param {string} projectID - The projectID to be inserted
+ * @param {string} userID - The userID to be inserted.
+ * @param {string} category - The category to be inserted.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const insertBookmark = async (projectID: string, userID: string, category: string) => {
+  const { error } = await supabase.from('bookmark').insert({
+    project_id: projectID,
+    user_id: userID,
+    category: category
+  })
+
+  return error
+}
+
+/**
  * Sets the trending states of all projects to false.
  * contributor_count comparison because I want to target all rows but have to specify a filter
  */
@@ -440,6 +513,22 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
   }
 
   return false
+}
+
+/**
+ * Renames a bookmark category.
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} projectID - The project ID of the project in question.
+ * @returns {PostgrestError} The error which might happen during the request.
+ */
+const renameBookmarkCategory = async (userID: string, oldCategory: string, newCategory: string) => {
+  const { error } = await supabase
+    .from('bookmark')
+    .update({ category: newCategory })
+    .eq('user_id', userID)
+    .eq('category', oldCategory)
+
+  return error
 }
 
 /**

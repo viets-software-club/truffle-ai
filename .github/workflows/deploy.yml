@@ -21,7 +21,7 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Build truffle-ai-graphql-gateway image
-        run: docker build --build-arg SERVER_GRAPHQL_URL=${{ vars.SERVER_GRAPHQL_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }} --build-arg SUPABASE_API_KEY=${{ secrets.SUPABASE_API_KEY }} --build-arg SUPABASE_GRAPHQL_URL=${{ vars.SUPABASE_GRAPHQL_URL }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_gateway/Dockerfile .
+        run: docker build --no-cache --build-arg SERVER_GRAPHQL_URL=${{ vars.SERVER_GRAPHQL_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }} --build-arg SUPABASE_API_KEY=${{ secrets.SUPABASE_API_KEY }} --build-arg SUPABASE_GRAPHQL_URL=${{ vars.SUPABASE_GRAPHQL_URL }} -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-gateway:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_gateway/Dockerfile .
       - name: Build truffle-ai-graphql-server image
         run: docker build -t registry.digitalocean.com/truffle-ai-containers/truffle-ai-graphql-server:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_server/Dockerfile .
       - name: Build truffle-ai-repo-job image

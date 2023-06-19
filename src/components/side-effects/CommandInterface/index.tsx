@@ -26,6 +26,7 @@ const CommandInterface: React.FC = () => {
   const listRef: RefObject<HTMLDivElement> = useRef(null)
 
   const router = useRouter()
+  const { id } = router.query
 
   const [{ data }] = useTrendingProjectsQuery()
 
@@ -108,6 +109,25 @@ const CommandInterface: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [selectedLine])
+
+  useEffect(() => {
+    if (projects) {
+      setRecommendationList(
+        defaultList.map((item) => {
+          const newItem = { ...item }
+          if (newItem.commandInterfaceOptions.includes('mailto:')) {
+            const project = projects.filter((projectItem) => projectItem.id === id)[0]
+            newItem.commandInterfaceOptions = emailTemplate(
+              project.associatedPerson?.email ?? '',
+              project.associatedPerson?.name ?? '',
+              project.name ?? ''
+            )
+          }
+          return newItem
+        })
+      )
+    }
+  }, [projects])
 
   useLayoutEffect(() => {
     if (inputRef?.current) {
@@ -214,7 +234,6 @@ const CommandInterface: React.FC = () => {
       shortcutKey: 'No',
       pageRestriction: null
     }
-
     setRecommendationList([yesLine, noLine])
   }
 

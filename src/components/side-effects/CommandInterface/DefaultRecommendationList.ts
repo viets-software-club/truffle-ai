@@ -16,8 +16,6 @@ const defaultList: RecommendationRowType[] = [
     menuText: 'Send Mail',
     subtitle: 'Actions',
     commandInterfaceOptions: CommandInterfaceOptions.SendMail,
-    isProjectPrimary: true,
-    isIdPrimary: true,
     shortcutKey: null,
     pageRestriction: 'details'
   },

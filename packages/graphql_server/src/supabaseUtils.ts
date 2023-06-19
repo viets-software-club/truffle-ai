@@ -29,6 +29,7 @@ export {
   getTrendingAndBookmarkedProjects,
   insertBookmark,
   purgeTrendingState,
+  renameBookmarkCategory,
   repoIsAlreadyInDB,
   turnIntoProjectInsertion,
   updateSupabaseProject
@@ -45,8 +46,8 @@ const bookmarkIsAlreadyInDB = async (userID: string, projectID: string) => {
     .select()
     .eq('user_id', userID)
     .eq('project_id', projectID)
-
-  return data ? true : false
+  console.log(data?.length ? true : false)
+  return data?.length ? true : false
 }
 
 /**

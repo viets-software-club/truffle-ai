@@ -3,7 +3,8 @@ import {
   bookmarkIsAlreadyInDB,
   deleteBookmark,
   editBookmarkCategory,
-  insertBookmark
+  insertBookmark,
+  renameBookmarkCategory
 } from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
@@ -37,7 +38,6 @@ const resolvers = {
         return BAD_USER_RESPONSE
       }
       const userID = context.user?.id
-
       if (await bookmarkIsAlreadyInDB(userID, projectID)) {
         return {
           message: 'This bookmark is already in the database.',
@@ -45,7 +45,7 @@ const resolvers = {
         }
       }
 
-      const insertionError = await insertBookmark(userID, projectID, category)
+      const insertionError = await insertBookmark(projectID, userID, category)
       return insertionError
         ? insertionError
         : {
@@ -99,7 +99,8 @@ const resolvers = {
 
       const userID = context.user?.id
 
-      const renameError = await editBookmarkCategory(userID, oldCategory, newCategory)
+      //@Todo: check if category exists
+      const renameError = await renameBookmarkCategory(userID, oldCategory, newCategory)
       return renameError ? renameError : { code: '204' }
     }
   }

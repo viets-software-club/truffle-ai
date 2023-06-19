@@ -57,7 +57,7 @@ const FounderItem = ({
             </a>
           )}
           {twitter && (
-            <a href={twitter} target="_blank" rel="noreferrer">
+            <a href={`https://twitter.com/${twitter}`} target="_blank" rel="noreferrer">
               <FaTwitter className="h-[14px] w-[14px] text-gray-500" />
             </a>
           )}
@@ -73,9 +73,11 @@ const FounderItem = ({
           )}
         </div>
       </div>
-      {repositoryCount && (
-        <span className="text-xs not-italic leading-3">Repository count: {repositoryCount}</span>
-      )}
+      <div>
+        {repositoryCount && (
+          <span className="text-xs not-italic leading-3">Repository count: {repositoryCount}</span>
+        )}
+      </div>
     </div>
   </div>
 )

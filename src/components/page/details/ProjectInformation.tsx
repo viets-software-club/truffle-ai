@@ -28,7 +28,7 @@ const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformation
           </h1>
         </a>
 
-        {tags.length > 0 ? (
+        {tags !== null && tags.length > 0 ? (
           tags.map((tag) => (
             <p
               key={tag.name}

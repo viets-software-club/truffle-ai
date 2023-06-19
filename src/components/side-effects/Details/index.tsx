@@ -108,7 +108,7 @@ const Details = ({ id }: DetailsProps) => {
             } / ${project.name as string}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
-            tags={project.languages || []}
+            tags={[]} // project.languages ||
           />
 
           <Chart
@@ -132,18 +132,14 @@ const Details = ({ id }: DetailsProps) => {
               button={SomeButton}
               textFields={project.hackernewsSentiment as string}
             /> */}
-            {/* <Card
-              Icon={FaHackerNews}
-              name="Community Sentiment"
-              button={SomeButton}
-              textFields={hackerNewsListMock}
-            /> */}
-            <HackernewsCard
-              Icon={FaHackerNews}
-              name="Community Sentiment"
-              communitySentiment={project.hackernewsSentiment as string}
-              links={project.hackernewsStories as string[]}
-            />
+            {project.hackernewsSentiment && (
+              <HackernewsCard
+                Icon={FaHackerNews}
+                name="Community Sentiment"
+                communitySentiment={project.hackernewsSentiment}
+                links={project.hackernewsStories as string[]}
+              />
+            )}
           </div>
         </div>
 

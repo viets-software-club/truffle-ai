@@ -46,24 +46,34 @@ const RightSidebar = ({ project }: Props) => (
     </Sidebar.Box>
 
     {/* @TODO Add real data for social media + founders */}
-    <Sidebar.Box title="Company">
-      <Sidebar.Box.CompanyItem
-        twitterLink={project?.organization?.twitterUsername as string}
-        websiteLink={project?.websiteUrl as string}
-      />
-    </Sidebar.Box>
+    {(project?.organization?.twitterUsername || project?.organization?.websiteUrl) && (
+      <Sidebar.Box title="Company">
+        <Sidebar.Box.CompanyItem
+          twitterLink={project?.organization?.twitterUsername as string}
+          websiteLink={project?.websiteUrl as string}
+        />
+      </Sidebar.Box>
+    )}
 
-    <Sidebar.Box title="Founder">
-      <Sidebar.Box.FounderItem
-        company={project?.organization?.name as string}
-        name={project?.associatedPerson?.name as string}
-        github={project?.associatedPerson?.githubUrl as string}
-        mail={project?.associatedPerson?.email as string}
-        repositoryCount={project?.associatedPerson?.repositoryCount as number}
-        twitter={project?.associatedPerson?.twitterUsername as string}
-        website={project?.associatedPerson?.websiteUrl as string}
-      />
-    </Sidebar.Box>
+    {(project?.organization?.name ||
+      project?.associatedPerson?.name ||
+      project?.associatedPerson?.githubUrl ||
+      project?.associatedPerson?.email ||
+      project?.associatedPerson?.repositoryCount ||
+      project?.associatedPerson?.twitterUsername ||
+      project?.associatedPerson?.websiteUrl) && (
+      <Sidebar.Box title="Founder">
+        <Sidebar.Box.FounderItem
+          company={project?.organization?.name as string}
+          name={project?.associatedPerson?.name as string}
+          github={project?.associatedPerson?.githubUrl as string}
+          mail={project?.associatedPerson?.email as string}
+          repositoryCount={project?.associatedPerson?.repositoryCount as number}
+          twitter={project?.associatedPerson?.twitterUsername as string}
+          website={project?.associatedPerson?.websiteUrl as string}
+        />
+      </Sidebar.Box>
+    )}
 
     <Sidebar.Box title="Integrations">
       <div className="flex flex-col justify-between">

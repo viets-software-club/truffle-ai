@@ -8,7 +8,7 @@ import {
   formatGithubStats,
   getProjectAbout
 } from './supabaseUtils'
-import { getRepoFounders, getRepositoryTopics } from './api/githubApi'
+import { getContributorCount, getRepoFounders, getRepositoryTopics } from './api/githubApi'
 import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
@@ -18,10 +18,12 @@ import { getGithubData, mockForkHistory, mockTwitterPosts } from './utils'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
+import { get } from 'http'
 
 export {
   updateAllProjectInfo,
   updateProjectCategories,
+  updateProjectContributorCount,
   updateProjectELI5,
   updateProjectForkHistory,
   updateProjectFounders,
@@ -73,6 +75,19 @@ const updateProjectCategories = async (repoName: string, owner: string) => {
   const categories = await getCategoriesFromGPT(repoGithubTopics, repoAbout ?? null)
 
   await updateSupabaseProject(repoName, owner, { categories: categories })
+}
+
+const updateProjectContributorCount = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  let contributorCount = await getContributorCount(owner, repoName, process.env.GITHUB_API_TOKEN)
+  // we get the anonymous contributors as well, so we should try to get close to the actual number
+  //@Todo: refine approximation approach
+  if (contributorCount > 50) {
+    contributorCount = Math.round(contributorCount * 0.9)
+  }
+  await updateSupabaseProject(repoName, owner, { contributor_count: contributorCount })
 }
 
 /**

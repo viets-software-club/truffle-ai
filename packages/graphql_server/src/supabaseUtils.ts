@@ -68,7 +68,6 @@ const formatGithubStats = (githubData: GitHubInfo) => {
     issue_count: githubData?.issues?.totalCount,
     fork_count: githubData?.forkCount,
     pull_request_count: githubData?.pullRequests?.totalCount,
-    contributor_count: 1,
     github_url: githubData?.url,
     website_url: githubData?.homepageUrl,
     languages: languages,

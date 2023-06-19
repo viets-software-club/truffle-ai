@@ -222,6 +222,7 @@ export interface Database {
           is_trending_weekly: boolean | null
           issue_count: number | null
           languages: Json[] | null
+          languages2: Json[] | null
           name: string | null
           owning_organization: string | null
           owning_person: string | null
@@ -249,6 +250,7 @@ export interface Database {
           is_trending_weekly?: boolean | null
           issue_count?: number | null
           languages?: Json[] | null
+          languages2?: Json[] | null
           name?: string | null
           owning_organization?: string | null
           owning_person?: string | null
@@ -276,6 +278,7 @@ export interface Database {
           is_trending_weekly?: boolean | null
           issue_count?: number | null
           languages?: Json[] | null
+          languages2?: Json[] | null
           name?: string | null
           owning_organization?: string | null
           owning_person?: string | null

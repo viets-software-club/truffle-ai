@@ -182,7 +182,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
               margin={{
                 top: 25,
                 right: 10,
-                left: -25,
+                left: 0,
                 bottom: 5
               }}
             >

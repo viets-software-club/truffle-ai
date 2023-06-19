@@ -12,7 +12,7 @@ import defaultColumns from '@/components/pure/ProjectsTable/columns'
 import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { TableFilter } from '@/components/page/overview/TableFilter'
+import { NumberTableFilterOperator, TableFilter } from '@/components/page/overview/TableFilter'
 import { TableSort } from '@/components/page/overview/TableSort'
 
 /**
@@ -24,8 +24,68 @@ const ProjectsTable = () => {
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
-  const [filters, setFilters] = useState<TableFilter[]>([])
   const [tableSort, setTableSort] = useState<TableSort | null>(null)
+
+  // Initialize TanStack table
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      columnVisibility,
+      columnOrder
+    },
+    enableColumnFilters: true,
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel()
+  })
+
+  const defaultFilters = () => {
+    const starsColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Stars')
+    const forksColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Forks')
+    const issuesColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Issues')
+    const contributorsColumn = table
+      .getAllLeafColumns()
+      .find((c) => c.columnDef.header === 'Contrib.')
+
+    if (starsColumn && forksColumn && issuesColumn && contributorsColumn) {
+      const savedStarsDefaultFilter = Number(localStorage.getItem('starsDefaultFilter'))
+      const savedForksDefaultFilter = Number(localStorage.getItem('forksDefaultFilter'))
+      const savedIssuesDefaultFilter = Number(localStorage.getItem('issuesDefaultFilter'))
+      const savedContributorsDefaultFilter = Number(
+        localStorage.getItem('contributorsDefaultFilter')
+      )
+
+      const preFilters = [
+        {
+          column: starsColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedStarsDefaultFilter
+        },
+        {
+          column: forksColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedForksDefaultFilter
+        },
+        {
+          column: issuesColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedIssuesDefaultFilter
+        },
+        {
+          column: contributorsColumn,
+          operator: NumberTableFilterOperator.GREATER_THAN,
+          value: savedContributorsDefaultFilter
+        }
+      ]
+
+      return preFilters.filter((filter) => filter.value !== 0)
+    }
+    return []
+  }
+
+  const [filters, setFilters] = useState<TableFilter[]>(defaultFilters())
 
   const addFilter = (filter: TableFilter) => {
     setFilters([...filters, filter])
@@ -53,20 +113,6 @@ const ProjectsTable = () => {
     }
   }, [urqlData])
 
-  // Initialize TanStack table
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      columnVisibility,
-      columnOrder
-    },
-    enableColumnFilters: true,
-    onColumnVisibilityChange: setColumnVisibility,
-    onColumnOrderChange: setColumnOrder,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel()
-  })
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Getting trending projects for you..." />
   if (data.length === 0 || error) return <Error />

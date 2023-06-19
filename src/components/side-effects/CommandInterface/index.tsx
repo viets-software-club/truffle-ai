@@ -14,6 +14,7 @@ import { RecommendationRowType } from './types'
 const CommandInterface: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [searchWord, setSearchWord] = useState<string>('')
+  const [selectedLine, setSelectedLine] = useState<number>(0)
   const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
   const [recommendationList, setRecommendationList] = useState<RecommendationRowType[]>([])
   const [prevProjectRecommendationList, setPrevProjectRecommendationList] = useState<
@@ -22,6 +23,7 @@ const CommandInterface: React.FC = () => {
 
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   const commandInterfaceWrapperRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const listRef: RefObject<HTMLDivElement> = useRef(null)
 
   const router = useRouter()
 
@@ -33,35 +35,65 @@ const CommandInterface: React.FC = () => {
     setOpen(!open)
   }
 
+  const scrollToNextItem = () => {
+    const currentList = listRef.current
+    if (currentList) {
+      const currentItem = currentList.querySelector('#active')
+      if (currentItem) {
+        currentItem.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
+
+  const keyDownEvent = (event: KeyboardEvent) => {
+    if (event.ctrlKey || event.metaKey) {
+      event.preventDefault() // Prevent browser's shortcut
+
+      if (event.key === 'k') {
+        event.preventDefault()
+        toggleModal()
+        return
+      }
+
+      const shortcutItem = defaultList.find(
+        (item) => item.shortcutKey?.toLowerCase() === event.key.toLowerCase()
+      )
+
+      if (shortcutItem) {
+        event.preventDefault()
+        void router.push(shortcutItem.commandInterfaceOptions)
+      }
+    } else if (event.key === 'Escape') {
+      toggleModal()
+    } else if (event.key === 'ArrowUp') {
+      const newLine =
+        selectedLine - 1 !== 0
+          ? (selectedLine - 1) % (recommendationList.length || defaultList.length)
+          : 0
+      setSelectedLine(newLine)
+    } else if (event.key === 'ArrowDown') {
+      const newLine = (selectedLine + 1) % (recommendationList.length || defaultList.length)
+      setSelectedLine(newLine)
+      scrollToNextItem()
+    }
+  }
+
+  const clickOutside = (event: MouseEvent) => {
+    if (
+      commandInterfaceWrapperRef.current &&
+      !commandInterfaceWrapperRef.current.contains(event.target as Node)
+    ) {
+      toggleModal()
+    }
+  }
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey || event.metaKey) {
-        if (event.key === 'k') {
-          event.preventDefault()
-          toggleModal()
-        }
-
-        const shortcutsForPages = defaultList.filter(
-          (item) => item.shortcutKey?.toLocaleLowerCase() === event.key.toLocaleLowerCase()
-        )
-
-        if (shortcutsForPages.length > 0) {
-          event.preventDefault()
-
-          void router.push(shortcutsForPages[0].commandInterfaceOptions)
-        }
-      } else if (event.key === 'Escape') {
-        toggleModal()
-      }
+      keyDownEvent(event)
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        commandInterfaceWrapperRef.current &&
-        !commandInterfaceWrapperRef.current.contains(event.target as Node)
-      ) {
-        toggleModal()
-      }
+      clickOutside(event)
     }
 
     if (recommendationList.length === 0) {
@@ -75,7 +107,7 @@ const CommandInterface: React.FC = () => {
       document.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, [selectedLine])
 
   useLayoutEffect(() => {
     if (inputRef?.current) {
@@ -215,9 +247,13 @@ const CommandInterface: React.FC = () => {
         : searchWordAsArray.slice(0, 2).join(' ')
     }
 
-    const command = recommendationList.filter((row) =>
+    let command = recommendationList.filter((row) =>
       row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
     )[0]
+
+    if (searchWord === '') {
+      command = recommendationList[selectedLine]
+    }
 
     handleNavigation(
       command.commandInterfaceOptions,
@@ -240,10 +276,12 @@ const CommandInterface: React.FC = () => {
   return (
     <CommandInterfaceModal
       open={open}
+      selectedLine={selectedLine}
       searchWord={searchWord}
       isProjectListOn={isProjectListOn}
       recommendationList={recommendationList}
       wrapperRef={commandInterfaceWrapperRef}
+      listRef={listRef}
       inputRef={inputRef}
       toggleModal={toggleModal}
       handleClick={handleClick}

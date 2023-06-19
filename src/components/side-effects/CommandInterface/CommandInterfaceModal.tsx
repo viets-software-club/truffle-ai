@@ -5,10 +5,12 @@ import { RecommendationRowType } from './types'
 
 type CommandInterfaceModalProps = {
   open: boolean
+  selectedLine: number
   searchWord: string
   isProjectListOn: boolean
   recommendationList: RecommendationRowType[]
   inputRef: RefObject<HTMLInputElement>
+  listRef: RefObject<HTMLDivElement>
   wrapperRef: RefObject<HTMLDivElement>
   toggleModal: () => void
   handleClick: (
@@ -26,10 +28,12 @@ type CommandInterfaceModalProps = {
  */
 const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
   open,
+  selectedLine,
   searchWord,
   isProjectListOn,
   recommendationList,
   wrapperRef,
+  listRef,
   inputRef,
   toggleModal,
   handleClick,
@@ -83,12 +87,18 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
 
           <div className="border-b-[0.5px] border-gray-500/25" />
 
-          <div className="h-full max-h-[383px] w-full overflow-y-auto py-2 scrollbar-hide">
+          <div
+            ref={listRef}
+            className="h-full max-h-[383px] w-full overflow-y-auto py-2 scrollbar-hide"
+          >
             {recommendationList.map((item, index) => (
               <RecommendationRow
                 key={item.menuText}
                 Icon={item.Icon}
-                isHighlighted={index === 0 && searchWord !== ''}
+                isHighlighted={index === selectedLine}
+                isNextItem={
+                  selectedLine + 1 === recommendationList.length ? true : selectedLine + 1 === index
+                }
                 menuText={item.menuText}
                 subtitle={item.subtitle}
                 isProjectItem={isProjectListOn}

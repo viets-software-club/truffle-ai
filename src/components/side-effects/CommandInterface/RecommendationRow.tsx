@@ -4,6 +4,7 @@ type RecommendationRowCommandProps = {
   menuText: string
   subtitle?: string | null
   isHighlighted: boolean
+  isNextItem: boolean
   isProjectItem: boolean
   handleClick: () => void
 }
@@ -18,15 +19,16 @@ const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
   isHighlighted,
   isProjectItem,
   shortcutKey,
+  isNextItem,
   handleClick
 }: RecommendationRowCommandProps) => (
-  <div>
+  <div id={`${isNextItem ? 'active' : ''}`}>
     {subtitle && <h4 className="mt-2 px-6 py-2 text-sm text-gray-500">{subtitle}</h4>}
 
     <button type="button" className="w-full" onClick={handleClick}>
       <div
         className={`mx-2 flex h-12 cursor-pointer items-center justify-between rounded-[5px] p-4 text-sm transition-all hover:bg-gray-800/50 ${
-          isHighlighted ? 'bg-gray-800/50' : ''
+          isHighlighted ? 'bg-gray-500/50' : ''
         }`}
       >
         <div className="flex w-full items-center">

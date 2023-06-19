@@ -7,6 +7,7 @@ const SORT_BY_REPLIES = 'replies'
 
 /**
  * Gets first page of twitter posts for a given hashtag
+ * Does not have to be a hashtag, can be any string
  * @param hashtag - the hashtag to search for
  * @returns An array of the TwitterPosts
  */

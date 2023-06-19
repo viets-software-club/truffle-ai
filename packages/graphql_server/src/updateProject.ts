@@ -19,6 +19,7 @@ import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
 import { get } from 'http'
+import { getPostsForHashtag } from './scraping/twitterScraping'
 
 export {
   updateAllProjectInfo,
@@ -332,7 +333,7 @@ const updateProjectTweets = async (repoName: string, owner: string) => {
   }
 
   //@Todo: get real fork history -> waiting for jonas' PR to be merged
-  const tweets = mockTwitterPosts
+  const tweets = await getPostsForHashtag(repoName)
 
   await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })
 }

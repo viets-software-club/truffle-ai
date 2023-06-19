@@ -70,6 +70,16 @@ const updateProjectCategories = async (repoName: string, owner: string) => {
   await updateSupabaseProject(repoName, owner, { categories: categories })
 }
 
+const updateProjectTweets = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+
+  const tweets = [{ date: 'today', text: 'This is a tweet' }]
+
+  await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })
+}
+
 /**
  * Updates the eli5 of a repo
  * @param {string} name - The name of the repo.

@@ -1,36 +1,30 @@
-import React, {
-  FocusEvent,
-  FormEvent,
-  RefObject,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react'
 import { useRouter } from 'next/router'
-import RecommendationRow from '@/components/side-effects/CommandInterface/RecommendationRow'
+import React, { FormEvent, RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { MdArrowForward } from 'react-icons/md'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { defaultFilters, defaultSort } from '@/components/page/overview/types'
 import emailTemplate from '@/util/emailTemplate'
-import RecommendationRowType from './RecommendationRowType'
 import defaultList from './DefaultRecommendationList'
 import CommandInterfaceOptions from './CommandInterfaceOptions'
+import CommandInterfaceModal from './CommandInterfaceModal'
+import { RecommendationRowType } from './types'
 
-type CommandInterfaceProps = {
-  action: (event: FocusEvent<HTMLInputElement> | null) => void
-}
-
-const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
+/**
+ * Comand interface logic/ event listeners
+ */
+const CommandInterface: React.FC = () => {
+  const [open, setOpen] = useState<boolean>(false)
   const [searchWord, setSearchWord] = useState<string>('')
+  const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
   const [recommendationList, setRecommendationList] = useState<RecommendationRowType[]>([])
-  const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
-  const commandInterfaceWrapperRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
   const [prevProjectRecommendationList, setPrevProjectRecommendationList] = useState<
     RecommendationRowType[]
   >([])
-  const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
+
+  const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
+  const commandInterfaceWrapperRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+
+  const router = useRouter()
 
   const [{ data }] = useTrendingProjectsQuery({
     variables: {
@@ -38,22 +32,53 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
       filter: defaultFilters
     }
   })
+
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
+  const toggleModal = () => {
+    setOpen(!open)
+  }
+
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey) {
+        if (event.key === 'k') {
+          event.preventDefault()
+          toggleModal()
+        }
+
+        const shortcutsForPages = defaultList.filter(
+          (item) => item.shortcutKey?.toLocaleLowerCase() === event.key.toLocaleLowerCase()
+        )
+
+        if (shortcutsForPages.length > 0) {
+          event.preventDefault()
+
+          void router.push(shortcutsForPages[0].commandInterfaceOptions)
+        }
+      } else if (event.key === 'Escape') {
+        toggleModal()
+      }
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         commandInterfaceWrapperRef.current &&
         !commandInterfaceWrapperRef.current.contains(event.target as Node)
       ) {
-        action(null)
+        toggleModal()
       }
     }
+
     if (recommendationList.length === 0) {
       setRecommendationList(defaultList)
     }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyDown)
+
     return () => {
+      document.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
@@ -67,9 +92,11 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
   const isCommandExistInList = (command: RecommendationRowType, word: string): boolean =>
     command.menuText.toLocaleLowerCase().includes(word.trim().toLocaleLowerCase())
 
-  const searchHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     let search = event.target.value
+
     setSearchWord(search)
+
     if (search.trim() !== '' && !search.includes('>') && !search.includes('<')) {
       if (isProjectListOn) {
         search = defaultList
@@ -108,6 +135,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     if (commandInterfaceOption.includes(':id')) {
       return commandInterfaceOption.replace(':id', item.id)
     }
+
     if (commandInterfaceOption.includes('mailto:')) {
       return emailTemplate(
         item.associatedPerson?.email ?? '',
@@ -115,6 +143,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
         item.name ?? ''
       )
     }
+
     return '/' as string
   }
 
@@ -126,40 +155,41 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
             Icon: MdArrowForward,
             menuText: item.name ?? item.id,
             commandInterfaceOptions: setCommandInterface(commandInterfaceOption, item),
-            shortcutKey: index.toString(),
-            shortcutKeyIcon: null
+            shortcutKey: index.toString()
           }
           return recommendationRow
         }
       )
+
       setIsProjectListOn(true)
-      setPrevProjectRecommendationList(newRecommendationList)
       setRecommendationList(newRecommendationList)
+      setPrevProjectRecommendationList(newRecommendationList)
     }
   }
 
   const showConfirmationLines = () => {
     setSearchWord('Are you sure?')
+
     const yesLine: RecommendationRowType = {
       Icon: MdArrowForward,
       menuText: 'Yes',
       commandInterfaceOptions: CommandInterfaceOptions.Logout,
       isIdPrimary: false,
-      shortcutKey: 'Yes',
-      shortcutKeyIcon: null
+      shortcutKey: 'Yes'
     }
+
     const noLine: RecommendationRowType = {
       Icon: MdArrowForward,
       menuText: 'No',
       commandInterfaceOptions: CommandInterfaceOptions.GoHome,
       isIdPrimary: false,
-      shortcutKey: 'No',
-      shortcutKeyIcon: null
+      shortcutKey: 'No'
     }
+
     setRecommendationList([yesLine, noLine])
   }
 
-  const decideNavigation = (
+  const handleNavigation = (
     command: string,
     searchText: string,
     isIdPrimary: boolean,
@@ -170,7 +200,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     } else if (!isIdPrimary) {
       navigateTo(command)
       setIsProjectListOn(false)
-      action(null)
+      toggleModal()
     } else if (isIdPrimary) {
       setSearchWord(`${searchText} <project name>`)
       setProjectNamesAsRow(command)
@@ -181,17 +211,21 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     const searchWordAsArray = searchWord.split(' ')
     let commandName = ''.concat(searchWord)
+
     if (searchWordAsArray.length > 1) {
       commandName = isProjectListOn
         ? searchWordAsArray[searchWordAsArray.length - 1]
         : searchWordAsArray.slice(0, 2).join(' ')
     }
+
     const command = recommendationList.filter((row) =>
       row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
     )[0]
-    decideNavigation(
+
+    handleNavigation(
       command.commandInterfaceOptions,
       command.menuText,
       command.isIdPrimary ?? false,
@@ -199,61 +233,29 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ action }) => {
     )
   }
 
-  const rowClicked = (
+  const handleClick = (
     command: string,
     searchText: string,
     isIdPrimary: boolean,
     needConfirmation: boolean
   ) => {
     setSearchWord(searchText)
-    decideNavigation(command, searchText, isIdPrimary, needConfirmation)
+    handleNavigation(command, searchText, isIdPrimary, needConfirmation)
   }
 
   return (
-    <div
-      className="fixed z-10 flex h-screen w-full items-start justify-center bg-black/50 shadow-lg"
-      id="spotlight_wrapper"
-    >
-      <div ref={commandInterfaceWrapperRef} className="h-96 w-1/2">
-        <form onSubmit={handleSubmit}>
-          <input
-            className="mt-28 block h-14 w-full appearance-none rounded-t-xl bg-gray-900 bg-left-bottom bg-no-repeat px-6
-            py-10 shadow-lg outline-none placeholder:text-gray-600"
-            onChange={(event) => searchHandler(event)}
-            value={searchWord}
-            autoComplete="off"
-            spellCheck="false"
-            type="text"
-            id="spotlight"
-            ref={inputRef}
-            placeholder="Type a command or search..."
-          />
-        </form>
-        <div className="h-0.5 bg-gray-600" />
-        <ul className="h-full w-full overflow-y-auto rounded-b-xl bg-gray-900 bg-left-bottom bg-no-repeat shadow scrollbar-hide">
-          {recommendationList.map((item, index) => (
-            <RecommendationRow
-              key={item.menuText}
-              Icon={item.Icon}
-              isHighlighted={index === 0 && searchWord !== ''}
-              menuText={item.menuText}
-              enableDivider={item.enableDivider}
-              subtitle={item.subtitle}
-              isProjectItem={isProjectListOn}
-              ShortcutIcon={item.shortcutKeyIcon}
-              rowClicked={() =>
-                rowClicked(
-                  item.commandInterfaceOptions,
-                  item.menuText,
-                  item.isIdPrimary ?? false,
-                  item.needConfirmation ?? false
-                )
-              }
-            />
-          ))}
-        </ul>
-      </div>
-    </div>
+    <CommandInterfaceModal
+      open={open}
+      searchWord={searchWord}
+      isProjectListOn={isProjectListOn}
+      recommendationList={recommendationList}
+      wrapperRef={commandInterfaceWrapperRef}
+      inputRef={inputRef}
+      toggleModal={toggleModal}
+      handleClick={handleClick}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+    />
   )
 }
 

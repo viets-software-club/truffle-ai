@@ -91,16 +91,32 @@ const Details = ({ id }: DetailsProps) => {
             <X key="2" className="h-4 w-4 text-gray-500" />
           </Link>
 
-          {nextProjectId && (
+          {nextProjectId ? (
             <Link href={`/details/${nextProjectId}`}>
               <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
             </Link>
+          ) : (
+            <Button
+              disabled={!nextProjectId}
+              variant="onlyIcon"
+              onClick={handleClick}
+              Icon={ChevronUp}
+              iconColor="text-gray-600"
+            />
           )}
 
-          {previousProjectId && (
+          {previousProjectId ? (
             <Link href={`/details/${previousProjectId}`}>
               <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
             </Link>
+          ) : (
+            <Button
+              disabled={!previousProjectId}
+              variant="onlyIcon"
+              onClick={handleClick}
+              Icon={ChevronDown}
+              iconColor="text-gray-600"
+            />
           )}
 
           <div className="flex flex-row items-center">
@@ -115,6 +131,7 @@ const Details = ({ id }: DetailsProps) => {
       <div className="flex grow">
         <div className="w-4/5 flex-row border-t border-solid border-gray-800">
           <ProjectInformation
+            githubUrl={project.githubUrl as string}
             image={
               (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
             }

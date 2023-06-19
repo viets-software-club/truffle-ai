@@ -1,53 +1,55 @@
-type RecommendationRowCommandType = {
+type RecommendationRowCommandProps = {
   Icon?: IconComponentType | null
-  ShortcutIcon?: IconComponentType | null
+  shortcutKey: string | null
   menuText: string
-  enableDivider?: boolean | false
   subtitle?: string | null
   isHighlighted: boolean
   isProjectItem: boolean
-  rowClicked: () => void
+  handleClick: () => void
 }
 
-const RecommendationRow: React.FC<RecommendationRowCommandType> = ({
+/**
+ * Command interface row
+ */
+const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
   Icon,
   menuText,
-  enableDivider,
   subtitle,
   isHighlighted,
   isProjectItem,
-  ShortcutIcon,
-  rowClicked
-}: RecommendationRowCommandType) => {
-  const classNameForWrapper = `flex cursor-pointer items-center h-14 justify-between p-4 py-2 ${
-    isHighlighted ? 'bg-gray-700' : ''
-  }`
-  return (
-    <div className="cursor-pointer">
-      {subtitle && <h4 className="mt-2 px-6 py-2 text-sm text-gray-500">{subtitle}</h4>}
-      <button type="button" className="w-full" onClick={rowClicked}>
-        <div className={classNameForWrapper}>
-          <div className="flex w-full items-center px-2 py-1">
-            {Icon && <Icon className="mr-8  w-[24px] text-gray-500" />}
-            <span className="w-full text-left text-gray-200">{menuText}</span>
-            <div className="flex justify-end">
-              {!isProjectItem && ShortcutIcon && (
-                <ShortcutIcon className="mr-8 h-8 w-[24px] text-gray-500" />
-              )}{' '}
-            </div>
+  shortcutKey,
+  handleClick
+}: RecommendationRowCommandProps) => (
+  <div>
+    {subtitle && <h4 className="mt-2 px-6 py-2 text-sm text-gray-500">{subtitle}</h4>}
+
+    <button type="button" className="w-full" onClick={handleClick}>
+      <div
+        className={`mx-2 flex h-12 cursor-pointer items-center justify-between rounded-[5px] p-4 text-sm transition-all hover:bg-gray-800/50 ${
+          isHighlighted ? 'bg-gray-800/50' : ''
+        }`}
+      >
+        <div className="flex w-full items-center">
+          {Icon && <Icon className="mr-4 w-[24px] text-gray-500" />}
+
+          <span className="w-full text-left text-gray-200">{menuText}</span>
+
+          <div className="flex justify-end">
+            {!isProjectItem && shortcutKey && (
+              <span className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-gray-500/20 text-10 leading-none text-white">
+                {shortcutKey}
+              </span>
+            )}
           </div>
         </div>
-        {enableDivider && <div className="h-0.5 bg-gray-600" />}
-      </button>
-    </div>
-  )
-}
+      </div>
+    </button>
+  </div>
+)
 
 RecommendationRow.defaultProps = {
   Icon: null,
-  enableDivider: false,
-  subtitle: null,
-  ShortcutIcon: null
+  subtitle: null
 }
 
 export default RecommendationRow

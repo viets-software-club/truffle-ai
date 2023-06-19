@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
@@ -22,6 +23,8 @@ import {
   ProjectOrderBy,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
+import Banner from '@/components/page/settings/Banner'
+import sendSlackNotification from '@/util/sendSlackNotification'
 
 /**
  * Compare projects component
@@ -30,10 +33,12 @@ import {
 const Compare = () => {
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
-  const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
+  const [columnVisibility, setColumnVisibility] = useState({})
+  const [slackLoading, setSlackLoading] = useState(false)
+  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
@@ -68,6 +73,28 @@ const Compare = () => {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel()
   })
+
+  const handleNotificationWrapper = async (message: string) => {
+    setNotificationStatus(await sendSlackNotification(message))
+  }
+
+  const sendSlackMessage = () => {
+    setSlackLoading(true)
+    const savedMessage = localStorage.getItem('slackMessageMultiple') || ''
+    const message = `${savedMessage}\n${table
+      .getRowModel()
+      .rows.map(
+        (row) =>
+          `- <${row.original.githubUrl as string}|${row.original.name}>, ${
+            row.original.starCount as number
+          } stars`
+      )
+      .join('\n')}\n`
+
+    void handleNotificationWrapper(message)
+
+    setSlackLoading(false)
+  }
 
   return (
     <div className="flex w-full flex-col">
@@ -124,7 +151,24 @@ const Compare = () => {
             <div className="flex flex-col">
               <p className="font-medium">All projects in this category</p>
             </div>
-            <div>
+
+            <div className="flex flex-row items-center justify-end gap-2">
+              <Button
+                onClick={sendSlackMessage}
+                variant="normal"
+                text={slackLoading ? 'Loading...' : 'Send to Slack'}
+                Icon={FaSlack}
+                order="ltr"
+                textColor="white"
+              />
+
+              {notificationStatus === 'success' && (
+                <Banner variant="success" message="Slack notification sent" />
+              )}
+
+              {notificationStatus === 'error' && (
+                <Banner variant="error" message="Error sending notification" />
+              )}
               <Button
                 variant="normal"
                 text="Add project to compare"

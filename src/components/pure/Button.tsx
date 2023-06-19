@@ -12,6 +12,7 @@ type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HT
     | 'onlyIconNoBorderNoBG'
     | 'normalHighlighted'
     | 'filter'
+    | 'red'
   text?: string
   Icon?: IconComponentType
   order?: 'ltr' | 'rtl'
@@ -31,7 +32,8 @@ const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>
   ['highlighted', 'border border-indigo-500 bg-indigo-500 px-2 py-1.5'],
   ['onlyIcon', 'bg-gray-850 border border-gray-800 px-1.5 py-1.5'],
   ['onlyIconNoBorderNoBG', ''],
-  ['filter', 'border border-dashed border-gray-800 px-2 py-1.5']
+  ['filter', 'border border-dashed border-gray-800 px-2 py-1.5'],
+  ['red', 'bg-red px-2 py-1.5']
 ])
 
 /**
@@ -56,12 +58,11 @@ const Button = ({
   type = 'button'
 }: ButtonProps) => {
   // Determine the class names to apply to the button based on the variant and whether it is full width
-
   const classNames = `${baseClassNames} ${variantToButtonVariantClassNames.get(variant) ?? ''} ${
     fullWidth ? 'w-full' : ''
   }  ${className}`
 
-  // create a text node if text is provided
+  // Create a text node if text is provided
   const textNode = text && (
     <span key="1" className={`text-14 leading-none ${textColor}`}>
       {text}
@@ -76,6 +77,7 @@ const Button = ({
     ) : (
       <Icon key="2" className={`${order === 'ltr' ? 'mr-1.5' : 'ml-1.5'} ${iconColor}`} />
     ))
+
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
   return (
     <button

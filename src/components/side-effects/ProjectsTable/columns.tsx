@@ -2,6 +2,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
 import { VscIssues } from 'react-icons/vsc'
+import { GoGitPullRequest } from 'react-icons/go'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
@@ -117,6 +118,21 @@ const columns = [
     header: 'Issues/Contrib.',
     enableColumnFilter: true,
     cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
+  }),
+  // PR column definition
+  columnHelper.accessor('pullRequestCount', {
+    id: 'PR',
+    header: 'PR',
+    enableColumnFilter: true,
+    cell: (info) => (
+      <GitHubStatisticItem
+        Icon={GoGitPullRequest}
+        paddingOn={false}
+        outerPaddingOn={false}
+        hoverOn={false}
+        value={info.getValue() as number}
+      />
+    )
   })
 ]
 

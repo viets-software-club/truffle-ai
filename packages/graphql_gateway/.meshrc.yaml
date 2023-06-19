@@ -10,9 +10,11 @@ sources:
         operationHeaders:
           apiKey: '{env.SUPABASE_API_KEY}'
           Content-Type: application/json
+          Authorization: '{context.headers["authorization"]}'
         schemaHeaders:
           apiKey: '{env.SUPABASE_API_KEY}'
           Content-Type: application/json
+          Authorization: '{context.headers["authorization"]}'
   - name: Server
     handler:
       graphql:

@@ -109,7 +109,7 @@ const createCategorizationPrompt = () => {
   return prompt
 }
 
-export const getCategoryNumberFromGPT = async (categories: string[]) => {
+export const getCategoryNumberFromGPT = async (topics: string[]) => {
   const request_body_Categories = {
     model: model,
     messages: [
@@ -124,7 +124,7 @@ export const getCategoryNumberFromGPT = async (categories: string[]) => {
       {
         role: 'user',
         content: `        
-        Topics related to the repository: ${categories.toString()}
+        Topics related to the repository: ${topics.toString()}
         `
       }
     ]

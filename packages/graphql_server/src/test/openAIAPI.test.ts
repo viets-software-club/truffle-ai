@@ -27,8 +27,10 @@ export async function testHackerNewsSentiment() {
 const testCategorization = async (repoName: string, owner: string) => {
   const repoTopics = await getRepositoryTopics(owner, repoName, process.env.GITHUB_API_TOKEN)
   console.log('topics', repoTopics)
-  const categoryNumbers = await getCategoryNumberFromGPT(repoTopics)
-  console.log('categoryNumbers:', categoryNumbers)
+  if (repoTopics) {
+    const categoryNumbers = await getCategoryNumberFromGPT(repoTopics)
+    console.log('categoryNumbers:', categoryNumbers)
+  }
 }
 
 void testCategorization('react', 'facebook')

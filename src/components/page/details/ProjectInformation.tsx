@@ -28,9 +28,7 @@ const ProjectInformation = ({ image, url, name, eli5, tags }: ProjectInformation
           </h1>
         </a>
 
-        <Tooltip id="project-url" data-tooltip-content="Hello world!">
-          {url}
-        </Tooltip>
+        <Tooltip id="project-url">{url}</Tooltip>
 
         {tags.length > 0 ? (
           tags.map((tag) => (

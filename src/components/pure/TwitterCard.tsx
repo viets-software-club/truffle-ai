@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { AiOutlineRetweet, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai'
+import { AiOutlineRetweet, AiOutlineMessage } from 'react-icons/ai'
 
 type Tweet = {
   userVerified: boolean
@@ -8,7 +8,6 @@ type Tweet = {
   date: string
   text: string
   retweetCount: number
-  likeCount: number
   replies: number
 }
 
@@ -34,7 +33,7 @@ const TwitterCard = ({ Icon, name, tweets }: TwitterCardProps) => (
           <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
             <div className="flex items-center justify-between">
               <p className="font-bold">
-                {tweet.userName} {tweet.userVerified && '✔️'}
+                @{tweet.userName} {tweet.userVerified && '✔️'}
               </p>
               <p className="text-sm text-gray-500">{formattedDate}</p>
             </div>
@@ -43,10 +42,6 @@ const TwitterCard = ({ Icon, name, tweets }: TwitterCardProps) => (
               <span className="flex items-center space-x-1 text-sm text-gray-500">
                 <AiOutlineRetweet size={16} />
                 <p>{tweet.retweetCount}</p>
-              </span>
-              <span className="flex items-center space-x-1 text-sm text-gray-500">
-                <AiOutlineHeart size={16} />
-                <p>{tweet.likeCount}</p>
               </span>
               <span className="flex items-center space-x-1 text-sm text-gray-500">
                 <AiOutlineMessage size={16} />

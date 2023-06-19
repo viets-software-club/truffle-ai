@@ -109,8 +109,8 @@ export enum Topic {
  * @param {string} description - The description of a repo, probably fetched from github
  * @returns The categories a repo fits into as a list of strings.
  */
-export const getCategoryFromGPT = async (topics: string[] | null, description: string | null) => {
-  if (topics === null && description === null) return Topic['9']
+export const getCategoriesFromGPT = async (topics: string[] | null, description: string | null) => {
+  if (topics === null && description === null) return [Topic['9']]
 
   const request_body_Categories = {
     model: model,
@@ -144,7 +144,7 @@ export const getCategoryFromGPT = async (topics: string[] | null, description: s
       return Topic[Number(categoryNumber)]
     })
   } catch (error) {
-    return Topic['9']
+    return [Topic['9']]
   }
 }
 

@@ -181,6 +181,7 @@ const CommandInterface: React.FC = () => {
             Icon: MdArrowForward,
             menuText: (item.name as string) ?? (item.id as string),
             commandInterfaceOptions: setCommandInterface(commandInterfaceOption, item),
+            pageRestriction: null,
             shortcutKey: index.toString()
           }
           return recommendationRow
@@ -201,7 +202,8 @@ const CommandInterface: React.FC = () => {
       menuText: 'Yes',
       commandInterfaceOptions: CommandInterfaceOptions.Logout,
       isIdPrimary: false,
-      shortcutKey: 'Yes'
+      shortcutKey: 'Yes',
+      pageRestriction: null
     }
 
     const noLine: RecommendationRowType = {
@@ -209,7 +211,8 @@ const CommandInterface: React.FC = () => {
       menuText: 'No',
       commandInterfaceOptions: CommandInterfaceOptions.GoHome,
       isIdPrimary: false,
-      shortcutKey: 'No'
+      shortcutKey: 'No',
+      pageRestriction: null
     }
 
     setRecommendationList([yesLine, noLine])

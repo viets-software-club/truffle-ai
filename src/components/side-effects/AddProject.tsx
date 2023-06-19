@@ -115,6 +115,7 @@ const AddProject = () => {
                   variant="highlighted"
                   disabled={fetching}
                   type="submit"
+                  textColor="text-white"
                 />
               </div>
             </Dialog.Panel>

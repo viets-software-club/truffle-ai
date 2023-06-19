@@ -16,7 +16,9 @@ query TrendingProjects {
         owningOrganization
         associatedPerson {
           id
+          name
           login
+          email
           avatarUrl
         }
         organization {

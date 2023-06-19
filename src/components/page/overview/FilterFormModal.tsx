@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import {
   NumberTableFilterOperator,
   StringTableFilterOperator,
@@ -18,11 +18,25 @@ type FilterFormModalProps = {
   filter: TableFilter
   removeFilter: (filter: TableFilter) => void
   updateFilter(filter: { column: Column<Project>; value?: number | string; operator: string }): void
+  defaultValue?: number
 }
 
-const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModalProps) => {
+const FilterFormModal = ({
+  filter,
+  removeFilter,
+  updateFilter,
+  defaultValue
+}: FilterFormModalProps) => {
   const [value, setValue] = useState('')
   const [selectedOperator, setSelectedOperator] = useState(filter.operator || 'Select')
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(defaultValue.toString())
+      setSelectedOperator(NumberTableFilterOperator.GREATER_THAN)
+    }
+  }, [defaultValue])
+
   const numericFilterOptions = Object.values(NumberTableFilterOperator).map((op) => (
     <Menu.Item key={op}>
       <button
@@ -149,6 +163,10 @@ const FilterFormModal = ({ filter, removeFilter, updateFilter }: FilterFormModal
       </Popover>
     </div>
   )
+}
+
+FilterFormModal.defaultProps = {
+  defaultValue: null
 }
 
 export default FilterFormModal

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useReactTable, getCoreRowModel, ColumnOrderState } from '@tanstack/react-table'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
@@ -10,8 +11,10 @@ import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import Banner from '@/components/page/settings/Banner'
 import { TableFilter } from '@/components/page/overview/TableFilter'
+import sendSlackNotification from '@/util/sendSlackNotification'
+import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { TableSort } from '@/components/page/overview/TableSort'
 
 /**
@@ -19,12 +22,14 @@ import { TableSort } from '@/components/page/overview/TableSort'
  */
 // @TODO Get id from props to fetch category title & projects from DB
 const Compare = () => {
-  const [filteredRowCount, setFilteredRowCount] = useState(0)
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
-  const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<TableFilter[]>([])
+  const [filteredRowCount, setFilteredRowCount] = useState(0)
+  const [columnVisibility, setColumnVisibility] = useState({})
+  const [slackLoading, setSlackLoading] = useState(false)
+  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [tableSort, setTableSort] = useState<TableSort | null>(null)
 
   // Fetch data from Supabase using generated Urql hook
@@ -69,6 +74,28 @@ const Compare = () => {
   // Display loading/ error messages conditionally
   if (fetching) return <Loading message="Getting saved projects for you..." />
   if (data.length === 0 || error) return <Error />
+
+  const handleNotificationWrapper = async (message: string) => {
+    setNotificationStatus(await sendSlackNotification(message))
+  }
+
+  const sendSlackMessage = () => {
+    setSlackLoading(true)
+    const savedMessage = localStorage.getItem('slackMessageMultiple') || ''
+    const message = `${savedMessage}\n${table
+      .getRowModel()
+      .rows.map(
+        (row) =>
+          `- <${row.original.githubUrl as string}|${row.original.name as string}>, ${
+            row.original.starCount as number
+          } stars`
+      )
+      .join('\n')}\n`
+
+    void handleNotificationWrapper(message)
+
+    setSlackLoading(false)
+  }
 
   return (
     <div className="flex w-full flex-col">
@@ -124,14 +151,34 @@ const Compare = () => {
         <div className="flex flex-col">
           <p className="font-medium">All projects in this category</p>
         </div>
-        <div>
+
+        <div className="flex flex-row items-center justify-end gap-2">
           <Button
+            onClick={sendSlackMessage}
             variant="normal"
-            text="Add project to compare"
-            Icon={AiOutlinePlus}
+            text={slackLoading ? 'Loading...' : 'Send to Slack'}
+            Icon={FaSlack}
             order="ltr"
             textColor="white"
           />
+
+          {notificationStatus === 'success' && (
+            <Banner variant="success" message="Slack notification sent" />
+          )}
+
+          {notificationStatus === 'error' && (
+            <Banner variant="error" message="Error sending notification" />
+          )}
+
+          <div>
+            <Button
+              variant="normal"
+              text="Add project to compare"
+              Icon={AiOutlinePlus}
+              order="ltr"
+              textColor="white"
+            />
+          </div>
         </div>
       </div>
 

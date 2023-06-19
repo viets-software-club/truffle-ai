@@ -7,6 +7,16 @@ const schema = `
   type Mutation {
     addProjectByName(name: String!, owner: String!): Boolean!
     addProjectByUrl(url: String!): Boolean!
+    addBookmark(projectID: String!, category: String!): Response!
+    deleteBookmark(projectID: String!): Response!
+    editBookmarkCategory(projectID: String!, newCategory: String!): Response!
+    renameBookmarkCategory(oldCategory: String!, newCategory: String!): Response!
+  }
+  type Response {
+      message: String
+      details: String
+      hint: String
+      code: String!
   }
   type ProjectConnection {
     edges: [ProjectEdge!]!

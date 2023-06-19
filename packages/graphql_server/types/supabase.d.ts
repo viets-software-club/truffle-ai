@@ -62,18 +62,21 @@ export interface Database {
       }
       bookmark: {
         Row: {
+          category: string | null
           created_at: string | null
           id: string
           project_id: string
           user_id: string
         }
         Insert: {
+          category?: string | null
           created_at?: string | null
           id?: string
           project_id: string
           user_id: string
         }
         Update: {
+          category?: string | null
           created_at?: string | null
           id?: string
           project_id?: string
@@ -293,18 +296,21 @@ export interface Database {
           created_at: string | null
           id: string
           name: string | null
+          testColumn: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
           name?: string | null
+          testColumn?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
           name?: string | null
+          testColumn?: string | null
           user_id?: string | null
         }
         Relationships: [
@@ -321,7 +327,32 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_user:
+        | {
+            Args: {
+              algo: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: boolean
+          }
+      delete_user2:
+        | {
+            Args: {
+              algo: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: boolean
+          }
+      test: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

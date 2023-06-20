@@ -77,12 +77,13 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
               links &&
               links.map((link, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <a key={`${link}-${index}`} href={link} target="_blank" rel="noreferrer">
+                <a key={link} href={link} target="_blank" rel="noreferrer">
                   <Button
                     Icon={FiArrowUpRight}
                     variant="normal"
                     onClick={() => ''}
                     text={`Source ${index}`}
+                    x
                     order="ltr"
                   />
                 </a>

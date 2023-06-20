@@ -10,7 +10,6 @@ type FounderProps = {
   twitter?: string
   github?: string
   website?: string
-  repositoryCount?: number
 }
 
 const emailTemplate = (email: string, founderName: string, companyName: string) => {
@@ -23,15 +22,7 @@ const emailTemplate = (email: string, founderName: string, companyName: string) 
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
-const FounderItem = ({
-  name,
-  mail,
-  company,
-  github,
-  repositoryCount,
-  twitter,
-  website
-}: FounderProps) => (
+const FounderItem = ({ name, mail, company, github, twitter, website }: FounderProps) => (
   <div className="flex flex-col justify-between">
     <div className="px-7 py-2.5 text-gray-500">
       <div className="inline-flex pb-2">
@@ -64,11 +55,6 @@ const FounderItem = ({
           )}
         </div>
       </div>
-      <div>
-        {repositoryCount && (
-          <span className="text-xs not-italic leading-3">Repository count: {repositoryCount}</span>
-        )}
-      </div>
     </div>
   </div>
 )
@@ -78,8 +64,7 @@ FounderItem.defaultProps = {
   // linkedin: null,
   twitter: null,
   github: null,
-  website: null,
-  repositoryCount: null
+  website: null
 }
 
 export default FounderItem

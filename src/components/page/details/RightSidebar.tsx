@@ -76,7 +76,6 @@ const RightSidebar = ({ project }: Props) => {
         project.associatedPerson?.name ||
         project.associatedPerson?.githubUrl ||
         project.associatedPerson?.email ||
-        project.associatedPerson?.repositoryCount ||
         project.associatedPerson?.twitterUsername ||
         project.associatedPerson?.websiteUrl) && (
         <Sidebar.Box title="Founder">
@@ -85,7 +84,6 @@ const RightSidebar = ({ project }: Props) => {
             name={project.associatedPerson?.name as string}
             github={project.associatedPerson?.githubUrl as string}
             mail={project.associatedPerson?.email as string}
-            repositoryCount={project.associatedPerson?.repositoryCount as number}
             twitter={project.associatedPerson?.twitterUsername as string}
             website={project.associatedPerson?.websiteUrl as string}
           />

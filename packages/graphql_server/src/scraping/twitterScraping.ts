@@ -11,7 +11,7 @@ const SORT_BY_REPLIES = 'replies'
  * @param hashtag - the hashtag to search for
  * @returns An array of the TwitterPosts
  */
-export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]> {
+export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[] | null> {
   const { data } = await axios.get<TwitterSearchResponse>(
     'https://api.scraperapi.com/structured/twitter/v2/search',
     {
@@ -21,6 +21,8 @@ export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]
       }
     }
   )
+  if (!data.tweets || !Array.isArray(data.tweets)) return null
+
   return mapToTwitterPosts(data.tweets)
 }
 
@@ -33,9 +35,9 @@ export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]
 export async function getPostsForHashtagSortedBy(
   hashtag: string,
   sortBy: string
-): Promise<TwitterPost[]> {
+): Promise<TwitterPost[] | null> {
   const tweets = await getPostsForHashtag(hashtag)
-
+  if (!tweets) return null
   return tweets.sort((a, b) => {
     if (sortBy === SORT_BY_REPLIES) {
       return b.replies - a.replies

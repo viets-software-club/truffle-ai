@@ -35,7 +35,7 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
       </div>
 
       {variant === 'twitter' && tweets && (
-        <div className="max-h-[500px] overflow-auto">
+        <div className="max-h-[270px] overflow-auto">
           {tweets.map((tweet) => {
             const date = new Date(tweet.date)
             const formattedDate = format(date, 'MMM do, yyyy')

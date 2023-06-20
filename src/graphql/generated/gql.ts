@@ -1318,7 +1318,6 @@ export type TrendingProjectsQuery = {
     __typename?: 'ProjectConnection'
     edges: Array<{
       __typename?: 'ProjectEdge'
-      cursor: string
       node: {
         __typename?: 'Project'
         id: any
@@ -1439,7 +1438,6 @@ export const TrendingProjectsDocument = gql`
       before: $before
     ) {
       edges {
-        cursor
         node {
           id
           name

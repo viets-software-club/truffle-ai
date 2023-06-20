@@ -15,9 +15,10 @@ import {
   Project,
   ProjectFilter,
   ProjectOrderBy,
-  useTrendingProjectsQuery
+  useTrendingProjectsQuery,
+  PageInfo
 } from '@/graphql/generated/gql'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { defaultFilters, defaultSort, paginationParameters } from '@/components/page/overview/types'
 
 /**
  * Table for displaying trending projects
@@ -29,62 +30,24 @@ const ProjectsTable = () => {
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
+  const [pageInfo, setPageInfo] = useState<PageInfo>()
+  const [pagination, setPagination] = useState<paginationParameters>({
+    first: 10,
+    last: null,
+    after: null,
+    before: null
+  })
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
   }
 
-  // @TODO adapt default filters to new filtering system
-
-  // const defaultFilters = () => {
-  //   const starsColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Stars')
-  //   const forksColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Forks')
-  //   const issuesColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Issues')
-  //   const contributorsColumn = table
-  //     .getAllLeafColumns()
-  //     .find((c) => c.columnDef.header === 'Contrib.')
-
-  //   if (starsColumn && forksColumn && issuesColumn && contributorsColumn) {
-  //     const savedStarsDefaultFilter = Number(localStorage.getItem('starsDefaultFilter'))
-  //     const savedForksDefaultFilter = Number(localStorage.getItem('forksDefaultFilter'))
-  //     const savedIssuesDefaultFilter = Number(localStorage.getItem('issuesDefaultFilter'))
-  //     const savedContributorsDefaultFilter = Number(
-  //       localStorage.getItem('contributorsDefaultFilter')
-  //     )
-
-  //     const preFilters = [
-  //       {
-  //         column: starsColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedStarsDefaultFilter
-  //       },
-  //       {
-  //         column: forksColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedForksDefaultFilter
-  //       },
-  //       {
-  //         column: issuesColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedIssuesDefaultFilter
-  //       },
-  //       {
-  //         column: contributorsColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedContributorsDefaultFilter
-  //       }
-  //     ]
-
-  //     return preFilters.filter((filter) => filter.value !== 0)
-  //   }
-  //   return []
-  // }
-
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters
+      filter: filters || defaultFilters,
+      ...pagination
     }
   })
 
@@ -92,6 +55,7 @@ const ProjectsTable = () => {
   useEffect(() => {
     if (urqlData) {
       setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
     }
   }, [urqlData])
 
@@ -121,7 +85,7 @@ const ProjectsTable = () => {
         updateFilters={updateFilters}
       />
 
-      {(Object.keys(filters).length > 0 || sorting) && (
+      {(Object.keys(filters).length > 0 || sorting) && pageInfo && (
         <FilterBar
           filters={filters}
           updateFilters={updateFilters}
@@ -129,18 +93,18 @@ const ProjectsTable = () => {
           totalEntries={data.length} // @TODO get total entries from DB
           sorting={sorting}
           setSorting={setSorting}
+          pageInfo={pageInfo}
+          setPagination={setPagination}
         />
       )}
 
       {fetching && <Loading message="Getting trending projects for you..." />}
 
       {error && <Error />}
-
-      {data.length === 0 && !error && !fetching && (
+      {data.length > 0 && !error && <Table table={table} />}
+      {urqlData?.projectCollection?.edges?.length === 0 && !error && !fetching && (
         <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
       )}
-
-      {data.length > 0 && !error && <Table table={table} />}
     </div>
   )
 }

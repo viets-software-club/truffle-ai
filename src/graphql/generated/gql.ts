@@ -463,8 +463,10 @@ export type IntFilter = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  addBookmark: Response
   addProjectByName: Scalars['Boolean']
   addProjectByUrl: Scalars['Boolean']
+  deleteBookmark: Response
   /** Deletes zero or more records from the `AllowedUsers` collection */
   deleteFromAllowedUsersCollection: AllowedUsersDeleteResponse
   /** Deletes zero or more records from the `AssociatedPerson` collection */
@@ -479,6 +481,7 @@ export type Mutation = {
   deleteFromProjectCollection: ProjectDeleteResponse
   /** Deletes zero or more records from the `TestTable` collection */
   deleteFromTestTableCollection: TestTableDeleteResponse
+  editBookmarkCategory: Response
   /** Adds one or more `AllowedUsers` records to the collection */
   insertIntoAllowedUsersCollection?: Maybe<AllowedUsersInsertResponse>
   /** Adds one or more `AssociatedPerson` records to the collection */
@@ -493,6 +496,7 @@ export type Mutation = {
   insertIntoProjectCollection?: Maybe<ProjectInsertResponse>
   /** Adds one or more `TestTable` records to the collection */
   insertIntoTestTableCollection?: Maybe<TestTableInsertResponse>
+  renameBookmarkCategory: Response
   /** Updates zero or more records in the `AllowedUsers` collection */
   updateAllowedUsersCollection: AllowedUsersUpdateResponse
   /** Updates zero or more records in the `AssociatedPerson` collection */
@@ -509,6 +513,11 @@ export type Mutation = {
   updateTestTableCollection: TestTableUpdateResponse
 }
 
+export type MutationAddBookmarkArgs = {
+  category: Scalars['String']
+  projectID: Scalars['String']
+}
+
 export type MutationAddProjectByNameArgs = {
   name: Scalars['String']
   owner: Scalars['String']
@@ -516,6 +525,10 @@ export type MutationAddProjectByNameArgs = {
 
 export type MutationAddProjectByUrlArgs = {
   url: Scalars['String']
+}
+
+export type MutationDeleteBookmarkArgs = {
+  projectID: Scalars['String']
 }
 
 export type MutationDeleteFromAllowedUsersCollectionArgs = {
@@ -553,6 +566,11 @@ export type MutationDeleteFromTestTableCollectionArgs = {
   filter?: InputMaybe<TestTableFilter>
 }
 
+export type MutationEditBookmarkCategoryArgs = {
+  newCategory: Scalars['String']
+  projectID: Scalars['String']
+}
+
 export type MutationInsertIntoAllowedUsersCollectionArgs = {
   objects: Array<AllowedUsersInsertInput>
 }
@@ -579,6 +597,11 @@ export type MutationInsertIntoProjectCollectionArgs = {
 
 export type MutationInsertIntoTestTableCollectionArgs = {
   objects: Array<TestTableInsertInput>
+}
+
+export type MutationRenameBookmarkCategoryArgs = {
+  newCategory: Scalars['String']
+  oldCategory: Scalars['String']
 }
 
 export type MutationUpdateAllowedUsersCollectionArgs = {
@@ -824,50 +847,38 @@ export type PageInfo = {
 
 export type Project = Node & {
   __typename?: 'Project'
-  about: Scalars['String']
+  about?: Maybe<Scalars['String']>
   associatedPerson?: Maybe<AssociatedPerson>
   bookmarkCollection?: Maybe<BookmarkConnection>
+  categories?: Maybe<Array<Maybe<Scalars['String']>>>
   contributorCount?: Maybe<Scalars['Int']>
-  contributor_count: Scalars['Int']
   createdAt?: Maybe<Scalars['Datetime']>
-  eli5: Scalars['String']
+  eli5?: Maybe<Scalars['String']>
   forkCount?: Maybe<Scalars['Int']>
-  fork_count: Scalars['Int']
+  forkHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
   foundedByCollection?: Maybe<FoundedByConnection>
   githubUrl?: Maybe<Scalars['String']>
-  github_url: Scalars['String']
   hackernewsSentiment?: Maybe<Scalars['String']>
   hackernewsStories?: Maybe<Array<Maybe<Scalars['String']>>>
-  hackernews_sentiment: Scalars['String']
-  hackernews_stories: Array<Scalars['String']>
-  id: Scalars['ID']
+  id: Scalars['UUID']
   isBookmarked?: Maybe<Scalars['Boolean']>
   isTrendingDaily?: Maybe<Scalars['Boolean']>
   isTrendingMonthly?: Maybe<Scalars['Boolean']>
   isTrendingWeekly?: Maybe<Scalars['Boolean']>
-  is_bookmarked: Scalars['Boolean']
-  is_trending_daily: Scalars['Boolean']
-  is_trending_monthly: Scalars['Boolean']
-  is_trending_weekly: Scalars['Boolean']
   issueCount?: Maybe<Scalars['Int']>
-  issue_count: Scalars['Int']
-  languages: Array<Scalars['String']>
-  name: Scalars['String']
+  languages?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  languages2?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  name?: Maybe<Scalars['String']>
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']
   organization?: Maybe<Organization>
   owningOrganization?: Maybe<Scalars['UUID']>
   owningPerson?: Maybe<Scalars['UUID']>
-  owning_organization: Scalars['ID']
-  owning_person: Scalars['String']
   pullRequestCount?: Maybe<Scalars['Int']>
-  pull_request_count: Scalars['Int']
+  relatedTwitterPosts?: Maybe<Array<Maybe<Scalars['JSON']>>>
   starCount?: Maybe<Scalars['Int']>
   starHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
-  star_count: Scalars['Int']
-  star_history: Scalars['String']
   websiteUrl?: Maybe<Scalars['String']>
-  website_url: Scalars['String']
 }
 
 export type ProjectBookmarkCollectionArgs = {
@@ -933,10 +944,12 @@ export type ProjectFilter = {
 
 export type ProjectInsertInput = {
   about?: InputMaybe<Scalars['String']>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   contributorCount?: InputMaybe<Scalars['Int']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   eli5?: InputMaybe<Scalars['String']>
   forkCount?: InputMaybe<Scalars['Int']>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   githubUrl?: InputMaybe<Scalars['String']>
   hackernewsSentiment?: InputMaybe<Scalars['String']>
   hackernewsStories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
@@ -947,10 +960,12 @@ export type ProjectInsertInput = {
   isTrendingWeekly?: InputMaybe<Scalars['Boolean']>
   issueCount?: InputMaybe<Scalars['Int']>
   languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  languages2?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   name?: InputMaybe<Scalars['String']>
   owningOrganization?: InputMaybe<Scalars['UUID']>
   owningPerson?: InputMaybe<Scalars['UUID']>
   pullRequestCount?: InputMaybe<Scalars['Int']>
+  relatedTwitterPosts?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
@@ -988,10 +1003,12 @@ export type ProjectOrderBy = {
 
 export type ProjectUpdateInput = {
   about?: InputMaybe<Scalars['String']>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   contributorCount?: InputMaybe<Scalars['Int']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   eli5?: InputMaybe<Scalars['String']>
   forkCount?: InputMaybe<Scalars['Int']>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   githubUrl?: InputMaybe<Scalars['String']>
   hackernewsSentiment?: InputMaybe<Scalars['String']>
   hackernewsStories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
@@ -1002,10 +1019,12 @@ export type ProjectUpdateInput = {
   isTrendingWeekly?: InputMaybe<Scalars['Boolean']>
   issueCount?: InputMaybe<Scalars['Int']>
   languages?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  languages2?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   name?: InputMaybe<Scalars['String']>
   owningOrganization?: InputMaybe<Scalars['UUID']>
   owningPerson?: InputMaybe<Scalars['UUID']>
   pullRequestCount?: InputMaybe<Scalars['Int']>
+  relatedTwitterPosts?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
@@ -1021,7 +1040,6 @@ export type ProjectUpdateResponse = {
 
 export type Query = {
   __typename?: 'Query'
-  allProjects: ProjectConnection
   /** A pagable collection of type `AllowedUsers` */
   allowedUsersCollection?: Maybe<AllowedUsersConnection>
   /** A pagable collection of type `AssociatedPerson` */
@@ -1039,11 +1057,6 @@ export type Query = {
   projectCollection?: Maybe<ProjectConnection>
   /** A pagable collection of type `TestTable` */
   testTableCollection?: Maybe<TestTableConnection>
-}
-
-export type QueryAllProjectsArgs = {
-  after?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryAllowedUsersCollectionArgs = {
@@ -1111,6 +1124,14 @@ export type QueryTestTableCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   orderBy?: InputMaybe<Array<TestTableOrderBy>>
+}
+
+export type Response = {
+  __typename?: 'Response'
+  code: Scalars['String']
+  details?: Maybe<Scalars['String']>
+  hint?: Maybe<Scalars['String']>
+  message?: Maybe<Scalars['String']>
 }
 
 /** Boolean expression comparing fields on type "String" */
@@ -1246,10 +1267,10 @@ export type ProjectDetailsQuery = {
       __typename?: 'ProjectEdge'
       node: {
         __typename?: 'Project'
-        id: string
-        name: string
-        about: string
-        eli5: string
+        id: any
+        name?: string | null
+        about?: string | null
+        eli5?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -1258,7 +1279,7 @@ export type ProjectDetailsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
-        languages: Array<string>
+        languages?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
         associatedPerson?: {
@@ -1285,6 +1306,10 @@ export type ProjectDetailsQuery = {
 export type TrendingProjectsQueryVariables = Exact<{
   orderBy: ProjectOrderBy
   filter: ProjectFilter
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
 }>
 
 export type TrendingProjectsQuery = {
@@ -1293,10 +1318,11 @@ export type TrendingProjectsQuery = {
     __typename?: 'ProjectConnection'
     edges: Array<{
       __typename?: 'ProjectEdge'
+      cursor: string
       node: {
         __typename?: 'Project'
-        id: string
-        name: string
+        id: any
+        name?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -1326,6 +1352,13 @@ export type TrendingProjectsQuery = {
         } | null
       }
     }>
+    pageInfo: {
+      __typename?: 'PageInfo'
+      hasNextPage: boolean
+      endCursor?: string | null
+      hasPreviousPage: boolean
+      startCursor?: string | null
+    }
   } | null
 }
 
@@ -1389,9 +1422,24 @@ export function useProjectDetailsQuery(
   })
 }
 export const TrendingProjectsDocument = gql`
-  query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
-    projectCollection(filter: $filter, orderBy: [$orderBy]) {
+  query TrendingProjects(
+    $orderBy: ProjectOrderBy!
+    $filter: ProjectFilter!
+    $first: Int
+    $last: Int
+    $after: Cursor
+    $before: Cursor
+  ) {
+    projectCollection(
+      filter: $filter
+      orderBy: [$orderBy]
+      first: $first
+      last: $last
+      after: $after
+      before: $before
+    ) {
       edges {
+        cursor
         node {
           id
           name
@@ -1421,6 +1469,12 @@ export const TrendingProjectsDocument = gql`
           isTrendingWeekly
           isTrendingMonthly
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
       }
     }
   }

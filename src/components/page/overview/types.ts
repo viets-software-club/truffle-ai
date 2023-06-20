@@ -1,4 +1,4 @@
-import { OrderByDirection } from '@/graphql/generated/gql'
+import { OrderByDirection, PageInfo } from '@/graphql/generated/gql'
 
 export type FilterOption = {
   key: 'name' | 'starCount' | 'forkCount' | 'issueCount' | 'contributorCount' | 'pullRequestCount'
@@ -48,4 +48,11 @@ export const defaultFilters = {
 
 export const defaultSort = {
   name: OrderByDirection.AscNullsLast
+}
+
+export type paginationParameters = {
+  first: number | null
+  after: PageInfo['endCursor']
+  last: number | null
+  before: PageInfo['startCursor']
 }

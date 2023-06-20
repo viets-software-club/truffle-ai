@@ -1,6 +1,7 @@
-query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
-  projectCollection(filter: $filter, orderBy: [$orderBy]) {
+query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!, $first: Int, $last: Int, $after: Cursor, $before: Cursor) {
+  projectCollection(filter: $filter, orderBy: [$orderBy], first: $first, last: $last, after: $after, before: $before) {
     edges {
+      cursor
       node {
         id
         name
@@ -30,6 +31,12 @@ query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
         isTrendingWeekly
         isTrendingMonthly
       }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
     }
   }
 }

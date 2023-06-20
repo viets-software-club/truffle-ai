@@ -38,21 +38,21 @@ const RightSidebar = ({ project }: Props) => {
     // @TODO Add historical data for showing growth
     <Sidebar.Small>
       <Sidebar.Box title="GitHub Stats">
-        <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project?.starCount as number} />
-        <Sidebar.Box.GithubStatItem Icon={IssueOpenedIcon} value={project?.issueCount as number} />
-        <Sidebar.Box.GithubStatItem Icon={RepoForkedIcon} value={project?.forkCount as number} />
+        <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project.starCount as number} />
+        <Sidebar.Box.GithubStatItem Icon={IssueOpenedIcon} value={project.issueCount as number} />
+        <Sidebar.Box.GithubStatItem Icon={RepoForkedIcon} value={project.forkCount as number} />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-          value={(project?.forkCount || 0) / (project?.contributorCount || 1)}
+          value={(project.forkCount || 0) / (project.contributorCount || 1)}
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-          value={(project?.issueCount || 0) / (project?.contributorCount || 1)}
+          value={(project.issueCount || 0) / (project.contributorCount || 1)}
         />
-        <Sidebar.Box.GithubStatItem Icon={PeopleIcon} value={project?.contributorCount as number} />
+        <Sidebar.Box.GithubStatItem Icon={PeopleIcon} value={project.contributorCount as number} />
         <Sidebar.Box.GithubStatItem
           Icon={GitPullRequestIcon}
-          value={project?.pullRequestCount as number}
+          value={project.pullRequestCount as number}
         />
         <Sidebar.Box.GithubStatItem Icon={LinkIcon} link={project.githubUrl as string} />
       </Sidebar.Box>
@@ -67,31 +67,31 @@ const RightSidebar = ({ project }: Props) => {
         />
       </Sidebar.Box>
 
-      {(project?.organization?.twitterUsername || project?.organization?.websiteUrl) && (
+      {(project.organization?.twitterUsername || project.organization?.websiteUrl) && (
         <Sidebar.Box title="Company">
           <Sidebar.Box.CompanyItem
-            twitterLink={project?.organization?.twitterUsername as string}
-            websiteLink={project?.websiteUrl as string}
+            twitterLink={project.organization?.twitterUsername as string}
+            websiteLink={project.organization?.websiteUrl as string}
           />
         </Sidebar.Box>
       )}
 
-      {(project?.organization?.name ||
-        project?.associatedPerson?.name ||
-        project?.associatedPerson?.githubUrl ||
-        project?.associatedPerson?.email ||
-        project?.associatedPerson?.repositoryCount ||
-        project?.associatedPerson?.twitterUsername ||
-        project?.associatedPerson?.websiteUrl) && (
+      {(project.organization?.name ||
+        project.associatedPerson?.name ||
+        project.associatedPerson?.githubUrl ||
+        project.associatedPerson?.email ||
+        project.associatedPerson?.repositoryCount ||
+        project.associatedPerson?.twitterUsername ||
+        project.associatedPerson?.websiteUrl) && (
         <Sidebar.Box title="Founder">
           <Sidebar.Box.FounderItem
-            company={project?.organization?.name as string}
-            name={project?.associatedPerson?.name as string}
-            github={project?.associatedPerson?.githubUrl as string}
-            mail={project?.associatedPerson?.email as string}
-            repositoryCount={project?.associatedPerson?.repositoryCount as number}
-            twitter={project?.associatedPerson?.twitterUsername as string}
-            website={project?.associatedPerson?.websiteUrl as string}
+            company={project.organization?.name as string}
+            name={project.associatedPerson?.name as string}
+            github={project.associatedPerson?.githubUrl as string}
+            mail={project.associatedPerson?.email as string}
+            repositoryCount={project.associatedPerson?.repositoryCount as number}
+            twitter={project.associatedPerson?.twitterUsername as string}
+            website={project.associatedPerson?.websiteUrl as string}
           />
         </Sidebar.Box>
       )}

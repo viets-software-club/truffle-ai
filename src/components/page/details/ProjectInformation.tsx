@@ -59,7 +59,7 @@ const ProjectInformation = ({
             </h1>
           </a>
 
-          {categories.length > 0 &&
+          {categories?.length > 0 &&
             categories[0] !== 'CategorizationError' &&
             categories.map((category) => (
               <p

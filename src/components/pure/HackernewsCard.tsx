@@ -22,7 +22,8 @@ const HackernewsCard = ({ Icon, name, communitySentiment, links }: HackernewsCar
     <div className="flex flex-wrap gap-3 overflow-auto p-4">
       {links !== null &&
         links.map((link, index) => (
-          <a href={link} target="_blank" rel="noreferrer">
+          // eslint-disable-next-line react/no-array-index-key
+          <a key={`${link}-${index}`} href={link} target="_blank" rel="noreferrer">
             <Button
               Icon={FiArrowUpRight}
               variant="normal"

@@ -24,7 +24,6 @@ import { getPostsForHashtag } from './scraping/twitterScraping'
 export {
   updateAllProjectInfo,
   updateProjectCategories,
-  updateProjectContributorCount,
   updateProjectELI5,
   updateProjectForkHistory,
   updateProjectFounders,
@@ -52,7 +51,6 @@ const updateAllProjectInfo = async (
     return
   }
   await updateProjectGithubStats(repoName, owner)
-  await updateProjectContributorCount(repoName, owner)
   await updateProjectELI5(repoName, owner)
   await updateProjectFounders(repoName, owner)
   await updateProjectLinkedInData(owner)
@@ -79,19 +77,6 @@ const updateProjectCategories = async (repoName: string, owner: string) => {
   await updateSupabaseProject(repoName, owner, { categories: categories })
 }
 
-const updateProjectContributorCount = async (repoName: string, owner: string) => {
-  if (!(await repoIsAlreadyInDB(repoName, owner))) {
-    return
-  }
-  let contributorCount = await getContributorCount(owner, repoName, process.env.GITHUB_API_TOKEN)
-  // we get the anonymous contributors as well, so we should try to get close to the actual number
-  //@Todo: refine approximation approach
-  if (contributorCount > 50) {
-    contributorCount = Math.round(contributorCount * 0.9)
-  }
-  await updateSupabaseProject(repoName, owner, { contributor_count: contributorCount })
-}
-
 /**
  * Updates the eli5 of a repo
  * @param {string} name - The name of the repo.
@@ -108,27 +93,6 @@ const updateProjectELI5 = async (name: string, owner: string) => {
     await updateSupabaseProject(name, owner, {
       eli5: 'ELI5/description could not be generated for this project'
     })
-  }
-}
-
-/**
- * Updates the github stats of a repo.
- * Not the star-history though.
- * @param {string} repoName - The name of the repo.
- * @param {string} owner - The name of the owner of the repo.
- */
-const updateProjectGithubStats = async (name: string, owner: string) => {
-  const githubStats: GitHubInfo | null = await getGithubData(name, owner)
-  if (!githubStats) {
-    console.log('Could not get github stats for ', name, 'owned by', owner)
-    return
-  }
-  const updated = await updateSupabaseProject(name, owner, formatGithubStats(githubStats))
-
-  if (!updated) {
-    console.log('Could not update github stats for ', name, 'owned by', owner)
-  } else {
-    console.log('Updated github stats for ', name, 'owned by', owner)
   }
 }
 
@@ -189,6 +153,43 @@ const updateProjectForkHistory = async (repoName: string, owner: string) => {
   const forkHistory = mockForkHistory
 
   await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
+}
+
+/**
+ * Updates the github stats of a repo.
+ * Not the star-history though.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
+const updateProjectGithubStats = async (name: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(name, owner))) return
+  const githubStats: GitHubInfo | null = await getGithubData(name, owner)
+  if (!githubStats) {
+    console.log('Could not get github stats for ', name, 'owned by', owner)
+    return
+  }
+
+  // *0.9 because the contributor count is not 100% accurate. It is an approximation.
+  // *10 /10 to round to one decimal place
+  //@Todo: refine approximation approach
+  const contributorCount =
+    Math.round((await getContributorCount(owner, name, process.env.GITHUB_API_TOKEN)) * 0.9 * 10) /
+    10
+
+  const issuesPerContributor = githubStats.issues.totalCount / contributorCount
+  const forksPerContributor = githubStats.forkCount / contributorCount
+
+  const updated = await updateSupabaseProject(name, owner, {
+    ...formatGithubStats(githubStats),
+    issues_per_contributor: issuesPerContributor,
+    forks_per_contributor: forksPerContributor
+  })
+
+  if (!updated) {
+    console.log('Could not update github stats for ', name, 'owned by', owner)
+  } else {
+    console.log('Updated github stats for ', name, 'owned by', owner)
+  }
 }
 
 /**

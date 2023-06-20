@@ -5,9 +5,9 @@ import {
   PersonIcon,
   RepoForkedIcon,
   StarIcon,
-  LinkIcon,
   GitPullRequestIcon
 } from '@primer/octicons-react'
+import { FaGithub } from 'react-icons/fa'
 import { Project } from '@/graphql/generated/gql'
 import Sidebar from '@/components/pure/Sidebar'
 import GitHubMetricIcon from './GitHubMetricIcon'
@@ -54,7 +54,7 @@ const RightSidebar = ({ project }: Props) => {
           Icon={GitPullRequestIcon}
           value={project.pullRequestCount as number}
         />
-        <Sidebar.Box.GithubStatItem Icon={LinkIcon} link={project.githubUrl as string} />
+        <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
       </Sidebar.Box>
 
       <Sidebar.Box title="Languages">

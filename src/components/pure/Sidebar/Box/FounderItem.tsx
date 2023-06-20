@@ -1,5 +1,6 @@
+import { LinkIcon } from '@primer/octicons-react'
 import { AiFillMail } from 'react-icons/ai'
-import { FaGithub, FaTwitter, FaGlobe } from 'react-icons/fa'
+import { FaGithub, FaTwitter } from 'react-icons/fa'
 
 type FounderProps = {
   name: string
@@ -53,7 +54,7 @@ const FounderItem = ({
           )}
           {website && (
             <a href={website} target="_blank" rel="noreferrer">
-              <FaGlobe className="h-[14px] w-[14px] text-gray-500" />
+              <LinkIcon className="h-[14px] w-[14px] text-gray-500" />
             </a>
           )}
           {github && (

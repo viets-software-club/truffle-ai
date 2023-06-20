@@ -59,7 +59,7 @@ const GithubStatItem = ({
           )}
           {link && (
             <a href={link} target="_blank" rel="noreferrer">
-              Go to repo
+              GitHub
             </a>
           )}
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}

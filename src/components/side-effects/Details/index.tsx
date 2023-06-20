@@ -8,10 +8,9 @@ import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import HackernewsCard from '@/components/pure/HackernewsCard'
-import TwitterCard from '@/components/pure/TwitterCard'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import { defaultSort, defaultFilters } from '@/components/page/overview/types'
+import Card from '@/components/pure/Card'
 
 const handleClick = () => ''
 
@@ -147,21 +146,25 @@ const Details = ({ id }: DetailsProps) => {
           />
           <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
             {project.relatedTwitterPosts && (
-              <div className="flex-1 overflow-auto">
-                <TwitterCard
+              <div className="w-full md:w-1/2">
+                <Card
                   Icon={FaTwitter}
                   name="Top Tweets"
                   tweets={project.relatedTwitterPosts}
+                  variant="twitter"
+                  key={project.id}
                 />
               </div>
             )}
             {project.hackernewsSentiment && (
-              <div className="flex-1 overflow-auto">
-                <HackernewsCard
+              <div className="w-full md:w-1/2">
+                <Card
                   Icon={FaHackerNews}
                   name="Community Sentiment"
                   communitySentiment={project.hackernewsSentiment}
                   links={project.hackernewsStories as string[]}
+                  variant="hackernews"
+                  key={project.id}
                 />
               </div>
             )}

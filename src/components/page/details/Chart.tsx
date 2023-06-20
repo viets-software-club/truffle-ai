@@ -178,9 +178,9 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              height={300}
+              height={310}
               margin={{
-                top: 25,
+                top: 30,
                 right: 10,
                 left: 0,
                 bottom: 5

@@ -6,3 +6,5 @@ export const exposeProjectsData = async () => {
     console.error('Error while getting all projects: \n', projectsRetrievalError)
   return data
 }
+
+// might be used later on. The resolver that calls it had to be deleted, because it caused issues with schema stitching

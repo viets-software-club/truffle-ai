@@ -6,11 +6,12 @@ import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
-import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import HackernewsCard from '@/components/pure/HackernewsCard'
 import TwitterCard from '@/components/pure/TwitterCard'
+import ProjectInformation from '@/components/page/details/ProjectInformation'
+import { defaultSort, defaultFilters } from '@/components/page/overview/types'
 
 const handleClick = () => ''
 
@@ -23,7 +24,13 @@ type DetailsProps = {
  */
 const Details = ({ id }: DetailsProps) => {
   // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
-  const [{ data: tpData }] = useTrendingProjectsQuery()
+  // + add proper pagination
+  const [{ data: tpData }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: defaultSort,
+      filter: defaultFilters
+    }
+  })
 
   const projects = tpData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
@@ -34,13 +41,10 @@ const Details = ({ id }: DetailsProps) => {
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
     const currentIndex = projectList.findIndex((project) => project.id === currentId)
 
-    const newPreviousProjectId =
-      currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
+    const newPreviousProjectId = currentIndex > 0 ? projectList[currentIndex - 1].id : undefined
 
     const newNextProjectId =
-      currentIndex < projectList.length - 1
-        ? (projectList[currentIndex + 1].id as string)
-        : undefined
+      currentIndex < projectList.length - 1 ? projectList[currentIndex + 1].id : undefined
 
     setCurrentProjectIndex(currentIndex)
     setPreviousProjectId(newPreviousProjectId)
@@ -123,17 +127,18 @@ const Details = ({ id }: DetailsProps) => {
             }
             name={`${
               (project.organization?.login || project.associatedPerson?.login) as string
-            } / ${project.name as string}`}
+            } / ${project.name}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
-            categories={(project.categories as string[]) || []}
+            tags={(project.languages || []) as unknown as { name: string; color: string }[]} // @TODO temporary fix
+            // categories={(project.categories as string[]) || []}
           />
 
           <Chart
             datasets={[
               {
-                id: project.id as string,
-                name: project.name as string,
+                id: project.id,
+                name: project.name,
                 data: project.starHistory as React.ComponentProps<
                   typeof Chart
                 >['datasets'][0]['data']

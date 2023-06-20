@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import React, { FormEvent, RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { MdArrowForward } from 'react-icons/md'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { defaultFilters, defaultSort } from '@/components/page/overview/types'
 import emailTemplate from '@/util/emailTemplate'
 import defaultList from './DefaultRecommendationList'
 import CommandInterfaceOptions from './CommandInterfaceOptions'
@@ -25,7 +26,12 @@ const CommandInterface: React.FC = () => {
 
   const router = useRouter()
 
-  const [{ data }] = useTrendingProjectsQuery()
+  const [{ data }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: defaultSort,
+      filter: defaultFilters
+    }
+  })
 
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
@@ -127,7 +133,7 @@ const CommandInterface: React.FC = () => {
 
   const setCommandInterface = (commandInterfaceOption: string, item: Project): string => {
     if (commandInterfaceOption.includes(':id')) {
-      return commandInterfaceOption.replace(':id', item.id as string)
+      return commandInterfaceOption.replace(':id', item.id)
     }
 
     if (commandInterfaceOption.includes('mailto:')) {
@@ -147,7 +153,7 @@ const CommandInterface: React.FC = () => {
         (item: Project, index: number) => {
           const recommendationRow: RecommendationRowType = {
             Icon: MdArrowForward,
-            menuText: (item.name as string) ?? (item.id as string),
+            menuText: item.name ?? item.id,
             commandInterfaceOptions: setCommandInterface(commandInterfaceOption, item),
             shortcutKey: index.toString()
           }

@@ -25,7 +25,7 @@ const RightSidebar = ({ project }: Props) => {
   const affinityListID = localStorage.getItem('affinityListId')
 
   const sendToAffinityProps: SendToAffinityProps = {
-    name: project.name as string,
+    name: project.name,
     stars: project.starCount as number,
     forks: project.forkCount as number,
     contributors: project.contributorCount as number,

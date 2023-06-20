@@ -130,8 +130,7 @@ const Details = ({ id }: DetailsProps) => {
             } / ${project.name}`}
             url={project.githubUrl as string}
             eli5={project.eli5 || project.about || 'No description'}
-            tags={(project.languages || []) as unknown as { name: string; color: string }[]} // @TODO temporary fix
-            // categories={(project.categories as string[]) || []}
+            categories={project.categories as string[]}
           />
 
           <Chart

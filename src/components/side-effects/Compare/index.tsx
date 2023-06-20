@@ -16,8 +16,9 @@ import Chart from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { defaultFilters, defaultSort, paginationParameters } from '@/components/page/overview/types'
 import {
+  PageInfo,
   Project,
   ProjectFilter,
   ProjectOrderBy,
@@ -39,6 +40,13 @@ const Compare = () => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [slackLoading, setSlackLoading] = useState(false)
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [pageInfo, setPageInfo] = useState<PageInfo>()
+  const [pagination, setPagination] = useState<paginationParameters>({
+    first: 10,
+    last: null,
+    after: null,
+    before: null
+  })
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
@@ -48,7 +56,8 @@ const Compare = () => {
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters
+      filter: filters || defaultFilters,
+      ...pagination
     }
   })
 
@@ -56,6 +65,7 @@ const Compare = () => {
   useEffect(() => {
     if (urqlData) {
       setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
     }
   }, [urqlData])
 
@@ -85,7 +95,7 @@ const Compare = () => {
       .getRowModel()
       .rows.map(
         (row) =>
-          `- <${row.original.githubUrl as string}|${row.original.name}>, ${
+          `- <${row.original.githubUrl as string}|${row.original.name || ''}>, ${
             row.original.starCount as number
           } stars`
       )
@@ -107,7 +117,7 @@ const Compare = () => {
         updateFilters={updateFilters}
       />
 
-      {(Object.keys(filters).length > 0 || sorting) && (
+      {(Object.keys(filters).length > 0 || sorting) && pageInfo && (
         <FilterBar
           filters={filters}
           updateFilters={updateFilters}
@@ -115,6 +125,8 @@ const Compare = () => {
           totalEntries={data.length} // @TODO get total entries from DB
           sorting={sorting}
           setSorting={setSorting}
+          pageInfo={pageInfo}
+          setPagination={setPagination}
         />
       )}
 
@@ -140,7 +152,7 @@ const Compare = () => {
         <>
           <Chart
             datasets={data.map((project) => ({
-              id: project.id,
+              id: project.id as string | undefined,
               name: project.name,
               data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
             }))}

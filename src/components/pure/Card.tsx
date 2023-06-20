@@ -39,36 +39,38 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
         <h3 className="text-lg font-bold">{name}</h3>
       </div>
 
-      {variant === 'twitter' &&
-        tweets &&
-        tweets.slice(0, numTweetsShown).map((tweet) => {
-          const date = new Date(tweet.date)
-          const formattedDate = format(date, 'MMM do, yyyy')
+      {variant === 'twitter' && tweets && (
+        <div className="grid grid-cols-2 gap-4">
+          {tweets.slice(0, numTweetsShown).map((tweet) => {
+            const date = new Date(tweet.date)
+            const formattedDate = format(date, 'MMM do, yyyy')
 
-          return (
-            <div key={tweet.id} className="border-b border-gray-800 p-4">
-              <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium">
-                    @{tweet.userName} {tweet.userVerified && '✔️'}
-                  </p>
-                  <p className="text-sm text-gray-500">{formattedDate}</p>
-                </div>
-                <p className="my-2 text-14 font-light text-gray-300">{tweet.text}</p>
-                <div className="flex items-center justify-start space-x-3">
-                  <span className="flex items-center space-x-1 text-sm text-gray-500">
-                    <AiOutlineRetweet size={16} />
-                    <p>{tweet.retweetCount}</p>
-                  </span>
-                  <span className="flex items-center space-x-1 text-sm text-gray-500">
-                    <AiOutlineMessage size={16} />
-                    <p>{tweet.replies}</p>
-                  </span>
-                </div>
-              </a>
-            </div>
-          )
-        })}
+            return (
+              <div key={tweet.id} className="border-b border-gray-800 p-4">
+                <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium">
+                      @{tweet.userName} {tweet.userVerified && '✔️'}
+                    </p>
+                    <p className="text-sm text-gray-500">{formattedDate}</p>
+                  </div>
+                  <p className="my-2 text-14 font-light text-gray-300">{tweet.text}</p>
+                  <div className="flex items-center justify-start space-x-3">
+                    <span className="flex items-center space-x-1 text-sm text-gray-500">
+                      <AiOutlineRetweet size={16} />
+                      <p>{tweet.retweetCount}</p>
+                    </span>
+                    <span className="flex items-center space-x-1 text-sm text-gray-500">
+                      <AiOutlineMessage size={16} />
+                      <p>{tweet.replies}</p>
+                    </span>
+                  </div>
+                </a>
+              </div>
+            )
+          })}
+        </div>
+      )}
       {variant === 'twitter' && tweets && numTweetsShown < tweets.length && (
         <div className="p-4">
           <Button variant="normal" onClick={increaseShownTweets} text="Show more" order="ltr" />

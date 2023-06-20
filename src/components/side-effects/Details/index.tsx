@@ -12,8 +12,6 @@ import ProjectInformation from '@/components/page/details/ProjectInformation'
 import { defaultSort, defaultFilters } from '@/components/page/overview/types'
 import Card from '@/components/pure/Card'
 
-const handleClick = () => ''
-
 type DetailsProps = {
   id: string
 }
@@ -82,13 +80,12 @@ const Details = ({ id }: DetailsProps) => {
 
           {nextProjectId ? (
             <Link href={`/details/${nextProjectId}`}>
-              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
+              <Button variant="onlyIcon" Icon={ChevronUp} />
             </Link>
           ) : (
             <Button
               disabled={!nextProjectId}
               variant="onlyIcon"
-              onClick={handleClick}
               Icon={ChevronUp}
               iconColor="text-gray-600"
             />
@@ -96,13 +93,12 @@ const Details = ({ id }: DetailsProps) => {
 
           {previousProjectId ? (
             <Link href={`/details/${previousProjectId}`}>
-              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
+              <Button variant="onlyIcon" Icon={ChevronDown} />
             </Link>
           ) : (
             <Button
               disabled={!previousProjectId}
               variant="onlyIcon"
-              onClick={handleClick}
               Icon={ChevronDown}
               iconColor="text-gray-600"
             />
@@ -144,29 +140,25 @@ const Details = ({ id }: DetailsProps) => {
             ]}
             multipleLines={false}
           />
-          <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            {project.relatedTwitterPosts && (
-              <div className="w-full md:w-1/2">
-                <Card
-                  Icon={FaTwitter}
-                  name="Top Tweets"
-                  tweets={project.relatedTwitterPosts}
-                  variant="twitter"
-                  key={project.id}
-                />
-              </div>
-            )}
+          <div className="flex flex-col gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
             {project.hackernewsSentiment && (
-              <div className="w-full md:w-1/2">
-                <Card
-                  Icon={FaHackerNews}
-                  name="Community Sentiment"
-                  communitySentiment={project.hackernewsSentiment}
-                  links={project.hackernewsStories as string[]}
-                  variant="hackernews"
-                  key={project.id}
-                />
-              </div>
+              <Card
+                Icon={FaHackerNews}
+                name="Community Sentiment"
+                communitySentiment={project.hackernewsSentiment}
+                links={project.hackernewsStories as string[]}
+                variant="hackernews"
+                key={project.id}
+              />
+            )}
+            {project.relatedTwitterPosts && (
+              <Card
+                Icon={FaTwitter}
+                name="Top Tweets"
+                tweets={project.relatedTwitterPosts}
+                variant="twitter"
+                key={project.id}
+              />
             )}
           </div>
         </div>

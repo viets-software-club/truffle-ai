@@ -54,13 +54,15 @@ const ProjectInformation = ({
           </div>
 
           <a href={url} target="_blank" rel="noreferrer">
-            <h1 className="mr-3 text-20 font-medium">
+            <h1 className="mr-3 text-20 font-medium" data-tooltip-id="project-url">
               {name.slice(0, 32)}
               {name.length > 32 ? '...' : ''}
             </h1>
           </a>
 
-          <Tooltip id="project-url">{url}</Tooltip>
+          <Tooltip id="project-url" place="bottom">
+            {url}
+          </Tooltip>
 
           {tags.length > 0 ? (
             tags.map((tag) => (

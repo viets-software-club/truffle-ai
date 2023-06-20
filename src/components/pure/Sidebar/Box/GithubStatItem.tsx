@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import formatNumber from '@/util/formatNumber'
+import { Tooltip } from 'react-tooltip'
 
 enum Color {
   DEFAULT = 'text-gray-100',
@@ -7,6 +8,7 @@ enum Color {
   RED = 'text-red'
 }
 type GithubStatItemProps = {
+  id?: string
   Icon?: IconComponentType
   IconMetric?: ReactNode
   value: number
@@ -20,6 +22,7 @@ type GithubStatItemProps = {
 }
 
 const GithubStatItem = ({
+  id,
   Icon,
   value,
   growth,
@@ -47,7 +50,7 @@ const GithubStatItem = ({
           hoverOn ? 'transition-colors duration-100 hover:bg-gray-850' : ''
         }`}
       >
-        <div className={`flex flex-row items-center justify-center ${gap}`}>
+        <div className={`flex flex-row items-center justify-center ${gap}`} data-tooltip-id={id}>
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
           <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
@@ -55,12 +58,16 @@ const GithubStatItem = ({
           </span>
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}
         </div>
+        <Tooltip id={id} place="bottom">
+          {id}
+        </Tooltip>
       </div>
     </div>
   )
 }
 
 GithubStatItem.defaultProps = {
+  id: undefined,
   Icon: undefined,
   IconMetric: undefined,
   growth: undefined,

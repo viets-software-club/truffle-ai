@@ -1,41 +1,49 @@
-import { TableFilter } from '@/components/page/overview/TableFilter'
-import FilterFormModal from '@/components/page/overview/FilterFormModal'
-import { TableSort } from '@/components/page/overview/TableSort'
-import TableSortModal from '@/components/page/overview/TableSortModal'
+import FilterItemModal from '@/components/page/overview/FilterItemModal'
+import SortModal from '@/components/page/overview/SortModal'
+import { ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { FilterOption, TimeFilterOption } from './types'
 
 type FilterBarProps = {
-  filters: TableFilter[]
-  removeFilter: (filter: TableFilter) => void
-  updateFilter(filter: TableFilter): void
+  filters: ProjectFilter
   currentEntries: number
   totalEntries: number
-  tableSort: TableSort | null
-  setTableSort(tableSort: TableSort | null): void
+  sorting: ProjectOrderBy | null
+  updateFilters: (filter: ProjectFilter) => void
+  setSorting: (sorting: ProjectOrderBy | null) => void
 }
 
 const FilterBar = ({
   filters,
-  removeFilter,
-  updateFilter,
   currentEntries,
   totalEntries,
-  tableSort,
-  setTableSort
+  sorting,
+  setSorting,
+  updateFilters
 }: FilterBarProps) => (
   <div className="flex flex-row justify-between border-b border-gray-800 px-6 py-2.5">
     <div className="flex flex-row gap-3">
-      {tableSort && <TableSortModal tableSort={tableSort} setTableSort={setTableSort} />}
-      {tableSort && filters.length > 0 && <div className="mx-3 h-full border-l border-gray-800" />}
-      {filters.map((filter: TableFilter) => (
-        <FilterFormModal
-          filter={filter}
-          removeFilter={removeFilter}
-          updateFilter={updateFilter}
-          defaultValue={filter.value as number}
-        />
-      ))}
+      {/* Sorting */}
+      {sorting && <SortModal sorting={sorting} setSorting={setSorting} />}
+
+      {/* Separator */}
+      {sorting && Object.keys(filters).length > 0 && (
+        <div className="my-auto h-4/5 border-l border-gray-800" />
+      )}
+
+      {/* Filters (exclude time filter options) */}
+      {Object.keys(filters)
+        .filter((key) => !Object.values(TimeFilterOption).includes(key as TimeFilterOption))
+        .map((key) => (
+          <FilterItemModal
+            key={key}
+            currentKey={key as FilterOption['key']}
+            filters={filters}
+            updateFilters={updateFilters}
+          />
+        ))}
     </div>
 
+    {/* Row count */}
     <div className="flex flex-row items-center">
       <p className="text-14">Showing {currentEntries}&nbsp;</p>
       <p className="text-14 text-gray-500">/&nbsp;{totalEntries} entries</p>

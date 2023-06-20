@@ -22,7 +22,7 @@ type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HT
 }
 
 const baseClassNames =
-  'flex items-center rounded-[5px] transition-all duration-200 hover:bg-opacity-80'
+  'flex items-center rounded-[5px] transition-all duration-200 hover:bg-opacity-80 outline-none'
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
   ['normal', 'bg-gray-850 border border-gray-800 px-2 py-1.5'],

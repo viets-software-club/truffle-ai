@@ -864,6 +864,7 @@ export type Project = Node & {
   pull_request_count: Scalars['Int']
   starCount?: Maybe<Scalars['Int']>
   starHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  forkHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
   star_count: Scalars['Int']
   star_history: Scalars['String']
   websiteUrl?: Maybe<Scalars['String']>
@@ -953,6 +954,7 @@ export type ProjectInsertInput = {
   pullRequestCount?: InputMaybe<Scalars['Int']>
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
 }
 
@@ -1008,6 +1010,7 @@ export type ProjectUpdateInput = {
   pullRequestCount?: InputMaybe<Scalars['Int']>
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
 }
 
@@ -1258,6 +1261,7 @@ export type ProjectDetailsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
         languages: Array<string>
         owningPerson?: any | null
         owningOrganization?: any | null
@@ -1305,6 +1309,7 @@ export type TrendingProjectsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
         isTrendingDaily?: boolean | null
@@ -1357,6 +1362,7 @@ export const ProjectDetailsDocument = gql`
           githubUrl
           websiteUrl
           starHistory
+          forkHistory
           languages
           owningPerson
           owningOrganization
@@ -1403,6 +1409,7 @@ export const TrendingProjectsDocument = gql`
           githubUrl
           websiteUrl
           starHistory
+          forkHistory
           owningPerson
           owningOrganization
           associatedPerson {

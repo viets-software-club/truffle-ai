@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import {
   LineChart,
@@ -58,6 +58,7 @@ type ChartProps = {
     }[]
   }[]
   multipleLines: boolean
+  selectedMetric: string
 }
 
 type DataPoint = {
@@ -74,9 +75,11 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
 /**
  * Linechart with one or more datasets
  * @param {ChartProps} datasets - The datasets to be displayed on the chart.
+ * @param {boolean} multipleLines - Whether to display multiple lines or not.
+ * @param {string} selectedMetric - The selected metric.
  */
 
-const Chart = ({ datasets, multipleLines }: ChartProps) => {
+const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => {
   const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
   //   const [modalValue, setModalValue] = useState('Select Value')
@@ -134,8 +137,12 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
     [chartDataOriginal]
   )
 
+  useEffect(() => {
+    setChartData([...datasets])
+  }, [datasets])
+
   return (
-    <div className="flex w-full flex-row px-7 py-8">
+    <div className="flex w-full flex-row p-6">
       {datasets.length === 0 ? (
         <p>No data</p>
       ) : (
@@ -199,7 +206,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
               />
 
               <YAxis
-                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
+                label={{ value: selectedMetric, dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 stroke={grayColors['500']}
                 tickFormatter={formatNumber}
@@ -217,6 +224,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
 
               {chartData
                 .sort((a, b) => {
+                  if (!a.data || !b.data) return 0
                   const lastDataPointA = a.data[a.data.length - 1]?.count || 0
                   const lastDataPointB = b.data[b.data.length - 1]?.count || 0
                   return lastDataPointB - lastDataPointA
@@ -224,10 +232,14 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
                 .map((dataset, index) => (
                   <Line
                     key={dataset.id}
-                    data={dataset.data.map((item) => ({
-                      ...item,
-                      date: new Date(item.date).getTime()
-                    }))}
+                    data={
+                      dataset.data
+                        ? dataset.data.map((item) => ({
+                            ...item,
+                            date: new Date(item.date).getTime()
+                          }))
+                        : []
+                    }
                     dataKey="count"
                     name={dataset.name}
                     type="monotone"

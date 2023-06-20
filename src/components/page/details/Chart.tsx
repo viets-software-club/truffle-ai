@@ -10,12 +10,12 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts'
-import { FiChevronDown as ChevronDown } from 'react-icons/fi'
+import { FiChevronDown } from 'react-icons/fi'
 import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
-import Modal from '@/components/pure/Modal'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
+import { Menu, Transition } from '@headlessui/react'
 import tailwindConfig from '../../../../tailwind.config'
 
 // The following 3 statements are needed in order to be able to use our Tailwind classes inside JS objects of the recharts library
@@ -59,6 +59,7 @@ type ChartProps = {
   }[]
   multipleLines: boolean
   selectedMetric: string
+  setSelectedMetric: (metric: string) => void
 }
 
 type DataPoint = {
@@ -79,11 +80,8 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
  * @param {string} selectedMetric - The selected metric.
  */
 
-const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => {
-  const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
+const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: ChartProps) => {
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
-  //   const [modalValue, setModalValue] = useState('Select Value')
-  //   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
   const [chartData, setChartData] = useState(chartDataOriginal)
@@ -112,11 +110,6 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => {
         ).toISOString()
       }))
     }))
-    // Updates state when modal value changes
-    // const handleModalValueChange = useCallback((newValue: string) => {
-    //   setModalValue(newValue)
-    //   setIsModalOpen(false)
-    // }, [])
 
     setChartData(normalizedData)
   }
@@ -125,7 +118,6 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => {
     (value: number) => () => {
       const selectedOption = TimeframeOptions.find((option) => option.value === value)
       setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
-      setTimeframeModalOpen(false)
 
       const filteredData = chartDataOriginal.map((dataset) => ({
         ...dataset,
@@ -147,41 +139,76 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => {
         <p>No data</p>
       ) : (
         <div className="flex w-full flex-col gap-3">
-          {multipleLines && (
-            <div className="flex flex-row gap-3 ">
-              <div className="flex flex-col">
-                <Button
-                  variant="normal"
-                  text={timeframeModalValue}
-                  Icon={ChevronDown}
-                  order="rtl"
-                  onClick={() => {
-                    setTimeframeModalOpen(true)
-                  }}
-                />
+          <div className="flex flex-row gap-3 ">
+            {multipleLines && (
+              <>
+                <Menu as="div" className="relative inline-block">
+                  <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+                    <FiChevronDown className="text-gray-500" />
+                    <p className="leading-none">{timeframeModalValue}</p>
+                  </Menu.Button>
 
-                <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
-                  {TimeframeOptions.map((option) => (
-                    <Button
-                      key={option.label}
-                      variant="noBorderNoBG"
-                      text={option.label}
-                      fullWidth
-                      onClick={handleTimeframeChange(option.value)}
-                    />
-                  ))}
-                </Modal>
-              </div>
-              <div>
-                <Button
-                  variant="normal"
-                  text="Normalize Data"
-                  fullWidth
-                  onClick={handleDataNormalization}
-                />
-              </div>
-            </div>
-          )}
+                  <Transition.Child>
+                    <Menu.Items
+                      static
+                      className="absolute z-10 mt-2 w-28 rounded-md bg-gray-700 shadow-lg focus:outline-none"
+                    >
+                      <div className="py-1">
+                        {TimeframeOptions.map((metric) => (
+                          <Menu.Item key={metric.label}>
+                            <button
+                              type="button"
+                              onClick={handleTimeframeChange(metric.value)}
+                              className="flex w-28 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                            >
+                              <p>{metric.label}</p>
+                            </button>
+                          </Menu.Item>
+                        ))}
+                      </div>
+                    </Menu.Items>
+                  </Transition.Child>
+                </Menu>
+
+                <div>
+                  <Button
+                    variant="normal"
+                    text="Normalize Data"
+                    fullWidth
+                    onClick={handleDataNormalization}
+                  />
+                </div>
+              </>
+            )}
+
+            <Menu as="div" className="relative inline-block">
+              <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+                <FiChevronDown className="text-gray-500" />
+                <p className="leading-none">{selectedMetric}</p>
+              </Menu.Button>
+
+              <Transition.Child>
+                <Menu.Items
+                  static
+                  className="absolute z-10 mt-2 w-24 rounded-md bg-gray-700 shadow-lg focus:outline-none"
+                >
+                  <div className="py-1">
+                    {['Stars', 'Forks'].map((metric) => (
+                      <Menu.Item key={metric}>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedMetric(metric)}
+                          className="flex w-24 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                        >
+                          <p>{metric}</p>
+                        </button>
+                      </Menu.Item>
+                    ))}
+                  </div>
+                </Menu.Items>
+              </Transition.Child>
+            </Menu>
+          </div>
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart

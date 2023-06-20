@@ -5,7 +5,6 @@ import {
   ColumnOrderState,
   getFilteredRowModel
 } from '@tanstack/react-table'
-import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
@@ -25,7 +24,6 @@ import {
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
 import sendSlackNotification from '@/util/sendSlackNotification'
-import { Menu, Transition } from '@headlessui/react'
 
 /**
  * Compare projects component
@@ -126,34 +124,6 @@ const Compare = () => {
           {/* @TODO Update page title */}
           <h1 className="text-24 font-medium">Infrastructure</h1>
         </div>
-
-        <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-            <FiChevronDown className="text-gray-500" />
-            <p className="leading-none">{selectedMetric}</p>
-          </Menu.Button>
-
-          <Transition.Child>
-            <Menu.Items
-              static
-              className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none"
-            >
-              <div className="py-1">
-                {['Stars', 'Forks'].map((metric) => (
-                  <Menu.Item key={metric}>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedMetric(metric)}
-                      className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                    >
-                      <p>{metric}</p>
-                    </button>
-                  </Menu.Item>
-                ))}
-              </div>
-            </Menu.Items>
-          </Transition.Child>
-        </Menu>
       </div>
 
       {!fetching && !error && data.length > 0 && (
@@ -173,6 +143,7 @@ const Compare = () => {
             }))}
             multipleLines
             selectedMetric={selectedMetric}
+            setSelectedMetric={setSelectedMetric}
           />
 
           <div className="flex flex-row items-center justify-between px-6 py-3.5">

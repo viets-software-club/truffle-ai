@@ -4,8 +4,7 @@ import {
   FiX as X,
   FiChevronUp as ChevronUp,
   FiChevronDown as ChevronDown,
-  FiArrowUpRight,
-  FiChevronDown
+  FiArrowUpRight
 } from 'react-icons/fi'
 import { FaTwitter, FaHackerNews } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
@@ -18,7 +17,6 @@ import ProjectInformation from '@/components/page/details/ProjectInformation'
 import { defaultSort, defaultFilters } from '@/components/page/overview/types'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
-import { Menu, Transition } from '@headlessui/react'
 
 const handleClick = () => ''
 
@@ -147,34 +145,6 @@ const Details = ({ id }: DetailsProps) => {
           />
 
           <div className="flex flex-col items-start">
-            <Menu as="div" className="relative inline-block pl-7 pt-7">
-              <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-                <FiChevronDown className="text-gray-500" />
-                <p className="leading-none">{selectedMetric}</p>
-              </Menu.Button>
-
-              <Transition.Child>
-                <Menu.Items
-                  static
-                  className="absolute z-10 mt-2 w-24 rounded-md bg-gray-700 shadow-lg focus:outline-none"
-                >
-                  <div className="py-1">
-                    {['Stars', 'Forks'].map((metric) => (
-                      <Menu.Item key={metric}>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedMetric(metric)}
-                          className="flex w-24 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                        >
-                          <p>{metric}</p>
-                        </button>
-                      </Menu.Item>
-                    ))}
-                  </div>
-                </Menu.Items>
-              </Transition.Child>
-            </Menu>
-
             <Chart
               datasets={[
                 {
@@ -192,6 +162,7 @@ const Details = ({ id }: DetailsProps) => {
               ]}
               multipleLines={false}
               selectedMetric={selectedMetric}
+              setSelectedMetric={setSelectedMetric}
             />
           </div>
 

@@ -11,6 +11,7 @@ query ProjectDetails($id: UUID) {
         forkCount
         pullRequestCount
         contributorCount
+        languages
         githubUrl
         websiteUrl
         starHistory

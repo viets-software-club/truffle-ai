@@ -1379,6 +1379,7 @@ export const ProjectDetailsDocument = gql`
           forkCount
           pullRequestCount
           contributorCount
+          languages
           githubUrl
           websiteUrl
           starHistory

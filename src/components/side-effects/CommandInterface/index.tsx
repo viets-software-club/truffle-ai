@@ -118,8 +118,8 @@ const CommandInterface: React.FC = () => {
           if (newItem.commandInterfaceOptions.includes('mailto:')) {
             const project = projects.filter((projectItem) => projectItem.id === id)[0]
             newItem.commandInterfaceOptions = emailTemplate(
-              project.associatedPerson?.email ?? '',
-              project.associatedPerson?.name ?? '',
+              project?.associatedPerson?.email ?? '',
+              project?.associatedPerson?.name ?? '',
               project.name ?? ''
             )
           }

@@ -1,7 +1,6 @@
 import { IconType } from 'react-icons'
 import { AiOutlineRetweet, AiOutlineMessage } from 'react-icons/ai'
 import { FiArrowUpRight } from 'react-icons/fi'
-import { useState } from 'react'
 import { format } from 'date-fns'
 import Button from './Button'
 
@@ -26,27 +25,23 @@ type CardProps = {
 }
 
 const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardProps) => {
-  const [numTweetsShown, setNumTweetsShown] = useState(5)
-
-  const increaseShownTweets = () => {
-    setNumTweetsShown(numTweetsShown + 5)
-  }
+  const color = variant === 'twitter' ? 'text-twitter' : 'text-hackernews'
 
   return (
     <div className="my-4 h-auto rounded-lg border border-gray-800">
-      <div className="flex flex-row items-center px-4 pt-4">
-        <Icon className="mr-2 h-6 w-6 text-indigo-500" />
+      <div className="flex flex-row items-center p-4">
+        <Icon className={`mr-2 h-6 w-6  ${color}`} />
         <h3 className="text-lg font-bold">{name}</h3>
       </div>
 
       {variant === 'twitter' && tweets && (
-        <div className="grid grid-cols-2 gap-4">
-          {tweets.slice(0, numTweetsShown).map((tweet) => {
+        <div className="max-h-[500px] overflow-auto">
+          {tweets.map((tweet) => {
             const date = new Date(tweet.date)
             const formattedDate = format(date, 'MMM do, yyyy')
 
             return (
-              <div key={tweet.id} className="border-b border-gray-800 p-4">
+              <div key={tweet.id} className="mb-4 border-b border-gray-800 px-4 pb-4">
                 <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
                   <div className="flex items-center justify-between">
                     <p className="font-medium">
@@ -71,14 +66,9 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
           })}
         </div>
       )}
-      {variant === 'twitter' && tweets && numTweetsShown < tweets.length && (
-        <div className="p-4">
-          <Button variant="normal" onClick={increaseShownTweets} text="Show more" order="ltr" />
-        </div>
-      )}
       {variant === 'hackernews' && (
         <>
-          <p className="border-b border-gray-800 p-4 text-14 font-light text-gray-300">
+          <p className="border-b border-gray-800 px-4 pb-4 text-14 font-light text-gray-300">
             {communitySentiment}
           </p>
 

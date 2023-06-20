@@ -140,25 +140,29 @@ const Details = ({ id }: DetailsProps) => {
             ]}
             multipleLines={false}
           />
-          <div className="flex flex-col gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            {project.hackernewsSentiment && (
-              <Card
-                Icon={FaHackerNews}
-                name="Community Sentiment"
-                communitySentiment={project.hackernewsSentiment}
-                links={project.hackernewsStories as string[]}
-                variant="hackernews"
-                key={project.id}
-              />
-            )}
+          <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
             {project.relatedTwitterPosts && (
-              <Card
-                Icon={FaTwitter}
-                name="Top Tweets"
-                tweets={project.relatedTwitterPosts}
-                variant="twitter"
-                key={project.id}
-              />
+              <div className="w-full md:w-1/2">
+                <Card
+                  Icon={FaTwitter}
+                  name="Top Tweets"
+                  tweets={project.relatedTwitterPosts}
+                  variant="twitter"
+                  key={project.id}
+                />
+              </div>
+            )}
+            {project.hackernewsSentiment && (
+              <div className="w-full md:w-1/2">
+                <Card
+                  Icon={FaHackerNews}
+                  name="Community Sentiment"
+                  communitySentiment={project.hackernewsSentiment}
+                  links={project.hackernewsStories as string[]}
+                  variant="hackernews"
+                  key={project.id}
+                />
+              </div>
             )}
           </div>
         </div>

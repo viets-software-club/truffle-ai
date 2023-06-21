@@ -67,7 +67,7 @@ const Details = ({ id }: DetailsProps) => {
   const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
 
   // Display loading/ error messages conditionally
-  if (fetching) return <Loading fullscreen message="Fetching project details for you..." />
+  if (fetching) return <Loading fullscreen />
   if (error || !project) return <Error />
 
   return (

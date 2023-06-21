@@ -174,7 +174,7 @@ const Compare = () => {
           </>
         )}
 
-        {fetching && <Loading message="Getting trending projects for you..." />}
+        {fetching && <Loading />}
 
         {error && <Error />}
 

@@ -133,7 +133,7 @@ const ProjectsTable = () => {
       )}
 
       <div className="flex w-full flex-col pt-[120px]">
-        {fetching && <Loading message="Getting trending projects for you..." />}
+        {fetching && <Loading />}
 
         {error && <Error />}
 

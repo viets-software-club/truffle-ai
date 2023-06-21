@@ -9,6 +9,15 @@ import { updateAllProjectInfo } from '../../updateProject'
 import { REPO_ALREADY_IN_DB_RESPOSE } from '../commonResponses'
 import { addBookmark } from './bookmark'
 
+/**
+ * Adds a project to the database and bookmarks it for the specified user.
+ * Will not await the fetching of information about the project.
+ * Should usually be called from a addProjectBy<> resolver.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @param {string} userID - The user ID of the user in question.
+ * @param {string} bookmarkCategory - The category the bookmark should be added to. Not named 'category' because it might not be apparent why an addition needs a category.
+ */
 export const addProject = async (
   repoName: string,
   owner: string,

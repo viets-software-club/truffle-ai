@@ -173,11 +173,12 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
   // *10 /10 to round to one decimal place
   //@Todo: refine approximation approach
   const contributorCount =
-    Math.round((await getContributorCount(owner, name, process.env.GITHUB_API_TOKEN)) * 0.9 * 10) /
-    10
+    Math.round(await getContributorCount(owner, name, process.env.GITHUB_API_TOKEN)) * 0.9
 
-  const issuesPerContributor = githubStats.issues.totalCount / contributorCount
-  const forksPerContributor = githubStats.forkCount / contributorCount
+  // *10, round, and /10 to round to one decimal place
+  const issuesPerContributor =
+    Math.round((githubStats.issues.totalCount / contributorCount) * 10) / 10
+  const forksPerContributor = Math.round((githubStats.forkCount / contributorCount) * 10) / 10
 
   const updated = await updateSupabaseProject(name, owner, {
     ...formatGithubStats(githubStats),

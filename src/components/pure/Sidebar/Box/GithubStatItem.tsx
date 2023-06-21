@@ -47,7 +47,10 @@ const GithubStatItem = ({
   return (
     <div className="flex flex-col justify-between">
       <div className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5`}>
-        <div className={`flex flex-row items-center justify-center text-xs ${gap}`}>
+        <div
+          className={`flex flex-row items-center justify-center text-xs ${gap}`}
+          data-tooltip-id={id}
+        >
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
           {value && (

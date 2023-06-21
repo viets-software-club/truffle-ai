@@ -39,9 +39,9 @@ const RightSidebar = ({ project }: Props) => {
     <Sidebar.Small>
       <Sidebar.Box title="GitHub Stats">
         <Sidebar.Box.GithubStatItem
+          id="stars"
           Icon={StarIcon}
           value={project?.starCount as number}
-          id="stars"
         />
         <Sidebar.Box.GithubStatItem
           Icon={IssueOpenedIcon}
@@ -71,8 +71,13 @@ const RightSidebar = ({ project }: Props) => {
         <Sidebar.Box.GithubStatItem
           Icon={GitPullRequestIcon}
           value={project.pullRequestCount as number}
+          id="pull requests"
         />
-        <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
+        <Sidebar.Box.GithubStatItem
+          Icon={FaGithub}
+          link={project.githubUrl as string}
+          id={project.githubUrl as string}
+        />
       </Sidebar.Box>
 
       {project.languages?.length > 0 && (

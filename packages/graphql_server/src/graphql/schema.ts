@@ -5,8 +5,8 @@ const schema = `
     allProjects(first: Int, after: String): ProjectConnection!
   }
   type Mutation {
-    addProjectByName(name: String!, owner: String!): Boolean!
-    addProjectByUrl(url: String!): Boolean!
+    addProjectByName(name: String!, owner: String!): Response!
+    addProjectByUrl(url: String!): Response!
     addBookmark(projectID: String!, category: String!): Response!
     deleteBookmark(projectID: String!): Response!
     editBookmarkCategory(projectID: String!, newCategory: String!): Response!

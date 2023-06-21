@@ -6,6 +6,7 @@ enum Color {
   GREEN = 'text-green',
   RED = 'text-red'
 }
+
 type GithubStatItemProps = {
   Icon?: IconComponentType
   IconMetric?: ReactNode
@@ -13,7 +14,6 @@ type GithubStatItemProps = {
   growth?: string
   paddingOn?: boolean
   outerPaddingOn?: boolean
-  hoverOn?: boolean
   greenValue?: number
   redValue?: number
   largeGap?: boolean
@@ -27,7 +27,6 @@ const GithubStatItem = ({
   IconMetric,
   paddingOn,
   outerPaddingOn,
-  hoverOn,
   greenValue,
   redValue,
   largeGap,
@@ -44,12 +43,8 @@ const GithubStatItem = ({
 
   return (
     <div className="flex flex-col justify-between">
-      <div
-        className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5 ${
-          hoverOn ? 'transition-colors duration-100 hover:bg-gray-850' : ''
-        }`}
-      >
-        <div className={`flex flex-row items-center justify-center ${gap}`}>
+      <div className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5`}>
+        <div className={`flex flex-row items-center justify-center text-xs ${gap}`}>
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
           {value && (
@@ -76,7 +71,6 @@ GithubStatItem.defaultProps = {
   growth: undefined,
   outerPaddingOn: true,
   paddingOn: true,
-  hoverOn: true,
   greenValue: 100,
   redValue: 0,
   largeGap: false,

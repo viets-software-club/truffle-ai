@@ -151,7 +151,7 @@ const Details = ({ id }: DetailsProps) => {
               <Card
                 Icon={FaTwitter}
                 name="Top Tweets"
-                tweets={(project.relatedTwitterPosts as []) ?? undefined}
+                tweets={project.relatedTwitterPosts ?? undefined}
                 variant="twitter"
                 key={project.id as string}
               />
@@ -170,7 +170,7 @@ const Details = ({ id }: DetailsProps) => {
           </div>
         </div>
 
-        <RightSidebar project={project} />
+        <RightSidebar project={project as Project} />
       </div>
     </>
   )

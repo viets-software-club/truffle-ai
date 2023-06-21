@@ -57,11 +57,13 @@ const RightSidebar = ({ project }: Props) => {
         <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
       </Sidebar.Box>
 
-      <Sidebar.Box title="Languages">
-        <Sidebar.Box.LanguagesItem
-          languages={project.languages as unknown as Array<{ name: string; color: string }>}
-        />
-      </Sidebar.Box>
+      {project.languages?.length > 0 && (
+        <Sidebar.Box title="Languages">
+          <Sidebar.Box.LanguagesItem
+            languages={project.languages as unknown as Array<{ name: string; color: string }>}
+          />
+        </Sidebar.Box>
+      )}
 
       {(project.organization?.twitterUsername || project.organization?.websiteUrl) && (
         <Sidebar.Box title="Company">

@@ -139,46 +139,11 @@ const CommandInterface: React.FC = () => {
   }, [])
 
   const isCommandExistInList = (command: RecommendationRowType, word: string): boolean =>
-    command.menuText.toLocaleLowerCase().includes(word.trim().toLocaleLowerCase())
+    command.menuText.toLocaleLowerCase().includes(word.trim().toLocaleLowerCase()) ||
+    word.trim().toLocaleLowerCase().includes(command.menuText.toLocaleLowerCase())
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    let search = event.target.value
-
-    setSearchWord(search)
-
-    if (search.trim() !== '' && !search.includes('>') && !search.includes('<')) {
-      if (isProjectListOn) {
-        search = defaultList
-          .map((item) => item.menuText.toLocaleLowerCase())
-          .includes(search.toLocaleLowerCase())
-          ? ''
-          : search.split(' ')[search.split(' ').length - 1]
-
-        if (
-          prevProjectRecommendationList.filter((rowItem) => isCommandExistInList(rowItem, search))
-            .length === 0
-        ) {
-          setRecommendationList(defaultList)
-          setIsProjectListOn(false)
-          return
-        }
-        setRecommendationList(
-          prevProjectRecommendationList.filter((rowItem) => isCommandExistInList(rowItem, search))
-        )
-      } else {
-        setRecommendationList(
-          defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
-        )
-      }
-    } else if (search.trim() === '') {
-      setIsProjectListOn(false)
-      setRecommendationList(defaultList)
-    }
-  }
-
-  const navigateTo = (path: string) => {
-    void router.push(path)
-  }
+  const isCommandExactlyExistInList = (command: RecommendationRowType, word: string): boolean =>
+    command.menuText.toLocaleLowerCase() === word.trim().toLocaleLowerCase()
 
   const setCommandInterface = (commandInterfaceOption: string, item: Project): string => {
     if (commandInterfaceOption.includes(':id')) {
@@ -215,6 +180,53 @@ const CommandInterface: React.FC = () => {
       setRecommendationList(newRecommendationList)
       setPrevProjectRecommendationList(newRecommendationList)
     }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const search = event.target.value.trim()
+    setSearchWord(search)
+
+    const filteredDefaultList = defaultList.filter((index) => isCommandExistInList(index, search))
+    const isSearchNotEmpty = search !== ''
+    const isSearchContainingSymbol = search.includes('>') || search.includes('<')
+    const isSingleFilteredResult = filteredDefaultList.length === 1
+    const isProjectListOnAndSingleFiltered = isProjectListOn && isSingleFilteredResult
+
+    if (isSearchNotEmpty) {
+      if (!isSearchContainingSymbol && isProjectListOnAndSingleFiltered) {
+        if (search.split(' ').length > 2) {
+          const lastSearchTerm = search.split(' ').pop()!
+          setRecommendationList(
+            prevProjectRecommendationList.filter((rowItem) =>
+              isCommandExistInList(rowItem, lastSearchTerm)
+            )
+          )
+        } else if (
+          defaultList.filter((index) => isCommandExactlyExistInList(index, search)).length === 0
+        ) {
+          setIsProjectListOn(false)
+          setRecommendationList(
+            defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
+          )
+        } else {
+          setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
+        }
+      } else if (
+        isSingleFilteredResult &&
+        filteredDefaultList[0].isIdPrimary &&
+        isSearchContainingSymbol
+      ) {
+        setProjectNamesAsRow(filteredDefaultList[0].commandInterfaceOptions)
+        setIsProjectListOn(true)
+      }
+    } else {
+      setIsProjectListOn(false)
+      setRecommendationList(defaultList)
+    }
+  }
+
+  const navigateTo = (path: string) => {
+    void router.push(path)
   }
 
   const showConfirmationLines = () => {

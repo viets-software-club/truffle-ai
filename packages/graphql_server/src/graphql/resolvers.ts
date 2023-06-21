@@ -1,4 +1,3 @@
-import { exposeProjectsData } from './resolver/projects'
 import { createProject } from '../dbUpdater'
 import {
   bookmarkIsAlreadyInDB,

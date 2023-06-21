@@ -9,7 +9,11 @@ import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
 import { addProject } from './resolver/addProject'
 import { addBookmark } from './resolver/bookmark'
-import { BAD_USER_RESPONSE, BOOKMARK_DOES_NOT_EXIST_RESPONSE } from './commonResponses'
+import {
+  BAD_URL_RESPONSE,
+  BAD_USER_RESPONSE,
+  BOOKMARK_DOES_NOT_EXIST_RESPONSE
+} from './commonResponses'
 
 //@Todo: refine and refactor response types
 
@@ -29,7 +33,7 @@ const resolvers = {
     addProjectByUrl: async (_parent: unknown, { url }: { url: string }) => {
       const urlParts = parseGitHubUrl(url)
       if (urlParts === null) {
-        return false
+        return BAD_URL_RESPONSE
       } else {
         return await addProject(urlParts.repo, urlParts.owner, '')
       }

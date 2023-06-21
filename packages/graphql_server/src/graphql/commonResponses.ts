@@ -13,3 +13,8 @@ export const BOOKMARK_DOES_NOT_EXIST_RESPONSE = {
   message: 'This bookmark does not exist on the database.',
   code: '409'
 }
+
+export const BAD_URL_RESPONSE = {
+  message: 'The URL you provided is not valid.',
+  code: '400'
+}

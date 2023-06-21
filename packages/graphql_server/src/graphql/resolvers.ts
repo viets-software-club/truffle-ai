@@ -93,7 +93,7 @@ const resolvers = {
 
       const userID = context.user?.id
 
-      //@Todo: check if category exists
+      //@Todo: check if category exists -> future improvement cause not crucial atm
       const renameError = await renameBookmarkCategory(userID, oldCategory, newCategory)
       return renameError ? renameError : { code: '204' }
     }

@@ -9,7 +9,7 @@ type LoadingProps = {
  * @returns {React.Element} The loading element.
  */
 const Loading = ({ message }: LoadingProps) => (
-  <div className="flex h-screen grow flex-col items-center justify-between">
+  <div className="flex h-screen grow flex-col items-center justify-between text-gray-300">
     <div />
 
     <div className="flex flex-col items-center">
@@ -17,7 +17,7 @@ const Loading = ({ message }: LoadingProps) => (
       <p className="pt-6">{message || 'Loading...'}</p>
     </div>
 
-    <div className="self-center pb-4 text-12 text-gray-300">© 2023 La Famiglia x Rostlab</div>
+    <div className="self-center pb-4 text-12">© 2023 La Famiglia x Rostlab</div>
   </div>
 )
 

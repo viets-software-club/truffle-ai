@@ -5,7 +5,6 @@ import { FaGithub, FaTwitter } from 'react-icons/fa'
 type FounderProps = {
   name: string
   mail?: string
-  // linkedin?: string
   company: string
   twitter?: string
   github?: string
@@ -28,11 +27,6 @@ const FounderItem = ({ name, mail, company, github, twitter, website }: FounderP
       <div className="inline-flex pb-2">
         <div className="flex flex-row items-center justify-center gap-[15px]">
           <span className="text-xs not-italic leading-3">{name}</span>
-          {/* {linkedin && (
-            <a href={linkedin} target="_blank" rel="noreferrer">
-              <FaLinkedin className="h-[14px] w-[14px] text-gray-500" />
-            </a>
-          )} */}
           {mail && (
             <a href={emailTemplate(mail, name, company)} target="_blank" rel="noreferrer">
               <AiFillMail className="h-[14px] w-[14px] text-gray-500" />

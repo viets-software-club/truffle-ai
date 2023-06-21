@@ -95,6 +95,9 @@ const Compare = () => {
     setSlackLoading(false)
   }
 
+  const displayChart = () => !fetching && !error && data.length > 0
+
+  // @TODO Update page title
   return (
     <>
       <TopBar
@@ -121,7 +124,6 @@ const Compare = () => {
         <div className="flex flex-row items-center justify-between px-6 pt-3.5">
           <div className="flex flex-col">
             <p className="text-12 font-medium uppercase text-gray-500">Compare</p>
-            {/* @TODO Update page title */}
             <h1 className="text-24 font-medium">Infrastructure</h1>
           </div>
 
@@ -153,7 +155,7 @@ const Compare = () => {
           </div>
         </div>
 
-        {!fetching && !error && data.length > 0 && (
+        {displayChart() && (
           <>
             <Chart
               datasets={data.map((project) => ({

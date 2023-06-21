@@ -11,7 +11,8 @@ type ProjectInformationProps = {
   image: string
   name: string
   url: string
-  eli5: string
+  explanation: string
+  about: string
   categories: string[]
 }
 
@@ -23,7 +24,8 @@ const ProjectInformation = ({
   image,
   url,
   name,
-  eli5,
+  explanation,
+  about,
   categories
 }: ProjectInformationProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
@@ -61,14 +63,16 @@ const ProjectInformation = ({
 
           {categories?.length > 0 &&
             categories[0] !== 'CategorizationError' &&
-            categories.map((category) => (
-              <p
-                key={category}
-                className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
-              >
-                {category}
-              </p>
-            ))}
+            categories
+              .filter((value, index, array) => array.indexOf(value) === index)
+              .map((category) => (
+                <p
+                  key={category}
+                  className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
+                >
+                  {category}
+                </p>
+              ))}
         </div>
 
         <div className="flex flex-row items-center justify-end gap-2">
@@ -94,7 +98,17 @@ const ProjectInformation = ({
         </div>
       </div>
 
-      <p className="text-14 font-light">{eli5}</p>
+      <div className="flex w-full gap-6">
+        <div className="flex w-[250px] shrink-0 flex-col gap-2">
+          <span className="text-12 font-semibold uppercase text-gray-500">About</span>
+          <p className="text-14 font-light">{about}</p>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="text-12 font-semibold uppercase text-gray-500">Explanation</span>
+          <p className="max-w-[750px] text-14 font-light">{explanation}</p>
+        </div>
+      </div>
 
       {notificationStatus === 'success' && (
         <Banner variant="success" message="Slack notification sent" />

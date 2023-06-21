@@ -72,7 +72,7 @@ const Details = ({ id }: DetailsProps) => {
 
   return (
     <>
-      <div className="flex h-[59px] w-full items-center justify-between px-3 pl-7 text-gray-500">
+      <div className="fixed z-10 flex h-[60px] w-full items-center justify-between border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500">
         <div className="flex flex-row items-center gap-3">
           <Link href="/">
             <X key="2" className="h-4 w-4 text-gray-500" />
@@ -114,7 +114,7 @@ const Details = ({ id }: DetailsProps) => {
       </div>
 
       <div className="flex grow">
-        <div className="w-4/5 flex-row border-t border-solid border-gray-800">
+        <div className="w-[calc(100%-250px)] flex-row pt-[60px]">
           <ProjectInformation
             githubUrl={project.githubUrl as string}
             image={
@@ -124,7 +124,8 @@ const Details = ({ id }: DetailsProps) => {
               (project.organization?.login || project.associatedPerson?.login) as string
             } / ${project.name}`}
             url={project.githubUrl as string}
-            eli5={project.eli5 || project.about || 'No description'}
+            explanation={project.eli5 || 'No explanation'}
+            about={project.about || 'No description'}
             categories={project.categories as string[]}
           />
 
@@ -140,30 +141,28 @@ const Details = ({ id }: DetailsProps) => {
             ]}
             multipleLines={false}
           />
-          <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            {project.relatedTwitterPosts && (
-              <div className="w-full md:w-1/2">
-                <Card
-                  Icon={FaTwitter}
-                  name="Top Tweets"
-                  tweets={project.relatedTwitterPosts}
-                  variant="twitter"
-                  key={project.id}
-                />
-              </div>
-            )}
-            {project.hackernewsSentiment && (
-              <div className="w-full md:w-1/2">
-                <Card
-                  Icon={FaHackerNews}
-                  name="Community Sentiment"
-                  communitySentiment={project.hackernewsSentiment}
-                  links={project.hackernewsStories as string[]}
-                  variant="hackernews"
-                  key={project.id}
-                />
-              </div>
-            )}
+
+          <div className="flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3">
+            <div className="w-1/2">
+              <Card
+                Icon={FaTwitter}
+                name="Top Tweets"
+                tweets={project.relatedTwitterPosts ?? undefined}
+                variant="twitter"
+                key={project.id}
+              />
+            </div>
+
+            <div className="w-1/2">
+              <Card
+                Icon={FaHackerNews}
+                name="Community Sentiment"
+                communitySentiment={project.hackernewsSentiment ?? undefined}
+                links={project.hackernewsStories as string[]}
+                variant="hackernews"
+                key={project.id}
+              />
+            </div>
           </div>
         </div>
 

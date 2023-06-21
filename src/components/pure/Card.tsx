@@ -1,8 +1,6 @@
 import { IconType } from 'react-icons'
 import { AiOutlineRetweet, AiOutlineMessage } from 'react-icons/ai'
-import { FiArrowUpRight } from 'react-icons/fi'
 import { format } from 'date-fns'
-import Button from './Button'
 
 type Tweet = {
   userVerified: boolean
@@ -34,62 +32,58 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
         <h3 className="text-lg font-bold">{name}</h3>
       </div>
 
-      {variant === 'twitter' && tweets && (
-        <div className="max-h-[270px] overflow-auto">
-          {tweets.map((tweet) => {
-            const date = new Date(tweet.date)
-            const formattedDate = format(date, 'MMM do, yyyy')
+      {variant === 'twitter' && (
+        <div className="max-h-[270px] overflow-auto scrollbar-hide">
+          {tweets?.map((tweet) => (
+            <div key={tweet.id} className="mb-4 border-b border-gray-800 px-4 pb-4">
+              <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
+                <div className="flex items-center justify-between">
+                  <p className="font-medium">
+                    @{tweet.userName} {tweet.userVerified && '✔️'}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {format(new Date(tweet.date), 'MMM do, yyyy')}
+                  </p>
+                </div>
 
-            return (
-              <div key={tweet.id} className="mb-4 border-b border-gray-800 px-4 pb-4">
-                <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium">
-                      @{tweet.userName} {tweet.userVerified && '✔️'}
-                    </p>
-                    <p className="text-sm text-gray-500">{formattedDate}</p>
-                  </div>
-                  <p className="my-2 text-14 font-light text-gray-300">{tweet.text}</p>
-                  <div className="flex items-center justify-start space-x-3">
-                    <span className="flex items-center space-x-1 text-sm text-gray-500">
-                      <AiOutlineRetweet size={16} />
-                      <p>{tweet.retweetCount}</p>
-                    </span>
-                    <span className="flex items-center space-x-1 text-sm text-gray-500">
-                      <AiOutlineMessage size={16} />
-                      <p>{tweet.replies}</p>
-                    </span>
-                  </div>
-                </a>
-              </div>
-            )
-          })}
+                <p className="my-2 text-14 font-light text-gray-300">{tweet.text}</p>
+
+                <div className="flex items-center justify-start space-x-3">
+                  <span className="flex items-center space-x-1 text-sm text-gray-500">
+                    <AiOutlineRetweet size={16} />
+                    <p>{tweet.retweetCount}</p>
+                  </span>
+
+                  <span className="flex items-center space-x-1 text-sm text-gray-500">
+                    <AiOutlineMessage size={16} />
+                    <p>{tweet.replies}</p>
+                  </span>
+                </div>
+              </a>
+            </div>
+          ))}
         </div>
       )}
+
       {variant === 'hackernews' && (
-        <>
-          <p className="border-b border-gray-800 px-4 pb-4 text-14 font-light text-gray-300">
-            {communitySentiment}
+        <div className="text-14 font-light text-gray-300 ">
+          <p className="px-4 pb-4">
+            {communitySentiment || 'No Hackernews posts found for this project'}
           </p>
 
-          <div className="flex flex-wrap gap-3 overflow-auto p-4">
-            {links !== null &&
-              links &&
-              links.map((link, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <a key={link} href={link} target="_blank" rel="noreferrer">
-                  <Button
-                    Icon={FiArrowUpRight}
-                    variant="normal"
-                    onClick={() => ''}
-                    text={`Source ${index}`}
-                    x
-                    order="ltr"
-                  />
-                </a>
-              ))}
-          </div>
-        </>
+          {communitySentiment && (
+            <div className="flex flex-wrap gap-1 overflow-auto border-t border-gray-800 p-4 font-medium">
+              Sources:{' '}
+              {links
+                ?.filter((value, index, array) => array.indexOf(value) === index)
+                .map((link, index) => (
+                  <a key={link} href={link} target="_blank" rel="noreferrer">
+                    {index + 1}
+                  </a>
+                ))}
+            </div>
+          )}
+        </div>
       )}
     </div>
   )

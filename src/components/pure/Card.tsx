@@ -22,6 +22,9 @@ type CardProps = {
   links?: string[]
 }
 
+const twitterVariant = 'twitter'
+const hackernewsVariant = 'hackernews'
+
 const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardProps) => {
   const color = variant === 'twitter' ? 'text-twitter' : 'text-hackernews'
 
@@ -32,7 +35,7 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
         <h3 className="text-lg font-bold">{name}</h3>
       </div>
 
-      {variant === 'twitter' && (
+      {variant === twitterVariant && (
         <div className="max-h-[270px] overflow-auto scrollbar-hide">
           {tweets?.map((tweet) => (
             <div key={tweet.id} className="mb-4 border-b border-gray-800 px-4 pb-4">
@@ -65,7 +68,7 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
         </div>
       )}
 
-      {variant === 'hackernews' && (
+      {variant === hackernewsVariant && (
         <div className="text-14 font-light text-gray-300 ">
           <p className="px-4 pb-4">
             {communitySentiment || 'No Hackernews posts found for this project'}

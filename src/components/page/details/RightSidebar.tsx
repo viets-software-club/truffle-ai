@@ -24,7 +24,8 @@ const RightSidebar = ({ project }: Props) => {
   const affinityListID = localStorage.getItem('affinityListId')
 
   const sendToAffinityProps: SendToAffinityProps = {
-    name: project.name,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    name: project.name as string,
     stars: project.starCount as number,
     forks: project.forkCount as number,
     contributors: project.contributorCount as number,

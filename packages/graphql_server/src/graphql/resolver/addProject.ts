@@ -1,10 +1,20 @@
 import supabase from '../../supabase'
-import { getOrganizationID, getPersonID, repoIsAlreadyInDB } from '../../supabaseUtils'
+import {
+  getOrganizationID,
+  getPersonID,
+  getProjectID,
+  repoIsAlreadyInDB
+} from '../../supabaseUtils'
 import { updateAllProjectInfo } from '../../updateProject'
 import { REPO_ALREADY_IN_DB_RESPOSE } from '../commonResponses'
 import { addBookmark } from './bookmark'
 
-export const addProject = async (repoName: string, owner: string, bookmarkCategory: string) => {
+export const addProject = async (
+  repoName: string,
+  owner: string,
+  userID: string,
+  bookmarkCategory: string
+) => {
   if (await repoIsAlreadyInDB(repoName, owner)) {
     return REPO_ALREADY_IN_DB_RESPOSE
   } else {
@@ -17,10 +27,17 @@ export const addProject = async (repoName: string, owner: string, bookmarkCatego
       return insertionError
     } else {
       // update all the data sources. trending state may be null
-      // add the repo as bookmark immediately
       // no await so that the return happens faster
       void updateAllProjectInfo(repoName, owner, null)
-      //void addBookmark(repoName, owner, bookmarkCategory)
+
+      // add the repo as bookmark immediately
+      const projectID = await getProjectID(repoName, owner)
+      if (!projectID)
+        return {
+          code: '500',
+          message: 'The project might have been added, but it could not be bookmarked.'
+        }
+      void addBookmark(userID, projectID, bookmarkCategory)
       return {
         code: '201'
       }

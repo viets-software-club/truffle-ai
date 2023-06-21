@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useEffect, useState } from 'react'
 import {
   useReactTable,
@@ -171,9 +172,8 @@ const Compare = () => {
           <>
             <Chart
               datasets={data.map((project) => ({
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-                id: project.id as string,
-                name: project.name,
+                id: (project.id as string) ?? '',
+                name: project.name ?? '',
                 data: project.starHistory as React.ComponentProps<
                   typeof Chart
                 >['datasets'][0]['data']

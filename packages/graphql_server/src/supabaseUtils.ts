@@ -576,7 +576,8 @@ const updateSupabaseProject = async (
 }
 
 /**
- *
+ * Check and updates the bookmarked state of a project by looking at the bookmark table.
+ * @param {string} projectID - The project ID of the project in question.
  */
 const checkAndUpdateProjectBookmarkedState = async (projectID: string) => {
   const { data: bookmarkEntries, error } = await supabase

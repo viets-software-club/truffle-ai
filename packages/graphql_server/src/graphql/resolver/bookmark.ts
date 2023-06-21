@@ -12,6 +12,6 @@ export const addBookmark = async (userID: string, projectID: string, category: s
   return insertionError
     ? insertionError
     : {
-        code: '204'
+        code: '201'
       }
 }

@@ -1,16 +1,15 @@
 import { exposeProjectsData } from './resolver/projects'
-import { createProject } from '../dbUpdater'
 import {
   bookmarkIsAlreadyInDB,
   deleteBookmark,
   editBookmarkCategory,
-  insertBookmark,
   renameBookmarkCategory
 } from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
 import { addProject } from './resolver/addProject'
 import { addBookmark } from './resolver/bookmark'
+import { BAD_USER_RESPONSE, BOOKMARK_DOES_NOT_EXIST_RESPONSE } from './commonResponses'
 
 //@Todo: refine and refactor response types
 
@@ -102,14 +101,3 @@ const resolvers = {
 }
 
 export default resolvers
-
-const BAD_USER_RESPONSE = {
-  message: 'The graphQL resolver did not receive a valid user.',
-  code: '400',
-  hint: 'Are you loggedIn?'
-}
-
-const BOOKMARK_DOES_NOT_EXIST_RESPONSE = {
-  message: 'This bookmark does not exist on the database.',
-  code: '409'
-}

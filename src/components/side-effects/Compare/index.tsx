@@ -97,7 +97,7 @@ const Compare = () => {
   }
 
   return (
-    <div className="flex w-full flex-col">
+    <>
       <TopBar
         columns={table.getAllLeafColumns()}
         filters={filters}
@@ -118,79 +118,83 @@ const Compare = () => {
         />
       )}
 
-      <div className="flex flex-row items-center justify-between px-6 pt-3.5">
-        <div className="flex flex-col">
-          <p className="text-12 font-medium uppercase text-gray-500">Compare</p>
-          {/* @TODO Update page title */}
-          <h1 className="text-24 font-medium">Infrastructure</h1>
-        </div>
-
-        <div>
-          <Button
-            variant="normal"
-            text="Stars"
-            Icon={FiChevronDown}
-            order="ltr"
-            textColor="white"
-          />
-        </div>
-      </div>
-
-      {!fetching && !error && data.length > 0 && (
-        <>
-          <Chart
-            datasets={data.map((project) => ({
-              id: project.id,
-              name: project.name,
-              data: project.starHistory as React.ComponentProps<typeof Chart>['datasets'][0]['data']
-            }))}
-            multipleLines
-          />
-
-          <div className="flex flex-row items-center justify-between px-6 py-3.5">
-            <div className="flex flex-col">
-              <p className="font-medium">All projects in this category</p>
-            </div>
-
-            <div className="flex flex-row items-center justify-end gap-2">
-              <Button
-                onClick={sendSlackMessage}
-                variant="normal"
-                text={slackLoading ? 'Loading...' : 'Send to Slack'}
-                Icon={FaSlack}
-                order="ltr"
-                textColor="white"
-              />
-
-              {notificationStatus === 'success' && (
-                <Banner variant="success" message="Slack notification sent" />
-              )}
-
-              {notificationStatus === 'error' && (
-                <Banner variant="error" message="Error sending notification" />
-              )}
-              <Button
-                variant="normal"
-                text="Add project to compare"
-                Icon={AiOutlinePlus}
-                order="ltr"
-                textColor="white"
-              />
-            </div>
+      <div className="flex w-full flex-col pt-[120px]">
+        <div className="flex flex-row items-center justify-between px-6 pt-3.5">
+          <div className="flex flex-col">
+            <p className="text-12 font-medium uppercase text-gray-500">Compare</p>
+            {/* @TODO Update page title */}
+            <h1 className="text-24 font-medium">Infrastructure</h1>
           </div>
-        </>
-      )}
 
-      {fetching && <Loading message="Getting trending projects for you..." />}
+          <div>
+            <Button
+              variant="normal"
+              text="Stars"
+              Icon={FiChevronDown}
+              order="ltr"
+              textColor="white"
+            />
+          </div>
+        </div>
 
-      {error && <Error />}
+        {!fetching && !error && data.length > 0 && (
+          <>
+            <Chart
+              datasets={data.map((project) => ({
+                id: project.id,
+                name: project.name,
+                data: project.starHistory as React.ComponentProps<
+                  typeof Chart
+                >['datasets'][0]['data']
+              }))}
+              multipleLines
+            />
 
-      {data.length === 0 && !error && !fetching && (
-        <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
-      )}
+            <div className="flex flex-row items-center justify-between px-6 py-3.5">
+              <div className="flex flex-col">
+                <p className="font-medium">All projects in this category</p>
+              </div>
 
-      {data.length > 0 && !error && <Table table={table} />}
-    </div>
+              <div className="flex flex-row items-center justify-end gap-2">
+                <Button
+                  onClick={sendSlackMessage}
+                  variant="normal"
+                  text={slackLoading ? 'Loading...' : 'Send to Slack'}
+                  Icon={FaSlack}
+                  order="ltr"
+                  textColor="white"
+                />
+
+                {notificationStatus === 'success' && (
+                  <Banner variant="success" message="Slack notification sent" />
+                )}
+
+                {notificationStatus === 'error' && (
+                  <Banner variant="error" message="Error sending notification" />
+                )}
+                <Button
+                  variant="normal"
+                  text="Add project to compare"
+                  Icon={AiOutlinePlus}
+                  order="ltr"
+                  textColor="white"
+                />
+              </div>
+            </div>
+          </>
+        )}
+
+        {fetching && <Loading message="Getting trending projects for you..." />}
+
+        {error && <Error />}
+
+        {data.length === 0 && !error && !fetching && (
+          <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
+        )}
+
+        {data.length > 0 && !error && <Table table={table} />}
+      </div>
+    </>
   )
 }
 

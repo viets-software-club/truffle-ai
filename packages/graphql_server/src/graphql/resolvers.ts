@@ -67,6 +67,7 @@ const resolvers = {
       }
       const userID = context.user?.id
 
+      //@Todo: updates is_bookmarked field in projects table
       return await addBookmark(userID, projectID, category)
     },
     deleteBookmark: async (

@@ -17,6 +17,7 @@ Exports:
 */
 export {
   bookmarkIsAlreadyInDB,
+  checkAndUpdateProjectBookmarkedState,
   deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
   editBookmarkCategory,
@@ -572,4 +573,23 @@ const updateSupabaseProject = async (
     .eq('owning_person', owningPersonID)
 
   return ownerUpdateError2 ? false : true
+}
+
+/**
+ *
+ */
+const checkAndUpdateProjectBookmarkedState = async (projectID: string) => {
+  const { data: bookmarkEntries, error } = await supabase
+    .from('bookmark')
+    .select('*')
+    .eq('project_id', projectID)
+
+  if (error) {
+    console.error('Error while checking bookmarked state: \n', error)
+  } else if (!bookmarkEntries) {
+    await supabase.from('project').update({ is_bookmarked: false }).eq('project_id', projectID)
+    // check if there is a bookmark entry
+  } else if (bookmarkEntries?.[0]) {
+    await supabase.from('project').update({ is_bookmarked: true }).eq('project_id', projectID)
+  }
 }

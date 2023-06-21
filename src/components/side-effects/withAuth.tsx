@@ -18,7 +18,7 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
       if (error || (!isLoading && !user)) void router.replace('/login')
     }, [error, isLoading, user])
 
-    if (isLoading || !user) return <Loading />
+    if (isLoading || !user) return <Loading fullscreen />
 
     return React.createElement(WrappedComponent, props)
   }

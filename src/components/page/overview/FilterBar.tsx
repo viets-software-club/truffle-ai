@@ -20,7 +20,7 @@ const FilterBar = ({
   setSorting,
   updateFilters
 }: FilterBarProps) => (
-  <div className="flex flex-row justify-between border-b border-gray-800 px-6 py-2.5">
+  <div className="fixed top-[60px] z-10 flex w-full flex-row justify-between border-b border-gray-800 bg-gray-900 px-6 py-2.5">
     <div className="flex flex-row gap-3">
       {/* Sorting */}
       {sorting && <SortModal sorting={sorting} setSorting={setSorting} />}

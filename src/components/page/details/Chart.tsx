@@ -159,28 +159,20 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
                       key={option.label}
                       variant="noBorderNoBG"
                       text={option.label}
-                      fullWidth
                       onClick={handleTimeframeChange(option.value)}
                     />
                   ))}
                 </Modal>
               </div>
-              <div>
-                <Button
-                  variant="normal"
-                  text="Normalize Data"
-                  fullWidth
-                  onClick={handleDataNormalization}
-                />
-              </div>
+              <Button variant="normal" text="Normalize Data" onClick={handleDataNormalization} />
             </div>
           )}
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              height={300}
+              height={310}
               margin={{
-                top: 25,
+                top: 30,
                 right: 10,
                 left: 0,
                 bottom: 5

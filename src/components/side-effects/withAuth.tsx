@@ -19,7 +19,7 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
       }
     }, [error, isLoading, user])
 
-    if (isLoading || !user) return <Loading />
+    if (isLoading || !user) return <Loading fullscreen />
 
     return React.createElement(WrappedComponent, props)
   }

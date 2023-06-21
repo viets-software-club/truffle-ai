@@ -867,6 +867,9 @@ export type Project = Node & {
   star_count: Scalars['Int']
   star_history: Scalars['String']
   websiteUrl?: Maybe<Scalars['String']>
+  relatedTwitterPosts?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  forkHistory?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  categories?: Maybe<Array<Maybe<Scalars['String']>>>
   website_url: Scalars['String']
 }
 
@@ -929,6 +932,8 @@ export type ProjectFilter = {
   pullRequestCount?: InputMaybe<IntFilter>
   starCount?: InputMaybe<IntFilter>
   websiteUrl?: InputMaybe<StringFilter>
+  forkHistory?: InputMaybe<IntFilter>
+  categories?: InputMaybe<StringFilter>
 }
 
 export type ProjectInsertInput = {
@@ -954,6 +959,9 @@ export type ProjectInsertInput = {
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
+  relatedTwitterPosts?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 }
 
 export type ProjectInsertResponse = {
@@ -984,6 +992,8 @@ export type ProjectOrderBy = {
   pullRequestCount?: InputMaybe<OrderByDirection>
   starCount?: InputMaybe<OrderByDirection>
   websiteUrl?: InputMaybe<OrderByDirection>
+  forkHistory?: InputMaybe<OrderByDirection>
+  categories?: InputMaybe<OrderByDirection>
 }
 
 export type ProjectUpdateInput = {
@@ -1009,6 +1019,9 @@ export type ProjectUpdateInput = {
   starCount?: InputMaybe<Scalars['Int']>
   starHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
   websiteUrl?: InputMaybe<Scalars['String']>
+  relatedTwitterPosts?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  forkHistory?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 }
 
 export type ProjectUpdateResponse = {
@@ -1261,6 +1274,11 @@ export type ProjectDetailsQuery = {
         languages: Array<string>
         owningPerson?: any | null
         owningOrganization?: any | null
+        hackernewsSentiment?: string | null
+        hackernewsStories?: Array<any | null> | null
+        relatedTwitterPosts?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
+        categories?: Array<any | null> | null
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
@@ -1270,12 +1288,19 @@ export type ProjectDetailsQuery = {
           email?: string | null
           githubUrl?: string | null
           twitterUsername?: string | null
+          repositoryCount?: number | null
+          websiteUrl?: string | null
         } | null
         organization?: {
           __typename?: 'Organization'
           id: any
           login?: string | null
           avatarUrl?: string | null
+          email?: string | null
+          githubUrl?: string | null
+          twitterUsername?: string | null
+          repositoryCount?: number | null
+          websiteUrl?: string | null
         } | null
       }
     }>
@@ -1354,12 +1379,17 @@ export const ProjectDetailsDocument = gql`
           forkCount
           pullRequestCount
           contributorCount
+          languages
           githubUrl
           websiteUrl
           starHistory
-          languages
           owningPerson
           owningOrganization
+          hackernewsSentiment
+          hackernewsStories
+          relatedTwitterPosts
+          forkHistory
+          categories
           associatedPerson {
             id
             name
@@ -1368,11 +1398,18 @@ export const ProjectDetailsDocument = gql`
             email
             githubUrl
             twitterUsername
+            repositoryCount
+            websiteUrl
           }
           organization {
             id
             login
             avatarUrl
+            email
+            githubUrl
+            twitterUsername
+            repositoryCount
+            websiteUrl
           }
         }
       }

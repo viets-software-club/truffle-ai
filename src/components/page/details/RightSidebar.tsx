@@ -4,9 +4,10 @@ import {
   PeopleIcon,
   PersonIcon,
   RepoForkedIcon,
-  StarIcon
+  StarIcon,
+  GitPullRequestIcon
 } from '@primer/octicons-react'
-import { founderListMock, socialMediaListMock } from '@/data/detailPageMocks'
+import { FaGithub } from 'react-icons/fa'
 import { Project } from '@/graphql/generated/gql'
 import Sidebar from '@/components/pure/Sidebar'
 import GitHubMetricIcon from './GitHubMetricIcon'
@@ -67,20 +68,47 @@ const RightSidebar = ({ project }: Props) => {
           value={project?.contributorCount as number}
           id="contributors"
         />
+        <Sidebar.Box.GithubStatItem
+          Icon={GitPullRequestIcon}
+          value={project.pullRequestCount as number}
+        />
+        <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
       </Sidebar.Box>
 
-      {/* @TODO Add real data for social media + founders */}
-      <Sidebar.Box title="Social Media">
-        {socialMediaListMock.map(({ id, ...data }) => (
-          <Sidebar.Box.SocialMediaItem key={id} {...data} />
-        ))}
-      </Sidebar.Box>
+      {project.languages?.length > 0 && (
+        <Sidebar.Box title="Languages">
+          <Sidebar.Box.LanguagesItem
+            languages={project.languages as unknown as Array<{ name: string; color: string }>}
+          />
+        </Sidebar.Box>
+      )}
 
-      <Sidebar.Box title="Founder">
-        {founderListMock.map(({ id, ...data }) => (
-          <Sidebar.Box.FounderItem key={id} {...data} />
-        ))}
-      </Sidebar.Box>
+      {(project.organization?.twitterUsername || project.organization?.websiteUrl) && (
+        <Sidebar.Box title="Company">
+          <Sidebar.Box.CompanyItem
+            twitterLink={project.organization?.twitterUsername as string}
+            websiteLink={project.organization?.websiteUrl as string}
+          />
+        </Sidebar.Box>
+      )}
+
+      {(project.organization?.name ||
+        project.associatedPerson?.name ||
+        project.associatedPerson?.githubUrl ||
+        project.associatedPerson?.email ||
+        project.associatedPerson?.twitterUsername ||
+        project.associatedPerson?.websiteUrl) && (
+        <Sidebar.Box title="Founder">
+          <Sidebar.Box.FounderItem
+            company={project.organization?.name as string}
+            name={project.associatedPerson?.name as string}
+            github={project.associatedPerson?.githubUrl as string}
+            mail={project.associatedPerson?.email as string}
+            twitter={project.associatedPerson?.twitterUsername as string}
+            website={project.associatedPerson?.websiteUrl as string}
+          />
+        </Sidebar.Box>
+      )}
 
       <Sidebar.Box title="Integrations">
         <div className="flex flex-col justify-between">

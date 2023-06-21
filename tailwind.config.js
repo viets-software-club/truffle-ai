@@ -55,7 +55,9 @@ module.exports = {
           800: '#2D2E3D',
           850: '#202231',
           900: '#1A1B24'
-        }
+        },
+        twitter: '#1DA1F2',
+        hackernews: '#FF6600'
       }
     }
   },

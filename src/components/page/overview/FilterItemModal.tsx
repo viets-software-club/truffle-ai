@@ -85,7 +85,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
           {/* Filterbar dropdown */}
           <MenuItemsTransition>
             <Popover.Panel
-              className={`absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-[5px] bg-gray-700 shadow-lg outline-none ${
+              className={`absolute left-0 z-40 mt-2 w-44 rounded-[5px] bg-gray-700 shadow-lg outline-none ${
                 open ? 'block' : 'hidden'
               }`}
             >

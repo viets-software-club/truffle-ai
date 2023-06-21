@@ -17,7 +17,7 @@ type SidebarProps = PropsWithChildren<{
  * @returns {ReactNode} Returns a sidebar component with provided footer and title, and children elements.
  */
 const Sidebar = ({ footer, ...props }: SidebarProps) => (
-  <aside className="fixed z-20 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800 bg-gray-900">
+  <aside className="fixed z-30 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800 bg-gray-900">
     <div>
       {/* Top bar with title and profile modal button */}
       <div className="flex h-[59px] w-full items-center justify-between px-7 text-gray-100">

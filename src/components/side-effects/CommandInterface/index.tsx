@@ -110,8 +110,11 @@ const CommandInterface: React.FC = () => {
     }
   }, [selectedLine])
 
+  const isMailRefEmpty = (): boolean =>
+    recommendationList.filter((item) => item.commandInterfaceOptions === 'mailto:').length !== 0
+
   useEffect(() => {
-    if (projects) {
+    if (projects && isMailRefEmpty()) {
       setRecommendationList(
         defaultList.map((item) => {
           const newItem = { ...item }
@@ -120,7 +123,7 @@ const CommandInterface: React.FC = () => {
             newItem.commandInterfaceOptions = emailTemplate(
               project?.associatedPerson?.email ?? '',
               project?.associatedPerson?.name ?? '',
-              project.name ?? ''
+              project?.name ?? ''
             )
           }
           return newItem

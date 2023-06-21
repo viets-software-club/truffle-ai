@@ -66,7 +66,7 @@ const AddProject = () => {
       />
 
       <Transition appear show={open}>
-        <Dialog as="div" open={open} onClose={toggleModal} className="fixed right-9 top-14">
+        <Dialog as="div" open={open} onClose={toggleModal} className="fixed right-9 top-14 z-20">
           <Transition.Child
             enter="ease-out duration-300"
             enterFrom="opacity-0"

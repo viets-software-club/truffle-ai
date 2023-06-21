@@ -1276,12 +1276,17 @@ export type ProjectDetailsQuery = {
         forkCount?: number | null
         pullRequestCount?: number | null
         contributorCount?: number | null
+        languages?: Array<any | null> | null
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
-        languages?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
+        hackernewsSentiment?: string | null
+        hackernewsStories?: Array<string | null> | null
+        relatedTwitterPosts?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
+        categories?: Array<string | null> | null
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
@@ -1291,12 +1296,19 @@ export type ProjectDetailsQuery = {
           email?: string | null
           githubUrl?: string | null
           twitterUsername?: string | null
+          repositoryCount?: number | null
+          websiteUrl?: string | null
         } | null
         organization?: {
           __typename?: 'Organization'
           id: any
           login?: string | null
           avatarUrl?: string | null
+          email?: string | null
+          githubUrl?: string | null
+          twitterUsername?: string | null
+          repositoryCount?: number | null
+          websiteUrl?: string | null
         } | null
       }
     }>
@@ -1386,12 +1398,17 @@ export const ProjectDetailsDocument = gql`
           forkCount
           pullRequestCount
           contributorCount
+          languages
           githubUrl
           websiteUrl
           starHistory
-          languages
           owningPerson
           owningOrganization
+          hackernewsSentiment
+          hackernewsStories
+          relatedTwitterPosts
+          forkHistory
+          categories
           associatedPerson {
             id
             name
@@ -1400,11 +1417,18 @@ export const ProjectDetailsDocument = gql`
             email
             githubUrl
             twitterUsername
+            repositoryCount
+            websiteUrl
           }
           organization {
             id
             login
             avatarUrl
+            email
+            githubUrl
+            twitterUsername
+            repositoryCount
+            websiteUrl
           }
         }
       }

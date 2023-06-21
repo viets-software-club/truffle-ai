@@ -75,7 +75,7 @@ const ProjectsTable = () => {
   })
 
   return (
-    <div className="flex w-full flex-col">
+    <>
       <TopBar
         columns={table.getAllLeafColumns()}
         filters={filters}
@@ -98,14 +98,18 @@ const ProjectsTable = () => {
         />
       )}
 
-      {fetching && <Loading message="Getting trending projects for you..." />}
+      <div className="flex w-full flex-col pt-[120px]">
+        {fetching && <Loading />}
 
-      {error && <Error />}
-      {data.length > 0 && !error && <Table table={table} />}
-      {urqlData?.projectCollection?.edges?.length === 0 && !error && !fetching && (
-        <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
-      )}
-    </div>
+        {error && <Error />}
+
+        {data.length === 0 && !error && !fetching && (
+          <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
+        )}
+
+        {data.length > 0 && !error && <Table table={table} />}
+      </div>
+    </>
   )
 }
 

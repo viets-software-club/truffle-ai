@@ -6,17 +6,18 @@ enum Color {
   GREEN = 'text-green',
   RED = 'text-red'
 }
+
 type GithubStatItemProps = {
   Icon?: IconComponentType
   IconMetric?: ReactNode
-  value: number
+  value?: number
   growth?: string
   paddingOn?: boolean
   outerPaddingOn?: boolean
-  hoverOn?: boolean
   greenValue?: number
   redValue?: number
   largeGap?: boolean
+  link?: string
 }
 
 const GithubStatItem = ({
@@ -26,15 +27,15 @@ const GithubStatItem = ({
   IconMetric,
   paddingOn,
   outerPaddingOn,
-  hoverOn,
   greenValue,
   redValue,
-  largeGap
+  largeGap,
+  link
 }: GithubStatItemProps) => {
   let color = Color.DEFAULT
-  if (greenValue !== undefined && value > greenValue) {
+  if (greenValue !== undefined && value !== undefined && value > greenValue) {
     color = Color.GREEN
-  } else if (redValue !== undefined && value < redValue) {
+  } else if (redValue !== undefined && value !== undefined && value < redValue) {
     color = Color.RED
   }
 
@@ -42,17 +43,20 @@ const GithubStatItem = ({
 
   return (
     <div className="flex flex-col justify-between">
-      <div
-        className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5 ${
-          hoverOn ? 'transition-colors duration-100 hover:bg-gray-850' : ''
-        }`}
-      >
-        <div className={`flex flex-row items-center justify-center ${gap}`}>
+      <div className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5`}>
+        <div className={`flex flex-row items-center justify-center text-xs ${gap}`}>
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
-          <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
-            {formatNumber(value)}
-          </span>
+          {value && (
+            <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
+              {formatNumber(value)}
+            </span>
+          )}
+          {link && (
+            <a href={link} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+          )}
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}
         </div>
       </div>
@@ -62,14 +66,15 @@ const GithubStatItem = ({
 
 GithubStatItem.defaultProps = {
   Icon: undefined,
+  value: undefined,
   IconMetric: undefined,
   growth: undefined,
   outerPaddingOn: true,
   paddingOn: true,
-  hoverOn: true,
   greenValue: 100,
   redValue: 0,
-  largeGap: false
+  largeGap: false,
+  link: undefined
 }
 
 export default GithubStatItem

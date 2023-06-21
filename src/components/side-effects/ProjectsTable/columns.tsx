@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
@@ -27,7 +28,7 @@ const columns = [
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name}`,
+      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
     {
       id: 'Name',
       header: 'Name',
@@ -55,7 +56,6 @@ const columns = [
         Icon={AiOutlineStar}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -70,7 +70,6 @@ const columns = [
         Icon={VscIssues}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -85,7 +84,6 @@ const columns = [
         Icon={AiOutlineFork}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -100,7 +98,6 @@ const columns = [
         Icon={BsPeople}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -122,14 +119,13 @@ const columns = [
   // PR column definition
   columnHelper.accessor('pullRequestCount', {
     id: 'PR',
-    header: 'PR',
+    header: 'Open PRs',
     enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={GoGitPullRequest}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import Link from 'next/link'
 import { useReactTable, flexRender } from '@tanstack/react-table'
 import { Project } from '@/graphql/generated/gql'
@@ -41,7 +42,7 @@ const Table = ({ table }: TableProps) => (
                   isLastChild ? 'rounded-r-lg' : ''
                 }`}
               >
-                <Link href={`/details/${row.original.id}`}>
+                <Link href={`/details/${row.original.id as string}`}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Link>
               </td>

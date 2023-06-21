@@ -14,7 +14,6 @@ export const addProject = async (repoName: string, owner: string, bookmarkCatego
     if (insertionError) {
       return false
     } else {
-      console.log('inserted project', repoName, 'owned by', owner)
       // update all the data sources. trending state may be null
       // no await so that the return happens faster
       void updateAllProjectInfo(repoName, owner, null)

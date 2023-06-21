@@ -10,6 +10,7 @@ import {
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
 import { addProject } from './resolver/addProject'
+import { addBookmark } from './resolver/bookmark'
 
 //@Todo: refine and refactor response types
 
@@ -43,19 +44,8 @@ const resolvers = {
         return BAD_USER_RESPONSE
       }
       const userID = context.user?.id
-      if (await bookmarkIsAlreadyInDB(userID, projectID)) {
-        return {
-          message: 'This bookmark is already in the database.',
-          code: '409'
-        }
-      }
 
-      const insertionError = await insertBookmark(projectID, userID, category)
-      return insertionError
-        ? insertionError
-        : {
-            code: '204'
-          }
+      return await addBookmark(userID, projectID, category)
     },
     deleteBookmark: async (
       _parent: unknown,

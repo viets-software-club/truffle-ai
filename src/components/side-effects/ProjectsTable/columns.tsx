@@ -55,7 +55,6 @@ const columns = [
         Icon={AiOutlineStar}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -70,7 +69,6 @@ const columns = [
         Icon={VscIssues}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -85,7 +83,6 @@ const columns = [
         Icon={AiOutlineFork}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -100,7 +97,6 @@ const columns = [
         Icon={BsPeople}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -122,14 +118,13 @@ const columns = [
   // PR column definition
   columnHelper.accessor('pullRequestCount', {
     id: 'PR',
-    header: 'PR',
+    header: 'Open PRs',
     enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={GoGitPullRequest}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )

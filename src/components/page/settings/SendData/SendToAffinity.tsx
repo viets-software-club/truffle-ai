@@ -60,7 +60,7 @@ const SendToAffinity = (props: SendToAffinityProps) => {
     <div className="flex flex-col items-start gap-[15px]">
       <Button
         variant="normal"
-        text={affinityLoading ? 'Loading...' : 'Add to Affinity'}
+        text={affinityLoading ? 'Loading...' : 'Send to Affinity'}
         onClick={handleClickWrapper}
       />
       {notificationStatus === 'success' && (

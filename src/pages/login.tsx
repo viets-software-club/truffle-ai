@@ -62,7 +62,7 @@ const Login = () => {
   if (user) void router.replace('/')
 
   // Show loading spinner if session state is still loading
-  if (sessionLoading) return <Loading />
+  if (sessionLoading) return <Loading fullscreen />
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-radial-gradient">

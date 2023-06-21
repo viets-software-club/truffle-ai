@@ -159,20 +159,12 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
                       key={option.label}
                       variant="noBorderNoBG"
                       text={option.label}
-                      fullWidth
                       onClick={handleTimeframeChange(option.value)}
                     />
                   ))}
                 </Modal>
               </div>
-              <div>
-                <Button
-                  variant="normal"
-                  text="Normalize Data"
-                  fullWidth
-                  onClick={handleDataNormalization}
-                />
-              </div>
+              <Button variant="normal" text="Normalize Data" onClick={handleDataNormalization} />
             </div>
           )}
 

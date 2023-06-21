@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable react/jsx-props-no-spreading */
 import {
   IssueOpenedIcon,
@@ -25,8 +26,7 @@ const RightSidebar = ({ project }: Props) => {
   const affinityListID = localStorage.getItem('affinityListId')
 
   const sendToAffinityProps: SendToAffinityProps = {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    name: project.name as Project['name'],
+    name: project.name as string,
     stars: project.starCount as number,
     forks: project.forkCount as number,
     contributors: project.contributorCount as number,

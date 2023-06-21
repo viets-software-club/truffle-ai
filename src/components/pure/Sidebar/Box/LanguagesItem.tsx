@@ -9,7 +9,7 @@ const LanguagesItem = ({ languages }: LanguagesProps) => (
         {languages.map((language) => (
           <div key={language.name} className="flex items-center gap-[5px]">
             <div
-              className="h-[12px] w-[12px] rounded-full"
+              className="h-[12px] w-[12px] rounded-full border border-gray-100/20"
               style={{ backgroundColor: language.color }}
             />
             {language.name}

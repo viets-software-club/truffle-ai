@@ -39,7 +39,8 @@ export const addProject = async (
         }
       void addBookmark(userID, projectID, bookmarkCategory)
       return {
-        code: '201'
+        code: '201',
+        message: 'The project was added and bookmarked. We are fetching data for it now.'
       }
     }
   }

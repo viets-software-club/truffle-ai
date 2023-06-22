@@ -1,8 +1,8 @@
-const emailTemplate = (email: string, founderName: string, companyName: string) => {
-  const subject = `La Famiglia x ${companyName}`
+const emailTemplate = (email: string, founderName: string, projectName: string) => {
+  const subject = `La Famiglia x ${projectName}`
   const body = `Dear ${founderName},
   
-I hope you're well. I saw you're the mastermind behind ${companyName}, and I had to reach out.
+I hope you're well. I saw you're the mastermind behind ${projectName}, and I had to reach out.
   
 I'm a former ML researcher (in federated learning) + data scientist at Amazon turned VC at La Famiglia (early-stage investor of Deel, Personio, Applied Intuition, Groq, Abacus AI, Stripe, etc.).
   

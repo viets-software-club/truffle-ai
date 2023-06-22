@@ -12,18 +12,23 @@ const SORT_BY_REPLIES = 'replies'
  * @returns An array of the TwitterPosts
  */
 export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[] | null> {
-  const { data } = await axios.get<TwitterSearchResponse>(
-    'https://api.scraperapi.com/structured/twitter/v2/search',
-    {
-      params: {
-        api_key: apiKey,
-        query: hashtag
+  try {
+    const { data } = await axios.get<TwitterSearchResponse>(
+      'https://api.scraperapi.com/structured/twitter/v2/search',
+      {
+        params: {
+          api_key: apiKey,
+          query: hashtag
+        }
       }
-    }
-  )
-  if (!data.tweets || !Array.isArray(data.tweets)) return null
+    )
+    if (!data.tweets || !Array.isArray(data.tweets)) return null
 
-  return mapToTwitterPosts(data.tweets)
+    return mapToTwitterPosts(data.tweets)
+  } catch (error) {
+    console.log(error)
+    return null
+  }
 }
 
 /**

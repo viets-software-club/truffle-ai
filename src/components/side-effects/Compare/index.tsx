@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useUser } from '@supabase/auth-helpers-react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -20,16 +21,19 @@ import {
   Project,
   ProjectFilter,
   ProjectOrderBy,
-  useTrendingProjectsQuery
+  useAllBookmarksQuery
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
 import sendSlackNotification from '@/util/sendSlackNotification'
 
+type CompareProps = {
+  category: string
+}
+
 /**
  * Compare projects component
  */
-// @TODO Get id from props to fetch category title & projects from DB
-const Compare = () => {
+const Compare = ({ category }: CompareProps) => {
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
@@ -39,22 +43,24 @@ const Compare = () => {
   const [slackLoading, setSlackLoading] = useState(false)
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
 
+  const user = useUser()
+
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
   }
 
-  // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
+  // Fetches all bookmarks of a user in the given category
+  const [{ data: urqlData, fetching, error }] = useAllBookmarksQuery({
     variables: {
-      orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters
+      userId: user?.id as string,
+      category
     }
   })
 
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+      setData(urqlData?.bookmarkCollection?.edges?.map((edge) => edge.node.project) as Project[])
     }
   }, [urqlData])
 
@@ -84,7 +90,7 @@ const Compare = () => {
       .getRowModel()
       .rows.map(
         (row) =>
-          `- <${row.original.githubUrl as string}|${row.original.name}>, ${
+          `- <${row.original.githubUrl as string}|${row.original.name as string}>, ${
             row.original.starCount as number
           } stars`
       )
@@ -124,7 +130,7 @@ const Compare = () => {
         <div className="flex flex-row items-center justify-between px-6 pt-3.5">
           <div className="flex flex-col">
             <p className="text-12 font-medium uppercase text-gray-500">Compare</p>
-            <h1 className="text-24 font-medium">Infrastructure</h1>
+            <h1 className="text-24 font-medium">{category}</h1>
           </div>
 
           <div className="flex flex-row items-center justify-end gap-2">
@@ -159,8 +165,8 @@ const Compare = () => {
           <>
             <Chart
               datasets={data.map((project) => ({
-                id: project.id,
-                name: project.name,
+                id: project.id as string,
+                name: project.name as string,
                 data: project.starHistory as React.ComponentProps<
                   typeof Chart
                 >['datasets'][0]['data']

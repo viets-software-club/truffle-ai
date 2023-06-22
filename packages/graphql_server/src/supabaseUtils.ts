@@ -664,6 +664,7 @@ const updateSupabaseProject = async (
   if (!(await repoIsAlreadyInDB(name, owner))) {
     return false
   }
+
   const owningOrganizationID = await getOrganizationID(owner)
 
   const { error: ownerUpdateError } = await supabase

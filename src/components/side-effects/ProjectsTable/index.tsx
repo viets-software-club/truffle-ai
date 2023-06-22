@@ -101,8 +101,8 @@ const ProjectsTable = () => {
   // Fetch data from Supabase using generated Urql hook for total count
   const [{ data: urqlDataTotal }] = useTrendingProjectsQuery({
     variables: {
-      orderBy: defaultSort,
-      filter: defaultFilters
+      orderBy: sorting || defaultSort,
+      filter: filters || defaultFilters
     }
   })
 

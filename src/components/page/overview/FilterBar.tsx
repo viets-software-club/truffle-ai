@@ -70,22 +70,24 @@ const FilterBar = ({
 
       {/* Row count */}
       <div className="flex flex-row items-center">
-        <div className="mr-2 flex gap-3">
-          <Button
-            disabled={!pageInfo.hasPreviousPage}
-            onClick={handleClickLeft}
-            variant="onlyIcon"
-            Icon={ChevronLeft}
-            iconColor={!pageInfo.hasPreviousPage ? 'text-gray-600' : 'text-white-600'}
-          />
-          <Button
-            disabled={!pageInfo.hasNextPage}
-            onClick={handleClickRight}
-            variant="onlyIcon"
-            Icon={ChevronRight}
-            iconColor={!pageInfo.hasNextPage ? 'text-gray-600' : 'text-white-600'}
-          />
-        </div>
+        {totalEntries > 1 && (
+          <div className="mr-2 flex gap-3">
+            <Button
+              disabled={!pageInfo.hasPreviousPage}
+              onClick={handleClickLeft}
+              variant="onlyIcon"
+              Icon={ChevronLeft}
+              iconColor={!pageInfo.hasPreviousPage ? 'text-gray-600' : 'text-white-600'}
+            />
+            <Button
+              disabled={!pageInfo.hasNextPage}
+              onClick={handleClickRight}
+              variant="onlyIcon"
+              Icon={ChevronRight}
+              iconColor={!pageInfo.hasNextPage ? 'text-gray-600' : 'text-white-600'}
+            />
+          </div>
+        )}
         <p className="text-14">Showing {currentEntries}&nbsp;</p>
         <p className="text-14 text-gray-500">/&nbsp;{totalEntries} entries</p>
       </div>

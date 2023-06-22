@@ -7,10 +7,17 @@ import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery, useProjectIdsQuery } from '@/graphql/generated/gql'
+import {
+  Bookmark,
+  Project,
+  useBookmarkIdsQuery,
+  useProjectDetailsQuery,
+  useProjectIdsQuery
+} from '@/graphql/generated/gql'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import { defaultSort, defaultFilters } from '@/components/page/overview/types'
 import Card from '@/components/pure/Card'
+import { useUser } from '@supabase/auth-helpers-react'
 
 type DetailsProps = {
   id: string
@@ -20,23 +27,47 @@ type DetailsProps = {
  * Project detail component
  */
 const Details = ({ id }: DetailsProps) => {
+  // States for navigation between projects
+  const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
+  const [previousProjectId, setPreviousProjectId] = useState<string>()
+  const [nextProjectId, setNextProjectId] = useState<string>()
+
+  // User data from Supabase auth session
+  const user = useUser()
+
+  /**
+   * Get project details data using generated hook (returns array with 1 project if successful).
+   * @param {string} id - The ID of the project for which to fetch details.
+   * @returns {[{ data: any, fetching: boolean, error: any }]} Data is the data containing trending projects.
+   * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
+   * Error contains any error information if the query encounters an error during the fetch.
+   */
+  const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
+
+  const [{ data: bookmarkIds }] = useBookmarkIdsQuery({
+    variables: { userId: user?.id as string, projectId: id }
+  })
+
   // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
   // + add proper pagination
-  const [{ data: tpData }] = useProjectIdsQuery({
+  const [{ data: projectIds }] = useProjectIdsQuery({
     variables: {
       orderBy: defaultSort,
       filter: defaultFilters
     }
   })
 
-  const projects = tpData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  // First entry of returned collection contains project details
+  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
+  // List of all project IDs for navigation
+  const projects = projectIds?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  // Array of length 1 with bookmark details if bookmarked, otherwise empty array
+  const bookmarks = bookmarkIds?.bookmarkCollection?.edges?.map((edge) => edge.node) as Bookmark[]
 
-  const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
-  const [previousProjectId, setPreviousProjectId] = useState<string>()
-  const [nextProjectId, setNextProjectId] = useState<string>()
+  const isBookmarked = bookmarks?.length > 0 && bookmarks[0].project?.id === id
 
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
-    const currentIndex = projectList.findIndex((project) => project.id === currentId)
+    const currentIndex = projectList.findIndex((p) => p.id === currentId)
 
     const newPreviousProjectId =
       currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
@@ -56,18 +87,6 @@ const Details = ({ id }: DetailsProps) => {
       updateProjectIndices(id, projects)
     }
   }, [projects, id])
-
-  /**
-   * Get project details data using generated hook (returns array with 1 project if successful).
-   * @param {string} id - The ID of the project for which to fetch details.
-   * @returns {[{ data: any, fetching: boolean, error: any }]} Data is the data containing trending projects.
-   * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
-   * Error contains any error information if the query encounters an error during the fetch.
-   */
-  const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
-
-  // Get first entry of returned collection
-  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
 
   // Display loading/ error messages conditionally
   if (fetching) return <Loading fullscreen />
@@ -130,6 +149,7 @@ const Details = ({ id }: DetailsProps) => {
             explanation={project.eli5 || 'No explanation'}
             about={project.about || 'No description'}
             categories={project.categories as string[]}
+            isBookmarked={isBookmarked}
           />
 
           <Chart

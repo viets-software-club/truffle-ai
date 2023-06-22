@@ -14,6 +14,7 @@ type ProjectInformationProps = {
   explanation: string
   about: string
   categories: string[]
+  isBookmarked: boolean
 }
 
 /**
@@ -26,7 +27,8 @@ const ProjectInformation = ({
   name,
   explanation,
   about,
-  categories
+  categories,
+  isBookmarked
 }: ProjectInformationProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [slackLoading, setSlackLoading] = useState(false)
@@ -87,7 +89,7 @@ const ProjectInformation = ({
 
           <Button
             variant="normal"
-            text="Bookmark"
+            text={isBookmarked ? 'Edit bookmark' : 'Bookmark'}
             Icon={Bookmark}
             onClick={() => {
               // @TODO Implement bookmark functionality

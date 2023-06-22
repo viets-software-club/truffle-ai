@@ -16,6 +16,7 @@ export {
   deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
   deleteStaleOrganizations,
+  deleteStaleAssociatedPersons,
   editBookmarkCategory,
   formatLinkedInCompanyData,
   formatGithubStats,
@@ -104,6 +105,24 @@ const deleteStaleOrganizations = async () => {
   }
 }
 
+const deleteStaleAssociatedPersons = async () => {
+  const { data: associatedPersons } = await supabase.from('associated_person').select('login')
+
+  if (!associatedPersons?.length) return
+
+  for (const associatedPersonLogin of associatedPersons.map(
+    (associatedPerson) => associatedPerson.login
+  )) {
+    if (!associatedPersonLogin) continue
+    const ownedByPerson = await getListOfProjectsOwnedByUser(associatedPersonLogin)
+    const foundedByPerson = await getListOfProjectsFoundedByUser(associatedPersonLogin)
+
+    if (!ownedByPerson?.length && !foundedByPerson?.length) {
+      await supabase.from('associated_person').delete().eq('login', associatedPersonLogin)
+    }
+  }
+}
+
 /**
  * Edits the category for a bookmark on the database
  * @param {string} userID - The user ID of the user in question.
@@ -168,7 +187,7 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
 
 const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
   const personID = await getPersonID(githubUsername)
-  console.log(personID)
+
   const { data: projects } = await supabase
     .from('founded_by')
     .select('project_id')

@@ -87,6 +87,10 @@ const deleteBookmark = async (userID: string, projectID: string) => {
   return error
 }
 
+/**
+ * Deletes organizations from the db, that do not own projects anymore.
+ * Probably because the projects owned by the organizations are not trending anymore and got deleted.
+ */
 const deleteStaleOrganizations = async () => {
   // get the login not the name!
   const { data: organizations } = await supabase.from('organization').select('login')
@@ -105,6 +109,10 @@ const deleteStaleOrganizations = async () => {
   }
 }
 
+/**
+ * Deletes associatedPersons from the db, that do not own projects anymore.
+ * Probably because the projects owned or founded by the person are not trending anymore and got deleted.
+ */
 const deleteStaleAssociatedPersons = async () => {
   const { data: associatedPersons } = await supabase.from('associated_person').select('login')
 
@@ -185,6 +193,11 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
   }
 }
 
+/**
+ * Gets a list of projects founded by the given user as specified by the founded_by table.
+ * @param {string} githubUsername - The username (login) of the user in question.
+ * @returns {String[] | null} The list of project ids (can be an empty list) or null if there was an problem during the process.
+ */
 const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
   const personID = await getPersonID(githubUsername)
 
@@ -196,6 +209,11 @@ const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
   return projects?.map((project) => project.project_id) ?? null
 }
 
+/**
+ * Gets a list of projects owned by the given user
+ * @param {string} githubUsername - The username (login) of the user in question.
+ * @returns {String[] | null} The list of project ids (can be an empty list) or null if there was an problem during the process.
+ */
 const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
   const personID = await getPersonID(githubUsername)
   const { data: projects } = await supabase
@@ -206,6 +224,11 @@ const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
   return projects?.map((project) => project.id) ?? null
 }
 
+/**
+ * Gets a list of projects owned by the given organization
+ * @param {string} githubUsername - The username (login) of the user in question.
+ * @returns {String[] | null} The list of project ids (can be an empty list) or null if there was an problem during the process.
+ */
 const getListOfProjectsOwnedByOrganization = async (githubOrganizationName: string) => {
   const organizationID = await getOrganizationID(githubOrganizationName)
   const { data: projects } = await supabase

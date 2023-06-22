@@ -38,10 +38,13 @@ const Details = ({ id }: DetailsProps) => {
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
     const currentIndex = projectList.findIndex((project) => project.id === currentId)
 
-    const newPreviousProjectId = currentIndex > 0 ? projectList[currentIndex - 1].id : undefined
+    const newPreviousProjectId =
+      currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
 
     const newNextProjectId =
-      currentIndex < projectList.length - 1 ? projectList[currentIndex + 1].id : undefined
+      currentIndex < projectList.length - 1
+        ? (projectList[currentIndex + 1].id as string)
+        : undefined
 
     setCurrentProjectIndex(currentIndex)
     setPreviousProjectId(newPreviousProjectId)
@@ -122,7 +125,7 @@ const Details = ({ id }: DetailsProps) => {
             }
             name={`${
               (project.organization?.login || project.associatedPerson?.login) as string
-            } / ${project.name}`}
+            } / ${project.name as string}`}
             url={project.githubUrl as string}
             explanation={project.eli5 || 'No explanation'}
             about={project.about || 'No description'}
@@ -132,8 +135,8 @@ const Details = ({ id }: DetailsProps) => {
           <Chart
             datasets={[
               {
-                id: project.id,
-                name: project.name,
+                id: project.id as string,
+                name: project.name as string,
                 data: project.starHistory as React.ComponentProps<
                   typeof Chart
                 >['datasets'][0]['data']
@@ -149,7 +152,7 @@ const Details = ({ id }: DetailsProps) => {
                 name="Top Tweets"
                 tweets={project.relatedTwitterPosts ?? undefined}
                 variant="twitter"
-                key={project.id}
+                key={project.id as string}
               />
             </div>
 
@@ -160,7 +163,7 @@ const Details = ({ id }: DetailsProps) => {
                 communitySentiment={project.hackernewsSentiment ?? undefined}
                 links={project.hackernewsStories as string[]}
                 variant="hackernews"
-                key={project.id}
+                key={project.id as string}
               />
             </div>
           </div>

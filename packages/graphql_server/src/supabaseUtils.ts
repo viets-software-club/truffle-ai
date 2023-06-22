@@ -1,4 +1,4 @@
-import supabase from './supabase'
+import supabaseClient from './supabaseClient'
 import { getOrganizationInfo, getUserInfo } from './api/githubApi'
 import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
 import { LinkedInCompanyProfile } from '../types/linkedInScraping'
@@ -41,7 +41,7 @@ export {
  * @param {string} projectID - The project ID of the project in question.
  */
 const bookmarkIsAlreadyInDB = async (userID: string, projectID: string) => {
-  const { data } = await supabase
+  const { data } = await supabaseClient
     .from('bookmark')
     .select()
     .eq('user_id', userID)
@@ -54,7 +54,7 @@ const bookmarkIsAlreadyInDB = async (userID: string, projectID: string) => {
  * Deletes all projects that are neither trending nor bookmarked.
  */
 const deleteNotTrendingAndNotBookmarkedProjects = async () => {
-  const { error: deletionError } = await supabase
+  const { error: deletionError } = await supabaseClient
     .from('project')
     .delete()
     .eq('is_bookmarked', false)
@@ -79,7 +79,7 @@ const deleteNotTrendingAndNotBookmarkedProjects = async () => {
  * @returns {PostgrestError} The error which might happen during the request.
  */
 const deleteBookmark = async (userID: string, projectID: string) => {
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from('bookmark')
     .delete()
     .eq('user_id', userID)
@@ -95,7 +95,7 @@ const deleteBookmark = async (userID: string, projectID: string) => {
  * @returns {PostgrestError} The error which might happen during the request.
  */
 const editBookmarkCategory = async (userID: string, projectID: string, newCategory: string) => {
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from('bookmark')
     .update({ category: newCategory })
     .eq('user_id', userID)
@@ -156,7 +156,7 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
  * @returns {ProjectInfo[]} staleProjectsFormatted - A list of stale projects that are either trending or bookmarked
  */
 const getNotTrendingAndNotBookmarkedProjects = async () => {
-  const { data: staleProjects } = await supabase
+  const { data: staleProjects } = await supabaseClient
     .from('project')
     .select('*')
     .eq('is_bookmarked', false)
@@ -178,14 +178,14 @@ const getNotTrendingAndNotBookmarkedProjects = async () => {
       ownerID = staleProject.owning_person
 
       //get the personName from the database
-      const { data: owningPerson } = await supabase
+      const { data: owningPerson } = await supabaseClient
         .from('associated_person')
         .select('login')
         .eq('id', ownerID)
       ownerLogin = owningPerson?.[0]?.login || ''
     } else {
       // if it is a organization get the name from the database
-      const { data: owningOrga } = await supabase
+      const { data: owningOrga } = await supabaseClient
         .from('organization')
         .select('login')
         .eq('id', ownerID)
@@ -208,7 +208,7 @@ const getNotTrendingAndNotBookmarkedProjects = async () => {
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
 const getOrganizationID = async (owner: string) => {
-  const { data: organization, error: organizationRetrievalError } = await supabase
+  const { data: organization, error: organizationRetrievalError } = await supabaseClient
     .from('organization')
     .select('id')
     .eq('login', owner)
@@ -258,13 +258,13 @@ const getOrganizationID = async (owner: string) => {
     github_url: organizationGHData.url
   }
 
-  const { error: organizationInsertionError } = await supabase
+  const { error: organizationInsertionError } = await supabaseClient
     .from('organization')
     .insert([organizationDataDBFormat])
   organizationInsertionError &&
     console.error('Error inserting organization into database: \n', organizationInsertionError)
 
-  const { data: orga } = await supabase.from('organization').select('id').eq('login', owner)
+  const { data: orga } = await supabaseClient.from('organization').select('id').eq('login', owner)
 
   if (orga?.[0]?.id) {
     return orga[0].id
@@ -280,7 +280,7 @@ const getOrganizationID = async (owner: string) => {
  * @returns {string} The id of the organization or null if the organization does not exist.
  */
 const getPersonID = async (owner: string) => {
-  const { data: existingPerson, error: personRetrievalError } = await supabase
+  const { data: existingPerson, error: personRetrievalError } = await supabaseClient
     .from('associated_person')
     .select('id')
     .eq('login', owner)
@@ -324,13 +324,16 @@ const getPersonID = async (owner: string) => {
     github_url: userGHData.url
   }
 
-  const { error: personInsertionError } = await supabase
+  const { error: personInsertionError } = await supabaseClient
     .from('associated_person')
     .insert([personDataDBFormat])
   personInsertionError &&
     console.error('Error inserting organization into database: \n', personInsertionError)
 
-  const { data: person } = await supabase.from('associated_person').select('id').eq('login', owner)
+  const { data: person } = await supabaseClient
+    .from('associated_person')
+    .select('id')
+    .eq('login', owner)
 
   return person?.[0]?.id ? person[0].id : null
 }
@@ -352,7 +355,7 @@ const getProjectID = async (name: string, owner: string) => {
       return null
     }
 
-    const { data: projects } = await supabase
+    const { data: projects } = await supabaseClient
       .from('project')
       .select('id')
       .eq('owning_person', ownerID)
@@ -361,7 +364,7 @@ const getProjectID = async (name: string, owner: string) => {
   }
 
   // if the organization id is not null try to get the project id
-  const { data: projects } = await supabase
+  const { data: projects } = await supabaseClient
     .from('project')
     .select('id')
     .eq('owning_organization', ownerID)
@@ -375,7 +378,7 @@ const getProjectID = async (name: string, owner: string) => {
  */
 const getTrendingAndBookmarkedProjects = async () => {
   // or syntax see here: https://supabase.com/docs/reference/javascript/or
-  const { data: validProjects } = await supabase
+  const { data: validProjects } = await supabaseClient
     .from('project')
     .select('*')
     .or(
@@ -395,14 +398,14 @@ const getTrendingAndBookmarkedProjects = async () => {
       ownerID = validProject.owning_person
 
       //get the personName from the database
-      const { data: owningPerson } = await supabase
+      const { data: owningPerson } = await supabaseClient
         .from('associated_person')
         .select('login')
         .eq('id', ownerID)
       ownerLogin = owningPerson?.[0]?.login || ''
     } else {
       // if it is a organization get the name from the database
-      const { data: owningOrga } = await supabase
+      const { data: owningOrga } = await supabaseClient
         .from('organization')
         .select('login')
         .eq('id', ownerID)
@@ -426,7 +429,7 @@ const getTrendingAndBookmarkedProjects = async () => {
  * @returns {PostgrestError} The error which might happen during the request.
  */
 const insertBookmark = async (projectID: string, userID: string, category: string) => {
-  const { error } = await supabase.from('bookmark').insert({
+  const { error } = await supabaseClient.from('bookmark').insert({
     project_id: projectID,
     user_id: userID,
     category: category
@@ -440,7 +443,7 @@ const insertBookmark = async (projectID: string, userID: string, category: strin
  * contributor_count comparison because I want to target all rows but have to specify a filter
  */
 const purgeTrendingState = async () => {
-  const { error: supabaseError } = await supabase
+  const { error: supabaseError } = await supabaseClient
     .from('project')
     .update({ is_trending_daily: false, is_trending_weekly: false, is_trending_monthly: false })
     .neq('contributor_count', -1000)
@@ -455,7 +458,7 @@ const purgeTrendingState = async () => {
  */
 const repoIsAlreadyInDB = async (name: string, owner: string) => {
   // check if there are repositories with the same name
-  const { data: matchingRepos, error: checkRepoIfRepoInDBError } = await supabase
+  const { data: matchingRepos, error: checkRepoIfRepoInDBError } = await supabaseClient
     .from('project')
     .select('*')
     .eq('name', name)
@@ -473,7 +476,7 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
   for (const repo of matchingRepos) {
     // if the owner is an organization
     if (repo.owning_organization) {
-      const { data: owning_organization } = await supabase
+      const { data: owning_organization } = await supabaseClient
         .from('organization')
         .select('*')
         .eq('id', repo.owning_organization)
@@ -481,7 +484,7 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
       // the owner has the same name -> the repo is already in the database
       if (owning_organization?.[0]?.login === owner) return true
     } else {
-      const { data: owning_person } = await supabase
+      const { data: owning_person } = await supabaseClient
         .from('associated_person')
         .select('*')
         .eq('id', repo.owning_person)
@@ -501,7 +504,7 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
  * @returns {PostgrestError} The error which might happen during the request.
  */
 const renameBookmarkCategory = async (userID: string, oldCategory: string, newCategory: string) => {
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from('bookmark')
     .update({ category: newCategory })
     .eq('user_id', userID)
@@ -557,7 +560,7 @@ const updateSupabaseProject = async (
   }
   const owningOrganizationID = await getOrganizationID(owner)
 
-  const { error: ownerUpdateError } = await supabase
+  const { error: ownerUpdateError } = await supabaseClient
     .from('project')
     .update(updatedProject)
     .eq('name', name)
@@ -565,7 +568,7 @@ const updateSupabaseProject = async (
 
   if (!ownerUpdateError) return true
   const owningPersonID = await getPersonID(owner)
-  const { error: ownerUpdateError2 } = await supabase
+  const { error: ownerUpdateError2 } = await supabaseClient
     .from('project')
     .update(updatedProject)
     .eq('name', name)

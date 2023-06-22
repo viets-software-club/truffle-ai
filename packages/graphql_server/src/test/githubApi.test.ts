@@ -14,9 +14,10 @@ export async function testGetContributorCount(owner: string, repo: string) {
 async function fetchTrendingRepoFounders() {
   const repos = await fetchTrendingRepos('daily')
   for (let i = 0; i < repos.length - 1; i += 2) {
-    const currentString: string = repos[i]
-    const nextString: string = repos[i + 1]
-    void getRepoFounders(currentString, nextString).then((r) => console.log(r))
+    const owner = repos[i]
+    const name = repos[i + 1]
+    console.log(owner, name)
+    void getRepoFounders(owner, name).then((r) => console.log(r))
   }
 }
 

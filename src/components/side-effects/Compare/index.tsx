@@ -74,6 +74,9 @@ const Compare = ({ category }: CompareProps) => {
         orderBy: sorting || defaultSort,
         filter: {
           ...(filters || defaultFilters),
+          isTrendingDaily: null,
+          isTrendingWeekly: null,
+          isTrendingMonthly: null,
           id: {
             in: bookmarkIds
           }

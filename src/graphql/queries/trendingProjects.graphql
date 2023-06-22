@@ -12,6 +12,7 @@ query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
         githubUrl
         websiteUrl
         starHistory
+        forkHistory
         owningPerson
         owningOrganization
         associatedPerson {

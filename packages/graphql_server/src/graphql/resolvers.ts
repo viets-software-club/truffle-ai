@@ -1,4 +1,3 @@
-import { createProject } from '../dbUpdater'
 import {
   bookmarkIsAlreadyInDB,
   checkAndUpdateProjectBookmarkedState,

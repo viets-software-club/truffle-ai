@@ -1,4 +1,4 @@
-import { exposeProjectsData } from './resolver/projects'
+import { createProject } from '../dbUpdater'
 import {
   bookmarkIsAlreadyInDB,
   checkAndUpdateProjectBookmarkedState,
@@ -20,10 +20,7 @@ import {
 
 const resolvers = {
   Query: {
-    helloWorld: () => 'Hello world!',
-    allProjects: async () => {
-      return await exposeProjectsData()
-    }
+    helloWorld: () => 'Hello world!'
   },
   Mutation: {
     // takes in variables. Parent object _ is never used

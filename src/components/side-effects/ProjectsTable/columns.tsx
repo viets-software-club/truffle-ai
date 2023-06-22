@@ -26,7 +26,7 @@ const columns = [
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name?.toString() || ''}`,
+      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
     {
       id: 'Name',
       header: 'Name',

@@ -1,4 +1,4 @@
-import supabase from '../../supabase'
+import supabaseClient from '../../supabaseClient'
 import {
   getOrganizationID,
   getPersonID,
@@ -27,7 +27,7 @@ export const addProject = async (
   if (await repoIsAlreadyInDB(repoName, owner)) {
     return REPO_ALREADY_IN_DB_RESPOSE
   } else {
-    const { error: insertionError } = await supabase.from('project').insert({
+    const { error: insertionError } = await supabaseClient.from('project').insert({
       name: repoName,
       owning_organization: await getOrganizationID(owner),
       owning_person: await getPersonID(owner)

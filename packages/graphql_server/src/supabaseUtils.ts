@@ -10,7 +10,6 @@ import {
   ProjectUpdate,
   ProjectInfo
 } from '../types/supabaseUtils'
-import { PostgrestError } from '@supabase/supabase-js'
 
 /*
 Exports:
@@ -23,6 +22,7 @@ export {
   formatLinkedInCompanyData,
   formatGithubStats,
   getListOfProjectsFoundedByUser,
+  getListOfProjectsOwnedByUser,
   getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
   getPersonID,
@@ -160,7 +160,17 @@ const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
     .select('project_id')
     .eq('founder_id', personID)
 
-  return projects?.map((project) => project.project_id)
+  return projects?.map((project) => project.project_id) ?? null
+}
+
+const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
+  const personID = await getPersonID(githubUsername)
+  const { data: projects } = await supabase
+    .from('project')
+    .select('id')
+    .eq('owning_person', personID)
+
+  return projects?.map((project) => project.id) ?? null
 }
 
 /**

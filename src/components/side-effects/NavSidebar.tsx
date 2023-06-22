@@ -3,7 +3,7 @@ import { withRouter } from 'next/router'
 import { FiBookOpen, FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/pure/Sidebar'
-import { Bookmark, useAllBookmarksQuery } from '@/graphql/generated/gql'
+import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 
 const renderFooter = () => (
   <>
@@ -23,7 +23,7 @@ const NavSidebar = () => {
   const user = useUser()
 
   // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData }] = useAllBookmarksQuery({
+  const [{ data: urqlData }] = useFilteredBookmarksQuery({
     variables: { userId: user?.id as string }
   })
 

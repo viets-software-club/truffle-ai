@@ -7,7 +7,7 @@ import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { Project, useProjectDetailsQuery, useProjectIdsQuery } from '@/graphql/generated/gql'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import { defaultSort, defaultFilters } from '@/components/page/overview/types'
 import Card from '@/components/pure/Card'
@@ -22,7 +22,7 @@ type DetailsProps = {
 const Details = ({ id }: DetailsProps) => {
   // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
   // + add proper pagination
-  const [{ data: tpData }] = useTrendingProjectsQuery({
+  const [{ data: tpData }] = useProjectIdsQuery({
     variables: {
       orderBy: defaultSort,
       filter: defaultFilters

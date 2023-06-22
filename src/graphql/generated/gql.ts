@@ -2483,6 +2483,36 @@ export type AllBookmarksQuery = {
   } | null
 }
 
+export type FilteredBookmarksQueryVariables = Exact<{
+  userId: Scalars['UUID']
+  category?: InputMaybe<Scalars['String']>
+  projectId?: InputMaybe<Scalars['UUID']>
+}>
+
+export type FilteredBookmarksQuery = {
+  __typename?: 'Query'
+  bookmarkCollection?: {
+    __typename?: 'BookmarkConnection'
+    edges: Array<{
+      __typename?: 'BookmarkEdge'
+      node: {
+        __typename?: 'Bookmark'
+        id: any
+        category?: string | null
+        project?: {
+          __typename?: 'Project'
+          id: any
+          name?: string | null
+          owningPerson?: any | null
+          owningOrganization?: any | null
+          associatedPerson?: { __typename?: 'AssociatedPerson'; avatarUrl?: string | null } | null
+          organization?: { __typename?: 'Organization'; avatarUrl?: string | null } | null
+        } | null
+      }
+    }>
+  } | null
+}
+
 export type ProjectDetailsQueryVariables = Exact<{
   id?: InputMaybe<Scalars['UUID']>
 }>
@@ -2540,6 +2570,19 @@ export type ProjectDetailsQuery = {
         } | null
       }
     }>
+  } | null
+}
+
+export type ProjectIdsQueryVariables = Exact<{
+  orderBy: ProjectOrderBy
+  filter: ProjectFilter
+}>
+
+export type ProjectIdsQuery = {
+  __typename?: 'Query'
+  projectCollection?: {
+    __typename?: 'ProjectConnection'
+    edges: Array<{ __typename?: 'ProjectEdge'; node: { __typename?: 'Project'; id: any } }>
   } | null
 }
 
@@ -2660,6 +2703,45 @@ export function useAllBookmarksQuery(
     ...options
   })
 }
+export const FilteredBookmarksDocument = gql`
+  query FilteredBookmarks($userId: UUID!, $category: String, $projectId: UUID) {
+    bookmarkCollection(
+      filter: {
+        userId: { eq: $userId }
+        category: { eq: $category }
+        projectId: { eq: $projectId }
+      }
+    ) {
+      edges {
+        node {
+          id
+          category
+          project {
+            id
+            name
+            owningPerson
+            owningOrganization
+            associatedPerson {
+              avatarUrl
+            }
+            organization {
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export function useFilteredBookmarksQuery(
+  options: Omit<Urql.UseQueryArgs<FilteredBookmarksQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<FilteredBookmarksQuery, FilteredBookmarksQueryVariables>({
+    query: FilteredBookmarksDocument,
+    ...options
+  })
+}
 export const ProjectDetailsDocument = gql`
   query ProjectDetails($id: UUID) {
     projectCollection(filter: { id: { eq: $id } }) {
@@ -2717,6 +2799,26 @@ export function useProjectDetailsQuery(
 ) {
   return Urql.useQuery<ProjectDetailsQuery, ProjectDetailsQueryVariables>({
     query: ProjectDetailsDocument,
+    ...options
+  })
+}
+export const ProjectIdsDocument = gql`
+  query ProjectIds($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
+    projectCollection(filter: $filter, orderBy: [$orderBy]) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export function useProjectIdsQuery(
+  options: Omit<Urql.UseQueryArgs<ProjectIdsQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<ProjectIdsQuery, ProjectIdsQueryVariables>({
+    query: ProjectIdsDocument,
     ...options
   })
 }

@@ -42,15 +42,17 @@ const Details = ({ id }: DetailsProps) => {
    * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
    * Error contains any error information if the query encounters an error during the fetch.
    */
-  const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
+  const [{ data, fetching, error }, refetchProjectDetails] = useProjectDetailsQuery({
+    variables: { id }
+  })
 
-  const [{ data: bookmarkIds }] = useBookmarkIdsQuery({
+  const [{ data: bookmarkIds }, refetchBookmarkIds] = useBookmarkIdsQuery({
     variables: { userId: user?.id as string, projectId: id }
   })
 
   // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
   // + add proper pagination
-  const [{ data: projectIds }] = useProjectIdsQuery({
+  const [{ data: projectIds }, refetchProjectIds] = useProjectIdsQuery({
     variables: {
       orderBy: defaultSort,
       filter: defaultFilters
@@ -64,8 +66,12 @@ const Details = ({ id }: DetailsProps) => {
   // Array of length 1 with bookmark details if bookmarked, otherwise empty array
   const bookmarks = bookmarkIds?.bookmarkCollection?.edges?.map((edge) => edge.node) as Bookmark[]
 
+  // Whether project is bookmarked or not
   const isBookmarked = bookmarks?.length > 0 && bookmarks[0].project?.id === id
+  // Current category of if project is bookmarked
+  const category = isBookmarked ? (bookmarks[0].category as string) : ''
 
+  // Set IDs of previous and next project for navigation buttons
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
     const currentIndex = projectList.findIndex((p) => p.id === currentId)
 
@@ -82,6 +88,13 @@ const Details = ({ id }: DetailsProps) => {
     setNextProjectId(newNextProjectId)
   }
 
+  const refetch = () => {
+    refetchProjectDetails()
+    refetchBookmarkIds()
+    refetchProjectIds()
+  }
+
+  // Update project indices once projects are fetched
   useEffect(() => {
     if (projects) {
       updateProjectIndices(id, projects)
@@ -138,6 +151,7 @@ const Details = ({ id }: DetailsProps) => {
       <div className="flex grow">
         <div className="w-[calc(100%-250px)] flex-row pt-[60px]">
           <ProjectInformation
+            id={project.id as string}
             githubUrl={project.githubUrl as string}
             image={
               (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
@@ -150,6 +164,8 @@ const Details = ({ id }: DetailsProps) => {
             about={project.about || 'No description'}
             categories={project.categories as string[]}
             isBookmarked={isBookmarked}
+            category={category}
+            refetch={refetch}
           />
 
           <Chart

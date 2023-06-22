@@ -4,9 +4,11 @@ import { FaSlack } from 'react-icons/fa'
 import { FiBookmark as Bookmark } from 'react-icons/fi'
 import Banner from '@/components/page/settings/Banner'
 import Button from '@/components/pure/Button'
+import BookmarkModal from '@/components/side-effects/Details/BookmarkModal'
 import sendSlackNotification from '@/util/sendSlackNotification'
 
 type ProjectInformationProps = {
+  id: string
   githubUrl: string
   image: string
   name: string
@@ -15,12 +17,15 @@ type ProjectInformationProps = {
   about: string
   categories: string[]
   isBookmarked: boolean
+  category: string
+  refetch: () => void
 }
 
 /**
  * Top part of project detail page (logo, name, tags, bookmark button)
  */
 const ProjectInformation = ({
+  id,
   githubUrl,
   image,
   url,
@@ -28,10 +33,13 @@ const ProjectInformation = ({
   explanation,
   about,
   categories,
-  isBookmarked
+  isBookmarked,
+  category,
+  refetch
 }: ProjectInformationProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [slackLoading, setSlackLoading] = useState(false)
+  const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false)
 
   const handleNotificationWrapper = async (message: string) => {
     setNotificationStatus(await sendSlackNotification(message))
@@ -46,6 +54,10 @@ const ProjectInformation = ({
     void handleNotificationWrapper(message)
 
     setSlackLoading(false)
+  }
+
+  const toggleBookmarkModal = () => {
+    setBookmarkModalOpen(!bookmarkModalOpen)
   }
 
   return (
@@ -67,12 +79,12 @@ const ProjectInformation = ({
             categories[0] !== 'CategorizationError' &&
             categories
               .filter((value, index, array) => array.indexOf(value) === index)
-              .map((category) => (
+              .map((cat) => (
                 <p
-                  key={category}
+                  key={cat}
                   className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
                 >
-                  {category}
+                  {cat}
                 </p>
               ))}
         </div>
@@ -88,12 +100,10 @@ const ProjectInformation = ({
           />
 
           <Button
+            onClick={toggleBookmarkModal}
             variant="normal"
             text={isBookmarked ? 'Edit bookmark' : 'Bookmark'}
             Icon={Bookmark}
-            onClick={() => {
-              // @TODO Implement bookmark functionality
-            }}
             order="ltr"
             textColor="text-gray-100"
           />
@@ -119,6 +129,15 @@ const ProjectInformation = ({
       {notificationStatus === 'error' && (
         <Banner variant="error" message="Error sending notification" />
       )}
+
+      <BookmarkModal
+        open={bookmarkModalOpen}
+        toggleModal={toggleBookmarkModal}
+        projectID={id}
+        category={category}
+        isBookmarked={isBookmarked}
+        refetch={refetch}
+      />
     </div>
   )
 }

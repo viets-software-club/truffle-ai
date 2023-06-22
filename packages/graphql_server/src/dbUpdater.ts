@@ -20,12 +20,31 @@ import {
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { TrendingState } from '../types/updateProject'
 
-export const automaticDbUpdater = async () => {}
+export const automaticDbUpdater = async () => {
+  const currentDate = new Date()
+  const currentMinutes = currentDate.getMinutes()
+  const currentHour = currentDate.getHours()
+  const currentDayOfWeek = currentDate.getDay()
+
+  // Check if it's 4am on Sunday
+  if (currentHour === 4 && currentMinutes < 5 && currentDayOfWeek === 0) {
+    await dailyDbUpdater(true)
+    return
+  }
+  // Check if it's 4am on any other day of the week
+  if (currentHour === 4 && currentMinutes < 5) {
+    await dailyDbUpdater(false)
+    return
+  }
+
+  await hourlyDbUpdater()
+}
 
 /**
  * Updates the github stats of the trending and bookmarked projects
  */
 export const hourlyDbUpdater = async () => {
+  console.log('HourlyDbUpdater called...')
   // get the trending or bookmarked repos
   const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
 

@@ -5,7 +5,7 @@ import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
-import Chart from '@/components/page/details/Chart'
+import Chart, { DataPoint } from '@/components/page/details/Chart'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
@@ -138,12 +138,8 @@ const Details = ({ id }: DetailsProps) => {
                   name: project.name,
                   data:
                     selectedMetric === 'Stars'
-                      ? (project.starHistory as React.ComponentProps<
-                          typeof Chart
-                        >['datasets'][0]['data'])
-                      : (project.forkHistory as React.ComponentProps<
-                          typeof Chart
-                        >['datasets'][1]['data'])
+                      ? (project.starHistory as DataPoint[])
+                      : (project.forkHistory as DataPoint[])
                 }
               ]}
               multipleLines={false}

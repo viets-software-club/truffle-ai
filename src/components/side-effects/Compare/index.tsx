@@ -11,7 +11,7 @@ import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
 import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
-import Chart from '@/components/page/details/Chart'
+import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
@@ -164,12 +164,8 @@ const Compare = () => {
                 name: project.name,
                 data:
                   selectedMetric === 'Stars'
-                    ? (project.starHistory as React.ComponentProps<
-                        typeof Chart
-                      >['datasets'][0]['data'])
-                    : (project.forkHistory as React.ComponentProps<
-                        typeof Chart
-                      >['datasets'][1]['data'])
+                    ? (project.starHistory as DataPoint[])
+                    : (project.forkHistory as DataPoint[])
               }))}
               multipleLines
               selectedMetric={selectedMetric}

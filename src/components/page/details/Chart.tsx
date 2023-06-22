@@ -41,30 +41,29 @@ const singleColorValues = singleColors
 
 colors = colors.concat(singleColorValues)
 
-const TimeframeOptions = [
+const timeframeOptions = [
   { value: 1, label: '1 Month' },
   { value: 3, label: '3 Months' },
   { value: 6, label: '6 Months' },
   { value: 12, label: '1 Year' }
 ]
 
+const dataOptions = ['Stars', 'Forks']
+
+export type DataPoint = {
+  date: string
+  count: number
+}
+
 type ChartProps = {
   datasets: {
     id: string
     name: string
-    data: {
-      date: string
-      count: number
-    }[]
+    data: DataPoint[]
   }[]
   multipleLines: boolean
   selectedMetric: string
   setSelectedMetric: (metric: string) => void
-}
-
-type DataPoint = {
-  date: string
-  count: number
 }
 
 const filterDataByTimeframe = (data: DataPoint[], months: number) => {
@@ -117,8 +116,8 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
 
   const handleTimeframeChange = useCallback(
     (value: number) => () => {
-      const selectedOption = TimeframeOptions.find((option) => option.value === value)
-      setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
+      const selectedOption = timeframeOptions.find((option) => option.value === value)
+      setTimeframeModalValue(selectedOption ? selectedOption.label : timeframeOptions[0].label)
 
       const filteredData = chartDataOriginal.map((dataset) => ({
         ...dataset,
@@ -155,7 +154,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
                       className="absolute z-10 mt-2 w-28 rounded-md bg-gray-700 shadow-lg focus:outline-none"
                     >
                       <div className="py-1">
-                        {TimeframeOptions.map((metric) => (
+                        {timeframeOptions.map((metric) => (
                           <Menu.Item key={metric.label}>
                             <button
                               type="button"
@@ -194,7 +193,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
                   className="absolute z-10 mt-2 w-24 rounded-md bg-gray-700 shadow-lg focus:outline-none"
                 >
                   <div className="py-1">
-                    {['Stars', 'Forks'].map((metric) => (
+                    {dataOptions.map((metric) => (
                       <Menu.Item key={metric}>
                         <button
                           type="button"

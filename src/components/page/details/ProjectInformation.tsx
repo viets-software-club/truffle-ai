@@ -55,7 +55,7 @@ const ProjectInformation = ({
           </div>
 
           <a href={url} target="_blank" rel="noreferrer">
-            <h1 className="mr-3 text-20 font-medium" data-tooltip-id={url}>
+            <h1 className="mr-3 text-20 font-medium">
               {name.slice(0, 32)}
               {name.length > 32 ? '...' : ''}
             </h1>

@@ -44,7 +44,13 @@ export async function getRepoStarRecords(
   if ((await getRepoStargazersCount(repo, token)) == 0) {
     return []
   }
-  const requestPages: number[] = await utils.getHistoryPages(repo, token, 10, 'star', startPage)
+  const requestPages: number[] = await utils.getHistoryPages(
+    repo,
+    token,
+    maxRequestAmount,
+    'star',
+    startPage
+  )
 
   const resArray = await Promise.all(
     requestPages.map((page) => {

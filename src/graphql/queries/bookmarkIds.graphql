@@ -1,0 +1,14 @@
+query BookmarkIds($userId: UUID!, $category: String, $projectId: UUID) {
+  bookmarkCollection(
+    filter: { userId: { eq: $userId }, category: { eq: $category }, projectId: { eq: $projectId } }
+  ) {
+    edges {
+      node {
+        id
+        project {
+          id
+        }
+      }
+    }
+  }
+}

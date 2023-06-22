@@ -2483,6 +2483,27 @@ export type AllBookmarksQuery = {
   } | null
 }
 
+export type BookmarkIdsQueryVariables = Exact<{
+  userId: Scalars['UUID']
+  category?: InputMaybe<Scalars['String']>
+  projectId?: InputMaybe<Scalars['UUID']>
+}>
+
+export type BookmarkIdsQuery = {
+  __typename?: 'Query'
+  bookmarkCollection?: {
+    __typename?: 'BookmarkConnection'
+    edges: Array<{
+      __typename?: 'BookmarkEdge'
+      node: {
+        __typename?: 'Bookmark'
+        id: any
+        project?: { __typename?: 'Project'; id: any } | null
+      }
+    }>
+  } | null
+}
+
 export type FilteredBookmarksQueryVariables = Exact<{
   userId: Scalars['UUID']
   category?: InputMaybe<Scalars['String']>
@@ -2700,6 +2721,35 @@ export function useAllBookmarksQuery(
 ) {
   return Urql.useQuery<AllBookmarksQuery, AllBookmarksQueryVariables>({
     query: AllBookmarksDocument,
+    ...options
+  })
+}
+export const BookmarkIdsDocument = gql`
+  query BookmarkIds($userId: UUID!, $category: String, $projectId: UUID) {
+    bookmarkCollection(
+      filter: {
+        userId: { eq: $userId }
+        category: { eq: $category }
+        projectId: { eq: $projectId }
+      }
+    ) {
+      edges {
+        node {
+          id
+          project {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
+export function useBookmarkIdsQuery(
+  options: Omit<Urql.UseQueryArgs<BookmarkIdsQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<BookmarkIdsQuery, BookmarkIdsQueryVariables>({
+    query: BookmarkIdsDocument,
     ...options
   })
 }

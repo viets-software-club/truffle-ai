@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import Link from 'next/link'
 import { useReactTable, flexRender } from '@tanstack/react-table'
 import { Project } from '@/graphql/generated/gql'

@@ -1,29 +1,16 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {
-  FiX as X,
-  FiChevronUp as ChevronUp,
-  FiChevronDown as ChevronDown,
-  FiArrowUpRight
-} from 'react-icons/fi'
-import { FaTwitter, FaHackerNews } from 'react-icons/fa'
+import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
+import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
-import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
 import RightSidebar from '@/components/page/details/RightSidebar'
+import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import { defaultSort, defaultFilters } from '@/components/page/overview/types'
-import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
-
-const handleClick = () => ''
-
-// @TODO Update social media buttons
-const SomeButton = (
-  <Button Icon={FiArrowUpRight} variant="normal" onClick={handleClick} text="Open" order="ltr" />
-)
+import Card from '@/components/pure/Card'
 
 type DetailsProps = {
   id: string
@@ -81,12 +68,12 @@ const Details = ({ id }: DetailsProps) => {
   const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
 
   // Display loading/ error messages conditionally
-  if (fetching) return <Loading message="Fetching project details for you..." />
+  if (fetching) return <Loading fullscreen />
   if (error || !project) return <Error />
 
   return (
     <>
-      <div className="flex h-[59px] w-full items-center justify-between px-3 pl-7 text-gray-500">
+      <div className="fixed z-10 flex h-[60px] w-full items-center justify-between border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500">
         <div className="flex flex-row items-center gap-3">
           <Link href="/">
             <X key="2" className="h-4 w-4 text-gray-500" />
@@ -94,13 +81,12 @@ const Details = ({ id }: DetailsProps) => {
 
           {nextProjectId ? (
             <Link href={`/details/${nextProjectId}`}>
-              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
+              <Button variant="onlyIcon" Icon={ChevronUp} />
             </Link>
           ) : (
             <Button
               disabled={!nextProjectId}
               variant="onlyIcon"
-              onClick={handleClick}
               Icon={ChevronUp}
               iconColor="text-gray-600"
             />
@@ -108,13 +94,12 @@ const Details = ({ id }: DetailsProps) => {
 
           {previousProjectId ? (
             <Link href={`/details/${previousProjectId}`}>
-              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
+              <Button variant="onlyIcon" Icon={ChevronDown} />
             </Link>
           ) : (
             <Button
               disabled={!previousProjectId}
               variant="onlyIcon"
-              onClick={handleClick}
               Icon={ChevronDown}
               iconColor="text-gray-600"
             />
@@ -130,7 +115,7 @@ const Details = ({ id }: DetailsProps) => {
       </div>
 
       <div className="flex grow">
-        <div className="w-4/5 flex-row border-t border-solid border-gray-800">
+        <div className="w-[calc(100%-250px)] flex-row pt-[60px]">
           <ProjectInformation
             githubUrl={project.githubUrl as string}
             image={
@@ -140,8 +125,9 @@ const Details = ({ id }: DetailsProps) => {
               (project.organization?.login || project.associatedPerson?.login) as string
             } / ${project.name}`}
             url={project.githubUrl as string}
-            eli5={project.eli5 || project.about || 'No description'}
-            tags={(project.languages || []) as unknown as { name: string; color: string }[]} // @TODO temporary fix
+            explanation={project.eli5 || 'No explanation'}
+            about={project.about || 'No description'}
+            categories={project.categories as string[]}
           />
 
           <div className="flex flex-col items-start">
@@ -166,20 +152,27 @@ const Details = ({ id }: DetailsProps) => {
             />
           </div>
 
-          {/* @TODO Add real data */}
-          <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            <Card
-              Icon={FaTwitter}
-              name="Top Tweets"
-              button={SomeButton}
-              textFields={tweetListMock}
-            />
-            <Card
-              Icon={FaHackerNews}
-              name="Community Sentiment"
-              button={SomeButton}
-              textFields={hackerNewsListMock}
-            />
+          <div className="flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3">
+            <div className="w-1/2">
+              <Card
+                Icon={FaTwitter}
+                name="Top Tweets"
+                tweets={project.relatedTwitterPosts ?? undefined}
+                variant="twitter"
+                key={project.id}
+              />
+            </div>
+
+            <div className="w-1/2">
+              <Card
+                Icon={FaHackerNews}
+                name="Community Sentiment"
+                communitySentiment={project.hackernewsSentiment ?? undefined}
+                links={project.hackernewsStories as string[]}
+                variant="hackernews"
+                key={project.id}
+              />
+            </div>
           </div>
         </div>
 

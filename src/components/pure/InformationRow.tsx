@@ -34,7 +34,6 @@ const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
         value={data.value}
         growth={data.growth}
         paddingOn={false}
-        hoverOn={false}
       />
     ))}
   </div>

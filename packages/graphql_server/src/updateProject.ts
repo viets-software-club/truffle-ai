@@ -13,7 +13,7 @@ import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from 
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
-import { getRepoStarRecords } from './starHistory/starHistory'
+import { getRepoStarRecords } from './githubHistory/starHistory'
 import { getGithubData } from './utils'
 import { mockForkHistory } from './util/mockForkHistory'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'

@@ -4,6 +4,7 @@ import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
 import supbaseClient from './supabaseClient'
 import { UserResponse } from '@supabase/supabase-js'
+import { automaticDbUpdater } from './dbUpdater'
 const ENV = process.env.NODE_ENV || 'development'
 
 const envToLogger = {
@@ -72,4 +73,9 @@ void app.register(mercurius, {
   // validationRules: process.env.NODE_ENV === 'production' ? [NoSchemaIntrospectionCustomRule] : [],
   graphiql: true // see http://localhost:3001/graphiql
 })
+
+void app.post('/updateDatabase', async (_request, _reply) => {
+  await automaticDbUpdater()
+})
+
 export default app

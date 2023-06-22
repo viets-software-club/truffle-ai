@@ -20,6 +20,8 @@ import {
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { TrendingState } from '../types/updateProject'
 
+export const automaticDbUpdater = async () => {}
+
 /**
  * Updates the github stats of the trending and bookmarked projects
  */

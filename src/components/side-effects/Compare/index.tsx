@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 import {
@@ -6,7 +7,7 @@ import {
   ColumnOrderState,
   getFilteredRowModel
 } from '@tanstack/react-table'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { BiPencil } from 'react-icons/bi'
 import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
@@ -25,6 +26,7 @@ import {
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
 import sendSlackNotification from '@/util/sendSlackNotification'
+import CategoryModal from './CategoryModal'
 
 type CompareProps = {
   category: string
@@ -42,8 +44,10 @@ const Compare = ({ category }: CompareProps) => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [slackLoading, setSlackLoading] = useState(false)
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
   const user = useUser()
+  const router = useRouter()
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
@@ -56,6 +60,11 @@ const Compare = ({ category }: CompareProps) => {
       category
     }
   })
+
+  // Redirects to new category page after renaming
+  const redirect = (newCategory: string) => {
+    void router.replace(`/compare/${newCategory}`)
+  }
 
   // Only update table data when urql data changes
   useEffect(() => {
@@ -79,6 +88,10 @@ const Compare = ({ category }: CompareProps) => {
     getFilteredRowModel: getFilteredRowModel()
   })
 
+  const toggleCategoryModal = () => {
+    setCategoryModalOpen(!categoryModalOpen)
+  }
+
   const handleNotificationWrapper = async (message: string) => {
     setNotificationStatus(await sendSlackNotification(message))
   }
@@ -101,9 +114,6 @@ const Compare = ({ category }: CompareProps) => {
     setSlackLoading(false)
   }
 
-  const displayChart = () => !fetching && !error && data.length > 0
-
-  // @TODO Update page title
   return (
     <>
       <TopBar
@@ -153,15 +163,16 @@ const Compare = ({ category }: CompareProps) => {
 
             <Button
               variant="normal"
-              text="Add project to compare"
-              Icon={AiOutlinePlus}
+              text="Edit category"
+              Icon={BiPencil}
               order="ltr"
               textColor="white"
+              onClick={toggleCategoryModal}
             />
           </div>
         </div>
 
-        {displayChart() && (
+        {!fetching && !error && data.length > 0 && (
           <>
             <Chart
               datasets={data.map((project) => ({
@@ -191,6 +202,13 @@ const Compare = ({ category }: CompareProps) => {
         )}
 
         {data.length > 0 && !error && <Table table={table} />}
+
+        <CategoryModal
+          open={categoryModalOpen}
+          toggleModal={toggleCategoryModal}
+          category={category}
+          redirect={redirect}
+        />
       </div>
     </>
   )

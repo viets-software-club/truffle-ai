@@ -5,6 +5,7 @@ query BookmarkIds($userId: UUID!, $category: String, $projectId: UUID) {
     edges {
       node {
         id
+        category
         project {
           id
         }

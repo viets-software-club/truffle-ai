@@ -2434,6 +2434,25 @@ export type AddProjectByUrlMutationVariables = Exact<{
 
 export type AddProjectByUrlMutation = { __typename?: 'Mutation'; addProjectByUrl: boolean }
 
+export type DeleteBookmarkMutationVariables = Exact<{
+  projectID: Scalars['String']
+}>
+
+export type DeleteBookmarkMutation = {
+  __typename?: 'Mutation'
+  deleteBookmark: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
+export type EditBookmarkCategoryMutationVariables = Exact<{
+  projectID: Scalars['String']
+  newCategory: Scalars['String']
+}>
+
+export type EditBookmarkCategoryMutation = {
+  __typename?: 'Mutation'
+  editBookmarkCategory: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
 export type AllBookmarksQueryVariables = Exact<{
   userId: Scalars['UUID']
   category?: InputMaybe<Scalars['String']>
@@ -2498,6 +2517,7 @@ export type BookmarkIdsQuery = {
       node: {
         __typename?: 'Bookmark'
         id: any
+        category?: string | null
         project?: { __typename?: 'Project'; id: any } | null
       }
     }>
@@ -2677,6 +2697,34 @@ export function useAddProjectByUrlMutation() {
     AddProjectByUrlDocument
   )
 }
+export const DeleteBookmarkDocument = gql`
+  mutation DeleteBookmark($projectID: String!) {
+    deleteBookmark(projectID: $projectID) {
+      code
+      message
+    }
+  }
+`
+
+export function useDeleteBookmarkMutation() {
+  return Urql.useMutation<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>(
+    DeleteBookmarkDocument
+  )
+}
+export const EditBookmarkCategoryDocument = gql`
+  mutation EditBookmarkCategory($projectID: String!, $newCategory: String!) {
+    editBookmarkCategory(projectID: $projectID, newCategory: $newCategory) {
+      code
+      message
+    }
+  }
+`
+
+export function useEditBookmarkCategoryMutation() {
+  return Urql.useMutation<EditBookmarkCategoryMutation, EditBookmarkCategoryMutationVariables>(
+    EditBookmarkCategoryDocument
+  )
+}
 export const AllBookmarksDocument = gql`
   query AllBookmarks($userId: UUID!, $category: String) {
     bookmarkCollection(filter: { userId: { eq: $userId }, category: { eq: $category } }) {
@@ -2736,6 +2784,7 @@ export const BookmarkIdsDocument = gql`
       edges {
         node {
           id
+          category
           project {
             id
           }

@@ -1,0 +1,36 @@
+query AllBookmarks($userId: UUID!, $category: String) {
+  bookmarkCollection(filter: { userId: { eq: $userId }, category: { eq: $category } }) {
+    edges {
+      node {
+        id
+        category
+        project {
+          id
+          name
+          starCount
+          issueCount
+          forkCount
+          pullRequestCount
+          contributorCount
+          githubUrl
+          websiteUrl
+          starHistory
+          owningPerson
+          owningOrganization
+          associatedPerson {
+            id
+            name
+            login
+            email
+            avatarUrl
+          }
+          organization {
+            id
+            login
+            avatarUrl
+          }
+        }
+      }
+    }
+  }
+}

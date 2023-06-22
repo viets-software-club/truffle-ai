@@ -99,7 +99,7 @@ const deleteStaleOrganizations = async () => {
   if (!organizations?.length) return
 
   for (const organizationLogin of organizations.map((organization) => organization.login)) {
-    //@Todo: should think about changing login of organzation and associated_person tables to not-nullable
+    //@TODO should think about changing login of organzation and associated_person tables to not-nullable
     if (!organizationLogin) continue
     const ownedByOrganization = await getListOfProjectsOwnedByOrganization(organizationLogin)
 

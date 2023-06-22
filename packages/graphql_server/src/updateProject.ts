@@ -14,7 +14,8 @@ import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
-import { getGithubData, mockForkHistory } from './utils'
+import { getGithubData } from './utils'
+import { mockForkHistory } from './util/mockForkHistory'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
@@ -148,7 +149,7 @@ const updateProjectForkHistory = async (repoName: string, owner: string) => {
   if (!(await repoIsAlreadyInDB(repoName, owner))) {
     return
   }
-  //@Todo: get real fork history -> waiting for maxis PR
+  //@TODO get real fork history -> waiting for maxis PR
   const forkHistory = mockForkHistory
 
   await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })

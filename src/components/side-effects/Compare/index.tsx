@@ -22,7 +22,8 @@ import {
   Project,
   ProjectFilter,
   ProjectOrderBy,
-  useAllBookmarksQuery
+  useBookmarkIdsQuery,
+  useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
 import sendSlackNotification from '@/util/sendSlackNotification'
@@ -53,23 +54,40 @@ const Compare = ({ category }: CompareProps) => {
     setFilters(filter)
   }
 
-  // Fetches all bookmarks of a user in the given category
-  const [{ data: urqlData, fetching, error }] = useAllBookmarksQuery({
-    variables: {
-      userId: user?.id as string,
-      category
-    }
-  })
-
   // Redirects to new category page after renaming
   const redirect = (newCategory: string) => {
     void router.replace(`/compare/${newCategory}`)
   }
 
+  // Fetches all bookmarked project ids of a user in the given category
+  const [{ data: bookmarkData, fetching: fetchingBookmarks, error: errorBookmarks }] =
+    useBookmarkIdsQuery({ variables: { userId: user?.id as string, category } })
+
+  // Get array with all bookmarked project ids
+  const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
+    (edge) => edge.node.project?.id as string
+  ) as string[]
+
+  const [{ data: urqlData, fetching: fetchingProjects, error: errorProjects }] =
+    useTrendingProjectsQuery({
+      variables: {
+        orderBy: sorting || defaultSort,
+        filter: {
+          ...(filters || defaultFilters),
+          id: {
+            in: bookmarkIds
+          }
+        }
+      }
+    })
+
+  const fetching = fetchingBookmarks || fetchingProjects
+  const error = errorBookmarks || errorProjects
+
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setData(urqlData?.bookmarkCollection?.edges?.map((edge) => edge.node.project) as Project[])
+      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
     }
   }, [urqlData])
 

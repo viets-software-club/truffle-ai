@@ -5,6 +5,7 @@ type RecommendationRowCommandProps = {
   subtitle?: string | null
   isHighlighted: boolean
   isNextItem: boolean
+  isPrevItem: boolean
   isProjectItem: boolean
   handleClick: () => void
 }
@@ -20,9 +21,10 @@ const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
   isProjectItem,
   shortcutKey,
   isNextItem,
+  isPrevItem,
   handleClick
 }: RecommendationRowCommandProps) => (
-  <div id={`${isNextItem ? 'active' : ''}`}>
+  <div id={`${isNextItem ? 'active' : ''} ${isPrevItem ? 'prevActive' : ''}`}>
     {subtitle && <h4 className="mt-2 px-6 py-2 text-sm text-gray-500">{subtitle}</h4>}
 
     <button type="button" className="w-full" onClick={handleClick}>

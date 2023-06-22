@@ -109,6 +109,11 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
                           ? true
                           : selectedLine + 1 === index
                       }
+                      isPrevItem={
+                        selectedLine === 0 && index + 1 === recommendationList.length
+                          ? true
+                          : selectedLine === index + 1
+                      }
                       menuText={item.menuText}
                       subtitle={item.subtitle}
                       isProjectItem={isProjectListOn}

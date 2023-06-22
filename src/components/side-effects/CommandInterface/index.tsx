@@ -46,10 +46,18 @@ const CommandInterface: React.FC = () => {
     }
   }
 
+  const scrollToPrevItem = () => {
+    const currentList = listRef.current
+    if (currentList) {
+      const currentItem = currentList.querySelector('#prevActive')
+      if (currentItem) {
+        currentItem.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
+
   const keyDownEvent = (event: KeyboardEvent) => {
     if (event.ctrlKey || event.metaKey) {
-      event.preventDefault() // Prevent browser's shortcut
-
       if (event.key === 'k') {
         event.preventDefault()
         toggleModal()
@@ -68,10 +76,11 @@ const CommandInterface: React.FC = () => {
       toggleModal()
     } else if (event.key === 'ArrowUp') {
       const newLine =
-        selectedLine - 1 !== 0
+        selectedLine !== 0
           ? (selectedLine - 1) % (recommendationList.length || defaultList.length)
-          : 0
+          : defaultList.length - 1
       setSelectedLine(newLine)
+      scrollToPrevItem()
     } else if (event.key === 'ArrowDown') {
       const newLine = (selectedLine + 1) % (recommendationList.length || defaultList.length)
       setSelectedLine(newLine)
@@ -182,28 +191,35 @@ const CommandInterface: React.FC = () => {
     }
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchWord(event.target.value)
     const search = event.target.value.trim()
-    setSearchWord(search)
-
     const filteredDefaultList = defaultList.filter((index) => isCommandExistInList(index, search))
     const isSearchNotEmpty = search !== ''
     const isSearchContainingSymbol = search.includes('>') || search.includes('<')
     const isSingleFilteredResult = filteredDefaultList.length === 1
-    const isProjectListOnAndSingleFiltered = isProjectListOn && isSingleFilteredResult
+    const isMultipleSearchTerms = search.split(' ').length > 2
 
     if (isSearchNotEmpty) {
-      if (!isSearchContainingSymbol && isProjectListOnAndSingleFiltered) {
-        if (search.split(' ').length > 2) {
-          const lastSearchTerm = search.split(' ').pop()!
-          setRecommendationList(
-            prevProjectRecommendationList.filter((rowItem) =>
-              isCommandExistInList(rowItem, lastSearchTerm)
+      if (!isSearchContainingSymbol) {
+        if (isProjectListOn && isSingleFilteredResult) {
+          if (isMultipleSearchTerms) {
+            const lastSearchTerm = search.split(' ').pop()!
+            setRecommendationList(
+              prevProjectRecommendationList.filter((rowItem) =>
+                isCommandExistInList(rowItem, lastSearchTerm)
+              )
             )
-          )
-        } else if (
-          defaultList.filter((index) => isCommandExactlyExistInList(index, search)).length === 0
-        ) {
+          } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
+            setIsProjectListOn(false)
+            setRecommendationList(
+              defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
+            )
+          } else {
+            setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
+          }
+        } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
           setIsProjectListOn(false)
           setRecommendationList(
             defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
@@ -211,11 +227,7 @@ const CommandInterface: React.FC = () => {
         } else {
           setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
         }
-      } else if (
-        isSingleFilteredResult &&
-        filteredDefaultList[0].isIdPrimary &&
-        isSearchContainingSymbol
-      ) {
+      } else if (filteredDefaultList[0].isIdPrimary) {
         setProjectNamesAsRow(filteredDefaultList[0].commandInterfaceOptions)
         setIsProjectListOn(true)
       }

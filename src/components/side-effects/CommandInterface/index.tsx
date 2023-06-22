@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useRouter } from 'next/router'
 import React, { FormEvent, RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { MdArrowForward } from 'react-icons/md'

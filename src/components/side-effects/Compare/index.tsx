@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useEffect, useState } from 'react'
 import {
   useReactTable,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
@@ -170,7 +169,7 @@ const Details = ({ id }: DetailsProps) => {
           </div>
         </div>
 
-        <RightSidebar project={project as Project} />
+        <RightSidebar project={project} />
       </div>
     </>
   )

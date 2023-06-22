@@ -1,3 +1,6 @@
-mutation AddProjectByUrl($url: String!) {
-  addProjectByUrl(url: $url)
+mutation AddProjectByUrl($url: String!, $category: String!) {
+  addProjectByUrl(url: $url, bookmarkCategory: $category) {
+    code
+    message
+  }
 }

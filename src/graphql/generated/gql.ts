@@ -915,8 +915,8 @@ export type IntFilter = {
 export type Mutation = {
   __typename?: 'Mutation'
   addBookmark: Response
-  addProjectByName: Scalars['Boolean']
-  addProjectByUrl: Scalars['Boolean']
+  addProjectByName: Response
+  addProjectByUrl: Response
   deleteBookmark: Response
   /** Deletes zero or more records from the `AllowedUsers` collection */
   deleteFromAllowedUsersCollection: AllowedUsersDeleteResponse
@@ -1024,11 +1024,13 @@ export type MutationAddBookmarkArgs = {
 }
 
 export type MutationAddProjectByNameArgs = {
+  bookmarkCategory: Scalars['String']
   name: Scalars['String']
   owner: Scalars['String']
 }
 
 export type MutationAddProjectByUrlArgs = {
+  bookmarkCategory: Scalars['String']
   url: Scalars['String']
 }
 
@@ -2430,9 +2432,13 @@ export type AddBookmarkMutation = {
 
 export type AddProjectByUrlMutationVariables = Exact<{
   url: Scalars['String']
+  category: Scalars['String']
 }>
 
-export type AddProjectByUrlMutation = { __typename?: 'Mutation'; addProjectByUrl: boolean }
+export type AddProjectByUrlMutation = {
+  __typename?: 'Mutation'
+  addProjectByUrl: { __typename?: 'Response'; code: string; message?: string | null }
+}
 
 export type DeleteBookmarkMutationVariables = Exact<{
   projectID: Scalars['String']
@@ -2461,55 +2467,6 @@ export type RenameBookmarkCategoryMutationVariables = Exact<{
 export type RenameBookmarkCategoryMutation = {
   __typename?: 'Mutation'
   renameBookmarkCategory: { __typename?: 'Response'; code: string; message?: string | null }
-}
-
-export type AllBookmarksQueryVariables = Exact<{
-  userId: Scalars['UUID']
-  category?: InputMaybe<Scalars['String']>
-}>
-
-export type AllBookmarksQuery = {
-  __typename?: 'Query'
-  bookmarkCollection?: {
-    __typename?: 'BookmarkConnection'
-    edges: Array<{
-      __typename?: 'BookmarkEdge'
-      node: {
-        __typename?: 'Bookmark'
-        id: any
-        category?: string | null
-        project?: {
-          __typename?: 'Project'
-          id: any
-          name?: string | null
-          starCount?: number | null
-          issueCount?: number | null
-          forkCount?: number | null
-          pullRequestCount?: number | null
-          contributorCount?: number | null
-          githubUrl?: string | null
-          websiteUrl?: string | null
-          starHistory?: Array<any | null> | null
-          owningPerson?: any | null
-          owningOrganization?: any | null
-          associatedPerson?: {
-            __typename?: 'AssociatedPerson'
-            id: any
-            name?: string | null
-            login?: string | null
-            email?: string | null
-            avatarUrl?: string | null
-          } | null
-          organization?: {
-            __typename?: 'Organization'
-            id: any
-            login?: string | null
-            avatarUrl?: string | null
-          } | null
-        } | null
-      }
-    }>
-  } | null
 }
 
 export type BookmarkIdsQueryVariables = Exact<{
@@ -2697,8 +2654,11 @@ export function useAddBookmarkMutation() {
   return Urql.useMutation<AddBookmarkMutation, AddBookmarkMutationVariables>(AddBookmarkDocument)
 }
 export const AddProjectByUrlDocument = gql`
-  mutation AddProjectByUrl($url: String!) {
-    addProjectByUrl(url: $url)
+  mutation AddProjectByUrl($url: String!, $category: String!) {
+    addProjectByUrl(url: $url, bookmarkCategory: $category) {
+      code
+      message
+    }
   }
 `
 
@@ -2748,53 +2708,6 @@ export function useRenameBookmarkCategoryMutation() {
   return Urql.useMutation<RenameBookmarkCategoryMutation, RenameBookmarkCategoryMutationVariables>(
     RenameBookmarkCategoryDocument
   )
-}
-export const AllBookmarksDocument = gql`
-  query AllBookmarks($userId: UUID!, $category: String) {
-    bookmarkCollection(filter: { userId: { eq: $userId }, category: { eq: $category } }) {
-      edges {
-        node {
-          id
-          category
-          project {
-            id
-            name
-            starCount
-            issueCount
-            forkCount
-            pullRequestCount
-            contributorCount
-            githubUrl
-            websiteUrl
-            starHistory
-            owningPerson
-            owningOrganization
-            associatedPerson {
-              id
-              name
-              login
-              email
-              avatarUrl
-            }
-            organization {
-              id
-              login
-              avatarUrl
-            }
-          }
-        }
-      }
-    }
-  }
-`
-
-export function useAllBookmarksQuery(
-  options: Omit<Urql.UseQueryArgs<AllBookmarksQueryVariables>, 'query'>
-) {
-  return Urql.useQuery<AllBookmarksQuery, AllBookmarksQueryVariables>({
-    query: AllBookmarksDocument,
-    ...options
-  })
 }
 export const BookmarkIdsDocument = gql`
   query BookmarkIds($userId: UUID!, $category: String, $projectId: UUID) {

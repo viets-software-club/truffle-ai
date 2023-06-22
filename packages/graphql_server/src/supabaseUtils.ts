@@ -93,7 +93,7 @@ const deleteBookmark = async (userID: string, projectID: string) => {
  */
 const deleteStaleOrganizations = async () => {
   // get the login not the name!
-  const { data: organizations } = await supabase.from('organization').select('login')
+  const { data: organizations } = await supabaseClient.from('organization').select('login')
 
   // if organizations is null or the length is 0, return
   if (!organizations?.length) return
@@ -104,7 +104,7 @@ const deleteStaleOrganizations = async () => {
     const ownedByOrganization = await getListOfProjectsOwnedByOrganization(organizationLogin)
 
     if (!ownedByOrganization?.length) {
-      await supabase.from('organization').delete().eq('login', organizationLogin)
+      await supabaseClient.from('organization').delete().eq('login', organizationLogin)
     }
   }
 }
@@ -114,7 +114,7 @@ const deleteStaleOrganizations = async () => {
  * Probably because the projects owned or founded by the person are not trending anymore and got deleted.
  */
 const deleteStaleAssociatedPersons = async () => {
-  const { data: associatedPersons } = await supabase.from('associated_person').select('login')
+  const { data: associatedPersons } = await supabaseClient.from('associated_person').select('login')
 
   if (!associatedPersons?.length) return
 
@@ -126,7 +126,7 @@ const deleteStaleAssociatedPersons = async () => {
     const foundedByPerson = await getListOfProjectsFoundedByUser(associatedPersonLogin)
 
     if (!ownedByPerson?.length && !foundedByPerson?.length) {
-      await supabase.from('associated_person').delete().eq('login', associatedPersonLogin)
+      await supabaseClient.from('associated_person').delete().eq('login', associatedPersonLogin)
     }
   }
 }
@@ -201,7 +201,7 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
 const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
   const personID = await getPersonID(githubUsername)
 
-  const { data: projects } = await supabase
+  const { data: projects } = await supabaseClient
     .from('founded_by')
     .select('project_id')
     .eq('founder_id', personID)
@@ -216,7 +216,7 @@ const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
  */
 const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
   const personID = await getPersonID(githubUsername)
-  const { data: projects } = await supabase
+  const { data: projects } = await supabaseClient
     .from('project')
     .select('id')
     .eq('owning_person', personID)
@@ -231,7 +231,7 @@ const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
  */
 const getListOfProjectsOwnedByOrganization = async (githubOrganizationName: string) => {
   const organizationID = await getOrganizationID(githubOrganizationName)
-  const { data: projects } = await supabase
+  const { data: projects } = await supabaseClient
     .from('project')
     .select('id')
     .eq('owning_organization', organizationID)
@@ -429,7 +429,7 @@ const getPersonID = async (owner: string) => {
 const getProjectAbout = async (repoName: string, owner: string) => {
   const owningPersonID = await getPersonID(owner)
   if (owningPersonID) {
-    const { data: repoAbout } = await supabase
+    const { data: repoAbout } = await supabaseClient
       .from('project')
       .select('about')
       .eq('name', repoName)
@@ -438,7 +438,7 @@ const getProjectAbout = async (repoName: string, owner: string) => {
   }
   const owningOrganizationID = await getOrganizationID(owner)
   if (owningOrganizationID) {
-    const { data: repoAbout } = await supabase
+    const { data: repoAbout } = await supabaseClient
       .from('project')
       .select('about')
       .eq('name', repoName)

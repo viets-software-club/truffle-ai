@@ -21,6 +21,18 @@ import { fetchTrendingRepos } from './scraping/githubScraping'
 import { TrendingState } from '../types/updateProject'
 
 /**
+ * Updates the github stats of the trending and bookmarked projects
+ */
+export const hourlyDbUpdater = async () => {
+  // get the trending or bookmarked repos
+  const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
+
+  for (const project of projectsToBeUpdated) {
+    await updateProjectGithubStats(project.name, project.owner)
+  }
+}
+
+/**
  * Updates (and deletes) existing projects and inserts new trending ones.
  * @param {boolean} includeDeletion - If true all repos that are not trending and not bookmarked are deleted.
  */

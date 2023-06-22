@@ -2453,6 +2453,16 @@ export type EditBookmarkCategoryMutation = {
   editBookmarkCategory: { __typename?: 'Response'; code: string; message?: string | null }
 }
 
+export type RenameBookmarkCategoryMutationVariables = Exact<{
+  oldCategory: Scalars['String']
+  newCategory: Scalars['String']
+}>
+
+export type RenameBookmarkCategoryMutation = {
+  __typename?: 'Mutation'
+  renameBookmarkCategory: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
 export type AllBookmarksQueryVariables = Exact<{
   userId: Scalars['UUID']
   category?: InputMaybe<Scalars['String']>
@@ -2723,6 +2733,20 @@ export const EditBookmarkCategoryDocument = gql`
 export function useEditBookmarkCategoryMutation() {
   return Urql.useMutation<EditBookmarkCategoryMutation, EditBookmarkCategoryMutationVariables>(
     EditBookmarkCategoryDocument
+  )
+}
+export const RenameBookmarkCategoryDocument = gql`
+  mutation RenameBookmarkCategory($oldCategory: String!, $newCategory: String!) {
+    renameBookmarkCategory(oldCategory: $oldCategory, newCategory: $newCategory) {
+      code
+      message
+    }
+  }
+`
+
+export function useRenameBookmarkCategoryMutation() {
+  return Urql.useMutation<RenameBookmarkCategoryMutation, RenameBookmarkCategoryMutationVariables>(
+    RenameBookmarkCategoryDocument
   )
 }
 export const AllBookmarksDocument = gql`

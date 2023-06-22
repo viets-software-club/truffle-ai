@@ -1,0 +1,6 @@
+mutation RenameBookmarkCategory($oldCategory: String!, $newCategory: String!) {
+  renameBookmarkCategory(oldCategory: $oldCategory, newCategory: $newCategory) {
+    code
+    message
+  }
+}

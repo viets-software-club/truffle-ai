@@ -1,7 +1,6 @@
 import { getRepositoryTopics } from '../api/githubApi'
 import {
-  Topic,
-  getCategoryFromGPT,
+  getCategoriesFromGPT,
   getELI5FromReadMe,
   getHackernewsSentiment
   // categorizeProjectGeneral
@@ -28,7 +27,7 @@ export async function testHackerNewsSentiment() {
 const testCategorization = async (repoName: string, owner: string) => {
   const repoTopics = await getRepositoryTopics(owner, repoName, process.env.GITHUB_API_TOKEN)
   console.log('topics', repoTopics)
-  const categoryNumbers = await getCategoryFromGPT(repoTopics, null)
+  const categoryNumbers = await getCategoriesFromGPT(repoTopics, null)
   console.log('Categories:', categoryNumbers)
 }
 

@@ -2,7 +2,9 @@ import { timeMode } from '../../types/githubScraping'
 import * as github from '../api/githubApi'
 import * as githubScraping from '../scraping/githubScraping'
 import * as eli5 from '../api/openAIApi'
-import * as starHistory from '../starHistory/starHistory'
+import * as starHistory from '../githubHistory/starHistory'
+import * as forkHistory from '../githubHistory/forkHistory'
+import * as issueHistory from '../githubHistory/issueHistory'
 import * as hackernews from '../scraping/hackerNewsScraping'
 
 /** Main function to test the functionality of the different methods
@@ -95,6 +97,12 @@ export async function main(timeMode: timeMode, firstNRepos: number) {
 
     // get the star history of the repo
     console.log(await starHistory.getRepoStarRecords(owner + '/' + name, authToken, 10))
+
+    // get the fork history of the repo
+    console.log(await forkHistory.getRepoForkRecords(owner + '/' + name, authToken, 10))
+
+    // get the issue history of the repo
+    console.log(await issueHistory.getRepoIssueRecords(owner + '/' + name, authToken, 10))
 
     // get the contributor count of the repo
     console.log(await github.getContributorCount(owner, name, authToken))

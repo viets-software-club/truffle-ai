@@ -1,14 +1,14 @@
 // Github info type as returned by GraphQL API
 export type GitHubInfo = {
-  name?: string
-  description?: string
-  stargazerCount?: number
-  issues?: { totalCount?: number }
-  forkCount?: number
-  pullRequests?: { totalCount?: number }
-  url?: string
-  homepageUrl?: string
-  languages?: { edges?: { node?: { name?: string; color?: string } }[] }
+  name: string
+  description: string
+  stargazerCount: number
+  issues: { totalCount: number }
+  forkCount: number
+  pullRequests: { totalCount: number }
+  url: string
+  homepageUrl: string
+  languages: { edges: { node: { name: string; color: string } }[] }
 }
 
 export type RepositoryTopicsResponse = {
@@ -61,14 +61,12 @@ export type GitHubCommitHistory = {
   defaultBranchRef: {
     target: {
       history: {
-        edges: {
-          node: {
-            author: {
-              user: {
-                name: string
-                login: string
-                twitterUsername: string
-              }
+        nodes: {
+          author: {
+            user: {
+              name: string
+              login: string
+              twitterUsername: string
             }
           }
         }[]
@@ -76,6 +74,7 @@ export type GitHubCommitHistory = {
     }
   }
 }
+
 // Edge in the Github Commit History
 export type Edge = {
   node: {

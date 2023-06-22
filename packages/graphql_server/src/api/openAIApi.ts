@@ -95,11 +95,11 @@ async function getHackernewsSentiment(comments: string) {
   }
 }
 
-export enum Topic {
-  MachineLearning = 1,
+enum Category {
+  AI_ML = 1,
   DevTools = 2,
   Infrastructure = 3,
-  Miscellaneous = 8,
+  Other = 8,
   CategorizationError = 9
 }
 
@@ -109,8 +109,8 @@ export enum Topic {
  * @param {string} description - The description of a repo, probably fetched from github
  * @returns The categories a repo fits into as a list of strings.
  */
-export const getCategoryFromGPT = async (topics: string[] | null, description: string | null) => {
-  if (topics === null && description === null) return Topic['9']
+export const getCategoriesFromGPT = async (topics: string[] | null, description: string | null) => {
+  if (topics === null && description === null) return [Category['9']]
 
   const request_body_Categories = {
     model: model,
@@ -141,20 +141,20 @@ export const getCategoryFromGPT = async (topics: string[] | null, description: s
     const answer = response?.data?.choices?.[0]?.message?.content
     const categoryNumbers = answer ? convertNumbersStringToList(answer) : ['9']
     return categoryNumbers.map((categoryNumber) => {
-      return Topic[Number(categoryNumber)]
+      return Category[Number(categoryNumber)]
     })
   } catch (error) {
-    return Topic['9']
+    return [Category['9']]
   }
 }
 
 // iterating through enums needs to be done like that
 const createCategorizationPrompt = () => {
   let prompt = 'Answer with '
-  for (const key in Topic) {
+  for (const key in Category) {
     if (isNaN(Number(key))) continue
     if (key === '9') continue
-    prompt += `${key} for ${Topic[key]}, `
+    prompt += `${key} for ${Category[key]}, `
   }
   return prompt
 }

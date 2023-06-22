@@ -2,7 +2,7 @@ import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import mercurius, { MercuriusContext } from 'mercurius'
 import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
-import supbaseClient from './supabase'
+import supbaseClient from './supabaseClient'
 import { UserResponse } from '@supabase/supabase-js'
 const ENV = process.env.NODE_ENV || 'development'
 

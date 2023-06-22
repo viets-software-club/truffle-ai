@@ -1,33 +1,39 @@
-import supabase from './supabase'
+import supabaseClient from './supabaseClient'
 import {
   getPersonID,
   getProjectID,
   updateSupabaseProject,
   formatLinkedInCompanyData,
   repoIsAlreadyInDB,
-  formatGithubStats
+  formatGithubStats,
+  getProjectAbout
 } from './supabaseUtils'
-import { getRepoFounders } from './api/githubApi'
-import { getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
+import { getContributorCount, getRepoFounders, getRepositoryTopics } from './api/githubApi'
+import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
-import { getRepoStarRecords } from './starHistory/starHistory'
+import { getRepoStarRecords } from './githubHistory/starHistory'
 import { getGithubData } from './utils'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
+import { getPostsForHashtag } from './scraping/twitterScraping'
+import { getRepoForkRecords } from './githubHistory/forkHistory'
 
 export {
   updateAllProjectInfo,
+  updateProjectCategories,
   updateProjectELI5,
+  updateProjectForkHistory,
   updateProjectFounders,
   updateProjectGithubStats,
   updateProjectLinkedInData,
   updateProjectSentiment,
   updateProjectStarHistory,
   updateProjectTrendingState,
-  updateProjectTrendingStatesForListOfRepos
+  updateProjectTrendingStatesForListOfRepos,
+  updateProjectTweets
 }
 
 /**
@@ -44,15 +50,31 @@ const updateAllProjectInfo = async (
   if (!(await repoIsAlreadyInDB(repoName, owner))) {
     return
   }
+  await updateProjectGithubStats(repoName, owner)
   await updateProjectELI5(repoName, owner)
   await updateProjectFounders(repoName, owner)
-  await updateProjectGithubStats(repoName, owner)
   await updateProjectLinkedInData(owner)
   await updateProjectSentiment(repoName, owner)
   await updateProjectStarHistory(repoName, owner)
+  await updateProjectForkHistory(repoName, owner)
+  await updateProjectTweets(repoName, owner)
+  await updateProjectCategories(repoName, owner)
   if (trendingState) {
     await updateProjectTrendingState(repoName, owner, trendingState)
   }
+}
+
+const updateProjectCategories = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  const repoGithubTopics = await getRepositoryTopics(repoName, owner, process.env.GITHUB_API_TOKEN)
+
+  const repoAbout = await getProjectAbout(repoName, owner)
+
+  const categories = await getCategoriesFromGPT(repoGithubTopics, repoAbout ?? null)
+
+  await updateSupabaseProject(repoName, owner, { categories: categories })
 }
 
 /**
@@ -71,27 +93,6 @@ const updateProjectELI5 = async (name: string, owner: string) => {
     await updateSupabaseProject(name, owner, {
       eli5: 'ELI5/description could not be generated for this project'
     })
-  }
-}
-
-/**
- * Updates the github stats of a repo.
- * Not the star-history though.
- * @param {string} repoName - The name of the repo.
- * @param {string} owner - The name of the owner of the repo.
- */
-const updateProjectGithubStats = async (name: string, owner: string) => {
-  const githubStats: GitHubInfo | null = await getGithubData(name, owner)
-  if (!githubStats) {
-    console.log('Could not get github stats for ', name, 'owned by', owner)
-    return
-  }
-  const updated = await updateSupabaseProject(name, owner, formatGithubStats(githubStats))
-
-  if (!updated) {
-    console.log('Could not update github stats for ', name, 'owned by', owner)
-  } else {
-    console.log('Updated github stats for ', name, 'owned by', owner)
   }
 }
 
@@ -117,7 +118,7 @@ const updateProjectFounders = async (repoName: string, owner: string) => {
       // so founderID being null means that the user is not on the db and was not inserted
       continue
     }
-    const { data: alreadyExists } = await supabase
+    const { data: alreadyExists } = await supabaseClient
       .from('founded_by')
       .select()
       .eq('founder_id', founderID)
@@ -127,7 +128,7 @@ const updateProjectFounders = async (repoName: string, owner: string) => {
       continue
     }
 
-    const { error: insertError } = await supabase
+    const { error: insertError } = await supabaseClient
       .from('founded_by')
       .insert({ founder_id: founderID, project_id: projectID })
 
@@ -144,13 +145,64 @@ const updateProjectFounders = async (repoName: string, owner: string) => {
   }
 }
 
+const updateProjectForkHistory = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+  const forkHistory = await getRepoForkRecords(
+    `${owner}/${repoName}`,
+    process.env.GITHUB_API_TOKEN,
+    10
+  )
+
+  await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
+}
+
+/**
+ * Updates the github stats of a repo.
+ * Not the star-history though.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ */
+const updateProjectGithubStats = async (name: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(name, owner))) return
+  const githubStats: GitHubInfo | null = await getGithubData(name, owner)
+  if (!githubStats) {
+    console.log('Could not get github stats for ', name, 'owned by', owner)
+    return
+  }
+
+  // *0.9 because the contributor count is not 100% accurate. It is an approximation.
+  // *10 /10 to round to one decimal place
+  //@Todo: refine approximation approach
+  const contributorCount =
+    Math.round(await getContributorCount(owner, name, process.env.GITHUB_API_TOKEN)) * 0.9
+
+  // *10, round, and /10 to round to one decimal place
+  const issuesPerContributor =
+    Math.round((githubStats.issues.totalCount / contributorCount) * 10) / 10
+  const forksPerContributor = Math.round((githubStats.forkCount / contributorCount) * 10) / 10
+
+  const updated = await updateSupabaseProject(name, owner, {
+    ...formatGithubStats(githubStats),
+    issues_per_contributor: issuesPerContributor,
+    forks_per_contributor: forksPerContributor
+  })
+
+  if (!updated) {
+    console.log('Could not update github stats for ', name, 'owned by', owner)
+  } else {
+    console.log('Updated github stats for ', name, 'owned by', owner)
+  }
+}
+
 /**
  * Updates all columns of organization that are populated with data that come from linkedIN
  * @param {string} organizationHandle - The login of the organization.
  */
 const updateProjectLinkedInData = async (organizationHandle: string) => {
   // check if repo is owned by an organization
-  const { data: supabaseOrga } = await supabase
+  const { data: supabaseOrga } = await supabaseClient
     .from('organization')
     .select('id, linkedin_url')
     .eq('login', organizationHandle)
@@ -172,7 +224,7 @@ const updateProjectLinkedInData = async (organizationHandle: string) => {
   }
 
   // insert the formatted info
-  const { error: updateError } = await supabase
+  const { error: updateError } = await supabaseClient
     .from('organization')
     .update(formatLinkedInCompanyData(linkedinData))
     .eq('login', organizationHandle)
@@ -279,4 +331,15 @@ const updateProjectTrendingState = async (
     const repoName = repos[2 * i + 1]
     await updateProjectTrendingState(repoName, owner, trendingState)
   }
+}
+
+const updateProjectTweets = async (repoName: string, owner: string) => {
+  if (!(await repoIsAlreadyInDB(repoName, owner))) {
+    return
+  }
+
+  //@Todo: get real fork history -> waiting for jonas' PR to be merged
+  const tweets = await getPostsForHashtag(repoName)
+
+  await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })
 }

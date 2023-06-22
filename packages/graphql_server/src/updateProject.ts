@@ -14,11 +14,10 @@ import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { getRepoStarRecords } from './starHistory/starHistory'
-import { getGithubData, mockForkHistory, mockTwitterPosts } from './utils'
+import { getGithubData, mockForkHistory } from './utils'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
-import { get } from 'http'
 import { getPostsForHashtag } from './scraping/twitterScraping'
 
 export {

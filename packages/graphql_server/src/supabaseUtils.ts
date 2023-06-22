@@ -22,6 +22,7 @@ export {
   editBookmarkCategory,
   formatLinkedInCompanyData,
   formatGithubStats,
+  getListOfProjectsFoundedByUser,
   getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
   getPersonID,
@@ -149,6 +150,17 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
     number_of_employees: parseInt(linkedInData.employeesAmountInLinkedin),
     specialties: linkedInData.specialties
   }
+}
+
+const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
+  const personID = await getPersonID(githubUsername)
+  console.log(personID)
+  const { data: projects } = await supabase
+    .from('founded_by')
+    .select('project_id')
+    .eq('founder_id', personID)
+
+  return projects?.map((project) => project.project_id)
 }
 
 /**

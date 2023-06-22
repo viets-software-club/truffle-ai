@@ -78,6 +78,7 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
  * @param {ChartProps} datasets - The datasets to be displayed on the chart.
  * @param {boolean} multipleLines - Whether to display multiple lines or not.
  * @param {string} selectedMetric - The selected metric.
+ * @param {function} setSelectedMetric - The function to set the selected metric.
  */
 
 const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: ChartProps) => {
@@ -212,9 +213,9 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              height={300}
+              height={310}
               margin={{
-                top: 25,
+                top: 30,
                 right: 10,
                 left: 0,
                 bottom: 5

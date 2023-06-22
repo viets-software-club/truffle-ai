@@ -11,7 +11,9 @@ import {
   purgeTrendingState,
   repoIsAlreadyInDB,
   deleteNotTrendingAndNotBookmarkedProjects,
-  getTrendingAndBookmarkedProjects
+  getTrendingAndBookmarkedProjects,
+  deleteStaleOrganizations,
+  deleteStaleAssociatedPersons
 } from './supabaseUtils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { TrendingState } from '../types/updateProject'
@@ -35,13 +37,16 @@ export const dailyDbUpdater = async (includeDeletion: boolean) => {
   await updateProjectTrendingStatesForListOfRepos(monthlyTrendingRepos, 'is_trending_monthly')
 
   // if includeDeletion is true all repos that are not trending and not bookmarked are deleted
+  // also stale organizations and associated persons are deleted
   if (includeDeletion) {
     await deleteNotTrendingAndNotBookmarkedProjects()
+    await deleteStaleOrganizations()
+    await deleteStaleAssociatedPersons()
   }
 
   // update the trending or bookmarked repos
   const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
-  // here everything that should be updated daily is updated. atm this is just github stats
+  // here everything that should be updated daily is updated.
   for (const project of projectsToBeUpdated) {
     await updateProjectGithubStats(project.name, project.owner)
     await updateProjectTweets(project.name, project.owner)

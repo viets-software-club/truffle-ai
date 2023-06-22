@@ -32,11 +32,12 @@ const ProjectsTable = () => {
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<paginationParameters>({
-    first: 10,
+    first: 30,
     last: null,
     after: null,
     before: null
   })
+  const [totalCount, setTotalCount] = useState(0)
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
@@ -51,13 +52,22 @@ const ProjectsTable = () => {
     }
   })
 
+  // Fetch data from Supabase using generated Urql hook for total count
+  const [{ data: urqlDataTotal }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: defaultSort,
+      filter: defaultFilters
+    }
+  })
+
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
       setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
+      setTotalCount(urqlDataTotal?.projectCollection?.edges?.length ?? 0)
     }
-  }, [urqlData])
+  }, [urqlData, urqlDataTotal])
 
   // Initialize TanStack table
   const table = useReactTable({
@@ -90,7 +100,7 @@ const ProjectsTable = () => {
           filters={filters}
           updateFilters={updateFilters}
           currentEntries={data.length}
-          totalEntries={data.length} // @TODO get total entries from DB
+          totalEntries={totalCount} // @TODO get total entries from DB
           sorting={sorting}
           setSorting={setSorting}
           pageInfo={pageInfo}

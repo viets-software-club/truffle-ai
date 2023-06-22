@@ -28,7 +28,7 @@ const FilterBar = ({
 }: FilterBarProps) => {
   const handleClickLeft = () => {
     setPagination({
-      last: 10,
+      last: 30,
       before: pageInfo.startCursor,
       first: null,
       after: null
@@ -37,7 +37,7 @@ const FilterBar = ({
 
   const handleClickRight = () => {
     setPagination({
-      first: 10,
+      first: 30,
       after: pageInfo.endCursor,
       last: null,
       before: null
@@ -76,14 +76,14 @@ const FilterBar = ({
             onClick={handleClickLeft}
             variant="onlyIcon"
             Icon={ChevronLeft}
-            iconColor="text-white-600"
+            iconColor={!pageInfo.hasPreviousPage ? 'text-gray-600' : 'text-white-600'}
           />
           <Button
             disabled={!pageInfo.hasNextPage}
             onClick={handleClickRight}
             variant="onlyIcon"
             Icon={ChevronRight}
-            iconColor="text-white-600"
+            iconColor={!pageInfo.hasNextPage ? 'text-gray-600' : 'text-white-600'}
           />
         </div>
         <p className="text-14">Showing {currentEntries}&nbsp;</p>

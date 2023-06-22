@@ -98,7 +98,7 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
             >
               {recommendationList &&
                 recommendationList
-                  .filter((item) => currentPath.includes(item.pageRestriction ?? ''))
+                  .filter((item) => currentPath.includes(item.pageRestriction ?? '') && !item.hide)
                   .map((item, index) => (
                     <RecommendationRow
                       key={item.menuText}

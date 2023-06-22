@@ -134,6 +134,7 @@ const CommandInterface: React.FC = () => {
               project?.associatedPerson?.name ?? '',
               project?.name ?? ''
             )
+            newItem.hide = project?.associatedPerson?.email === undefined
           }
           return newItem
         })

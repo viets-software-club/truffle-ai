@@ -8,4 +8,5 @@ export type RecommendationRowType = {
   commandInterfaceOptions: string
   shortcutKey: string | null
   needConfirmation?: boolean | false
+  hide?: boolean | false
 }

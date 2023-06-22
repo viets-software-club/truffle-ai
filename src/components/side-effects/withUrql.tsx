@@ -1,6 +1,8 @@
 import React from 'react'
 import { useSession } from '@supabase/auth-helpers-react'
-import { Client, Provider, cacheExchange, fetchExchange } from 'urql'
+import { Client, Provider, fetchExchange } from 'urql'
+
+// @TODO set up caching
 
 /**
  * HOC for Urql provider, adds Authorization header with access_token
@@ -13,7 +15,7 @@ export default function withUrql<P extends JSX.IntrinsicAttributes>(
 
     const client = new Client({
       url: process.env.NEXT_PUBLIC_API_GRAPHQL_URL,
-      exchanges: [cacheExchange, fetchExchange],
+      exchanges: [fetchExchange],
       fetchOptions: () => {
         if (!session?.access_token) return {}
         return {

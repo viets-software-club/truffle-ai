@@ -20,6 +20,7 @@ type ProjectsTableProps = {
   sorting: ProjectOrderBy | null
   fetching: boolean
   error: CombinedError | undefined
+  hideTimeFrame?: boolean
   setSorting: (sort: ProjectOrderBy | null) => void
   updateFilters: (filters: ProjectFilter) => void
 }
@@ -33,6 +34,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   sorting,
   fetching,
   error,
+  hideTimeFrame,
   setSorting,
   updateFilters
 }) => {
@@ -106,7 +108,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
       <TopBar
         columns={table.getAllLeafColumns()}
         filters={filters}
-        comparePage={false}
+        hideTimeFrame={hideTimeFrame}
         sorting={sorting}
         setSorting={setSorting}
         updateFilters={updateFilters}
@@ -136,6 +138,10 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
       </div>
     </>
   )
+}
+
+ProjectsTable.defaultProps = {
+  hideTimeFrame: false
 }
 
 export default ProjectsTable

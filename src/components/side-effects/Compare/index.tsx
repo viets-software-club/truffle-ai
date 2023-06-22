@@ -119,8 +119,8 @@ const Compare = ({ category }: CompareProps) => {
       <TopBar
         columns={table.getAllLeafColumns()}
         filters={filters}
-        comparePage={false}
         sorting={sorting}
+        hideTimeFrame
         setSorting={setSorting}
         updateFilters={updateFilters}
       />

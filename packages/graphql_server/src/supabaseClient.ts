@@ -3,7 +3,7 @@ import { Database } from '../types/supabase'
 
 const supabaseClient = createClient<Database>(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_API_KEY,
+  process.env.SUPABASE_SERVICE_API_KEY,
   {
     auth: {
       autoRefreshToken: false,

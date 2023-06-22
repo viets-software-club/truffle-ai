@@ -61,14 +61,12 @@ export type GitHubCommitHistory = {
   defaultBranchRef: {
     target: {
       history: {
-        edges: {
-          node: {
-            author: {
-              user: {
-                name: string
-                login: string
-                twitterUsername: string
-              }
+        nodes: {
+          author: {
+            user: {
+              name: string
+              login: string
+              twitterUsername: string
             }
           }
         }[]
@@ -76,6 +74,7 @@ export type GitHubCommitHistory = {
     }
   }
 }
+
 // Edge in the Github Commit History
 export type Edge = {
   node: {

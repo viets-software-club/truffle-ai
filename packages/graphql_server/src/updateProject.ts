@@ -1,4 +1,4 @@
-import supabase from './supabase'
+import supabaseClient from './supabaseClient'
 import {
   getPersonID,
   getProjectID,
@@ -118,7 +118,7 @@ const updateProjectFounders = async (repoName: string, owner: string) => {
       // so founderID being null means that the user is not on the db and was not inserted
       continue
     }
-    const { data: alreadyExists } = await supabase
+    const { data: alreadyExists } = await supabaseClient
       .from('founded_by')
       .select()
       .eq('founder_id', founderID)
@@ -128,7 +128,7 @@ const updateProjectFounders = async (repoName: string, owner: string) => {
       continue
     }
 
-    const { error: insertError } = await supabase
+    const { error: insertError } = await supabaseClient
       .from('founded_by')
       .insert({ founder_id: founderID, project_id: projectID })
 
@@ -199,7 +199,7 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
  */
 const updateProjectLinkedInData = async (organizationHandle: string) => {
   // check if repo is owned by an organization
-  const { data: supabaseOrga } = await supabase
+  const { data: supabaseOrga } = await supabaseClient
     .from('organization')
     .select('id, linkedin_url')
     .eq('login', organizationHandle)
@@ -221,7 +221,7 @@ const updateProjectLinkedInData = async (organizationHandle: string) => {
   }
 
   // insert the formatted info
-  const { error: updateError } = await supabase
+  const { error: updateError } = await supabaseClient
     .from('organization')
     .update(formatLinkedInCompanyData(linkedinData))
     .eq('login', organizationHandle)

@@ -1,5 +1,6 @@
 import {
   bookmarkIsAlreadyInDB,
+  checkAndUpdateProjectBookmarkedState,
   deleteBookmark,
   editBookmarkCategory,
   renameBookmarkCategory
@@ -63,6 +64,7 @@ const resolvers = {
       }
       const userID = context.user?.id
 
+      //includes updating the is_bookmarked state of the project
       return await addBookmark(userID, projectID, category)
     },
     deleteBookmark: async (
@@ -81,6 +83,7 @@ const resolvers = {
       }
 
       const deletionError = await deleteBookmark(userID, projectID)
+      await checkAndUpdateProjectBookmarkedState(projectID)
       return deletionError ? deletionError : { code: '204' }
     },
     editBookmarkCategory: async (

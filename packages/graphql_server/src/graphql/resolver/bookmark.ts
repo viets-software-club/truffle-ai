@@ -1,4 +1,8 @@
-import { bookmarkIsAlreadyInDB, insertBookmark } from '../../supabaseUtils'
+import {
+  bookmarkIsAlreadyInDB,
+  checkAndUpdateProjectBookmarkedState,
+  insertBookmark
+} from '../../supabaseUtils'
 
 /**
  * Bookmarks a projects for a user.
@@ -15,6 +19,7 @@ export const addBookmark = async (userID: string, projectID: string, category: s
   }
 
   const insertionError = await insertBookmark(projectID, userID, category)
+  await checkAndUpdateProjectBookmarkedState(projectID)
   return insertionError
     ? insertionError
     : {

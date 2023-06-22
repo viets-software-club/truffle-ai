@@ -11,19 +11,14 @@ import {
   ProjectInfo
 } from '../types/supabaseUtils'
 
-/*
-Exports:
-*/
 export {
   bookmarkIsAlreadyInDB,
   deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
+  deleteStaleOrganizations,
   editBookmarkCategory,
   formatLinkedInCompanyData,
   formatGithubStats,
-  getListOfProjectsFoundedByUser,
-  getListOfProjectsOwnedByOrganization,
-  getListOfProjectsOwnedByUser,
   getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
   getPersonID,
@@ -89,6 +84,24 @@ const deleteBookmark = async (userID: string, projectID: string) => {
     .eq('project_id', projectID)
 
   return error
+}
+
+const deleteStaleOrganizations = async () => {
+  // get the login not the name!
+  const { data: organizations } = await supabase.from('organization').select('login')
+
+  // if organizations is null or the length is 0, return
+  if (!organizations?.length) return
+
+  for (const organizationLogin of organizations.map((organization) => organization.login)) {
+    //@Todo: should think about changing login of organzation and associated_person tables to not-nullable
+    if (!organizationLogin) continue
+    const ownedByOrganization = await getListOfProjectsOwnedByOrganization(organizationLogin)
+
+    if (!ownedByOrganization?.length) {
+      await supabase.from('organization').delete().eq('login', organizationLogin)
+    }
+  }
 }
 
 /**

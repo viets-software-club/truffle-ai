@@ -13,11 +13,16 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
     const router = useRouter()
     const user = useUser()
 
+    const emailError = router.query.error
+    const errorDescription = router.query.error_description
+
     useEffect(() => {
-      if (error || (!isLoading && !user)) {
-        void router.replace('/login/error')
+      if (emailError && errorDescription) {
+        void router.replace('/login?error=invalid_email')
+      } else if (error || (!isLoading && !user)) {
+        void router.replace('/login')
       }
-    }, [error, isLoading, user])
+    }, [emailError, error, errorDescription, isLoading, user])
 
     if (isLoading || !user) return <Loading fullscreen />
 

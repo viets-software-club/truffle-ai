@@ -1,4 +1,4 @@
-import { FormEvent, useState, FC } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/router'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
@@ -8,7 +8,10 @@ import Button from '@/components/pure/Button'
 import Logo from '@/components/pure/Icons/Logo'
 import { signInWithGoogle, signInWithPassword } from '@/util/login'
 
-const LoginErrorPage: FC = () => {
+/**
+ * Login component. Displays a Google login button and handles the Google OAuth login flow.
+ */
+const Login = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 
@@ -16,6 +19,7 @@ const LoginErrorPage: FC = () => {
   const router = useRouter()
   const { isLoading: sessionLoading } = useSessionContext()
   const supabaseClient = useSupabaseClient()
+  const { error } = router.query
 
   const handleLogin = async (type: 'google' | 'email', email?: string, password?: string) => {
     try {
@@ -59,7 +63,7 @@ const LoginErrorPage: FC = () => {
   if (user) void router.replace('/')
 
   // Show loading spinner if session state is still loading
-  if (sessionLoading) return <Loading />
+  if (sessionLoading) return <Loading fullscreen />
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-radial-gradient">
@@ -78,10 +82,12 @@ const LoginErrorPage: FC = () => {
           className="w-full justify-center py-3"
         />
 
-        <div className="mt-1 text-center text-sm text-red">
-          Invalid google email or password. Please note that only invited users or La Famiglia
-          employees can sign in.
-        </div>
+        {error === 'invalid_email' && (
+          <div className="text-center text-sm text-red">
+            Invalid google email or password. Please note that only invited users or La Famiglia
+            employees can sign in.
+          </div>
+        )}
 
         <hr className="w-full border-b-[.5px] border-gray-100/10" />
 
@@ -95,4 +101,4 @@ const LoginErrorPage: FC = () => {
   )
 }
 
-export default LoginErrorPage
+export default Login

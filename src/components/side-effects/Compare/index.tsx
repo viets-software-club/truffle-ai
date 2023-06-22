@@ -84,7 +84,7 @@ const Compare = () => {
       .getRowModel()
       .rows.map(
         (row) =>
-          `- <${row.original.githubUrl as string}|${row.original.name}>, ${
+          `- <${row.original.githubUrl as string}|${row.original.name as string}>, ${
             row.original.starCount as number
           } stars`
       )
@@ -159,8 +159,8 @@ const Compare = () => {
           <>
             <Chart
               datasets={data.map((project) => ({
-                id: project.id,
-                name: project.name,
+                id: project.id as string,
+                name: project.name as string,
                 data: project.starHistory as React.ComponentProps<
                   typeof Chart
                 >['datasets'][0]['data']

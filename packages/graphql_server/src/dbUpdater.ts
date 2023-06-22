@@ -1,7 +1,9 @@
 import supabaseClient from './supabaseClient'
 import {
   updateAllProjectInfo,
+  updateProjectForkHistory,
   updateProjectGithubStats,
+  updateProjectStarHistory,
   updateProjectTrendingStatesForListOfRepos,
   updateProjectTweets
 } from './updateProject'
@@ -56,6 +58,8 @@ export const dailyDbUpdater = async (includeDeletion: boolean) => {
   console.log('Updating existing trending and bookmarked projects...')
   for (const project of projectsToBeUpdated) {
     await updateProjectGithubStats(project.name, project.owner)
+    await updateProjectStarHistory(project.name, project.owner)
+    await updateProjectForkHistory(project.name, project.owner)
     await updateProjectTweets(project.name, project.owner)
   }
 

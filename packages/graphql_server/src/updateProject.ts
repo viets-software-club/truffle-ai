@@ -15,11 +15,11 @@ import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
 import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { getRepoStarRecords } from './githubHistory/starHistory'
 import { getGithubData } from './utils'
-import { mockForkHistory } from './util/mockForkHistory'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
 import { TrendingState } from '../types/updateProject'
 import { ProjectUpdate } from '../types/supabaseUtils'
 import { getPostsForHashtag } from './scraping/twitterScraping'
+import { getRepoForkRecords } from './githubHistory/forkHistory'
 
 export {
   updateAllProjectInfo,
@@ -149,8 +149,11 @@ const updateProjectForkHistory = async (repoName: string, owner: string) => {
   if (!(await repoIsAlreadyInDB(repoName, owner))) {
     return
   }
-  //@TODO get real fork history -> waiting for maxis PR
-  const forkHistory = mockForkHistory
+  const forkHistory = await getRepoForkRecords(
+    `${owner}/${repoName}`,
+    process.env.GITHUB_API_TOKEN,
+    10
+  )
 
   await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
 }

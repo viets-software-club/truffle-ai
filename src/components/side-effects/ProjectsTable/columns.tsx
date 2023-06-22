@@ -5,7 +5,6 @@ import { VscIssues } from 'react-icons/vsc'
 import { GoGitPullRequest } from 'react-icons/go'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
-import formatNumber from '@/util/formatNumber'
 import Image from 'next/image'
 
 const columnHelper = createColumnHelper<Project>()
@@ -27,7 +26,7 @@ const columns = [
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name}`,
+      `${(organization?.login || associatedPerson?.login) as string} / ${name?.toString() || ''}`,
     {
       id: 'Name',
       header: 'Name',
@@ -102,18 +101,18 @@ const columns = [
     )
   }),
   // Forks per Contributor column definition
-  columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
+  columnHelper.accessor('forksPerContributor', {
     id: 'Forks/Contrib.',
     header: 'Forks/Contrib.',
     enableColumnFilter: true,
-    cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
+    cell: (info) => <p className="text-14">{info.getValue() as number}</p>
   }),
   // Issues per Contributor column definition
-  columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
+  columnHelper.accessor('issuesPerContributor', {
     id: 'Issues/Contrib.',
     header: 'Issues/Contrib.',
     enableColumnFilter: true,
-    cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
+    cell: (info) => <p className="text-14">{info.getValue() as number}</p>
   }),
   // PR column definition
   columnHelper.accessor('pullRequestCount', {

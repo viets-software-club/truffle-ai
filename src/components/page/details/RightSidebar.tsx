@@ -25,7 +25,7 @@ const RightSidebar = ({ project }: Props) => {
   const affinityListID = localStorage.getItem('affinityListId')
 
   const sendToAffinityProps: SendToAffinityProps = {
-    name: project.name,
+    name: project.name ?? '',
     stars: project.starCount as number,
     forks: project.forkCount as number,
     contributors: project.contributorCount as number,
@@ -43,11 +43,11 @@ const RightSidebar = ({ project }: Props) => {
         <Sidebar.Box.GithubStatItem Icon={RepoForkedIcon} value={project.forkCount as number} />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-          value={(project.forkCount || 0) / (project.contributorCount || 1)}
+          value={project.forksPerContributor as number}
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-          value={(project.issueCount || 0) / (project.contributorCount || 1)}
+          value={project.issuesPerContributor as number}
         />
         <Sidebar.Box.GithubStatItem Icon={PeopleIcon} value={project.contributorCount as number} />
         <Sidebar.Box.GithubStatItem
@@ -57,7 +57,7 @@ const RightSidebar = ({ project }: Props) => {
         <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
       </Sidebar.Box>
 
-      {project.languages?.length > 0 && (
+      {project.languages?.length && project.languages.length > 0 && (
         <Sidebar.Box title="Languages">
           <Sidebar.Box.LanguagesItem
             languages={project.languages as unknown as Array<{ name: string; color: string }>}

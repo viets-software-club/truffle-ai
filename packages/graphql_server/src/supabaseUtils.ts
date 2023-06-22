@@ -10,15 +10,13 @@ import {
   ProjectUpdate,
   ProjectInfo
 } from '../types/supabaseUtils'
-import { PostgrestError } from '@supabase/supabase-js'
 
-/*
-Exports:
-*/
 export {
   bookmarkIsAlreadyInDB,
   deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
+  deleteStaleOrganizations,
+  deleteStaleAssociatedPersons,
   editBookmarkCategory,
   formatLinkedInCompanyData,
   formatGithubStats,
@@ -26,6 +24,7 @@ export {
   getOrganizationID,
   getPersonID,
   getProjectID,
+  getProjectAbout,
   getTrendingAndBookmarkedProjects,
   insertBookmark,
   purgeTrendingState,
@@ -89,6 +88,50 @@ const deleteBookmark = async (userID: string, projectID: string) => {
 }
 
 /**
+ * Deletes organizations from the db, that do not own projects anymore.
+ * Probably because the projects owned by the organizations are not trending anymore and got deleted.
+ */
+const deleteStaleOrganizations = async () => {
+  // get the login not the name!
+  const { data: organizations } = await supabaseClient.from('organization').select('login')
+
+  // if organizations is null or the length is 0, return
+  if (!organizations?.length) return
+
+  for (const organizationLogin of organizations.map((organization) => organization.login)) {
+    //@TODO should think about changing login of organzation and associated_person tables to not-nullable
+    if (!organizationLogin) continue
+    const ownedByOrganization = await getListOfProjectsOwnedByOrganization(organizationLogin)
+
+    if (!ownedByOrganization?.length) {
+      await supabaseClient.from('organization').delete().eq('login', organizationLogin)
+    }
+  }
+}
+
+/**
+ * Deletes associatedPersons from the db, that do not own projects anymore.
+ * Probably because the projects owned or founded by the person are not trending anymore and got deleted.
+ */
+const deleteStaleAssociatedPersons = async () => {
+  const { data: associatedPersons } = await supabaseClient.from('associated_person').select('login')
+
+  if (!associatedPersons?.length) return
+
+  for (const associatedPersonLogin of associatedPersons.map(
+    (associatedPerson) => associatedPerson.login
+  )) {
+    if (!associatedPersonLogin) continue
+    const ownedByPerson = await getListOfProjectsOwnedByUser(associatedPersonLogin)
+    const foundedByPerson = await getListOfProjectsFoundedByUser(associatedPersonLogin)
+
+    if (!ownedByPerson?.length && !foundedByPerson?.length) {
+      await supabaseClient.from('associated_person').delete().eq('login', associatedPersonLogin)
+    }
+  }
+}
+
+/**
  * Edits the category for a bookmark on the database
  * @param {string} userID - The user ID of the user in question.
  * @param {string} projectID - The project ID of the project in question.
@@ -123,7 +166,6 @@ const formatGithubStats = (githubData: GitHubInfo) => {
     issue_count: githubData?.issues?.totalCount,
     fork_count: githubData?.forkCount,
     pull_request_count: githubData?.pullRequests?.totalCount,
-    contributor_count: 1,
     github_url: githubData?.url,
     website_url: githubData?.homepageUrl,
     languages: languages,
@@ -149,6 +191,52 @@ const formatLinkedInCompanyData = (linkedInData: LinkedInCompanyProfile): Organi
     number_of_employees: parseInt(linkedInData.employeesAmountInLinkedin),
     specialties: linkedInData.specialties
   }
+}
+
+/**
+ * Gets a list of projects founded by the given user as specified by the founded_by table.
+ * @param {string} githubUsername - The username (login) of the user in question.
+ * @returns {String[] | null} The list of project ids (can be an empty list) or null if there was an problem during the process.
+ */
+const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
+  const personID = await getPersonID(githubUsername)
+
+  const { data: projects } = await supabaseClient
+    .from('founded_by')
+    .select('project_id')
+    .eq('founder_id', personID)
+
+  return projects?.map((project) => project.project_id) ?? null
+}
+
+/**
+ * Gets a list of projects owned by the given user
+ * @param {string} githubUsername - The username (login) of the user in question.
+ * @returns {String[] | null} The list of project ids (can be an empty list) or null if there was an problem during the process.
+ */
+const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
+  const personID = await getPersonID(githubUsername)
+  const { data: projects } = await supabaseClient
+    .from('project')
+    .select('id')
+    .eq('owning_person', personID)
+
+  return projects?.map((project) => project.id) ?? null
+}
+
+/**
+ * Gets a list of projects owned by the given organization
+ * @param {string} githubUsername - The username (login) of the user in question.
+ * @returns {String[] | null} The list of project ids (can be an empty list) or null if there was an problem during the process.
+ */
+const getListOfProjectsOwnedByOrganization = async (githubOrganizationName: string) => {
+  const organizationID = await getOrganizationID(githubOrganizationName)
+  const { data: projects } = await supabaseClient
+    .from('project')
+    .select('id')
+    .eq('owning_organization', organizationID)
+
+  return projects?.map((project) => project.id) ?? null
 }
 
 /**
@@ -328,7 +416,7 @@ const getPersonID = async (owner: string) => {
     .from('associated_person')
     .insert([personDataDBFormat])
   personInsertionError &&
-    console.error('Error inserting organization into database: \n', personInsertionError)
+    console.error('Error inserting person into database: \n', personInsertionError)
 
   const { data: person } = await supabaseClient
     .from('associated_person')
@@ -336,6 +424,27 @@ const getPersonID = async (owner: string) => {
     .eq('login', owner)
 
   return person?.[0]?.id ? person[0].id : null
+}
+
+const getProjectAbout = async (repoName: string, owner: string) => {
+  const owningPersonID = await getPersonID(owner)
+  if (owningPersonID) {
+    const { data: repoAbout } = await supabaseClient
+      .from('project')
+      .select('about')
+      .eq('name', repoName)
+      .eq('owning_person', owningPersonID)
+    return repoAbout?.[0]?.about ?? null
+  }
+  const owningOrganizationID = await getOrganizationID(owner)
+  if (owningOrganizationID) {
+    const { data: repoAbout } = await supabaseClient
+      .from('project')
+      .select('about')
+      .eq('name', repoName)
+      .eq('owningOrganization', owningOrganizationID)
+    return repoAbout?.[0]?.about ?? null
+  }
 }
 
 /**
@@ -558,6 +667,7 @@ const updateSupabaseProject = async (
   if (!(await repoIsAlreadyInDB(name, owner))) {
     return false
   }
+
   const owningOrganizationID = await getOrganizationID(owner)
 
   const { error: ownerUpdateError } = await supabaseClient

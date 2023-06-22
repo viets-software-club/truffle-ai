@@ -1,14 +1,14 @@
 // Github info type as returned by GraphQL API
 export type GitHubInfo = {
-  name?: string
-  description?: string
-  stargazerCount?: number
-  issues?: { totalCount?: number }
-  forkCount?: number
-  pullRequests?: { totalCount?: number }
-  url?: string
-  homepageUrl?: string
-  languages?: { edges?: { node?: { name?: string; color?: string } }[] }
+  name: string
+  description: string
+  stargazerCount: number
+  issues: { totalCount: number }
+  forkCount: number
+  pullRequests: { totalCount: number }
+  url: string
+  homepageUrl: string
+  languages: { edges: { node: { name: string; color: string } }[] }
 }
 
 export type RepositoryTopicsResponse = {

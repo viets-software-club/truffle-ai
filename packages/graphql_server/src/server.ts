@@ -74,7 +74,7 @@ void app.register(mercurius, {
   graphiql: true // see http://localhost:3001/graphiql
 })
 
-void app.post('/updateDatabase', async (_request, _reply) => {
+void app.get('/updateDatabase', async (_request, _reply) => {
   await automaticDbUpdater()
 })
 

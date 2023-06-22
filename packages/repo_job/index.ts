@@ -1,1 +1,5 @@
-console.log('Job run at', new Date().toLocaleString())
+import axios from 'axios'
+
+console.log('Repo job run at', new Date().toLocaleString())
+
+void axios.get((process.env.SERVER_URL as string) + '/updateDatabase')

@@ -4,7 +4,6 @@ import { FaSlack } from 'react-icons/fa'
 import { FiBookmark as Bookmark } from 'react-icons/fi'
 import Banner from '@/components/page/settings/Banner'
 import Button from '@/components/pure/Button'
-import { Tooltip } from 'react-tooltip'
 import sendSlackNotification from '@/util/sendSlackNotification'
 
 type ProjectInformationProps = {
@@ -56,15 +55,11 @@ const ProjectInformation = ({
           </div>
 
           <a href={url} target="_blank" rel="noreferrer">
-            <h1 className="mr-3 text-20 font-medium" data-tooltip-id="project-url">
+            <h1 className="mr-3 text-20 font-medium" data-tooltip-id={url}>
               {name.slice(0, 32)}
               {name.length > 32 ? '...' : ''}
             </h1>
           </a>
-
-          <Tooltip id="project-url" place="bottom">
-            {url}
-          </Tooltip>
 
           {categories?.length > 0 &&
             categories[0] !== 'CategorizationError' &&

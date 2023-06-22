@@ -1,7 +1,7 @@
 import { LinkIcon } from '@primer/octicons-react'
 import { AiFillMail } from 'react-icons/ai'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
-import { Tooltip } from 'react-tooltip'
+import Tooltip from '@/components/pure/Sidebar/Box/TooltipItem'
 
 type FounderProps = {
   name: string
@@ -38,9 +38,7 @@ const FounderItem = ({ name, mail, company, github, twitter, website }: FounderP
               >
                 <AiFillMail className="h-[14px] w-[14px] text-gray-500" />
               </a>
-              <Tooltip id={mail} place="bottom">
-                {mail}
-              </Tooltip>
+              <Tooltip id={mail} />
             </div>
           )}
           {twitter && (
@@ -53,9 +51,7 @@ const FounderItem = ({ name, mail, company, github, twitter, website }: FounderP
               >
                 <FaTwitter className="h-[14px] w-[14px] text-gray-500" />
               </a>
-              <Tooltip id={twitter} place="bottom">
-                {twitter}
-              </Tooltip>
+              <Tooltip id={twitter} />
             </div>
           )}
           {website && (
@@ -63,17 +59,13 @@ const FounderItem = ({ name, mail, company, github, twitter, website }: FounderP
               <a href={website} target="_blank" rel="noreferrer" data-tooltip-id={website}>
                 <LinkIcon className="h-[14px] w-[14px] text-gray-500" />
               </a>
-              <Tooltip id={website} place="bottom">
-                {website}
-              </Tooltip>
+              <Tooltip id={website} />
             </div>
           )}
           {github && (
             <a href={github} target="_blank" rel="noreferrer" data-tooltip-id={github}>
               <FaGithub className="h-[14px] w-[14px] text-gray-500" />
-              <Tooltip id={github} place="bottom">
-                {github}
-              </Tooltip>
+              <Tooltip id={github} />
             </a>
           )}
         </div>

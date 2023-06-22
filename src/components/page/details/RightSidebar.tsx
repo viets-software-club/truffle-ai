@@ -39,39 +39,39 @@ const RightSidebar = ({ project }: Props) => {
     <Sidebar.Small>
       <Sidebar.Box title="GitHub Stats">
         <Sidebar.Box.GithubStatItem
-          id="stars"
+          id="Stars"
           Icon={StarIcon}
           value={project?.starCount as number}
         />
         <Sidebar.Box.GithubStatItem
           Icon={IssueOpenedIcon}
           value={project?.issueCount as number}
-          id="issues"
+          id="Issues"
         />
         <Sidebar.Box.GithubStatItem
           Icon={RepoForkedIcon}
           value={project?.forkCount as number}
-          id="forks"
+          id="Forks"
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
           value={(project?.forkCount || 0) / (project?.contributorCount || 1)}
-          id="fork/contributor"
+          id="Forks/contributor"
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
           value={(project?.issueCount || 0) / (project?.contributorCount || 1)}
-          id="issue/contributor"
+          id="Issues/contributor"
         />
         <Sidebar.Box.GithubStatItem
           Icon={PeopleIcon}
           value={project?.contributorCount as number}
-          id="contributors"
+          id="Contributors"
         />
         <Sidebar.Box.GithubStatItem
           Icon={GitPullRequestIcon}
           value={project.pullRequestCount as number}
-          id="pull requests"
+          id="Pull requests"
         />
         <Sidebar.Box.GithubStatItem
           Icon={FaGithub}

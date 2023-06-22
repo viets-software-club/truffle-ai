@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import formatNumber from '@/util/formatNumber'
-import { Tooltip } from 'react-tooltip'
+import Tooltip from '@/components/pure/Sidebar/Box/TooltipItem'
 
 enum Color {
   DEFAULT = 'text-gray-100',
@@ -64,10 +64,8 @@ const GithubStatItem = ({
             </a>
           )}
           {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}
+          <Tooltip id={id} />
         </div>
-        <Tooltip id={id} place="bottom">
-          {id}
-        </Tooltip>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import { FaTwitter, FaGlobe } from 'react-icons/fa'
-import { Tooltip } from 'react-tooltip'
+import Tooltip from '@/components/pure/Sidebar/Box/TooltipItem'
 
 type CompanyProps = {
   twitterLink?: string
@@ -22,9 +22,7 @@ const CompanyItem = ({ twitterLink, websiteLink }: CompanyProps) => (
               <FaTwitter className="h-[14px] w-[14px]" />
               Twitter
             </a>
-            <Tooltip id={twitterLink} place="bottom">
-              {twitterLink}
-            </Tooltip>
+            <Tooltip id={twitterLink} />
           </div>
         )}
         {websiteLink && (
@@ -39,9 +37,7 @@ const CompanyItem = ({ twitterLink, websiteLink }: CompanyProps) => (
               <FaGlobe className="h-[14px] w-[14px]" />
               Website
             </a>
-            <Tooltip id={websiteLink} place="bottom">
-              {websiteLink}
-            </Tooltip>
+            <Tooltip id={websiteLink} />
           </div>
         )}
         {/* <span className="text-xs not-italic leading-3 text-gray-500">{name}</span>

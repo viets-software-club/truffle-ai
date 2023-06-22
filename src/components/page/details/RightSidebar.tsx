@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable react/jsx-props-no-spreading */
 import {
   IssueOpenedIcon,

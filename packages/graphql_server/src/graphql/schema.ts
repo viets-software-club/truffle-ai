@@ -4,8 +4,8 @@ const schema = `
     helloWorld: String!
     }
   type Mutation {
-    addProjectByName(name: String!, owner: String!): Boolean!
-    addProjectByUrl(url: String!): Boolean!
+    addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): Response!
+    addProjectByUrl(url: String!, bookmarkCategory: String!): Response!
     addBookmark(projectID: String!, category: String!): Response!
     deleteBookmark(projectID: String!): Response!
     editBookmarkCategory(projectID: String!, newCategory: String!): Response!

@@ -1,13 +1,18 @@
-import { createProject } from '../dbUpdater'
 import {
   bookmarkIsAlreadyInDB,
   deleteBookmark,
   editBookmarkCategory,
-  insertBookmark,
   renameBookmarkCategory
 } from '../supabaseUtils'
 import { parseGitHubUrl } from '../utils'
 import { MercuriusContext } from 'mercurius'
+import { addProject } from './resolver/addProject'
+import { addBookmark } from './resolver/bookmark'
+import {
+  BAD_URL_RESPONSE,
+  BAD_USER_RESPONSE,
+  BOOKMARK_DOES_NOT_EXIST_RESPONSE
+} from './commonResponses'
 
 //@Todo: refine and refactor response types
 
@@ -17,16 +22,35 @@ const resolvers = {
   },
   Mutation: {
     // takes in variables. Parent object _ is never used
-    addProjectByName: async (_: unknown, { name, owner }: { name: string; owner: string }) => {
-      return await createProject(name, owner, null)
+    addProjectByName: async (
+      _: unknown,
+      { name, owner, bookmarkCategory }: { name: string; owner: string; bookmarkCategory: string },
+      context: MercuriusContext
+    ) => {
+      //Todo: refactor user check
+      if (!context.user) {
+        return BAD_USER_RESPONSE
+      }
+      const userID = context.user?.id
+
+      return await addProject(name, owner, userID, bookmarkCategory)
     },
     // takes in variables. Parent object _parent is never used
-    addProjectByUrl: async (_parent: unknown, { url }: { url: string }) => {
+    addProjectByUrl: async (
+      _parent: unknown,
+      { url, bookmarkCategory }: { url: string; bookmarkCategory: string },
+      context: MercuriusContext
+    ) => {
+      if (!context.user) {
+        return BAD_USER_RESPONSE
+      }
+      const userID = context.user?.id
+
       const urlParts = parseGitHubUrl(url)
       if (urlParts === null) {
-        return false
+        return BAD_URL_RESPONSE
       } else {
-        return await createProject(urlParts.repo, urlParts.owner, null)
+        return await addProject(urlParts.repo, urlParts.owner, userID, bookmarkCategory)
       }
     },
     addBookmark: async (
@@ -38,19 +62,8 @@ const resolvers = {
         return BAD_USER_RESPONSE
       }
       const userID = context.user?.id
-      if (await bookmarkIsAlreadyInDB(userID, projectID)) {
-        return {
-          message: 'This bookmark is already in the database.',
-          code: '409'
-        }
-      }
 
-      const insertionError = await insertBookmark(projectID, userID, category)
-      return insertionError
-        ? insertionError
-        : {
-            code: '204'
-          }
+      return await addBookmark(userID, projectID, category)
     },
     deleteBookmark: async (
       _parent: unknown,
@@ -99,7 +112,7 @@ const resolvers = {
 
       const userID = context.user?.id
 
-      //@Todo: check if category exists
+      //@Todo: check if category exists -> future improvement cause not crucial atm
       const renameError = await renameBookmarkCategory(userID, oldCategory, newCategory)
       return renameError ? renameError : { code: '204' }
     }
@@ -107,14 +120,3 @@ const resolvers = {
 }
 
 export default resolvers
-
-const BAD_USER_RESPONSE = {
-  message: 'The graphQL resolver did not receive a valid user.',
-  code: '400',
-  hint: 'Are you loggedIn?'
-}
-
-const BOOKMARK_DOES_NOT_EXIST_RESPONSE = {
-  message: 'This bookmark does not exist on the database.',
-  code: '409'
-}

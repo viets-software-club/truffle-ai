@@ -97,23 +97,23 @@ const RightSidebar = ({ project }: Props) => {
         </Sidebar.Box>
       )}
 
-      {(project.name ||
-        project.associatedPerson?.name ||
-        project.associatedPerson?.githubUrl ||
-        project.associatedPerson?.email ||
-        project.associatedPerson?.twitterUsername ||
-        project.associatedPerson?.websiteUrl) && (
-        <Sidebar.Box title="Founder">
-          <Sidebar.Box.FounderItem
-            projectName={project.name as string}
-            name={project.associatedPerson?.name as string}
-            github={project.associatedPerson?.githubUrl as string}
-            mail={project.associatedPerson?.email as string}
-            twitter={project.associatedPerson?.twitterUsername as string}
-            website={project.associatedPerson?.websiteUrl as string}
-          />
-        </Sidebar.Box>
-      )}
+      {project.name &&
+        (project.associatedPerson?.name ||
+          project.associatedPerson?.githubUrl ||
+          project.associatedPerson?.email ||
+          project.associatedPerson?.twitterUsername ||
+          project.associatedPerson?.websiteUrl) && (
+          <Sidebar.Box title="Founder">
+            <Sidebar.Box.FounderItem
+              projectName={project.name}
+              name={project.associatedPerson?.name as string}
+              github={project.associatedPerson?.githubUrl as string}
+              mail={project.associatedPerson?.email as string}
+              twitter={project.associatedPerson?.twitterUsername as string}
+              website={project.associatedPerson?.websiteUrl as string}
+            />
+          </Sidebar.Box>
+        )}
 
       <Sidebar.Box title="Integrations">
         <div className="flex flex-col justify-between">

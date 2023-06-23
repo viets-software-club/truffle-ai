@@ -17,7 +17,7 @@ import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { defaultSort } from '@/components/page/overview/types'
 import {
   Project,
   ProjectFilter,
@@ -40,7 +40,7 @@ const Compare = ({ category }: CompareProps) => {
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
+  const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [columnVisibility, setColumnVisibility] = useState({})
   const [slackLoading, setSlackLoading] = useState(false)
@@ -74,10 +74,7 @@ const Compare = ({ category }: CompareProps) => {
       variables: {
         orderBy: sorting || defaultSort,
         filter: {
-          ...(filters || defaultFilters),
-          isTrendingDaily: null,
-          isTrendingWeekly: null,
-          isTrendingMonthly: null,
+          ...filters,
           id: {
             in: bookmarkIds
           }

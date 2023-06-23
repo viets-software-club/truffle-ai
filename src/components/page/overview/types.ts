@@ -37,15 +37,6 @@ export enum StringFilterOperator {
   'starts with' = 'startsWith'
 }
 
-export const defaultFilters = {
-  starCount: {
-    gt: 1000
-  },
-  isTrendingDaily: {
-    eq: true
-  }
-}
-
 export const defaultSort = {
   name: OrderByDirection.AscNullsLast
 }

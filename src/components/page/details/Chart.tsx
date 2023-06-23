@@ -12,7 +12,7 @@ import {
 } from 'recharts'
 import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlineCalendar } from 'react-icons/ai'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu } from '@headlessui/react'
 import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
 import formatDate from '@/util/formatDate'
@@ -47,7 +47,8 @@ const timeframeOptions = [
   { value: 1, label: '1 Month' },
   { value: 3, label: '3 Months' },
   { value: 6, label: '6 Months' },
-  { value: 12, label: '1 Year' }
+  { value: 12, label: '1 Year' },
+  { value: undefined, label: 'All Time' }
 ]
 
 const dataOptions = ['Stars', 'Forks']
@@ -83,7 +84,7 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
  */
 
 const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: ChartProps) => {
-  const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
+  const [timeframeModalValue, setTimeframeModalValue] = useState<string>('All Time')
   const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
   const [chartData, setChartData] = useState(chartDataOriginal)
   const [isDataNormalized, setIsDataNormalized] = useState(false)
@@ -115,16 +116,21 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
   }
 
   const handleTimeframeChange = useCallback(
-    (value: number) => () => {
-      const selectedOption = timeframeOptions.find((option) => option.value === value)
-      setTimeframeModalValue(selectedOption ? selectedOption.label : timeframeOptions[0].label)
+    (value?: number) => () => {
+      if (value) {
+        const selectedOption = timeframeOptions.find((option) => option.value === value)
+        setTimeframeModalValue(selectedOption ? selectedOption.label : timeframeOptions[0].label)
 
-      const filteredData = chartDataOriginal.map((dataset) => ({
-        ...dataset,
-        data: filterDataByTimeframe(dataset.data, value)
-      }))
+        const filteredData = chartDataOriginal.map((dataset) => ({
+          ...dataset,
+          data: filterDataByTimeframe(dataset.data, value)
+        }))
 
-      setChartData(filteredData)
+        setChartData(filteredData)
+      } else {
+        setTimeframeModalValue('All Time')
+        setChartData(chartDataOriginal)
+      }
     },
     [chartDataOriginal]
   )
@@ -140,72 +146,56 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
       ) : (
         <div className="flex w-full flex-col gap-3">
           <div className="flex flex-row gap-3 ">
-            {multipleLines && (
-              <>
-                <Menu as="div" className="relative">
-                  <Menu.Button as="div">
-                    <Button
-                      Icon={AiOutlineCalendar}
-                      variant="normal"
-                      text={timeframeModalValue}
-                      order="ltr"
-                    />
-                  </Menu.Button>
-
-                  <MenuItemsTransition>
-                    <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
-                      {timeframeOptions.map((option) => (
-                        <Menu.Item
-                          as="button"
-                          key={option.label}
-                          onClick={handleTimeframeChange(option.value)}
-                          className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
-                        >
-                          {option.label}
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </MenuItemsTransition>
-                </Menu>
-
-                <div>
-                  <Button
-                    variant="normal"
-                    text="Normalize Data"
-                    fullWidth
-                    onClick={handleDataNormalization}
-                  />
-                </div>
-              </>
-            )}
-
-            <Menu as="div" className="relative inline-block">
-              <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-                <FiChevronDown className="text-gray-500" />
-                <p className="leading-none">{selectedMetric}</p>
+            <Menu as="div" className="relative">
+              <Menu.Button as="div">
+                <Button Icon={FiChevronDown} variant="normal" text={selectedMetric} order="ltr" />
               </Menu.Button>
 
-              <Transition.Child>
-                <Menu.Items
-                  static
-                  className="absolute z-10 mt-2 w-24 rounded-md bg-gray-700 shadow-lg focus:outline-none"
-                >
-                  <div className="py-1">
-                    {dataOptions.map((metric) => (
-                      <Menu.Item key={metric}>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedMetric(metric)}
-                          className="flex w-24 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                        >
-                          <p>{metric}</p>
-                        </button>
-                      </Menu.Item>
-                    ))}
-                  </div>
+              <MenuItemsTransition>
+                <Menu.Items className="z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+                  {dataOptions.map((metric) => (
+                    <Menu.Item
+                      as="button"
+                      key={metric}
+                      onClick={() => setSelectedMetric(metric)}
+                      className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                    >
+                      {metric}
+                    </Menu.Item>
+                  ))}
                 </Menu.Items>
-              </Transition.Child>
+              </MenuItemsTransition>
             </Menu>
+
+            <Menu as="div" className="relative">
+              <Menu.Button as="div">
+                <Button
+                  Icon={AiOutlineCalendar}
+                  variant="normal"
+                  text={timeframeModalValue}
+                  order="ltr"
+                />
+              </Menu.Button>
+
+              <MenuItemsTransition>
+                <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+                  {timeframeOptions.map((option) => (
+                    <Menu.Item
+                      as="button"
+                      key={option.label}
+                      onClick={handleTimeframeChange(option.value)}
+                      className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                    >
+                      {option.label}
+                    </Menu.Item>
+                  ))}
+                </Menu.Items>
+              </MenuItemsTransition>
+            </Menu>
+
+            {multipleLines && (
+              <Button variant="normal" text="Normalize Data" onClick={handleDataNormalization} />
+            )}
           </div>
 
           <ResponsiveContainer width="100%" height={300}>

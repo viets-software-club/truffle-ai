@@ -5,7 +5,7 @@ import { AiOutlineNumber } from 'react-icons/ai'
 import { ChevronDownIcon } from '@primer/octicons-react'
 import { Menu, Popover } from '@headlessui/react'
 import Button from '@/components/pure/Button'
-import { ProjectFilter } from '@/graphql/generated/gql'
+import { IntFilter, ProjectFilter, StringFilter } from '@/graphql/generated/gql'
 import { FilterOption, IntFilterOperator, StringFilterOperator, filterOptions } from './types'
 import MenuItemsTransition from './MenuItemsTransition'
 import FilterMenuItem from './FilterMenuItem'
@@ -16,6 +16,10 @@ type FilterItemModalProps = {
   updateFilters: (filter: ProjectFilter) => void
 }
 
+function isIntFilter(filter: StringFilter | IntFilter): filter is IntFilter {
+  return (filter as IntFilter).gt !== undefined
+}
+
 const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModalProps) => {
   const type = filterOptions.find((option) => option.key === currentKey)?.type
   const column = filterOptions.find((option) => option.key === currentKey)?.column
@@ -23,7 +27,19 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
     | StringFilterOperator
     | IntFilterOperator
 
-  const [value, setValue] = useState<string | number>('')
+  let defFilterNumber
+  const filter = filters?.[currentKey]
+  let val
+  if (filter && isIntFilter(filter)) {
+    val = filter[currentOperator as IntFilterOperator]
+  }
+
+  if (typeof val === 'number' && val !== -1) {
+    defFilterNumber = val
+  }
+
+  const [value, setValue] = useState<string | number>(defFilterNumber || '')
+
   const [operator, setOperator] = useState<IntFilterOperator | StringFilterOperator>(
     currentOperator
   )

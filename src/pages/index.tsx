@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react'
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import ProjectsTable from '@/components/side-effects/ProjectsTable'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { defaultSort } from '@/components/page/overview/types'
 import {
   Project,
   ProjectFilter,
   ProjectOrderBy,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
+import defaultFilters from '@/components/page/overview/defaultFilters'
 
 const TrendingProjects = () => {
   const [data, setData] = useState<Project[]>([])

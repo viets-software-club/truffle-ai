@@ -20,10 +20,14 @@ const NumberedBulletList: React.FC<Props> = ({ items }) => (
           <ul className="list-inside list-disc">
             <div className="pl-4">
               <li>
-                <a href={item.link1}>Link</a>
+                <a href={item.link1} className="hover:underline">
+                  Link
+                </a>
               </li>
               <li>
-                Licence: <a href={item.link2}>Link</a>
+                <a href={item.link2} className="hover:underline">
+                  Licence: Link
+                </a>
               </li>
             </div>
           </ul>

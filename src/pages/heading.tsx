@@ -28,7 +28,7 @@ export const HeaderTwo: React.FC<HeaderProps> = ({ text }) => {
 export const HeaderThree: React.FC<HeaderProps> = ({ text }) => {
   const headerId = generateHeaderId(text)
   return (
-    <h3 id={headerId} className="py-1 text-18">
+    <h3 id={headerId} className="py-1 pt-2 text-16">
       {text}
     </h3>
   )

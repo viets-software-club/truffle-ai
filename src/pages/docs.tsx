@@ -1,6 +1,6 @@
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
-import { HeaderOne, HeaderTwo } from './heading'
+import { HeaderOne, HeaderThree, HeaderTwo } from './heading'
 import Paragraph from './paragraph'
 import NumberedBulletedList from './numberedBulletedList'
 
@@ -124,10 +124,24 @@ const Docs = () => {
           <HeaderOne text="Introduction" />
 
           <HeaderTwo text="Purpose of the System" />
-          <Paragraph size="last">
-            What is your application all about? Write a short introduction with an elevator pitch
-            and include the main users and/or stakeholders.
+          <Paragraph>
+            Our Goal is to create a system that helps the end-users to invest in the early stages of
+            a Company or a Project.
           </Paragraph>
+
+          <Paragraph>
+            Companies often leave traces on the internet via Git repositories, Twitter, etc. We aim
+            to create an interface that displays the most trending projects and repositories for the
+            Day/Week by looking at their footprint on the internet, whether it be contributors or
+            forks of their Git repositories or tweets and hackernews posts discussing the project.
+          </Paragraph>
+
+          <Paragraph>
+            By automatically web-scraping this information, along with the contact information of
+            the founders, we plan to keep track of interesting individuals or companies that have
+            the potential to grow and discover interesting projects in the early stages.
+          </Paragraph>
+
           <hr className="my-1 h-px border-t-0 bg-neutral-100 opacity-25 dark:opacity-25" />
 
           <HeaderOne text="Requirements" />
@@ -142,10 +156,76 @@ const Docs = () => {
           <hr className="my-1 h-px border-t-0 bg-neutral-100 opacity-25 dark:opacity-25" />
           <HeaderOne text="System Design" />
           <HeaderTwo text="Overview" />
+          <HeaderThree text="Supabse" />
           <Paragraph>
-            Include and describe the Workflow here in terms of the main components and technologies
-            used.
+            Supabase is a Backend as a Service (BaaS) for managing authentication, a Postgre
+            database, file storage, edge functions and more. Authentication and Database management
+            are fully handled by Supabase. The database is additionally configured to expose a
+            GraphQL endpoint.
           </Paragraph>
+
+          <HeaderThree text="Microservices" />
+          <Paragraph>
+            The backend consists of multiple microservices, managed by NPM workspaces. All services
+            are implemented with Node.js and TypeScript for type-safety, linted with ESLint and
+            formatted with Prettier.
+          </Paragraph>
+
+          <HeaderThree text="graphql_gateway" />
+          <Paragraph>
+            The Gateway is the entry point to the backend and forwards all incoming requests. It is
+            built using GraphQL Mesh, which stitches multiple GraphQL schemas together, by
+            introspecting different GraphQL endpoints, thus creating its own supergraph. It then
+            forwards requests and their individual GraphQL query to the corresponding service. The
+            Supergraph is created from Supabase’s GraphQL endpoint and Before any request is
+            forwarded it first verifies that the user is authenticated.
+          </Paragraph>
+
+          <HeaderThree text="graphql_server" />
+          <Paragraph>
+            A fully functional server. It sets up a Fastify server using the Mercurius middleware to
+            expose a graphql endpoint.
+          </Paragraph>
+
+          <Paragraph>
+            A fully functional server. It sets up a Fastify server using the Mercurius middleware to
+            expose a graphql endpoint.
+          </Paragraph>
+
+          <Paragraph className="font-bold">Queries:</Paragraph>
+          <ul className="list-inside list-disc text-14">
+            <li> helloWorld(): a test query</li>
+          </ul>
+
+          <Paragraph className="font-bold">Mutations:</Paragraph>
+
+          <ul className="list-inside list-disc text-14">
+            <li>
+              addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): adds and
+              bookmarks a project by name
+            </li>
+            <li>
+              addProjectByUrl(url: String!, bookmarkCategory: String!): adds and bookmarks a project
+              by URL
+            </li>
+            <li>
+              addBookmark(projectID: String!, category: String!): adds a bookmark for the currently
+              logged in user
+            </li>
+            <li>
+              deleteBookmark(projectID: String!): deletes a bookmark for the currently logged in
+              user
+            </li>
+            <li>
+              editBookmarkCategory(projectID: String!, newCategory: String!): edits the category a
+              bookmark is associated with
+            </li>
+            <li>
+              renameBookmarkCategory(oldCategory: String!, newCategory: String!): renames a category
+              of bookmarks
+            </li>
+          </ul>
+
           <HeaderTwo text="Hardware/Software Mapping" />
           <Paragraph>
             Include and describe your Deployment or Infrastructure Diagram here. Describe the

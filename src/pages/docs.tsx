@@ -115,7 +115,7 @@ const Docs = () => {
 
   return (
     <Page>
-      <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
+      <div className=" flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
         <h1 className="text-20 font-medium">Documentation</h1>
       </div>
 
@@ -152,6 +152,8 @@ const Docs = () => {
           <Paragraph>
             Include and describe your Activity Diagram which points out the system behavior.
           </Paragraph>
+
+          {/*  <Image className="h-auto max-w-lg rounded-lg" src="/src/assets/dbUpdating.png" width={500} height={300} alt="dbUpdating"    /> */}
 
           <hr className="my-1 h-px border-t-0 bg-neutral-100 opacity-25 dark:opacity-25" />
           <HeaderOne text="System Design" />
@@ -275,12 +277,6 @@ const Docs = () => {
 
           <NumberedBulletedList items={items} />
 
-          <ol className="list-inside list-decimal">
-            <li>Item in list…</li>
-            <li>Item in list…</li>
-            <li>Item in list…</li>
-          </ol>
-
           {/* <h1 className="py-1 text-20 font-semibold text-gray-400">Introduction</h1>
             <h2 className="py-1 text-16 font-semibold text-gray-400">Purpose of the System</h2>
               <p className="text-14 font-light">What is your application all about? Write a short introduction with an elevator pitch and include the main users and/or stakeholders.</p>
@@ -297,30 +293,6 @@ const Docs = () => {
           <br/>
 */}
         </div>
-
-        <div className="py-20"> </div>
-
-        <div>
-          <h1 className="py-1 text-20 font-medium">Introduction</h1>
-          <br />
-          <h3 className="py-1 text-18" id="purpose">
-            Purpose of the System
-          </h3>
-
-          <p className="text-14">
-            What is your application all about? Write a short introduction with an elevator pitch
-            and include the main users and/or stakeholders.
-          </p>
-        </div>
-        <br />
-        <h1 className="py-1 text-20 font-medium">Requirements</h1>
-        <br />
-
-        <h3 className="text-18" id="analysisobjectmodel">
-          Analysis Object Model
-        </h3>
-
-        <p className="text-16">Include and describe your Analysis Object Model here.</p>
       </div>
     </Page>
   )

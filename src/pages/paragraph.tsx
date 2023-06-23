@@ -7,7 +7,7 @@ interface ParagraphProps {
 const Paragraph: FC<
   ParagraphProps & DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>
 > = ({ children, className, size }) => {
-  let classNames = `text-14 font-light ${className || ''}`
+  let classNames = `text-14 font-light text-gray-300${className || ''}`
 
   if (size === 'last') {
     classNames += 'pb-2'

@@ -6,23 +6,23 @@ import Tooltip from '@/components/pure/Sidebar/Box/TooltipItem'
 type FounderProps = {
   name: string
   mail?: string
-  company: string
+  projectName: string
   twitter?: string
   github?: string
   website?: string
 }
 
-const emailTemplate = (email: string, founderName: string, companyName: string) => {
-  const subject = `La Famiglia x ${companyName}`
+const emailTemplate = (email: string, founderName: string, projectName: string) => {
+  const subject = `La Famiglia x ${projectName}`
 
   let body = localStorage.getItem('emailMessage') || ''
+  body = body.replace('{projectName}', projectName)
   body = body.replace('{founderName}', founderName)
-  body = body.replace('{companyName}', companyName)
 
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
-const FounderItem = ({ name, mail, company, github, twitter, website }: FounderProps) => (
+const FounderItem = ({ name, mail, projectName, github, twitter, website }: FounderProps) => (
   <div className="flex flex-col justify-between">
     <div className="px-7 py-2.5 text-gray-500">
       <div className="inline-flex pb-2">
@@ -31,7 +31,7 @@ const FounderItem = ({ name, mail, company, github, twitter, website }: FounderP
           {mail && (
             <div>
               <a
-                href={emailTemplate(mail, name, company)}
+                href={emailTemplate(mail, name, projectName)}
                 target="_blank"
                 rel="noreferrer"
                 data-tooltip-id={mail}

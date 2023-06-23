@@ -25,7 +25,7 @@ const RightSidebar = ({ project }: Props) => {
   const affinityListID = localStorage.getItem('affinityListId')
 
   const sendToAffinityProps: SendToAffinityProps = {
-    name: project.name,
+    name: project.name as string,
     stars: project.starCount as number,
     forks: project.forkCount as number,
     contributors: project.contributorCount as number,
@@ -80,7 +80,7 @@ const RightSidebar = ({ project }: Props) => {
         />
       </Sidebar.Box>
 
-      {project.languages?.length > 0 && (
+      {project.languages && project.languages?.length > 0 && (
         <Sidebar.Box title="Languages">
           <Sidebar.Box.LanguagesItem
             languages={project.languages as unknown as Array<{ name: string; color: string }>}
@@ -97,7 +97,7 @@ const RightSidebar = ({ project }: Props) => {
         </Sidebar.Box>
       )}
 
-      {(project.organization?.name ||
+      {(project.name ||
         project.associatedPerson?.name ||
         project.associatedPerson?.githubUrl ||
         project.associatedPerson?.email ||
@@ -105,7 +105,7 @@ const RightSidebar = ({ project }: Props) => {
         project.associatedPerson?.websiteUrl) && (
         <Sidebar.Box title="Founder">
           <Sidebar.Box.FounderItem
-            company={project.organization?.name as string}
+            projectName={project.name as string}
             name={project.associatedPerson?.name as string}
             github={project.associatedPerson?.githubUrl as string}
             mail={project.associatedPerson?.email as string}

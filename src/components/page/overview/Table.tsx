@@ -41,7 +41,7 @@ const Table = ({ table }: TableProps) => (
                   isLastChild ? 'rounded-r-lg' : ''
                 }`}
               >
-                <Link href={`/details/${row.original.id}`}>
+                <Link href={`/details/${row.original.id as string}`}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Link>
               </td>

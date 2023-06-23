@@ -1,98 +1,80 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { withRouter } from 'next/router'
-import {
-  FiBookOpen as BookOpen,
-  FiCompass as Compass,
-  FiBookmark as Bookmark,
-  FiSettings as Settings
-} from 'react-icons/fi'
+import { FiBookOpen, FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
+import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/pure/Sidebar'
-import sidebarCategories from '@/data/sidebarMock'
+import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 
 const renderFooter = () => (
   <>
-    <Sidebar.Section.Item
-      id={0}
-      Icon={Settings}
-      text="Settings"
-      path="/settings"
-      showIcon
-      editable={false}
-    />
-    <Sidebar.Section.Item
-      id={1}
-      Icon={BookOpen}
-      text="Help & Support"
-      path="/docs"
-      showIcon
-      editable={false}
-    />
+    <Sidebar.Section.Item Icon={FiSettings} text="Settings" path="/settings" />
+    <Sidebar.Section.Item Icon={FiBookOpen} text="Help & Support" path="/docs" />
   </>
 )
 
-const initialSections = [
-  {
-    title: 'Overview',
-    items: [
-      {
-        id: 1,
-        Icon: Compass,
-        text: 'Trending projects',
-        path: '/',
-        showIcon: true,
-        editable: false
-      },
-      {
-        id: 2,
-        Icon: Bookmark,
-        text: 'All bookmarks',
-        path: '/',
-        showIcon: true,
-        editable: false
-      }
-    ]
-  },
-  {
-    title: 'Categories',
-    items: sidebarCategories
-  }
-]
+// @TODO loading state + error handling
 
 /**
  * Main sidebar on the left
  */
 const NavSidebar = () => {
-  const [sections] = useState(initialSections)
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
 
-  const handleSave = () => {
-    // @TODO implement save
-  }
+  const user = useUser()
 
-  const handleDelete = () => {
-    // @TODO implement delete
-  }
+  // Fetch data from Supabase using generated Urql hook
+  const [{ data: urqlData }] = useFilteredBookmarksQuery({
+    variables: { userId: user?.id as string }
+  })
 
+  // Only update table data when urql data changes
+  useEffect(() => {
+    if (urqlData) {
+      setBookmarks(urqlData?.bookmarkCollection?.edges?.map((edge) => edge.node) as Bookmark[])
+    }
+  }, [urqlData])
+
+  // @TODO highlight current page in sidebar
   return (
     <Sidebar title="TruffleAI" footer={renderFooter()}>
-      {sections.map((section) => (
-        <Sidebar.Section key={section.title} title={section.title}>
-          {section.items.map((item) => (
-            <Sidebar.Section.Item
-              key={item.id}
-              id={item.id}
-              Icon={item.Icon}
-              text={item.text}
-              onSave={handleSave}
-              onDelete={handleDelete}
-              path={item.path}
-              showIcon={item.showIcon}
-              // @TODO highlight current page in sidebar
-              secondaryItem={item.secondaryItem}
-              editable={item.editable}
-            />
+      <Sidebar.Section title="Overview">
+        <Sidebar.Section.Item Icon={FiCompass} text="Trending projects" path="/" />
+        <Sidebar.Section.Item Icon={FiBookmark} text="All bookmarks" path="/bookmarks" />
+      </Sidebar.Section>
+
+      <Sidebar.Section title="Categories">
+        {bookmarks
+          // Get a list of unique categories to display as folders
+          .map(({ category }) => category)
+          .filter((value, index, array) => array.indexOf(value) === index)
+          .map((category) => (
+            <div key={category}>
+              <Sidebar.Section.Item
+                key={category}
+                Icon={FiFolder}
+                text={category as string}
+                path={`/compare/${category as string}`}
+              />
+              {/* Display all projects in a category under their corresponding folder */}
+              {bookmarks
+                .filter((bookmark) => bookmark.category === category)
+                .map(({ project }) => {
+                  if (!project) return null
+                  const { name, organization, associatedPerson } = project
+
+                  return (
+                    <Sidebar.Section.Item
+                      key={project.id as string}
+                      imageSrc={(organization?.avatarUrl || associatedPerson?.avatarUrl) as string}
+                      text={name as string}
+                      path={`/details/${project.id as string}`}
+                      secondaryItem
+                    />
+                  )
+                })}
+            </div>
           ))}
-        </Sidebar.Section>
-      ))}
+      </Sidebar.Section>
     </Sidebar>
   )
 }

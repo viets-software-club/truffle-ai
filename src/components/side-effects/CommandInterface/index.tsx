@@ -133,7 +133,7 @@ const CommandInterface: React.FC = () => {
 
   const setCommandInterface = (commandInterfaceOption: string, item: Project): string => {
     if (commandInterfaceOption.includes(':id')) {
-      return commandInterfaceOption.replace(':id', item.id)
+      return commandInterfaceOption.replace(':id', item.id as string)
     }
 
     if (commandInterfaceOption.includes('mailto:')) {
@@ -153,7 +153,7 @@ const CommandInterface: React.FC = () => {
         (item: Project, index: number) => {
           const recommendationRow: RecommendationRowType = {
             Icon: MdArrowForward,
-            menuText: item.name ?? item.id,
+            menuText: (item.name as string) ?? (item.id as string),
             commandInterfaceOptions: setCommandInterface(commandInterfaceOption, item),
             shortcutKey: index.toString()
           }

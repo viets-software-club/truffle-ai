@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
@@ -6,7 +7,6 @@ import { GoGitPullRequest } from 'react-icons/go'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
-import Image from 'next/image'
 
 const columnHelper = createColumnHelper<Project>()
 
@@ -27,7 +27,7 @@ const columns = [
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
-      `${(organization?.login || associatedPerson?.login) as string} / ${name}`,
+      `${(organization?.login || associatedPerson?.login) as string} / ${name as string}`,
     {
       id: 'Name',
       header: 'Name',

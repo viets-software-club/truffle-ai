@@ -11,8 +11,8 @@ import EditColumns from './EditColumns'
 type TopBarProps = {
   columns: Column<Project, unknown>[]
   filters: ProjectFilter
-  comparePage: boolean
   sorting: ProjectOrderBy | null
+  hideTimeFrame?: boolean
   setSorting: (sort: ProjectOrderBy | null) => void
   updateFilters: (filters: ProjectFilter) => void
 }
@@ -23,7 +23,7 @@ type TopBarProps = {
 const TopBar = ({
   columns,
   filters,
-  comparePage,
+  hideTimeFrame,
   sorting,
   setSorting,
   updateFilters
@@ -64,7 +64,7 @@ const TopBar = ({
     <div className="fixed left-56 right-0 z-20 flex h-[60px] flex-row items-center justify-between border-b border-gray-800 bg-gray-900 px-6">
       {/* Time frame (only show on trending page) */}
       <div className="flex flex-row gap-3">
-        {!comparePage && (
+        {!hideTimeFrame && (
           <TimeFrameSelector
             currentTimeFilterLabel={currentTimeFilterLabel}
             handleChange={updateTimeFrame}
@@ -86,6 +86,10 @@ const TopBar = ({
       </div>
     </div>
   )
+}
+
+TopBar.defaultProps = {
+  hideTimeFrame: false
 }
 
 export default TopBar

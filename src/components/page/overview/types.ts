@@ -65,7 +65,7 @@ if (typeof window !== 'undefined') {
   savedContributorsDefaultFilter = Number(localStorage.getItem('contributorsDefaultFilter'))
 }
 
-const defaultFilters: defaultFiltersProps = {
+export const defaultFilters: defaultFiltersProps = {
   isTrendingDaily: {
     eq: true
   }
@@ -94,8 +94,6 @@ if (savedContributorsDefaultFilter > 0) {
     gt: savedContributorsDefaultFilter
   }
 }
-
-export default defaultFilters
 
 export const defaultSort = {
   name: OrderByDirection.AscNullsLast

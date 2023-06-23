@@ -15,7 +15,8 @@ import {
   useProjectIdsQuery
 } from '@/graphql/generated/gql'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
-import { defaultSort, defaultFilters } from '@/components/page/overview/types'
+import { defaultSort } from '@/components/page/overview/types'
+import defaultFilters from '@/components/page/overview/defaultFilters'
 import Card from '@/components/pure/Card'
 import { useUser } from '@supabase/auth-helpers-react'
 

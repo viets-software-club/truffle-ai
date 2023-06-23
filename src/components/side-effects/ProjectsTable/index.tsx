@@ -51,52 +51,6 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
 
-  // @TODO adapt default filters to new filtering system
-
-  // const defaultFilters = () => {
-  //   const starsColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Stars')
-  //   const forksColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Forks')
-  //   const issuesColumn = table.getAllLeafColumns().find((c) => c.columnDef.header === 'Issues')
-  //   const contributorsColumn = table
-  //     .getAllLeafColumns()
-  //     .find((c) => c.columnDef.header === 'Contrib.')
-
-  //   if (starsColumn && forksColumn && issuesColumn && contributorsColumn) {
-  //     const savedStarsDefaultFilter = Number(localStorage.getItem('starsDefaultFilter'))
-  //     const savedForksDefaultFilter = Number(localStorage.getItem('forksDefaultFilter'))
-  //     const savedIssuesDefaultFilter = Number(localStorage.getItem('issuesDefaultFilter'))
-  //     const savedContributorsDefaultFilter = Number(
-  //       localStorage.getItem('contributorsDefaultFilter')
-  //     )
-
-  //     const preFilters = [
-  //       {
-  //         column: starsColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedStarsDefaultFilter
-  //       },
-  //       {
-  //         column: forksColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedForksDefaultFilter
-  //       },
-  //       {
-  //         column: issuesColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedIssuesDefaultFilter
-  //       },
-  //       {
-  //         column: contributorsColumn,
-  //         operator: NumberTableFilterOperator.GREATER_THAN,
-  //         value: savedContributorsDefaultFilter
-  //       }
-  //     ]
-
-  //     return preFilters.filter((filter) => filter.value !== 0)
-  //   }
-  //   return []
-  // }
-
   // Initialize TanStack table
   const table = useReactTable({
     data,

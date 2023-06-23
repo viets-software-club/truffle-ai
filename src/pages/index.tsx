@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import ProjectsTable from '@/components/side-effects/ProjectsTable'
-import { defaultFilters, defaultSort, paginationParameters } from '@/components/page/overview/types'
+import { defaultSort, paginationParameters } from '@/components/page/overview/types'
 import {
   PageInfo,
   Project,
@@ -14,7 +14,7 @@ import {
 const TrendingProjects = () => {
   const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
+  const [filters, setFilters] = useState<ProjectFilter>()
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<paginationParameters>({
@@ -32,7 +32,9 @@ const TrendingProjects = () => {
   const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters,
+      filter: {
+        ...filters
+      },
       ...pagination
     }
   })
@@ -41,7 +43,10 @@ const TrendingProjects = () => {
   const [{ data: urqlDataTotal }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters
+      filter: {
+        ...filters
+      },
+      ...pagination
     }
   })
 

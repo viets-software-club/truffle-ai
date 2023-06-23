@@ -3,7 +3,8 @@ import { useUser } from '@supabase/auth-helpers-react'
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import ProjectsTable from '@/components/side-effects/ProjectsTable'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { defaultSort } from '@/components/page/overview/types'
+import defaultFilters from '@/components/page/overview/defaultFilters'
 import {
   Project,
   ProjectFilter,

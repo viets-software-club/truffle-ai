@@ -17,7 +17,8 @@ import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { defaultSort } from '@/components/page/overview/types'
+import defaultFilters from '@/components/page/overview/defaultFilters'
 import {
   Project,
   ProjectFilter,

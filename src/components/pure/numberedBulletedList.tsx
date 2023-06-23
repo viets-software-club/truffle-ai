@@ -12,10 +12,9 @@ type Props = {
 
 const NumberedBulletList: React.FC<Props> = ({ items }) => (
   <div>
-    <ol className="list-inside list-decimal">
-      {items.map((item, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <li key={index}>
+    <ol className="list-inside list-decimal text-14 font-normal leading-relaxed text-gray-400/80">
+      {items.map((item) => (
+        <li key={item.text}>
           {item.text}
           <ul className="list-inside list-disc">
             <div className="pl-4">
@@ -26,7 +25,7 @@ const NumberedBulletList: React.FC<Props> = ({ items }) => (
               </li>
               <li>
                 <a href={item.link2} className="hover:underline">
-                  Licence: Link
+                  License: Link
                 </a>
               </li>
             </div>

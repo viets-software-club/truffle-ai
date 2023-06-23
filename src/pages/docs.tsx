@@ -1,8 +1,10 @@
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
-import { HeaderOne, HeaderThree, HeaderTwo } from './heading'
-import Paragraph from './paragraph'
-import NumberedBulletedList from './numberedBulletedList'
+import Paragraph from '@/components/pure/paragraph'
+import NumberedBulletedList from '@/components/pure/numberedBulletedList'
+import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
+
+const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
 
 const Docs = () => {
   const items = [
@@ -119,8 +121,8 @@ const Docs = () => {
         <h1 className="text-20 font-medium">Documentation</h1>
       </div>
 
-      <div className="block border-b border-gray-800 px-6">
-        <div className="flex flex-col gap-2">
+      <div className="px-10 py-6">
+        <div className="flex flex-col gap-4">
           <HeaderOne text="Introduction" />
 
           <HeaderTwo text="Purpose of the System" />
@@ -142,7 +144,7 @@ const Docs = () => {
             the potential to grow and discover interesting projects in the early stages.
           </Paragraph>
 
-          <hr className="my-1 h-px border-t-0 bg-neutral-100 opacity-25 dark:opacity-25" />
+          <Divider />
 
           <HeaderOne text="Requirements" />
           <HeaderTwo text="Analysis Object Model" />
@@ -153,9 +155,8 @@ const Docs = () => {
             Include and describe your Activity Diagram which points out the system behavior.
           </Paragraph>
 
-          {/*  <Image className="h-auto max-w-lg rounded-lg" src="/src/assets/dbUpdating.png" width={500} height={300} alt="dbUpdating"    /> */}
+          <Divider />
 
-          <hr className="my-1 h-px border-t-0 bg-neutral-100 opacity-25 dark:opacity-25" />
           <HeaderOne text="System Design" />
           <HeaderTwo text="Overview" />
           <HeaderThree text="Supabse" />
@@ -179,7 +180,7 @@ const Docs = () => {
             built using GraphQL Mesh, which stitches multiple GraphQL schemas together, by
             introspecting different GraphQL endpoints, thus creating its own supergraph. It then
             forwards requests and their individual GraphQL query to the corresponding service. The
-            Supergraph is created from Supabase’s GraphQL endpoint and Before any request is
+            Supergraph is created from Supabases GraphQL endpoint and Before any request is
             forwarded it first verifies that the user is authenticated.
           </Paragraph>
 
@@ -195,40 +196,38 @@ const Docs = () => {
           </Paragraph>
 
           <Paragraph className="font-bold">Queries:</Paragraph>
-          <Paragraph>
-            <ul className="list-inside list-disc text-14">
-              <li> helloWorld(): a test query</li>
-            </ul>
-          </Paragraph>
+          <ul className="list-inside list-disc text-14">
+            <li> helloWorld(): a test query</li>
+          </ul>
+
           <Paragraph className="font-bold">Mutations:</Paragraph>
-          <Paragraph>
-            <ul className="list-inside list-disc text-14">
-              <li>
-                addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): adds and
-                bookmarks a project by name
-              </li>
-              <li>
-                addProjectByUrl(url: String!, bookmarkCategory: String!): adds and bookmarks a
-                project by URL
-              </li>
-              <li>
-                addBookmark(projectID: String!, category: String!): adds a bookmark for the
-                currently logged in user
-              </li>
-              <li>
-                deleteBookmark(projectID: String!): deletes a bookmark for the currently logged in
-                user
-              </li>
-              <li>
-                editBookmarkCategory(projectID: String!, newCategory: String!): edits the category a
-                bookmark is associated with
-              </li>
-              <li>
-                renameBookmarkCategory(oldCategory: String!, newCategory: String!): renames a
-                category of bookmarks
-              </li>
-            </ul>
-          </Paragraph>
+
+          <ul className="list-inside list-disc text-14 text-gray-400/80">
+            <li>
+              addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): adds and
+              bookmarks a project by name
+            </li>
+            <li>
+              addProjectByUrl(url: String!, bookmarkCategory: String!): adds and bookmarks a project
+              by URL
+            </li>
+            <li>
+              addBookmark(projectID: String!, category: String!): adds a bookmark for the currently
+              logged in user
+            </li>
+            <li>
+              deleteBookmark(projectID: String!): deletes a bookmark for the currently logged in
+              user
+            </li>
+            <li>
+              editBookmarkCategory(projectID: String!, newCategory: String!): edits the category a
+              bookmark is associated with
+            </li>
+            <li>
+              renameBookmarkCategory(oldCategory: String!, newCategory: String!): renames a category
+              of bookmarks
+            </li>
+          </ul>
           <HeaderTwo text="Hardware/Software Mapping" />
           <Paragraph>
             Include and describe your Deployment or Infrastructure Diagram here. Describe the
@@ -248,7 +247,7 @@ const Docs = () => {
             matrix. This section also describes security issues, such as the selection of an
             authentication mechanism, the use of encryption, and the management of keys.
           </Paragraph>
-          <hr className="my-1 h-px border-t-0 bg-neutral-100 opacity-25 dark:opacity-25" />
+          <Divider />
           <HeaderOne text="Administrator Manual" />
           <HeaderTwo text="Infrastructure Setup" />
           <Paragraph>
@@ -275,24 +274,8 @@ const Docs = () => {
             license terms. If you used commercial software refer to the product information at the
             manufacturer`s site.
           </Paragraph>
-          <Paragraph>
-            <NumberedBulletedList items={items} />
-          </Paragraph>
-          {/* <h1 className="py-1 text-20 font-semibold text-gray-400">Introduction</h1>
-            <h2 className="py-1 text-16 font-semibold text-gray-400">Purpose of the System</h2>
-              <p className="text-14 font-light">What is your application all about? Write a short introduction with an elevator pitch and include the main users and/or stakeholders.</p>
-          <br/>
 
-          <h1 className="py-1 text-20 font-semibold text-gray-300">Requirements</h1>
-            <h2 className="py-1 text-16 font-semibold text-gray-300">Analysis Object Model</h2>
-              <p className="text-14 font-light">Include and describe your Analysis Object Model here.</p>
-            
-            <h2 className=" py-1 text-16 font-semibold text-gray-300">Activity Diagram</h2>
-
-              <p className="text-14 font-light">Include and describe your Activity Diagram which points out the system behavior.</p>
-              <div className='divide-x'/>
-          <br/>
-*/}
+          <NumberedBulletedList items={items} />
         </div>
       </div>
     </Page>

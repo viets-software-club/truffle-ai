@@ -7,7 +7,7 @@ interface ParagraphProps {
 const Paragraph: FC<
   ParagraphProps & DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>
 > = ({ children, className, size }) => {
-  let classNames = `text-14 font-light text-gray-400${className || ''}`
+  let classNames = `text-14 font-normal text-gray-400/80 leading-relaxed ${className || ''}`
 
   if (size === 'last') {
     classNames += 'pb-2'
@@ -24,4 +24,4 @@ Paragraph.defaultProps = {
   size: 'md'
 }
 
-export default Paragraph // Export the component as the default export
+export default Paragraph

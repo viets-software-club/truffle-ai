@@ -5,7 +5,7 @@ import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
 import Error from '@/components/pure/Error'
-import Chart from '@/components/page/details/Chart'
+import Chart, { DataPoint } from '@/components/page/details/Chart'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import {
   Bookmark,
@@ -31,6 +31,7 @@ const Details = ({ id }: DetailsProps) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
   const [previousProjectId, setPreviousProjectId] = useState<string>()
   const [nextProjectId, setNextProjectId] = useState<string>()
+  const [selectedMetric, setSelectedMetric] = useState('Stars')
 
   // User data from Supabase auth session
   const user = useUser()
@@ -168,18 +169,23 @@ const Details = ({ id }: DetailsProps) => {
             refetch={refetch}
           />
 
-          <Chart
-            datasets={[
-              {
-                id: project.id as string,
-                name: project.name as string,
-                data: project.starHistory as React.ComponentProps<
-                  typeof Chart
-                >['datasets'][0]['data']
-              }
-            ]}
-            multipleLines={false}
-          />
+          <div className="flex flex-col items-start">
+            <Chart
+              datasets={[
+                {
+                  id: project.id as string,
+                  name: project.name as string,
+                  data:
+                    selectedMetric === 'Stars'
+                      ? (project.starHistory as DataPoint[])
+                      : (project.forkHistory as DataPoint[])
+                }
+              ]}
+              multipleLines={false}
+              selectedMetric={selectedMetric}
+              setSelectedMetric={setSelectedMetric}
+            />
+          </div>
 
           <div className="flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3">
             <div className="w-1/2">

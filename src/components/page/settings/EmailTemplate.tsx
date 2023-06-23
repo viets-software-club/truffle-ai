@@ -5,7 +5,7 @@ import Banner from './Banner'
 
 const initialTemplate = `Dear {founderName},
 
-I hope you're well. I saw you're the mastermind behind {companyName}, and I had to reach out.
+I hope you're well. I saw you're the mastermind behind {projectName}, and I had to reach out.
 
 I'm a former ML researcher (in federated learning) + data scientist at Amazon turned VC at La Famiglia (early-stage investor of Deel, Personio, Applied Intuition, Groq, Abacus AI, Stripe, etc.).
 
@@ -38,7 +38,7 @@ const UpdateEmailTemplate = () => {
       <p className="mb-6 text-14 font-normal text-gray-400">
         Here, you have the option to customize the email template that will be automatically sent to
         the founders of a project on its detail page.
-        <br /> Use {'{founderName}'} and {'{companyName}'} as placeholders for the actual values.
+        <br /> Use {'{founderName}'} and {'{projectName}'} as placeholders for the actual values.
       </p>
       <Textarea
         placeholder="Hi {founderName}, ..."

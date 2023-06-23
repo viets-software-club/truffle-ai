@@ -13,7 +13,7 @@ import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
 import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
-import Chart from '@/components/page/details/Chart'
+import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
@@ -45,6 +45,7 @@ const Compare = ({ category }: CompareProps) => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [slackLoading, setSlackLoading] = useState(false)
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [selectedMetric, setSelectedMetric] = useState('Stars')
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
   const user = useUser()
@@ -199,11 +200,14 @@ const Compare = ({ category }: CompareProps) => {
               datasets={data.map((project) => ({
                 id: project.id as string,
                 name: project.name as string,
-                data: project.starHistory as React.ComponentProps<
-                  typeof Chart
-                >['datasets'][0]['data']
+                data:
+                  selectedMetric === 'Stars'
+                    ? (project.starHistory as DataPoint[])
+                    : (project.forkHistory as DataPoint[])
               }))}
               multipleLines
+              selectedMetric={selectedMetric}
+              setSelectedMetric={setSelectedMetric}
             />
 
             <div className="flex flex-row items-center justify-between px-6 py-3.5">

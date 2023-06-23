@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import {
   LineChart,
@@ -10,8 +10,9 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts'
-import { Menu } from '@headlessui/react'
+import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlineCalendar } from 'react-icons/ai'
+import { Menu, Transition } from '@headlessui/react'
 import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
 import formatDate from '@/util/formatDate'
@@ -42,28 +43,29 @@ const singleColorValues = singleColors
 
 colors = colors.concat(singleColorValues)
 
-const TimeframeOptions = [
+const timeframeOptions = [
   { value: 1, label: '1 Month' },
   { value: 3, label: '3 Months' },
   { value: 6, label: '6 Months' },
   { value: 12, label: '1 Year' }
 ]
 
+const dataOptions = ['Stars', 'Forks']
+
+export type DataPoint = {
+  date: string
+  count: number
+}
+
 type ChartProps = {
   datasets: {
     id: string
     name: string
-    data: {
-      date: string
-      count: number
-    }[]
+    data: DataPoint[]
   }[]
   multipleLines: boolean
-}
-
-type DataPoint = {
-  date: string
-  count: number
+  selectedMetric: string
+  setSelectedMetric: (metric: string) => void
 }
 
 const filterDataByTimeframe = (data: DataPoint[], months: number) => {
@@ -75,16 +77,15 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
 /**
  * Linechart with one or more datasets
  * @param {ChartProps} datasets - The datasets to be displayed on the chart.
+ * @param {boolean} multipleLines - Whether to display multiple lines or not.
+ * @param {string} selectedMetric - The selected metric.
+ * @param {function} setSelectedMetric - The function to set the selected metric.
  */
 
-const Chart = ({ datasets, multipleLines }: ChartProps) => {
+const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: ChartProps) => {
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
-  //   const [modalValue, setModalValue] = useState('Select Value')
-  //   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
   const [chartData, setChartData] = useState(chartDataOriginal)
-
   const [isDataNormalized, setIsDataNormalized] = useState(false)
 
   // Mehtod to handle the click on the "Normalize data" button
@@ -109,19 +110,14 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
         ).toISOString()
       }))
     }))
-    // Updates state when modal value changes
-    // const handleModalValueChange = useCallback((newValue: string) => {
-    //   setModalValue(newValue)
-    //   setIsModalOpen(false)
-    // }, [])
 
     setChartData(normalizedData)
   }
 
   const handleTimeframeChange = useCallback(
     (value: number) => () => {
-      const selectedOption = TimeframeOptions.find((option) => option.value === value)
-      setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
+      const selectedOption = timeframeOptions.find((option) => option.value === value)
+      setTimeframeModalValue(selectedOption ? selectedOption.label : timeframeOptions[0].label)
 
       const filteredData = chartDataOriginal.map((dataset) => ({
         ...dataset,
@@ -133,43 +129,84 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
     [chartDataOriginal]
   )
 
+  useEffect(() => {
+    setChartData([...datasets])
+  }, [datasets])
+
   return (
-    <div className="flex w-full flex-row px-7 py-8">
+    <div className="flex w-full flex-row p-6">
       {datasets.length === 0 ? (
         <p>No data</p>
       ) : (
         <div className="flex w-full flex-col gap-3">
-          {multipleLines && (
-            <div className="flex flex-row gap-3 ">
-              <Menu as="div" className="relative">
-                <Menu.Button as="div">
-                  <Button
-                    Icon={AiOutlineCalendar}
-                    variant="normal"
-                    text={timeframeModalValue}
-                    order="ltr"
-                  />
-                </Menu.Button>
+          <div className="flex flex-row gap-3 ">
+            {multipleLines && (
+              <>
+                <Menu as="div" className="relative">
+                  <Menu.Button as="div">
+                    <Button
+                      Icon={AiOutlineCalendar}
+                      variant="normal"
+                      text={timeframeModalValue}
+                      order="ltr"
+                    />
+                  </Menu.Button>
 
-                <MenuItemsTransition>
-                  <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
-                    {TimeframeOptions.map((option) => (
-                      <Menu.Item
-                        as="button"
-                        key={option.label}
-                        onClick={handleTimeframeChange(option.value)}
-                        className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
-                      >
-                        {option.label}
+                  <MenuItemsTransition>
+                    <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+                      {timeframeOptions.map((option) => (
+                        <Menu.Item
+                          as="button"
+                          key={option.label}
+                          onClick={handleTimeframeChange(option.value)}
+                          className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                        >
+                          {option.label}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </MenuItemsTransition>
+                </Menu>
+
+                <div>
+                  <Button
+                    variant="normal"
+                    text="Normalize Data"
+                    fullWidth
+                    onClick={handleDataNormalization}
+                  />
+                </div>
+              </>
+            )}
+
+            <Menu as="div" className="relative inline-block">
+              <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
+                <FiChevronDown className="text-gray-500" />
+                <p className="leading-none">{selectedMetric}</p>
+              </Menu.Button>
+
+              <Transition.Child>
+                <Menu.Items
+                  static
+                  className="absolute z-10 mt-2 w-24 rounded-md bg-gray-700 shadow-lg focus:outline-none"
+                >
+                  <div className="py-1">
+                    {dataOptions.map((metric) => (
+                      <Menu.Item key={metric}>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedMetric(metric)}
+                          className="flex w-24 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
+                        >
+                          <p>{metric}</p>
+                        </button>
                       </Menu.Item>
                     ))}
-                  </Menu.Items>
-                </MenuItemsTransition>
-              </Menu>
-
-              <Button variant="normal" text="Normalize Data" onClick={handleDataNormalization} />
-            </div>
-          )}
+                  </div>
+                </Menu.Items>
+              </Transition.Child>
+            </Menu>
+          </div>
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
@@ -194,7 +231,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
               />
 
               <YAxis
-                label={{ value: 'Stars', dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
+                label={{ value: selectedMetric, dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 stroke={grayColors['500']}
                 tickFormatter={formatNumber}
@@ -212,6 +249,7 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
 
               {chartData
                 .sort((a, b) => {
+                  if (!a.data || !b.data) return 0
                   const lastDataPointA = a.data[a.data.length - 1]?.count || 0
                   const lastDataPointB = b.data[b.data.length - 1]?.count || 0
                   return lastDataPointB - lastDataPointA
@@ -219,10 +257,14 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
                 .map((dataset, index) => (
                   <Line
                     key={dataset.id}
-                    data={dataset.data.map((item) => ({
-                      ...item,
-                      date: new Date(item.date).getTime()
-                    }))}
+                    data={
+                      dataset.data
+                        ? dataset.data.map((item) => ({
+                            ...item,
+                            date: new Date(item.date).getTime()
+                          }))
+                        : []
+                    }
                     dataKey="count"
                     name={dataset.name}
                     type="monotone"

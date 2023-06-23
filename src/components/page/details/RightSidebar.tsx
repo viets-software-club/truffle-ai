@@ -74,7 +74,7 @@ const RightSidebar = ({ project }: Props) => {
         </Sidebar.Box>
       )}
 
-      {(project.organization?.name ||
+      {(project.name ||
         project.associatedPerson?.name ||
         project.associatedPerson?.githubUrl ||
         project.associatedPerson?.email ||
@@ -82,7 +82,7 @@ const RightSidebar = ({ project }: Props) => {
         project.associatedPerson?.websiteUrl) && (
         <Sidebar.Box title="Founder">
           <Sidebar.Box.FounderItem
-            company={project.organization?.name as string}
+            projectName={project.name as string}
             name={project.associatedPerson?.name as string}
             github={project.associatedPerson?.githubUrl as string}
             mail={project.associatedPerson?.email as string}

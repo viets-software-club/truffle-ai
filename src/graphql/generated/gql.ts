@@ -2617,6 +2617,7 @@ export type TrendingProjectsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
         isTrendingDaily?: boolean | null
@@ -2873,6 +2874,7 @@ export const TrendingProjectsDocument = gql`
           githubUrl
           websiteUrl
           starHistory
+          forkHistory
           owningPerson
           owningOrganization
           associatedPerson {

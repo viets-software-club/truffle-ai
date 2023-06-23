@@ -38,6 +38,7 @@ type CompareProps = {
  * Compare projects component
  */
 const Compare = ({ category }: CompareProps) => {
+  const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
@@ -167,6 +168,7 @@ const Compare = ({ category }: CompareProps) => {
           setSorting={setSorting}
           pageInfo={pageInfo}
           setPagination={setPagination}
+          pageSize={PAGE_SIZE}
         />
       )}
 

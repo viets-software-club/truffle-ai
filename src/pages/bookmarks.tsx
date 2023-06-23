@@ -90,7 +90,7 @@ const Bookmarks = () => {
         hideTimeFrame
         setSorting={setSorting}
         updateFilters={updateFilters}
-        pageInfo={pageInfo}
+        pageInfo={pageInfo as PageInfo}
         totalCount={totalCount}
         pageSize={PAGE_SIZE}
         setPagination={setPagination}

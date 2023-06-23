@@ -65,7 +65,7 @@ const TrendingProjects = () => {
         setSorting={setSorting}
         updateFilters={updateFilters}
         totalCount={totalCount}
-        pageInfo={pageInfo}
+        pageInfo={pageInfo as PageInfo}
         setPagination={setPagination}
         pageSize={PAGE_SIZE}
       />

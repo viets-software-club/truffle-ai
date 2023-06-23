@@ -39,7 +39,7 @@ const CommandInterface: React.FC = () => {
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
   const toggleModal = () => {
-    setOpen(!open)
+    setOpen(false)
   }
 
   const scrollToNextItem = () => {

@@ -1,6 +1,7 @@
 import { LinkIcon } from '@primer/octicons-react'
 import { AiFillMail } from 'react-icons/ai'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
+import Tooltip from '@/components/pure/Sidebar/Box/TooltipItem'
 
 type FounderProps = {
   name: string
@@ -28,23 +29,43 @@ const FounderItem = ({ name, mail, projectName, github, twitter, website }: Foun
         <div className="flex flex-row items-center justify-center gap-[15px]">
           <span className="text-xs not-italic leading-3">{name}</span>
           {mail && (
-            <a href={emailTemplate(mail, name, projectName)} target="_blank" rel="noreferrer">
-              <AiFillMail className="h-[14px] w-[14px] text-gray-500" />
-            </a>
+            <div>
+              <a
+                href={emailTemplate(mail, name, projectName)}
+                target="_blank"
+                rel="noreferrer"
+                data-tooltip-id={mail}
+              >
+                <AiFillMail className="h-[14px] w-[14px] text-gray-500" />
+              </a>
+              <Tooltip id={mail} />
+            </div>
           )}
           {twitter && (
-            <a href={`https://twitter.com/${twitter}`} target="_blank" rel="noreferrer">
-              <FaTwitter className="h-[14px] w-[14px] text-gray-500" />
-            </a>
+            <div>
+              <a
+                href={`https://twitter.com/${twitter}`}
+                target="_blank"
+                rel="noreferrer"
+                data-tooltip-id={twitter}
+              >
+                <FaTwitter className="h-[14px] w-[14px] text-gray-500" />
+              </a>
+              <Tooltip id={twitter} />
+            </div>
           )}
           {website && (
-            <a href={website} target="_blank" rel="noreferrer">
-              <LinkIcon className="h-[14px] w-[14px] text-gray-500" />
-            </a>
+            <div>
+              <a href={website} target="_blank" rel="noreferrer" data-tooltip-id={website}>
+                <LinkIcon className="h-[14px] w-[14px] text-gray-500" />
+              </a>
+              <Tooltip id={website} />
+            </div>
           )}
           {github && (
-            <a href={github} target="_blank" rel="noreferrer">
+            <a href={github} target="_blank" rel="noreferrer" data-tooltip-id={github}>
               <FaGithub className="h-[14px] w-[14px] text-gray-500" />
+              <Tooltip id={github} />
             </a>
           )}
         </div>

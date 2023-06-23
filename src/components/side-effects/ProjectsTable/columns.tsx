@@ -37,8 +37,10 @@ const columns = [
         const [owner, name] = info.getValue().split(' / ')
         return (
           <div>
-            <span className="text-14 font-medium text-gray-500">{owner.slice(0, 15)} /&nbsp;</span>
-            {owner.length > 16 && <span className="text-14 text-gray-500">...</span>}
+            <span className="text-14 font-medium text-gray-500">
+              {owner.slice(0, 15)}
+              {owner.length > 16 && '...'} /&nbsp;
+            </span>
             <span className="text-14 font-bold">{name.slice(0, 31)}</span>
             {name.length > 32 && <span className="text-14">...</span>}
           </div>
@@ -98,7 +100,7 @@ const columns = [
         Icon={BsPeople}
         paddingOn={false}
         outerPaddingOn={false}
-        value={info.getValue() as number}
+        value={(info.getValue() as number) || 0}
       />
     )
   }),

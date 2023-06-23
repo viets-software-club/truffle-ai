@@ -11,14 +11,16 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { FiChevronDown } from 'react-icons/fi'
+import { AiOutlineCalendar } from 'react-icons/ai'
+import { Menu, Transition } from '@headlessui/react'
 import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
-import { Menu, Transition } from '@headlessui/react'
 import tailwindConfig from '../../../../tailwind.config'
+import MenuItemsTransition from '../overview/MenuItemsTransition'
 
-// The following 3 statements are needed in order to be able to use our Tailwind classes inside JS objects of the recharts library
+// Make Tailwind classes accessible inside JS objects of the recharts library
 const fullConfig = resolveConfig(tailwindConfig)
 
 type ColorObject = {
@@ -82,10 +84,8 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
 
 const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: ChartProps) => {
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
-
   const [chartDataOriginal] = useState<ChartProps['datasets']>([...datasets])
   const [chartData, setChartData] = useState(chartDataOriginal)
-
   const [isDataNormalized, setIsDataNormalized] = useState(false)
 
   // Mehtod to handle the click on the "Normalize data" button
@@ -142,32 +142,30 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
           <div className="flex flex-row gap-3 ">
             {multipleLines && (
               <>
-                <Menu as="div" className="relative inline-block">
-                  <Menu.Button className="flex h-[30px] flex-row items-center space-x-1 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-                    <FiChevronDown className="text-gray-500" />
-                    <p className="leading-none">{timeframeModalValue}</p>
+                <Menu as="div" className="relative">
+                  <Menu.Button as="div">
+                    <Button
+                      Icon={AiOutlineCalendar}
+                      variant="normal"
+                      text={timeframeModalValue}
+                      order="ltr"
+                    />
                   </Menu.Button>
 
-                  <Transition.Child>
-                    <Menu.Items
-                      static
-                      className="absolute z-10 mt-2 w-28 rounded-md bg-gray-700 shadow-lg focus:outline-none"
-                    >
-                      <div className="py-1">
-                        {timeframeOptions.map((metric) => (
-                          <Menu.Item key={metric.label}>
-                            <button
-                              type="button"
-                              onClick={handleTimeframeChange(metric.value)}
-                              className="flex w-28 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                            >
-                              <p>{metric.label}</p>
-                            </button>
-                          </Menu.Item>
-                        ))}
-                      </div>
+                  <MenuItemsTransition>
+                    <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+                      {timeframeOptions.map((option) => (
+                        <Menu.Item
+                          as="button"
+                          key={option.label}
+                          onClick={handleTimeframeChange(option.value)}
+                          className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                        >
+                          {option.label}
+                        </Menu.Item>
+                      ))}
                     </Menu.Items>
-                  </Transition.Child>
+                  </MenuItemsTransition>
                 </Menu>
 
                 <div>

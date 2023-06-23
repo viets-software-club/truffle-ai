@@ -25,7 +25,7 @@ const RightSidebar = ({ project }: Props) => {
   const affinityListID = localStorage.getItem('affinityListId')
 
   const sendToAffinityProps: SendToAffinityProps = {
-    name: project.name,
+    name: project.name as string,
     stars: project.starCount as number,
     forks: project.forkCount as number,
     contributors: project.contributorCount as number,
@@ -57,7 +57,7 @@ const RightSidebar = ({ project }: Props) => {
         <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
       </Sidebar.Box>
 
-      {project.languages?.length > 0 && (
+      {project.languages && project.languages?.length > 0 && (
         <Sidebar.Box title="Languages">
           <Sidebar.Box.LanguagesItem
             languages={project.languages as unknown as Array<{ name: string; color: string }>}

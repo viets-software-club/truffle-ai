@@ -1,38 +1,46 @@
-import { useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
   ColumnOrderState,
   getFilteredRowModel
 } from '@tanstack/react-table'
+import { CombinedError } from 'urql'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import TopBar from '@/components/page/overview/TopBar'
 import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
 import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
-import {
-  Project,
-  ProjectFilter,
-  ProjectOrderBy,
-  useTrendingProjectsQuery
-} from '@/graphql/generated/gql'
-import { defaultFilters, defaultSort } from '@/components/page/overview/types'
+import { Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+
+type ProjectsTableProps = {
+  data: Project[]
+  filters: ProjectFilter
+  sorting: ProjectOrderBy | null
+  fetching: boolean
+  error: CombinedError | undefined
+  hideTimeFrame?: boolean
+  setSorting: (sort: ProjectOrderBy | null) => void
+  updateFilters: (filters: ProjectFilter) => void
+}
 
 /**
  * Table for displaying trending projects
  */
-const ProjectsTable = () => {
-  const [data, setData] = useState<Project[]>([])
+const ProjectsTable: FC<ProjectsTableProps> = ({
+  data,
+  filters,
+  sorting,
+  fetching,
+  error,
+  hideTimeFrame,
+  setSorting,
+  updateFilters
+}) => {
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
-  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
-
-  const updateFilters = (filter: ProjectFilter) => {
-    setFilters(filter)
-  }
 
   // @TODO adapt default filters to new filtering system
 
@@ -80,21 +88,6 @@ const ProjectsTable = () => {
   //   return []
   // }
 
-  // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
-    variables: {
-      orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters
-    }
-  })
-
-  // Only update table data when urql data changes
-  useEffect(() => {
-    if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
-    }
-  }, [urqlData])
-
   // Initialize TanStack table
   const table = useReactTable({
     data,
@@ -115,7 +108,7 @@ const ProjectsTable = () => {
       <TopBar
         columns={table.getAllLeafColumns()}
         filters={filters}
-        comparePage={false}
+        hideTimeFrame={hideTimeFrame}
         sorting={sorting}
         setSorting={setSorting}
         updateFilters={updateFilters}
@@ -145,6 +138,10 @@ const ProjectsTable = () => {
       </div>
     </>
   )
+}
+
+ProjectsTable.defaultProps = {
+  hideTimeFrame: false
 }
 
 export default ProjectsTable

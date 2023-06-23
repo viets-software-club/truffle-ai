@@ -3,7 +3,7 @@ import SortModal from '@/components/page/overview/SortModal'
 import { PageInfo, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
 import Button from '@/components/pure/Button'
 import { FiChevronLeft as ChevronLeft, FiChevronRight as ChevronRight } from 'react-icons/fi'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useMemo } from 'react'
 import { FilterOption, TimeFilterOption, paginationParameters } from './types'
 
 type FilterBarProps = {
@@ -15,6 +15,7 @@ type FilterBarProps = {
   setSorting: (sorting: ProjectOrderBy | null) => void
   pageInfo: PageInfo
   setPagination: Dispatch<SetStateAction<paginationParameters>>
+  pageSize: number
 }
 const FilterBar = ({
   filters,
@@ -24,11 +25,12 @@ const FilterBar = ({
   setSorting,
   updateFilters,
   pageInfo,
-  setPagination
+  setPagination,
+  pageSize
 }: FilterBarProps) => {
   const handleClickLeft = () => {
     setPagination({
-      last: 30,
+      last: pageSize,
       before: pageInfo.startCursor,
       first: null,
       after: null
@@ -37,35 +39,40 @@ const FilterBar = ({
 
   const handleClickRight = () => {
     setPagination({
-      first: 30,
+      first: pageSize,
       after: pageInfo.endCursor,
       last: null,
       before: null
     })
   }
 
+  // Filters (exclude time filter options)
+  const filterItemModals = useMemo(
+    () =>
+      Object.keys(filters)
+        .filter((key) => !Object.values(TimeFilterOption).includes(key as TimeFilterOption))
+        .map((key) => (
+          <FilterItemModal
+            key={key}
+            currentKey={key as FilterOption['key']}
+            filters={filters}
+            updateFilters={updateFilters}
+          />
+        )),
+    [filters, updateFilters]
+  )
+
   return (
     <div className="fixed top-[60px] z-10 flex w-11/12 flex-row justify-between border-b border-gray-800 bg-gray-900 px-6 py-2.5 pr-28">
       <div className="flex flex-row gap-3">
         {/* Sorting */}
         {sorting && <SortModal sorting={sorting} setSorting={setSorting} />}
-
         {/* Separator */}
         {sorting && Object.keys(filters).length > 0 && (
           <div className="my-auto h-4/5 border-l border-gray-800" />
         )}
 
-        {/* Filters (exclude time filter options) */}
-        {Object.keys(filters)
-          .filter((key) => !Object.values(TimeFilterOption).includes(key as TimeFilterOption))
-          .map((key) => (
-            <FilterItemModal
-              key={key}
-              currentKey={key as FilterOption['key']}
-              filters={filters}
-              updateFilters={updateFilters}
-            />
-          ))}
+        {filterItemModals}
       </div>
 
       {/* Row count */}

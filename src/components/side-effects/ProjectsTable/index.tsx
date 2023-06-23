@@ -24,6 +24,7 @@ import { defaultFilters, defaultSort, paginationParameters } from '@/components/
  * Table for displaying trending projects
  */
 const ProjectsTable = () => {
+  const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
@@ -32,7 +33,7 @@ const ProjectsTable = () => {
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<paginationParameters>({
-    first: 30,
+    first: PAGE_SIZE,
     last: null,
     after: null,
     before: null
@@ -151,6 +152,7 @@ const ProjectsTable = () => {
           setSorting={setSorting}
           pageInfo={pageInfo}
           setPagination={setPagination}
+          pageSize={PAGE_SIZE}
         />
       )}
 

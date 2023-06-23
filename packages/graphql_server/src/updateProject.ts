@@ -175,8 +175,9 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
   // *0.9 because the contributor count is not 100% accurate. It is an approximation.
   // *10 /10 to round to one decimal place
   //@Todo: refine approximation approach
-  const contributorCount =
-    Math.round(await getContributorCount(owner, name, process.env.GITHUB_API_TOKEN)) * 0.9
+  const contributorCount = Math.round(
+    (await getContributorCount(owner, name, process.env.GITHUB_API_TOKEN)) * 0.9
+  )
 
   // *10, round, and /10 to round to one decimal place
   const issuesPerContributor =
@@ -186,7 +187,8 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
   const updated = await updateSupabaseProject(name, owner, {
     ...formatGithubStats(githubStats),
     issues_per_contributor: issuesPerContributor,
-    forks_per_contributor: forksPerContributor
+    forks_per_contributor: forksPerContributor,
+    contributor_count: contributorCount
   })
 
   if (!updated) {

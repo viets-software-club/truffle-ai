@@ -4,7 +4,6 @@ import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import ProjectsTable from '@/components/side-effects/ProjectsTable'
 import { defaultSort } from '@/components/page/overview/types'
-import defaultFilters from '@/components/page/overview/defaultFilters'
 import {
   Project,
   ProjectFilter,
@@ -20,7 +19,7 @@ import {
  */
 const Bookmarks = () => {
   const [data, setData] = useState<Project[]>([])
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
+  const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
 
   const user = useUser()
@@ -42,10 +41,7 @@ const Bookmarks = () => {
       variables: {
         orderBy: sorting || defaultSort,
         filter: {
-          ...(filters || defaultFilters),
-          isTrendingDaily: null,
-          isTrendingWeekly: null,
-          isTrendingMonthly: null,
+          ...filters,
           id: {
             in: bookmarkIds
           }

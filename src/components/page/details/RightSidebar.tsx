@@ -82,7 +82,7 @@ const RightSidebar = ({ project }: Props) => {
         project.associatedPerson?.websiteUrl) && (
         <Sidebar.Box title="Founder">
           <Sidebar.Box.FounderItem
-            projectName={project.name}
+            projectName={project.name as string}
             name={project.associatedPerson?.name as string}
             github={project.associatedPerson?.githubUrl as string}
             mail={project.associatedPerson?.email as string}

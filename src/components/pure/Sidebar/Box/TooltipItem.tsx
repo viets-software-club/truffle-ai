@@ -5,23 +5,13 @@ type TooltipItemProps = {
 }
 
 const TooltipItem = ({ id }: TooltipItemProps) => (
-  <div>
-    <Tooltip
-      id={id}
-      place="bottom"
-      style={{
-        borderRadius: '5px',
-        border: '1px solid #2D3748',
-        borderColor: '#2D3748',
-        backgroundColor: '#1A202C',
-        padding: '0.5rem',
-        fontSize: '0.75rem',
-        color: '#FFFFFF'
-      }}
-    >
-      {id}
-    </Tooltip>
-  </div>
+  <Tooltip
+    id={id}
+    place="bottom"
+    className="!z-20 !rounded-[5px] !border !border-gray-300/10 !bg-gray-700 !p-2 !text-12"
+  >
+    {id}
+  </Tooltip>
 )
 
 TooltipItem.defaultProps = {

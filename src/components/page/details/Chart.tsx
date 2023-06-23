@@ -152,7 +152,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
               </Menu.Button>
 
               <MenuItemsTransition>
-                <Menu.Items className="z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+                <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-left rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
                   {dataOptions.map((metric) => (
                     <Menu.Item
                       as="button"

@@ -50,7 +50,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
         const res = await addBookmarkMutation({ projectID, category: newCategory })
 
         // If the mutation was successful, show success message
-        if (res?.data?.addBookmark?.code === '204') {
+        if (res?.data?.addBookmark?.code === '201') {
           refetch()
         } else {
           // Otherwise, show error message

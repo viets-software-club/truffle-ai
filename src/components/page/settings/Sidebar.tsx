@@ -32,12 +32,13 @@ const Sidebar = ({ sections, activeSection, onClick }: SidebarProps) => {
 
           {subSections.map((subSection) => {
             const id = `${heading} - ${subSection}`
+
             return (
               <button
                 type="button"
                 key={id}
                 id={id}
-                className={`w-full cursor-pointer rounded-[5px] px-6 py-2 text-left text-xs not-italic leading-3 text-gray-100 hover:bg-gray-800 ${
+                className={`w-full cursor-pointer rounded-[5px] px-6 py-2.5 text-left text-xs not-italic leading-3 text-gray-100 hover:bg-gray-800 ${
                   activeSection === id ? 'bg-gray-600 ' : ''
                 }`}
                 onClick={() => onClick(id)}

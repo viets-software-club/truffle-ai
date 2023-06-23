@@ -1,48 +1,55 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
   ColumnOrderState,
   getFilteredRowModel
 } from '@tanstack/react-table'
+import { CombinedError } from 'urql'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import TopBar from '@/components/page/overview/TopBar'
 import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
 import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
-import {
-  Project,
-  ProjectFilter,
-  ProjectOrderBy,
-  useTrendingProjectsQuery,
-  PageInfo
-} from '@/graphql/generated/gql'
-import { defaultFilters, defaultSort, paginationParameters } from '@/components/page/overview/types'
+import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { paginationParameters } from '@/components/page/overview/types'
+
+type ProjectsTableProps = {
+  data: Project[]
+  filters: ProjectFilter
+  sorting: ProjectOrderBy | null
+  fetching: boolean
+  error: CombinedError | undefined
+  hideTimeFrame?: boolean
+  setSorting: (sort: ProjectOrderBy | null) => void
+  updateFilters: (filters: ProjectFilter) => void
+  totalCount: number
+  pageInfo: PageInfo
+  setPagination: Dispatch<SetStateAction<paginationParameters>>
+  pageSize: number
+}
 
 /**
  * Table for displaying trending projects
  */
-const ProjectsTable = () => {
-  const PAGE_SIZE = 30
-  const [data, setData] = useState<Project[]>([])
+const ProjectsTable: FC<ProjectsTableProps> = ({
+  data,
+  filters,
+  sorting,
+  fetching,
+  error,
+  hideTimeFrame,
+  setSorting,
+  updateFilters,
+  totalCount,
+  pageInfo,
+  setPagination,
+  pageSize
+}) => {
   const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
-  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
-  const [pageInfo, setPageInfo] = useState<PageInfo>()
-  const [pagination, setPagination] = useState<paginationParameters>({
-    first: PAGE_SIZE,
-    last: null,
-    after: null,
-    before: null
-  })
-  const [totalCount, setTotalCount] = useState(0)
-
-  const updateFilters = (filter: ProjectFilter) => {
-    setFilters(filter)
-  }
 
   // @TODO adapt default filters to new filtering system
 
@@ -90,32 +97,6 @@ const ProjectsTable = () => {
   //   return []
   // }
 
-  // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
-    variables: {
-      orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters,
-      ...pagination
-    }
-  })
-
-  // Fetch data from Supabase using generated Urql hook for total count
-  const [{ data: urqlDataTotal }] = useTrendingProjectsQuery({
-    variables: {
-      orderBy: sorting || defaultSort,
-      filter: filters || defaultFilters
-    }
-  })
-
-  // Only update table data when urql data changes
-  useEffect(() => {
-    if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
-      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
-      setTotalCount(urqlDataTotal?.projectCollection?.edges?.length ?? 0)
-    }
-  }, [urqlData, urqlDataTotal])
-
   // Initialize TanStack table
   const table = useReactTable({
     data,
@@ -136,7 +117,7 @@ const ProjectsTable = () => {
       <TopBar
         columns={table.getAllLeafColumns()}
         filters={filters}
-        comparePage={false}
+        hideTimeFrame={hideTimeFrame}
         sorting={sorting}
         setSorting={setSorting}
         updateFilters={updateFilters}
@@ -152,7 +133,7 @@ const ProjectsTable = () => {
           setSorting={setSorting}
           pageInfo={pageInfo}
           setPagination={setPagination}
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
         />
       )}
 
@@ -169,6 +150,10 @@ const ProjectsTable = () => {
       </div>
     </>
   )
+}
+
+ProjectsTable.defaultProps = {
+  hideTimeFrame: false
 }
 
 export default ProjectsTable

@@ -38,23 +38,46 @@ const RightSidebar = ({ project }: Props) => {
     // @TODO Add historical data for showing growth
     <Sidebar.Small>
       <Sidebar.Box title="GitHub Stats">
-        <Sidebar.Box.GithubStatItem Icon={StarIcon} value={project.starCount as number} />
-        <Sidebar.Box.GithubStatItem Icon={IssueOpenedIcon} value={project.issueCount as number} />
-        <Sidebar.Box.GithubStatItem Icon={RepoForkedIcon} value={project.forkCount as number} />
+        <Sidebar.Box.GithubStatItem
+          id="Stars"
+          Icon={StarIcon}
+          value={project?.starCount as number}
+        />
+        <Sidebar.Box.GithubStatItem
+          Icon={IssueOpenedIcon}
+          value={project?.issueCount as number}
+          id="Issues"
+        />
+        <Sidebar.Box.GithubStatItem
+          Icon={RepoForkedIcon}
+          value={project?.forkCount as number}
+          id="Forks"
+        />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-          value={(project.forkCount || 0) / (project.contributorCount || 1)}
+          value={(project?.forkCount || 0) / (project?.contributorCount || 1)}
+          id="Forks/contributor"
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-          value={(project.issueCount || 0) / (project.contributorCount || 1)}
+          value={(project?.issueCount || 0) / (project?.contributorCount || 1)}
+          id="Issues/contributor"
         />
-        <Sidebar.Box.GithubStatItem Icon={PeopleIcon} value={project.contributorCount as number} />
+        <Sidebar.Box.GithubStatItem
+          Icon={PeopleIcon}
+          value={project?.contributorCount as number}
+          id="Contributors"
+        />
         <Sidebar.Box.GithubStatItem
           Icon={GitPullRequestIcon}
           value={project.pullRequestCount as number}
+          id="Pull requests"
         />
-        <Sidebar.Box.GithubStatItem Icon={FaGithub} link={project.githubUrl as string} />
+        <Sidebar.Box.GithubStatItem
+          Icon={FaGithub}
+          link={project.githubUrl as string}
+          id={project.githubUrl as string}
+        />
       </Sidebar.Box>
 
       {project.languages?.length && (
@@ -74,7 +97,7 @@ const RightSidebar = ({ project }: Props) => {
         </Sidebar.Box>
       )}
 
-      {(project.organization?.name ||
+      {(project.name ||
         project.associatedPerson?.name ||
         project.associatedPerson?.githubUrl ||
         project.associatedPerson?.email ||
@@ -82,7 +105,7 @@ const RightSidebar = ({ project }: Props) => {
         project.associatedPerson?.websiteUrl) && (
         <Sidebar.Box title="Founder">
           <Sidebar.Box.FounderItem
-            company={project.organization?.name as string}
+            projectName={project.name as string}
             name={project.associatedPerson?.name as string}
             github={project.associatedPerson?.githubUrl as string}
             mail={project.associatedPerson?.email as string}

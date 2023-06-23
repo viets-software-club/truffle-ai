@@ -19,6 +19,7 @@ const Login = () => {
   const router = useRouter()
   const { isLoading: sessionLoading } = useSessionContext()
   const supabaseClient = useSupabaseClient()
+  const { error } = router.query
 
   const handleLogin = async (type: 'google' | 'email', email?: string, password?: string) => {
     try {
@@ -80,6 +81,13 @@ const Login = () => {
           variant="highlighted"
           className="w-full justify-center py-3"
         />
+
+        {error === 'invalid_email' && (
+          <div className="text-center text-sm text-red">
+            Invalid google email or password. Please note that only invited users or La Famiglia
+            employees can sign in.
+          </div>
+        )}
 
         <hr className="w-full border-b-[.5px] border-gray-100/10" />
 

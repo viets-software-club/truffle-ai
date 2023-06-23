@@ -6,7 +6,8 @@ import { VscIssues } from 'react-icons/vsc'
 import { GoGitPullRequest } from 'react-icons/go'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
-import formatNumber from '@/util/formatNumber'
+import GitHubMetricIcon from '@/components/page/details/GitHubMetricIcon'
+import { RepoForkedIcon, PersonIcon, IssueOpenedIcon } from '@primer/octicons-react'
 
 const columnHelper = createColumnHelper<Project>()
 
@@ -106,14 +107,28 @@ const columns = [
     id: 'Forks/Contrib.',
     header: 'Forks/Contrib.',
     enableColumnFilter: true,
-    cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
+    cell: (info) => (
+      <GitHubStatisticItem
+        IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
+        paddingOn={false}
+        outerPaddingOn={false}
+        value={info.getValue()}
+      />
+    )
   }),
   // Issues per Contributor column definition
   columnHelper.accessor((project) => (project.issueCount || 0) / (project.contributorCount || 1), {
     id: 'Issues/Contrib.',
     header: 'Issues/Contrib.',
     enableColumnFilter: true,
-    cell: (info) => <p className="text-14">{formatNumber(info.getValue())}</p>
+    cell: (info) => (
+      <GitHubStatisticItem
+        IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
+        paddingOn={false}
+        outerPaddingOn={false}
+        value={info.getValue()}
+      />
+    )
   }),
   // PR column definition
   columnHelper.accessor('pullRequestCount', {

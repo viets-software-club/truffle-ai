@@ -1,28 +1,23 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {
-  FiX as X,
-  FiChevronUp as ChevronUp,
-  FiChevronDown as ChevronDown,
-  FiArrowUpRight
-} from 'react-icons/fi'
-import { FaTwitter, FaHackerNews } from 'react-icons/fa'
+import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
+import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import Loading from '@/components/pure/Loading'
 import Button from '@/components/pure/Button'
-import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
 import Chart from '@/components/page/details/Chart'
-import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
-import { Project, useProjectDetailsQuery, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { hackerNewsListMock, tweetListMock } from '@/data/detailPageMocks'
-
-const handleClick = () => ''
-
-// @TODO Update social media buttons
-const SomeButton = (
-  <Button Icon={FiArrowUpRight} variant="normal" onClick={handleClick} text="Open" order="ltr" />
-)
+import {
+  Bookmark,
+  Project,
+  useBookmarkIdsQuery,
+  useProjectDetailsQuery,
+  useProjectIdsQuery
+} from '@/graphql/generated/gql'
+import ProjectInformation from '@/components/page/details/ProjectInformation'
+import { defaultSort, defaultFilters } from '@/components/page/overview/types'
+import Card from '@/components/pure/Card'
+import { useUser } from '@supabase/auth-helpers-react'
 
 type DetailsProps = {
   id: string
@@ -32,17 +27,53 @@ type DetailsProps = {
  * Project detail component
  */
 const Details = ({ id }: DetailsProps) => {
-  // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
-  const [{ data: tpData }] = useTrendingProjectsQuery()
-
-  const projects = tpData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
-
+  // States for navigation between projects
   const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
   const [previousProjectId, setPreviousProjectId] = useState<string>()
   const [nextProjectId, setNextProjectId] = useState<string>()
 
+  // User data from Supabase auth session
+  const user = useUser()
+
+  /**
+   * Get project details data using generated hook (returns array with 1 project if successful).
+   * @param {string} id - The ID of the project for which to fetch details.
+   * @returns {[{ data: any, fetching: boolean, error: any }]} Data is the data containing trending projects.
+   * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
+   * Error contains any error information if the query encounters an error during the fetch.
+   */
+  const [{ data, fetching, error }, refetchProjectDetails] = useProjectDetailsQuery({
+    variables: { id }
+  })
+
+  const [{ data: bookmarkIds }, refetchBookmarkIds] = useBookmarkIdsQuery({
+    variables: { userId: user?.id as string, projectId: id }
+  })
+
+  // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
+  // + add proper pagination
+  const [{ data: projectIds }, refetchProjectIds] = useProjectIdsQuery({
+    variables: {
+      orderBy: defaultSort,
+      filter: defaultFilters
+    }
+  })
+
+  // First entry of returned collection contains project details
+  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
+  // List of all project IDs for navigation
+  const projects = projectIds?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  // Array of length 1 with bookmark details if bookmarked, otherwise empty array
+  const bookmarks = bookmarkIds?.bookmarkCollection?.edges?.map((edge) => edge.node) as Bookmark[]
+
+  // Whether project is bookmarked or not
+  const isBookmarked = bookmarks?.length > 0 && bookmarks[0].project?.id === id
+  // Current category of if project is bookmarked
+  const category = isBookmarked ? (bookmarks[0].category as string) : ''
+
+  // Set IDs of previous and next project for navigation buttons
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
-    const currentIndex = projectList.findIndex((project) => project.id === currentId)
+    const currentIndex = projectList.findIndex((p) => p.id === currentId)
 
     const newPreviousProjectId =
       currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
@@ -57,46 +88,55 @@ const Details = ({ id }: DetailsProps) => {
     setNextProjectId(newNextProjectId)
   }
 
+  const refetch = () => {
+    refetchProjectDetails()
+    refetchBookmarkIds()
+    refetchProjectIds()
+  }
+
+  // Update project indices once projects are fetched
   useEffect(() => {
     if (projects) {
       updateProjectIndices(id, projects)
     }
   }, [projects, id])
 
-  /**
-   * Get project details data using generated hook (returns array with 1 project if successful).
-   * @param {string} id - The ID of the project for which to fetch details.
-   * @returns {[{ data: any, fetching: boolean, error: any }]} Data is the data containing trending projects.
-   * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
-   * Error contains any error information if the query encounters an error during the fetch.
-   */
-  const [{ data, fetching, error }] = useProjectDetailsQuery({ variables: { id } })
-
-  // Get first entry of returned collection
-  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
-
   // Display loading/ error messages conditionally
-  if (fetching) return <Loading message="Fetching project details for you..." />
+  if (fetching) return <Loading fullscreen />
   if (error || !project) return <Error />
 
   return (
     <>
-      <div className="flex h-[59px] w-full items-center justify-between px-3 pl-7 text-gray-500">
+      <div className="fixed z-10 flex h-[60px] w-full items-center justify-between border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500">
         <div className="flex flex-row items-center gap-3">
           <Link href="/">
             <X key="2" className="h-4 w-4 text-gray-500" />
           </Link>
 
-          {nextProjectId && (
+          {nextProjectId ? (
             <Link href={`/details/${nextProjectId}`}>
-              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronUp} />
+              <Button variant="onlyIcon" Icon={ChevronUp} />
             </Link>
+          ) : (
+            <Button
+              disabled={!nextProjectId}
+              variant="onlyIcon"
+              Icon={ChevronUp}
+              iconColor="text-gray-600"
+            />
           )}
 
-          {previousProjectId && (
+          {previousProjectId ? (
             <Link href={`/details/${previousProjectId}`}>
-              <Button variant="onlyIcon" onClick={handleClick} Icon={ChevronDown} />
+              <Button variant="onlyIcon" Icon={ChevronDown} />
             </Link>
+          ) : (
+            <Button
+              disabled={!previousProjectId}
+              variant="onlyIcon"
+              Icon={ChevronDown}
+              iconColor="text-gray-600"
+            />
           )}
 
           <div className="flex flex-row items-center">
@@ -109,8 +149,10 @@ const Details = ({ id }: DetailsProps) => {
       </div>
 
       <div className="flex grow">
-        <div className="w-4/5 flex-row border-t border-solid border-gray-800">
+        <div className="w-[calc(100%-250px)] flex-row pt-[60px]">
           <ProjectInformation
+            id={project.id as string}
+            githubUrl={project.githubUrl as string}
             image={
               (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
             }
@@ -118,8 +160,12 @@ const Details = ({ id }: DetailsProps) => {
               (project.organization?.login || project.associatedPerson?.login) as string
             } / ${project.name as string}`}
             url={project.githubUrl as string}
-            eli5={project.eli5 || project.about || 'No description'}
-            tags={project.languages || []}
+            explanation={project.eli5 || 'No explanation'}
+            about={project.about || 'No description'}
+            categories={project.categories as string[]}
+            isBookmarked={isBookmarked}
+            category={category}
+            refetch={refetch}
           />
 
           <Chart
@@ -135,20 +181,27 @@ const Details = ({ id }: DetailsProps) => {
             multipleLines={false}
           />
 
-          {/* @TODO Add real data */}
-          <div className="flex flex-row gap-4 border-t border-solid border-gray-800 py-2 pl-7 pr-3">
-            <Card
-              Icon={FaTwitter}
-              name="Top Tweets"
-              button={SomeButton}
-              textFields={tweetListMock}
-            />
-            <Card
-              Icon={FaHackerNews}
-              name="Community Sentiment"
-              button={SomeButton}
-              textFields={hackerNewsListMock}
-            />
+          <div className="flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3">
+            <div className="w-1/2">
+              <Card
+                Icon={FaTwitter}
+                name="Top Tweets"
+                tweets={project.relatedTwitterPosts ?? undefined}
+                variant="twitter"
+                key={project.id as string}
+              />
+            </div>
+
+            <div className="w-1/2">
+              <Card
+                Icon={FaHackerNews}
+                name="Community Sentiment"
+                communitySentiment={project.hackernewsSentiment ?? undefined}
+                links={project.hackernewsStories as string[]}
+                variant="hackernews"
+                key={project.id as string}
+              />
+            </div>
           </div>
         </div>
 

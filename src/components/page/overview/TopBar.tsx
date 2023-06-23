@@ -1,275 +1,95 @@
-import { Fragment, ReactNode, useState } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { useState } from 'react'
 import { Column } from '@tanstack/react-table'
-import { TbArrowsSort, TbColumns2 } from 'react-icons/tb'
-import { AiOutlineCalendar, AiOutlineFilter, AiOutlineNumber } from 'react-icons/ai'
-import { RiCheckboxBlankLine, RiCheckboxFill } from 'react-icons/ri'
-import { IoTextOutline } from 'react-icons/io5'
-import {
-  NumberTableFilterOperator,
-  StringTableFilterOperator,
-  TableFilter
-} from '@/components/page/overview/TableFilter'
-import { TableSort } from '@/components/page/overview/TableSort'
 import AddProject from '@/components/side-effects/AddProject'
-import { Project } from '@/graphql/generated/gql'
+import { Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { FilterType, TimeFilterOption } from './types'
+import TimeFrameSelector from './TimeFrameSelector'
+import SortingSelector from './SortingSelector'
+import FilterSelector from './FilterSelector'
+import EditColumns from './EditColumns'
 
 type TopBarProps = {
   columns: Column<Project, unknown>[]
-  addFilter: (filter: TableFilter) => void
-  filters: TableFilter[]
-  comparePage: boolean
-  tableSort: TableSort | null
-  setTableSort: (sort: TableSort | null) => void
+  filters: ProjectFilter
+  sorting: ProjectOrderBy | null
+  hideTimeFrame?: boolean
+  setSorting: (sort: ProjectOrderBy | null) => void
+  updateFilters: (filters: ProjectFilter) => void
 }
-
-const timeFrameOptions = [
-  { value: 'day', label: 'Today' },
-  { value: 'week', label: 'This Week' },
-  { value: 'month', label: 'This Month' }
-]
-
-type TransitionMenuItemsProps = {
-  children: ReactNode
-}
-
-const TransitionMenuItems = ({ children }: TransitionMenuItemsProps) => (
-  <Transition
-    as={Fragment}
-    enter="transition ease-out duration-100"
-    enterFrom="transform opacity-0 scale-95"
-    enterTo="transform opacity-100 scale-100"
-    leave="transition ease-in duration-75"
-    leaveFrom="transform opacity-100 scale-100"
-    leaveTo="transform opacity-0 scale-95"
-  >
-    {children}
-  </Transition>
-)
 
 /**
  * Top navigation for the table view, including filter, sort, edit columns and add project buttons
  */
 const TopBar = ({
   columns,
-  addFilter,
   filters,
-  comparePage,
-  tableSort,
-  setTableSort
+  hideTimeFrame,
+  sorting,
+  setSorting,
+  updateFilters
 }: TopBarProps) => {
-  const [open, setOpen] = useState(false)
-  const [selectedTimeFrame, setSelectedTimeFrame] = useState(timeFrameOptions[1])
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFilterOption>(
+    TimeFilterOption.Today
+  )
 
-  const visibleColumnTextStyle = 'text-14 text-gray-100'
-  const hiddenColumnTextStyle = 'text-14 text-gray-500'
+  // Adds new filter to the filter object/ bar
+  const addFilter = (key: string, type: FilterType) => {
+    const defaultFilter = type === 'string' ? { startsWith: '' } : { gt: -1 }
+
+    updateFilters({ ...filters, [key]: defaultFilter })
+  }
+
+  const updateSorting = (sort: ProjectOrderBy | null) => {
+    setSorting(sort)
+  }
+
+  const updateTimeFrame = (timeFrame: TimeFilterOption) => {
+    setSelectedTimeFrame(timeFrame)
+
+    // Remove all other time filters
+    const newFilters = { ...filters }
+    Object.values(TimeFilterOption)
+      .filter((t) => t !== timeFrame)
+      .forEach((t) => delete newFilters[t])
+
+    updateFilters({ ...newFilters, [timeFrame]: { eq: true } })
+  }
+
+  // Maps time frame enum value to the corresponding key
+  const currentTimeFilterLabel = Object.entries(TimeFilterOption).filter(
+    (option) => option[1] === selectedTimeFrame
+  )[0][0]
 
   return (
-    <div className="flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
-      {/* Filter, Sort, Edit Columns buttons */}
+    <div className="fixed left-56 right-0 z-20 flex h-[60px] flex-row items-center justify-between border-b border-gray-800 bg-gray-900 px-6">
+      {/* Time frame (only show on trending page) */}
       <div className="flex flex-row gap-3">
-        {!comparePage && (
-          <Menu as="div" className="relative inline-block text-left">
-            <div>
-              <Menu.Button className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700">
-                <AiOutlineCalendar className="text-gray-500" />
-                <p className="leading-none">{selectedTimeFrame.label}</p>
-              </Menu.Button>
-            </div>
-
-            <TransitionMenuItems>
-              <Menu.Items className="absolute right-0 z-30 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
-                <div className="py-1">
-                  {timeFrameOptions.map((option) => (
-                    <Menu.Item key={option.value}>
-                      {/* @TODO Change time frame */}
-                      <button
-                        type="button"
-                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                        onClick={() => setSelectedTimeFrame(option)}
-                      >
-                        <p className="text-14 text-gray-100">{option.label}</p>
-                      </button>
-                    </Menu.Item>
-                  ))}
-                </div>
-              </Menu.Items>
-            </TransitionMenuItems>
-          </Menu>
+        {!hideTimeFrame && (
+          <TimeFrameSelector
+            currentTimeFilterLabel={currentTimeFilterLabel}
+            handleChange={updateTimeFrame}
+          />
         )}
 
-        <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button
-            onClick={() => setOpen(!open)}
-            className="flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700"
-          >
-            <TbColumns2 className="text-gray-500" />
-            <p className="leading-none">Edit Columns</p>
-          </Menu.Button>
+        {/* Sorting */}
+        <SortingSelector sorting={sorting} updateSorting={updateSorting} />
 
-          <TransitionMenuItems>
-            <Menu.Items
-              static
-              className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none"
-            >
-              <div className="py-1">
-                {columns.map((column) => (
-                  <Menu.Item key={column.id}>
-                    <button
-                      type="button"
-                      onClick={column.getToggleVisibilityHandler()}
-                      className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                    >
-                      {column.getIsVisible() ? (
-                        <RiCheckboxFill className="text-indigo-600" />
-                      ) : (
-                        <RiCheckboxBlankLine />
-                      )}
-
-                      <p
-                        className={
-                          column.getIsVisible() ? visibleColumnTextStyle : hiddenColumnTextStyle
-                        }
-                      >
-                        {typeof column.columnDef.header === 'string' ? column.columnDef.header : ''}
-                      </p>
-                    </button>
-                  </Menu.Item>
-                ))}
-              </div>
-            </Menu.Items>
-          </TransitionMenuItems>
-        </Menu>
-
-        <Menu as="div" className="relative inline-block text-left">
-          <div>
-            <Menu.Button
-              className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
-                tableSort ? 'bg-gray-850' : ''
-              }`}
-            >
-              <TbArrowsSort className="text-gray-500" />
-              <p className={`leading-none ${tableSort ? '' : 'text-gray-500'}`}>Sorting</p>
-            </Menu.Button>
-          </div>
-
-          <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
-              <div className="py-1">
-                {columns
-                  .filter(
-                    (column) =>
-                      column.getIsVisible() &&
-                      column.columnDef.header !== 'Logo' &&
-                      column.columnDef.header !== tableSort?.column
-                  )
-                  .map((column) => (
-                    <Menu.Item key={column.id}>
-                      <button
-                        type="button"
-                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                        onClick={() => {
-                          setTableSort({
-                            column: column.columnDef.header as string,
-                            direction: 'desc'
-                          })
-                        }}
-                      >
-                        {column.columnDef.header === 'Name' ? (
-                          <IoTextOutline className="text-gray-500" />
-                        ) : (
-                          <AiOutlineNumber className="text-gray-500" />
-                        )}
-
-                        <p
-                          className={
-                            column.getIsVisible() ? visibleColumnTextStyle : hiddenColumnTextStyle
-                          }
-                        >
-                          {typeof column.columnDef.header === 'string'
-                            ? column.columnDef.header
-                            : ''}
-                        </p>
-                      </button>
-                    </Menu.Item>
-                  ))}
-              </div>
-            </Menu.Items>
-          </TransitionMenuItems>
-        </Menu>
-
-        <Menu as="div" className="relative inline-block text-left">
-          <div>
-            <Menu.Button
-              className={`flex h-[30px] flex-row items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 transition-colors duration-100 hover:bg-gray-700 ${
-                filters.length > 0 ? 'bg-gray-850' : ''
-              }`}
-            >
-              <AiOutlineFilter className="text-gray-500" />
-              <p className={`leading-none ${filters.length > 0 ? '' : 'text-gray-500'}`}>Filters</p>
-            </Menu.Button>
-          </div>
-
-          <TransitionMenuItems>
-            <Menu.Items className="absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
-              <div className="py-1">
-                {filters.length === 7 && (
-                  <p className="py-1 pl-2 text-14">No more filters can be applied.</p>
-                )}
-                {columns
-                  .filter(
-                    (column) =>
-                      column.getIsVisible() &&
-                      column.columnDef.header !== 'Logo' &&
-                      !filters.some(
-                        (filter) => filter.column.columnDef.header === column.columnDef.header
-                      )
-                  )
-                  .map((column) => (
-                    <Menu.Item key={column.id}>
-                      <button
-                        type="button"
-                        className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
-                        onClick={() =>
-                          addFilter({
-                            column,
-                            operator:
-                              column.columnDef.header === 'Name'
-                                ? StringTableFilterOperator.CONTAINS
-                                : NumberTableFilterOperator.EQUALS
-                          })
-                        }
-                      >
-                        {column.columnDef.header === 'Name' ? (
-                          <IoTextOutline className="text-gray-500" />
-                        ) : (
-                          <AiOutlineNumber className="text-gray-500" />
-                        )}
-
-                        <p
-                          className={
-                            column.getIsVisible()
-                              ? 'text-14 text-gray-100'
-                              : 'text-14 text-gray-400'
-                          }
-                        >
-                          {typeof column.columnDef.header === 'string'
-                            ? column.columnDef.header
-                            : ''}
-                        </p>
-                      </button>
-                    </Menu.Item>
-                  ))}
-              </div>
-            </Menu.Items>
-          </TransitionMenuItems>
-        </Menu>
+        {/* Filtering */}
+        <FilterSelector filters={filters} addFilter={addFilter} />
       </div>
 
-      <AddProject />
+      <div className="flex gap-3">
+        {/* Edit columns */}
+        <EditColumns columns={columns} />
+
+        <AddProject />
+      </div>
     </div>
   )
 }
 
+TopBar.defaultProps = {
+  hideTimeFrame: false
+}
+
 export default TopBar
-export { TransitionMenuItems }

@@ -11,7 +11,9 @@ type SmallSidebarProps = {
  * @returns {React.Element} The sidebar element.
  */
 const SmallSidebar = ({ children }: SmallSidebarProps) => (
-  <div className="h-full w-1/5 border-l border-solid border-gray-800">{children}</div>
+  <div className="fixed right-0 top-[60px] h-[calc(100vh-60px)] w-[250px] border-l border-gray-800">
+    {children}
+  </div>
 )
 
 export default SmallSidebar

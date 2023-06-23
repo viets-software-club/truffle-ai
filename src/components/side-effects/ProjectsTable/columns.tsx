@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
@@ -6,11 +7,9 @@ import { GoGitPullRequest } from 'react-icons/go'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import formatNumber from '@/util/formatNumber'
-import Image from 'next/image'
 
 const columnHelper = createColumnHelper<Project>()
 
-// @TODO Make columns sortable, filterable
 const columns = [
   // Logo column definition
   columnHelper.accessor(
@@ -25,8 +24,6 @@ const columns = [
       )
     }
   ),
-
-  // @TODO Adjust for user owners
   // Name column definition
   columnHelper.accessor(
     ({ organization, associatedPerson, name }) =>
@@ -48,7 +45,6 @@ const columns = [
       }
     }
   ),
-  // @TODO Add tags column
   // Stars column definition
   columnHelper.accessor('starCount', {
     id: 'Stars',
@@ -59,7 +55,6 @@ const columns = [
         Icon={AiOutlineStar}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -74,7 +69,6 @@ const columns = [
         Icon={VscIssues}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -89,7 +83,6 @@ const columns = [
         Icon={AiOutlineFork}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -104,7 +97,6 @@ const columns = [
         Icon={BsPeople}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )
@@ -126,14 +118,13 @@ const columns = [
   // PR column definition
   columnHelper.accessor('pullRequestCount', {
     id: 'PR',
-    header: 'PR',
+    header: 'Open PRs',
     enableColumnFilter: true,
     cell: (info) => (
       <GitHubStatisticItem
         Icon={GoGitPullRequest}
         paddingOn={false}
         outerPaddingOn={false}
-        hoverOn={false}
         value={info.getValue() as number}
       />
     )

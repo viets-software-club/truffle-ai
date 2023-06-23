@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import React, { FormEvent, RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { MdArrowForward } from 'react-icons/md'
 import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { defaultFilters, defaultSort } from '@/components/page/overview/types'
 import emailTemplate from '@/util/emailTemplate'
 import defaultList from './DefaultRecommendationList'
 import CommandInterfaceOptions from './CommandInterfaceOptions'
@@ -28,7 +29,12 @@ const CommandInterface: React.FC = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const [{ data }] = useTrendingProjectsQuery()
+  const [{ data }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: defaultSort,
+      filter: defaultFilters
+    }
+  })
 
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 

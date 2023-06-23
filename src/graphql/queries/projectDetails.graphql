@@ -11,12 +11,17 @@ query ProjectDetails($id: UUID) {
         forkCount
         pullRequestCount
         contributorCount
+        languages
         githubUrl
         websiteUrl
         starHistory
-        languages
         owningPerson
         owningOrganization
+        hackernewsSentiment
+        hackernewsStories
+        relatedTwitterPosts
+        forkHistory
+        categories
         associatedPerson {
           id
           name
@@ -25,11 +30,18 @@ query ProjectDetails($id: UUID) {
           email
           githubUrl
           twitterUsername
+          repositoryCount
+          websiteUrl
         }
         organization {
           id
           login
           avatarUrl
+          email
+          githubUrl
+          twitterUsername
+          repositoryCount
+          websiteUrl
         }
       }
     }

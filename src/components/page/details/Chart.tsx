@@ -10,15 +10,16 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts'
-import { FiChevronDown as ChevronDown } from 'react-icons/fi'
+import { Menu } from '@headlessui/react'
+import { AiOutlineCalendar } from 'react-icons/ai'
 import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
-import Modal from '@/components/pure/Modal'
 import formatDate from '@/util/formatDate'
 import formatNumber from '@/util/formatNumber'
 import tailwindConfig from '../../../../tailwind.config'
+import MenuItemsTransition from '../overview/MenuItemsTransition'
 
-// The following 3 statements are needed in order to be able to use our Tailwind classes inside JS objects of the recharts library
+// Make Tailwind classes accessible inside JS objects of the recharts library
 const fullConfig = resolveConfig(tailwindConfig)
 
 type ColorObject = {
@@ -77,7 +78,6 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
  */
 
 const Chart = ({ datasets, multipleLines }: ChartProps) => {
-  const [timeframeModalOpen, setTimeframeModalOpen] = useState(false)
   const [timeframeModalValue, setTimeframeModalValue] = useState('Select timeframe')
   //   const [modalValue, setModalValue] = useState('Select Value')
   //   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -122,7 +122,6 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
     (value: number) => () => {
       const selectedOption = TimeframeOptions.find((option) => option.value === value)
       setTimeframeModalValue(selectedOption ? selectedOption.label : TimeframeOptions[0].label)
-      setTimeframeModalOpen(false)
 
       const filteredData = chartDataOriginal.map((dataset) => ({
         ...dataset,
@@ -142,47 +141,43 @@ const Chart = ({ datasets, multipleLines }: ChartProps) => {
         <div className="flex w-full flex-col gap-3">
           {multipleLines && (
             <div className="flex flex-row gap-3 ">
-              <div className="flex flex-col">
-                <Button
-                  variant="normal"
-                  text={timeframeModalValue}
-                  Icon={ChevronDown}
-                  order="rtl"
-                  onClick={() => {
-                    setTimeframeModalOpen(true)
-                  }}
-                />
+              <Menu as="div" className="relative">
+                <Menu.Button as="div">
+                  <Button
+                    Icon={AiOutlineCalendar}
+                    variant="normal"
+                    text={timeframeModalValue}
+                    order="ltr"
+                  />
+                </Menu.Button>
 
-                <Modal isOpen={timeframeModalOpen} onClose={() => setTimeframeModalOpen(false)}>
-                  {TimeframeOptions.map((option) => (
-                    <Button
-                      key={option.label}
-                      variant="noBorderNoBG"
-                      text={option.label}
-                      fullWidth
-                      onClick={handleTimeframeChange(option.value)}
-                    />
-                  ))}
-                </Modal>
-              </div>
-              <div>
-                <Button
-                  variant="normal"
-                  text="Normalize Data"
-                  fullWidth
-                  onClick={handleDataNormalization}
-                />
-              </div>
+                <MenuItemsTransition>
+                  <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+                    {TimeframeOptions.map((option) => (
+                      <Menu.Item
+                        as="button"
+                        key={option.label}
+                        onClick={handleTimeframeChange(option.value)}
+                        className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                      >
+                        {option.label}
+                      </Menu.Item>
+                    ))}
+                  </Menu.Items>
+                </MenuItemsTransition>
+              </Menu>
+
+              <Button variant="normal" text="Normalize Data" onClick={handleDataNormalization} />
             </div>
           )}
 
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              height={300}
+              height={310}
               margin={{
-                top: 25,
+                top: 30,
                 right: 10,
-                left: -25,
+                left: 0,
                 bottom: 5
               }}
             >

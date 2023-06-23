@@ -195,39 +195,40 @@ const Docs = () => {
           </Paragraph>
 
           <Paragraph className="font-bold">Queries:</Paragraph>
-          <ul className="list-inside list-disc text-14">
-            <li> helloWorld(): a test query</li>
-          </ul>
-
+          <Paragraph>
+            <ul className="list-inside list-disc text-14">
+              <li> helloWorld(): a test query</li>
+            </ul>
+          </Paragraph>
           <Paragraph className="font-bold">Mutations:</Paragraph>
-
-          <ul className="list-inside list-disc text-14">
-            <li>
-              addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): adds and
-              bookmarks a project by name
-            </li>
-            <li>
-              addProjectByUrl(url: String!, bookmarkCategory: String!): adds and bookmarks a project
-              by URL
-            </li>
-            <li>
-              addBookmark(projectID: String!, category: String!): adds a bookmark for the currently
-              logged in user
-            </li>
-            <li>
-              deleteBookmark(projectID: String!): deletes a bookmark for the currently logged in
-              user
-            </li>
-            <li>
-              editBookmarkCategory(projectID: String!, newCategory: String!): edits the category a
-              bookmark is associated with
-            </li>
-            <li>
-              renameBookmarkCategory(oldCategory: String!, newCategory: String!): renames a category
-              of bookmarks
-            </li>
-          </ul>
-
+          <Paragraph>
+            <ul className="list-inside list-disc text-14">
+              <li>
+                addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): adds and
+                bookmarks a project by name
+              </li>
+              <li>
+                addProjectByUrl(url: String!, bookmarkCategory: String!): adds and bookmarks a
+                project by URL
+              </li>
+              <li>
+                addBookmark(projectID: String!, category: String!): adds a bookmark for the
+                currently logged in user
+              </li>
+              <li>
+                deleteBookmark(projectID: String!): deletes a bookmark for the currently logged in
+                user
+              </li>
+              <li>
+                editBookmarkCategory(projectID: String!, newCategory: String!): edits the category a
+                bookmark is associated with
+              </li>
+              <li>
+                renameBookmarkCategory(oldCategory: String!, newCategory: String!): renames a
+                category of bookmarks
+              </li>
+            </ul>
+          </Paragraph>
           <HeaderTwo text="Hardware/Software Mapping" />
           <Paragraph>
             Include and describe your Deployment or Infrastructure Diagram here. Describe the
@@ -274,9 +275,9 @@ const Docs = () => {
             license terms. If you used commercial software refer to the product information at the
             manufacturer`s site.
           </Paragraph>
-
-          <NumberedBulletedList items={items} />
-
+          <Paragraph>
+            <NumberedBulletedList items={items} />
+          </Paragraph>
           {/* <h1 className="py-1 text-20 font-semibold text-gray-400">Introduction</h1>
             <h2 className="py-1 text-16 font-semibold text-gray-400">Purpose of the System</h2>
               <p className="text-14 font-light">What is your application all about? Write a short introduction with an elevator pitch and include the main users and/or stakeholders.</p>

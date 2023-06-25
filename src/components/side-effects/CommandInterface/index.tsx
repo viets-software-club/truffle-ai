@@ -38,8 +38,12 @@ const CommandInterface: React.FC = () => {
 
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
-  const toggleModal = () => {
+  const closeModal = () => {
     setOpen(false)
+  }
+
+  const openModal = () => {
+    setOpen(true)
   }
 
   const scrollToNextItem = () => {
@@ -66,7 +70,7 @@ const CommandInterface: React.FC = () => {
     if (event.ctrlKey || event.metaKey) {
       if (event.key === 'k') {
         event.preventDefault()
-        toggleModal()
+        openModal()
         return
       }
 
@@ -79,7 +83,7 @@ const CommandInterface: React.FC = () => {
         void router.push(shortcutItem.commandInterfaceOptions)
       }
     } else if (event.key === 'Escape') {
-      toggleModal()
+      closeModal()
     } else if (event.key === 'ArrowUp') {
       const newLine =
         selectedLine !== 0
@@ -99,7 +103,7 @@ const CommandInterface: React.FC = () => {
       commandInterfaceWrapperRef.current &&
       !commandInterfaceWrapperRef.current.contains(event.target as Node)
     ) {
-      toggleModal()
+      closeModal()
     }
   }
 
@@ -282,7 +286,7 @@ const CommandInterface: React.FC = () => {
     } else if (!isIdPrimary) {
       navigateTo(command)
       setIsProjectListOn(false)
-      toggleModal()
+      closeModal()
     } else if (isIdPrimary) {
       setSearchWord(`${searchText} <project name>`)
       setProjectNamesAsRow(command)
@@ -339,7 +343,7 @@ const CommandInterface: React.FC = () => {
       wrapperRef={commandInterfaceWrapperRef}
       listRef={listRef}
       inputRef={inputRef}
-      toggleModal={toggleModal}
+      toggleModal={closeModal}
       handleClick={handleClick}
       handleChange={handleChange}
       handleSubmit={handleSubmit}

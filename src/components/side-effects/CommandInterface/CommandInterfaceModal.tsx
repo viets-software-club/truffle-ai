@@ -50,7 +50,7 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
         as="div"
         open={open}
         onClose={toggleModal}
-        className="fixed inset-0 z-20 flex h-screen w-screen justify-center"
+        className="fixed inset-0 z-30 flex h-screen w-screen justify-center"
       >
         <Transition.Child
           enter="ease-out duration-300"

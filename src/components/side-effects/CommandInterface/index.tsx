@@ -27,7 +27,10 @@ const CommandInterface: React.FC = () => {
   const listRef: RefObject<HTMLDivElement> = useRef(null)
 
   const router = useRouter()
-  const { id } = router.query
+  const {
+    query: { id },
+    pathname
+  } = router
 
   const [{ data }] = useTrendingProjectsQuery({
     variables: {
@@ -117,7 +120,9 @@ const CommandInterface: React.FC = () => {
     }
 
     if (recommendationList.length === 0) {
-      setRecommendationList(defaultList)
+      setRecommendationList(
+        defaultList.filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+      )
     }
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -216,7 +221,7 @@ const CommandInterface: React.FC = () => {
       if (!isSearchContainingSymbol) {
         if (isProjectListOn && isSingleFilteredResult) {
           if (isMultipleSearchTerms) {
-            const lastSearchTerm = search.split(' ').pop()!
+            const lastSearchTerm = search.split(' ').pop() as string
             setRecommendationList(
               prevProjectRecommendationList.filter((rowItem) =>
                 isCommandExistInList(rowItem, lastSearchTerm)
@@ -225,7 +230,9 @@ const CommandInterface: React.FC = () => {
           } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
             setIsProjectListOn(false)
             setRecommendationList(
-              defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
+              defaultList
+                .filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+                .filter((rowItem) => isCommandExistInList(rowItem, search))
             )
           } else {
             setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
@@ -233,7 +240,9 @@ const CommandInterface: React.FC = () => {
         } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
           setIsProjectListOn(false)
           setRecommendationList(
-            defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
+            defaultList
+              .filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+              .filter((rowItem) => isCommandExistInList(rowItem, search))
           )
         } else {
           setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
@@ -244,7 +253,9 @@ const CommandInterface: React.FC = () => {
       }
     } else {
       setIsProjectListOn(false)
-      setRecommendationList(defaultList)
+      setRecommendationList(
+        defaultList.filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+      )
     }
   }
 

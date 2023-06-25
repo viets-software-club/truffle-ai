@@ -63,7 +63,7 @@ const TrendingProjects = () => {
     <Page>
       <ProjectsTable
         data={data}
-        filters={filters}
+        filters={filters as ProjectFilter}
         sorting={sorting}
         fetching={fetching}
         error={error}

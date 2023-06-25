@@ -16,18 +16,23 @@ const githubApiUrl = process.env.GITHUB_API_URL || ''
  * @returns {any[]} the json data for the requested repo as by the graphql query
  */
 export async function getRepoInfo(query: string, authToken: string): Promise<GitHubInfo | null> {
-  const response: AxiosResponse<{ data: { repository: GitHubInfo } }> = await axios.post(
-    githubApiUrl,
-    {
-      query
-    },
-    {
-      headers: {
-        Authorization: authToken
+  try {
+    const response: AxiosResponse<{ data: { repository: GitHubInfo } }> = await axios.post(
+      githubApiUrl,
+      {
+        query
+      },
+      {
+        headers: {
+          Authorization: authToken
+        }
       }
-    }
-  )
-  return response.data.data.repository
+    )
+    return response.data.data.repository
+  } catch (e) {
+    console.log(e)
+    return null
+  }
 }
 
 /** Gets a organizations information via GitHub's GraphQL API

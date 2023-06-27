@@ -12,7 +12,6 @@ import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
-import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
 import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
@@ -27,10 +26,43 @@ import {
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
 import sendSlackNotification from '@/util/sendSlackNotification'
+import createColumns from '@/components/side-effects/ProjectsTable/columns'
 import CategoryModal from './CategoryModal'
 
 type CompareProps = {
   category: string
+}
+
+const NUMERIC_FIELDS = [
+  'contributorCount',
+  'forkCount',
+  'issueCount',
+  'pullRequestCount',
+  'starCount'
+]
+
+const getPercentileValue = (projects: Project[], percentile: number, sortDescending = true) => {
+  const result = {}
+  NUMERIC_FIELDS.forEach((field) => {
+    const sortedData = projects
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      .map((item) => item[field])
+      .filter((item) => !!item)
+      .sort((a, b) => (sortDescending ? b - a : a - b))
+
+    const percentileIndex = Math.floor(sortedData.length * percentile)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    result[field] =
+      percentileIndex < sortedData.length && sortedData.length > 0
+        ? sortedData[percentileIndex]
+        : null
+  })
+
+  return result
 }
 
 /**
@@ -38,7 +70,6 @@ type CompareProps = {
  */
 const Compare = ({ category }: CompareProps) => {
   const [data, setData] = useState<Project[]>([])
-  const [columns] = useState(() => [...defaultColumns])
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
@@ -47,6 +78,19 @@ const Compare = ({ category }: CompareProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [selectedMetric, setSelectedMetric] = useState('Stars')
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
+
+  const [percentileStats, setPercentileStats] = useState({
+    topTenPercent: {},
+    topTwentyPercent: {},
+    bottomTenPercent: {},
+    bottomTwentyPercent: {}
+  })
+
+  const { topTenPercent, topTwentyPercent, bottomTenPercent, bottomTwentyPercent } = percentileStats
+
+  const [columns, setColumns] = useState(() =>
+    createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent)
+  )
 
   const user = useUser()
   const router = useRouter()
@@ -88,9 +132,23 @@ const Compare = ({ category }: CompareProps) => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      setData(projectData)
+
+      setPercentileStats({
+        topTenPercent: getPercentileValue(projectData, 0.1),
+        bottomTenPercent: getPercentileValue(projectData, 0.1, false),
+        topTwentyPercent: getPercentileValue(projectData, 0.2),
+        bottomTwentyPercent: getPercentileValue(projectData, 0.2, false)
+      })
     }
   }, [urqlData])
+
+  useEffect(() => {
+    setColumns(() =>
+      createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent)
+    )
+  }, [bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent])
 
   // Initialize TanStack table
   const table = useReactTable({

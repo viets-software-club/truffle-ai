@@ -28,7 +28,7 @@ const LoginForm: FC<LoginFormProps> = ({ loading, error, handleSubmit }) => (
       className="w-full max-w-full py-3"
     />
     {error && (
-      <div className="mt-4 text-center text-sm text-red">
+      <div className="mt-4 text-center text-sm text-red-500">
         Invalid email or password. Please note that only invited users or La Famiglia employees can
         sign in.
       </div>

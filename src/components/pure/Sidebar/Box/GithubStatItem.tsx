@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import formatNumber from '@/util/formatNumber'
-import { Tooltip } from 'react-tooltip'
+import Tooltip from './TooltipItem'
 
 enum Color {
-  DEFAULT = 'text-gray-100',
+  DEFAULT = 'text-gray-300',
   GREEN = 'text-green-500',
   LIGHT_GREEN = 'text-green-300',
   RED = 'text-red-500',
@@ -42,14 +42,14 @@ const GithubStatItem = ({
   link
 }: GithubStatItemProps) => {
   let color = Color.DEFAULT
-  if (greenValue !== undefined && value !== undefined && value >= greenValue) {
-    color = Color.GREEN
-  } else if (lightGreenValue !== undefined && value !== undefined && value >= lightGreenValue) {
+  if (greenValue && value && value >= greenValue) {
     color = Color.LIGHT_GREEN
-  } else if (redValue !== undefined && value !== undefined && value <= redValue) {
-    color = Color.RED
-  } else if (lightRedValue !== undefined && value !== undefined && value <= lightRedValue) {
+  } else if (lightGreenValue && value && value >= lightGreenValue) {
+    color = Color.GREEN
+  } else if (redValue && value && value <= redValue) {
     color = Color.LIGHT_RED
+  } else if (lightRedValue && value && value <= lightRedValue) {
+    color = Color.RED
   }
 
   const gap = largeGap ? 'gap-[10px]' : 'gap-[5px]'
@@ -63,8 +63,12 @@ const GithubStatItem = ({
         >
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
-          {value !== undefined && (
-            <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
+          {value && (
+            <span
+              className={`text-xs font-medium not-italic leading-3 ${
+                paddingOn ? 'w-6' : ''
+              } ${color}`}
+            >
               {formatNumber(value)}
             </span>
           )}

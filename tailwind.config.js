@@ -30,8 +30,8 @@ module.exports = {
       colors: {
         teal: '#01B3C0',
         red: {
-          300: '#FFCCCB',
-          500: '#EC5858'
+          300: '#e57069',
+          500: '#c5534b'
         },
         mustard: '#988300',
         yellow: '#F3CA4D',
@@ -42,8 +42,8 @@ module.exports = {
         },
         blue: '#4FA8FD',
         green: {
-          300: '#CFE1C9',
-          500: '#4DB783'
+          300: '#3ad48d',
+          500: '#36956a'
         },
         indigo: {
           100: '#E1E8FF',

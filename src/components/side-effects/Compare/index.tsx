@@ -39,23 +39,27 @@ const NUMERIC_FIELDS = [
   'issueCount',
   'pullRequestCount',
   'starCount'
-]
+] as const
+
+type NumericField = (typeof NUMERIC_FIELDS)[number]
+type NumericFieldStats = Record<NumericField, number | null>
 
 const getPercentileValue = (projects: Project[], percentile: number, sortDescending = true) => {
-  const result = {}
+  const result: NumericFieldStats = {
+    contributorCount: null,
+    forkCount: null,
+    issueCount: null,
+    pullRequestCount: null,
+    starCount: null
+  }
+
   NUMERIC_FIELDS.forEach((field) => {
     const sortedData = projects
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      .map((item) => item[field])
-      .filter((item) => !!item)
+      .map((item) => item[field] ?? null)
+      .filter((item: number | null): item is number => item !== null)
       .sort((a, b) => (sortDescending ? b - a : a - b))
 
     const percentileIndex = Math.floor(sortedData.length * percentile)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     result[field] =
       percentileIndex < sortedData.length && sortedData.length > 0
         ? sortedData[percentileIndex]

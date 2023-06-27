@@ -15,7 +15,7 @@ import { RecommendationRowType } from './types'
 const CommandInterface: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [searchWord, setSearchWord] = useState<string>('')
-  const [selectedLine, setSelectedLine] = useState<number>(0)
+  const [selectedLine, setSelectedLine] = useState<number>(-1)
   const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
   const [recommendationList, setRecommendationList] = useState<RecommendationRowType[]>([])
   const [prevProjectRecommendationList, setPrevProjectRecommendationList] = useState<
@@ -89,7 +89,7 @@ const CommandInterface: React.FC = () => {
       closeModal()
     } else if (event.key === 'ArrowUp') {
       const newLine =
-        selectedLine !== 0
+        selectedLine !== -1
           ? (selectedLine - 1) % (recommendationList.length || defaultList.length)
           : defaultList.length - 1
       setSelectedLine(newLine)
@@ -312,26 +312,31 @@ const CommandInterface: React.FC = () => {
     const searchWordAsArray = searchWord.split(' ')
     let commandName = ''.concat(searchWord)
 
-    if (searchWordAsArray.length > 1) {
-      commandName = isProjectListOn
-        ? searchWordAsArray[searchWordAsArray.length - 1]
-        : searchWordAsArray.slice(0, 2).join(' ')
+    if (selectedLine === -1 && searchWord !== '') {
+      if (searchWordAsArray.length > 1) {
+        commandName = isProjectListOn
+          ? searchWordAsArray[searchWordAsArray.length - 1]
+          : searchWordAsArray.slice(0, 2).join(' ')
+      }
+
+      const [command] = recommendationList.filter((row) =>
+        row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
+      )
+      handleNavigation(
+        command.commandInterfaceOptions,
+        command.menuText,
+        command.isIdPrimary ?? false,
+        command.needConfirmation ?? false
+      )
+    } else if (selectedLine !== -1) {
+      const recommendationListItem = recommendationList[selectedLine]
+      handleNavigation(
+        recommendationListItem.commandInterfaceOptions,
+        recommendationListItem.menuText,
+        recommendationListItem.isIdPrimary ?? false,
+        recommendationListItem.needConfirmation ?? false
+      )
     }
-
-    let command = recommendationList.filter((row) =>
-      row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
-    )[0]
-
-    if (searchWord === '') {
-      command = recommendationList[selectedLine]
-    }
-
-    handleNavigation(
-      command.commandInterfaceOptions,
-      command.menuText,
-      command.isIdPrimary ?? false,
-      command.needConfirmation ?? false
-    )
   }
 
   const handleClick = (

@@ -915,8 +915,8 @@ export type IntFilter = {
 export type Mutation = {
   __typename?: 'Mutation'
   addBookmark: Response
-  addProjectByName: Scalars['Boolean']
-  addProjectByUrl: Scalars['Boolean']
+  addProjectByName: Response
+  addProjectByUrl: Response
   deleteBookmark: Response
   /** Deletes zero or more records from the `AllowedUsers` collection */
   deleteFromAllowedUsersCollection: AllowedUsersDeleteResponse
@@ -1024,11 +1024,13 @@ export type MutationAddBookmarkArgs = {
 }
 
 export type MutationAddProjectByNameArgs = {
+  bookmarkCategory: Scalars['String']
   name: Scalars['String']
   owner: Scalars['String']
 }
 
 export type MutationAddProjectByUrlArgs = {
+  bookmarkCategory: Scalars['String']
   url: Scalars['String']
 }
 
@@ -2418,11 +2420,106 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']>
 }
 
-export type AddProjectByUrlMutationVariables = Exact<{
-  url: Scalars['String']
+export type AddBookmarkMutationVariables = Exact<{
+  projectID: Scalars['String']
+  category: Scalars['String']
 }>
 
-export type AddProjectByUrlMutation = { __typename?: 'Mutation'; addProjectByUrl: boolean }
+export type AddBookmarkMutation = {
+  __typename?: 'Mutation'
+  addBookmark: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
+export type AddProjectByUrlMutationVariables = Exact<{
+  url: Scalars['String']
+  category: Scalars['String']
+}>
+
+export type AddProjectByUrlMutation = {
+  __typename?: 'Mutation'
+  addProjectByUrl: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
+export type DeleteBookmarkMutationVariables = Exact<{
+  projectID: Scalars['String']
+}>
+
+export type DeleteBookmarkMutation = {
+  __typename?: 'Mutation'
+  deleteBookmark: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
+export type EditBookmarkCategoryMutationVariables = Exact<{
+  projectID: Scalars['String']
+  newCategory: Scalars['String']
+}>
+
+export type EditBookmarkCategoryMutation = {
+  __typename?: 'Mutation'
+  editBookmarkCategory: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
+export type RenameBookmarkCategoryMutationVariables = Exact<{
+  oldCategory: Scalars['String']
+  newCategory: Scalars['String']
+}>
+
+export type RenameBookmarkCategoryMutation = {
+  __typename?: 'Mutation'
+  renameBookmarkCategory: { __typename?: 'Response'; code: string; message?: string | null }
+}
+
+export type BookmarkIdsQueryVariables = Exact<{
+  userId: Scalars['UUID']
+  category?: InputMaybe<Scalars['String']>
+  projectId?: InputMaybe<Scalars['UUID']>
+}>
+
+export type BookmarkIdsQuery = {
+  __typename?: 'Query'
+  bookmarkCollection?: {
+    __typename?: 'BookmarkConnection'
+    edges: Array<{
+      __typename?: 'BookmarkEdge'
+      node: {
+        __typename?: 'Bookmark'
+        id: any
+        category?: string | null
+        project?: { __typename?: 'Project'; id: any } | null
+      }
+    }>
+  } | null
+}
+
+export type FilteredBookmarksQueryVariables = Exact<{
+  userId: Scalars['UUID']
+  category?: InputMaybe<Scalars['String']>
+  projectId?: InputMaybe<Scalars['UUID']>
+}>
+
+export type FilteredBookmarksQuery = {
+  __typename?: 'Query'
+  bookmarkCollection?: {
+    __typename?: 'BookmarkConnection'
+    edges: Array<{
+      __typename?: 'BookmarkEdge'
+      node: {
+        __typename?: 'Bookmark'
+        id: any
+        category?: string | null
+        project?: {
+          __typename?: 'Project'
+          id: any
+          name?: string | null
+          owningPerson?: any | null
+          owningOrganization?: any | null
+          associatedPerson?: { __typename?: 'AssociatedPerson'; avatarUrl?: string | null } | null
+          organization?: { __typename?: 'Organization'; avatarUrl?: string | null } | null
+        } | null
+      }
+    }>
+  } | null
+}
 
 export type ProjectDetailsQueryVariables = Exact<{
   id?: InputMaybe<Scalars['UUID']>
@@ -2486,6 +2583,19 @@ export type ProjectDetailsQuery = {
   } | null
 }
 
+export type ProjectIdsQueryVariables = Exact<{
+  orderBy: ProjectOrderBy
+  filter: ProjectFilter
+}>
+
+export type ProjectIdsQuery = {
+  __typename?: 'Query'
+  projectCollection?: {
+    __typename?: 'ProjectConnection'
+    edges: Array<{ __typename?: 'ProjectEdge'; node: { __typename?: 'Project'; id: any } }>
+  } | null
+}
+
 export type TrendingProjectsQueryVariables = Exact<{
   orderBy: ProjectOrderBy
   filter: ProjectFilter
@@ -2509,6 +2619,7 @@ export type TrendingProjectsQuery = {
         githubUrl?: string | null
         websiteUrl?: string | null
         starHistory?: Array<any | null> | null
+        forkHistory?: Array<any | null> | null
         owningPerson?: any | null
         owningOrganization?: any | null
         isTrendingDaily?: boolean | null
@@ -2535,9 +2646,24 @@ export type TrendingProjectsQuery = {
   } | null
 }
 
+export const AddBookmarkDocument = gql`
+  mutation AddBookmark($projectID: String!, $category: String!) {
+    addBookmark(projectID: $projectID, category: $category) {
+      code
+      message
+    }
+  }
+`
+
+export function useAddBookmarkMutation() {
+  return Urql.useMutation<AddBookmarkMutation, AddBookmarkMutationVariables>(AddBookmarkDocument)
+}
 export const AddProjectByUrlDocument = gql`
-  mutation AddProjectByUrl($url: String!) {
-    addProjectByUrl(url: $url)
+  mutation AddProjectByUrl($url: String!, $category: String!) {
+    addProjectByUrl(url: $url, bookmarkCategory: $category) {
+      code
+      message
+    }
   }
 `
 
@@ -2545,6 +2671,117 @@ export function useAddProjectByUrlMutation() {
   return Urql.useMutation<AddProjectByUrlMutation, AddProjectByUrlMutationVariables>(
     AddProjectByUrlDocument
   )
+}
+export const DeleteBookmarkDocument = gql`
+  mutation DeleteBookmark($projectID: String!) {
+    deleteBookmark(projectID: $projectID) {
+      code
+      message
+    }
+  }
+`
+
+export function useDeleteBookmarkMutation() {
+  return Urql.useMutation<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>(
+    DeleteBookmarkDocument
+  )
+}
+export const EditBookmarkCategoryDocument = gql`
+  mutation EditBookmarkCategory($projectID: String!, $newCategory: String!) {
+    editBookmarkCategory(projectID: $projectID, newCategory: $newCategory) {
+      code
+      message
+    }
+  }
+`
+
+export function useEditBookmarkCategoryMutation() {
+  return Urql.useMutation<EditBookmarkCategoryMutation, EditBookmarkCategoryMutationVariables>(
+    EditBookmarkCategoryDocument
+  )
+}
+export const RenameBookmarkCategoryDocument = gql`
+  mutation RenameBookmarkCategory($oldCategory: String!, $newCategory: String!) {
+    renameBookmarkCategory(oldCategory: $oldCategory, newCategory: $newCategory) {
+      code
+      message
+    }
+  }
+`
+
+export function useRenameBookmarkCategoryMutation() {
+  return Urql.useMutation<RenameBookmarkCategoryMutation, RenameBookmarkCategoryMutationVariables>(
+    RenameBookmarkCategoryDocument
+  )
+}
+export const BookmarkIdsDocument = gql`
+  query BookmarkIds($userId: UUID!, $category: String, $projectId: UUID) {
+    bookmarkCollection(
+      filter: {
+        userId: { eq: $userId }
+        category: { eq: $category }
+        projectId: { eq: $projectId }
+      }
+    ) {
+      edges {
+        node {
+          id
+          category
+          project {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
+export function useBookmarkIdsQuery(
+  options: Omit<Urql.UseQueryArgs<BookmarkIdsQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<BookmarkIdsQuery, BookmarkIdsQueryVariables>({
+    query: BookmarkIdsDocument,
+    ...options
+  })
+}
+export const FilteredBookmarksDocument = gql`
+  query FilteredBookmarks($userId: UUID!, $category: String, $projectId: UUID) {
+    bookmarkCollection(
+      filter: {
+        userId: { eq: $userId }
+        category: { eq: $category }
+        projectId: { eq: $projectId }
+      }
+    ) {
+      edges {
+        node {
+          id
+          category
+          project {
+            id
+            name
+            owningPerson
+            owningOrganization
+            associatedPerson {
+              avatarUrl
+            }
+            organization {
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export function useFilteredBookmarksQuery(
+  options: Omit<Urql.UseQueryArgs<FilteredBookmarksQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<FilteredBookmarksQuery, FilteredBookmarksQueryVariables>({
+    query: FilteredBookmarksDocument,
+    ...options
+  })
 }
 export const ProjectDetailsDocument = gql`
   query ProjectDetails($id: UUID) {
@@ -2608,6 +2845,26 @@ export function useProjectDetailsQuery(
     ...options
   })
 }
+export const ProjectIdsDocument = gql`
+  query ProjectIds($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
+    projectCollection(filter: $filter, orderBy: [$orderBy]) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export function useProjectIdsQuery(
+  options: Omit<Urql.UseQueryArgs<ProjectIdsQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<ProjectIdsQuery, ProjectIdsQueryVariables>({
+    query: ProjectIdsDocument,
+    ...options
+  })
+}
 export const TrendingProjectsDocument = gql`
   query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
     projectCollection(filter: $filter, orderBy: [$orderBy]) {
@@ -2623,6 +2880,7 @@ export const TrendingProjectsDocument = gql`
           githubUrl
           websiteUrl
           starHistory
+          forkHistory
           owningPerson
           owningOrganization
           associatedPerson {

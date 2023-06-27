@@ -109,7 +109,7 @@ const Settings = () => {
 
         <Section title="General" subtitle="Default filters" refs={refs}>
           <p className="mb-6 text-14 font-normal text-gray-400">
-            Anything below these values will be filtered out of your results.
+            Anything below these values will be filtered out of your results on the trending page.
           </p>
           <div className="mb-6 flex flex-row">
             {Object.keys(filters).map((filterType) => (

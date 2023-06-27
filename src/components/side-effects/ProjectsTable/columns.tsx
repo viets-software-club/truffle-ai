@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
@@ -5,7 +6,8 @@ import { VscIssues } from 'react-icons/vsc'
 import { GoGitPullRequest } from 'react-icons/go'
 import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
-import Image from 'next/image'
+import GitHubMetricIcon from '@/components/page/details/GitHubMetricIcon'
+import { RepoForkedIcon, PersonIcon, IssueOpenedIcon } from '@primer/octicons-react'
 
 const columnHelper = createColumnHelper<Project>()
 
@@ -35,8 +37,10 @@ const columns = [
         const [owner, name] = info.getValue().split(' / ')
         return (
           <div>
-            <span className="text-14 font-medium text-gray-500">{owner.slice(0, 15)} /&nbsp;</span>
-            {owner.length > 16 && <span className="text-14 text-gray-500">...</span>}
+            <span className="text-14 font-medium text-gray-500">
+              {owner.slice(0, 15)}
+              {owner.length > 16 && '...'} /&nbsp;
+            </span>
             <span className="text-14 font-bold">{name.slice(0, 31)}</span>
             {name.length > 32 && <span className="text-14">...</span>}
           </div>
@@ -96,7 +100,7 @@ const columns = [
         Icon={BsPeople}
         paddingOn={false}
         outerPaddingOn={false}
-        value={info.getValue() as number}
+        value={(info.getValue() as number) || 0}
       />
     )
   }),
@@ -105,14 +109,28 @@ const columns = [
     id: 'Forks/Contrib.',
     header: 'Forks/Contrib.',
     enableColumnFilter: true,
-    cell: (info) => <p className="text-14">{info.getValue() as number}</p>
+    cell: (info) => (
+      <GitHubStatisticItem
+        IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
+        paddingOn={false}
+        outerPaddingOn={false}
+        value={info.getValue() as number}
+      />
+    )
   }),
   // Issues per Contributor column definition
   columnHelper.accessor('issuesPerContributor', {
     id: 'Issues/Contrib.',
     header: 'Issues/Contrib.',
     enableColumnFilter: true,
-    cell: (info) => <p className="text-14">{info.getValue() as number}</p>
+    cell: (info) => (
+      <GitHubStatisticItem
+        IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
+        paddingOn={false}
+        outerPaddingOn={false}
+        value={info.getValue() as number}
+      />
+    )
   }),
   // PR column definition
   columnHelper.accessor('pullRequestCount', {

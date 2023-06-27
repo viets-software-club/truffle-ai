@@ -21,8 +21,8 @@ export const filterOptions: FilterOption[] = [
   { key: 'issueCount', column: 'Issues', type: 'number' },
   { key: 'contributorCount', column: 'Contributors', type: 'number' },
   { key: 'pullRequestCount', column: 'Pull Requests', type: 'number' },
-  { key: 'issuesPerContributor', column: 'Issues/Contr', type: 'number' },
-  { key: 'forksPerContributor', column: 'Forks/Contr', type: 'number' }
+  { key: 'issuesPerContributor', column: 'Issues/ Contr.', type: 'number' },
+  { key: 'forksPerContributor', column: 'Forks/ Contr.', type: 'number' }
 ]
 
 export enum TimeFilterOption {

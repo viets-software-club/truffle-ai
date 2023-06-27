@@ -54,8 +54,7 @@ const Bookmarks = () => {
         id: {
           in: bookmarkIds
         }
-      },
-      ...pagination
+      }
     }
   })
 

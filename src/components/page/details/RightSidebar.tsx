@@ -79,7 +79,7 @@ const RightSidebar = ({ project }: Props) => {
         />
       </Sidebar.Box>
 
-      {project.languages?.length && (
+      {project.languages && project.languages?.length > 0 && (
         <Sidebar.Box title="Languages">
           <Sidebar.Box.LanguagesItem
             languages={project.languages as unknown as Array<{ name: string; color: string }>}

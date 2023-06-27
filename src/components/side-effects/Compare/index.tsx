@@ -25,48 +25,13 @@ import {
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
-import sendSlackNotification from '@/util/sendSlackNotification'
+import CategoryModal from '@/components/side-effects/Compare/CategoryModal'
 import createColumns from '@/components/side-effects/ProjectsTable/columns'
-import CategoryModal from './CategoryModal'
+import getPercentile from '@/util/getPercentile'
+import sendSlackNotification from '@/util/sendSlackNotification'
 
 type CompareProps = {
   category: string
-}
-
-const NUMERIC_FIELDS = [
-  'contributorCount',
-  'forkCount',
-  'issueCount',
-  'pullRequestCount',
-  'starCount'
-] as const
-
-type NumericField = (typeof NUMERIC_FIELDS)[number]
-type NumericFieldStats = Record<NumericField, number | null>
-
-const getPercentileValue = (projects: Project[], percentile: number, sortDescending = true) => {
-  const result: NumericFieldStats = {
-    contributorCount: null,
-    forkCount: null,
-    issueCount: null,
-    pullRequestCount: null,
-    starCount: null
-  }
-
-  NUMERIC_FIELDS.forEach((field) => {
-    const sortedData = projects
-      .map((item) => item[field] ?? null)
-      .filter((item: number | null): item is number => item !== null)
-      .sort((a, b) => (sortDescending ? b - a : a - b))
-
-    const percentileIndex = Math.floor(sortedData.length * percentile)
-    result[field] =
-      percentileIndex < sortedData.length && sortedData.length > 0
-        ? sortedData[percentileIndex]
-        : null
-  })
-
-  return result
 }
 
 /**
@@ -140,10 +105,10 @@ const Compare = ({ category }: CompareProps) => {
       setData(projectData)
 
       setPercentileStats({
-        topTenPercent: getPercentileValue(projectData, 0.1),
-        bottomTenPercent: getPercentileValue(projectData, 0.1, false),
-        topTwentyPercent: getPercentileValue(projectData, 0.2),
-        bottomTwentyPercent: getPercentileValue(projectData, 0.2, false)
+        topTenPercent: getPercentile(projectData, 0.1),
+        bottomTenPercent: getPercentile(projectData, 0.1, false),
+        topTwentyPercent: getPercentile(projectData, 0.2),
+        bottomTwentyPercent: getPercentile(projectData, 0.2, false)
       })
     }
   }, [urqlData])

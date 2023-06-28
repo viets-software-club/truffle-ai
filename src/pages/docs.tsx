@@ -2,6 +2,7 @@ import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import Paragraph from '@/components/pure/paragraph'
 import NumberedBulletedList from '@/components/pure/numberedBulletedList'
+import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 
 const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
@@ -190,13 +191,8 @@ const Docs = () => {
             expose a graphql endpoint.
           </Paragraph>
 
-          <Paragraph>
-            A fully functional server. It sets up a Fastify server using the Mercurius middleware to
-            expose a graphql endpoint.
-          </Paragraph>
-
           <Paragraph className="font-bold">Queries:</Paragraph>
-          <ul className="list-inside list-disc text-14">
+          <ul className="list-inside list-disc text-14 text-gray-400/80 ">
             <li> helloWorld(): a test query</li>
           </ul>
 
@@ -228,34 +224,116 @@ const Docs = () => {
               of bookmarks
             </li>
           </ul>
-          <HeaderTwo text="Hardware/Software Mapping" />
-          <Paragraph>
-            Include and describe your Deployment or Infrastructure Diagram here. Describe the
-            specific hardware, software and protocols for your system.
-          </Paragraph>
-          <HeaderTwo text="Persistent Data Management" />
-          <Paragraph>
-            Persistent data management describes the persistent data stored by the system and the
-            data management infrastructure required for it. This section typically includes the
-            description of data schemes, the selection of a database, and the description of the
-            encapsulation of the database.
-          </Paragraph>
-          <HeaderTwo text="Persistent Data Management" />
 
           <Paragraph>
-            Access control and security describe the user model of the system in terms of an access
-            matrix. This section also describes security issues, such as the selection of an
-            authentication mechanism, the use of encryption, and the management of keys.
+            {' '}
+            Right now, the functionality for scraping and API calling also resides in
+            /graphql_server.
+            <br />
+            This includes:
           </Paragraph>
+
+          <NormalBulletList
+            items={[
+              '/api: a folder that contains all functionalities to call APIs, like GitHub and openAI',
+              '/scraping: a folder that contains files that do scraping or that call APIs that do scraping',
+              '/githubHistory: a folder that contains all the files associated with the histories for example starHistory or forkHistory'
+            ]}
+          />
+
+          <HeaderThree text="repo_job" />
+          <Paragraph>
+            A cronjob calling the graphql_server every hour to update its repository data.
+          </Paragraph>
+
+          <HeaderTwo text="Hardware/Software Mapping" />
+          <HeaderThree text="Frontend" />
+          <Paragraph>
+            The frontend application of truffle is a nextjs application. NextJs is a It connects
+            with the backend via a GraphQL client called urql. Furthermore it uses Supabase’s
+            client-side library to connect with Supabase to handle client-side authentication
+            including cookie and session management.
+          </Paragraph>
+
+          <HeaderThree text="Supabse clinet" />
+          <Paragraph>
+            The supabase client retrieves a JSON web token for authentication from Supabase after
+            log
+          </Paragraph>
+
+          <HeaderThree text="GraphQL client" />
+          <Paragraph>
+            The GraphQL client connects to the GraphQL_Gateway service on the backend by providing
+            an Authorization Bearer &lt;jwt&gt; header to authenticate.
+          </Paragraph>
+
+          <HeaderTwo text="Persistent Data Management" />
+          <Paragraph>
+            We use Supabase as a database.
+            <br />
+            There are 6 tabels:
+          </Paragraph>
+
+          <NormalBulletList
+            items={[
+              'allowed_users: stores whitelisted users',
+              'associated_person: stores information about people that are owners or likely founders of one or more of the projects',
+              'bookmark: stores bookmarks of projects by specific users as well as a associated category',
+              'founded_by: stores which associated persons are founders of which projects',
+              'organization: stores information about organizations that own one or more of the projects',
+              'project: stores information about trending projects'
+            ]}
+          />
+          <HeaderTwo text="Access Control &amp; Security" />
+
+          <Paragraph>
+            Supabase provides in house client-side session and cookie management for authentication.
+            Users authenticate from the frontend client directly with Supabase using Supabase’s
+            client libraries. Therefore the authentication including OAuth flow is fully abstracted
+            away by Supabase.
+          </Paragraph>
+          <HeaderThree text="Sign up" />
+          <Paragraph>
+            Users are stored in Supabase’s Postgre database. By default only @lafamiglia.vc emails
+            or emails stored in the allowed_users table are allowed to sign up. Before any user
+            entry is inserted into Supabase’s user table, a Postgre function checks if this criteria
+            is met. This means @lafamiglia.vc members can immediately sign up with Google’s OAuth
+            from within the app. For sign ups requiring a password an account has to be created in
+            Supabase’s Dashboard with a specific password. This allows La Famiglia to invite
+            external users.
+          </Paragraph>
+          <HeaderThree text="Login" />
+          <Paragraph>
+            When you login on the frontend client, the Supabase client will create a session cookie
+            in the browser containing the access_token as a JSON Web Token. It will also retrieve a
+            refresh_token. When the access_token expires, Supabase’s client will use the
+            refresh_token to retrieve a new access_token.
+          </Paragraph>
+          <HeaderThree text="Backend Access Control" />
+          <Paragraph>
+            When the frontend client sends a request to the GraphQL Gateway (backend), the
+            Authentication Bearer http header is checked for the containing JSON Web Token. The
+            Gateway validates this token with Supabase via a Middleware. It either rejects or allows
+            the request to the supergraph.
+          </Paragraph>
+
           <Divider />
           <HeaderOne text="Administrator Manual" />
           <HeaderTwo text="Infrastructure Setup" />
           <Paragraph>
-            Describe the setup of the infrastructure in terms of hardware, software, and protocols
-            so it can be configured by a system administrator at the client site. (incl. virtual
-            machines, software packages etc. Describe the installation and startup order for each
-            component.
+            The backend application consists of multiple microservices running Node.Js. To run them
+            could be deployed to any Kubernetes cluster by adjusting the provided
+            config/deployment.template.yml and applying it using the Kubernetes command interface
+            kubectl.
+            <br />
+            The deployment Github Action will create the Docker images of the application,
+            authenticate with Digitaloceans and push the commit tagged Docker images to the private
+            container image registry truffle-ai-containers, get short lived credentials for the
+            Kubernetes cluster, replace environment variables, secrets and variables within it.
           </Paragraph>
+
+          <Paragraph> When all repositories are cloned, the Kubernetes has a config.yml</Paragraph>
+
           <HeaderTwo text="Deployment and Configuration" />
           <Paragraph>
             Describe the steps a system administrator needs to take to install your system on the
@@ -264,8 +342,17 @@ const Docs = () => {
           </Paragraph>
           <HeaderTwo text="Known Issues &amp; Workarounds" />
           <Paragraph>
-            Describe any known problems and workarounds with respect to infrastructure and
-            deployment. For example, explain that you used a mock database.
+            <NormalBulletList
+              items={[
+                'truffle.tools relies on many third party APIs including GitHub and Hackernews. APIs usually have a limit for the maximum amount of requests per hour. As the application relies heavily on the GitHub API to display all its content, we had to use a database to store the retrieved data and update it in intervals, in order to be able to access the API in future without being blocked. This introduces the drawback of not having immediate real time data available.',
+                'External users without @lafamiglia.vc email can only be signed up on Supabase',
+                'The deployment GitHub Action is run only on pushes to the main branch, to save GitHub Action minutes and thus costs. A deployment can still fail when the Docker images, or environment variables are not set up properly without being detected beforehand by the build Actions.',
+                'Pagination of repositories is missing, this can render the app unusable when there are too many bookmarked repositories.',
+                'The frontend (truffle.tools) and backend (api.truffle.tools) don’t share the same domain',
+                'Database tables are not normalized, they contain multiple values in a single cell',
+                'Database tables contain null values'
+              ]}
+            />
           </Paragraph>
           <HeaderTwo text="Third-party Components" />
           <Paragraph>

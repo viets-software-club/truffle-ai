@@ -16,6 +16,7 @@ import { RecommendationRowType } from './types'
 const CommandInterface: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [searchWord, setSearchWord] = useState<string>('')
+  const [selectedLine, setSelectedLine] = useState<number>(-1)
   const [isProjectListOn, setIsProjectListOn] = useState<boolean>(false)
   const [recommendationList, setRecommendationList] = useState<RecommendationRowType[]>([])
   const [prevProjectRecommendationList, setPrevProjectRecommendationList] = useState<
@@ -24,8 +25,13 @@ const CommandInterface: React.FC = () => {
 
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null)
   const commandInterfaceWrapperRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
+  const listRef: RefObject<HTMLDivElement> = useRef(null)
 
   const router = useRouter()
+  const {
+    query: { id },
+    pathname
+  } = router
 
   const [{ data }] = useTrendingProjectsQuery({
     variables: {
@@ -36,43 +42,88 @@ const CommandInterface: React.FC = () => {
 
   const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
 
-  const toggleModal = () => {
-    setOpen(!open)
+  const closeModal = () => {
+    setOpen(false)
+  }
+
+  const openModal = () => {
+    setOpen(true)
+  }
+
+  const scrollToNextItem = () => {
+    const currentList = listRef.current
+    if (currentList) {
+      const currentItem = currentList.querySelector('#active')
+      if (currentItem) {
+        currentItem.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
+
+  const scrollToPrevItem = () => {
+    const currentList = listRef.current
+    if (currentList) {
+      const currentItem = currentList.querySelector('#prevActive')
+      if (currentItem) {
+        currentItem.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
+
+  const keyDownEvent = (event: KeyboardEvent) => {
+    if (event.ctrlKey || event.metaKey) {
+      if (event.key === 'k') {
+        event.preventDefault()
+        openModal()
+        return
+      }
+
+      const shortcutItem = defaultList.find(
+        (item) => item.shortcutKey?.toLowerCase() === event.key.toLowerCase()
+      )
+
+      if (shortcutItem) {
+        event.preventDefault()
+        void router.push(shortcutItem.commandInterfaceOptions)
+      }
+    } else if (event.key === 'Escape') {
+      closeModal()
+    } else if (event.key === 'ArrowUp') {
+      const newLine =
+        selectedLine !== -1
+          ? (selectedLine - 1) % (recommendationList.length || defaultList.length)
+          : defaultList.length - 1
+      setSelectedLine(newLine)
+      scrollToPrevItem()
+    } else if (event.key === 'ArrowDown') {
+      const newLine = (selectedLine + 1) % (recommendationList.length || defaultList.length)
+      setSelectedLine(newLine)
+      scrollToNextItem()
+    }
+  }
+
+  const clickOutside = (event: MouseEvent) => {
+    if (
+      commandInterfaceWrapperRef.current &&
+      !commandInterfaceWrapperRef.current.contains(event.target as Node)
+    ) {
+      closeModal()
+    }
   }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey || event.metaKey) {
-        if (event.key === 'k') {
-          event.preventDefault()
-          toggleModal()
-        }
-
-        const shortcutsForPages = defaultList.filter(
-          (item) => item.shortcutKey?.toLocaleLowerCase() === event.key.toLocaleLowerCase()
-        )
-
-        if (shortcutsForPages.length > 0) {
-          event.preventDefault()
-
-          void router.push(shortcutsForPages[0].commandInterfaceOptions)
-        }
-      } else if (event.key === 'Escape') {
-        toggleModal()
-      }
+      keyDownEvent(event)
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        commandInterfaceWrapperRef.current &&
-        !commandInterfaceWrapperRef.current.contains(event.target as Node)
-      ) {
-        toggleModal()
-      }
+      clickOutside(event)
     }
 
     if (recommendationList.length === 0) {
-      setRecommendationList(defaultList)
+      setRecommendationList(
+        defaultList.filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+      )
     }
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -82,7 +133,30 @@ const CommandInterface: React.FC = () => {
       document.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, [selectedLine])
+
+  const isMailRefEmpty = (): boolean =>
+    recommendationList.filter((item) => item.commandInterfaceOptions === 'mailto:').length !== 0
+
+  useEffect(() => {
+    if (projects && isMailRefEmpty()) {
+      setRecommendationList(
+        defaultList.map((item) => {
+          const newItem = { ...item }
+          if (newItem.commandInterfaceOptions.includes('mailto:')) {
+            const project = projects.filter((projectItem) => projectItem.id === id)[0]
+            newItem.commandInterfaceOptions = emailTemplate(
+              project?.associatedPerson?.email ?? '',
+              project?.associatedPerson?.name ?? '',
+              project?.name ?? ''
+            )
+            newItem.hide = project?.associatedPerson?.email === undefined
+          }
+          return newItem
+        })
+      )
+    }
+  }, [projects])
 
   useLayoutEffect(() => {
     if (inputRef?.current) {
@@ -91,46 +165,11 @@ const CommandInterface: React.FC = () => {
   }, [])
 
   const isCommandExistInList = (command: RecommendationRowType, word: string): boolean =>
-    command.menuText.toLocaleLowerCase().includes(word.trim().toLocaleLowerCase())
+    command.menuText.toLocaleLowerCase().includes(word.trim().toLocaleLowerCase()) ||
+    word.trim().toLocaleLowerCase().includes(command.menuText.toLocaleLowerCase())
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    let search = event.target.value
-
-    setSearchWord(search)
-
-    if (search.trim() !== '' && !search.includes('>') && !search.includes('<')) {
-      if (isProjectListOn) {
-        search = defaultList
-          .map((item) => item.menuText.toLocaleLowerCase())
-          .includes(search.toLocaleLowerCase())
-          ? ''
-          : search.split(' ')[search.split(' ').length - 1]
-
-        if (
-          prevProjectRecommendationList.filter((rowItem) => isCommandExistInList(rowItem, search))
-            .length === 0
-        ) {
-          setRecommendationList(defaultList)
-          setIsProjectListOn(false)
-          return
-        }
-        setRecommendationList(
-          prevProjectRecommendationList.filter((rowItem) => isCommandExistInList(rowItem, search))
-        )
-      } else {
-        setRecommendationList(
-          defaultList.filter((rowItem) => isCommandExistInList(rowItem, search))
-        )
-      }
-    } else if (search.trim() === '') {
-      setIsProjectListOn(false)
-      setRecommendationList(defaultList)
-    }
-  }
-
-  const navigateTo = (path: string) => {
-    void router.push(path)
-  }
+  const isCommandExactlyExistInList = (command: RecommendationRowType, word: string): boolean =>
+    command.menuText.toLocaleLowerCase() === word.trim().toLocaleLowerCase()
 
   const setCommandInterface = (commandInterfaceOption: string, item: Project): string => {
     if (commandInterfaceOption.includes(':id')) {
@@ -156,6 +195,7 @@ const CommandInterface: React.FC = () => {
             Icon: MdArrowForward,
             menuText: (item.name as string) ?? (item.id as string),
             commandInterfaceOptions: setCommandInterface(commandInterfaceOption, item),
+            pageRestriction: null,
             shortcutKey: index.toString()
           }
           return recommendationRow
@@ -168,6 +208,62 @@ const CommandInterface: React.FC = () => {
     }
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchWord(event.target.value)
+    const search = event.target.value.trim()
+    const filteredDefaultList = defaultList.filter((index) => isCommandExistInList(index, search))
+    const isSearchNotEmpty = search !== ''
+    const isSearchContainingSymbol = search.includes('>') || search.includes('<')
+    const isSingleFilteredResult = filteredDefaultList.length === 1
+    const isMultipleSearchTerms = search.split(' ').length > 2
+
+    if (isSearchNotEmpty) {
+      if (!isSearchContainingSymbol) {
+        if (isProjectListOn && isSingleFilteredResult) {
+          if (isMultipleSearchTerms) {
+            const lastSearchTerm = search.split(' ').pop() as string
+            setRecommendationList(
+              prevProjectRecommendationList.filter((rowItem) =>
+                isCommandExistInList(rowItem, lastSearchTerm)
+              )
+            )
+          } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
+            setIsProjectListOn(false)
+            setRecommendationList(
+              defaultList
+                .filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+                .filter((rowItem) => isCommandExistInList(rowItem, search))
+            )
+          } else {
+            setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
+          }
+        } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
+          setIsProjectListOn(false)
+          setRecommendationList(
+            defaultList
+              .filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+              .filter((rowItem) => isCommandExistInList(rowItem, search))
+          )
+        } else {
+          setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
+        }
+      } else if (filteredDefaultList[0].isIdPrimary) {
+        setProjectNamesAsRow(filteredDefaultList[0].commandInterfaceOptions)
+        setIsProjectListOn(true)
+      }
+    } else {
+      setIsProjectListOn(false)
+      setRecommendationList(
+        defaultList.filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+      )
+    }
+  }
+
+  const navigateTo = (path: string) => {
+    void router.push(path)
+  }
+
   const showConfirmationLines = () => {
     setSearchWord('Are you sure?')
 
@@ -176,7 +272,8 @@ const CommandInterface: React.FC = () => {
       menuText: 'Yes',
       commandInterfaceOptions: CommandInterfaceOptions.Logout,
       isIdPrimary: false,
-      shortcutKey: 'Yes'
+      shortcutKey: 'Yes',
+      pageRestriction: null
     }
 
     const noLine: RecommendationRowType = {
@@ -184,9 +281,9 @@ const CommandInterface: React.FC = () => {
       menuText: 'No',
       commandInterfaceOptions: CommandInterfaceOptions.GoHome,
       isIdPrimary: false,
-      shortcutKey: 'No'
+      shortcutKey: 'No',
+      pageRestriction: null
     }
-
     setRecommendationList([yesLine, noLine])
   }
 
@@ -201,7 +298,7 @@ const CommandInterface: React.FC = () => {
     } else if (!isIdPrimary) {
       navigateTo(command)
       setIsProjectListOn(false)
-      toggleModal()
+      closeModal()
     } else if (isIdPrimary) {
       setSearchWord(`${searchText} <project name>`)
       setProjectNamesAsRow(command)
@@ -216,22 +313,31 @@ const CommandInterface: React.FC = () => {
     const searchWordAsArray = searchWord.split(' ')
     let commandName = ''.concat(searchWord)
 
-    if (searchWordAsArray.length > 1) {
-      commandName = isProjectListOn
-        ? searchWordAsArray[searchWordAsArray.length - 1]
-        : searchWordAsArray.slice(0, 2).join(' ')
+    if (selectedLine === -1 && searchWord !== '') {
+      if (searchWordAsArray.length > 1) {
+        commandName = isProjectListOn
+          ? searchWordAsArray[searchWordAsArray.length - 1]
+          : searchWordAsArray.slice(0, 2).join(' ')
+      }
+
+      const [command] = recommendationList.filter((row) =>
+        row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
+      )
+      handleNavigation(
+        command.commandInterfaceOptions,
+        command.menuText,
+        command.isIdPrimary ?? false,
+        command.needConfirmation ?? false
+      )
+    } else if (selectedLine !== -1) {
+      const recommendationListItem = recommendationList[selectedLine]
+      handleNavigation(
+        recommendationListItem.commandInterfaceOptions,
+        recommendationListItem.menuText,
+        recommendationListItem.isIdPrimary ?? false,
+        recommendationListItem.needConfirmation ?? false
+      )
     }
-
-    const command = recommendationList.filter((row) =>
-      row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
-    )[0]
-
-    handleNavigation(
-      command.commandInterfaceOptions,
-      command.menuText,
-      command.isIdPrimary ?? false,
-      command.needConfirmation ?? false
-    )
   }
 
   const handleClick = (
@@ -247,12 +353,14 @@ const CommandInterface: React.FC = () => {
   return (
     <CommandInterfaceModal
       open={open}
+      selectedLine={selectedLine}
       searchWord={searchWord}
       isProjectListOn={isProjectListOn}
       recommendationList={recommendationList}
       wrapperRef={commandInterfaceWrapperRef}
+      listRef={listRef}
       inputRef={inputRef}
-      toggleModal={toggleModal}
+      toggleModal={closeModal}
       handleClick={handleClick}
       handleChange={handleChange}
       handleSubmit={handleSubmit}

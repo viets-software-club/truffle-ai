@@ -5,10 +5,12 @@ import { RecommendationRowType } from './types'
 
 type CommandInterfaceModalProps = {
   open: boolean
+  selectedLine: number
   searchWord: string
   isProjectListOn: boolean
   recommendationList: RecommendationRowType[]
   inputRef: RefObject<HTMLInputElement>
+  listRef: RefObject<HTMLDivElement>
   wrapperRef: RefObject<HTMLDivElement>
   toggleModal: () => void
   handleClick: (
@@ -26,10 +28,12 @@ type CommandInterfaceModalProps = {
  */
 const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
   open,
+  selectedLine,
   searchWord,
   isProjectListOn,
   recommendationList,
   wrapperRef,
+  listRef,
   inputRef,
   toggleModal,
   handleClick,
@@ -41,7 +45,7 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
       as="div"
       open={open}
       onClose={toggleModal}
-      className="fixed inset-0 z-20 flex h-screen w-screen justify-center"
+      className="fixed inset-0 z-30 flex h-screen w-screen justify-center"
     >
       <Transition.Child
         enter="ease-out duration-300"
@@ -83,31 +87,44 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
 
           <div className="border-b-[0.5px] border-gray-500/25" />
 
-          <div className="h-full max-h-[383px] w-full overflow-y-auto py-2 scrollbar-hide">
-            {recommendationList.map((item, index) => (
-              <RecommendationRow
-                key={item.menuText}
-                Icon={item.Icon}
-                isHighlighted={index === 0 && searchWord !== ''}
-                menuText={item.menuText}
-                subtitle={item.subtitle}
-                isProjectItem={isProjectListOn}
-                shortcutKey={item.shortcutKey}
-                handleClick={() =>
-                  handleClick(
-                    item.commandInterfaceOptions,
-                    item.menuText,
-                    item.isIdPrimary ?? false,
-                    item.needConfirmation ?? false
-                  )
-                }
-              />
-            ))}
+          <div
+            ref={listRef}
+            className="h-full max-h-[383px] w-full overflow-y-auto py-2 scrollbar-hide"
+          >
+            {recommendationList &&
+              recommendationList.map((item, index) => (
+                <RecommendationRow
+                  key={item.menuText}
+                  Icon={item.Icon}
+                  isHighlighted={index === selectedLine}
+                  isNextItem={
+                    selectedLine + 1 === recommendationList.length
+                      ? true
+                      : selectedLine + 1 === index
+                  }
+                  isPrevItem={
+                    selectedLine === 0 && index + 1 === recommendationList.length
+                      ? true
+                      : selectedLine === index + 1
+                  }
+                  menuText={item.menuText}
+                  subtitle={item.subtitle}
+                  isProjectItem={isProjectListOn}
+                  shortcutKey={item.shortcutKey}
+                  handleClick={() =>
+                    handleClick(
+                      item.commandInterfaceOptions,
+                      item.menuText,
+                      item.isIdPrimary ?? false,
+                      item.needConfirmation ?? false
+                    )
+                  }
+                />
+              ))}
           </div>
         </Dialog.Panel>
       </Transition.Child>
     </Dialog>
   </Transition>
 )
-
 export default CommandInterfaceModal

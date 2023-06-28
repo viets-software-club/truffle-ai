@@ -83,7 +83,7 @@ const Login = () => {
         />
 
         {error === 'invalid_email' && (
-          <div className="text-center text-sm text-red">
+          <div className="text-center text-sm text-red-500">
             Invalid google email or password. Please note that only invited users or La Famiglia
             employees can sign in.
           </div>

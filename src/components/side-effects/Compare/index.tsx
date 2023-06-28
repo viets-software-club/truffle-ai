@@ -12,7 +12,6 @@ import { FaSlack } from 'react-icons/fa'
 import Error from '@/components/pure/Error'
 import Button from '@/components/pure/Button'
 import Loading from '@/components/pure/Loading'
-import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
 import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
@@ -26,8 +25,10 @@ import {
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import Banner from '@/components/page/settings/Banner'
+import CategoryModal from '@/components/side-effects/Compare/CategoryModal'
+import createColumns from '@/components/side-effects/ProjectsTable/columns'
+import getPercentile from '@/util/getPercentile'
 import sendSlackNotification from '@/util/sendSlackNotification'
-import CategoryModal from './CategoryModal'
 
 type CompareProps = {
   category: string
@@ -38,7 +39,6 @@ type CompareProps = {
  */
 const Compare = ({ category }: CompareProps) => {
   const [data, setData] = useState<Project[]>([])
-  const [columns] = useState(() => [...defaultColumns])
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
@@ -47,6 +47,19 @@ const Compare = ({ category }: CompareProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [selectedMetric, setSelectedMetric] = useState('Stars')
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
+
+  const [percentileStats, setPercentileStats] = useState({
+    topTenPercent: {},
+    topTwentyPercent: {},
+    bottomTenPercent: {},
+    bottomTwentyPercent: {}
+  })
+
+  const { topTenPercent, topTwentyPercent, bottomTenPercent, bottomTwentyPercent } = percentileStats
+
+  const [columns, setColumns] = useState(() =>
+    createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent)
+  )
 
   const user = useUser()
   const router = useRouter()
@@ -88,9 +101,23 @@ const Compare = ({ category }: CompareProps) => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      setData(projectData)
+
+      setPercentileStats({
+        topTenPercent: getPercentile(projectData, 0.1),
+        bottomTenPercent: getPercentile(projectData, 0.1, false),
+        topTwentyPercent: getPercentile(projectData, 0.2),
+        bottomTwentyPercent: getPercentile(projectData, 0.2, false)
+      })
     }
   }, [urqlData])
+
+  useEffect(() => {
+    setColumns(() =>
+      createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent)
+    )
+  }, [bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent])
 
   // Initialize TanStack table
   const table = useReactTable({

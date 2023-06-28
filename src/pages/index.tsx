@@ -10,11 +10,19 @@ import {
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import defaultFilters from '@/components/page/overview/defaultFilters'
+import getPercentile from '@/util/getPercentile'
 
 const TrendingProjects = () => {
   const [data, setData] = useState<Project[]>([])
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
+
+  const [percentileStats, setPercentileStats] = useState({
+    topTenPercent: {},
+    topTwentyPercent: {},
+    bottomTenPercent: {},
+    bottomTwentyPercent: {}
+  })
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
@@ -31,7 +39,14 @@ const TrendingProjects = () => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
+      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      setData(projectData)
+      setPercentileStats({
+        topTenPercent: getPercentile(projectData, 0.1),
+        bottomTenPercent: getPercentile(projectData, 0.1, false),
+        topTwentyPercent: getPercentile(projectData, 0.2),
+        bottomTwentyPercent: getPercentile(projectData, 0.2, false)
+      })
     }
   }, [urqlData])
 
@@ -45,6 +60,7 @@ const TrendingProjects = () => {
         error={error}
         setSorting={setSorting}
         updateFilters={updateFilters}
+        percentileStats={percentileStats}
       />
     </Page>
   )

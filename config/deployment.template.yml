@@ -72,7 +72,8 @@ metadata:
   name: truffle-ai-repo-cronjob
 spec:
   timeZone: 'Europe/Berlin'
-  schedule: '0 * * * *'
+  # Todo: change minutes back to 0
+  schedule: '* * * * *'
   jobTemplate:
     spec:
       template:

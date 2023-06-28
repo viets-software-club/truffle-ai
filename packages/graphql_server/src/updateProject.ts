@@ -149,13 +149,17 @@ const updateProjectForkHistory = async (repoName: string, owner: string) => {
   if (!(await repoIsAlreadyInDB(repoName, owner))) {
     return
   }
-  const forkHistory = await getRepoForkRecords(
-    `${owner}/${repoName}`,
-    process.env.GITHUB_API_TOKEN,
-    10
-  )
-
-  await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
+  try {
+    const forkHistory = await getRepoForkRecords(
+      `${owner}/${repoName}`,
+      process.env.GITHUB_API_TOKEN,
+      10
+    )
+    await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
+  } catch (e) {
+    console.log('Error in updateProjectForkHistory:')
+    console.log(e)
+  }
 }
 
 /**
@@ -285,16 +289,21 @@ const updateProjectStarHistory = async (repoName: string, owner: string) => {
     return
   }
   const MAX_NUMBER_OF_REQUESTS = 25 // this is also roughly the number of star history data points
-  const starHistory = await getRepoStarRecords(
-    owner + '/' + repoName,
-    process.env.GITHUB_API_TOKEN,
-    MAX_NUMBER_OF_REQUESTS
-  )
-  if (!starHistory) {
-    console.log('No star history found for ', repoName, 'owned by', owner)
-  } else {
-    const updated = await updateSupabaseProject(repoName, owner, { star_history: starHistory })
-    if (updated) console.log('updated star history for ', repoName, 'owned by', owner)
+  try {
+    const starHistory = await getRepoStarRecords(
+      owner + '/' + repoName,
+      process.env.GITHUB_API_TOKEN,
+      MAX_NUMBER_OF_REQUESTS
+    )
+    if (!starHistory) {
+      console.log('No star history found for ', repoName, 'owned by', owner)
+    } else {
+      const updated = await updateSupabaseProject(repoName, owner, { star_history: starHistory })
+      if (updated) console.log('updated star history for ', repoName, 'owned by', owner)
+    }
+  } catch (e) {
+    console.log('Error in updateProjectStarHistory: ')
+    console.log(e)
   }
 }
 

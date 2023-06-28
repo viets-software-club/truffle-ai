@@ -25,9 +25,9 @@ const RightSidebar = ({ project }: Props) => {
 
   const sendToAffinityProps: SendToAffinityProps = {
     name: project.name as string,
-    stars: project.starCount as number,
-    forks: project.forkCount as number,
-    contributors: project.contributorCount as number,
+    stars: project.starCount || 0,
+    forks: project.forkCount || 0,
+    contributors: project.contributorCount || 0,
     githubUrl: project.githubUrl as string,
     apiKey: affinityAPIKey as string,
     listId: affinityListID as string
@@ -37,39 +37,35 @@ const RightSidebar = ({ project }: Props) => {
     // @TODO Add historical data for showing growth
     <Sidebar.Small>
       <Sidebar.Box title="GitHub Stats">
+        <Sidebar.Box.GithubStatItem id="Stars" Icon={StarIcon} value={project?.starCount || 0} />
         <Sidebar.Box.GithubStatItem
-          id="Stars"
-          Icon={StarIcon}
-          value={project?.starCount as number}
+          Icon={PeopleIcon}
+          value={project?.contributorCount || 0}
+          id="Contributors"
         />
         <Sidebar.Box.GithubStatItem
           Icon={IssueOpenedIcon}
-          value={project?.issueCount as number}
+          value={project?.issueCount || 0}
           id="Issues"
         />
         <Sidebar.Box.GithubStatItem
+          IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
+          value={project.issuesPerContributor || 0}
+          id="Issues/ Contributor"
+        />
+        <Sidebar.Box.GithubStatItem
           Icon={RepoForkedIcon}
-          value={project?.forkCount as number}
+          value={project?.forkCount || 0}
           id="Forks"
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-          value={project.forksPerContributor as number}
-          id="Forks/contributor"
-        />
-        <Sidebar.Box.GithubStatItem
-          IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-          value={project.issuesPerContributor as number}
-          id="Issues/contributor"
-        />
-        <Sidebar.Box.GithubStatItem
-          Icon={PeopleIcon}
-          value={project?.contributorCount as number}
-          id="Contributors"
+          value={project.forksPerContributor || 0}
+          id="Forks/ Contributor"
         />
         <Sidebar.Box.GithubStatItem
           Icon={GitPullRequestIcon}
-          value={project.pullRequestCount as number}
+          value={project.pullRequestCount || 0}
           id="Pull requests"
         />
         <Sidebar.Box.GithubStatItem

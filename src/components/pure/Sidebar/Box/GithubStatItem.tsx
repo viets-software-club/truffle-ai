@@ -1,11 +1,13 @@
 import { ReactNode } from 'react'
 import formatNumber from '@/util/formatNumber'
-import Tooltip from '@/components/pure/Sidebar/Box/TooltipItem'
+import Tooltip from './TooltipItem'
 
 enum Color {
-  DEFAULT = 'text-gray-100',
-  GREEN = 'text-green',
-  RED = 'text-red'
+  DEFAULT = 'text-gray-300',
+  GREEN = 'text-green-500',
+  LIGHT_GREEN = 'text-green-300',
+  RED = 'text-red-500',
+  LIGHT_RED = 'text-red-300'
 }
 
 type GithubStatItemProps = {
@@ -17,7 +19,9 @@ type GithubStatItemProps = {
   paddingOn?: boolean
   outerPaddingOn?: boolean
   greenValue?: number
+  lightGreenValue?: number
   redValue?: number
+  lightRedValue?: number
   largeGap?: boolean
   link?: string
 }
@@ -31,14 +35,20 @@ const GithubStatItem = ({
   paddingOn,
   outerPaddingOn,
   greenValue,
+  lightGreenValue,
   redValue,
+  lightRedValue,
   largeGap,
   link
 }: GithubStatItemProps) => {
   let color = Color.DEFAULT
-  if (greenValue !== undefined && value !== undefined && value > greenValue) {
+  if (greenValue && value && value >= greenValue) {
+    color = Color.LIGHT_GREEN
+  } else if (lightGreenValue && value && value >= lightGreenValue) {
     color = Color.GREEN
-  } else if (redValue !== undefined && value !== undefined && value < redValue) {
+  } else if (redValue && value && value <= redValue) {
+    color = Color.LIGHT_RED
+  } else if (lightRedValue && value && value <= lightRedValue) {
     color = Color.RED
   }
 
@@ -54,7 +64,11 @@ const GithubStatItem = ({
           {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
           {IconMetric}
           {value && (
-            <span className={`text-xs not-italic leading-3 ${paddingOn ? 'w-6' : ''} ${color}`}>
+            <span
+              className={`text-xs font-medium not-italic leading-3 ${
+                paddingOn ? 'w-6' : ''
+              } ${color}`}
+            >
               {formatNumber(value)}
             </span>
           )}
@@ -79,8 +93,10 @@ GithubStatItem.defaultProps = {
   growth: undefined,
   outerPaddingOn: true,
   paddingOn: true,
-  greenValue: 100,
-  redValue: 0,
+  greenValue: undefined,
+  lightGreenValue: undefined,
+  redValue: undefined,
+  lightRedValue: undefined,
   largeGap: false,
   link: undefined
 }

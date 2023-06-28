@@ -117,14 +117,14 @@ const AddProject = () => {
 
                 {/* Success message */}
                 {success && (
-                  <p className="text-sm text-green">
+                  <p className="text-sm text-green-500">
                     Project added successfully! Please give us a few minutes to fetch all the data.
                   </p>
                 )}
 
                 {/* Error message */}
                 {error && (
-                  <p className="text-sm text-red">
+                  <p className="text-sm text-red-500">
                     Failed to add project. Please make sure to provide a valid GitHub URL.
                   </p>
                 )}

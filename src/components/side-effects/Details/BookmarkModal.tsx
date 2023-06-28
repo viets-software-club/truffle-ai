@@ -139,7 +139,9 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
 
               {/* Error message */}
               {error && (
-                <p className="text-sm text-red">Something went wrong. Please try again later.</p>
+                <p className="text-sm text-red-500">
+                  Something went wrong. Please try again later.
+                </p>
               )}
 
               <div
@@ -151,7 +153,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
                 {isBookmarked && (
                   <Button
                     variant="noBorderNoBG"
-                    textColor="text-red"
+                    textColor="text-red-500"
                     text={fetchingDelete ? 'Deleting' : 'Delete'}
                     onClick={!fetchingDelete ? handleDelete : undefined}
                   />

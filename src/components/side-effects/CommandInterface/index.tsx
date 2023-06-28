@@ -11,7 +11,7 @@ import CommandInterfaceModal from './CommandInterfaceModal'
 import { RecommendationRowType } from './types'
 
 /**
- * Comand interface logic/ event listeners
+ * Command interface logic/ event listeners
  */
 const CommandInterface: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false)

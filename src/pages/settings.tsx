@@ -166,7 +166,7 @@ const Settings = () => {
             />
           ) : (
             <>
-              <p className="pb-6 text-14 font-normal text-red">Are you sure?</p>
+              <p className="pb-6 text-14 font-normal text-red-500">Are you sure?</p>
               <Link href="/logout">
                 <Button
                   onClick={handleDeleteAccount}

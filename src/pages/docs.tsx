@@ -395,8 +395,37 @@ const Docs = () => {
           <HeaderOne text="User Interface & Features (User Manual)" />
 
           <HeaderTwo text="Login" />
+
+          <Paragraph>
+            All our pages are protected, which means that if the user tries to access any page
+            without being logged in, they will be prompted to log in by this screen: If the user
+            enters wrong login credentials or tries to log in using an email or a Google account
+            that has not been whitelisted, they will receive an error message.
+          </Paragraph>
+
           <HeaderTwo text="Navbar" />
+          <Paragraph>
+            The navigation sidebar of our tool is split into four main sections, providing easy
+            access to various functionalities of the application.
+          </Paragraph>
+
+          <HeaderThree text="Top Section" />
+          <Paragraph>
+            Next to TruffleAI, the user will see the user button, which opens a modal with three
+            options:
+          </Paragraph>
+          <NormalBulletList
+            items={[
+              'Settings: This takes the user to the user settings page, where they can adjust their account details and preferences.',
+              'Documentation: This directs the user to our comprehensive user guide and documentation.',
+              'Log out: This option allows the user to securely log out from the application.'
+            ]}
+          />
+          <HeaderThree text="Overview Section" />
+          <HeaderThree text="Categories Section" />
+          <HeaderThree text="Bottom Section" />
           <HeaderTwo text="Trending Projects" />
+
           <HeaderTwo text="Project Details" />
           <HeaderTwo text="All Bookmarks" />
           <HeaderTwo text="Compare Categories" />

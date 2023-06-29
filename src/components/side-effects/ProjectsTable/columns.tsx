@@ -128,8 +128,9 @@ const createColumns = (
         />
       )
     }),
+
     // Forks per Contributor column definition
-    columnHelper.accessor((project) => (project.forkCount || 0) / (project.contributorCount || 1), {
+    columnHelper.accessor('forksPerContributor', {
       id: 'Forks/Contrib.',
       header: 'Forks/Contrib.',
       enableColumnFilter: true,
@@ -138,27 +139,24 @@ const createColumns = (
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
           paddingOn={false}
           outerPaddingOn={false}
-          value={info.getValue()}
+          value={info.getValue() as number}
         />
       )
     }),
     // Issues per Contributor column definition
-    columnHelper.accessor(
-      (project) => (project.issueCount || 0) / (project.contributorCount || 1),
-      {
-        id: 'Issues/Contrib.',
-        header: 'Issues/Contrib.',
-        enableColumnFilter: true,
-        cell: (info) => (
-          <GitHubStatisticItem
-            IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-            paddingOn={false}
-            outerPaddingOn={false}
-            value={info.getValue()}
-          />
-        )
-      }
-    ),
+    columnHelper.accessor('issuesPerContributor', {
+      id: 'Issues/Contrib.',
+      header: 'Issues/Contrib.',
+      enableColumnFilter: true,
+      cell: (info) => (
+        <GitHubStatisticItem
+          IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
+          paddingOn={false}
+          outerPaddingOn={false}
+          value={info.getValue() as number}
+        />
+      )
+    }),
     // PR column definition
     columnHelper.accessor('pullRequestCount', {
       id: 'PR',

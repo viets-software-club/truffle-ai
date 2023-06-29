@@ -67,8 +67,9 @@ const FilterBar = ({
       <div className="flex flex-row gap-3">
         {/* Sorting */}
         {sorting && <SortModal sorting={sorting} setSorting={setSorting} />}
-        {/* Separator */}
-        {sorting && Object.keys(filters).length > 0 && (
+        {/* Separator - only show when at least 1 filter is active
+        (> 1 because isTrendingDaily/Weekly/Monthly is not displayed in filter bar) */}
+        {sorting && Object.keys(filters).length > 1 && (
           <div className="my-auto h-4/5 border-l border-gray-800" />
         )}
 

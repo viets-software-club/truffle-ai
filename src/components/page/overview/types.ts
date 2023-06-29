@@ -1,7 +1,15 @@
 import { OrderByDirection, PageInfo } from '@/graphql/generated/gql'
 
 export type FilterOption = {
-  key: 'name' | 'starCount' | 'forkCount' | 'issueCount' | 'contributorCount' | 'pullRequestCount'
+  key:
+    | 'name'
+    | 'starCount'
+    | 'forkCount'
+    | 'issueCount'
+    | 'contributorCount'
+    | 'pullRequestCount'
+    | 'issuesPerContributor'
+    | 'forksPerContributor'
   column: string
   type: 'string' | 'number'
 }
@@ -12,7 +20,9 @@ export const filterOptions: FilterOption[] = [
   { key: 'forkCount', column: 'Forks', type: 'number' },
   { key: 'issueCount', column: 'Issues', type: 'number' },
   { key: 'contributorCount', column: 'Contributors', type: 'number' },
-  { key: 'pullRequestCount', column: 'Pull Requests', type: 'number' }
+  { key: 'pullRequestCount', column: 'Pull Requests', type: 'number' },
+  { key: 'issuesPerContributor', column: 'Issues/ Contr.', type: 'number' },
+  { key: 'forksPerContributor', column: 'Forks/ Contr.', type: 'number' }
 ]
 
 export enum TimeFilterOption {

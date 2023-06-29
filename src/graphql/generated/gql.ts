@@ -2553,6 +2553,8 @@ export type ProjectDetailsQuery = {
         relatedTwitterPosts?: Array<any | null> | null
         forkHistory?: Array<any | null> | null
         categories?: Array<string | null> | null
+        issuesPerContributor?: number | null
+        forksPerContributor?: number | null
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
@@ -2627,6 +2629,8 @@ export type TrendingProjectsQuery = {
         isTrendingDaily?: boolean | null
         isTrendingWeekly?: boolean | null
         isTrendingMonthly?: boolean | null
+        issuesPerContributor?: number | null
+        forksPerContributor?: number | null
         associatedPerson?: {
           __typename?: 'AssociatedPerson'
           id: any
@@ -2836,6 +2840,8 @@ export const ProjectDetailsDocument = gql`
             repositoryCount
             websiteUrl
           }
+          issuesPerContributor
+          forksPerContributor
         }
       }
     }
@@ -2917,6 +2923,8 @@ export const TrendingProjectsDocument = gql`
           isTrendingDaily
           isTrendingWeekly
           isTrendingMonthly
+          issuesPerContributor
+          forksPerContributor
         }
       }
       pageInfo {

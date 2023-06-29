@@ -65,6 +65,12 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
               </a>
             </div>
           ))}
+
+          {!tweets?.length && (
+            <div className="px-4 pb-4 text-14 font-light text-gray-300">
+              No tweets found for this project
+            </div>
+          )}
         </div>
       )}
 

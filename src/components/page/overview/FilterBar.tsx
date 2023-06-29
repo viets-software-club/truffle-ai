@@ -1,9 +1,9 @@
+import { Dispatch, SetStateAction, useMemo } from 'react'
+import { FiChevronLeft as ChevronLeft, FiChevronRight as ChevronRight } from 'react-icons/fi'
 import FilterItemModal from '@/components/page/overview/FilterItemModal'
 import SortModal from '@/components/page/overview/SortModal'
-import { PageInfo, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
 import Button from '@/components/pure/Button'
-import { FiChevronLeft as ChevronLeft, FiChevronRight as ChevronRight } from 'react-icons/fi'
-import { Dispatch, SetStateAction, useMemo } from 'react'
+import { PageInfo, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
 import { FilterOption, TimeFilterOption, paginationParameters } from './types'
 
 type FilterBarProps = {
@@ -11,22 +11,22 @@ type FilterBarProps = {
   currentEntries: number
   totalEntries: number
   sorting: ProjectOrderBy | null
+  pageInfo: PageInfo
+  pageSize: number
   updateFilters: (filter: ProjectFilter) => void
   setSorting: (sorting: ProjectOrderBy | null) => void
-  pageInfo: PageInfo
   setPagination: Dispatch<SetStateAction<paginationParameters>>
-  pageSize: number
 }
 const FilterBar = ({
   filters,
   currentEntries,
   totalEntries,
   sorting,
+  pageInfo,
+  pageSize,
   setSorting,
   updateFilters,
-  pageInfo,
-  setPagination,
-  pageSize
+  setPagination
 }: FilterBarProps) => {
   const handleClickLeft = () => {
     setPagination({

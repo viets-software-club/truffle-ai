@@ -596,6 +596,13 @@ const Docs = () => {
             sending an email, the project details page or logging out, a second step is shown before
             carrying out the action.
           </Paragraph>
+
+          <HeaderTwo text="Documentation (WIP)" />
+          <Paragraph>
+            An easily accessible and more user-friendly version of this very manual you’re currently
+            reading, directly inside of the app.
+          </Paragraph>
+
           <Divider />
         </div>
       </div>

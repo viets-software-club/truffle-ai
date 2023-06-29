@@ -585,13 +585,17 @@ const Docs = () => {
           />
 
           <HeaderTwo text="Command Interface" />
-          <Paragraph> </Paragraph>
-
-          <HeaderTwo text="Documentation (WIP)" />
-          <Paragraph> </Paragraph>
-
-          <HeaderThree text="" />
-
+          <Paragraph>
+            Using Cmd/Ctrl + K, the user can open up a command interface which allows quicker
+            navigation between pages and fast execution of certain actions like sending an email
+            without ever leaving the keyboard. Some items have shortcut keys displayed on the right
+            which makes navigation between key pages even faster.{' '}
+          </Paragraph>
+          <Paragraph>
+            For actions or navigation items that require additional input or confirmation, such as
+            sending an email, the project details page or logging out, a second step is shown before
+            carrying out the action.
+          </Paragraph>
           <Divider />
         </div>
       </div>

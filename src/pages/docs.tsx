@@ -568,6 +568,14 @@ const Docs = () => {
             ]}
           />
 
+          <HeaderThree text="Account" />
+          <NormalBulletList
+            items={[
+              'Log out: Logs the user out.',
+              'Delete Account: Deletes all user data after an additional confirmation step.'
+            ]}
+          />
+
           <HeaderTwo text="Command Interface" />
           <Paragraph> </Paragraph>
 

@@ -12,6 +12,7 @@ import deleteAccount from '@/util/deleteAccount'
 import FilterInput, { defaultFilters } from '@/components/page/settings/FilterInput'
 import AffinitySettings from '@/components/page/settings/AffinitySettings'
 import Banner from '@/components/page/settings/Banner'
+import CommandInterface from '@/components/side-effects/CommandInterface'
 
 // @TODO use backend rather than local storage for Email template, slack webhook, affinity api key
 
@@ -104,6 +105,8 @@ const Settings = () => {
     <div className="flex">
       <Sidebar sections={sections} activeSection={activeSection} onClick={scrollTo} />
 
+      <CommandInterface />
+
       <div className="ml-64 w-full overflow-auto px-20 py-10 text-white">
         <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">General</h2>
 
@@ -166,7 +169,7 @@ const Settings = () => {
             />
           ) : (
             <>
-              <p className="pb-6 text-14 font-normal text-red">Are you sure?</p>
+              <p className="pb-6 text-14 font-normal text-red-500">Are you sure?</p>
               <Link href="/logout">
                 <Button
                   onClick={handleDeleteAccount}

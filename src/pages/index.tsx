@@ -10,6 +10,7 @@ import {
   ProjectOrderBy,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
+import getPercentile from '@/util/getPercentile'
 
 const TrendingProjects = () => {
   const PAGE_SIZE = 30
@@ -24,6 +25,13 @@ const TrendingProjects = () => {
     before: null
   })
   const [totalCount, setTotalCount] = useState(0)
+
+  const [percentileStats, setPercentileStats] = useState({
+    topTenPercent: {},
+    topTwentyPercent: {},
+    bottomTenPercent: {},
+    bottomTwentyPercent: {}
+  })
 
   const updateFilters = (filter: ProjectFilter) => {
     setFilters(filter)
@@ -42,9 +50,16 @@ const TrendingProjects = () => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
+      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      setData(projectData)
+      setPercentileStats({
+        topTenPercent: getPercentile(projectData, 0.1),
+        bottomTenPercent: getPercentile(projectData, 0.1, false),
+        topTwentyPercent: getPercentile(projectData, 0.2),
+        bottomTwentyPercent: getPercentile(projectData, 0.2, false)
+      })
     }
   }, [urqlData])
 
@@ -62,6 +77,7 @@ const TrendingProjects = () => {
         pageInfo={pageInfo as PageInfo}
         setPagination={setPagination}
         pageSize={PAGE_SIZE}
+        percentileStats={percentileStats}
       />
     </Page>
   )

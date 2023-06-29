@@ -1,4 +1,5 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useState, useMemo } from 'react'
+
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,11 +10,11 @@ import { CombinedError } from 'urql'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import TopBar from '@/components/page/overview/TopBar'
-import defaultColumns from '@/components/side-effects/ProjectsTable/columns'
 import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
 import { paginationParameters } from '@/components/page/overview/types'
+import createColumns from '@/components/side-effects/ProjectsTable/columns'
 
 type ProjectsTableProps = {
   data: Project[]
@@ -28,10 +29,17 @@ type ProjectsTableProps = {
   pageInfo: PageInfo
   setPagination: Dispatch<SetStateAction<paginationParameters>>
   pageSize: number
+  percentileStats: {
+    topTenPercent: object
+    topTwentyPercent: object
+    bottomTenPercent: object
+    bottomTwentyPercent: object
+  }
 }
 
 /**
  * Table for displaying trending projects
+ *
  */
 const ProjectsTable: FC<ProjectsTableProps> = ({
   data,
@@ -45,11 +53,17 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   totalCount,
   pageInfo,
   setPagination,
-  pageSize
+  pageSize,
+  percentileStats
 }) => {
-  const [columns] = useState(() => [...defaultColumns])
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
+
+  const { topTenPercent, topTwentyPercent, bottomTenPercent, bottomTwentyPercent } = percentileStats
+  const columns = useMemo(
+    () => createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent),
+    [bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent]
+  )
 
   // Initialize TanStack table
   const table = useReactTable({

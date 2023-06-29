@@ -89,7 +89,9 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
 
               {/* Error message */}
               {error && (
-                <p className="text-sm text-red">Something went wrong. Please try again later.</p>
+                <p className="text-sm text-red-500">
+                  Something went wrong. Please try again later.
+                </p>
               )}
 
               <div className="flex w-full items-center justify-end">

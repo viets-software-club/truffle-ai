@@ -603,6 +603,12 @@ const Docs = () => {
             reading, directly inside of the app.
           </Paragraph>
 
+          <HeaderTwo text="404" />
+          <Paragraph>
+            When trying to access a non-existing URL, the user will receive a custom 404 page with a
+            button linking back to the app:
+          </Paragraph>
+
           <Divider />
         </div>
       </div>

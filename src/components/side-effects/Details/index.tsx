@@ -163,7 +163,7 @@ const Details = ({ id }: DetailsProps) => {
             } / ${project.name as string}`}
             url={project.githubUrl as string}
             explanation={project.eli5 || 'No explanation'}
-            about={(project.about as string) || 'No description'}
+            about={project.about || 'No description'}
             categories={project.categories as string[]}
             isBookmarked={isBookmarked}
             category={category}

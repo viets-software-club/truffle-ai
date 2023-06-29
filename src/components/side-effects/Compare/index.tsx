@@ -49,7 +49,7 @@ const Compare = ({ category }: CompareProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<paginationParameters>({
-    first: 10,
+    first: PAGE_SIZE,
     last: null,
     after: null,
     before: null

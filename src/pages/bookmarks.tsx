@@ -45,19 +45,6 @@ const Bookmarks = () => {
     (edge) => edge.node.project?.id as string
   ) as string[]
 
-  // Fetch data from Supabase using generated Urql hook for total count
-  const [{ data: urqlDataTotal }] = useTrendingProjectsQuery({
-    variables: {
-      orderBy: sorting || defaultSort,
-      filter: {
-        ...filters,
-        id: {
-          in: bookmarkIds
-        }
-      }
-    }
-  })
-
   const [{ data: urqlData, fetching: fetchingProjects, error: errorProjects }] =
     useTrendingProjectsQuery({
       variables: {
@@ -77,9 +64,9 @@ const Bookmarks = () => {
     if (urqlData) {
       setData(urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[])
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
-      setTotalCount(urqlDataTotal?.projectCollection?.edges?.length ?? 0)
+      setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
     }
-  }, [urqlData, urqlDataTotal])
+  }, [urqlData])
 
   return (
     <Page>

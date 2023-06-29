@@ -6,6 +6,7 @@ import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 import dbUpdaterWorkflow from '@/assets/Bild1.png'
 import Image from 'next/image'
+import NestedBulletList from '@/components/pure/NestedBulletList'
 
 const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
 
@@ -362,6 +363,75 @@ const Docs = () => {
 
           <HeaderThree text="Backend (server-side)" />
           <HeaderThree text="API Services:" />
+          <NestedBulletList
+            items={[
+              {
+                key: 'scraperapi - https://www.scraperapi.com/twitter-scraper/, Scraping twitter searches for specific hashtags',
+                value: []
+              },
+              {
+                key: 'scraping-bot - https://www.scraping-bot.io/web-scraping-documentation/, Scraping of LinkedIn data (only for company specific data)',
+                value: []
+              },
+              {
+                key: 'GitHub GraphQL API - GitHub GraphQL API documentation - GitHub Docs. Most of the information that we get from GitHub including:',
+                value: [
+                  {
+                    key: 'getting the founders / first committers of a repository',
+                    value: []
+                  },
+                  {
+                    key: 'creating various histories from different information points of a repository',
+                    value: []
+                  },
+                  {
+                    key: 'get the available repository topics if the founder defined them',
+                    value: []
+                  }
+                ]
+              },
+              {
+                key: 'Github Rest API - https://docs.github.com/en/rest?apiVersion=2022-11-28',
+                value: [
+                  {
+                    key: 'To get the contributor Count for a given repository',
+                    value: []
+                  }
+                ]
+              },
+              {
+                key: 'Chatgpt (OpenAI) requests: https://openai.com/',
+                value: [
+                  {
+                    key: 'To sum up a readMe file in simple terms',
+                    value: []
+                  },
+                  {
+                    key: 'To get the sentiment described in comments scraped from Hackernews',
+                    value: []
+                  },
+                  {
+                    key: 'To summaries categories that were scraped from Github into new customized categories',
+                    value: []
+                  }
+                ]
+              },
+              {
+                key: 'Hackernews API by algolia - https://hn.algolia.com/api',
+                value: [
+                  {
+                    key: 'Search HackerNewsStories based on the name of the repository and the name of the founder',
+                    value: []
+                  },
+                  {
+                    key: 'After we have found all stories we scrape the comments from the stories based on the found story id',
+                    value: []
+                  }
+                ]
+              }
+            ]}
+          />
+
           <HeaderThree text="Libraries and Frameworks:" />
           <NormalBulletList
             items={[

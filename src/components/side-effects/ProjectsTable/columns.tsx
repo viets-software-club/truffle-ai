@@ -128,37 +128,37 @@ const createColumns = (
         />
       )
     }),
-  
-  // Forks per Contributor column definition
-  columnHelper.accessor('forksPerContributor', {
-    id: 'Forks/Contrib.',
-    header: 'Forks/Contrib.',
-    enableColumnFilter: true,
-    cell: (info) => (
-      <GitHubStatisticItem
-        IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-        paddingOn={false}
-        outerPaddingOn={false}
-        value={info.getValue() as number}
-      />
-    )
-  }),
-  // Issues per Contributor column definition
-  columnHelper.accessor('issuesPerContributor', {
-    id: 'Issues/Contrib.',
-    header: 'Issues/Contrib.',
-    enableColumnFilter: true,
-    cell: (info) => (
-      <GitHubStatisticItem
-        IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-        paddingOn={false}
-        outerPaddingOn={false}
-        value={info.getValue() as number}
-      />
-    )
-  }),
-  // PR column definition
-  columnHelper.accessor('pullRequestCount', {
+
+    // Forks per Contributor column definition
+    columnHelper.accessor('forksPerContributor', {
+      id: 'Forks/Contrib.',
+      header: 'Forks/Contrib.',
+      enableColumnFilter: true,
+      cell: (info) => (
+        <GitHubStatisticItem
+          IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
+          paddingOn={false}
+          outerPaddingOn={false}
+          value={info.getValue() as number}
+        />
+      )
+    }),
+    // Issues per Contributor column definition
+    columnHelper.accessor('issuesPerContributor', {
+      id: 'Issues/Contrib.',
+      header: 'Issues/Contrib.',
+      enableColumnFilter: true,
+      cell: (info) => (
+        <GitHubStatisticItem
+          IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
+          paddingOn={false}
+          outerPaddingOn={false}
+          value={info.getValue() as number}
+        />
+      )
+    }),
+    // PR column definition
+    columnHelper.accessor('pullRequestCount', {
       id: 'PR',
       header: 'Open PRs',
       enableColumnFilter: true,
@@ -175,8 +175,7 @@ const createColumns = (
         />
       )
     })
-]
+  ]
 }
-
 
 export default createColumns

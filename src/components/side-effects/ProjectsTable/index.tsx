@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useState, useMemo } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -11,8 +11,9 @@ import Loading from '@/components/pure/Loading'
 import TopBar from '@/components/page/overview/TopBar'
 import Table from '@/components/page/overview/Table'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { paginationParameters } from '@/components/page/overview/types'
 import createColumns from '@/components/side-effects/ProjectsTable/columns'
+import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
 
 type ProjectsTableProps = {
   data: Project[]
@@ -21,14 +22,18 @@ type ProjectsTableProps = {
   fetching: boolean
   error: CombinedError | undefined
   hideTimeFrame?: boolean
-  setSorting: (sort: ProjectOrderBy | null) => void
-  updateFilters: (filters: ProjectFilter) => void
+  totalCount: number
+  pageInfo: PageInfo
+  pageSize: number
   percentileStats: {
     topTenPercent: object
     topTwentyPercent: object
     bottomTenPercent: object
     bottomTwentyPercent: object
   }
+  setSorting: (sort: ProjectOrderBy | null) => void
+  updateFilters: (filters: ProjectFilter) => void
+  setPagination: Dispatch<SetStateAction<paginationParameters>>
 }
 
 /**
@@ -42,9 +47,13 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   fetching,
   error,
   hideTimeFrame,
+  totalCount,
+  pageInfo,
+  pageSize,
+  percentileStats,
   setSorting,
   updateFilters,
-  percentileStats
+  setPagination
 }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
@@ -81,14 +90,17 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         updateFilters={updateFilters}
       />
 
-      {(Object.keys(filters).length > 0 || sorting) && (
+      {(Object.keys(filters).length > 0 || sorting) && pageInfo && (
         <FilterBar
           filters={filters}
           updateFilters={updateFilters}
           currentEntries={data.length}
-          totalEntries={data.length} // @TODO get total entries from DB
+          totalEntries={totalCount} // @TODO get total entries from DB
           sorting={sorting}
           setSorting={setSorting}
+          pageInfo={pageInfo}
+          setPagination={setPagination}
+          pageSize={pageSize}
         />
       )}
 

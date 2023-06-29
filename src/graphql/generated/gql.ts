@@ -2599,6 +2599,10 @@ export type ProjectIdsQuery = {
 export type TrendingProjectsQueryVariables = Exact<{
   orderBy: ProjectOrderBy
   filter: ProjectFilter
+  first?: InputMaybe<Scalars['Int']>
+  last?: InputMaybe<Scalars['Int']>
+  after?: InputMaybe<Scalars['Cursor']>
+  before?: InputMaybe<Scalars['Cursor']>
 }>
 
 export type TrendingProjectsQuery = {
@@ -2643,6 +2647,13 @@ export type TrendingProjectsQuery = {
         } | null
       }
     }>
+    pageInfo: {
+      __typename?: 'PageInfo'
+      hasNextPage: boolean
+      endCursor?: string | null
+      hasPreviousPage: boolean
+      startCursor?: string | null
+    }
   } | null
 }
 
@@ -2866,8 +2877,22 @@ export function useProjectIdsQuery(
   })
 }
 export const TrendingProjectsDocument = gql`
-  query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
-    projectCollection(filter: $filter, orderBy: [$orderBy]) {
+  query TrendingProjects(
+    $orderBy: ProjectOrderBy!
+    $filter: ProjectFilter!
+    $first: Int
+    $last: Int
+    $after: Cursor
+    $before: Cursor
+  ) {
+    projectCollection(
+      filter: $filter
+      orderBy: [$orderBy]
+      first: $first
+      last: $last
+      after: $after
+      before: $before
+    ) {
       edges {
         node {
           id
@@ -2901,6 +2926,12 @@ export const TrendingProjectsDocument = gql`
           issuesPerContributor
           forksPerContributor
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+        hasPreviousPage
+        startCursor
       }
     }
   }

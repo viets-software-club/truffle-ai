@@ -3,8 +3,9 @@ import { useUser } from '@supabase/auth-helpers-react'
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import ProjectsTable from '@/components/side-effects/ProjectsTable'
-import { defaultSort } from '@/components/page/overview/types'
+import { defaultSort, paginationParameters } from '@/components/page/overview/types'
 import {
+  PageInfo,
   Project,
   ProjectFilter,
   ProjectOrderBy,
@@ -19,10 +20,18 @@ import getPercentile from '@/util/getPercentile'
  * Project table with all bookmarks of a user
  */
 const Bookmarks = () => {
+  const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
   const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
-
+  const [pageInfo, setPageInfo] = useState<PageInfo>()
+  const [pagination, setPagination] = useState<paginationParameters>({
+    first: PAGE_SIZE,
+    last: null,
+    after: null,
+    before: null
+  })
+  const [totalCount, setTotalCount] = useState(0)
   const user = useUser()
 
   const [percentileStats, setPercentileStats] = useState({
@@ -53,13 +62,16 @@ const Bookmarks = () => {
           id: {
             in: bookmarkIds
           }
-        }
+        },
+        ...pagination
       }
     })
 
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
+      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
+      setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
       const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
       setData(projectData)
       setPercentileStats({
@@ -82,6 +94,10 @@ const Bookmarks = () => {
         hideTimeFrame
         setSorting={setSorting}
         updateFilters={updateFilters}
+        pageInfo={pageInfo as PageInfo}
+        totalCount={totalCount}
+        pageSize={PAGE_SIZE}
+        setPagination={setPagination}
         percentileStats={percentileStats}
       />
     </Page>

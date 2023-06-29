@@ -16,8 +16,9 @@ import Chart, { DataPoint } from '@/components/page/details/Chart'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
 import FilterBar from '@/components/page/overview/FilterBar'
-import { defaultSort } from '@/components/page/overview/types'
+import { defaultSort, paginationParameters } from '@/components/page/overview/types'
 import {
+  PageInfo,
   Project,
   ProjectFilter,
   ProjectOrderBy,
@@ -38,6 +39,7 @@ type CompareProps = {
  * Compare projects component
  */
 const Compare = ({ category }: CompareProps) => {
+  const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [filters, setFilters] = useState<ProjectFilter>({})
@@ -45,6 +47,13 @@ const Compare = ({ category }: CompareProps) => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [slackLoading, setSlackLoading] = useState(false)
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
+  const [pageInfo, setPageInfo] = useState<PageInfo>()
+  const [pagination, setPagination] = useState<paginationParameters>({
+    first: PAGE_SIZE,
+    last: null,
+    after: null,
+    before: null
+  })
   const [selectedMetric, setSelectedMetric] = useState('Stars')
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
@@ -91,7 +100,8 @@ const Compare = ({ category }: CompareProps) => {
           id: {
             in: bookmarkIds
           }
-        }
+        },
+        ...pagination
       }
     })
 
@@ -101,6 +111,7 @@ const Compare = ({ category }: CompareProps) => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
+      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
       const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
       setData(projectData)
 
@@ -171,7 +182,7 @@ const Compare = ({ category }: CompareProps) => {
         updateFilters={updateFilters}
       />
 
-      {(Object.keys(filters).length > 0 || sorting) && (
+      {(Object.keys(filters).length > 0 || sorting) && pageInfo && (
         <FilterBar
           filters={filters}
           updateFilters={updateFilters}
@@ -179,6 +190,9 @@ const Compare = ({ category }: CompareProps) => {
           totalEntries={data.length} // @TODO get total entries from DB
           sorting={sorting}
           setSorting={setSorting}
+          pageInfo={pageInfo}
+          setPagination={setPagination}
+          pageSize={PAGE_SIZE}
         />
       )}
 

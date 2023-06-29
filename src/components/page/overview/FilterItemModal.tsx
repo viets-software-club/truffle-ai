@@ -51,7 +51,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
 
     const newFilters = { ...filters }
     newFilters[currentKey] = {
-      [operator]: type === 'string' ? value : parseInt(value as string, 10)
+      [operator]: type === 'string' ? value : parseFloat(value as string)
     }
     updateFilters(newFilters)
   }

@@ -30,6 +30,8 @@ query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
         isTrendingDaily
         isTrendingWeekly
         isTrendingMonthly
+        issuesPerContributor
+        forksPerContributor
       }
     }
   }

@@ -4,6 +4,8 @@ import Paragraph from '@/components/pure/paragraph'
 import NumberedBulletedList from '@/components/pure/numberedBulletedList'
 import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
+import dbUpdaterWorkflow from '@/assets/Bild1.png'
+import Image from 'next/image'
 
 const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
 
@@ -155,6 +157,8 @@ const Docs = () => {
           <Paragraph>
             Include and describe your Activity Diagram which points out the system behavior.
           </Paragraph>
+
+          <Image src={dbUpdaterWorkflow} alt="boburIsNotGayMAYBE" />
 
           <Divider />
 
@@ -355,6 +359,28 @@ const Docs = () => {
             />
           </Paragraph>
           <HeaderTwo text="Third-party Components" />
+
+          <HeaderThree text="Backend (server-side)" />
+          <HeaderThree text="API Services:" />
+          <HeaderThree text="Libraries and Frameworks:" />
+          <NormalBulletList
+            items={[
+              'Axios (1.4.0) - Making all sorts of requests to mostly GitHub’s API',
+              'Cheerio (1.0.0) - Extracting information from HTML code, in particular extracting the trending repositories from the GitHub trending page',
+              'Fastify (4.17.0) - Web Framework for Node.js for building our web application',
+              'Mercurius (13.0.0) - build GraphQL APIs and servers',
+              'Showdown (2.1.0) - converting Markdown Syntax into HTML, used for the extraction of the ReadME.md files from each repository',
+              'Supabase JS (2.24.0) - connection to the Supabase database'
+            ]}
+          />
+          <HeaderThree text="Open Source Software:" />
+          <NormalBulletList
+            items={[
+              'Star-History - <a href="blaa"> star-history/star-history: The missing star history graph of GitHub repos - https://star-history.com </a>'
+            ]}
+          />
+          <HeaderThree text="Frontend (client-side)" />
+
           <Paragraph>
             List all third-party components you use (e.g. libraries, frameworks) and include their
             version numbers. If you used open-source components add a link to the website and/or the
@@ -363,6 +389,24 @@ const Docs = () => {
           </Paragraph>
 
           <NumberedBulletedList items={items} />
+
+          <Divider />
+
+          <HeaderOne text="User Interface & Features (User Manual)" />
+
+          <HeaderTwo text="Login" />
+          <HeaderTwo text="Navbar" />
+          <HeaderTwo text="Trending Projects" />
+          <HeaderTwo text="Project Details" />
+          <HeaderTwo text="All Bookmarks" />
+          <HeaderTwo text="Compare Categories" />
+          <HeaderTwo text="Settings" />
+          <HeaderTwo text="Command Interface" />
+          <HeaderTwo text="Documentation (WIP)" />
+
+          <HeaderThree text="" />
+
+          <Divider />
         </div>
       </div>
     </Page>

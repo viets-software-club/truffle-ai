@@ -20,28 +20,29 @@ const FilterSelector: FC<FilterSelectorProps> = ({ filters, addFilter }) => (
 
     <MenuItemsTransition>
       <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
-        {Object.keys(filters).length >= filterOptions.length && (
+        {filters && Object.keys(filters).length >= filterOptions.length && (
           <p className="py-1 pl-2 text-14">No more filters can be applied.</p>
         )}
 
-        {filterOptions
-          .filter(({ key }) => !Object.keys(filters).includes(key))
-          .map(({ key, column, type }) => (
-            <Menu.Item
-              as="button"
-              key={key}
-              className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
-              onClick={() => addFilter(key, type)}
-            >
-              {key === 'name' ? (
-                <IoTextOutline className="text-gray-500" />
-              ) : (
-                <AiOutlineNumber className="text-gray-500" />
-              )}
+        {filters &&
+          filterOptions
+            .filter(({ key }) => !Object.keys(filters).includes(key))
+            .map(({ key, column, type }) => (
+              <Menu.Item
+                as="button"
+                key={key}
+                className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                onClick={() => addFilter(key, type)}
+              >
+                {key === 'name' ? (
+                  <IoTextOutline className="text-gray-500" />
+                ) : (
+                  <AiOutlineNumber className="text-gray-500" />
+                )}
 
-              <p className="text-14 text-gray-100">{column}</p>
-            </Menu.Item>
-          ))}
+                <p className="text-14 text-gray-100">{column}</p>
+              </Menu.Item>
+            ))}
       </Menu.Items>
     </MenuItemsTransition>
   </Menu>

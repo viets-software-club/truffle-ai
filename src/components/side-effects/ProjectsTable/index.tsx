@@ -91,7 +91,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         updateFilters={updateFilters}
       />
 
-      {(Object.keys(filters).length > 0 || sorting) && pageInfo && (
+      {filters && (Object.keys(filters).length > 0 || sorting) && pageInfo && (
         <FilterBar
           filters={filters}
           updateFilters={updateFilters}

@@ -576,6 +576,14 @@ const Docs = () => {
             ]}
           />
 
+          <HeaderThree text="Integrations" />
+          <NormalBulletList
+            items={[
+              'Notifications: The user can configure notifications to be sent to a designated Slack channel by entering the channel’s webhook URL. The user can also set a prefix that will be included before the repo names in the notification messages.',
+              "Affinity: Here, the user can add and update the API token for Affinity. Also, the user will need to provide the list ID for the list to which the projects' details should be sent."
+            ]}
+          />
+
           <HeaderTwo text="Command Interface" />
           <Paragraph> </Paragraph>
 

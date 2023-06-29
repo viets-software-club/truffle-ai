@@ -561,6 +561,12 @@ const Docs = () => {
             The page is divided into three sections: General, Account, and Integrations.{' '}
           </Paragraph>
           <HeaderThree text="General" />
+          <NormalBulletList
+            items={[
+              'Default Filters: The user can set default filters (only greater than as of now) that will always be applied to the Trending Projects table. The user can filter based on stars, forks, issues, and contributors. If the values are set to 0, no filter is applied.',
+              'Email Template: Lets the user customize the email template that will be automatically sent to the founders of a project on its Details page.'
+            ]}
+          />
 
           <HeaderTwo text="Command Interface" />
           <Paragraph> </Paragraph>

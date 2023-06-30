@@ -174,17 +174,23 @@ const Docs = () => {
           </Paragraph>
           <HeaderThree text="User-Interface (Frontend - truffle.tools)" />
           <Paragraph>
-            The user-interface of the application is built using React.js. React is a JavaScript
-            library for creating large and complex web user interfaces using reusable components.{' '}
+            The user-interface of the application is built using{' '}
+            <Link href="https://react.dev/">React.js</Link>. React is a JavaScript library for
+            creating large and complex web user interfaces using reusable components. <br />
+            To bundle multiple JavaScript files, preload links, improve{' '}
+            <Link href="https://web.dev/tti/">Time To Interactive</Link>, prerender pages and
+            statically optimize them we use <Link href="https://nextjs.org/">Next.js</Link>
+            . Next is a framework for building web applications using React and comes with a lot of
+            performance optimizations and its own JavaScript/TypeScript bundler.
             <br />
-            To bundle multiple JavaScript files, preload links, improve Time To Interactive,
-            prerender pages and statically optimize them we use Next.js. Next is a framework for
-            building web applications using React and comes with a lot of performance optimizations
-            and its own JavaScript/TypeScript bundler.
+            The application was fully designed in <Link href="https://figma.com">Figma</Link>
+            .
             <br />
-            The application was fully designed in Figma.
-            <br />
-            It is hosted on Vercel’s edge network at the domain truffle.tools.
+            It is hosted on{' '}
+            <Link href="https://vercel.com/docs/concepts/edge-network/regions">
+              Vercel&rsquo;s edge network
+            </Link>{' '}
+            at the domain <Link href="https://truffle.tools">truffle.tools</Link>.
           </Paragraph>
           <HeaderThree text="Supabse" />
           <Paragraph>

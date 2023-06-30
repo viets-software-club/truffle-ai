@@ -1,132 +1,26 @@
 import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import Paragraph from '@/components/pure/paragraph'
-import NumberedBulletedList from '@/components/pure/numberedBulletedList'
 import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
-import dbUpdaterWorkflow from '@/assets/Bild1.png'
 import login from '@/assets/LoginPage.png'
 import AddBookmark from '@/assets/AddBookmark.png'
 import AllBookmarks from '@/assets/AllBookmarks.png'
 import ComparePage from '@/assets/ComparePage.png'
 import Sidebar from '@/assets/Sidebar.png'
+import NotFound404 from '@/assets/404NotFound.png'
+
+import CommandInterface from '@/assets/commandInterface.png'
+
+import Settings from '@/assets/Settings.png'
 import TrendingProject from '@/assets/TrendingProject.png'
 import ProjectDetails from '@/assets/ProjectDetails.png'
 import Image from 'next/image'
-import NestedBulletList from '@/components/pure/NestedBulletList'
-import Link from '@/components/pure/BasicLink'
 
 const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
 
 const Docs = () => {
-  const items = [
-    {
-      text: '@headlessui/react version 1.7.14',
-      link1: 'https://headlessui.dev/',
-      link2: 'https://github.com/tailwindlabs/headlessui/blob/main/LICENSE'
-    },
-    {
-      text: '@primer/octicons-react version 19.1.0',
-      link1: 'https://primer.style/octicons/',
-      link2: 'https://github.com/primer/octicons/blob/main/LICENSE'
-    },
-    {
-      text: '@supabase/auth-helpers-nextjs version 0.6.1 and @supabase/auth-helpers-react version 0.3.1',
-      link1: 'https://supabase.io/',
-      link2: 'https://github.com/supabase/supabase/blob/master/LICENSE'
-    },
-    {
-      text: '@tanstack/react-table version 8.9.1',
-      link1: 'https://tanstack.com/react-table',
-      link2: 'https://github.com/tannerlinsley/react-table/blob/master/LICENSE'
-    },
-    {
-      text: '@types/node version 18.16.3, @types/react version 18.2.0, and @types/react-dom version 18.2.1',
-      link1: 'https://www.typescriptlang.org/',
-      link2: 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE'
-    },
-    {
-      text: 'autoprefixer version 10.4.14',
-      link1: 'https://autoprefixer.github.io/',
-      link2: 'https://github.com/postcss/autoprefixer/blob/main/LICENSE'
-    },
-    {
-      text: 'date-fns version 2.30.0',
-      link1: 'https://date-fns.org/',
-      link2: 'https://github.com/date-fns/date-fns/blob/main/LICENSE.md'
-    },
-    {
-      text: 'graphql version 16.6.0 and graphql-tag version 2.12.6',
-      link1: 'https://graphql.org/',
-      link2: 'https://github.com/graphql/graphql-js/blob/main/LICENSE'
-    },
-    {
-      text: 'next version 13.3.1 and next-urql version 5.0.1',
-      link1: 'https://nextjs.org/',
-      link2: ''
-    },
-    {
-      text: 'postcss version 8.4.23',
-      link1: 'https://postcss.org/',
-      link2: ''
-    },
-    {
-      text: 'react version 18.2.0, react-dom version 18.2.0, and react-is version 18.2.0',
-      link1: 'https://reactjs.org/',
-      link2: 'https://github.com/react-icons/react-icons/blob/master/LICENSE.md'
-    },
-    {
-      text: 'react-icons version 4.8.0',
-      link1: 'https://react-icons.github.io/react-icons/',
-      link2: 'https://github.com/react-icons/react-icons/blob/master/LICENSE.md'
-    },
-    {
-      text: 'recharts version 2.6.2',
-      link1: 'http://recharts.org/',
-      link2: 'https://github.com/recharts/recharts/blob/master/LICENSE'
-    },
-    {
-      text: 'sass version 1.63.4',
-      link1: 'https://github.com/sass/dart-sass',
-      link2: ''
-    },
-    {
-      text: 'tailwindcss version 3.3.2',
-      link1: 'https://tailwindcss.com/',
-      link2: 'https://www.npmjs.com/package/tailwindcss'
-    },
-    {
-      text: 'urql version 4.0.4',
-      link1: 'https://formidable.com/open-source/urql/docs/',
-      link2: 'https://www.npmjs.com/package/urql'
-    },
-    {
-      text: '@graphql-codegen/cli version 2.5.0-alpha-c9cbc7d69.0',
-      link1: 'https://github.com/dotansimha/graphql-code-generator#readme',
-      link2: 'https://www.npmjs.com/package/@graphql-codegen/cli/v/2.5.0-alpha-c9cbc7d69.0'
-    },
-    {
-      text: '@graphql-codegen/typescript version 4.0.0',
-      link1: 'https://github.com/dotansimha/graphql-code-generator',
-      link2: 'https://snyk.io/advisor/npm-package/@graphql-codegen/typescript'
-    },
-    {
-      text: '@emotion/react',
-      link1: 'https://emotion.sh/docs/@emotion/react',
-      link2: 'https://snyk.io/advisor/npm-package/@emotion/react'
-    },
-    {
-      text: '@graphql-codegen/typescript-urql',
-      link1: 'https://github.com/dotansimha/graphql-code-generator',
-      link2: 'https://snyk.io/advisor/npm-package/@graphql-codegen/typescript-urql'
-    },
-    {
-      text: '@headlessui/react version 1.7.15',
-      link1: 'https://github.com/tailwindlabs/headlessui#readme',
-      link2: 'https://www.npmjs.com/package/@headlessui/react'
-    }
-  ]
-  const cssClassForSimillarIMG = 'h-auto w-5/12 rounded-lg shadow-2xl'
+  const cssClassForSimillarIMG = 'h-auto w-1/2  rounded-lg shadow-2xl'
   return (
     <Page>
       <div className=" flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
@@ -135,7 +29,7 @@ const Docs = () => {
 
       <div className="px-10 py-6">
         <div className="flex flex-col gap-4">
-          <HeaderOne text="Introduction" />
+          {/* <HeaderOne text="Introduction" />
 
           <HeaderTwo text="Purpose of the System" />
           <Paragraph>
@@ -167,9 +61,7 @@ const Docs = () => {
           <Paragraph>
             Include and describe your Activity Diagram which points out the system behavior.
           </Paragraph>
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image src={dbUpdaterWorkflow} alt="dbUpdaterWorklow" />
-
+          
           <Divider />
 
           <HeaderOne text="System Design" />
@@ -501,6 +393,7 @@ const Docs = () => {
           <NumberedBulletedList items={items} />
 
           <Divider />
+           */}
 
           <HeaderOne text="User Interface & Features (User Manual)" />
 
@@ -691,6 +584,9 @@ const Docs = () => {
           />
 
           <HeaderTwo text="Settings" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={Settings} alt="settings" />
+
           <Paragraph>
             The page is divided into three sections: General, Account, and Integrations.{' '}
           </Paragraph>
@@ -719,6 +615,9 @@ const Docs = () => {
           />
 
           <HeaderTwo text="Command Interface" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={CommandInterface} alt="commandInterface" />
+
           <Paragraph>
             Using Cmd/Ctrl + K, the user can open up a command interface which allows quicker
             navigation between pages and fast execution of certain actions like sending an email
@@ -731,13 +630,10 @@ const Docs = () => {
             carrying out the action.
           </Paragraph>
 
-          <HeaderTwo text="Documentation (WIP)" />
-          <Paragraph>
-            An easily accessible and more user-friendly version of this very manual you’re currently
-            reading, directly inside of the app.
-          </Paragraph>
-
           <HeaderTwo text="404" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={NotFound404} alt="notFound" />
+
           <Paragraph>
             When trying to access a non-existing URL, the user will receive a custom 404 page with a
             button linking back to the app:
@@ -751,3 +647,118 @@ const Docs = () => {
 }
 
 export default withAuth(Docs)
+/*
+import NestedBulletList from '@/components/pure/NestedBulletList'
+import Link from '@/components/pure/BasicLink'
+import NumberedBulletedList from '@/components/pure/numberedBulletedList'
+import dbUpdaterWorkflow from '@/assets/Bild1.png'
+*/
+
+/* 
+  /* const items = [
+    {
+      text: '@headlessui/react version 1.7.14',
+      link1: 'https://headlessui.dev/',
+      link2: 'https://github.com/tailwindlabs/headlessui/blob/main/LICENSE'
+    },
+    {
+      text: '@primer/octicons-react version 19.1.0',
+      link1: 'https://primer.style/octicons/',
+      link2: 'https://github.com/primer/octicons/blob/main/LICENSE'
+    },
+    {
+      text: '@supabase/auth-helpers-nextjs version 0.6.1 and @supabase/auth-helpers-react version 0.3.1',
+      link1: 'https://supabase.io/',
+      link2: 'https://github.com/supabase/supabase/blob/master/LICENSE'
+    },
+    {
+      text: '@tanstack/react-table version 8.9.1',
+      link1: 'https://tanstack.com/react-table',
+      link2: 'https://github.com/tannerlinsley/react-table/blob/master/LICENSE'
+    },
+    {
+      text: '@types/node version 18.16.3, @types/react version 18.2.0, and @types/react-dom version 18.2.1',
+      link1: 'https://www.typescriptlang.org/',
+      link2: 'https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE'
+    },
+    {
+      text: 'autoprefixer version 10.4.14',
+      link1: 'https://autoprefixer.github.io/',
+      link2: 'https://github.com/postcss/autoprefixer/blob/main/LICENSE'
+    },
+    {
+      text: 'date-fns version 2.30.0',
+      link1: 'https://date-fns.org/',
+      link2: 'https://github.com/date-fns/date-fns/blob/main/LICENSE.md'
+    },
+    {
+      text: 'graphql version 16.6.0 and graphql-tag version 2.12.6',
+      link1: 'https://graphql.org/',
+      link2: 'https://github.com/graphql/graphql-js/blob/main/LICENSE'
+    },
+    {
+      text: 'next version 13.3.1 and next-urql version 5.0.1',
+      link1: 'https://nextjs.org/',
+      link2: ''
+    },
+    {
+      text: 'postcss version 8.4.23',
+      link1: 'https://postcss.org/',
+      link2: ''
+    },
+    {
+      text: 'react version 18.2.0, react-dom version 18.2.0, and react-is version 18.2.0',
+      link1: 'https://reactjs.org/',
+      link2: 'https://github.com/react-icons/react-icons/blob/master/LICENSE.md'
+    },
+    {
+      text: 'react-icons version 4.8.0',
+      link1: 'https://react-icons.github.io/react-icons/',
+      link2: 'https://github.com/react-icons/react-icons/blob/master/LICENSE.md'
+    },
+    {
+      text: 'recharts version 2.6.2',
+      link1: 'http://recharts.org/',
+      link2: 'https://github.com/recharts/recharts/blob/master/LICENSE'
+    },
+    {
+      text: 'sass version 1.63.4',
+      link1: 'https://github.com/sass/dart-sass',
+      link2: ''
+    },
+    {
+      text: 'tailwindcss version 3.3.2',
+      link1: 'https://tailwindcss.com/',
+      link2: 'https://www.npmjs.com/package/tailwindcss'
+    },
+    {
+      text: 'urql version 4.0.4',
+      link1: 'https://formidable.com/open-source/urql/docs/',
+      link2: 'https://www.npmjs.com/package/urql'
+    },
+    {
+      text: '@graphql-codegen/cli version 2.5.0-alpha-c9cbc7d69.0',
+      link1: 'https://github.com/dotansimha/graphql-code-generator#readme',
+      link2: 'https://www.npmjs.com/package/@graphql-codegen/cli/v/2.5.0-alpha-c9cbc7d69.0'
+    },
+    {
+      text: '@graphql-codegen/typescript version 4.0.0',
+      link1: 'https://github.com/dotansimha/graphql-code-generator',
+      link2: 'https://snyk.io/advisor/npm-package/@graphql-codegen/typescript'
+    },
+    {
+      text: '@emotion/react',
+      link1: 'https://emotion.sh/docs/@emotion/react',
+      link2: 'https://snyk.io/advisor/npm-package/@emotion/react'
+    },
+    {
+      text: '@graphql-codegen/typescript-urql',
+      link1: 'https://github.com/dotansimha/graphql-code-generator',
+      link2: 'https://snyk.io/advisor/npm-package/@graphql-codegen/typescript-urql'
+    },
+    {
+      text: '@headlessui/react version 1.7.15',
+      link1: 'https://github.com/tailwindlabs/headlessui#readme',
+      link2: 'https://www.npmjs.com/package/@headlessui/react'
+    }
+  ] */

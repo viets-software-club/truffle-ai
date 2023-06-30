@@ -8,6 +8,7 @@ import dbUpdaterWorkflow from '@/assets/Bild1.png'
 import login from '@/assets/LoginPage.png'
 import AddBookmark from '@/assets/AddBookmark.png'
 import AllBookmarks from '@/assets/AllBookmarks.png'
+import ComparePage from '@/assets/ComparePage.png'
 import Sidebar from '@/assets/Sidebar.png'
 import TrendingProject from '@/assets/TrendingProject.png'
 import ProjectDetails from '@/assets/ProjectDetails.png'
@@ -669,6 +670,8 @@ const Docs = () => {
           </Paragraph>
 
           <HeaderTwo text="Compare Categories" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={ComparePage} alt="comparePage" />
 
           <Paragraph>
             This page helps the user compare projects bookmarked into the same category. The user

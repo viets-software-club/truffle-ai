@@ -4,7 +4,6 @@ import Paragraph from '@/components/pure/paragraph'
 import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 import login from '@/assets/LoginPage.png'
-import AddBookmark from '@/assets/AddBookmark.png'
 import AllBookmarks from '@/assets/AllBookmarks.png'
 import ComparePage from '@/assets/ComparePage.png'
 import Sidebar from '@/assets/Sidebar.png'
@@ -175,8 +174,6 @@ const Docs = () => {
           />
 
           <HeaderThree text="Right Sidebar" />
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image className={cssClassForSimillarIMG} src={AddBookmark} alt="addBookmarks" />
 
           <Paragraph>
             The right sidebar provides statistics and social media information about the project and

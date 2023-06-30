@@ -5,6 +5,11 @@ import NumberedBulletedList from '@/components/pure/numberedBulletedList'
 import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 import dbUpdaterWorkflow from '@/assets/Bild1.png'
+import login from '@/assets/LoginPage.png'
+
+import Sidebar from '@/assets/Sidebar.png'
+import TrendingProject from '@/assets/TrendingProject.png'
+
 import Image from 'next/image'
 import NestedBulletList from '@/components/pure/NestedBulletList'
 import Link from '@/components/pure/BasicLink'
@@ -119,7 +124,7 @@ const Docs = () => {
       link2: 'https://www.npmjs.com/package/@headlessui/react'
     }
   ]
-
+  const cssClassForSimillarIMG = 'h-auto w-5/12 rounded-lg shadow-2xl'
   return (
     <Page>
       <div className=" flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
@@ -498,6 +503,8 @@ const Docs = () => {
           <HeaderOne text="User Interface & Features (User Manual)" />
 
           <HeaderTwo text="Login" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={login} alt="login" />
 
           <Paragraph>
             All our pages are protected, which means that if the user tries to access any page
@@ -506,46 +513,56 @@ const Docs = () => {
             account that has not been whitelisted, they will receive an error message.
           </Paragraph>
 
-          <HeaderTwo text="Navbar" />
-          <Paragraph>
-            The navigation sidebar of our tool is split into four main sections, providing easy
-            access to various functionalities of the application.
-          </Paragraph>
+          <div className="flex flex-row justify-start gap-6">
+            <div className="flex flex-col gap-4">
+              <HeaderTwo text="Navbar" />
+              <Paragraph>
+                The navigation sidebar of our tool is split into four main sections, providing easy
+                access to various functionalities of the application.
+              </Paragraph>
 
-          <HeaderThree text="Top Section" />
-          <Paragraph>
-            Next to TruffleAI, the user will see the user button, which opens a modal with three
-            options:
-          </Paragraph>
-          <NormalBulletList
-            items={[
-              'Settings: This takes the user to the user settings page, where they can adjust their account details and preferences.',
-              'Documentation: This directs the user to our comprehensive user guide and documentation.',
-              'Log out: This option allows the user to securely log out from the application.'
-            ]}
-          />
-          <HeaderThree text="Overview Section" />
-          <Paragraph>
-            The Overview section gives the user a snapshot of their main areas of interest:
-          </Paragraph>
-          <NormalBulletList
-            items={[
-              'Trending Projects: This option takes the user to the Trending Projects page, where they can see all the currently trending projects.',
-              'All Bookmarks: This directs the user to a page listing all the projects they have bookmarked.'
-            ]}
-          />
+              <HeaderThree text="Top Section" />
+              <Paragraph>
+                Next to TruffleAI, the user will see the user button, which opens a modal with three
+                options:
+              </Paragraph>
+              <NormalBulletList
+                items={[
+                  'Settings: This takes the user to the user settings page, where they can adjust their account details and preferences.',
+                  'Documentation: This directs the user to our comprehensive user guide and documentation.',
+                  'Log out: This option allows the user to securely log out from the application.'
+                ]}
+              />
+              <HeaderThree text="Overview Section" />
+              <Paragraph>
+                The Overview section gives the user a snapshot of their main areas of interest:
+              </Paragraph>
+              <NormalBulletList
+                items={[
+                  'Trending Projects: This option takes the user to the Trending Projects page, where they can see all the currently trending projects.',
+                  'All Bookmarks: This directs the user to a page listing all the projects they have bookmarked.'
+                ]}
+              />
 
-          <HeaderThree text="Categories Section" />
-          <Paragraph>
-            The Categories section allows the user to see all their bookmark categories as well as
-            the projects they include at one glance{' '}
-          </Paragraph>
-          <HeaderThree text="Bottom Section" />
-          <Paragraph>
-            The Bottom section provides access to additional support and settings.
-          </Paragraph>
+              <HeaderThree text="Categories Section" />
+              <Paragraph>
+                The Categories section allows the user to see all their bookmark categories as well
+                as the projects they include at one glance{' '}
+              </Paragraph>
+              <HeaderThree text="Bottom Section" />
+              <Paragraph>
+                The Bottom section provides access to additional support and settings.
+              </Paragraph>
+            </div>
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+
+            <Image className=" h-auto w-48 rounded-lg shadow-2xl" src={Sidebar} alt="sidebar" />
+          </div>
 
           <HeaderTwo text="Trending Projects" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={TrendingProject} alt="trendingProjects" />
+
           <Paragraph>
             As the first screen the user sees after logging into Truffle, the Trending Projects page
             is designed to provide a comprehensive overview of all currently trending projects by

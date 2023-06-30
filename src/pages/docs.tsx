@@ -277,17 +277,10 @@ const Docs = () => {
             ]}
           />
 
+          <HeaderThree text="Repo job" />
           <Paragraph>
-            {' '}
-            Right now, the functionality for scraping and API calling also resides in
-            /graphql_server.
-            <br />
-            This includes:
-          </Paragraph>
-
-          <HeaderThree text="repo_job" />
-          <Paragraph>
-            A cronjob calling the graphql_server every hour to update its repository data.
+            A cronjob that calls the data updating functions inside the GraphQL Server. It runs
+            hourly.
           </Paragraph>
 
           <HeaderTwo text="Hardware/Software Mapping" />

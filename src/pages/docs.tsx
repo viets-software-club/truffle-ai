@@ -196,66 +196,86 @@ const Docs = () => {
           <Paragraph>
             Supabase is a Backend as a Service (BaaS) for managing authentication, a Postgre
             database, file storage, edge functions and more. Authentication and Database management
-            are fully handled by Supabase. The database is additionally configured to expose a
-            GraphQL endpoint.
+            are fully handled by Supabase. Its database is additionally configured to expose a
+            GraphQL endpoint. For Authentication Supabase is directly contacted by the frontend
+            application, see section “Authentication”. For Database queries and mutations only the
+            exposed GraphQL endpoint is used.
           </Paragraph>
 
-          <HeaderThree text="Microservices" />
+          <HeaderThree text="Microservices (Backend - api.truffle.tools)" />
           <Paragraph>
-            The backend consists of multiple microservices, managed by NPM workspaces. All services
-            are implemented with Node.js and TypeScript for type-safety, linted with ESLint and
-            formatted with Prettier.
+            The backend consists of three microservices that are managed by{' '}
+            <Link href="https://docs.npmjs.com/cli/v9/using-npm/workspaces?v=true">
+              NPM workspaces
+            </Link>
+            . <br />
+            They are hosted on DigitalOcean in a Kubernetes Cluster using Docker containers and use{' '}
+            <Link href="https://nodejs.org/en">Node.js</Link>
+            as their runtime environment for JavaScript code.
+            <br />
+            All services are only accessible from the Gateway via the GraphQL endpoint
+            api.truffle.tools/graphql, which does additional Authorization checks on requests.
           </Paragraph>
 
-          <HeaderThree text="graphql_gateway" />
+          <HeaderThree text="GraphQL Gateway" />
           <Paragraph>
-            The Gateway is the entry point to the backend and forwards all incoming requests. It is
-            built using GraphQL Mesh, which stitches multiple GraphQL schemas together, by
-            introspecting different GraphQL endpoints, thus creating its own supergraph. It then
-            forwards requests and their individual GraphQL query to the corresponding service. The
-            Supergraph is created from Supabases GraphQL endpoint and Before any request is
-            forwarded it first verifies that the user is authenticated.
+            The Gateway is the entry point to the backend and receives all incoming requests from
+            the frontend application. <br />
+            It is built using <Link href="https://the-guild.dev/graphql/mesh">GraphQL Mesh</Link>
+            , which stitches multiple GraphQL schemas together, by introspecting different GraphQL
+            endpoints, thus creating its own supergraph. It then forwards requests and their
+            individual GraphQL query to the corresponding service.
+            <br />
+            The current supergraph consists of Supabase’s database GraphQL schema and the GraphQL
+            server microservice schema.
+            <br />
+            For any incoming requests the gateway first verifies if the user is logged in with
+            Supabase via the{' '}
+            <Link href="https://swagger.io/docs/specification/authentication/bearer-authentication/">
+              Authorization Bearer
+            </Link>{' '}
+            header. See “Authorization on Gateway”
           </Paragraph>
 
-          <HeaderThree text="graphql_server" />
+          <HeaderThree text="GraphQL Server" />
           <Paragraph>
-            A fully functional server. It sets up a Fastify server using the Mercurius middleware to
-            expose a graphql endpoint.
+            A fully functional web server. It sets up a Fastify server using the Mercurius
+            middleware to expose a /graphql endpoint. It implements functionality for scraping data
+            from different sites like GitHub Trending and calls all external APIs like GitHub,
+            Hackernews etc.
+            <NormalBulletList
+              items={[
+                '/api: a folder that contains all functionalities to call APIs, like GitHub and openAI',
+                '/scraping: a folder that contains files that do scraping or that call APIs that do scraping',
+                '/githubHistory: a folder that contains all the files associated with the histories for example starHistory or forkHistory'
+              ]}
+            />
+            The current GraphQL schema exposes the following queries and mutations:
           </Paragraph>
 
           <Paragraph className="font-bold">Queries:</Paragraph>
           <ul className="list-inside list-disc text-14 text-gray-400/80 ">
-            <li> helloWorld(): a test query</li>
+            <li> helloWorld(): GraphQL Middleware Mercurius requires at least one query</li>
           </ul>
 
           <Paragraph className="font-bold">Mutations:</Paragraph>
 
-          <ul className="list-inside list-disc text-14 text-gray-400/80">
-            <li>
-              addProjectByName(name: String!, owner: String!, bookmarkCategory: String!): adds and
-              bookmarks a project by name
-            </li>
-            <li>
-              addProjectByUrl(url: String!, bookmarkCategory: String!): adds and bookmarks a project
-              by URL
-            </li>
-            <li>
-              addBookmark(projectID: String!, category: String!): adds a bookmark for the currently
-              logged in user
-            </li>
-            <li>
-              deleteBookmark(projectID: String!): deletes a bookmark for the currently logged in
-              user
-            </li>
-            <li>
-              editBookmarkCategory(projectID: String!, newCategory: String!): edits the category a
-              bookmark is associated with
-            </li>
-            <li>
-              renameBookmarkCategory(oldCategory: String!, newCategory: String!): renames a category
-              of bookmarks
-            </li>
-          </ul>
+          <NormalBulletList
+            items={[
+              'addProjectByName(name: String!, owner: String!, bookmarkCategory: String!)',
+              'adds and bookmarks a project by name',
+              'addProjectByUrl(url: String!, bookmarkCategory: String!)',
+              'adds and bookmarks a project by URL',
+              'addBookmark(projectID: String!, category: String!)',
+              'adds a bookmark for the currently logged in user',
+              'deleteBookmark(projectID: String!)',
+              'deletes a bookmark for the currently logged in user',
+              'editBookmarkCategory(projectID: String!, newCategory: String!)',
+              'edits the category a bookmark is associated with',
+              'renameBookmarkCategory(oldCategory: String!, newCategory: String!)',
+              'renames a category of bookmarks'
+            ]}
+          />
 
           <Paragraph>
             {' '}
@@ -264,14 +284,6 @@ const Docs = () => {
             <br />
             This includes:
           </Paragraph>
-
-          <NormalBulletList
-            items={[
-              '/api: a folder that contains all functionalities to call APIs, like GitHub and openAI',
-              '/scraping: a folder that contains files that do scraping or that call APIs that do scraping',
-              '/githubHistory: a folder that contains all the files associated with the histories for example starHistory or forkHistory'
-            ]}
-          />
 
           <HeaderThree text="repo_job" />
           <Paragraph>

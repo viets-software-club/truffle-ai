@@ -85,7 +85,6 @@ const Docs = () => {
               </Paragraph>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-
             <Image
               className=" h-auto w-48 rounded-lg border border-gray-500/25 shadow-2xl"
               src={Sidebar}

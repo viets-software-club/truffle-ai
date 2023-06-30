@@ -7,6 +7,7 @@ import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 import dbUpdaterWorkflow from '@/assets/Bild1.png'
 import login from '@/assets/LoginPage.png'
 import AddBookmark from '@/assets/AddBookmark.png'
+import AllBookmarks from '@/assets/AllBookmarks.png'
 import Sidebar from '@/assets/Sidebar.png'
 import TrendingProject from '@/assets/TrendingProject.png'
 import ProjectDetails from '@/assets/ProjectDetails.png'
@@ -642,7 +643,7 @@ const Docs = () => {
 
           <HeaderThree text="Right Sidebar" />
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image className={cssClassForSimillarIMG} src={AddBookmark} alt="projectDetails" />
+          <Image className={cssClassForSimillarIMG} src={AddBookmark} alt="addBookmarks" />
 
           <Paragraph>
             The right sidebar provides statistics and social media information about the project and
@@ -659,6 +660,8 @@ const Docs = () => {
           />
 
           <HeaderTwo text="All Bookmarks" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={AllBookmarks} alt="allBookmarks" />
 
           <Paragraph>
             This page gives the user an overview of all projects which were bookmarked regardless of
@@ -666,6 +669,7 @@ const Docs = () => {
           </Paragraph>
 
           <HeaderTwo text="Compare Categories" />
+
           <Paragraph>
             This page helps the user compare projects bookmarked into the same category. The user
             can access this page by clicking on one of the folders on the left, which represents the

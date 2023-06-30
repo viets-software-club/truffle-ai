@@ -6,10 +6,10 @@ import NormalBulletList from '@/components/pure/normalBulletedList'
 import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 import dbUpdaterWorkflow from '@/assets/Bild1.png'
 import login from '@/assets/LoginPage.png'
-
+import AddBookmark from '@/assets/AddBookmark.png'
 import Sidebar from '@/assets/Sidebar.png'
 import TrendingProject from '@/assets/TrendingProject.png'
-
+import ProjectDetails from '@/assets/ProjectDetails.png'
 import Image from 'next/image'
 import NestedBulletList from '@/components/pure/NestedBulletList'
 import Link from '@/components/pure/BasicLink'
@@ -601,6 +601,9 @@ const Docs = () => {
           />
 
           <HeaderTwo text="Project Details" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={ProjectDetails} alt="projectDetails" />
+
           <Paragraph>
             The Project Details page gives the user an in-depth look at an individual project. This
             page presents them with all the necessary information they need to understand the
@@ -638,6 +641,9 @@ const Docs = () => {
           />
 
           <HeaderThree text="Right Sidebar" />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className={cssClassForSimillarIMG} src={AddBookmark} alt="projectDetails" />
+
           <Paragraph>
             The right sidebar provides statistics and social media information about the project and
             its founders:
@@ -653,6 +659,7 @@ const Docs = () => {
           />
 
           <HeaderTwo text="All Bookmarks" />
+
           <Paragraph>
             This page gives the user an overview of all projects which were bookmarked regardless of
             their category.

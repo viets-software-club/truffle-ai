@@ -84,9 +84,10 @@ const Docs = () => {
                 The Bottom section provides access to additional support and settings.
               </Paragraph>
             </div>
-            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+
             <Image
               className="h-auto w-48 rounded-lg border border-gray-500/25 shadow-2xl"
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               src={Sidebar}
               alt="sidebar"
             />

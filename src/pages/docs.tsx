@@ -160,7 +160,7 @@ const Docs = () => {
             Include and describe your Activity Diagram which points out the system behavior.
           </Paragraph>
 
-          <Image src={dbUpdaterWorkflow} alt="boburIsNotGayMAYBE" />
+          <Image src={dbUpdaterWorkflow} alt="dbUpdaterWorklow" />
 
           <Divider />
 

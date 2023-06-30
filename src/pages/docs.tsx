@@ -7,6 +7,7 @@ import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
 import dbUpdaterWorkflow from '@/assets/Bild1.png'
 import Image from 'next/image'
 import NestedBulletList from '@/components/pure/NestedBulletList'
+import Link from '@/components/pure/BasicLink'
 
 const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
 
@@ -165,6 +166,26 @@ const Docs = () => {
 
           <HeaderOne text="System Design" />
           <HeaderTwo text="Overview" />
+          <Paragraph>
+            The application consists of three parts, the <b>user-interface</b>, the backend
+            architecture with its <b>microservices</b> and <b>Supabase</b>. Except for
+            Authentication, all communication between these parts relies on{' '}
+            <Link href="https://graphql.org/">GraphQL</Link>.{' '}
+          </Paragraph>
+          <HeaderThree text="User-Interface (Frontend - truffle.tools)" />
+          <Paragraph>
+            The user-interface of the application is built using React.js. React is a JavaScript
+            library for creating large and complex web user interfaces using reusable components.{' '}
+            <br />
+            To bundle multiple JavaScript files, preload links, improve Time To Interactive,
+            prerender pages and statically optimize them we use Next.js. Next is a framework for
+            building web applications using React and comes with a lot of performance optimizations
+            and its own JavaScript/TypeScript bundler.
+            <br />
+            The application was fully designed in Figma.
+            <br />
+            It is hosted on Vercel’s edge network at the domain truffle.tools.
+          </Paragraph>
           <HeaderThree text="Supabse" />
           <Paragraph>
             Supabase is a Backend as a Service (BaaS) for managing authentication, a Postgre

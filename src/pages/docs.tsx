@@ -119,7 +119,7 @@ const Docs = () => {
       link2: 'https://www.npmjs.com/package/@headlessui/react'
     }
   ]
-  const { src } = dbUpdaterWorkflow
+
   return (
     <Page>
       <div className=" flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
@@ -156,11 +156,12 @@ const Docs = () => {
           <Paragraph>Include and describe your Analysis Object Model here.</Paragraph>
 
           <HeaderTwo text="Activity Diagram" />
+
           <Paragraph>
             Include and describe your Activity Diagram which points out the system behavior.
           </Paragraph>
-
-          <Image src={src} alt="dbUpdaterWorklow" width={100} height={100} />
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image src={dbUpdaterWorkflow} alt="dbUpdaterWorklow" />
 
           <Divider />
 

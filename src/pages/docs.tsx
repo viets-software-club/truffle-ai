@@ -20,7 +20,7 @@ import Image from 'next/image'
 const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" />
 
 const Docs = () => {
-  const cssClassForSimillarIMG = 'h-auto w-1/2  rounded-lg shadow-2xl'
+  const cssClassForSimillarIMG = ' h-auto  w-1/2 rounded-lg border-2 border-gray-500/25 shadow-2xl'
   return (
     <Page>
       <div className=" flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
@@ -395,7 +395,7 @@ const Docs = () => {
           <Divider />
            */}
 
-          <HeaderOne text="User Interface & Features (User Manual)" />
+          <HeaderOne text="User Manual" />
 
           <HeaderTwo text="Login" />
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
@@ -451,7 +451,11 @@ const Docs = () => {
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
 
-            <Image className=" h-auto w-48 rounded-lg shadow-2xl" src={Sidebar} alt="sidebar" />
+            <Image
+              className=" h-auto w-48 rounded-lg border-2 border-gray-500/25 shadow-2xl"
+              src={Sidebar}
+              alt="sidebar"
+            />
           </div>
 
           <HeaderTwo text="Trending Projects" />

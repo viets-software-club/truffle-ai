@@ -20,7 +20,7 @@ const Divider = () => <hr className="my-4 border-b-[0.5px] border-gray-500/10" /
 
 const Docs = () => {
   const cssClassForSimillarIMG =
-    'h-auto w-1/2 min-w-[700px] rounded-lg border border-gray-500/25 shadow-2xl'
+    'h-auto w-1/2 min-w-[700px] max-w-[1119px] rounded-lg border border-gray-500/25 shadow-2xl'
   return (
     <Page>
       <div className="fixed flex h-[60px] w-full flex-row items-center justify-between border-b border-gray-800 bg-gray-900 px-6 opacity-100">
@@ -43,7 +43,7 @@ const Docs = () => {
           </Paragraph>
 
           <div className="flex flex-row justify-start gap-6">
-            <div className="flex w-[900px] flex-col gap-4">
+            <div className="flex w-[900px]  flex-col gap-4">
               <HeaderTwo text="Navbar" />
               <Paragraph>
                 The navigation sidebar of our tool is split into four main sections, providing easy

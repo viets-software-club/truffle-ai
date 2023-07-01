@@ -83,9 +83,10 @@ const Docs = () => {
                 The Bottom section provides access to additional support and settings.
               </Paragraph>
               <HeaderTwo text="Trending Projects" />
-              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+
               <Image
                 className={cssClassForSimillarIMG}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 src={TrendingProject}
                 alt="trendingProjects"
               />

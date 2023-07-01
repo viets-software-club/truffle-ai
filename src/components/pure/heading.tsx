@@ -12,11 +12,16 @@ export const HeaderOne: React.FC<HeaderProps> = ({ text }) => (
 )
 
 export const HeaderTwo: React.FC<HeaderProps> = ({ text }) => (
+  <h2 id={generateHeaderId(text)} className="pb-1 pt-6 text-16 font-semibold text-gray-300">
+    {text}
+  </h2>
+)
+// the first header of the page, the only difference there is no padding to the top for optical purposes
+export const FirstHeaderTwo: React.FC<HeaderProps> = ({ text }) => (
   <h2 id={generateHeaderId(text)} className="pb-1 text-16 font-semibold text-gray-300">
     {text}
   </h2>
 )
-
 export const HeaderThree: React.FC<HeaderProps> = ({ text }) => (
   <h3 id={generateHeaderId(text)} className="pb-1 text-14 font-semibold text-gray-300">
     {text}

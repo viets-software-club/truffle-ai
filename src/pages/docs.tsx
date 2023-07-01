@@ -2,7 +2,7 @@ import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 import Paragraph from '@/components/pure/paragraph'
 import NormalBulletList from '@/components/pure/normalBulletedList'
-import { HeaderOne, HeaderThree, HeaderTwo } from '@/components/pure/heading'
+import { HeaderOne, HeaderThree, HeaderTwo, FirstHeaderTwo } from '@/components/pure/heading'
 import login from '@/assets/LoginPage.png'
 import AllBookmarks from '@/assets/AllBookmarks.png'
 import ComparePage from '@/assets/ComparePage.png'
@@ -23,15 +23,15 @@ const Docs = () => {
     'h-auto w-1/2 min-w-[700px] rounded-lg border border-gray-500/25 shadow-2xl'
   return (
     <Page>
-      <div className=" flex h-[60px] flex-row items-center justify-between border-b border-gray-800 px-6">
+      <div className="fixed flex h-[60px] w-full flex-row items-center justify-between border-b border-gray-800 bg-gray-900 px-6 opacity-100">
         <h1 className="text-20 font-medium">Documentation</h1>
       </div>
-
+      <div className="pt-[60px]" />
       <div className="px-10 py-6">
         <div className="flex flex-col gap-4">
-          <HeaderOne text="User Manual" />
+          <HeaderOne text="Overview of Pages" />
 
-          <HeaderTwo text="Login" />
+          <FirstHeaderTwo text="Login" />
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image className={cssClassForSimillarIMG} src={login} alt="login" />
 
@@ -43,7 +43,7 @@ const Docs = () => {
           </Paragraph>
 
           <div className="flex flex-row justify-start gap-6">
-            <div className="flex flex-col gap-4">
+            <div className="flex w-[900px] flex-col gap-4">
               <HeaderTwo text="Navbar" />
               <Paragraph>
                 The navigation sidebar of our tool is split into four main sections, providing easy
@@ -82,56 +82,60 @@ const Docs = () => {
               <Paragraph>
                 The Bottom section provides access to additional support and settings.
               </Paragraph>
+              <HeaderTwo text="Trending Projects" />
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+              <Image
+                className={cssClassForSimillarIMG}
+                src={TrendingProject}
+                alt="trendingProjects"
+              />
+
+              <Paragraph>
+                As the first screen the user sees after logging into Truffle, the Trending Projects
+                page is designed to provide a comprehensive overview of all currently trending
+                projects by displaying them in a sortable and filterable table. For each project,
+                the user will find the following information organized in columns:
+              </Paragraph>
+
+              <NormalBulletList
+                items={[
+                  'Logo: The logo associated with the project. This could be the organization`s logo or the owner`s avatar.',
+                  'Name: The owning organization or person, and the responsible repository name.',
+                  'Stars: The number of stars the project has received on its repository.',
+                  'Issues: This provides the number of open issues in the project`s repository.',
+                  'Forks: The number of times the project has been forked.',
+                  'Contributors: The number of contributors to the project.',
+                  'Forks/Contributor: The ratio of forks to contributors.',
+                  'Issues/Contributor: The ratio of issues to contributors.',
+                  'Open Pull Requests: The number of open pull requests.'
+                ]}
+              />
+              <Paragraph>
+                The numeric values for each project are color-coded for easy identification of their
+                relative positioning. Values in the top 10% are displayed in light green, the top
+                10-20% in dark green, the bottom 10-20% in dark red, the bottom 10% in light red,
+                and the remaining values in gray.{' '}
+              </Paragraph>
+              <Paragraph>At the top of the page, there are five key functional buttons: </Paragraph>
+              <NormalBulletList
+                items={[
+                  'Select Timeframe: This button allows the user to filter projects based on the timeframe in which they are trending. This can either be "Today", "This week", or "This month".',
+                  'Edit Columns: This button lets the user  customize their viewing experience by activating or deactivating specific columns.',
+                  'Filters: This feature enables the user to add filters to the table for a more focused view. Multiple filters can be active at once.',
+                  'Sorting: Using this, the user can sort the table based on any column, either in ascending or descending order.',
+                  'Add Project: This allows the user to manually add a project to the table, which can be useful when TruffleAI doesn’t automatically detect a trending repository, which the user deems worthy of being displayed here.'
+                ]}
+              />
             </div>
-
-            <Image
-              className="h-auto w-48 rounded-lg border border-gray-500/25 shadow-2xl"
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              src={Sidebar}
-              alt="sidebar"
-            />
+            <div className="pt-8">
+              <Image
+                className="h-auto w-48 rounded-lg border border-gray-500/25 shadow-2xl"
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                src={Sidebar}
+                alt="sidebar"
+              />
+            </div>
           </div>
-
-          <HeaderTwo text="Trending Projects" />
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image className={cssClassForSimillarIMG} src={TrendingProject} alt="trendingProjects" />
-
-          <Paragraph>
-            As the first screen the user sees after logging into Truffle, the Trending Projects page
-            is designed to provide a comprehensive overview of all currently trending projects by
-            displaying them in a sortable and filterable table. For each project, the user will find
-            the following information organized in columns:
-          </Paragraph>
-
-          <NormalBulletList
-            items={[
-              'Logo: The logo associated with the project. This could be the organization`s logo or the owner`s avatar.',
-              'Name: The owning organization or person, and the responsible repository name.',
-              'Stars: The number of stars the project has received on its repository.',
-              'Issues: This provides the number of open issues in the project`s repository.',
-              'Forks: The number of times the project has been forked.',
-              'Contributors: The number of contributors to the project.',
-              'Forks/Contributor: The ratio of forks to contributors.',
-              'Issues/Contributor: The ratio of issues to contributors.',
-              'Open Pull Requests: The number of open pull requests.'
-            ]}
-          />
-          <Paragraph>
-            The numeric values for each project are color-coded for easy identification of their
-            relative positioning. Values in the top 10% are displayed in light green, the top 10-20%
-            in dark green, the bottom 10-20% in dark red, the bottom 10% in light red, and the
-            remaining values in gray.{' '}
-          </Paragraph>
-          <Paragraph>At the top of the page, there are five key functional buttons: </Paragraph>
-          <NormalBulletList
-            items={[
-              'Select Timeframe: This button allows the user to filter projects based on the timeframe in which they are trending. This can either be "Today", "This week", or "This month".',
-              'Edit Columns: This button lets the user  customize their viewing experience by activating or deactivating specific columns.',
-              'Filters: This feature enables the user to add filters to the table for a more focused view. Multiple filters can be active at once.',
-              'Sorting: Using this, the user can sort the table based on any column, either in ascending or descending order.',
-              'Add Project: This allows the user to manually add a project to the table, which can be useful when TruffleAI doesn’t automatically detect a trending repository, which the user deems worthy of being displayed here.'
-            ]}
-          />
 
           <HeaderTwo text="Project Details" />
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}

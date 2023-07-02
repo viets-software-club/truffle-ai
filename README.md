@@ -67,7 +67,7 @@ npm run update-types # updates supabase graphql types
 
 ### repo_job
 
-The repo job service runs a script every day at 2am to get essential data for the app from external sources.
+The repo job service runs a script several times a day that notifies the graphql_server to update all bookmarked repositories.
 <br /><br/>
 To work with all services simultaneously you can use [NPM workspaces](https://docs.npmjs.com/cli/v9/using-npm/workspaces).
 

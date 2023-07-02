@@ -1,5 +1,5 @@
 import { GitHubInfo } from '../types/githubApi'
-import { getContributorCount, getRepoInfo } from './api/githubApi'
+import { getRepoInfo } from './api/githubApi'
 
 /**
  * Calculates time specified by the parameters

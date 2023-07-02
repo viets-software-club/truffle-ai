@@ -1,5 +1,5 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
-import mercurius, { MercuriusContext } from 'mercurius'
+import mercurius from 'mercurius'
 import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
 import supbaseClient from './supabaseClient'

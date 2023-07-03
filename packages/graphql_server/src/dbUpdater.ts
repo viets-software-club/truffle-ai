@@ -19,6 +19,7 @@ import {
 } from './supabaseUtils'
 import { fetchTrendingRepos } from './scraping/githubScraping'
 import { TrendingState } from '../types/updateProject'
+import { ProjectInfo } from '../types/supabaseUtils'
 
 export const automaticDbUpdater = async () => {
   console.log('Auto-DB-updater run at', new Date().toLocaleString())
@@ -92,10 +93,7 @@ export const dailyDbUpdater = async (includeDeletion: boolean) => {
   // here everything that should be updated daily is updated.
   console.log('Updating existing trending and bookmarked projects...')
   for (const project of projectsToBeUpdated) {
-    await updateProjectGithubStats(project.name, project.owner)
-    await updateProjectStarHistory(project.name, project.owner)
-    await updateProjectForkHistory(project.name, project.owner)
-    await updateProjectTweets(project.name, project.owner)
+    await updateProjectDaily(project)
   }
 
   // insert and enrich with data the trending repos
@@ -118,6 +116,17 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
     // if it is in the database already only the trending state has to be updated
     await createProject(name, owner, trendingState)
   }
+}
+
+/**
+ * Updates all stats for a project, that should be updated daily.
+ * @param {ProjectInfo} project - The project to update
+ */
+export const updateProjectDaily = async (project: ProjectInfo) => {
+  await updateProjectGithubStats(project.name, project.owner)
+  await updateProjectStarHistory(project.name, project.owner)
+  await updateProjectForkHistory(project.name, project.owner)
+  await updateProjectTweets(project.name, project.owner)
 }
 
 /**

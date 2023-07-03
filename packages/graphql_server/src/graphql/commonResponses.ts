@@ -22,3 +22,8 @@ export const BAD_URL_RESPONSE = {
 export const INTERNAL_SERVER_ERROR = {
   code: '500'
 }
+
+export const BOOKMARK_ALREADY_EXISTS_RESPONSE = {
+  message: 'You have already bookmarked this project.',
+  code: '409'
+}

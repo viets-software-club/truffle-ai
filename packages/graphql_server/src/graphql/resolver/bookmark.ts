@@ -3,6 +3,7 @@ import {
   checkAndUpdateProjectBookmarkedState,
   insertBookmark
 } from '../../supabaseUtils'
+import { BOOKMARK_ALREADY_EXISTS_RESPONSE } from '../commonResponses'
 
 /**
  * Bookmarks a projects for a user.
@@ -14,10 +15,7 @@ import {
 // projects can be bookmarked even if not trending, f.e. if they are added manually
 export const addBookmark = async (userID: string, projectID: string, category: string) => {
   if (await bookmarkIsAlreadyInDB(userID, projectID)) {
-    return {
-      message: 'This bookmark is already in the database.',
-      code: '409'
-    }
+    return BOOKMARK_ALREADY_EXISTS_RESPONSE
   }
 
   const insertionError = await insertBookmark(projectID, userID, category)

@@ -1,3 +1,5 @@
+import { PostgrestError } from '@supabase/supabase-js'
+import { updateProjectDaily } from '../../dbUpdater'
 import supabaseClient from '../../supabaseClient'
 import {
   getOrganizationID,
@@ -30,7 +32,9 @@ export const addProject = async (
       return INTERNAL_SERVER_ERROR
     }
 
-    // it should be checked in addBookmark whether the project data needs to be updated as well
+    // no await so that the return happens faster
+    void checkIfProjectNeedsToBeUpdated(projectID, repoName, owner)
+
     const response = await addBookmark(userID, projectID, bookmarkCategory)
     if (response.code === '201') {
       return {
@@ -66,5 +70,37 @@ export const addProject = async (
         message: 'The project was added and bookmarked. We are fetching data for it now.'
       }
     }
+  }
+}
+
+/**
+ * Checks if a project needs to be updated and updates it if necessary.
+ * @param {string} projectID - The ID of the project in question.
+ * @param {string} repoName - The name of the repo.
+ * @param {string} owner - The name of the owner of the repo.
+ * @returns {null | PostgrestError} - Returns null if the project was updated, or a PostgrestError if there were Problems.
+ */
+const checkIfProjectNeedsToBeUpdated = async (
+  projectID: string,
+  repoName: string,
+  owner: string
+) => {
+  const { data: project, error } = await supabaseClient
+    .from('project')
+    .select('is_trending_daily, is_trending_weekly, is_trending_monthly, is_bookmarked')
+    .eq('id', projectID)
+    .single()
+
+  if (error) {
+    return error
+  }
+
+  if (
+    !project.is_trending_daily &&
+    !project.is_trending_weekly &&
+    !project.is_trending_monthly &&
+    !project.is_bookmarked
+  ) {
+    await updateProjectDaily({ name: repoName, owner })
   }
 }

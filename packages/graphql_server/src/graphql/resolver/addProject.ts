@@ -6,7 +6,7 @@ import {
   repoIsAlreadyInDB
 } from '../../supabaseUtils'
 import { updateAllProjectInfo } from '../../updateProject'
-import { REPO_ALREADY_IN_DB_RESPOSE } from '../commonResponses'
+import { INTERNAL_SERVER_ERROR, REPO_ALREADY_IN_DB_RESPONSE } from '../commonResponses'
 import { addBookmark } from './bookmark'
 
 /**
@@ -25,7 +25,21 @@ export const addProject = async (
   bookmarkCategory: string
 ) => {
   if (await repoIsAlreadyInDB(repoName, owner)) {
-    return REPO_ALREADY_IN_DB_RESPOSE
+    const projectID = await getProjectID(repoName, owner)
+    if (!projectID) {
+      return INTERNAL_SERVER_ERROR
+    }
+
+    // it should be checked in addBookmark whether the project data needs to be updated as well
+    const response = await addBookmark(userID, projectID, bookmarkCategory)
+    if (response.code === '201') {
+      return {
+        code: '200',
+        message: 'The project was already in the database. We bookmarked it for you.'
+      }
+    }
+
+    return response
   } else {
     const { error: insertionError } = await supabaseClient.from('project').insert({
       name: repoName,

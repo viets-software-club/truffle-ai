@@ -10,6 +10,8 @@ import {
  * @param {string} projectID - The project ID of the project in question.
  * @param {string} category - The category the bookmark should be added to.
  */
+// @TODO: if the project is not trending or bookmarked the data should be updated, because it might be stale
+// projects can be bookmarked even if not trending, f.e. if they are added manually
 export const addBookmark = async (userID: string, projectID: string, category: string) => {
   if (await bookmarkIsAlreadyInDB(userID, projectID)) {
     return {

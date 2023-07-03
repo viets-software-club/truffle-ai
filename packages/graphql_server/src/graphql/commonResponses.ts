@@ -1,4 +1,4 @@
-export const REPO_ALREADY_IN_DB_RESPOSE = {
+export const REPO_ALREADY_IN_DB_RESPONSE = {
   message: 'This repo is already in the database.',
   code: '409'
 }
@@ -17,4 +17,8 @@ export const BOOKMARK_DOES_NOT_EXIST_RESPONSE = {
 export const BAD_URL_RESPONSE = {
   message: 'The URL you provided is not valid.',
   code: '400'
+}
+
+export const INTERNAL_SERVER_ERROR = {
+  code: '500'
 }

@@ -76,8 +76,8 @@ spec:
   ports:
     - name: graphql-server
       protocol: TCP
-      port: 3002
-      targetPort: 3002
+      port: <GRAPHQL-SERVER-PORT>
+      targetPort: <GRAPHQL-SERVER-PORT>
 ---
 apiVersion: batch/v1
 kind: CronJob

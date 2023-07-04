@@ -79,6 +79,7 @@ void app.get('/updateDatabase', async (_request, _reply) => {
 })
 
 void app.get('/test', async (request, reply) => {
+  console.log('test endpoint called')
   await reply.send({ test: 'successful' })
 })
 

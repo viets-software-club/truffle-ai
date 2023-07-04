@@ -66,6 +66,41 @@ spec:
   selector:
     app: truffle-ai-deployment
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: truffle-ai-graphql-server-service
+spec:
+  selector:
+    app: truffle-ai-deployment
+  ports:
+    - name: graphql-server
+      protocol: TCP
+      port: <GRAPHQL-SERVER-PORT>
+      targetPort: <GRAPHQL-SERVER-PORT>
+---
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: truffle-ai-repo-cronjob
+# spec:
+#   timeZone: 'Europe/Berlin'
+#   # Todo: change minutes back to 0
+#   schedule: '* * * * *'
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#             - name: truffle-ai-repo-cronjob
+#               image: <REPO-JOB-IMAGE>
+#               envFrom:
+#                 - configMapRef:
+#                     name: repo-job-config
+#                 - secretRef:
+#                     name: repo-job-secret
+#           restartPolicy: OnFailure
+
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -80,10 +115,9 @@ spec:
         spec:
           containers:
             - name: truffle-ai-repo-cronjob
-              image: <REPO-JOB-IMAGE>
-              envFrom:
-                - configMapRef:
-                    name: repo-job-config
-                - secretRef:
-                    name: repo-job-secret
+              image: buildpack-deps:curl
+              args:
+                - /bin/sh
+                - -ec
+                - curl http://truffle-ai-graphql-server-service:<GRAPHQL-SERVER-PORT>/test
           restartPolicy: OnFailure

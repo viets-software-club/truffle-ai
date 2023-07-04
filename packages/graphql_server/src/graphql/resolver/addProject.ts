@@ -1,4 +1,3 @@
-import { PostgrestError } from '@supabase/supabase-js'
 import { updateProjectDaily } from '../../dbUpdater'
 import supabaseClient from '../../supabaseClient'
 import {
@@ -8,7 +7,7 @@ import {
   repoIsAlreadyInDB
 } from '../../supabaseUtils'
 import { updateAllProjectInfo } from '../../updateProject'
-import { INTERNAL_SERVER_ERROR, REPO_ALREADY_IN_DB_RESPONSE } from '../commonResponses'
+import { INTERNAL_SERVER_ERROR } from '../commonResponses'
 import { addBookmark } from './bookmark'
 
 /**

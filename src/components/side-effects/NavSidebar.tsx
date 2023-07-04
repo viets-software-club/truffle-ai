@@ -8,7 +8,7 @@ import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 const renderFooter = () => (
   <>
     <Sidebar.Section.Item Icon={FiSettings} text="Settings" path="/settings" />
-    <Sidebar.Section.Item Icon={FiBookOpen} text="Help & Support" path="/docs" />
+    <Sidebar.Section.Item Icon={FiBookOpen} text="Documentation" path="/docs" />
   </>
 )
 

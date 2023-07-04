@@ -28,7 +28,6 @@ export {
   updateProjectForkHistory,
   updateProjectFounders,
   updateProjectGithubStats,
-  updateProjectLinkedInData,
   updateProjectSentiment,
   updateProjectStarHistory,
   updateProjectTrendingState,
@@ -204,6 +203,7 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
 
 /**
  * Updates all columns of organization that are populated with data that come from linkedIN
+ * Currently not used. The data is not displayed anywhere, hence we cancled the plan.
  * @param {string} organizationHandle - The login of the organization.
  */
 const updateProjectLinkedInData = async (organizationHandle: string) => {

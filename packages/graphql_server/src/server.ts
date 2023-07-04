@@ -78,9 +78,4 @@ void app.get('/updateDatabase', async (_request, _reply) => {
   await automaticDbUpdater()
 })
 
-void app.get('/test', async (request, reply) => {
-  console.log('test endpoint called')
-  await reply.send({ test: 'successful' })
-})
-
 export default app

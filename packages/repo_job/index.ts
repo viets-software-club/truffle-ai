@@ -7,11 +7,9 @@ setTimeout(() => {
   //   .get((process.env.SERVER_URL as string) + '/updateDatabase')
   //   .then((response) => console.log(response.data))
 
-  void axios
-    .post(process.env.SERVER_GRAPHQL_URL as string, { query: '{ helloWorld }' })
-    .then((response) => {
-      console.log(response.data)
-    })
+  void axios.post('http://127.0.0.1:3002/graphql', { query: '{ helloWorld }' }).then((response) => {
+    console.log(response.data)
+  })
 
   // void axios
   //   .get((process.env.SERVER_URL as string) + '/test')

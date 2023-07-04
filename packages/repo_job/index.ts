@@ -13,7 +13,7 @@ setTimeout(() => {
       console.log(response.data)
     })
 
-  void axios
-    .get((process.env.SERVER_URL as string) + '/test')
-    .then((response) => console.log(response.data))
+  // void axios
+  //   .get((process.env.SERVER_URL as string) + '/test')
+  //   .then((response) => console.log(response.data))
 }, 10000)

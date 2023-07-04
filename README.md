@@ -3,47 +3,49 @@
 ## Getting Started
 
 You can run the application locally using NodeJS or Docker.<br />
-For **development purposes** we recommend using [NodeJS](https://nodejs.org/), for **production** we recommend using [Docker](https://www.docker.com/products/docker-desktop/) with [Kubernetes](https://kubernetes.io/).
+For **development** we recommend using [NodeJS](https://nodejs.org/), for **production** we recommend using [Docker](https://www.docker.com/products/docker-desktop/) with [Kubernetes](https://kubernetes.io/).
 
-**Important**<br />
-Before continuing make sure you have set up the [environment variables](#environment-variables), for Docker in a file called `.env` and for NodeJS in a file called `.env.dev`
+**Important - Environment variables**
+
+> Before continuing make sure you have set up the [environment variables](#environment-variables), for Docker in a file called `.env` and for NodeJS in a file called `.env.dev`
 
 ### Running the app locally with Docker (production)
 
 We recommend you to install [Docker](https://www.docker.com/products/docker-desktop/) for production.<br />
-To build all Docker images and serve them in containers with `docker-compose`, run
+To build all Docker images and serve them in containers, run
 
 ```
+cd truffle-ai-backend # go to project
 docker compose up
 ```
 
-in a terminal.<br />Your production ready images should now be created and served locally. You can run them in a Kubernetes cluster, see `./config/deployment.template.yml` for configuration.
+Your production ready images will now be created and served locally. You can run them in a Kubernetes cluster, see [config/deployment.template.yml](./config/deployment.template.yml) for configuration.
 
 ### Developing & Building the app with NodeJS
 
 To get started with the development of the application, install [NodeJS](https://nodejs.org/).<br />
-Then run the following in a terminal
+Then run the following in a terminal to install all dependencies.
 
 ```zsh
-cd truffle-ai-backend # project root
+cd truffle-ai-backend # go to project
 npm ci # install dependencies
 ```
 
-to install all dependencies.<br /><br />
+<br />
 To run the application in development mode, run
 
 ```zsh
 npm run dev:services # dev mode
 ```
 
-To build and serve the application with NodeJS run
+To build and serve the application with NodeJS, run
 
 ```zsh
 npm run build:services # builds the app
 npm run serve # serve the app
 ```
 
-## Services and Jobs
+## Packages
 
 The project consists of three [microservices](./packages)
 
@@ -65,7 +67,7 @@ npm run update-types # updates supabase graphql types
 
 ### repo_job
 
-The repo job service runs a script every day at 2am to get essential data for the app from external sources.
+The repo job service runs a script several times a day that notifies the graphql_server to update all bookmarked repositories.
 <br /><br/>
 To work with all services simultaneously you can use [NPM workspaces](https://docs.npmjs.com/cli/v9/using-npm/workspaces).
 
@@ -88,7 +90,7 @@ npm run job # starts all jobs
 
 npm run test # check your files format and lint them
 npm run format # format all your files with Pettier
-npm run lint # lint your files with ESLintr
+npm run lint # lint your files with ESLint
 
 docker compose build # builds the Docker containers
 docker compose up # builds and runs created Docker containers
@@ -109,6 +111,10 @@ SERVER_PORT # port number
 SERVER_URL # url to graphql_server
 SERVER_GRAPHQL_URL # url to graphql route on graphql-server
 NODE_ENV # development|production
+GITHUB_API_URL # github api url
 GITHUB_API_TOKEN # github api token
 OPENAI_API_KEY # openAI api key
+SCRAPING_BOT_API_KEY
+SCRAPING_BOT_USER_NAME
+SCRAPING_BOT_API_ENDPOINT
 ```

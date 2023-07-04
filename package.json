@@ -23,9 +23,9 @@
     "job:repo_job": "npm run start -w repo_job",
     "test": "npm run format:check && npm run lint",
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
-    "lint": "eslint ./packages/**",
-    "lint:debug": "eslint ./packages/** --debug",
-    "lint:fix": "eslint ./packages/** --fix",
+    "lint": "eslint ./packages/** --no-error-on-unmatched-pattern",
+    "lint:debug": "eslint ./packages/** --debug --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint ./packages/** --fix --no-error-on-unmatched-pattern",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -37,7 +37,7 @@
   "lint-staged": {
     "*.{js,ts}": [
       "prettier --write",
-      "eslint"
+      "eslint --no-error-on-unmatched-pattern"
     ],
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },

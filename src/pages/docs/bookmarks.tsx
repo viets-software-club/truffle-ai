@@ -9,6 +9,8 @@ const BookmarksDocs = () => (
   <DocsPageWrapper>
     <Heading type="h1">All bookmarks</Heading>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={AllBookmarks.src} alt="All bookmarks page" />
 
     <Paragraph>

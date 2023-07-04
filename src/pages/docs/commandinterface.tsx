@@ -16,6 +16,8 @@ const CIDocs = () => (
       between key pages even faster.
     </Paragraph>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={CommandInterface.src} alt="Command Interface" />
 
     <Paragraph>

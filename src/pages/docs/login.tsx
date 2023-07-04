@@ -14,6 +14,8 @@ const LoginDocs = () => (
       being logged in, they will be prompted to log in by this screen:
     </Paragraph>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={LoginPage.src} alt="Login page" />
 
     <Paragraph>

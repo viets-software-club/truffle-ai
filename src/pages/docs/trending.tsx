@@ -10,6 +10,8 @@ const SidebarDocs = () => (
   <DocsPageWrapper>
     <Heading type="h1">Trending projects</Heading>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={TrendingProject.src} alt="Trending projects page" />
 
     <Paragraph>

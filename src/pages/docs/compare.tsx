@@ -10,6 +10,8 @@ const CompareDocs = () => (
   <DocsPageWrapper>
     <Heading type="h1">Compare projects</Heading>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={ComparePage.src} alt="Compare page" />
 
     <Paragraph>

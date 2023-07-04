@@ -10,6 +10,8 @@ const DetailsDocs = () => (
   <DocsPageWrapper>
     <Heading type="h1">Project details</Heading>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={ProjectDetails.src} alt="projectDetails" />
 
     <Paragraph>

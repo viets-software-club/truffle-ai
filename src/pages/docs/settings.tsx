@@ -14,6 +14,8 @@ const CompareDocs = () => (
       The settings page is divided into three sections: General, Account, and Integrations.
     </Paragraph>
 
+    {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
+    {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
     <Image src={Settings.src} alt="Settings page" />
 
     <Heading type="h2">General</Heading>

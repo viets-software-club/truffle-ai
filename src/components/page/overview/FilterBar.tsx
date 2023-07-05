@@ -62,6 +62,8 @@ const FilterBar = ({
     [filters, updateFilters]
   )
 
+  const { hasNextPage, hasPreviousPage } = pageInfo
+
   return (
     <div className="fixed top-[60px] z-10 flex w-11/12 flex-row justify-between border-b border-gray-800 bg-gray-900 px-6 py-2.5 pr-28">
       <div className="flex flex-row gap-3">
@@ -78,7 +80,7 @@ const FilterBar = ({
 
       {/* Row count */}
       <div className="flex flex-row items-center">
-        {totalEntries > 1 && (
+        {totalEntries > 1 && (hasNextPage || hasPreviousPage) && (
           <div className="mr-2 flex gap-3">
             <Button
               disabled={!pageInfo.hasPreviousPage}

@@ -5,13 +5,17 @@ import Button from '@/components/pure/Button'
 import Input from '@/components/pure/Input'
 import { useAddProjectByUrlMutation } from '@/graphql/generated/gql'
 
+const defaultSuccessMessage =
+  'Project added successfully! Please give us a few minutes to fetch all the data.'
+const defaultErrorMessage = 'Failed to add project. Please make sure to provide a valid GitHub URL.'
+
 /**
  * Add project modal
  */
 const AddProject = () => {
   const [open, setOpen] = useState<boolean>(false)
-  const [success, setSuccess] = useState<boolean>(false)
-  const [error, setError] = useState<boolean>(false)
+  const [success, setSuccess] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [projectUrl, setProjectUrl] = useState<string>('')
   const [category, setCategory] = useState<string>('')
 
@@ -21,16 +25,17 @@ const AddProject = () => {
   const addProject = async () => {
     try {
       const res = await addProjectByUrlMutation({ url: projectUrl, category })
+      const responseCode = parseInt(res?.data?.addProjectByUrl?.code as string, 10)
 
       // If the mutation was successful, show success message
-      if (res?.data?.addProjectByUrl?.code === '201') {
-        setSuccess(true)
+      if (responseCode >= 200 && responseCode < 300) {
+        setSuccess(res?.data?.addProjectByUrl?.message || defaultSuccessMessage)
       } else {
         // Otherwise, show error message
-        throw new Error('Failed to add project')
+        setError(res?.data?.addProjectByUrl?.message || defaultErrorMessage)
       }
     } catch (e) {
-      setError(true)
+      setError(defaultErrorMessage)
     }
   }
 
@@ -39,8 +44,8 @@ const AddProject = () => {
     e.preventDefault()
 
     // Reset success and error states
-    setError(false)
-    setSuccess(false)
+    setError(null)
+    setSuccess(null)
 
     // If the project URL or category is empty, don't submit
     if (projectUrl.length === 0 || category.length === 0) return
@@ -116,18 +121,10 @@ const AddProject = () => {
                 </div>
 
                 {/* Success message */}
-                {success && (
-                  <p className="text-sm text-green-500">
-                    Project added successfully! Please give us a few minutes to fetch all the data.
-                  </p>
-                )}
+                {success && <p className="text-sm text-green-500">{success}</p>}
 
                 {/* Error message */}
-                {error && (
-                  <p className="text-sm text-red-500">
-                    Failed to add project. Please make sure to provide a valid GitHub URL.
-                  </p>
-                )}
+                {error && <p className="text-sm text-red-500">{error}</p>}
 
                 <div className="flex w-full justify-end">
                   <Button

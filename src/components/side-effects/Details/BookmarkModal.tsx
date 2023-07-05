@@ -8,6 +8,8 @@ import {
   useEditBookmarkCategoryMutation
 } from '@/graphql/generated/gql'
 
+const defaultErrorMessage = 'Something went wrong. Please try again later.'
+
 type BookmarkModalProps = {
   open: boolean
   toggleModal: () => void
@@ -26,7 +28,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   refetch
 }) => {
   const [newCategory, setNewCategory] = useState<string>(category)
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const [{ fetching: fetchingAdd }, addBookmarkMutation] = useAddBookmarkMutation()
   const [{ fetching: fetchingDelete }, deleteBookmarkMutation] = useDeleteBookmarkMutation()
@@ -36,29 +38,34 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   // Sends mutation that adds a project to a category or edits the category of a bookmark
   const addOrEditBookmark = async () => {
     try {
+      // Don't do anything if the category is the same or empty
+      if (newCategory === category || newCategory.length === 0) return
+
       if (isBookmarked) {
         const res = await editBookmarkCategoryMutation({ projectID, newCategory })
+        const responseCode = parseInt(res?.data?.editBookmarkCategory?.code as string, 10)
 
         // If the mutation was successful, show success message
-        if (res?.data?.editBookmarkCategory?.code === '204') {
+        if (responseCode >= 200 && responseCode < 300) {
           refetch()
         } else {
           // Otherwise, show error message
-          throw new Error('Failed to bookmark project')
+          setError(res?.data?.editBookmarkCategory?.message || defaultErrorMessage)
         }
       } else {
         const res = await addBookmarkMutation({ projectID, category: newCategory })
+        const responseCode = parseInt(res?.data?.addBookmark?.code as string, 10)
 
         // If the mutation was successful, show success message
-        if (res?.data?.addBookmark?.code === '201') {
+        if (responseCode >= 200 && responseCode < 300) {
           refetch()
         } else {
           // Otherwise, show error message
-          throw new Error('Failed to update category')
+          setError(res?.data?.addBookmark?.message || defaultErrorMessage)
         }
       }
     } catch (e) {
-      setError(true)
+      setError(defaultErrorMessage)
     }
   }
 
@@ -66,16 +73,17 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const deleteBookmark = async () => {
     try {
       const res = await deleteBookmarkMutation({ projectID })
+      const responseCode = parseInt(res?.data?.deleteBookmark?.code as string, 10)
 
       // If the mutation was successful, show success message
-      if (res?.data?.deleteBookmark?.code === '204') {
+      if (responseCode >= 200 && responseCode < 300) {
         refetch()
       } else {
         // Otherwise, show error message
-        throw new Error('Failed to delete bookmark')
+        setError(res?.data?.deleteBookmark?.message || defaultErrorMessage)
       }
     } catch (e) {
-      setError(true)
+      setError(defaultErrorMessage)
     }
   }
 
@@ -88,7 +96,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
     e.preventDefault()
 
     // Reset success and error states
-    setError(false)
+    setError(null)
 
     // Add or save bookmark
     void addOrEditBookmark()
@@ -96,7 +104,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
 
   const handleDelete = () => {
     // Reset success and error states
-    setError(false)
+    setError(null)
 
     // Delete bookmark
     void deleteBookmark()
@@ -138,11 +146,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
               <Input placeholder="Category" value={newCategory} onChange={handleChange} />
 
               {/* Error message */}
-              {error && (
-                <p className="text-sm text-red-500">
-                  Something went wrong. Please try again later.
-                </p>
-              )}
+              {error && <p className="text-sm text-red-500">{error}</p>}
 
               <div
                 className={`flex w-full items-center ${

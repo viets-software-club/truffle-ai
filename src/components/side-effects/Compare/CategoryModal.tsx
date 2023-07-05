@@ -4,6 +4,8 @@ import Button from '@/components/pure/Button'
 import Input from '@/components/pure/Input'
 import { useRenameBookmarkCategoryMutation } from '@/graphql/generated/gql'
 
+const defaultErrorMessage = 'Something went wrong. Please try again later.'
+
 type CategoryModalProps = {
   open: boolean
   category: string
@@ -13,7 +15,7 @@ type CategoryModalProps = {
 
 const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, redirect }) => {
   const [newCategory, setNewCategory] = useState<string>(category)
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const [{ fetching }, renameBookmarkCategoryMutation] = useRenameBookmarkCategoryMutation()
 
@@ -21,16 +23,17 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
   const renameBookmarkCategory = async () => {
     try {
       const res = await renameBookmarkCategoryMutation({ oldCategory: category, newCategory })
+      const responseCode = parseInt(res?.data?.renameBookmarkCategory?.code as string, 10)
 
       // If the mutation was successful, show success message
-      if (res?.data?.renameBookmarkCategory?.code === '204') {
+      if (responseCode >= 200 && responseCode < 300) {
         redirect(newCategory)
       } else {
         // Otherwise, show error message
-        throw new Error('Failed to rename category')
+        setError(res?.data?.renameBookmarkCategory?.message || defaultErrorMessage)
       }
     } catch (e) {
-      setError(true)
+      setError(defaultErrorMessage)
     }
   }
 
@@ -43,7 +46,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
     e.preventDefault()
 
     // Reset success and error states
-    setError(false)
+    setError(null)
 
     // Don't do anything if the category is the same or empty
     if (newCategory === category || newCategory.length === 0) return
@@ -88,11 +91,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
               <Input placeholder="Category" value={newCategory} onChange={handleChange} />
 
               {/* Error message */}
-              {error && (
-                <p className="text-sm text-red-500">
-                  Something went wrong. Please try again later.
-                </p>
-              )}
+              {error && <p className="text-sm text-red-500">{defaultErrorMessage}</p>}
 
               <div className="flex w-full items-center justify-end">
                 {/* Submit button */}

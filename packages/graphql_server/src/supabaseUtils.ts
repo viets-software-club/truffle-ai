@@ -691,21 +691,17 @@ const updateSupabaseProject = async (
  * @param {string} projectID - The project ID of the project in question.
  */
 const checkAndUpdateProjectBookmarkedState = async (projectID: string) => {
-  console.log('Checking bookmarked state of project with ID', projectID)
   const { data: bookmarkEntries, error } = await supabaseClient
     .from('bookmark')
     .select('*')
     .eq('project_id', projectID)
 
-  console.log('bookmarkentries:', bookmarkEntries)
   if (error) {
     console.error('Error while checking bookmarked state: \n', error)
   } else if (!bookmarkEntries?.[0]) {
-    console.log('changing to false')
     await supabaseClient.from('project').update({ is_bookmarked: false }).eq('id', projectID)
     // check if there is a bookmark entry
   } else if (bookmarkEntries?.[0]) {
-    console.log('changing to true')
     await supabaseClient.from('project').update({ is_bookmarked: true }).eq('id', projectID)
   }
 }

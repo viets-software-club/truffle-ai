@@ -52,7 +52,6 @@ const updateAllProjectInfo = async (
   await updateProjectGithubStats(repoName, owner)
   await updateProjectELI5(repoName, owner)
   await updateProjectFounders(repoName, owner)
-  await updateProjectLinkedInData(owner)
   await updateProjectSentiment(repoName, owner)
   await updateProjectStarHistory(repoName, owner)
   await updateProjectForkHistory(repoName, owner)
@@ -349,7 +348,6 @@ const updateProjectTweets = async (repoName: string, owner: string) => {
     return
   }
 
-  //@Todo: get real fork history -> waiting for jonas' PR to be merged
   const tweets = await getPostsForHashtag(repoName)
 
   await updateSupabaseProject(repoName, owner, { related_twitter_posts: tweets })

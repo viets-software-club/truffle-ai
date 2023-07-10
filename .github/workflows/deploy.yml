@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - BACK-95
     paths:
       - 'packages/**'
       - '.github/workflows/**'

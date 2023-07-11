@@ -85,7 +85,7 @@ metadata:
   name: truffle-ai-repo-cronjob
 spec:
   timeZone: 'Europe/Berlin'
-  schedule: '0 * * * *'
+  schedule: '10 * * * *'
   jobTemplate:
     spec:
       template:

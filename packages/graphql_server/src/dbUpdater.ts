@@ -30,12 +30,12 @@ export const automaticDbUpdater = async () => {
   const currentDayOfWeek = currentDate.getDay()
 
   // Check if it's 4am on Sunday
-  if (currentHour === 4 && currentMinutes < 5 && currentDayOfWeek === 0) {
+  if (currentHour === 4 && currentDayOfWeek === 0) {
     await dailyDbUpdater(true)
     return
   }
   // Check if it's 4am on any other day of the week
-  if (currentHour === 4 && currentMinutes < 5) {
+  if (currentHour === 4) {
     await dailyDbUpdater(false)
     return
   }

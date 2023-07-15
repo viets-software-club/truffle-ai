@@ -25,7 +25,6 @@ export const automaticDbUpdater = async () => {
   console.log('Auto-DB-updater run at', new Date().toLocaleString())
 
   const currentDate = new Date()
-  const currentMinutes = currentDate.getMinutes()
   const currentHour = currentDate.getHours()
   const currentDayOfWeek = currentDate.getDay()
 

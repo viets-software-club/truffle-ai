@@ -287,7 +287,7 @@ const updateProjectStarHistory = async (repoName: string, owner: string) => {
   if (!(await repoIsAlreadyInDB(repoName, owner))) {
     return
   }
-  const MAX_NUMBER_OF_REQUESTS = 25 // this is also roughly the number of star history data points
+  const MAX_NUMBER_OF_REQUESTS = 10 // this is also roughly the number of star history data points
   try {
     const starHistory = await getRepoStarRecords(
       owner + '/' + repoName,

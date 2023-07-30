@@ -28,6 +28,18 @@ export const automaticDbUpdater = async () => {
   const currentHour = currentDate.getHours()
   const currentDayOfWeek = currentDate.getDay()
 
+  // fork histories are updated at 3am to not hit GitHub REST API limits
+  // it is ugly to put this here from a separation of concerns perspective, but should just serve as a functional fix for now
+  // fork History updating functionality was removed from the dailyDbUpdater function
+  if (currentHour === 3) {
+    const projectsToBeUpdated = await getTrendingAndBookmarkedProjects()
+
+    console.log('updating fork histories...')
+    for (const project of projectsToBeUpdated) {
+      await updateProjectForkHistory(project.name, project.owner)
+    }
+  }
+
   // Check if it's 4am on Sunday
   if (currentHour === 4 && currentDayOfWeek === 0) {
     await dailyDbUpdater(true)
@@ -118,13 +130,12 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
 }
 
 /**
- * Updates all stats for a project, that should be updated daily.
+ * Updates all stats for a project, that should be updated daily. Fork histories are updated separately to safe API calls
  * @param {ProjectInfo} project - The project to update
  */
 export const updateProjectDaily = async (project: ProjectInfo) => {
   await updateProjectGithubStats(project.name, project.owner)
   await updateProjectStarHistory(project.name, project.owner)
-  await updateProjectForkHistory(project.name, project.owner)
   await updateProjectTweets(project.name, project.owner)
 }
 

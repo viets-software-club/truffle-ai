@@ -1,0 +1,9 @@
+query ProjectIds($orderBy: ProjectOrderBy!, $filter: ProjectFilter!) {
+  projectCollection(filter: $filter, orderBy: [$orderBy]) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}

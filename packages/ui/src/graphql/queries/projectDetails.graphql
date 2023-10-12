@@ -1,0 +1,51 @@
+query ProjectDetails($id: UUID) {
+  projectCollection(filter: { id: { eq: $id } }) {
+    edges {
+      node {
+        id
+        name
+        about
+        eli5
+        starCount
+        issueCount
+        forkCount
+        pullRequestCount
+        contributorCount
+        languages
+        githubUrl
+        websiteUrl
+        starHistory
+        owningPerson
+        owningOrganization
+        hackernewsSentiment
+        hackernewsStories
+        relatedTwitterPosts
+        forkHistory
+        categories
+        associatedPerson {
+          id
+          name
+          login
+          avatarUrl
+          email
+          githubUrl
+          twitterUsername
+          repositoryCount
+          websiteUrl
+        }
+        organization {
+          id
+          login
+          avatarUrl
+          email
+          githubUrl
+          twitterUsername
+          repositoryCount
+          websiteUrl
+        }
+        issuesPerContributor
+        forksPerContributor
+      }
+    }
+  }
+}

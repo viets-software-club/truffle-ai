@@ -1,0 +1,27 @@
+serve:
+  endpoint: /graphql
+  playground: true
+  port: 3001
+sources:
+  - name: Supabase
+    handler:
+      graphql:
+        endpoint: '{env.SUPABASE_GRAPHQL_URL}'
+        operationHeaders:
+          apiKey: '{env.SUPABASE_API_KEY}'
+          Content-Type: application/json
+          Authorization: '{context.headers["authorization"]}'
+        schemaHeaders:
+          apiKey: '{env.SUPABASE_API_KEY}'
+          Content-Type: application/json
+          Authorization: '{context.headers["authorization"]}'
+  - name: Server
+    handler:
+      graphql:
+        endpoint: '{env.SERVER_GRAPHQL_URL}'
+        source: ./../graphql_server/src/graphql/schema.ts
+        operationHeaders:
+          Authorization: '{context.headers["authorization"]}'
+        schemaHeaders:
+          Authorization: '{context.headers["authorization"]}'
+additionalEnvelopPlugins: './src/envelopPlugins'

@@ -1,0 +1,9 @@
+.husky
+node_modules
+.env*
+dist
+.mesh
+.DS_Store
+.eslintcache
+playground.ts
+envs.yaml

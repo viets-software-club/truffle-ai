@@ -17,7 +17,7 @@ const Sidebar = ({ sections, activeSection, onClick }: SidebarProps) => {
   return (
     <div className="fixed left-0 top-0 h-full w-56 overflow-auto border-r border-gray-800 px-4">
       <Link href="/">
-        <div className="flex flex-row items-center py-4 text-20 text-gray-500">
+        <div className="text-20 flex flex-row items-center py-4 text-gray-500">
           <FiChevronLeft className="mr-2" />
           <h2 className="font-medium text-white">Settings</h2>
         </div>
@@ -25,7 +25,7 @@ const Sidebar = ({ sections, activeSection, onClick }: SidebarProps) => {
 
       {Object.entries(sections).map(([heading, subSections]) => (
         <div key={heading}>
-          <div className="flex flex-row items-center py-4 text-12 text-gray-500">
+          <div className="text-12 flex flex-row items-center py-4 text-gray-500">
             <div className="mr-2">{icons[heading]}</div>
             <h2 className="font-medium uppercase">{heading}</h2>
           </div>

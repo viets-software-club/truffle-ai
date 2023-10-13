@@ -1,5 +1,5 @@
-import { HistoryType, ForksData, StargazersData, IssueData } from './types'
 import axios, { AxiosResponse } from 'axios'
+import { HistoryType, ForksData, StargazersData } from './types'
 
 const DEFAULT_PER_PAGE = 30
 // utility functions used by currently just the star-history.ts file
@@ -107,7 +107,7 @@ export async function getHistoryPages(
  * @throws {object} Throws an error object if the request fails or the repository has none of the parameter
  */
 export async function getPageCount(repo: string, token: string, historyType: HistoryType) {
-  let patchRes: AxiosResponse<StargazersData[] | ForksData[] | IssueData[]>
+  let patchRes: AxiosResponse<StargazersData[] | ForksData[]>
 
   if (historyType === 'star') {
     patchRes = await getRepoPage(repo, token, 'star')
@@ -153,9 +153,7 @@ export async function getRepoPage(
   historyType: HistoryType,
   page?: number,
   direction?: string
-): Promise<
-  AxiosResponse<ForksData[]> | AxiosResponse<IssueData[]> | AxiosResponse<StargazersData[]>
-> {
+): Promise<AxiosResponse<ForksData[]> | AxiosResponse<StargazersData[]>> {
   let url = ''
   let accept = ''
   if (historyType == 'fork') {

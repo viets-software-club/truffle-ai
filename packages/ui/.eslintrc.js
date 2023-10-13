@@ -23,6 +23,12 @@ module.exports = require('../../packages/config/eslint')({
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react-hooks/exhaustive-deps': 'off'
   },
+  ignorePatterns: [
+    'next.config.js',
+    'postcss.config.js',
+    'tailwind.config.js',
+    'src/graphql/generated/*.ts'
+  ],
   env: {
     browser: true
   },

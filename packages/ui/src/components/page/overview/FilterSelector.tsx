@@ -21,7 +21,7 @@ const FilterSelector: FC<FilterSelectorProps> = ({ filters, addFilter }) => (
     <MenuItemsTransition>
       <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
         {filters && Object.keys(filters).length >= filterOptions.length && (
-          <p className="py-1 pl-2 text-14">No more filters can be applied.</p>
+          <p className="text-14 py-1 pl-2">No more filters can be applied.</p>
         )}
 
         {filters &&
@@ -31,7 +31,7 @@ const FilterSelector: FC<FilterSelectorProps> = ({ filters, addFilter }) => (
               <Menu.Item
                 as="button"
                 key={key}
-                className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                className="text-14 flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-gray-100 hover:bg-gray-600"
                 onClick={() => addFilter(key, type)}
               >
                 {key === 'name' ? (

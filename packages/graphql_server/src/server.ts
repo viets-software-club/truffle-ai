@@ -1,10 +1,11 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import mercurius from 'mercurius'
+import { UserResponse } from '@supabase/supabase-js'
 import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
 import supbaseClient from './supabaseClient'
-import { UserResponse } from '@supabase/supabase-js'
 import { automaticDbUpdater } from './dbUpdater'
+
 const ENV = process.env.NODE_ENV || 'development'
 
 const envToLogger = {
@@ -60,7 +61,6 @@ type PromiseType<T> = T extends PromiseLike<infer U> ? U : T
 // extends the MercuriusContext with the return type of buildContext
 // I feel like the linting error is a bug
 declare module 'mercurius' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface MercuriusContext extends PromiseType<ReturnType<typeof buildContext>> {}
 }
 
@@ -74,7 +74,7 @@ void app.register(mercurius, {
   graphiql: true // see http://localhost:3001/graphiql
 })
 
-void app.get('/updateDatabase', async (_request, _reply) => {
+void app.get('/updateDatabase', async (): Promise<void> => {
   await automaticDbUpdater()
 })
 

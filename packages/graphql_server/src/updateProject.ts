@@ -3,7 +3,6 @@ import {
   getPersonID,
   getProjectID,
   updateSupabaseProject,
-  formatLinkedInCompanyData,
   repoIsAlreadyInDB,
   formatGithubStats,
   getProjectAbout
@@ -12,7 +11,6 @@ import { getContributorCount, getRepoFounders, getRepositoryTopics } from './api
 import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
-import { getCompanyInfosFromLinkedIn } from './scraping/linkedInScraping'
 import { getRepoStarRecords } from './githubHistory/starHistory'
 import { getGithubData } from './utils'
 import { GitHubInfo, ProjectFounder } from '../types/githubApi'
@@ -198,45 +196,6 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
   } else {
     console.log('Updated github stats for ', name, 'owned by', owner)
   }
-}
-
-/**
- * Updates all columns of organization that are populated with data that come from linkedIN
- * Currently not used. The data is not displayed anywhere, hence we cancled the plan.
- * @param {string} organizationHandle - The login of the organization.
- */
-const updateProjectLinkedInData = async (organizationHandle: string) => {
-  // check if repo is owned by an organization
-  const { data: supabaseOrga } = await supabaseClient
-    .from('organization')
-    .select('id, linkedin_url')
-    .eq('login', organizationHandle)
-  // if owning_organization is null then the project is owned by an user and no linkedIn data is fetched
-  // if the linkedIn url is not null then this means that the linkedIn data was already fetched
-  // we need to save API tokens so we don't want to fetch the data again
-  if (!supabaseOrga || supabaseOrga?.[0]?.linkedin_url) {
-    return false
-  }
-
-  // otherwise get the linkedIn data
-  // please leave the console.log for now. We have to be super cautious with API tokens and I
-  // want to see whenever this function is called
-  console.log('Fetching linkedIn data for organization', organizationHandle, '...')
-  const linkedinData = await getCompanyInfosFromLinkedIn(organizationHandle)
-  if (!linkedinData?.name) {
-    console.log('No linkedIn data found for organization', organizationHandle)
-    return false
-  }
-
-  // insert the formatted info
-  const { error: updateError } = await supabaseClient
-    .from('organization')
-    .update(formatLinkedInCompanyData(linkedinData))
-    .eq('login', organizationHandle)
-
-  // if no error occured the insert was successful
-  console.log('Updated linkedIn data for ', organizationHandle)
-  return !updateError
 }
 
 /**

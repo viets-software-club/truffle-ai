@@ -29,7 +29,7 @@ const TimeFrameSelector: FC<TimeFrameSelectorProps> = ({
             as="button"
             key={timeFrame}
             onClick={() => handleChange(timeFrame)}
-            className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+            className="text-14 min-w-[150px] rounded-[5px] p-2 text-left text-gray-100 hover:bg-gray-600"
           >
             {label}
           </Menu.Item>

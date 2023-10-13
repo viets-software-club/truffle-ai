@@ -14,13 +14,13 @@ type InformationRowProps = {
  * @returns {React.Element} The information row element.
  */
 const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
-  <div className="flex flex-row items-center p-2 text-14 font-normal transition-colors duration-100 hover:bg-gray-850">
+  <div className="text-14 hover:bg-gray-850 flex flex-row items-center p-2 font-normal transition-colors duration-100">
     <h4 className="text-14">{name}</h4>
 
     {tags.map(({ id, name: tagName }) => (
       <span
         key={id}
-        className="mx-1 block rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-light text-gray-300"
+        className="bg-gray-850 text-12 mx-1 block rounded-[5px] px-2 py-0.5 font-light text-gray-300"
       >
         {tagName}
       </span>

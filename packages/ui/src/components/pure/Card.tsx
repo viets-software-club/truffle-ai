@@ -36,7 +36,7 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
       </div>
 
       {variant === twitterVariant && (
-        <div className="max-h-[270px] overflow-auto scrollbar-hide">
+        <div className="scrollbar-hide max-h-[270px] overflow-auto">
           {tweets?.map((tweet) => (
             <div key={tweet.id} className="mb-4 border-b border-gray-800 px-4 pb-4">
               <a href={tweet.tweetUrl} target="_blank" rel="noopener noreferrer">
@@ -49,7 +49,7 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
                   </p>
                 </div>
 
-                <p className="my-2 text-14 font-light text-gray-300">{tweet.text}</p>
+                <p className="text-14 my-2 font-light text-gray-300">{tweet.text}</p>
 
                 <div className="flex items-center justify-start space-x-3">
                   <span className="flex items-center space-x-1 text-sm text-gray-500">
@@ -67,7 +67,7 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
           ))}
 
           {!tweets?.length && (
-            <div className="px-4 pb-4 text-14 font-light text-gray-300">
+            <div className="text-14 px-4 pb-4 font-light text-gray-300">
               No tweets found for this project
             </div>
           )}

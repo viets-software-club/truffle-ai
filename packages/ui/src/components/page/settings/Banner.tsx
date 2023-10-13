@@ -22,7 +22,7 @@ const Banner = ({ message, variant }: BannerProps) => {
 
   return isVisible ? (
     <div
-      className={`fixed bottom-4 right-4 z-30 rounded-[5px] border ${variantClasses[variant]} px-5 py-3 text-14 font-medium text-white`}
+      className={`fixed bottom-4 right-4 z-30 rounded-[5px] border ${variantClasses[variant]} text-14 px-5 py-3 font-medium text-white`}
     >
       {message}
     </div>

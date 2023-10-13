@@ -158,7 +158,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
                       as="button"
                       key={metric}
                       onClick={() => setSelectedMetric(metric)}
-                      className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                      className="text-14 min-w-[150px] rounded-[5px] p-2 text-left text-gray-100 hover:bg-gray-600"
                     >
                       {metric}
                     </Menu.Item>
@@ -184,7 +184,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
                       as="button"
                       key={option.label}
                       onClick={handleTimeframeChange(option.value)}
-                      className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+                      className="text-14 min-w-[150px] rounded-[5px] p-2 text-left text-gray-100 hover:bg-gray-600"
                     >
                       {option.label}
                     </Menu.Item>

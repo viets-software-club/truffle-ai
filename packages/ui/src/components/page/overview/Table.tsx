@@ -17,7 +17,7 @@ const Table = ({ table }: TableProps) => (
           {headerGroup.headers.map((header) => (
             <th
               key={header.id}
-              className="pb-2 text-left text-12 font-medium uppercase text-gray-500"
+              className="text-12 pb-2 text-left font-medium uppercase text-gray-500"
             >
               {header.isPlaceholder
                 ? null

@@ -6,7 +6,7 @@ import withAuth from '@/components/side-effects/withAuth'
 const Docs = () => (
   <Page>
     <div className="fixed z-10 flex h-[60px] w-full items-center gap-4 border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500">
-      <Heading type="h2" className="pt-0">
+      <Heading type="h2" className="!pt-0">
         Documentation
       </Heading>
     </div>

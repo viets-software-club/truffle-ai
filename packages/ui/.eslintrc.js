@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = require('../../packages/config/eslint')({
   extends: [
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
@@ -19,12 +19,12 @@ module.exports = {
         unnamedComponents: 'arrow-function'
       }
     ],
+    'import/extensions': ['error', { tsx: 'never' }],
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react-hooks/exhaustive-deps': 'off'
   },
   env: {
-    browser: true,
-    node: false
+    browser: true
   },
   globals: {
     process: true
@@ -34,4 +34,4 @@ module.exports = {
       version: '18'
     }
   }
-}
+})

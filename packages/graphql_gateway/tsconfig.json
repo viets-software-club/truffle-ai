@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../packages/config/tsconfig/index.json",
   "compilerOptions": {
     "module": "commonjs",
     "typeRoots": ["./node_modules/@types", "./types"],

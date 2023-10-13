@@ -1,5 +1,5 @@
 {
-  "name": "truffle-ai-backend",
+  "name": "truffle-ai",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -25,7 +25,7 @@
     "job": "concurrently -n repo_job -c blue 'npm run job:repo_job'",
     "job:repo_job": "npm run start -w repo_job",
     "test": "npm run format:check && npm run lint",
-    "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; ln -fs $PWD/.env.local ./packages/ui/.env.local; fi;",
     "lint": "eslint ./packages/** --no-error-on-unmatched-pattern",
     "lint:debug": "eslint ./packages/** --debug --no-error-on-unmatched-pattern",
     "lint:fix": "eslint ./packages/** --fix --no-error-on-unmatched-pattern",
@@ -46,10 +46,10 @@
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
-    "@typescript-eslint/parser": "^5.59.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "concurrently": "^8.0.1",
-    "eslint": "^8.39.0",
+    "eslint": "^8.51.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
@@ -57,5 +57,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

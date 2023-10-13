@@ -37,6 +37,12 @@ var baseConfig = {
   }
 }
 
+function customizer(objValue, srcValue) {
+  if (_.isArray(objValue)) {
+    return objValue.concat(srcValue)
+  }
+}
+
 module.exports = function (config) {
-  return _.merge(baseConfig, config)
+  return _.mergeWith(baseConfig, config, customizer)
 }

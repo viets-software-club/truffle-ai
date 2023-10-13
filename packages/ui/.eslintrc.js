@@ -1,9 +1,5 @@
 module.exports = {
-  root: true,
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'next/core-web-vitals',
@@ -14,8 +10,7 @@ module.exports = {
     'plugin:tailwindcss/recommended',
     'plugin:jsx-a11y/strict'
   ],
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'sonarjs', 'jsx-a11y'],
-  parser: '@typescript-eslint/parser',
+  plugins: ['react', 'react-hooks', 'jsx-a11y'],
   rules: {
     'react/function-component-definition': [
       'error',
@@ -25,14 +20,7 @@ module.exports = {
       }
     ],
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
-    'import/extensions': ['error', { tsx: 'never' }],
-    'no-shadow': 'off',
-    'react-hooks/exhaustive-deps': 'off',
-    '@typescript-eslint/no-shadow': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
-    // see for no-undef https://typescript-eslint.io/linting/troubleshooting/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-    'no-undef': 'off',
-    'no-void': ['error', { allowAsStatement: true }]
+    'react-hooks/exhaustive-deps': 'off'
   },
   env: {
     browser: true,
@@ -44,12 +32,6 @@ module.exports = {
   settings: {
     react: {
       version: '18'
-    }
-  },
-  parserOptions: {
-    project: ['./tsconfig.json'],
-    ecmaFeatures: {
-      jsx: true
     }
   }
 }

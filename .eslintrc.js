@@ -12,11 +12,20 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'sonarjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./packages/*/tsconfig.json'],
+    project: ['./tsconfig.base.json', './packages/*/tsconfig.json'],
+    ecmaFeatures: {
+      jsx: true
+    },
     tsconfigRootDir: __dirname
   },
   rules: {
-    'import/no-unresolved': 'error'
+    'import/no-unresolved': 'error',
+    'import/extensions': ['error', { tsx: 'never' }],
+    'no-shadow': 'off',
+    'no-undef': 'off',
+    'no-void': ['error', { allowAsStatement: true }],
+    '@typescript-eslint/no-shadow': 'error',
+    '@typescript-eslint/no-unused-vars': 'error'
   },
   settings: {
     'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
@@ -29,10 +38,5 @@ module.exports = {
         extensions: ['.ts']
       }
     }
-  },
-  env: {
-    browser: false,
-    node: true
-  },
-  root: true
+  }
 }

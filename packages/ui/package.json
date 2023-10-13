@@ -1,16 +1,15 @@
 {
   "name": "truffle-ai-frontend",
-  "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "serve": "next start",
     "codegen": "export $(cat .env.local | grep -v \"#\" | xargs) && graphql-codegen --config codegen.config.ts",
     "lint": "eslint ./src",
     "lint:debug": "eslint ./src --debug",
     "lint:fix": "eslint ./src --fix",
-    "prepare": "husky install",
     "prettier:all": "prettier --write .",
     "prettier:check": "prettier --check .",
     "react:update-react-imports": "npx react-codemod update-react-imports"
@@ -65,11 +64,6 @@
     "prettier-plugin-tailwindcss": "^0.2.8",
     "typescript": "^5.0.4"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint"
-    ],
-    "*.{html,css,scss,sass,md,mdx}": "prettier --write"
-  }
+  "types": "./index.d.ts",
+  "description": "Truffle AI is a tool helping VC analysts find early stage tech companies by collecting traces founders leave on the internet. This repository contains the frontend application for it, which was built using Next.js."
 }

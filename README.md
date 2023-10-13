@@ -18,29 +18,30 @@ Install the [recommended VS Code extensions](./.vscode/extensions.json) for the 
 
 The project consists of four microservices:
 
-### [`graphql_gateway`](./packages/graphql_gateway/)
+### `graphql_gateway`
 
 Composes multiple GraphQL schemas into one superschema and redirects all queries to the corresponding service, either a [postgraphile Supabase](https://supabase.com/blog/graphql-now-available) or the [graphql_server](./packages/graphql_server).
 
-### [`graphql_server`](./packages/graphql_server/)
+### `graphql_server`
 
 Sets up a [Fastify](https://www.fastify.io/) server which runs [Mercurius](https://mercurius.dev/#/) to host a GraphQL schema. It is used to build our own GraphQL schemas and contains all business logic.
 
 Make sure to set the `jwt` cookie before trying to access the gateway.
 
-### [`repo_job`](./packages/repo_job/)
+### `repo_job`
 
 Consists of a simple cron job that is run in a specified time interval and notifies the graphql_server to update all bookmarked repositories.
 
-### [`ui`](./packages/ui/)
+### `ui`
 
 Contains the frontend of Truffle AI, a [Next.js](https://nextjs.org/) application using [TailwindCSS](https://tailwindcss.com/) for styling and [urql](https://github.com/urql-graphql/urql) as GraphQL client.
 
 ## Important commands
 
+### General
+
 Note: services are served continuously and jobs are run once.
 
-### General
 ```zsh
 npm ci # installs all dependencies from package-lock.json
 npm run prepare # installs pre-commit hook (running lint-staged on staged files)
@@ -67,11 +68,9 @@ docker compose up # builds and runs created Docker containers
 
 You can use [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to run specialized commands of the individual packages from the root directory.
 
-Here are a few examples:
-
 ```zsh
 npm run dev -w ui # starts the frontend dev server
 npm run codegen -w ui # generates types and hooks for new GraphQL queries in the ui package
 npm run update-types -w graphql_server # updates Supabase GraphQL types in graphql server
 npm run react:update-react-imports -w ui # removes redundant import statements of 'react' in components
-``````
+```

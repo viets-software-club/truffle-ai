@@ -6,9 +6,9 @@ Truffle AI is a platform helping VC analysts find early stage tech startups. It 
 
 You can run the application locally using NodeJS or Docker. We recommend using [NodeJS](https://nodejs.org/) for development and [Docker](https://www.docker.com/products/docker-desktop/) with [Kubernetes](https://kubernetes.io/) for production.
 
-Make sure to set up the correct environment variables before starting to develop and build.
-- Create a file called `.env.dev` for NodeJS or `.env` for Docker Compose in the root directory for the backend services.
-- Create a file called `.env.local` in the ui package for the frontend application.
+Make sure to set up the correct environment variables before starting to develop and build:
+- Create `.env.dev` for NodeJS or `.env` for Docker Compose in the root directory for the backend services
+- Create `.env.local` in the ui package for the frontend application
 
 Refer to the respective `.env.example` files for a list of all required variables.
 
@@ -16,30 +16,25 @@ Install the [recommended VS Code extensions](./.vscode/extensions.json) for the 
 
 ## Packages
 
-The project consists of four [microservices](./packages):
+The project consists of four microservices:
 
-- [graphql_gateway](./packages/graphql_gateway/)
-- [graphql_server](./packages/graphql_server/)
-- [repo_job](./packages/repo_job/)
-- [ui](./packages/ui/)
-
-### graphql_gateway
+### [`graphql_gateway`](./packages/graphql_gateway/)
 
 Composes multiple GraphQL schemas into one superschema and redirects all queries to the corresponding service, either a [postgraphile Supabase](https://supabase.com/blog/graphql-now-available) or the [graphql_server](./packages/graphql_server).
 
-### graphql_server
+### [`graphql_server`](./packages/graphql_server/)
 
 Sets up a [Fastify](https://www.fastify.io/) server which runs [Mercurius](https://mercurius.dev/#/) to host a GraphQL schema. It is used to build our own GraphQL schemas and contains all business logic.
 
 Make sure to set the `jwt` cookie before trying to access the gateway.
 
-### repo_job
+### [`repo_job`](./packages/repo_job/)
 
 Consists of a simple cron job that is run in a specified time interval and notifies the graphql_server to update all bookmarked repositories.
 
-### ui
+### [`ui`](./packages/ui/)
 
-Contains the frontend of Truffle AI, namely a [Next.js](https://nextjs.org/) application using [TailwindCSS](https://tailwindcss.com/) for styling and [urql](https://github.com/urql-graphql/urql) as GraphQL client.
+Contains the frontend of Truffle AI, a [Next.js](https://nextjs.org/) application using [TailwindCSS](https://tailwindcss.com/) for styling and [urql](https://github.com/urql-graphql/urql) as GraphQL client.
 
 ## Important commands
 
@@ -70,7 +65,9 @@ docker compose up # builds and runs created Docker containers
 
 ### Package specific
 
-You can use [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to run specialized commands of the individual packages from the root directory. Here are a few examples:
+You can use [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to run specialized commands of the individual packages from the root directory.
+
+Here are a few examples:
 
 ```zsh
 npm run dev -w ui # starts the frontend dev server

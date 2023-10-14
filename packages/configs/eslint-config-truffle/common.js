@@ -19,8 +19,7 @@ module.exports = {
     '.mesh',
     '.dockerignore',
     '.husky',
-    '.eslintrc.js',
-    '!**/packages/configs/tsconfig/index.json'
+    '.eslintrc.js'
   ],
   rules: {
     'import/no-unresolved': 'error',

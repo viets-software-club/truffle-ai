@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/configs/tsconfig/index.json",
+  "extends": "ts-config-truffle/index.json",
   "compilerOptions": {
     "module": "commonjs",
     "typeRoots": ["./node_modules/@types", "./types"],

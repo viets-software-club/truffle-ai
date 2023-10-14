@@ -25,7 +25,6 @@
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
     "date-fns": "^2.30.0",
-    "eslint-config-truffle": "file:../configs/eslint-config-truffle",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "next": "^13.5.4",
@@ -41,10 +40,11 @@
     "sharp": "^0.32.6",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.2",
-    "ts-config-truffle": "file:../configs/ts-config-truffle",
     "urql": "^4.0.4"
   },
   "devDependencies": {
+    "eslint-config-truffle": "file:../configs/eslint-config-truffle",
+    "ts-config-truffle": "file:../configs/ts-config-truffle",
     "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-operations": "^3.0.4",

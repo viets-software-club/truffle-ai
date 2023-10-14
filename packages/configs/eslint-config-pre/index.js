@@ -1,7 +1,5 @@
 var path = require('path')
-var _ = require('lodash')
-var baseConfig = {
-  root: false,
+module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -25,7 +23,9 @@ var baseConfig = {
     'no-shadow': 'off',
     'no-undef': 'off',
     'no-unused-vars': 'off',
-    'no-void': ['error', { allowAsStatement: true }]
+    'no-void': ['error', { allowAsStatement: true }],
+    '@typescript-eslint/no-shadow': 'error',
+    '@typescript-eslint/no-unused-vars': 'error'
   },
   settings: {
     'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
@@ -37,12 +37,12 @@ var baseConfig = {
   }
 }
 
-function customizer(objValue, srcValue) {
-  if (_.isArray(objValue)) {
-    return objValue.concat(srcValue)
-  }
-}
+// function customizer(objValue, srcValue) {
+//   if (_.isArray(objValue)) {
+//     return objValue.concat(srcValue)
+//   }
+// }
 
-module.exports = function (config) {
-  return _.mergeWith(baseConfig, config, customizer)
-}
+// module.exports = function (config) {
+//   return _.mergeWith(baseConfig, config, customizer)
+// }

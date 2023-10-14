@@ -1,14 +1,15 @@
-module.exports = require('../../packages/config/eslint')({
+var path = require('path')
+module.exports = {
   extends: [
+    'truffle/pre',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'next/core-web-vitals',
     'airbnb',
     'plugin:react/jsx-runtime',
-    'prettier',
-    'plugin:sonarjs/recommended',
     'plugin:tailwindcss/recommended',
-    'plugin:jsx-a11y/strict'
+    'plugin:jsx-a11y/strict',
+    'truffle/post'
   ],
   plugins: ['react', 'react-hooks', 'jsx-a11y'],
   rules: {
@@ -30,7 +31,8 @@ module.exports = require('../../packages/config/eslint')({
     'src/graphql/generated/*.ts'
   ],
   env: {
-    browser: true
+    browser: true,
+    node: false
   },
   globals: {
     process: true
@@ -40,4 +42,4 @@ module.exports = require('../../packages/config/eslint')({
       version: '18'
     }
   }
-})
+}

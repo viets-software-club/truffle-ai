@@ -25,6 +25,7 @@
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
     "date-fns": "^2.30.0",
+    "eslint-config-truffle": "file:../configs/eslint-config-truffle",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "next": "^13.5.4",
@@ -58,6 +59,5 @@
     "prettier-plugin-tailwindcss": "^0.2.8",
     "typescript": "^5.0.4"
   },
-  "types": "./index.d.ts",
-  "description": "Truffle AI is a tool helping VC analysts find early stage tech companies by collecting traces founders leave on the internet. This repository contains the frontend application for it, which was built using Next.js."
+  "types": "./index.d.ts"
 }

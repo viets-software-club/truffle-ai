@@ -1,6 +1,7 @@
-module.exports = require('../../packages/config/eslint')({
+module.exports = {
+  extends: 'truffle',
   env: {
     browser: false,
     node: true
   }
-})
+}

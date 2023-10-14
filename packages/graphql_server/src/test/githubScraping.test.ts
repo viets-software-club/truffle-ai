@@ -19,8 +19,8 @@ import * as hackernews from '../scraping/hackerNewsScraping'
  * You need to add the process.env.OPenai_API_KEY because it needs to be used
  *
  */
-export async function main(timeMode: timeMode, firstNRepos: number) {
-  const trendingSplit: string[] | undefined = await githubScraping.fetchTrendingRepos(timeMode)
+export async function main(timeMode2: timeMode, firstNRepos: number) {
+  const trendingSplit: string[] | undefined = await githubScraping.fetchTrendingRepos(timeMode2)
   // your personal GitHub authToken
   const authToken: string = process.env.GITHUB_API_TOKEN
   // your personal OpenAI API Key

@@ -1,3 +1,5 @@
+var common = require('./common')
 module.exports = {
-  extends: ['./post', './pre'].map(require.resolve)
+  root: true,
+  ignorePatterns: common.ignorePatterns
 }

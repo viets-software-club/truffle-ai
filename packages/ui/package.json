@@ -41,6 +41,7 @@
     "sharp": "^0.32.6",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.2",
+    "ts-config-truffle": "file:../configs/ts-config-truffle",
     "urql": "^4.0.4"
   },
   "devDependencies": {

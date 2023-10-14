@@ -6,10 +6,22 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:import/recommended',
-    'plugin:import/typescript'
+    'plugin:import/typescript',
+    'plugin:sonarjs/recommended',
+    'prettier'
   ],
   plugins: ['@typescript-eslint', 'import', 'sonarjs'],
-  ignorePatterns: ['.eslintrc.js', 'dist', 'node_modules', '.mesh', '.dockerignore', '.husky'],
+  ignorePatterns: [
+    '**/packages/configs/**',
+    '.eslintrc.js',
+    'dist',
+    'node_modules',
+    '.mesh',
+    '.dockerignore',
+    '.husky',
+    '.eslintrc.js',
+    '!**/packages/configs/tsconfig/index.json'
+  ],
   rules: {
     'import/no-unresolved': 'error',
     'no-shadow': 'off',
@@ -29,10 +41,8 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    ecmaVersion: 9,
     project: ['./packages/*/tsconfig.json'],
-    tsconfigRootDir: path.join(__dirname, '../../..'),
-    ecmaFeatures: {
-      jsx: true
-    }
+    tsconfigRootDir: path.join(__dirname, '../../..')
   }
 }

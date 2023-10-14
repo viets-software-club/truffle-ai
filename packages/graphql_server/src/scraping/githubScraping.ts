@@ -69,9 +69,9 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
  * @param {string} timeMode describes the timeframe; 'daily' | 'weekly' | 'monthly'
  * @returns   list of {name: 'NAME', username: 'USERNAME', repo: 'REPO'}
  */
-export async function fetchTrendingDevelopers(timeMode: timeMode) {
+export async function fetchTrendingDevelopers(timeMode2: timeMode) {
   await axios
-    .get('https://github.com/trending/developers?since=' + timeMode)
+    .get('https://github.com/trending/developers?since=' + timeMode2)
     .then((response: { data: string | Buffer }) => {
       const htmlC = cheerio.load(response.data)
       const developers: Developer[] = []

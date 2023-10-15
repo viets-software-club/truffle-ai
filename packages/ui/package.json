@@ -43,8 +43,8 @@
     "urql": "^4.0.4"
   },
   "devDependencies": {
-    "@truffle/eslint-config-base": "file:../config/eslint-config-base",
-    "@truffle/ts-config-base": "file:../config/ts-config-base",
+    "@truffle/eslint-config-base": "0.0.1",
+    "@truffle/ts-config-base": "0.0.1",
     "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-operations": "^3.0.4",

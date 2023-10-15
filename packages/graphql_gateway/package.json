@@ -23,8 +23,8 @@
     "cookie": "^0.5.0"
   },
   "devDependencies": {
-    "@truffle/eslint-config-base": "file:../config/eslint-config-base",
-    "@truffle/ts-config-base": "file:../config/ts-config-base",
+    "@truffle/eslint-config-base": "0.0.1",
+    "@truffle/ts-config-base": "0.0.1",
     "@types/cookie": "^0.5.1"
   }
 }

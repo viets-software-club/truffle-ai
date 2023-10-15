@@ -47,7 +47,7 @@ jobs:
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG}
           COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header)
-          node $GITHUB_WORKSPACE/.github/init-deployment.js
+          node $GITHUB_WORKSPACE/packages/configs/deployment/index.js
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
       - name: Verify deployment

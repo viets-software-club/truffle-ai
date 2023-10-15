@@ -24,8 +24,8 @@
     "showdown": "^2.1.0"
   },
   "devDependencies": {
-    "@truffle/eslint-config-base": "file:../config/eslint-config-base",
-    "@truffle/ts-config-base": "file:../config/ts-config-base",
+    "@truffle/eslint-config-base": "0.0.1",
+    "@truffle/ts-config-base": "0.0.1",
     "@types/node": "^18.16.3",
     "@types/showdown": "^2.0.1",
     "concurrently": "^8.0.1",

@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const deploymentFile = path.join(__dirname, '../config/deployment.yml')
+const deploymentFile = path.join(__dirname, '../../../config/deployment.yml')
 try {
   const data = fs
     .readFileSync(deploymentFile, 'utf8')

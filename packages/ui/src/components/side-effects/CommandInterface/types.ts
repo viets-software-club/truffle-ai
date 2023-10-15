@@ -2,11 +2,11 @@ export type RecommendationRowType = {
   Icon?: IconComponentType | null
   menuText: string
   pageRestriction: string | null
-  isIdPrimary?: boolean | false
+  isIdPrimary?: boolean
   subtitle?: string | null
-  isProjectPrimary?: boolean | false
+  isProjectPrimary?: boolean
   commandInterfaceOptions: string
   shortcutKey: string | null
-  needConfirmation?: boolean | false
-  hide?: boolean | false
+  needConfirmation?: boolean
+  hide?: boolean
 }

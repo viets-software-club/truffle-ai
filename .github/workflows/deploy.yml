@@ -3,18 +3,17 @@ on:
   push:
     branches:
       - main
+      - staging
     paths:
       - 'packages/**'
       - '.github/workflows/**'
-      - '.github/init-deployment.js'
-      - 'config/deployment.template.yml'
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Checkout main
-        uses: actions/checkout@main
+      - name: Checkout $GITHUB_REF
+        uses: actions/checkout@v4
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -36,7 +35,7 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 truffle-ai-cluster
       - name: Create deployment.yml from deployment.template.yml and add environment variables
-        run: envsubst < $GITHUB_WORKSPACE/config/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
+        run: envsubst < $GITHUB_WORKSPACE/packages/configs/deployment/deployment.template.yml > $GITHUB_WORKSPACE/config/deployment.yml
       - uses: actions/setup-node@v3
       - name: Update values in deployment file
         run: >
@@ -48,7 +47,7 @@ jobs:
           REPO_JOB_IMAGE=registry.digitalocean.com/truffle-ai-containers/truffle-ai-repo-job:${COMMIT_TAG}
           COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
           CERTIFICATE_ID=$(doctl compute certificate list --format ID --no-header)
-          node $GITHUB_WORKSPACE/.github/init-deployment.js
+          node $GITHUB_WORKSPACE/packages/configs/deployment/index.js
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
       - name: Verify deployment

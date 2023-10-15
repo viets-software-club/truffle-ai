@@ -7,9 +7,9 @@ import { Developer, DeveloperRepo, timeMode } from '../../types/githubScraping'
  * @param {string} timeMode shoud be 'daily', 'weekly' or 'monthly' => timescope of the trending page
  * @returns {string[]} an array that stores alternatingly the owner and the name of each repo: [owner1, repo1, owner2, repo2]
  */
-export async function fetchTrendingRepos(timeMode: timeMode) {
+export async function fetchTrendingRepos(timeMode2: timeMode) {
   const response: AxiosResponse<string> = await axios.get(
-    `https://github.com/trending?since=${timeMode}`
+    `https://github.com/trending?since=${timeMode2}`
   )
   const html = cheerio.load(response.data)
   const repos: string[] = []
@@ -69,9 +69,9 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
  * @param {string} timeMode describes the timeframe; 'daily' | 'weekly' | 'monthly'
  * @returns   list of {name: 'NAME', username: 'USERNAME', repo: 'REPO'}
  */
-export async function fetchTrendingDevelopers(timeMode: timeMode) {
+export async function fetchTrendingDevelopers(timeMode2: timeMode) {
   await axios
-    .get('https://github.com/trending/developers?since=' + timeMode)
+    .get('https://github.com/trending/developers?since=' + timeMode2)
     .then((response: { data: string | Buffer }) => {
       const htmlC = cheerio.load(response.data)
       const developers: Developer[] = []

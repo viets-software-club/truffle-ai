@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "$npm_package_config_env_dev && mesh dev",
     "build": "$npm_package_config_env_dev && mesh build",
-    "serve": "$npm_package_config_env_dev && mesh start"
+    "serve": "$npm_package_config_env_dev && mesh start",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@envelop/core": "^3.0.6",
@@ -22,6 +23,8 @@
     "cookie": "^0.5.0"
   },
   "devDependencies": {
+    "@truffle/eslint-config-base": "0.0.1",
+    "@truffle/ts-config-base": "0.0.1",
     "@types/cookie": "^0.5.1"
   }
 }

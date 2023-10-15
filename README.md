@@ -7,10 +7,9 @@ Truffle AI is a platform helping VC analysts find early stage tech startups. It 
 You can run the application locally using NodeJS or Docker. We recommend using [NodeJS](https://nodejs.org/) for development and [Docker](https://www.docker.com/products/docker-desktop/) with [Kubernetes](https://kubernetes.io/) for production.
 
 Make sure to set up the correct environment variables before starting to develop and build:
-- Create `.env.dev` for NodeJS or `.env` for Docker Compose in the root directory for the backend services
-- Create `.env.local` in the ui package for the frontend application
 
-Refer to the respective `.env.example` files for a list of all required variables.
+- Create `.env` in the root directory (refer to `.env.example` for a list of all required variables)
+- Run `npm run prepare` to create a symlink for .env in the ui package
 
 Install the [recommended VS Code extensions](./.vscode/extensions.json) for the best development experience.
 
@@ -44,21 +43,24 @@ Note: services are served continuously and jobs are run once.
 
 ```zsh
 npm ci # installs all dependencies from package-lock.json
-npm run prepare # installs pre-commit hook (running lint-staged on staged files)
+npm run prepare # installs pre-commit hook (running lint-staged on staged files) and creates symlink for .env in ui package
 
 npm run dev # starts all services and jobs in dev mode
 npm run dev:jobs # starts all jobs in dev mode
 npm run dev:services # starts all services in dev mode
+npm run dev:backend # starts graphql_gateway, graphql_server and repo_job in dev mode
 
 npm run build # builds all services and jobs
 npm run build:jobs # builds all jobs
 npm run build:services # builds all services
-npm run serve # serves all built services
-npm run job # starts all jobs
+npm run build:backend # builds graphql_gateway, graphql_server and repo_job
+npm run serve # serves all previously built services
+npm run jobs # starts all jobs
 
-npm run test # checks code for formatting errors and run lint
-npm run format # formats code with Pettier
-npm run lint # lints code with ESLint
+npm run prettier:check # checks all packages for formatting issues with Prettier
+npm run prettier:fix # automatically fixes formatting issues in all packages with Pettier
+npm run lint # lints all packages with ESLint
+npm run test # runs prettier:check and lint
 
 docker compose build # builds Docker containers
 docker compose up # builds and runs created Docker containers

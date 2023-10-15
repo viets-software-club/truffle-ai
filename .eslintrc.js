@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['truffle']
+  extends: ['@truffle/eslint-config-base']
 }

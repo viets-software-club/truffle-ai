@@ -1,5 +1,6 @@
 {
-  "name": "tsconfig-truffle",
+  "name": "@truffle/eslint-config-truffle",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

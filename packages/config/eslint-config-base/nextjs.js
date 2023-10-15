@@ -2,6 +2,7 @@ var common = require('./common')
 
 module.exports = {
   ...common,
+  root: true,
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',

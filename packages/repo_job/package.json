@@ -12,8 +12,8 @@
     "start": "$npm_package_config_env_dev && node dist/index.js"
   },
   "devDependencies": {
-    "eslint-config-truffle": "file:../configs/eslint-config-truffle",
-    "ts-config-truffle": "file:../configs/ts-config-truffle",
+    "@truffle/eslint-config-base": "file:../config/eslint-config-base",
+    "@truffle/ts-config-base": "file:../config/ts-config-base",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.3"
   },

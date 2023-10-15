@@ -46,6 +46,7 @@
     "*.{html,css,scss,sass,md,mdx}": "prettier --write"
   },
   "devDependencies": {
+    "@truffle/eslint-config-base": "file:../config/eslint-config-base",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
     "concurrently": "^8.0.1",

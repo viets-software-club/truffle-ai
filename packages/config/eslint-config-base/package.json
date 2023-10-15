@@ -1,5 +1,5 @@
 {
-  "name": "@truffle/eslint-config-truffle",
+  "name": "@truffle/eslint-config-base",
   "private": true,
   "version": "1.0.0",
   "description": "",

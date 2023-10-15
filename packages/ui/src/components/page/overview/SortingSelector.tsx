@@ -39,7 +39,7 @@ const SortingSelector: FC<SortingSelectorProps> = ({ sorting, updateSorting }) =
                   [key]: OrderByDirection.DescNullsLast
                 })
               }}
-              className="text-14 flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-gray-100 hover:bg-gray-600"
+              className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
             >
               {type === 'string' ? (
                 <IoTextOutline className="text-gray-500" />

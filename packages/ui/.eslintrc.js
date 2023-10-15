@@ -1,11 +1,13 @@
+var path = require('path')
 module.exports = {
+  root: true,
   extends: ['@truffle/eslint-config-base/nextjs'],
   settings: {
     tailwindcss: {
-      config: 'packages/ui/tailwind.config.js'
+      config: path.join(__dirname, '../../packages/ui/tailwind.config.js')
     },
     next: {
-      rootDir: 'packages/ui/'
+      rootDir: path.join(__dirname, '../../packages/*')
     }
   }
 }

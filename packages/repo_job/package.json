@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "$npm_package_config_env_dev && ts-node index.ts",
     "build": "$npm_package_config_env_dev && tsc",
-    "start": "$npm_package_config_env_dev && node dist/index.js"
+    "start": "$npm_package_config_env_dev && node dist/index.js",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@truffle/eslint-config-base": "file:../config/eslint-config-base",

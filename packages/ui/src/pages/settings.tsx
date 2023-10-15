@@ -108,10 +108,10 @@ const Settings = () => {
       <CommandInterface />
 
       <div className="ml-64 w-full overflow-auto px-20 py-10 text-white">
-        <h2 className="text-20 mt-8 border-b border-gray-800 pb-4 font-medium">General</h2>
+        <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">General</h2>
 
         <Section title="General" subtitle="Default filters" refs={refs}>
-          <p className="text-14 mb-6 font-normal text-gray-400">
+          <p className="mb-6 text-14 font-normal text-gray-400">
             Anything below these values will be filtered out of your results on the trending page.
           </p>
           <div className="mb-6 flex flex-row">
@@ -135,7 +135,7 @@ const Settings = () => {
           <EmailTemplate />
         </Section>
 
-        <h2 className="text-20 mt-8 border-b border-gray-800 pb-4 font-medium">Account</h2>
+        <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">Account</h2>
 
         <Section title="Account" subtitle="Log out" refs={refs}>
           <div className="flex">
@@ -154,7 +154,7 @@ const Settings = () => {
         <div className="h-1 border-b border-gray-800" />
 
         <Section title="Account" subtitle="Delete account" refs={refs}>
-          <p className="text-14 pb-6 font-normal text-gray-300">
+          <p className="pb-6 text-14 font-normal text-gray-300">
             If you delete your account, all your data will be lost.
           </p>
           {!confirmDelete ? (
@@ -169,7 +169,7 @@ const Settings = () => {
             />
           ) : (
             <>
-              <p className="text-14 pb-6 font-normal text-red-500">Are you sure?</p>
+              <p className="pb-6 text-14 font-normal text-red-500">Are you sure?</p>
               <Link href="/logout">
                 <Button
                   onClick={handleDeleteAccount}
@@ -185,9 +185,9 @@ const Settings = () => {
           )}
         </Section>
 
-        <h2 className="text-20 mt-8 border-b border-gray-800 pb-4 font-medium">Integrations</h2>
+        <h2 className="mt-8 border-b border-gray-800 pb-4 text-20 font-medium">Integrations</h2>
         <Section title="Integrations" subtitle="Notifications" refs={refs}>
-          <p className="text-14 mb-4 font-normal">Slack notifications</p>
+          <p className="mb-4 text-14 font-normal">Slack notifications</p>
 
           <SlackSettings />
         </Section>

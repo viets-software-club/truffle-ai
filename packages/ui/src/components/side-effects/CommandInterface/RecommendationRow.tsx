@@ -40,7 +40,7 @@ const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
 
           <div className="flex justify-end">
             {!isProjectItem && shortcutKey && (
-              <span className="text-10 flex h-6 w-6 items-center justify-center rounded-[5px] bg-gray-500/20 leading-none text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-gray-500/20 text-10 leading-none text-white">
                 {shortcutKey}
               </span>
             )}

@@ -22,7 +22,7 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
       {/* Top bar with title and profile modal button */}
       <div className="flex h-[59px] w-full items-center justify-between px-7 text-gray-100">
         <Link href="/">
-          <span className="text-18 mr-2 font-medium">{props.title}</span>
+          <span className="mr-2 text-18 font-medium">{props.title}</span>
         </Link>
 
         <ProfileDropdownMenu />

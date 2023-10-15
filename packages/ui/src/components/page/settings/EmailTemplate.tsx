@@ -35,7 +35,7 @@ const UpdateEmailTemplate = () => {
 
   return (
     <>
-      <p className="text-14 mb-6 font-normal text-gray-400">
+      <p className="mb-6 text-14 font-normal text-gray-400">
         Here, you have the option to customize the email template that will be automatically sent to
         the founders of a project on its detail page.
         <br /> Use {'{founderName}'} and {'{projectName}'} as placeholders for the actual values.

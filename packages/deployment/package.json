@@ -1,5 +1,5 @@
 {
-  "name": "@truffle/deployment-config",
+  "name": "@truffle/deployment",
   "private": true,
   "version": "1.0.0",
   "description": "",

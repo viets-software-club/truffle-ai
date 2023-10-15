@@ -66,7 +66,7 @@ const Login = () => {
   if (sessionLoading) return <Loading fullscreen />
 
   return (
-    <main className="bg-radial-gradient flex min-h-screen flex-col items-center justify-center">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-radial-gradient">
       <div className="flex w-[300px] flex-col items-center justify-center gap-6">
         <Logo className="h-10 w-10" />
         <h1 className="text-xl font-medium text-gray-100">Log in to Truffle</h1>
@@ -94,7 +94,7 @@ const Login = () => {
         <LoginForm handleSubmit={handleSubmit} loading={loading} error={isError} />
       </div>
 
-      <div className="text-12 absolute bottom-4 self-center text-gray-300">
+      <div className="absolute bottom-4 self-center text-12 text-gray-300">
         © 2023 La Famiglia x Rostlab
       </div>
     </main>

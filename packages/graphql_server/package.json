@@ -11,7 +11,8 @@
     "dev": "concurrently -c magenta 'tsc -w --preserveWatchOutput' '$npm_package_config_env_dev && sleep 3.3 && nodemon dist/index.js'",
     "build": "tsc",
     "serve": "$npm_package_config_env_dev && node dist/index.js",
-    "update-types": "$npm_package_config_env_dev && npx supabase gen types typescript --project-id \"$SUPABASE_REFERENCE_ID\" > types/supabase.d.ts"
+    "update-types": "$npm_package_config_env_dev && npx supabase gen types typescript --project-id \"$SUPABASE_REFERENCE_ID\" > types/supabase.d.ts",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.24.0",

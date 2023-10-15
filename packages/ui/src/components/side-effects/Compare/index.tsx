@@ -261,7 +261,7 @@ const Compare = ({ category }: CompareProps) => {
         {error && <Error />}
 
         {data.length === 0 && !error && !fetching && (
-          <p className="text-14 w-full p-12 text-center text-gray-300">No projects found</p>
+          <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
         )}
 
         {data.length > 0 && !error && <Table table={table} />}

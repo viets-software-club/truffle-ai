@@ -73,7 +73,7 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
         >
           <form onSubmit={handleSubmit}>
             <input
-              className="text-18 block w-full appearance-none bg-transparent px-6 py-5 font-light text-gray-300 outline-none placeholder:text-gray-500"
+              className="block w-full appearance-none bg-transparent px-6 py-5 text-18 font-light text-gray-300 outline-none placeholder:text-gray-500"
               onChange={handleChange}
               value={searchWord}
               autoComplete="off"
@@ -89,7 +89,7 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
 
           <div
             ref={listRef}
-            className="scrollbar-hide h-full max-h-[383px] w-full overflow-y-auto py-2"
+            className="h-full max-h-[383px] w-full overflow-y-auto py-2 scrollbar-hide"
           >
             {recommendationList &&
               recommendationList.map((item, index) => (

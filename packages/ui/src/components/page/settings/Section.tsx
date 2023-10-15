@@ -18,7 +18,7 @@ const Section = ({ title, subtitle, children, refs }: SectionProps) => {
       id={id}
       className="py-16"
     >
-      <h3 className="text-16 mb-2 pb-4 font-medium">{subtitle}</h3>
+      <h3 className="mb-2 pb-4 text-16 font-medium">{subtitle}</h3>
       {children}
     </div>
   )

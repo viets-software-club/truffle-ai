@@ -12,7 +12,7 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'import', 'sonarjs'],
   ignorePatterns: [
-    '**/packages/configs/**',
+    '**/packages/config/**',
     '.eslintrc.js',
     'dist',
     'node_modules',

@@ -8,11 +8,11 @@ sources:
       graphql:
         endpoint: '{env.SUPABASE_GRAPHQL_URL}'
         operationHeaders:
-          apiKey: '{env.SUPABASE_API_KEY}'
+          apiKey: '{env.SUPABASE_SERVICE_KEY}'
           Content-Type: application/json
           Authorization: '{context.headers["authorization"]}'
         schemaHeaders:
-          apiKey: '{env.SUPABASE_API_KEY}'
+          apiKey: '{env.SUPABASE_SERVICE_KEY}'
           Content-Type: application/json
           Authorization: '{context.headers["authorization"]}'
   - name: Server

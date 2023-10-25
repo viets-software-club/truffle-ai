@@ -104,8 +104,8 @@ Before starting to develop and build check that you have setup your environment 
 SUPABASE_REFERENCE_ID # supabase reference id
 SUPABASE_URL # supabase url
 SUPABASE_GRAPHQL_URL # supabase graphql url
-SUPABASE_API_KEY # supabase api key
-SUPABASE_SERVICE_API_KEY # supabase service api key
+SUPABASE_SERVICE_KEY # supabase service key
+SUPABASE_ANON_KEY # supabase anon key
 GATEWAY_PORT # port number
 SERVER_PORT # port number
 SERVER_URL # url to graphql_server

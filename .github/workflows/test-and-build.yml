@@ -35,5 +35,6 @@ jobs:
         run: NODE_ENV=test npm run test
       - name: Build
         env:
-          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+          SUPABASE_SERICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: NODE_ENV=production npm run build

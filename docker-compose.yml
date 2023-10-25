@@ -15,7 +15,7 @@ services:
       dockerfile: ./packages/graphql_gateway/Dockerfile
       args:
         - SUPABASE_URL=${SUPABASE_URL}
-        - SUPABASE_API_KEY=${SUPABASE_API_KEY}
+        - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
         - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
         - SERVER_GRAPHQL_URL=${SERVER_GRAPHQL_URL}
     ports:
@@ -28,7 +28,7 @@ services:
       dockerfile: ./packages/repo_job/Dockerfile
       args:
         - SUPABASE_URL=${SUPABASE_URL}
-        - SUPABASE_API_KEY=${SUPABASE_API_KEY}
+        - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
         - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
     env_file:
       - .env

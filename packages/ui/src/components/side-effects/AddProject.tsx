@@ -60,15 +60,10 @@ const AddProject = () => {
 
   return (
     <div>
-      <Button
-        onClick={toggleModal}
-        variant='highlighted'
-        text='Add Project'
-        Icon={AiOutlinePlus}
-        textColor='text-white'
-        iconColor='text-white'
-        order='ltr'
-      />
+      <Button onClick={toggleModal} variant='highlighted' className='text-white'>
+        <AiOutlinePlus />
+        Add Project
+      </Button>
 
       <Transition appear show={open}>
         <Dialog as='div' open={open} onClose={toggleModal} className='fixed inset-0 z-30'>
@@ -125,12 +120,12 @@ const AddProject = () => {
 
                 <div className='flex w-full justify-end'>
                   <Button
-                    text={fetching ? 'Loading...' : 'Save'}
                     variant='highlighted'
                     disabled={fetching}
                     type='submit'
-                    textColor='text-white'
-                  />
+                    className='text-white'>
+                    {fetching ? 'Loading...' : 'Save'}
+                  </Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

@@ -125,7 +125,9 @@ const Settings = () => {
               />
             ))}
           </div>
-          <Button variant='highlighted' text='Update' onClick={showBannerFunc} />
+          <Button variant='highlighted' onClick={showBannerFunc}>
+            Update
+          </Button>
           {showBanner && <Banner variant='success' message='Filters updated' />}
         </Section>
 
@@ -140,13 +142,9 @@ const Settings = () => {
         <Section title='Account' subtitle='Log out' refs={refs}>
           <div className='flex'>
             <Link href='/logout'>
-              <Button
-                text='Log out'
-                variant='highlighted'
-                order='ltr'
-                textColor='white'
-                iconColor='white'
-              />
+              <Button variant='highlighted' className='text-white'>
+                Log out
+              </Button>
             </Link>
           </div>
         </Section>
@@ -158,28 +156,18 @@ const Settings = () => {
             If you delete your account, all your data will be lost.
           </p>
           {!confirmDelete ? (
-            <Button
-              onClick={() => setConfirmDelete(true)}
-              text='Delete account'
-              variant='red'
-              Icon={FiTrash2}
-              order='ltr'
-              textColor='white'
-              iconColor='white'
-            />
+            <Button onClick={() => setConfirmDelete(true)} variant='red' className='text-white'>
+              <FiTrash2 />
+              Delete account
+            </Button>
           ) : (
             <>
               <p className='pb-6 text-sm font-normal text-red-500'>Are you sure?</p>
               <Link href='/logout'>
-                <Button
-                  onClick={handleDeleteAccount}
-                  text='Yes, delete'
-                  variant='red'
-                  Icon={FiTrash2}
-                  order='ltr'
-                  textColor='white'
-                  iconColor='white'
-                />
+                <Button onClick={handleDeleteAccount} variant='red' className='text-white'>
+                  <FiTrash2 />
+                  Yes, delete
+                </Button>
               </Link>
             </>
           )}

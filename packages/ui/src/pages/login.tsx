@@ -72,15 +72,12 @@ const Login = () => {
         <h1 className='text-xl font-medium text-gray-100'>Log in to Truffle</h1>
 
         <Button
-          text='Continue with Google'
-          Icon={AiOutlineGoogle}
           onClick={handleGoogleLogin}
-          order='ltr'
-          iconColor='text-white'
-          textColor='text-white'
           variant='highlighted'
-          className='w-full justify-center py-3'
-        />
+          className='w-full justify-center py-3 text-white'>
+          <AiOutlineGoogle />
+          Continue with Google
+        </Button>
 
         {error === 'invalid_email' && (
           <div className='text-center text-sm text-red-500'>

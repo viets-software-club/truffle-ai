@@ -155,20 +155,20 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
                 {isBookmarked && (
                   <Button
                     variant='noBorderNoBG'
-                    textColor='text-red-500'
-                    text={fetchingDelete ? 'Deleting' : 'Delete'}
-                    onClick={!fetchingDelete ? handleDelete : undefined}
-                  />
+                    className='text-red-500'
+                    onClick={!fetchingDelete ? handleDelete : undefined}>
+                    {fetchingDelete ? 'Deleting' : 'Delete'}
+                  </Button>
                 )}
 
                 {/* Submit button */}
                 <Button
-                  text={fetchingAdd || fetchingEdit ? 'Loading...' : 'Save'}
                   variant='highlighted'
                   disabled={fetchingAdd || fetchingEdit}
                   type='submit'
-                  textColor='text-white'
-                />
+                  className='text-white'>
+                  {fetchingAdd || fetchingEdit ? 'Loading...' : 'Save'}
+                </Button>
               </div>
             </Dialog.Panel>
           </Transition.Child>

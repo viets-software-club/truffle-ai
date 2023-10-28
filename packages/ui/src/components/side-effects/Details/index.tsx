@@ -117,28 +117,26 @@ const Details = ({ id }: DetailsProps) => {
 
           {nextProjectId ? (
             <Link href={`/details/${nextProjectId}`}>
-              <Button variant='onlyIcon' Icon={ChevronUp} />
+              <Button>
+                <ChevronUp />
+              </Button>
             </Link>
           ) : (
-            <Button
-              disabled={!nextProjectId}
-              variant='onlyIcon'
-              Icon={ChevronUp}
-              iconColor='text-gray-600'
-            />
+            <Button disabled={!nextProjectId}>
+              <ChevronUp className='text-gray-600' />
+            </Button>
           )}
 
           {previousProjectId ? (
             <Link href={`/details/${previousProjectId}`}>
-              <Button variant='onlyIcon' Icon={ChevronDown} />
+              <Button>
+                <ChevronDown />
+              </Button>
             </Link>
           ) : (
-            <Button
-              disabled={!previousProjectId}
-              variant='onlyIcon'
-              Icon={ChevronDown}
-              iconColor='text-gray-600'
-            />
+            <Button disabled={!previousProjectId}>
+              <ChevronDown className='text-gray-600' />
+            </Button>
           )}
 
           <div className='flex flex-row items-center'>

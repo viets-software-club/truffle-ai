@@ -93,12 +93,12 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
               <div className='flex w-full items-center justify-end'>
                 {/* Submit button */}
                 <Button
-                  text={fetching ? 'Loading...' : 'Save'}
                   variant='highlighted'
                   disabled={fetching}
                   type='submit'
-                  textColor='text-white'
-                />
+                  className='text-white'>
+                  {fetching ? 'Loading...' : 'Save'}
+                </Button>
               </div>
             </Dialog.Panel>
           </Transition.Child>

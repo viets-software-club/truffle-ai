@@ -141,7 +141,9 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                   </div>
 
                   {/* Remove icon */}
-                  <Button onClick={removeFilter} variant='onlyIconNoBorderNoBG' Icon={TbTrash} />
+                  <Button onClick={removeFilter} variant='noBorderNoBG'>
+                    <TbTrash />
+                  </Button>
                 </div>
 
                 {/* Input */}
@@ -158,7 +160,9 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                     value={value}
                     onChange={handleChange}
                   />
-                  <Button variant='onlyIcon' type='submit' Icon={TbRefresh} />
+                  <Button type='submit'>
+                    <TbRefresh />
+                  </Button>
                 </form>
               </div>
             </Popover.Panel>

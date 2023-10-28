@@ -15,15 +15,10 @@ const FourOFour = () => {
       <h1 className='text-5xl font-bold leading-none text-indigo-500'>404</h1>
       <h2 className='text-white'>We couldn&apos;t find the page you&apos;re looking for...</h2>
 
-      <Button
-        onClick={routeToHomePage}
-        variant='highlighted'
-        text='Back to home'
-        Icon={LuArrowUpRight}
-        order='ltr'
-        textColor='text-white'
-        iconColor='text-white'
-      />
+      <Button onClick={routeToHomePage} variant='highlighted' className='text-white'>
+        <LuArrowUpRight />
+        Back to home
+      </Button>
     </div>
   )
 }

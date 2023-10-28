@@ -204,14 +204,10 @@ const Compare = ({ category }: CompareProps) => {
           </div>
 
           <div className='flex flex-row items-center justify-end gap-2'>
-            <Button
-              onClick={sendSlackMessage}
-              variant='normal'
-              text={slackLoading ? 'Loading...' : 'Send to Slack'}
-              Icon={FaSlack}
-              order='ltr'
-              textColor='white'
-            />
+            <Button onClick={sendSlackMessage} className='text-white'>
+              <FaSlack />
+              {slackLoading ? 'Loading...' : 'Send to Slack'}
+            </Button>
 
             {notificationStatus === 'success' && (
               <Banner variant='success' message='Slack notification sent' />
@@ -221,14 +217,10 @@ const Compare = ({ category }: CompareProps) => {
               <Banner variant='error' message='Error sending notification' />
             )}
 
-            <Button
-              variant='normal'
-              text='Edit category'
-              Icon={BiPencil}
-              order='ltr'
-              textColor='white'
-              onClick={toggleCategoryModal}
-            />
+            <Button className='text-white' onClick={toggleCategoryModal}>
+              <BiPencil />
+              Edit category
+            </Button>
           </div>
         </div>
 

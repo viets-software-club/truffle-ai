@@ -17,13 +17,10 @@ const EditColumns: FC<EditColumnsProps> = ({ columns }) => {
   return (
     <Menu as='div' className='relative'>
       <Menu.Button as='div'>
-        <Button
-          Icon={TbColumns2}
-          variant='normal'
-          text='Edit Columns'
-          order='ltr'
-          onClick={() => setOpen(!open)}
-        />
+        <Button onClick={() => setOpen(!open)}>
+          <TbColumns2 />
+          Edit columns
+        </Button>
       </Menu.Button>
 
       <MenuItemsTransition>

@@ -148,7 +148,10 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
           <div className='flex flex-row gap-3 '>
             <Menu as='div' className='relative'>
               <Menu.Button as='div'>
-                <Button Icon={FiChevronDown} variant='normal' text={selectedMetric} order='ltr' />
+                <Button>
+                  <FiChevronDown />
+                  {selectedMetric}
+                </Button>
               </Menu.Button>
 
               <MenuItemsTransition>
@@ -168,12 +171,10 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
 
             <Menu as='div' className='relative'>
               <Menu.Button as='div'>
-                <Button
-                  Icon={AiOutlineCalendar}
-                  variant='normal'
-                  text={timeframeModalValue}
-                  order='ltr'
-                />
+                <Button>
+                  <AiOutlineCalendar />
+                  {timeframeModalValue}
+                </Button>
               </Menu.Button>
 
               <MenuItemsTransition>
@@ -191,9 +192,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
               </MenuItemsTransition>
             </Menu>
 
-            {multipleLines && (
-              <Button variant='normal' text='Normalize Data' onClick={handleDataNormalization} />
-            )}
+            {multipleLines && <Button onClick={handleDataNormalization}>Normalize Data</Button>}
           </div>
 
           <ResponsiveContainer width='100%' height={300}>

@@ -29,7 +29,7 @@ const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
 
     <button type="button" className="w-full" onClick={handleClick}>
       <div
-        className={`mx-2 flex h-12 cursor-pointer items-center justify-between rounded-[5px] p-4 text-sm transition-all hover:bg-gray-800/50 ${
+        className={`mx-2 flex h-12 cursor-pointer items-center justify-between rounded-md p-4 text-sm transition-all hover:bg-gray-800/50 ${
           isHighlighted ? 'bg-gray-500/50' : ''
         }`}
       >
@@ -40,7 +40,7 @@ const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
 
           <div className="flex justify-end">
             {!isProjectItem && shortcutKey && (
-              <span className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-gray-500/20 text-xxs leading-none text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-500/20 text-xxs leading-none text-white">
                 {shortcutKey}
               </span>
             )}

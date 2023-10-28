@@ -41,7 +41,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
     <Popover as="div" className="relative inline-block text-left">
       {({ open, close }) => (
         <>
-          <Popover.Button className="flex h-[30px] flex-row  items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700">
+          <Popover.Button className="flex h-[30px] flex-row  items-center space-x-2 rounded-md border border-gray-800 bg-gray-850 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700">
             <div className="flex flex-row items-center space-x-1">
               <SortIcon className={textGray500} />
 
@@ -57,7 +57,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
 
           <MenuItemsTransition>
             <Popover.Panel
-              className={`absolute left-0 z-40 mt-2 rounded-[5px] bg-gray-700 shadow-lg focus:outline-none ${
+              className={`absolute left-0 z-40 mt-2 rounded-md bg-gray-700 shadow-lg focus:outline-none ${
                 open ? 'block' : 'hidden'
               }`}
             >

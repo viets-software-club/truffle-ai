@@ -64,7 +64,7 @@ const ProjectInformation = ({
     <div className="border-b border-gray-800 px-7 py-6">
       <div className="mb-6 flex flex-row items-center justify-between">
         <div className="flex flex-row items-center">
-          <div className="relative mr-4 h-8 w-8 overflow-hidden rounded-[5px] bg-gray-600">
+          <div className="relative mr-4 h-8 w-8 overflow-hidden rounded-md bg-gray-600">
             <Image src={image} alt="logo" fill sizes="32px" />
           </div>
 
@@ -82,7 +82,7 @@ const ProjectInformation = ({
               .map((cat) => (
                 <p
                   key={cat}
-                  className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-xs font-normal text-gray-300"
+                  className="mx-1 rounded-md bg-gray-850 px-2 py-0.5 text-xs font-normal text-gray-300"
                 >
                   {cat}
                 </p>

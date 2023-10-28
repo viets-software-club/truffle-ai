@@ -76,7 +76,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
         <>
           {/* Filterbar button - greyed out when no filter value has been selected */}
           <Popover.Button
-            className={`flex h-[30px] flex-row  items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700 ${
+            className={`flex h-[30px] flex-row  items-center space-x-2 rounded-md border border-gray-800 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700 ${
               value !== '' ? 'bg-gray-850 ' : ''
             }`}
           >
@@ -101,7 +101,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
           {/* Filterbar dropdown */}
           <MenuItemsTransition>
             <Popover.Panel
-              className={`absolute left-0 z-40 mt-2 w-44 rounded-[5px] bg-gray-700 shadow-lg outline-none ${
+              className={`absolute left-0 z-40 mt-2 w-44 rounded-md bg-gray-700 shadow-lg outline-none ${
                 open ? 'block' : 'hidden'
               }`}
             >
@@ -120,7 +120,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                       </Menu.Button>
 
                       <MenuItemsTransition>
-                        <Menu.Items className="absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-[5px] bg-gray-700 shadow-lg focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
                           <div className="py-1">
                             {type === 'string' ? stringFilterOperators : intFilterOperators}
                           </div>

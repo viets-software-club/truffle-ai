@@ -27,7 +27,7 @@ const createColumns = (
         header: 'Logo',
         enableColumnFilter: false,
         cell: (info) => (
-          <div className="relative ml-2 h-6 w-6 overflow-hidden rounded-[5px]">
+          <div className="relative ml-2 h-6 w-6 overflow-hidden rounded-md">
             <Image src={info.getValue() as string} alt="logo" fill sizes="24px" />
           </div>
         )

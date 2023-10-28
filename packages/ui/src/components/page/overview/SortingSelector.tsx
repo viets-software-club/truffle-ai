@@ -26,7 +26,7 @@ const SortingSelector: FC<SortingSelectorProps> = ({ sorting, updateSorting }) =
     </Menu.Button>
 
     <MenuItemsTransition>
-      <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+      <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-md bg-gray-700 p-1 shadow-lg focus:outline-none">
         {/* Populate sort modal, filter out currently sorted by key */}
         {filterOptions
           .filter(({ key }) => key !== Object.keys(sorting || {})[0])
@@ -39,7 +39,7 @@ const SortingSelector: FC<SortingSelectorProps> = ({ sorting, updateSorting }) =
                   [key]: OrderByDirection.DescNullsLast
                 })
               }}
-              className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-sm text-gray-100 hover:bg-gray-600"
+              className="flex min-w-[150px] items-center gap-2 rounded-md p-2 text-left text-sm text-gray-100 hover:bg-gray-600"
             >
               {type === 'string' ? (
                 <IoTextOutline className="text-gray-500" />

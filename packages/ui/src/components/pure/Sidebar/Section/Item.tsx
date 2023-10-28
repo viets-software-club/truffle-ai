@@ -17,7 +17,7 @@ const Item = ({ Icon, imageSrc, text, path, secondaryItem, highlighted }: ItemPr
   <div
     className={`relative flex flex-col justify-between ${
       highlighted ? 'bg-gray-700' : ''
-    } rounded-[5px] hover:bg-gray-800`}
+    } rounded-md hover:bg-gray-800`}
   >
     <Link href={path}>
       <div className="inline-flex w-full items-center justify-between py-2.5 pl-7">
@@ -28,7 +28,7 @@ const Item = ({ Icon, imageSrc, text, path, secondaryItem, highlighted }: ItemPr
           {Icon ? (
             <Icon className="h-[14px] w-[14px] text-gray-500" />
           ) : (
-            <div className="relative ml-2 h-4 w-4 overflow-hidden rounded-[5px]">
+            <div className="relative ml-2 h-4 w-4 overflow-hidden rounded-md">
               <Image src={imageSrc as string} alt="logo" fill sizes="24px" />
             </div>
           )}

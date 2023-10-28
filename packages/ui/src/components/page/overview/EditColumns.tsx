@@ -27,13 +27,13 @@ const EditColumns: FC<EditColumnsProps> = ({ columns }) => {
       </Menu.Button>
 
       <MenuItemsTransition>
-        <Menu.Items className="absolute right-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
+        <Menu.Items className="absolute right-0 z-30 mt-2 origin-top-right rounded-md bg-gray-700 p-1 shadow-lg focus:outline-none">
           {columns.map((column) => (
             <Menu.Item
               as="button"
               key={column.id}
               onClick={column.getToggleVisibilityHandler()}
-              className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-sm text-gray-100 hover:bg-gray-600"
+              className="flex min-w-[150px] items-center gap-2 rounded-md p-2 text-left text-sm text-gray-100 hover:bg-gray-600"
             >
               {column.getIsVisible() ? (
                 <RiCheckboxFill className="text-indigo-600" />

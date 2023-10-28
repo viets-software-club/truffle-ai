@@ -6,3 +6,4 @@ env.sh
 .dockerignore
 .meshrc.yaml
 .next
+config/kubernetes/deploy-*

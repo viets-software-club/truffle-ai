@@ -199,8 +199,8 @@ const Compare = ({ category }: CompareProps) => {
       <div className="flex w-full flex-col pt-[120px]">
         <div className="flex flex-row items-center justify-between px-6 pt-3.5">
           <div className="flex flex-col">
-            <p className="text-12 font-medium uppercase text-gray-500">Compare</p>
-            <h1 className="text-24 font-medium">{category}</h1>
+            <p className="text-xs font-medium uppercase text-gray-500">Compare</p>
+            <h1 className="text-2xl font-medium">{category}</h1>
           </div>
 
           <div className="flex flex-row items-center justify-end gap-2">
@@ -261,7 +261,7 @@ const Compare = ({ category }: CompareProps) => {
         {error && <Error />}
 
         {data.length === 0 && !error && !fetching && (
-          <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
+          <p className="w-full p-12 text-center text-sm text-gray-300">No projects found</p>
         )}
 
         {data.length > 0 && !error && <Table table={table} />}

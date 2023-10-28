@@ -69,7 +69,7 @@ const ProjectInformation = ({
           </div>
 
           <a href={url} target="_blank" rel="noreferrer">
-            <h1 className="mr-3 text-20 font-medium">
+            <h1 className="mr-3 text-xl font-medium">
               {name.slice(0, 32)}
               {name.length > 32 ? '...' : ''}
             </h1>
@@ -82,7 +82,7 @@ const ProjectInformation = ({
               .map((cat) => (
                 <p
                   key={cat}
-                  className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-12 font-normal text-gray-300"
+                  className="mx-1 rounded-[5px] bg-gray-850 px-2 py-0.5 text-xs font-normal text-gray-300"
                 >
                   {cat}
                 </p>
@@ -112,13 +112,13 @@ const ProjectInformation = ({
 
       <div className="flex w-full gap-6">
         <div className="flex w-[250px] shrink-0 flex-col gap-2">
-          <span className="text-12 font-semibold uppercase text-gray-500">About</span>
-          <p className="text-14 font-light">{about}</p>
+          <span className="text-xs font-semibold uppercase text-gray-500">About</span>
+          <p className="text-sm font-light">{about}</p>
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="text-12 font-semibold uppercase text-gray-500">Explanation</span>
-          <p className="max-w-[750px] text-14 font-light">{explanation}</p>
+          <span className="text-xs font-semibold uppercase text-gray-500">Explanation</span>
+          <p className="max-w-[750px] text-sm font-light">{explanation}</p>
         </div>
       </div>
 

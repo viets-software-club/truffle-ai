@@ -142,10 +142,10 @@ const Details = ({ id }: DetailsProps) => {
           )}
 
           <div className="flex flex-row items-center">
-            <p className="text-14 text-white">
+            <p className="text-sm text-white">
               {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
             </p>
-            <p className="text-14 text-gray-500">/&nbsp;{projects?.length}</p>
+            <p className="text-sm text-gray-500">/&nbsp;{projects?.length}</p>
           </div>
         </div>
       </div>

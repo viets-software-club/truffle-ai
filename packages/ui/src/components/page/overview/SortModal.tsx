@@ -41,11 +41,11 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
     <Popover as="div" className="relative inline-block text-left">
       {({ open, close }) => (
         <>
-          <Popover.Button className="flex h-[30px] flex-row  items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-14 outline-none transition-colors duration-100 hover:bg-gray-700">
+          <Popover.Button className="flex h-[30px] flex-row  items-center space-x-2 rounded-[5px] border border-gray-800 bg-gray-850 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700">
             <div className="flex flex-row items-center space-x-1">
               <SortIcon className={textGray500} />
 
-              <p className="text-14 text-gray-100">{column}</p>
+              <p className="text-sm text-gray-100">{column}</p>
 
               <ChevronDownIcon
                 className={`text-gray-500 transition-transform duration-200 ${
@@ -63,7 +63,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
             >
               <div className="flex flex-col space-y-3 p-2">
                 <div className="flex flex-row justify-between">
-                  <p className="text-14 text-gray-100">{column}</p>
+                  <p className="text-sm text-gray-100">{column}</p>
                   <Button
                     onClick={() => setSorting(null)}
                     variant="onlyIconNoBorderNoBG"

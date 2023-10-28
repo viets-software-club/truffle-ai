@@ -64,7 +64,7 @@ const Button = ({
 
   // Create a text node if text is provided
   const textNode = text && (
-    <span key="1" className={`text-14 leading-none ${textColor}`}>
+    <span key="1" className={`text-sm leading-none ${textColor}`}>
       {text}
     </span>
   )

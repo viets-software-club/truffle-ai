@@ -17,8 +17,8 @@ const DocsCard: FC<DocsCardProps> = ({ title, description, link }) => (
   >
     <Heading type="h3">{title}</Heading>
     <Paragraph className="text-gray-500">{description}</Paragraph>
-    <p className="mt-auto flex items-center gap-1 text-12 text-gray-300">
-      Learn more <FiChevronRight className="mb-[-2px] text-14 font-medium text-gray-500" />
+    <p className="mt-auto flex items-center gap-1 text-xs text-gray-300">
+      Learn more <FiChevronRight className="mb-[-2px] text-sm font-medium text-gray-500" />
     </p>
   </Link>
 )

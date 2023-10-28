@@ -98,8 +98,8 @@ const FilterBar = ({
             />
           </div>
         )}
-        <p className="text-14">Showing {currentEntries}&nbsp;</p>
-        <p className="text-14 text-gray-500">/&nbsp;{totalEntries} entries</p>
+        <p className="text-sm">Showing {currentEntries}&nbsp;</p>
+        <p className="text-sm text-gray-500">/&nbsp;{totalEntries} entries</p>
       </div>
     </div>
   )

@@ -20,7 +20,7 @@ const AffinitySettings = () => {
 
   return (
     <>
-      <p className="pb-2 text-14 font-normal">Affinity API token</p>
+      <p className="pb-2 text-sm font-normal">Affinity API token</p>
       <Input
         type="password"
         id="affinity"
@@ -29,7 +29,7 @@ const AffinitySettings = () => {
         value={affinityKey}
         onChange={(e) => setAffinityKey(e.target.value)}
       />
-      <p className="mt-4 pb-2 text-14 font-normal">Affinity List ID</p>
+      <p className="mt-4 pb-2 text-sm font-normal">Affinity List ID</p>
       <Input
         type="text"
         id="listId"

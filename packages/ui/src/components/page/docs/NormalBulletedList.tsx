@@ -5,7 +5,7 @@ type NormalBulletListProps = {
 }
 
 const NormalBulletList: FC<NormalBulletListProps> = ({ items }) => (
-  <ul className="list-inside list-disc pl-4 text-14 font-normal leading-relaxed text-gray-100/80">
+  <ul className="list-inside list-disc pl-4 text-sm font-normal leading-relaxed text-gray-100/80">
     {items.map((item) => (
       <li key={item}>{item}</li>
     ))}

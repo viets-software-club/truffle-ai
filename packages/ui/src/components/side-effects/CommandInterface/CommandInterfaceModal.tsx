@@ -73,7 +73,7 @@ const CommandInterfaceModal: FC<CommandInterfaceModalProps> = ({
         >
           <form onSubmit={handleSubmit}>
             <input
-              className="block w-full appearance-none bg-transparent px-6 py-5 text-18 font-light text-gray-300 outline-none placeholder:text-gray-500"
+              className="block w-full appearance-none bg-transparent px-6 py-5 text-lg font-light text-gray-300 outline-none placeholder:text-gray-500"
               onChange={handleChange}
               value={searchWord}
               autoComplete="off"

@@ -103,7 +103,7 @@ const AddProject = () => {
                 </Dialog.Title>
 
                 <div className="flex w-full flex-col gap-1.5">
-                  <p className="text-14 font-medium text-gray-500">GitHub URL</p>
+                  <p className="text-sm font-medium text-gray-500">GitHub URL</p>
                   <Input
                     placeholder="https://github.com/facebook/react"
                     value={projectUrl}
@@ -112,7 +112,7 @@ const AddProject = () => {
                 </div>
 
                 <div className="flex w-full flex-col gap-1.5">
-                  <p className="text-14 font-medium text-gray-500">Category</p>
+                  <p className="text-sm font-medium text-gray-500">Category</p>
                   <Input
                     placeholder="Artificial Intelligence"
                     value={category}

@@ -11,11 +11,11 @@ const Error = ({ title, message }: ErrorProps) => (
     <div />
 
     <div className="flex flex-col items-center">
-      <p className="mb-4 text-36 font-semibold text-gray-100">{title}</p>
+      <p className="mb-4 text-4xl font-semibold text-gray-100">{title}</p>
       <p className="text-gray-200">{message}</p>
     </div>
 
-    <div className="self-center pb-4 text-12 text-gray-300">© 2023 La Famiglia x Rostlab</div>
+    <div className="self-center pb-4 text-xs text-gray-300">© 2023 La Famiglia x Rostlab</div>
   </div>
 )
 

@@ -76,7 +76,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
         <>
           {/* Filterbar button - greyed out when no filter value has been selected */}
           <Popover.Button
-            className={`flex h-[30px] flex-row  items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-14 outline-none transition-colors duration-100 hover:bg-gray-700 ${
+            className={`flex h-[30px] flex-row  items-center space-x-2 rounded-[5px] border border-gray-800 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700 ${
               value !== '' ? 'bg-gray-850 ' : ''
             }`}
           >
@@ -88,7 +88,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                 <AiOutlineNumber className="text-gray-500" />
               )}
 
-              <p className={`text-14 ${value !== '' ? '' : 'text-gray-500'}`}>{column}</p>
+              <p className={`text-sm ${value !== '' ? '' : 'text-gray-500'}`}>{column}</p>
 
               <ChevronDownIcon
                 className={`text-gray-500 transition-transform duration-200 ${
@@ -110,12 +110,12 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row space-x-2">
                     {/* Filter/ column title */}
-                    <p className="text-14 text-white">{column}</p>
+                    <p className="text-sm text-white">{column}</p>
 
                     {/* Operator selector */}
                     <Menu as="div">
-                      <Menu.Button className="flex flex-row items-center space-x-1 text-14 text-gray-500 outline-none">
-                        <p className="text-14 font-medium text-gray-300">{operator}</p>
+                      <Menu.Button className="flex flex-row items-center space-x-1 text-sm text-gray-500 outline-none">
+                        <p className="text-sm font-medium text-gray-300">{operator}</p>
                         <ChevronDownIcon className="text-gray-500" />
                       </Menu.Button>
 
@@ -144,7 +144,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                   <input
                     placeholder="Type a value..."
                     type={type === 'string' ? 'text' : 'number'}
-                    className="w-full rounded bg-gray-850 px-2 py-1 text-14 text-gray-300 outline-none"
+                    className="w-full rounded bg-gray-850 px-2 py-1 text-sm text-gray-300 outline-none"
                     value={value}
                     onChange={handleChange}
                   />

@@ -33,7 +33,7 @@ const EditColumns: FC<EditColumnsProps> = ({ columns }) => {
               as="button"
               key={column.id}
               onClick={column.getToggleVisibilityHandler()}
-              className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
+              className="flex min-w-[150px] items-center gap-2 rounded-[5px] p-2 text-left text-sm text-gray-100 hover:bg-gray-600"
             >
               {column.getIsVisible() ? (
                 <RiCheckboxFill className="text-indigo-600" />
@@ -43,7 +43,7 @@ const EditColumns: FC<EditColumnsProps> = ({ columns }) => {
 
               <p
                 className={
-                  column.getIsVisible() ? 'text-14 text-gray-100' : 'text-14 text-gray-500'
+                  column.getIsVisible() ? 'text-sm text-gray-100' : 'text-sm text-gray-500'
                 }
               >
                 {typeof column.columnDef.header === 'string' ? column.columnDef.header : ''}

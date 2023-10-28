@@ -94,7 +94,7 @@ const Login = () => {
         <LoginForm handleSubmit={handleSubmit} loading={loading} error={isError} />
       </div>
 
-      <div className="absolute bottom-4 self-center text-12 text-gray-300">
+      <div className="absolute bottom-4 self-center text-xs text-gray-300">
         © 2023 La Famiglia x Rostlab
       </div>
     </main>

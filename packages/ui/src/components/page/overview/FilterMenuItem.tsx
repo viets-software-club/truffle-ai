@@ -10,7 +10,7 @@ const FilterMenuItem: FC<FilterMenuItemProps> = ({ label, handleClick }) => (
       className="flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600"
       onClick={handleClick}
     >
-      <p className="text-14 text-gray-100">{label}</p>
+      <p className="text-sm text-gray-100">{label}</p>
     </button>
   </Menu.Item>
 )

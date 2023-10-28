@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   namespace: ${NAMESPACE}
-  name: ${APP}-${PREFIX}-repo-cronjob
+  name: ${APP}-${PREFIX}-repo-cronjob-deployment
   annotations:
     kubernetes.io/change-cause: "${CHANGE_CAUSE}"
 spec:
@@ -13,14 +13,14 @@ spec:
       annotations:
         kubernetes.io/change-cause: "${CHANGE_CAUSE}"
       labels:
-        app: ${APP}-${PREFIX}-deployment
+        app: ${APP}-${PREFIX}-repo-cronjob-deployment
     spec:
       template:
         metadata:
           annotations:
             kubernetes.io/change-cause: "${CHANGE_CAUSE}"
           labels:
-            app: ${APP}-${PREFIX}-deployment
+            app: ${APP}-${PREFIX}-repo-cronjob-deployment
         spec:
           containers:
             - name: ${APP}-${PREFIX}-repo-cronjob-container

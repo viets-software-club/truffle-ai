@@ -17,4 +17,6 @@
 # REPO_CRONJOB_IMAGE
 
 mkdir $OUTPUT_PATH
-for yml_file in *.yaml; do env envsubst < $yml_file > $OUTPUT_PATH
+touch $OUTPUT_PATH/deployment.yml
+for yml_file in *.yaml; do env envsubst < $yml_file > $OUTPUT_PATH;
+for yml_file in $OUTPUT_PATH/*.yaml; do yml_file >> $OUTPUT_PATH/deployment.yml; echo "---" >> $OUTPUT_PATH/deployment.yml;

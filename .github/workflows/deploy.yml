@@ -58,11 +58,11 @@ jobs:
           CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
           OUTPUT_PATH=$GITHUB_WORKSPACE/.deployment/manifests
           ../../config/kubernetes/build.sh
-      - name: Deploy UI
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/manifests/deploy-ui.yml
-      - name: Deploy GraphQL Services
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/manifests/deploy-graphql-services.yml
-      - name: Deploy Jobs
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/manifests/deploy-jobs.yml
+      - name: Deploy everything
+        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/manifests/deployment.yml
       - name: Verify deployment
-        run: kubectl rollout status --timeout 240s deployment/truffle-ai-deployment
+        run: kubectl rollout status --timeout 240s deployment/${{vars.APP}-${{env.PREFIX}}-ui-deployment
+      - name: Verify deployment
+        run: kubectl rollout status --timeout 240s deployment/${{vars.APP}-${{env.PREFIX}}-graphql-services-deployment
+      - name: Verify deployment
+        run: kubectl rollout status --timeout 240s deployment/${{vars.APP}-${{env.PREFIX}}-repo-cronjob-deployment

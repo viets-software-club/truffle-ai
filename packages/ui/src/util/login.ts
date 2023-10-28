@@ -1,5 +1,5 @@
-import { validateEmail, validatePassword } from '@/util/validate'
 import { SupabaseClient } from '@supabase/auth-helpers-react'
+import { validateEmail, validatePassword } from '@/util/validate'
 
 const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/`
 

@@ -1,6 +1,6 @@
 // @TODO refactor component
-
 import { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+import clsx from 'clsx'
 
 type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   variant:
@@ -64,7 +64,7 @@ const Button = ({
 
   // Create a text node if text is provided
   const textNode = text && (
-    <span key="1" className={`text-sm leading-none ${textColor}`}>
+    <span key='1' className={clsx('text-sm leading-none', textColor)}>
       {text}
     </span>
   )
@@ -73,9 +73,12 @@ const Button = ({
   const iconNode =
     Icon &&
     (variant === 'onlyIcon' || variant === 'onlyIconNoBorderNoBG' ? (
-      <Icon key="2" className={iconColor} />
+      <Icon key='2' className={iconColor} />
     ) : (
-      <Icon key="2" className={`${order === 'ltr' ? 'mr-1.5' : 'ml-1.5'} ${iconColor}`} />
+      <Icon
+        key='2'
+        className={clsx({ 'mr-1.5': order === 'ltr', 'ml-1.5': order === 'rtl' }, iconColor)}
+      />
     ))
 
   const contentNode = order === 'ltr' ? [iconNode, textNode] : [textNode, iconNode]
@@ -86,8 +89,7 @@ const Button = ({
       name={name}
       value={value}
       className={classNames}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       {contentNode}
     </button>
   )

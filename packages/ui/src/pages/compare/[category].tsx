@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import Page from '@/components/side-effects/Page'
 import Compare from '@/components/side-effects/Compare'
+import Page from '@/components/side-effects/Page'
 import withAuth from '@/components/side-effects/withAuth'
 
 /**

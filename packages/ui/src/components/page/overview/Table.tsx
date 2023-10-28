@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useReactTable, flexRender } from '@tanstack/react-table'
+import clsx from 'clsx'
 import { Project } from '@/graphql/generated/gql'
 
 type TableProps = {
@@ -10,15 +11,14 @@ type TableProps = {
  * Generic table component using @tanstack/react-table
  */
 const Table = ({ table }: TableProps) => (
-  <table className="mx-6 my-3.5">
+  <table className='mx-6 my-3.5'>
     <thead>
-      {table.getHeaderGroups().map((headerGroup) => (
+      {table.getHeaderGroups().map(headerGroup => (
         <tr key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
+          {headerGroup.headers.map(header => (
             <th
               key={header.id}
-              className="pb-2 text-left text-xs font-medium uppercase text-gray-500"
-            >
+              className='pb-2 text-left text-xs font-medium uppercase text-gray-500'>
               {header.isPlaceholder
                 ? null
                 : flexRender(header.column.columnDef.header, header.getContext())}
@@ -29,18 +29,19 @@ const Table = ({ table }: TableProps) => (
     </thead>
 
     <tbody>
-      {table.getRowModel().rows.map((row) => (
-        <tr key={row.id} className="cursor-pointer hover:bg-gray-800">
+      {table.getRowModel().rows.map(row => (
+        <tr key={row.id} className='cursor-pointer hover:bg-gray-800'>
           {row.getVisibleCells().map((cell, cellIndex) => {
             const isFirstChild = cellIndex === 0
             const isLastChild = cellIndex === row.getVisibleCells().length - 1
+
             return (
               <td
                 key={cell.id}
-                className={`p-2 pl-0 text-left ${isFirstChild ? 'rounded-l-lg' : ''} ${
-                  isLastChild ? 'rounded-r-lg' : ''
-                }`}
-              >
+                className={clsx('p-2 pl-0 text-left', {
+                  'rounded-l-lg': isFirstChild,
+                  'rounded-r-lg': isLastChild
+                })}>
                 <Link href={`/details/${row.original.id as string}`}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Link>

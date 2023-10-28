@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Column } from '@tanstack/react-table'
 import AddProject from '@/components/side-effects/AddProject'
 import { Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
-import { FilterType, TimeFilterOption } from './types'
-import TimeFrameSelector from './TimeFrameSelector'
-import SortingSelector from './SortingSelector'
-import FilterSelector from './FilterSelector'
 import EditColumns from './EditColumns'
+import FilterSelector from './FilterSelector'
+import SortingSelector from './SortingSelector'
+import TimeFrameSelector from './TimeFrameSelector'
+import { FilterType, TimeFilterOption } from './types'
 
 type TopBarProps = {
   columns: Column<Project, unknown>[]
@@ -49,21 +49,21 @@ const TopBar = ({
     // Remove all other time filters
     const newFilters = { ...filters }
     Object.values(TimeFilterOption)
-      .filter((t) => t !== timeFrame)
-      .forEach((t) => delete newFilters[t])
+      .filter(t => t !== timeFrame)
+      .forEach(t => delete newFilters[t])
 
     updateFilters({ ...newFilters, [timeFrame]: { eq: true } })
   }
 
   // Maps time frame enum value to the corresponding key
   const currentTimeFilterLabel = Object.entries(TimeFilterOption).filter(
-    (option) => option[1] === selectedTimeFrame
+    option => option[1] === selectedTimeFrame
   )[0][0]
 
   return (
-    <div className="fixed left-56 right-0 z-20 flex h-[60px] flex-row items-center justify-between border-b border-gray-800 bg-gray-900 px-6">
+    <div className='fixed left-56 right-0 z-20 flex h-[60px] flex-row items-center justify-between border-b border-gray-800 bg-gray-900 px-6'>
       {/* Time frame (only show on trending page) */}
-      <div className="flex flex-row gap-3">
+      <div className='flex flex-row gap-3'>
         {!hideTimeFrame && (
           <TimeFrameSelector
             currentTimeFilterLabel={currentTimeFilterLabel}
@@ -78,7 +78,7 @@ const TopBar = ({
         <FilterSelector filters={filters} addFilter={addFilter} />
       </div>
 
-      <div className="flex gap-3">
+      <div className='flex gap-3'>
         {/* Edit columns */}
         <EditColumns columns={columns} />
 

@@ -1,18 +1,17 @@
-import Heading from '@/components/page/docs/Heading'
-import Paragraph from '@/components/page/docs/Paragraph'
-import NormalBulletList from '@/components/page/docs/NormalBulletedList'
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-import Image from '@/components/page/docs/Image'
-
 import TrendingProject from '@/assets/TrendingProject.png'
+import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
+import Heading from '@/components/page/docs/Heading'
+import Image from '@/components/page/docs/Image'
+import NormalBulletList from '@/components/page/docs/NormalBulletedList'
+import Paragraph from '@/components/page/docs/Paragraph'
 
 const SidebarDocs = () => (
   <DocsPageWrapper>
-    <Heading type="h1">Trending projects</Heading>
+    <Heading type='h1'>Trending projects</Heading>
 
     {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
     {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
-    <Image src={TrendingProject.src} alt="Trending projects page" />
+    <Image src={TrendingProject.src} alt='Trending projects page' />
 
     <Paragraph>
       As the first screen the user sees after logging into Truffle, the Trending Projects page is

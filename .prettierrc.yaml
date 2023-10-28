@@ -3,3 +3,22 @@ trailingComma: 'none'
 singleQuote: true
 printWidth: 100
 tabWidth: 2
+overrides:
+  - files: 'packages/ui/**'
+    options:
+      jsxSingleQuote: true
+      bracketSameLine: true
+      arrowParens: 'avoid'
+      tailwindConfig: 'packages/ui/tailwind.config.js'
+      importOrder:
+        - '^react(.*)'
+        - 'next(.*)'
+        - '<THIRD_PARTY_MODULES>'
+        - '@/types/(.*)'
+        - '@/(.*)'
+        - '^[./]'
+      tailwindFunctions:
+        - clsx
+      plugins:
+        - '@trivago/prettier-plugin-sort-imports'
+        - 'prettier-plugin-tailwindcss'

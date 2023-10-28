@@ -20,9 +20,9 @@ const getPercentile = (projects: Project[], percentile: number, sortDescending =
     starCount: null
   }
 
-  NUMERIC_FIELDS.forEach((field) => {
+  NUMERIC_FIELDS.forEach(field => {
     const sortedData = projects
-      .map((item) => item[field] ?? null)
+      .map(item => item[field] ?? null)
       .filter((item: number | null): item is number => item !== null)
       .sort((a, b) => (sortDescending ? b - a : a - b))
 

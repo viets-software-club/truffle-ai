@@ -1,5 +1,7 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { BiPencil } from 'react-icons/bi'
+import { FaSlack } from 'react-icons/fa'
+import { useRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import {
   useReactTable,
@@ -7,16 +9,17 @@ import {
   ColumnOrderState,
   getFilteredRowModel
 } from '@tanstack/react-table'
-import { BiPencil } from 'react-icons/bi'
-import { FaSlack } from 'react-icons/fa'
-import Error from '@/components/pure/Error'
-import Button from '@/components/pure/Button'
-import Loading from '@/components/pure/Loading'
 import Chart, { DataPoint } from '@/components/page/details/Chart'
+import FilterBar from '@/components/page/overview/FilterBar'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
-import FilterBar from '@/components/page/overview/FilterBar'
 import { defaultSort, paginationParameters } from '@/components/page/overview/types'
+import Banner from '@/components/page/settings/Banner'
+import Button from '@/components/pure/Button'
+import Error from '@/components/pure/Error'
+import Loading from '@/components/pure/Loading'
+import CategoryModal from '@/components/side-effects/Compare/CategoryModal'
+import createColumns from '@/components/side-effects/ProjectsTable/columns'
 import {
   PageInfo,
   Project,
@@ -25,9 +28,6 @@ import {
   useBookmarkIdsQuery,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
-import Banner from '@/components/page/settings/Banner'
-import CategoryModal from '@/components/side-effects/Compare/CategoryModal'
-import createColumns from '@/components/side-effects/ProjectsTable/columns'
 import getPercentile from '@/util/getPercentile'
 import sendSlackNotification from '@/util/sendSlackNotification'
 
@@ -88,7 +88,7 @@ const Compare = ({ category }: CompareProps) => {
 
   // Get array with all bookmarked project ids
   const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
-    (edge) => edge.node.project?.id as string
+    edge => edge.node.project?.id as string
   ) as string[]
 
   const [{ data: urqlData, fetching: fetchingProjects, error: errorProjects }] =
@@ -112,7 +112,7 @@ const Compare = ({ category }: CompareProps) => {
   useEffect(() => {
     if (urqlData) {
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
-      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
 
       setPercentileStats({
@@ -159,7 +159,7 @@ const Compare = ({ category }: CompareProps) => {
     const message = `${savedMessage}\n${table
       .getRowModel()
       .rows.map(
-        (row) =>
+        row =>
           `- <${row.original.githubUrl as string}|${row.original.name as string}>, ${
             row.original.starCount as number
           } stars`
@@ -196,37 +196,37 @@ const Compare = ({ category }: CompareProps) => {
         />
       )}
 
-      <div className="flex w-full flex-col pt-[120px]">
-        <div className="flex flex-row items-center justify-between px-6 pt-3.5">
-          <div className="flex flex-col">
-            <p className="text-xs font-medium uppercase text-gray-500">Compare</p>
-            <h1 className="text-2xl font-medium">{category}</h1>
+      <div className='flex w-full flex-col pt-[120px]'>
+        <div className='flex flex-row items-center justify-between px-6 pt-3.5'>
+          <div className='flex flex-col'>
+            <p className='text-xs font-medium uppercase text-gray-500'>Compare</p>
+            <h1 className='text-2xl font-medium'>{category}</h1>
           </div>
 
-          <div className="flex flex-row items-center justify-end gap-2">
+          <div className='flex flex-row items-center justify-end gap-2'>
             <Button
               onClick={sendSlackMessage}
-              variant="normal"
+              variant='normal'
               text={slackLoading ? 'Loading...' : 'Send to Slack'}
               Icon={FaSlack}
-              order="ltr"
-              textColor="white"
+              order='ltr'
+              textColor='white'
             />
 
             {notificationStatus === 'success' && (
-              <Banner variant="success" message="Slack notification sent" />
+              <Banner variant='success' message='Slack notification sent' />
             )}
 
             {notificationStatus === 'error' && (
-              <Banner variant="error" message="Error sending notification" />
+              <Banner variant='error' message='Error sending notification' />
             )}
 
             <Button
-              variant="normal"
-              text="Edit category"
+              variant='normal'
+              text='Edit category'
               Icon={BiPencil}
-              order="ltr"
-              textColor="white"
+              order='ltr'
+              textColor='white'
               onClick={toggleCategoryModal}
             />
           </div>
@@ -235,7 +235,7 @@ const Compare = ({ category }: CompareProps) => {
         {!fetching && !error && data.length > 0 && (
           <>
             <Chart
-              datasets={data.map((project) => ({
+              datasets={data.map(project => ({
                 id: project.id as string,
                 name: project.name as string,
                 data:
@@ -248,9 +248,9 @@ const Compare = ({ category }: CompareProps) => {
               setSelectedMetric={setSelectedMetric}
             />
 
-            <div className="flex flex-row items-center justify-between px-6 py-3.5">
-              <div className="flex flex-col">
-                <p className="font-medium">All projects in this category</p>
+            <div className='flex flex-row items-center justify-between px-6 py-3.5'>
+              <div className='flex flex-col'>
+                <p className='font-medium'>All projects in this category</p>
               </div>
             </div>
           </>
@@ -261,7 +261,7 @@ const Compare = ({ category }: CompareProps) => {
         {error && <Error />}
 
         {data.length === 0 && !error && !fetching && (
-          <p className="w-full p-12 text-center text-sm text-gray-300">No projects found</p>
+          <p className='w-full p-12 text-center text-sm text-gray-300'>No projects found</p>
         )}
 
         {data.length > 0 && !error && <Table table={table} />}

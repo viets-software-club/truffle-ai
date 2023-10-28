@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import clsx from 'clsx'
 import formatNumber from '@/util/formatNumber'
 import Tooltip from './TooltipItem'
 
@@ -55,29 +56,27 @@ const GithubStatItem = ({
   const gap = largeGap ? 'gap-[10px]' : 'gap-[5px]'
 
   return (
-    <div className="flex flex-col justify-between">
-      <div className={`inline-flex ${outerPaddingOn ? 'px-7' : ''} py-2.5`}>
+    <div className='flex flex-col justify-between'>
+      <div className={clsx('inline-flex py-2.5', { 'px-7': outerPaddingOn })}>
         <div
-          className={`flex flex-row items-center justify-center text-xs ${gap}`}
-          data-tooltip-id={id}
-        >
-          {Icon && <Icon className={`h-[14px] w-[14px] ${color}`} />}
+          className={clsx('flex flex-row items-center justify-center text-xs', gap)}
+          data-tooltip-id={id}>
+          {Icon && <Icon className={clsx('h-[14px] w-[14px]', color)} />}
           {IconMetric}
           {value && (
             <span
-              className={`text-xs font-medium not-italic leading-3 ${
-                paddingOn ? 'w-6' : ''
-              } ${color}`}
-            >
+              className={clsx('text-xs font-medium not-italic leading-3', color, {
+                'w-6': paddingOn
+              })}>
               {formatNumber(value)}
             </span>
           )}
           {link && (
-            <a href={link} target="_blank" rel="noreferrer">
+            <a href={link} target='_blank' rel='noreferrer'>
               GitHub
             </a>
           )}
-          {growth && <span className="text-xs not-italic leading-3 text-gray-500">{growth}</span>}
+          {growth && <span className='text-xs not-italic leading-3 text-gray-500'>{growth}</span>}
           <Tooltip id={id} />
         </div>
       </div>

@@ -1,18 +1,17 @@
-import Image from '@/components/page/docs/Image'
-import Heading from '@/components/page/docs/Heading'
-import Paragraph from '@/components/page/docs/Paragraph'
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-import NormalBulletList from '@/components/page/docs/NormalBulletedList'
-
 import ProjectDetails from '@/assets/ProjectDetails.png'
+import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
+import Heading from '@/components/page/docs/Heading'
+import Image from '@/components/page/docs/Image'
+import NormalBulletList from '@/components/page/docs/NormalBulletedList'
+import Paragraph from '@/components/page/docs/Paragraph'
 
 const DetailsDocs = () => (
   <DocsPageWrapper>
-    <Heading type="h1">Project details</Heading>
+    <Heading type='h1'>Project details</Heading>
 
     {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
     {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
-    <Image src={ProjectDetails.src} alt="projectDetails" />
+    <Image src={ProjectDetails.src} alt='projectDetails' />
 
     <Paragraph>
       The Project Details page gives the user an in-depth look at an individual project. This page
@@ -20,7 +19,7 @@ const DetailsDocs = () => (
       growth, its social media traction, and its creator(s).{' '}
     </Paragraph>
 
-    <Heading type="h2">Navigation</Heading>
+    <Heading type='h2'>Navigation</Heading>
 
     <Paragraph>
       At the top of the Details page, the user will find three navigation buttons:
@@ -34,7 +33,7 @@ const DetailsDocs = () => (
       ]}
     />
 
-    <Heading type="h2">Main Panel</Heading>
+    <Heading type='h2'>Main Panel</Heading>
 
     <Paragraph>
       The main panel of the Details page is packed with useful information about the project:
@@ -55,7 +54,7 @@ const DetailsDocs = () => (
       ]}
     />
 
-    <Heading type="h2">Right Sidebar</Heading>
+    <Heading type='h2'>Right Sidebar</Heading>
 
     <Paragraph>
       The right sidebar provides statistics and social media information about the project and its

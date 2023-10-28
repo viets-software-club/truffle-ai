@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import LoadingSpinner from './LoadingSpinner'
 
 type LoadingProps = {
@@ -10,10 +11,10 @@ type LoadingProps = {
  */
 const Loading = ({ fullscreen }: LoadingProps) => (
   <div
-    className={`flex ${
+    className={clsx(
+      'flex grow flex-col items-center justify-center text-gray-300',
       fullscreen ? 'h-screen' : 'py-40'
-    } grow flex-col items-center justify-center text-gray-300`}
-  >
+    )}>
     <LoadingSpinner />
   </div>
 )

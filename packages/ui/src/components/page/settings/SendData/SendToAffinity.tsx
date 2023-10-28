@@ -57,17 +57,17 @@ const SendToAffinity = (props: SendToAffinityProps) => {
   }
 
   return (
-    <div className="flex flex-col items-start gap-[15px]">
+    <div className='flex flex-col items-start gap-[15px]'>
       <Button
-        variant="normal"
+        variant='normal'
         text={affinityLoading ? 'Loading...' : 'Send to Affinity'}
         onClick={handleClickWrapper}
       />
       {notificationStatus === 'success' && (
-        <Banner variant="success" message="Slack notification sent" />
+        <Banner variant='success' message='Slack notification sent' />
       )}
       {notificationStatus === 'error' && (
-        <Banner variant="error" message="Error sending to Affinity" />
+        <Banner variant='error' message='Error sending to Affinity' />
       )}
     </div>
   )

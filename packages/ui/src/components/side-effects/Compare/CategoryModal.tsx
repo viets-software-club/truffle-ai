@@ -57,50 +57,47 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
 
   return (
     <Transition appear show={open}>
-      <Dialog as="div" open={open} onClose={toggleModal} className="fixed inset-0 z-30">
+      <Dialog as='div' open={open} onClose={toggleModal} className='fixed inset-0 z-30'>
         <Transition.Child
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-950/25" />
+          enter='ease-out duration-300'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'>
+          <div className='fixed inset-0 bg-gray-950/25' />
         </Transition.Child>
 
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className='fixed inset-0 flex items-center justify-center'>
           <Transition.Child
             as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
+            enter='transition ease-out duration-100'
+            enterFrom='transform opacity-0 scale-95'
+            enterTo='transform opacity-100 scale-100'
+            leave='transition ease-in duration-75'
+            leaveFrom='transform opacity-100 scale-100'
+            leaveTo='transform opacity-0 scale-95'>
             <Dialog.Panel
-              as="form"
-              className="flex w-[350px] flex-col items-stretch gap-4 rounded-lg border border-gray-900/20 bg-gray-700 p-4 text-left shadow-lg shadow-gray-950/10"
-              onSubmit={handleSubmit}
-            >
-              <Dialog.Title className="text-base font-semibold text-white">
+              as='form'
+              className='flex w-[350px] flex-col items-stretch gap-4 rounded-lg border border-gray-900/20 bg-gray-700 p-4 text-left shadow-lg shadow-gray-950/10'
+              onSubmit={handleSubmit}>
+              <Dialog.Title className='text-base font-semibold text-white'>
                 Rename category
               </Dialog.Title>
 
-              <Input placeholder="Category" value={newCategory} onChange={handleChange} />
+              <Input placeholder='Category' value={newCategory} onChange={handleChange} />
 
               {/* Error message */}
-              {error && <p className="text-sm text-red-500">{defaultErrorMessage}</p>}
+              {error && <p className='text-sm text-red-500'>{defaultErrorMessage}</p>}
 
-              <div className="flex w-full items-center justify-end">
+              <div className='flex w-full items-center justify-end'>
                 {/* Submit button */}
                 <Button
                   text={fetching ? 'Loading...' : 'Save'}
-                  variant="highlighted"
+                  variant='highlighted'
                   disabled={fetching}
-                  type="submit"
-                  textColor="text-white"
+                  type='submit'
+                  textColor='text-white'
                 />
               </div>
             </Dialog.Panel>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { withRouter } from 'next/router'
 import { FiBookOpen, FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
+import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/pure/Sidebar'
 import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 
 const renderFooter = () => (
   <>
-    <Sidebar.Section.Item Icon={FiSettings} text="Settings" path="/settings" />
-    <Sidebar.Section.Item Icon={FiBookOpen} text="Documentation" path="/docs" />
+    <Sidebar.Section.Item Icon={FiSettings} text='Settings' path='/settings' />
+    <Sidebar.Section.Item Icon={FiBookOpen} text='Documentation' path='/docs' />
   </>
 )
 
@@ -30,24 +30,24 @@ const NavSidebar = () => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setBookmarks(urqlData?.bookmarkCollection?.edges?.map((edge) => edge.node) as Bookmark[])
+      setBookmarks(urqlData?.bookmarkCollection?.edges?.map(edge => edge.node) as Bookmark[])
     }
   }, [urqlData])
 
   // @TODO highlight current page in sidebar
   return (
-    <Sidebar title="TruffleAI" footer={renderFooter()}>
-      <Sidebar.Section title="Overview">
-        <Sidebar.Section.Item Icon={FiCompass} text="Trending projects" path="/" />
-        <Sidebar.Section.Item Icon={FiBookmark} text="All bookmarks" path="/bookmarks" />
+    <Sidebar title='TruffleAI' footer={renderFooter()}>
+      <Sidebar.Section title='Overview'>
+        <Sidebar.Section.Item Icon={FiCompass} text='Trending projects' path='/' />
+        <Sidebar.Section.Item Icon={FiBookmark} text='All bookmarks' path='/bookmarks' />
       </Sidebar.Section>
 
-      <Sidebar.Section title="Categories">
+      <Sidebar.Section title='Categories'>
         {bookmarks
           // Get a list of unique categories to display as folders
           .map(({ category }) => category)
           .filter((value, index, array) => array.indexOf(value) === index)
-          .map((category) => (
+          .map(category => (
             <div key={category}>
               <Sidebar.Section.Item
                 key={category}
@@ -57,7 +57,7 @@ const NavSidebar = () => {
               />
               {/* Display all projects in a category under their corresponding folder */}
               {bookmarks
-                .filter((bookmark) => bookmark.category === category)
+                .filter(bookmark => bookmark.category === category)
                 .map(({ project }) => {
                   if (!project) return null
                   const { name, organization, associatedPerson } = project

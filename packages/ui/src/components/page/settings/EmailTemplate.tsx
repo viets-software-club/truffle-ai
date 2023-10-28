@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react'
 import Button from '@/components/pure/Button'
 import Textarea from '@/components/pure/Textarea'
-import { useEffect, useState } from 'react'
 import Banner from './Banner'
 
 const initialTemplate = `Dear {founderName},
@@ -35,19 +35,19 @@ const UpdateEmailTemplate = () => {
 
   return (
     <>
-      <p className="mb-6 text-sm font-normal text-gray-400">
+      <p className='mb-6 text-sm font-normal text-gray-400'>
         Here, you have the option to customize the email template that will be automatically sent to
         the founders of a project on its detail page.
         <br /> Use {'{founderName}'} and {'{projectName}'} as placeholders for the actual values.
       </p>
       <Textarea
-        placeholder="Hi {founderName}, ..."
+        placeholder='Hi {founderName}, ...'
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
       />
-      <div className="mt-5">
-        <Button variant="highlighted" text="Update" onClick={showBannerFunc} />
-        {showBanner && <Banner variant="success" message="Email updated" />}
+      <div className='mt-5'>
+        <Button variant='highlighted' text='Update' onClick={showBannerFunc} />
+        {showBanner && <Banner variant='success' message='Email updated' />}
       </div>
     </>
   )

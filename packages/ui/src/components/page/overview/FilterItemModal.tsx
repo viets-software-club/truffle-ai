@@ -1,14 +1,15 @@
 import { ChangeEvent, useState } from 'react'
-import { TbRefresh, TbTrash } from 'react-icons/tb'
-import { IoTextOutline } from 'react-icons/io5'
 import { AiOutlineNumber } from 'react-icons/ai'
-import { ChevronDownIcon } from '@primer/octicons-react'
+import { IoTextOutline } from 'react-icons/io5'
+import { TbRefresh, TbTrash } from 'react-icons/tb'
 import { Menu, Popover } from '@headlessui/react'
+import { ChevronDownIcon } from '@primer/octicons-react'
+import clsx from 'clsx'
 import Button from '@/components/pure/Button'
 import { IntFilter, ProjectFilter, StringFilter } from '@/graphql/generated/gql'
-import { FilterOption, IntFilterOperator, StringFilterOperator, filterOptions } from './types'
-import MenuItemsTransition from './MenuItemsTransition'
 import FilterMenuItem from './FilterMenuItem'
+import MenuItemsTransition from './MenuItemsTransition'
+import { FilterOption, IntFilterOperator, StringFilterOperator, filterOptions } from './types'
 
 type FilterItemModalProps = {
   currentKey: FilterOption['key']
@@ -21,8 +22,8 @@ function isIntFilter(filter: StringFilter | IntFilter): filter is IntFilter {
 }
 
 const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModalProps) => {
-  const type = filterOptions.find((option) => option.key === currentKey)?.type
-  const column = filterOptions.find((option) => option.key === currentKey)?.column
+  const type = filterOptions.find(option => option.key === currentKey)?.type
+  const column = filterOptions.find(option => option.key === currentKey)?.column
   const currentOperator = Object.keys(filters[currentKey] || {})[0] as
     | StringFilterOperator
     | IntFilterOperator
@@ -71,29 +72,36 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
   ))
 
   return (
-    <Popover as="div" className="relative inline-block text-left">
+    <Popover as='div' className='relative inline-block text-left'>
       {({ open, close }) => (
         <>
           {/* Filterbar button - greyed out when no filter value has been selected */}
           <Popover.Button
-            className={`flex h-[30px] flex-row  items-center space-x-2 rounded-md border border-gray-800 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700 ${
-              value !== '' ? 'bg-gray-850 ' : ''
-            }`}
-          >
-            <div className="flex flex-row items-center space-x-1">
+            className={clsx(
+              'flex h-[30px] flex-row  items-center space-x-2 rounded-md border border-gray-800 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700',
+              {
+                'bg-gray-850 ': value !== ''
+              }
+            )}>
+            <div className='flex flex-row items-center space-x-1'>
               {/* Show number or text icon depending on type */}
               {type === 'string' ? (
-                <IoTextOutline className="text-gray-500" />
+                <IoTextOutline className='text-gray-500' />
               ) : (
-                <AiOutlineNumber className="text-gray-500" />
+                <AiOutlineNumber className='text-gray-500' />
               )}
 
-              <p className={`text-sm ${value !== '' ? '' : 'text-gray-500'}`}>{column}</p>
+              <p
+                className={clsx('text-sm', {
+                  'text-gray-500': value === ''
+                })}>
+                {column}
+              </p>
 
               <ChevronDownIcon
-                className={`text-gray-500 transition-transform duration-200 ${
-                  open ? 'rotate-180' : ''
-                }`}
+                className={clsx('text-gray-500 transition-transform duration-200', {
+                  'rotate-180': open
+                })}
               />
             </div>
           </Popover.Button>
@@ -101,27 +109,30 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
           {/* Filterbar dropdown */}
           <MenuItemsTransition>
             <Popover.Panel
-              className={`absolute left-0 z-40 mt-2 w-44 rounded-md bg-gray-700 shadow-lg outline-none ${
-                open ? 'block' : 'hidden'
-              }`}
-            >
+              className={clsx(
+                'absolute left-0 z-40 mt-2 w-44 rounded-md bg-gray-700 shadow-lg outline-none',
+                {
+                  block: open,
+                  hidden: !open
+                }
+              )}>
               {/* Whole expanded dropdown */}
-              <div className="p-2">
-                <div className="flex flex-row justify-between">
-                  <div className="flex flex-row space-x-2">
+              <div className='p-2'>
+                <div className='flex flex-row justify-between'>
+                  <div className='flex flex-row space-x-2'>
                     {/* Filter/ column title */}
-                    <p className="text-sm text-white">{column}</p>
+                    <p className='text-sm text-white'>{column}</p>
 
                     {/* Operator selector */}
-                    <Menu as="div">
-                      <Menu.Button className="flex flex-row items-center space-x-1 text-sm text-gray-500 outline-none">
-                        <p className="text-sm font-medium text-gray-300">{operator}</p>
-                        <ChevronDownIcon className="text-gray-500" />
+                    <Menu as='div'>
+                      <Menu.Button className='flex flex-row items-center space-x-1 text-sm text-gray-500 outline-none'>
+                        <p className='text-sm font-medium text-gray-300'>{operator}</p>
+                        <ChevronDownIcon className='text-gray-500' />
                       </Menu.Button>
 
                       <MenuItemsTransition>
-                        <Menu.Items className="absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none">
-                          <div className="py-1">
+                        <Menu.Items className='absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none'>
+                          <div className='py-1'>
                             {type === 'string' ? stringFilterOperators : intFilterOperators}
                           </div>
                         </Menu.Items>
@@ -130,25 +141,24 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                   </div>
 
                   {/* Remove icon */}
-                  <Button onClick={removeFilter} variant="onlyIconNoBorderNoBG" Icon={TbTrash} />
+                  <Button onClick={removeFilter} variant='onlyIconNoBorderNoBG' Icon={TbTrash} />
                 </div>
 
                 {/* Input */}
                 <form
-                  className="mt-2 flex gap-1"
-                  onSubmit={(e) => {
+                  className='mt-2 flex gap-1'
+                  onSubmit={e => {
                     handleSubmit(e)
                     close()
-                  }}
-                >
+                  }}>
                   <input
-                    placeholder="Type a value..."
+                    placeholder='Type a value...'
                     type={type === 'string' ? 'text' : 'number'}
-                    className="w-full rounded bg-gray-850 px-2 py-1 text-sm text-gray-300 outline-none"
+                    className='w-full rounded bg-gray-850 px-2 py-1 text-sm text-gray-300 outline-none'
                     value={value}
                     onChange={handleChange}
                   />
-                  <Button variant="onlyIcon" type="submit" Icon={TbRefresh} />
+                  <Button variant='onlyIcon' type='submit' Icon={TbRefresh} />
                 </form>
               </div>
             </Popover.Panel>

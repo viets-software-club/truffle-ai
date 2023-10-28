@@ -1,6 +1,6 @@
 import { createElement, useState } from 'react'
-import { AppProps } from 'next/app'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { AppProps } from 'next/app'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import withUrql from '@/components/side-effects/withUrql'
 import '@/styles/globals.css'
@@ -22,8 +22,7 @@ const App = ({
   return (
     <SessionContextProvider
       supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
+      initialSession={pageProps.initialSession}>
       {createElement(withUrql(Component), pageProps)}
     </SessionContextProvider>
   )

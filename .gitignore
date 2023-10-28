@@ -16,3 +16,5 @@ next-env.d.ts
 .idea
 .next
 /ui/.next
+secrets.yml
+.vscode

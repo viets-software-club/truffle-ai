@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ${NAMESPACE}
+  name: ${APP}-${PREFIX}-ui-deployment
+  annotations:
+    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+  labels:
+    app: ${APP}-${PREFIX}-ui-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${APP}-${PREFIX}-ui-deployment
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: ${APP}-${PREFIX}-ui-deployment
+      annotations:
+        kubernetes.io/change-cause: ${CHANGE_CAUSE}
+    spec:
+      containers:
+        - name: ${APP}-${PREFIX}-ui-container
+          image: ${UI_IMAGE}
+          ports:
+            - containerPort: ${UI_PORT}
+          resources:
+            limits:
+              cpu: 102m
+            requests:
+              cpu: 102m
+          envFrom:
+            - configMapRef:
+                name: ${APP}-${PREFIX}-ui-config
+            - secretRef:
+                name: ${APP}-${PREFIX}-ui-secret

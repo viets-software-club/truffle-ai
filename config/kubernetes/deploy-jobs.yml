@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: ${NAMESPACE}
+  name: ${APP}-${PREFIX}-repo-cronjob
+  annotations:
+    kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+spec:
+  timeZone: 'Europe/Berlin'
+  schedule: '10 * * * *'
+  jobTemplate:
+    metadata:
+      annotations:
+        kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+      labels:
+        app: ${APP}-${PREFIX}-deployment
+    spec:
+      template:
+        metadata:
+          annotations:
+            kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+          labels:
+            app: ${APP}-${PREFIX}-deployment
+        spec:
+          containers:
+            - name: ${APP}-${PREFIX}-repo-cronjob-container
+              image: ${REPO_CRONJOB_IMAGE}
+              envFrom:
+                - configMapRef:
+                    name: ${APP}-${ENVIRONMENT}-repo-cronjob-config
+                - secretRef:
+                    name: ${APP}-${ENVIRONMENT}-repo-cronjob-secret
+          restartPolicy: OnFailure

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ${NAMESPACE}
+  name: ${APP}-${PREFIX}-grapqhl-services-deployment
+  annotations:
+    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+  labels:
+    app: ${APP}-${PREFIX}-grapqhl-services-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${APP}-${PREFIX}-grapqhl-services-deployment
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: ${APP}-${PREFIX}-grapqhl-services-deployment
+      annotations:
+        kubernetes.io/change-cause: ${CHANGE_CAUSE}
+    spec:
+      containers:
+        - name: ${APP}-${PREFIX}-graphql-gateway-container
+          image: ${GRAPHQL_GATEWAY_IMAGE}
+          ports:
+            - containerPort: ${GRAPHQL_GATEWAY_PORT}
+          resources:
+            limits:
+              cpu: 102m
+            requests:
+              cpu: 102m
+          envFrom:
+            - configMapRef:
+                name: ${APP}-${ENVIRONMENT}-graphql-gateway-config
+            - secretRef:
+                name: ${APP}-${ENVIRONMENT}-graphql-gateway-secret
+        - name: ${APP}-${PREFIX}-graphql-server-container
+          image: ${GRAPHQL_SERVER_IMAGE}
+          ports:
+            - containerPort: ${GRAPHQL_SERVER_PORT}
+          resources:
+            limits:
+              cpu: 102m
+            requests:
+              cpu: 102m
+          envFrom:
+            - configMapRef:
+                name: ${APP}-${ENVIRONMENT}-graphql-server-config
+            - secretRef:
+                name: ${APP}-${ENVIRONMENT}-graphql-server-secret

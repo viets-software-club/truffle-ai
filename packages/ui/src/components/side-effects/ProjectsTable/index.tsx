@@ -119,8 +119,4 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   )
 }
 
-ProjectsTable.defaultProps = {
-  hideTimeFrame: false
-}
-
 export default ProjectsTable

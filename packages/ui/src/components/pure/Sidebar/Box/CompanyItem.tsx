@@ -24,6 +24,7 @@ const CompanyItem = ({ twitterLink, websiteLink }: CompanyProps) => (
             <Tooltip id={twitterLink} />
           </div>
         )}
+
         {websiteLink && (
           <div>
             <a
@@ -38,16 +39,12 @@ const CompanyItem = ({ twitterLink, websiteLink }: CompanyProps) => (
             <Tooltip id={websiteLink} />
           </div>
         )}
+
         {/* <span className="text-xs not-italic leading-3 text-gray-500">{name}</span>
         <span className="w-6 text-xs not-italic leading-3 text-gray-100">{value}</span> */}
       </div>
     </div>
   </div>
 )
-
-CompanyItem.defaultProps = {
-  twitterLink: null,
-  websiteLink: null
-}
 
 export default CompanyItem

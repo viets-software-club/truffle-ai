@@ -72,12 +72,4 @@ const FounderItem = ({ name, mail, projectName, github, twitter, website }: Foun
   </div>
 )
 
-FounderItem.defaultProps = {
-  mail: null,
-  // linkedin: null,
-  twitter: null,
-  github: null,
-  website: null
-}
-
 export default FounderItem

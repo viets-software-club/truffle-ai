@@ -62,7 +62,9 @@ const GithubStatItem = ({
           className={clsx('flex flex-row items-center justify-center text-xs', gap)}
           data-tooltip-id={id}>
           {Icon && <Icon className={clsx('h-[14px] w-[14px]', color)} />}
+
           {IconMetric}
+
           {value && (
             <span
               className={clsx('text-xs font-medium not-italic leading-3', color, {
@@ -71,33 +73,20 @@ const GithubStatItem = ({
               {formatNumber(value)}
             </span>
           )}
+
           {link && (
             <a href={link} target='_blank' rel='noreferrer'>
               GitHub
             </a>
           )}
+
           {growth && <span className='text-xs not-italic leading-3 text-gray-500'>{growth}</span>}
+
           <Tooltip id={id} />
         </div>
       </div>
     </div>
   )
-}
-
-GithubStatItem.defaultProps = {
-  id: undefined,
-  Icon: undefined,
-  value: undefined,
-  IconMetric: undefined,
-  growth: undefined,
-  outerPaddingOn: true,
-  paddingOn: true,
-  greenValue: undefined,
-  lightGreenValue: undefined,
-  redValue: undefined,
-  lightRedValue: undefined,
-  largeGap: false,
-  link: undefined
 }
 
 export default GithubStatItem

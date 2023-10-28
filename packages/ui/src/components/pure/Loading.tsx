@@ -19,8 +19,4 @@ const Loading = ({ fullscreen }: LoadingProps) => (
   </div>
 )
 
-Loading.defaultProps = {
-  fullscreen: false
-}
-
 export default Loading

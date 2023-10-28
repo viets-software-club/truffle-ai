@@ -23,7 +23,7 @@ type TopBarProps = {
 const TopBar = ({
   columns,
   filters,
-  hideTimeFrame,
+  hideTimeFrame = false,
   sorting,
   setSorting,
   updateFilters
@@ -86,10 +86,6 @@ const TopBar = ({
       </div>
     </div>
   )
-}
-
-TopBar.defaultProps = {
-  hideTimeFrame: false
 }
 
 export default TopBar

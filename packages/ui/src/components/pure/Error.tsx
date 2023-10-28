@@ -6,7 +6,10 @@ type ErrorProps = {
 /**
  * Simple error component with customizable title and message
  */
-const Error = ({ title, message }: ErrorProps) => (
+const Error = ({
+  title = 'Oops...',
+  message = 'Something went wrong, please try again.'
+}: ErrorProps) => (
   <div className='flex h-screen grow flex-col items-center justify-between'>
     <div />
 
@@ -18,10 +21,5 @@ const Error = ({ title, message }: ErrorProps) => (
     <div className='self-center pb-4 text-xs text-gray-300'>© 2023 La Famiglia x Rostlab</div>
   </div>
 )
-
-Error.defaultProps = {
-  title: 'Oops...',
-  message: 'Something went wrong, please try again.'
-}
 
 export default Error

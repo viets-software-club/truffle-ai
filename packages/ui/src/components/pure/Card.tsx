@@ -99,10 +99,4 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
   )
 }
 
-Card.defaultProps = {
-  tweets: [],
-  communitySentiment: '',
-  links: []
-}
-
 export default Card

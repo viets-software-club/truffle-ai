@@ -1,0 +1,29 @@
+name: 'Deploy'
+on:
+  pull_request:
+    types:
+      - synchronize
+    branches:
+      - 'feature/**'
+    paths:
+      - 'packages/preview_cronjob'
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+      - 'config/**'
+      - 'packages/preview_cronjob'
+      - '.github/workflows/**'
+jobs:
+  build-preview-cronjob-image:
+    uses: ./.github/reusable/do-image.yml
+    with:
+      package: preview_cronjob
+  deploy-preview-cronjob:
+    needs: [build-preview-cronjob-image]
+    uses: ./.github/reusable/do-kube.yml
+    with:
+      template: 'deploy-preview-cronjob'
+      template_args: >
+        PREVIEW_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-preview-cronjob:${COMMIT_TAG}

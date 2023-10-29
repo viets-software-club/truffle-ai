@@ -1,0 +1,29 @@
+name: 'Deploy repo-cronjob'
+on:
+  pull_request:
+    types:
+      - synchronize
+    branches:
+      - 'feature/**'
+    paths:
+      - 'packages/repo_cronjob'
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+      - 'config/**'
+      - 'packages/repo_cronjob'
+      - '.github/workflows/**'
+jobs:
+  build-repo-cronjob-image:
+    uses: ./.github/reusable/do-image.yml
+    with:
+      package: repo_cronjob
+  deploy-repo-cronjob:
+    needs: [build-repo-cronjob-image]
+    uses: ./.github/reusable/do-kube.yml
+    with:
+      template: 'deploy-repo-cronjob'
+      template_args: >
+        REPO_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-repo-cronjob:${COMMIT_TAG}

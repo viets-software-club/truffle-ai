@@ -1,0 +1,30 @@
+name: 'Deploy GraphQL Backend'
+on:
+  pull_request:
+    types:
+      - synchronize
+    branches:
+      - 'feature/**'
+    paths:
+      - 'packages/ui'
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+      - 'config/**'
+      - 'packages/ui'
+      - '.github/workflows/**'
+jobs:
+  build-ui-image:
+    uses: ./.github/reusable/do-image.yml
+    with:
+      package: ui
+  deploy-ui:
+    needs: [build-graphql-gateway-image, build-graphql-server-image]
+    uses: ./.github/reusable/do-kube.yml
+    with:
+      template: deploy-ui
+      template_args: >
+        UI_PORT=${{vars.UI_PORT}}
+        UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-graphql-server:${COMMIT_TAG}

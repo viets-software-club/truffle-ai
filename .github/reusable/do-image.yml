@@ -1,0 +1,23 @@
+name: 'DO Images'
+on:
+  workflow_call:
+    inputs:
+      package_name:
+        required: true
+      build_args:
+        required: true
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+    env:
+      image_name: ${package/\_/\-}
+      environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+    steps:
+      - uses: ./.github/reusable/do-image.yml
+      - name: Build ${{env.image_name}} image
+        run: docker build ${{inputs.build_args}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{env.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+      - name: Push ${{env.image_name}} image to DigitalOcean Container Registry
+        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{env.image_name}}}:$(echo $GITHUB_SHA | head -c7)

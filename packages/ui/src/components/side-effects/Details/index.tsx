@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { FaHackerNews, FaTwitter } from 'react-icons/fa'
-import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
-import Link from 'next/link'
 import { useUser } from '@supabase/auth-helpers-react'
 import ChartWrapper, { DataPoint } from '@/components/page/details/ChartWrapper'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import defaultFilters from '@/components/page/overview/defaultFilters'
 import { defaultSort } from '@/components/page/overview/types'
-import Button from '@/components/pure/Button'
 import Card from '@/components/pure/Card'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
@@ -19,6 +16,7 @@ import {
   useProjectDetailsQuery,
   useProjectIdsQuery
 } from '@/graphql/generated/gql'
+import Navbar from './Navbar'
 
 type DetailsProps = {
   id: string
@@ -109,44 +107,12 @@ const Details = ({ id }: DetailsProps) => {
 
   return (
     <>
-      <div className='fixed z-10 flex h-[60px] w-full items-center justify-between border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500'>
-        <div className='flex flex-row items-center gap-3'>
-          <Link href='/'>
-            <X key='2' className='h-4 w-4 text-gray-500' />
-          </Link>
-
-          {nextProjectId ? (
-            <Link href={`/details/${nextProjectId}`}>
-              <Button>
-                <ChevronUp />
-              </Button>
-            </Link>
-          ) : (
-            <Button disabled={!nextProjectId}>
-              <ChevronUp className='text-gray-600' />
-            </Button>
-          )}
-
-          {previousProjectId ? (
-            <Link href={`/details/${previousProjectId}`}>
-              <Button>
-                <ChevronDown />
-              </Button>
-            </Link>
-          ) : (
-            <Button disabled={!previousProjectId}>
-              <ChevronDown className='text-gray-600' />
-            </Button>
-          )}
-
-          <div className='flex flex-row items-center'>
-            <p className='text-sm text-white'>
-              {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
-            </p>
-            <p className='text-sm text-gray-500'>/&nbsp;{projects?.length}</p>
-          </div>
-        </div>
-      </div>
+      <Navbar
+        currentProjectIndex={currentProjectIndex}
+        nextProjectId={nextProjectId}
+        previousProjectId={previousProjectId}
+        projectsLength={projects?.length}
+      />
 
       <div className='flex grow'>
         <div className='w-[calc(100%-250px)] flex-row pt-[60px]'>
@@ -193,7 +159,6 @@ const Details = ({ id }: DetailsProps) => {
                 name='Top Tweets'
                 tweets={project.relatedTwitterPosts ?? undefined}
                 variant='twitter'
-                key={project.id as string}
               />
             </div>
 
@@ -204,7 +169,6 @@ const Details = ({ id }: DetailsProps) => {
                 communitySentiment={project.hackernewsSentiment ?? undefined}
                 links={project.hackernewsStories as string[]}
                 variant='hackernews'
-                key={project.id as string}
               />
             </div>
           </div>

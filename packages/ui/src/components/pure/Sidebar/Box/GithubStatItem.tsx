@@ -34,7 +34,7 @@ const GithubStatItem = ({
   growth,
   IconMetric,
   paddingOn,
-  outerPaddingOn,
+  outerPaddingOn = true,
   greenValue,
   lightGreenValue,
   redValue,

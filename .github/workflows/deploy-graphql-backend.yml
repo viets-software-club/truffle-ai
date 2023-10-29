@@ -11,7 +11,6 @@ on:
 jobs:
   build-graphql-gateway-image:
     uses: ./.github/workflows/do-image.yml
-    environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
     with:
       package: graphql_gateway
       build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }}

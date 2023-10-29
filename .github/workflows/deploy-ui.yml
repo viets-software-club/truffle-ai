@@ -20,4 +20,4 @@ jobs:
       template: deploy-ui
       template_args: >
         UI_PORT=${{vars.UI_PORT}}
-        UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-graphql-server:${COMMIT_TAG}
+        UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-ui:${COMMIT_TAG}

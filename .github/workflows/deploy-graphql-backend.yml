@@ -9,13 +9,13 @@ on:
     branches: ['main', 'staging']
     paths: ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
 jobs:
-  build-graphql-gateway-image:
-    uses: ./.github/workflows/do-image.yml
-    with:
-      package: graphql_gateway
-      build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }}
-    secrets:
-      build_args: --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}
+  # build-graphql-gateway-image:
+  #   uses: ./.github/workflows/do-image.yml
+  #   with:
+  #     package: graphql_gateway
+  #     build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }}
+  #   secrets:
+  #     build_args: --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}
   build-graphql-server-image:
     uses: ./.github/workflows/do-image.yml
     with:

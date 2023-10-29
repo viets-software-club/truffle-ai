@@ -10,8 +10,6 @@ jobs:
   build-image:
     runs-on: ubuntu-latest 
     environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
-    env:
-      image_name: ${PACKAGE/\_/\-}  
     steps:
       - uses: ./.github/workflows/do-image.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials

@@ -14,7 +14,7 @@ jobs:
     with:
       package: ui
   deploy-ui:
-    needs: [build-graphql-gateway-image, build-graphql-server-image]
+    needs: [build-ui-image]
     uses: ./.github/workflows/do-kube.yml
     with:
       template: deploy-ui

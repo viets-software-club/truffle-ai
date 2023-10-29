@@ -3,7 +3,7 @@ import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
 import Link from 'next/link'
 import { useUser } from '@supabase/auth-helpers-react'
-import Chart, { DataPoint } from '@/components/page/details/Chart'
+import ChartWrapper, { DataPoint } from '@/components/page/details/ChartWrapper'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import defaultFilters from '@/components/page/overview/defaultFilters'
@@ -169,7 +169,7 @@ const Details = ({ id }: DetailsProps) => {
           />
 
           <div className='flex flex-col items-start'>
-            <Chart
+            <ChartWrapper
               datasets={[
                 {
                   id: project.id as string,

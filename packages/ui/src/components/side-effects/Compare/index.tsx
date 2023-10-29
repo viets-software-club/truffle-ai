@@ -9,7 +9,7 @@ import {
   ColumnOrderState,
   getFilteredRowModel
 } from '@tanstack/react-table'
-import Chart, { DataPoint } from '@/components/page/details/Chart'
+import ChartWrapper, { DataPoint } from '@/components/page/details/ChartWrapper'
 import FilterBar from '@/components/page/overview/FilterBar'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
@@ -226,7 +226,7 @@ const Compare = ({ category }: CompareProps) => {
 
         {!fetching && !error && data.length > 0 && (
           <>
-            <Chart
+            <ChartWrapper
               datasets={data.map(project => ({
                 id: project.id as string,
                 name: project.name as string,

@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "Builds the kubernetes manifest files for the different deployments and services",
   "scripts": {
-    "build": "sh ./build.sh"
+    "build": "OUT_DIR=../../.deployment sh ./build.sh"
   }
 }

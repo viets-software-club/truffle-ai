@@ -1,20 +1,34 @@
 name: 'Deploy'
 on:
+  pull_request:
+    types:
+      - synchronize
+    branches:
+      - 'feature/**'
+    paths:
+      - 'packages/*_cronjob'
   push:
     branches:
       - main
       - staging
-      - 'feature/**'
     paths:
+      - 'config/**'
       - 'packages/**'
       - '.github/workflows/**'
 jobs:
   build:
+    strategy:
+      matrix:
+        PACKAGE: [deployment_preview_cronjob, repo_cronjob]
+        - include:
+            - PACKAGE: deployment_preview_cronjob
+              IMAGE: ${{vars.APP}}-deployment-preview-cronjob
+            - PACKAGE: repo_cronjob
+              IMAGE: ${{vars.APP}}-repo-cronjob
     runs-on: ubuntu-latest
     environment: ${{ (github.ref == 'refs/heads/main' && 'production') || 'staging' }}
     env:
-      GITHUB_ENVIRONMENT: ${{ (github.ref == 'refs/heads/main' && 'production') || 'staging' }}
-      NAMESPACE: ${{ (github.ref == 'refs/heads/main' && 'production') || ('github.ref == 'refs/heads/staging' && 'staging') || 'commit' }}
+      ENVIRONMENT: ${{ (github.ref == 'refs/heads/main' && 'production') || ('github.ref == 'refs/heads/staging' && 'staging') || 'commit' }}
       PREFIX: ${{ (github.ref == 'refs/heads/main' && 'production') || ('github.ref == 'refs/heads/staging' && 'staging') || (echo $GITHUB_SHA | head -c7) }}
     steps:
       - name: Checkout $GITHUB_REF
@@ -23,25 +37,15 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Build truffle-graphql-gateway image
-        run: docker build --build-arg SERVER_GRAPHQL_URL=${{ vars.SERVER_GRAPHQL_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }} --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} --build-arg SUPABASE_GRAPHQL_URL=${{ vars.SUPABASE_GRAPHQL_URL }} -t registry.digitalocean.com/truffle-ai-containers/truffle-${{ env.environment }}-graphql-gateway:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_gateway/Dockerfile .
-      - name: Build truffle-ai-graphql-server image
-        run: docker build -t registry.digitalocean.com/truffle-ai-containers/truffle-${{ env.environment }}-graphql-server:$(echo $GITHUB_SHA | head -c7) -f ./packages/graphql_server/Dockerfile .
-      - name: Build truffle-ai-repo-job image
-        run: docker build -t registry.digitalocean.com/truffle-ai-containers/truffle-${{ env.environment }}-repo-job:$(echo $GITHUB_SHA | head -c7) -f ./packages/repo_job/Dockerfile .
+      - name: Build ${{matrix.IMAGE}} image
+        run: docker build -t ${{vars.ENVIRONMENT}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${{matrix.CRONJOBS}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{matrix.PACKAGE}}/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
-      - name: Push truffle-ai-graphql-gateway image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-${{ env.environment }}-graphql-gateway:$(echo $GITHUB_SHA | head -c7)
-      - name: Push truffle-ai-graphql-server image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-${{ env.environment }}-graphql-server:$(echo $GITHUB_SHA | head -c7)
-      - name: Push truffle-ai-repo-job image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/truffle-ai-containers/truffle-${{ env.environment }}-repo-job:$(echo $GITHUB_SHA | head -c7)
+      - name: Push ${{matrix.IMAGE}} image to DigitalOcean Container Registry
+        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{matrix.IMAGE}}:$(echo $GITHUB_SHA | head -c7)
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 truffle-ai-cluster
-      - name: Create deployment.yml from deployment.template.yml and add environment variables
-        run: envsubst < $GITHUB_WORKSPACE/packages/config/deployment/deployment.template.yml > $GITHUB_WORKSPACE/.deployment/deployment.yml
-      - name: Update values in deployment file
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
+      - name: Create Kubernetes manifest
         run: >
           APP=${{vars.APP}}
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
@@ -59,7 +63,7 @@ jobs:
           OUTPUT_PATH=$GITHUB_WORKSPACE/.deployment/manifests
           ../../config/kubernetes/build.sh
       - name: Deploy everything
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/manifests/deployment.yml
+        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/manifests/deploy-cronjobs.yml
       - name: Verify deployment
         run: kubectl rollout status --timeout 240s deployment/${{vars.APP}-${{env.PREFIX}}-ui-deployment
       - name: Verify deployment

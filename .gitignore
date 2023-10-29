@@ -18,3 +18,5 @@ next-env.d.ts
 /ui/.next
 secrets.yml
 .vscode
+secrets.*
+.deployment

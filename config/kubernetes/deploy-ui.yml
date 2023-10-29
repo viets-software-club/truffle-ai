@@ -36,6 +36,6 @@ spec:
               cpu: 102m
           envFrom:
             - configMapRef:
-                name: ${APP}-${PREFIX}-ui-config
+                name: ${APP}-ui-config
             - secretRef:
-                name: ${APP}-${PREFIX}-ui-secret
+                name: ${APP}-ui-secret

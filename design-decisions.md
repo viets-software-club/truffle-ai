@@ -1,0 +1,5 @@
+- Multi client-side graphql connects are not a general thing, that's why we use a graphql gateway instead
+- `graphql_gateway` depends on `graphql_server` so they should be in the same Kubernetes pod
+- Kustomize was discussed, but doesn't offer the features needed when passing dynamic values -> envsubst was used instead
+- Deno will be used when possible for new services
+- We have static sites, so we can show loading screens the fastest, the frontend app does not communicate directly with the backend (e.g. it doesn't do ssr), we can therefore put the frontend in a separate Kubernetes Pod, and we also do not need a service to connect them

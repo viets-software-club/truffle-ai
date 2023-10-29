@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: ${NAMESPACE}
+  namespace: ${ENVIRONMENT}
   name: ${APP}-${PREFIX}-repo-cronjob-deployment
   annotations:
     kubernetes.io/change-cause: "${CHANGE_CAUSE}"
@@ -27,7 +27,7 @@ spec:
               image: ${REPO_CRONJOB_IMAGE}
               envFrom:
                 - configMapRef:
-                    name: ${APP}-${ENVIRONMENT}-repo-cronjob-config
+                    name: ${APP}-repo-cronjob-config
                 - secretRef:
-                    name: ${APP}-${ENVIRONMENT}-repo-cronjob-secret
+                    name: ${APP}-repo-cronjob-secret
           restartPolicy: OnFailure

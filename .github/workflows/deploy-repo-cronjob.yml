@@ -17,12 +17,12 @@ on:
       - '.github/workflows/**'
 jobs:
   build-repo-cronjob-image:
-    uses: ./.github/reusable/do-image.yml
+    uses: ./.github/workflows/do-image.yml
     with:
       package: repo_cronjob
   deploy-repo-cronjob:
     needs: [build-repo-cronjob-image]
-    uses: ./.github/reusable/do-kube.yml
+    uses: ./.github/workflows/do-kube.yml
     with:
       template: 'deploy-repo-cronjob'
       template_args: >

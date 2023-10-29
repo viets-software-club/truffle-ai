@@ -19,7 +19,7 @@ on:
       - '.github/workflows/**'
 jobs:
   build-graphql-gateway-image:
-    uses: ./.github/reusable/do-image.yml
+    uses: ./.github/workflows/do-image.yml
     with:
       package: graphql_gateway
       build_args: >
@@ -27,12 +27,12 @@ jobs:
         --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }}
         --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}
   build-graphql-server-image:
-    uses: ./.github/reusable/do-image.yml
+    uses: ./.github/workflows/do-image.yml
     with:
       package: graphql_server
   deploy-graphql-backend:
     needs: [build-graphql-gateway-image, build-graphql-server-image]
-    uses: ./.github/reusable/do-kube.yml
+    uses: ./.github/workflows/do-kube.yml
     with:
       template: deploy-graphql-backend
       template_args: >

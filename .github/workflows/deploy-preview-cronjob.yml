@@ -17,12 +17,12 @@ on:
       - '.github/workflows/**'
 jobs:
   build-preview-cronjob-image:
-    uses: ./.github/reusable/do-image.yml
+    uses: ./.github/workflows/do-image.yml
     with:
       package: preview_cronjob
   deploy-preview-cronjob:
     needs: [build-preview-cronjob-image]
-    uses: ./.github/reusable/do-kube.yml
+    uses: ./.github/workflows/do-kube.yml
     with:
       template: 'deploy-preview-cronjob'
       template_args: >

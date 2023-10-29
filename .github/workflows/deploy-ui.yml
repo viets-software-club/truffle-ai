@@ -17,12 +17,12 @@ on:
       - '.github/workflows/**'
 jobs:
   build-ui-image:
-    uses: ./.github/reusable/do-image.yml
+    uses: ./.github/workflows/do-image.yml
     with:
       package: ui
   deploy-ui:
     needs: [build-graphql-gateway-image, build-graphql-server-image]
-    uses: ./.github/reusable/do-kube.yml
+    uses: ./.github/workflows/do-kube.yml
     with:
       template: deploy-ui
       template_args: >

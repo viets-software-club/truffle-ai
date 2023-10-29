@@ -7,3 +7,5 @@ env.sh
 .meshrc.yaml
 .next
 config/kubernetes/deploy-*
+.github
+.deployment

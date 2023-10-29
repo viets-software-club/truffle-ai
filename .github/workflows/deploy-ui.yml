@@ -1,4 +1,4 @@
-name: 'Deploy GraphQL Backend'
+name: 'Deploy ui'
 on:
   pull_request:
     types:

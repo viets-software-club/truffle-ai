@@ -1,4 +1,4 @@
-name: 'DO Kube'
+name: 'DO kube'
 on:
   workflow_call:
     inputs:

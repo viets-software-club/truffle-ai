@@ -1,8 +1,7 @@
-name: 'Deploy'
+name: 'Deploy preview_cronjob'
 on:
   pull_request:
-    types:
-      - synchronize
+    types: [synchronize]
     branches: ['main', 'staging']
     paths: ['packages/preview_cronjob', 'config/**', '.github/workflows/**']
   push:

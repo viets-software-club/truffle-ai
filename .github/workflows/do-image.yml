@@ -1,4 +1,4 @@
-name: 'DO Images'
+name: 'DO image'
 on:
   workflow_call:
     inputs:

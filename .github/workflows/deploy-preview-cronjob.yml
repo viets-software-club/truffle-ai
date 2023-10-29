@@ -3,21 +3,11 @@ on:
   pull_request:
     types:
       - synchronize
-    branches:
-      - 'feature/**'
-    paths:
-      - 'packages/preview_cronjob'
-      - 'config/**'
-      - '.github/workflows/**'
+    branches: ['main', 'staging']
+    paths: ['packages/preview_cronjob', 'config/**', '.github/workflows/**']
   push:
-    branches:
-      - main
-      - staging
-    paths:
-      - 'packages/preview_cronjob'
-      - '.github/workflows/**'
-      - 'config/**'
-      - '.github/workflows/**'
+    branches: ['main', 'staging']
+    paths: ['packages/preview_cronjob', 'config/**', '.github/workflows/**']
 jobs:
   build-preview-cronjob-image:
     uses: ./.github/workflows/do-image.yml

@@ -3,20 +3,11 @@ on:
   pull_request:
     types:
       - synchronize
-    branches:
-      - 'feature/**'
-    paths:
-      - 'packages/ui'
-      - 'config/**'
-      - '.github/workflows/**'
+    branches: ['main', 'staging']
+    paths: ['packages/ui', 'config/**', '.github/workflows/**']
   push:
-    branches:
-      - main
-      - staging
-    paths:
-      - 'packages/ui'
-      - 'config/**'
-      - '.github/workflows/**'
+    branches: ['main', 'staging']
+    paths: ['packages/ui', 'config/**', '.github/workflows/**']
 jobs:
   build-ui-image:
     uses: ./.github/workflows/do-image.yml

@@ -18,13 +18,13 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Build manifest
         run: >
-        APP=${{vars.APP}}
-        COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-        COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
-        CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
-        PREFIX="${{environment}}$((environment = 'commit' ? '-$COMMIT_TAG' : ''))"
-        ENVIRONMENT=${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
-        ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}
+          APP=${{vars.APP}}
+          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+          COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
+          CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
+          PREFIX="${{environment}}$((environment = 'commit' ? '-$COMMIT_TAG' : ''))"
+          ENVIRONMENT=${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+          ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}
       - name: Print rendered template
         run: cat ${{inputs.template}}
       - name: Deploy manifest

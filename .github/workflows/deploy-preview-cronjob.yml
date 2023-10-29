@@ -7,13 +7,16 @@ on:
       - 'feature/**'
     paths:
       - 'packages/preview_cronjob'
+      - 'config/**'
+      - '.github/workflows/**'
   push:
     branches:
       - main
       - staging
     paths:
-      - 'config/**'
       - 'packages/preview_cronjob'
+      - '.github/workflows/**'
+      - 'config/**'
       - '.github/workflows/**'
 jobs:
   build-preview-cronjob-image:

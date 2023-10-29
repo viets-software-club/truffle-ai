@@ -7,13 +7,15 @@ on:
       - 'feature/**'
     paths:
       - 'packages/repo_cronjob'
+      - 'config/**'
+      - '.github/workflows/**'
   push:
     branches:
       - main
       - staging
     paths:
-      - 'config/**'
       - 'packages/repo_cronjob'
+      - 'config/**'
       - '.github/workflows/**'
 jobs:
   build-repo-cronjob-image:

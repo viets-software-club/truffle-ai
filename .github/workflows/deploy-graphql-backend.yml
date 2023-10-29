@@ -8,14 +8,16 @@ on:
     paths:
       - 'packages/graphql_gateway'
       - 'packages/graphql_server'
+      - 'config/**'
+      - '.github/workflows/**'
   push:
     branches:
       - main
       - staging
     paths:
-      - 'config/**'
       - 'packages/graphql_gateway'
       - 'packages/graphql_server'
+      - 'config/**'
       - '.github/workflows/**'
 jobs:
   build-graphql-gateway-image:

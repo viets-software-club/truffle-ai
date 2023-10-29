@@ -6,6 +6,8 @@ on:
         required: true
       build_args:
         required: false
+      build_args_with_secrets:
+        required: false
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -16,7 +18,7 @@ jobs:
     steps:
       - uses: ./.github/workflows/do-image.yml
       - name: Build ${{env.image_name}} image
-        run: docker build -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{env.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
+        run: docker build ${{input.build_args}} ${{input.build_args_with_secrets}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{env.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
       - name: Push ${{env.image_name}} image to DigitalOcean Container Registry

@@ -7,7 +7,7 @@ declare global {
       SUPABASE_URL: string
       SUPABASE_SERVICE_KEY: string
       NODE_ENV: 'development' | 'production'
-      SERVER_PORT: number
+      GRAPHQL_SERVER_PORT: number
     }
   }
 }

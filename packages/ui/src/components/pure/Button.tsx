@@ -23,7 +23,7 @@ const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>
   ['noBorderNoBG', 'px-2 py-1.5'],
   ['highlighted', 'border border-indigo-500 bg-indigo-500 px-2 py-1.5'],
   ['filter', 'border border-dashed border-gray-800 px-2 py-1.5'],
-  ['red', 'bg-red px-2 py-1.5']
+  ['red', 'bg-red-500 px-2 py-1.5']
 ])
 
 const Button = ({

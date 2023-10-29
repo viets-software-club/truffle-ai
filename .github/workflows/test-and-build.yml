@@ -13,7 +13,7 @@ env:
   GATEWAY_PORT: ${{ vars.GATEWAY_PORT }}
   SERVER_PORT: ${{ vars.SERVER_PORT }}
   SERVER_URL: ${{ vars.SERVER_URL }}
-  SERVER_GRAPHQL_URL: ${{ vars.SERVER_GRAPHQL_URL }}
+  GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
 jobs:
   build:
     runs-on: ubuntu-latest

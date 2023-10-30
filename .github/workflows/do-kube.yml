@@ -3,8 +3,10 @@ on:
   workflow_call:
     inputs:
       template:
+        type: string
         required: true
       template_args:
+        type: string
         required: true
 jobs:
   build-image:

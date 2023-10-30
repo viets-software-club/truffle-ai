@@ -28,13 +28,14 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.digital_ocean_accesstoken }}
-      - env:
+      - id: gen-image-name
+        env:
           name: "${{inputs.package_name}}"
-        run: echo "image_name=${name/\_/-}" >> $GITHUB_ENV
+        run: echo "image_name=${name/\_/-}" >> $GITHUB_OUTPUT
       # - uses: ./.github/workflows/do-init.yml
-      - name: Build ${{env.image_name}} image
-        run: docker build ${{inputs.build_args}} ${{secrets.build_args}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{env.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
+      - name: Build ${{steps.gen-image-name.outputs.image_name}} image
+        run: docker build ${{inputs.build_args}} ${{secrets.build_args}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
-      - name: Push ${{env.image_name}} image to DigitalOcean Container Registry
-        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{env.image_name}}}:$(echo $GITHUB_SHA | head -c7)
+      - name: Push ${{steps.gen-image-name.outputs.image_name}} image to DigitalOcean Container Registry
+        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}}:$(echo $GITHUB_SHA | head -c7)

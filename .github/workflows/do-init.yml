@@ -8,4 +8,4 @@ runs:
       shell: bash
       uses: digitalocean/action-doctl@v2
       with:
-        token: ${{ secrets.digitalocean_access_token }}
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

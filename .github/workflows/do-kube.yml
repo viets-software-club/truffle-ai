@@ -20,7 +20,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.digitalocean_access_token }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       # - uses: ./.github/workflows/do-init.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}

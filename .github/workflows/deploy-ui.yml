@@ -12,7 +12,7 @@ jobs:
   build-ui-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package: ui
+      package_name: ui
   deploy-ui:
     needs: [build-ui-image]
     uses: ./.github/workflows/do-kube.yml

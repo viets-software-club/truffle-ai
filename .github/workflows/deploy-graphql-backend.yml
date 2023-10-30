@@ -19,7 +19,7 @@ jobs:
   build-graphql-server-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package: graphql_server
+      package_name: graphql_server
   deploy-graphql-backend:
     needs: [build-graphql-server-image]
     uses: ./.github/workflows/do-kube.yml

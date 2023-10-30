@@ -12,7 +12,7 @@ jobs:
   build-repo-cronjob-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package: repo_cronjob
+      package_name: repo_cronjob
   deploy-repo-cronjob:
     needs: [build-repo-cronjob-image]
     uses: ./.github/workflows/do-kube.yml

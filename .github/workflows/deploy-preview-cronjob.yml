@@ -11,7 +11,7 @@ jobs:
   build-preview-cronjob-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package: preview_cronjob
+      package_name: preview_cronjob
   deploy-preview-cronjob:
     needs: [build-preview-cronjob-image]
     uses: ./.github/workflows/do-kube.yml

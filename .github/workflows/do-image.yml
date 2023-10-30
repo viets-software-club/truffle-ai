@@ -5,6 +5,7 @@ on:
       package_name:
         required: true
       build_args:
+        type: 'string'
         required: false
     secrets:
       build_args:

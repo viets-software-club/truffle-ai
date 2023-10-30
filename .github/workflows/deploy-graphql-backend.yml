@@ -24,7 +24,7 @@ jobs:
     secrets:
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-graphql-backend:
-    needs: [build-graphql-server-image]
+    needs: [build-graphql-gateway-image, build-graphql-server-image]
     uses: ./.github/workflows/do-kube.yml
     with:
       template: deploy-graphql-backend

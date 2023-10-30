@@ -36,6 +36,8 @@ spec:
               cpu: 102m
           envFrom:
             - configMapRef:
+                name: ${APP}-common-nodejs-config
+            - configMapRef:
                 name: ${APP}-ui-config
             - secretRef:
                 name: ${APP}-ui-secret

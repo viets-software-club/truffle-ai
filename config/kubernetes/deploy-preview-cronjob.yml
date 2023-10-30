@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: ${ENVIRONMENT}
+  namespace: ${NAMESPACE}
   name: ${APP}-${PREFIX}-preview-cronjob-deployment
   annotations:
     kubernetes.io/change-cause: "${CHANGE_CAUSE}"
@@ -26,6 +26,8 @@ spec:
             - name: ${APP}-${PREFIX}-preview-cronjob-container
               image: ${PREVIEW_CRONJOB_IMAGE}
               envFrom:
+                - configMapRef:
+                    name: ${APP}-common-nodejs-config
                 - configMapRef:
                     name: ${APP}-preview-cronjob-config
                 - secretRef:

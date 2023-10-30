@@ -36,6 +36,8 @@ spec:
               cpu: 102m
           envFrom:
             - configMapRef:
+                name: ${APP}-common-nodejs-config
+            - configMapRef:
                 name: ${APP}-graphql-gateway-config
             - secretRef:
                 name: ${APP}-graphql-gateway-secret
@@ -50,6 +52,21 @@ spec:
               cpu: 102m
           envFrom:
             - configMapRef:
+                name: ${APP}-common-nodejs-config
+            - configMapRef:
                 name: ${APP}-graphql-server-config
             - secretRef:
                 name: ${APP}-graphql-server-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${APP}-${NAMESPACE}-graphql-server-service
+spec:
+  selector:
+    app: ${APP}-deployment
+  ports:
+    - name: ${APP}-${PREFIX}-graphql-server-container
+      protocol: TCP
+      port: ${GRAPHQL_SERVER_PORT}
+      targetPort: ${GRAPHQL_SERVER_PORT}

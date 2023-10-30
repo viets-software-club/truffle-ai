@@ -17,19 +17,15 @@ services:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
         - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
-        - SERVER_GRAPHQL_URL=${SERVER_GRAPHQL_URL}
+        - GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL}
     ports:
-      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+      - ${GRAPHQL_GATEWAY_PORT}:${GRAPHQL_GATEWAY_PORT}
     env_file:
       - .env
   repo-job:
     build:
       context: ./
       dockerfile: ./packages/repo_job/Dockerfile
-      args:
-        - SUPABASE_URL=${SUPABASE_URL}
-        - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
-        - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
     env_file:
       - .env
   ui:

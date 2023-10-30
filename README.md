@@ -42,6 +42,8 @@ Contains the frontend of Truffle AI, a [Next.js](https://nextjs.org/) applicatio
 Note: services are served continuously and jobs are run once.
 
 ```zsh
+kubectl config set-context --current --namespace=<namespace-name>
+
 npm ci # installs all dependencies from package-lock.json
 npm run prepare # installs pre-commit hook (running lint-staged on staged files) and creates symlink for .env in ui package
 

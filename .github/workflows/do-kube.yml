@@ -8,6 +8,9 @@ on:
       template_args:
         type: string
         required: true
+      delete_name:
+        type: string
+        required: false
     secrets:
       digital_ocean_accesstoken:
         required: true
@@ -27,6 +30,9 @@ jobs:
       # - uses: ./.github/workflows/do-init.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
+      - name: Delete
+        if: inputs.delete_name
+        run: kubectl delete pod --namespace=${{ env.environment }} ${{vars.APP}}-${{env.environment}}-${{inputs.delete_name}}
       - name: Build manifest
         run: >
           APP=${{vars.APP}}
@@ -35,6 +41,7 @@ jobs:
           CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
           ENVIRONMENT=${{ env.environment }}
+          NAMESPACE=${{ env.environment }}
           ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}
       - name: Print rendered template
         run: cat ${{inputs.template}}

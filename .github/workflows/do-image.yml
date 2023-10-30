@@ -14,10 +14,10 @@ on:
 jobs:
   build-image:
     runs-on: ubuntu-latest
-    environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     env:
       image_name: ${package/\_/\-}
-      environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4

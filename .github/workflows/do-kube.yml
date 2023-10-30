@@ -15,6 +15,8 @@ jobs:
     env:
       environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
     steps:
+      - name: Checkout $GITHUB_REF
+        uses: actions/checkout@v4
       - uses: ./.github/workflows/do-init.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}

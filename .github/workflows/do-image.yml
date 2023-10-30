@@ -33,6 +33,7 @@ jobs:
           name: "${{inputs.package_name}}"
         run: echo "image_name=${name/\_/-}" >> $GITHUB_OUTPUT
       # - uses: ./.github/workflows/do-init.yml
+      - run: echo ${{steps.gen-image-name.outputs.image_name}}
       - name: Build ${{steps.gen-image-name.outputs.image_name}} image
         run: docker build ${{inputs.build_args}} ${{secrets.build_args}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials

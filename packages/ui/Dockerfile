@@ -24,6 +24,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY ./config ./config
 COPY ./packages/ui ./packages/ui
 COPY package*.json ./
+COPY .env ./packages/ui/.env.local
 
 ## Disable telemetry during the build
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -59,4 +60,4 @@ ENV PORT 3000
 ## Set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["node", "packages/ui/server.js"]

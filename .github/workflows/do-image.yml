@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     env:
-      image_name: ${${{inputs.package_name}}/\_/\-}
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     steps:
       - name: Checkout $GITHUB_REF
@@ -29,6 +28,9 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.digital_ocean_accesstoken }}
+      - env:
+          name: "${{inputs.package_name}}"
+        run: echo "image_name=${name/\_/-}" >> $GITHUB_ENV
       # - uses: ./.github/workflows/do-init.yml
       - name: Build ${{env.image_name}} image
         run: docker build ${{inputs.build_args}} ${{secrets.build_args}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{env.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .

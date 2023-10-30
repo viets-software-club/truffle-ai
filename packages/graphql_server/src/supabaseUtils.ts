@@ -1,31 +1,31 @@
-import supabaseClient from './supabaseClient'
-import { getOrganizationInfo, getUserInfo } from './api/githubApi'
-import { GitHubOrganization, GitHubInfo, GitHubUser } from '../types/githubApi'
+import { GitHubInfo, GitHubOrganization, GitHubUser } from '../types/githubApi'
 import { LinkedInCompanyProfile } from '../types/linkedInScraping'
 import { StarRecord } from '../types/starHistory'
 import {
   OrganizationInsertion,
   OrganizationUpdate,
   PersonInsertion,
-  ProjectUpdate,
-  ProjectInfo
+  ProjectInfo,
+  ProjectUpdate
 } from '../types/supabaseUtils'
+import { getOrganizationInfo, getUserInfo } from './api/githubApi'
+import supabaseClient from './supabaseClient'
 
 export {
   bookmarkIsAlreadyInDB,
   checkAndUpdateProjectBookmarkedState,
   deleteBookmark,
   deleteNotTrendingAndNotBookmarkedProjects,
-  deleteStaleOrganizations,
   deleteStaleAssociatedPersons,
+  deleteStaleOrganizations,
   editBookmarkCategory,
-  formatLinkedInCompanyData,
   formatGithubStats,
+  formatLinkedInCompanyData,
   getNotTrendingAndNotBookmarkedProjects,
   getOrganizationID,
   getPersonID,
-  getProjectID,
   getProjectAbout,
+  getProjectID,
   getTrendingAndBookmarkedProjects,
   insertBookmark,
   purgeTrendingState,
@@ -203,7 +203,7 @@ const getListOfProjectsFoundedByUser = async (githubUsername: string) => {
   const { data: projects } = await supabaseClient
     .from('founded_by')
     .select('project_id')
-    .eq('founder_id', personID)
+    .eq('founder_id', personID || '')
 
   return projects?.map((project) => project.project_id) ?? null
 }
@@ -218,7 +218,7 @@ const getListOfProjectsOwnedByUser = async (githubUsername: string) => {
   const { data: projects } = await supabaseClient
     .from('project')
     .select('id')
-    .eq('owning_person', personID)
+    .eq('owning_person', personID || '')
 
   return projects?.map((project) => project.id) ?? null
 }
@@ -233,7 +233,7 @@ const getListOfProjectsOwnedByOrganization = async (githubOrganizationName: stri
   const { data: projects } = await supabaseClient
     .from('project')
     .select('id')
-    .eq('owning_organization', organizationID)
+    .eq('owning_organization', organizationID || '')
 
   return projects?.map((project) => project.id) ?? null
 }
@@ -268,7 +268,7 @@ const getNotTrendingAndNotBookmarkedProjects = async () => {
       const { data: owningPerson } = await supabaseClient
         .from('associated_person')
         .select('login')
-        .eq('id', ownerID)
+        .eq('id', ownerID || '')
       ownerLogin = owningPerson?.[0]?.login || ''
     } else {
       // if it is a organization get the name from the database
@@ -509,7 +509,7 @@ const getTrendingAndBookmarkedProjects = async () => {
       const { data: owningPerson } = await supabaseClient
         .from('associated_person')
         .select('login')
-        .eq('id', ownerID)
+        .eq('id', ownerID || '')
       ownerLogin = owningPerson?.[0]?.login || ''
     } else {
       // if it is a organization get the name from the database
@@ -595,7 +595,7 @@ const repoIsAlreadyInDB = async (name: string, owner: string) => {
       const { data: owning_person } = await supabaseClient
         .from('associated_person')
         .select('*')
-        .eq('id', repo.owning_person)
+        .eq('id', repo.owning_person || '')
 
       // the owner has the same name -> the repo is already in the database
       if (owning_person?.[0]?.login === owner) return true
@@ -673,7 +673,7 @@ const updateSupabaseProject = async (
     .from('project')
     .update(updatedProject)
     .eq('name', name)
-    .eq('owning_organization', owningOrganizationID)
+    .eq('owning_organization', owningOrganizationID || '')
 
   if (!ownerUpdateError) return true
   const owningPersonID = await getPersonID(owner)
@@ -681,7 +681,7 @@ const updateSupabaseProject = async (
     .from('project')
     .update(updatedProject)
     .eq('name', name)
-    .eq('owning_person', owningPersonID)
+    .eq('owning_person', owningPersonID || '')
 
   return ownerUpdateError2 ? false : true
 }

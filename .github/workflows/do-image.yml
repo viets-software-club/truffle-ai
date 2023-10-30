@@ -10,7 +10,6 @@ on:
         required: false
     secrets:
       build_args:
-        type: string
         required: false
 jobs:
   build-image:

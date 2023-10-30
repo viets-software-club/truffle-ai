@@ -18,7 +18,6 @@ jobs:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
       - name: Install doctl
-        shell: bash
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.digitalocean_access_token }}

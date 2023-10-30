@@ -14,7 +14,7 @@ jobs:
     with:
       package_name: ui
     secrets:
-      digital_ocean_accesstoken: ${{ secretes.DIGITALOCEAN_ACCESS_TOKEN }}
+      digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-ui:
     needs: [build-ui-image]
     uses: ./.github/workflows/do-kube.yml
@@ -24,4 +24,4 @@ jobs:
         UI_PORT=${{vars.UI_PORT}}
         UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-ui:${COMMIT_TAG}
     secrets:
-      digital_ocean_accesstoken: ${{ secretes.DIGITALOCEAN_ACCESS_TOKEN }}
+      digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

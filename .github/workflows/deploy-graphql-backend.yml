@@ -22,7 +22,7 @@ jobs:
     with:
       package_name: graphql_server
     secrets:
-      digital_ocean_accesstoken: ${{ secretes.DIGITALOCEAN_ACCESS_TOKEN }}
+      digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-graphql-backend:
     needs: [build-graphql-server-image]
     uses: ./.github/workflows/do-kube.yml
@@ -35,4 +35,4 @@ jobs:
         GRAPHQL_SERVER_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-graphql-server:${COMMIT_TAG}
         GRAPHQL_GATEWAY_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-graphql-gateway:${COMMIT_TAG}
     secrets:
-      digital_ocean_accesstoken: ${{ secretes.DIGITALOCEAN_ACCESS_TOKEN }}
+      digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

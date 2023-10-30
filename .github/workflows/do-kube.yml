@@ -12,6 +12,8 @@ jobs:
   build-image:
     runs-on: ubuntu-latest 
     environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+    env:
+      environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
     steps:
       - uses: ./.github/workflows/do-image.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
@@ -22,8 +24,8 @@ jobs:
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
           COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
           CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
-          PREFIX="${{environment}}$((environment = 'commit' ? '-$COMMIT_TAG' : ''))"
-          ENVIRONMENT=${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
+          PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
+          ENVIRONMENT=${{ env.environment }}
           ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}
       - name: Print rendered template
         run: cat ${{inputs.template}}

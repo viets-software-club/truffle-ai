@@ -4,11 +4,13 @@ on:
     inputs:
       package_name:
         required: true
+        type: string
       build_args:
         type: string
         required: false
     secrets:
       build_args:
+        type: string
         required: false
 jobs:
   build-image:

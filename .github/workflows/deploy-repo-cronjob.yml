@@ -4,15 +4,15 @@ on:
     types:
       - synchronize
     branches: ['main', 'staging']
-    paths: ['packages/repo_cronjob', 'config/**', '.github/workflows/**']
+    paths: ['packages/repo_job', 'config/**', '.github/workflows/**']
   push:
     branches: ['main', 'staging']
-    paths: ['packages/repo_cronjob', 'config/**', '.github/workflows/**']
+    paths: ['packages/repo_job', 'config/**', '.github/workflows/**']
 jobs:
   build-repo-cronjob-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package_name: repo_cronjob
+      package_name: repo_job
     secrets:
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-repo-cronjob:

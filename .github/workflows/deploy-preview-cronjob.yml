@@ -3,15 +3,15 @@ on:
   pull_request:
     types: [synchronize]
     branches: ['main', 'staging']
-    paths: ['packages/preview_cronjob', 'config/**', '.github/workflows/**']
+    paths: ['packages/preview_job', 'config/**', '.github/workflows/**']
   push:
     branches: ['main', 'staging']
-    paths: ['packages/preview_cronjob', 'config/**', '.github/workflows/**']
+    paths: ['packages/preview_job', 'config/**', '.github/workflows/**']
 jobs:
   build-preview-cronjob-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package_name: preview_cronjob
+      package_name: preview_job
     secrets:
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-preview-cronjob:

@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
+      - name: print
+        run: echo '${{ env.environment}}'
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:

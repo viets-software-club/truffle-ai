@@ -15,7 +15,7 @@ jobs:
     env:
       environment: ${{ startsWith(github.ref_name, 'feature/') && 'commit' || github.ref_name }}
     steps:
-      - uses: ./.github/workflows/do-init.yml
+      - uses: ./.github/composite/do-init.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Build manifest

@@ -5,6 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: Install doctl
+      shell: bash
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.digitalocean_access_token }}

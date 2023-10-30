@@ -1,22 +1,45 @@
-.husky
-node_modules
-.env*
+# Build output
 dist
-.mesh
-.DS_Store
-.eslintcache
-playground.ts
-envs.yaml
-/out/
-/build
-npm-debug.log*
-.vercel
-next-env.d.ts
-.eslintcache
-.idea
+out
+build
+target
 .next
 /ui/.next
 secrets.yml
 .vscode
 secrets.*
 .deployment
+.mesh
+
+# Dependencies
+node_modules
+package-lock.json
+
+# Logs & pids
+*.log
+pids
+
+# Test output
+test/**/out*
+test/**/next-env.d.ts
+.DS_Store
+test/tmp/**
+test/traces
+
+# Editors
+**/.idea
+**/.#*
+.nvmrc
+
+# Vercel
+.vercel
+.now
+
+# Cache
+*.tsbuildinfo
+.eslintcache
+
+# Other
+.husky
+.env
+.env.local

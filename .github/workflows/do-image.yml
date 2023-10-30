@@ -26,7 +26,7 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.digitalocean_access_token }}
-      - uses: ./.github/workflows/do-init.yml
+      # - uses: ./.github/workflows/do-init.yml
       - name: Build ${{env.image_name}} image
         run: docker build ${{inputs.build_args}} ${{secrets.build_args}} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${vars.APP}-${{env.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials

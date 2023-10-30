@@ -13,6 +13,8 @@ jobs:
     uses: ./.github/workflows/do-image.yml
     with:
       package_name: repo_cronjob
+    secrets:
+      digital_ocean_accesstoken: ${{ secretes.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-repo-cronjob:
     needs: [build-repo-cronjob-image]
     uses: ./.github/workflows/do-kube.yml
@@ -20,3 +22,5 @@ jobs:
       template: 'deploy-repo-cronjob'
       template_args: >
         REPO_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-repo-cronjob:${COMMIT_TAG}
+    secrets:
+      digital_ocean_accesstoken: ${{ secretes.DIGITALOCEAN_ACCESS_TOKEN }}

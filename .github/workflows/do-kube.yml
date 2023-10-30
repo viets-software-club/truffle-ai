@@ -8,6 +8,9 @@ on:
       template_args:
         type: string
         required: true
+    secrets:
+      digital_ocean_accesstoken:
+        required: true
 jobs:
   build-image:
     runs-on: ubuntu-latest 
@@ -20,7 +23,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          token: ${{ secrets.digital_ocean_accesstoken }}
       # - uses: ./.github/workflows/do-init.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}

@@ -12,7 +12,7 @@ COPY package*.json ./
 
 ## Install dependencies
 COPY ./packages/ui/package*.json ./packages/ui/
-COPY ./packages/config ./packages/config
+COPY ./config ./config
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w ui
 RUN apk del build-dependencies
@@ -21,7 +21,7 @@ RUN apk del build-dependencies
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY ./packages/config ./packages/config
+COPY ./config ./config
 COPY ./packages/ui ./packages/ui
 COPY package*.json ./
 

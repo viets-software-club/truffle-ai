@@ -7,6 +7,8 @@ FROM node:18-alpine as build
 ENV NODE_ENV=build
 ## copy package.json's to setup workspaces
 WORKDIR /app
+COPY ./config/ts-config-base /config/ts-config-base
+COPY ./config/eslint-config-base /config/eslint-config-base
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY env.sh env.sh

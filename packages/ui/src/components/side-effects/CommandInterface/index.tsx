@@ -13,7 +13,9 @@ import { RecommendationRowType } from './types'
 /**
  * Command interface logic/ event listeners
  */
-const CommandInterface: React.FC = () => {
+// @TODO refactor
+// eslint-disable-next-line max-lines-per-function
+const CommandInterface = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [searchWord, setSearchWord] = useState<string>('')
   const [selectedLine, setSelectedLine] = useState<number>(-1)
@@ -27,11 +29,11 @@ const CommandInterface: React.FC = () => {
   const commandInterfaceWrapperRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
   const listRef: RefObject<HTMLDivElement> = useRef(null)
 
-  const router = useRouter()
   const {
     query: { id },
-    pathname
-  } = router
+    pathname,
+    push
+  } = useRouter()
 
   const [{ data }] = useTrendingProjectsQuery({
     variables: {
@@ -42,13 +44,8 @@ const CommandInterface: React.FC = () => {
 
   const projects = data?.projectCollection?.edges?.map(edge => edge.node) as Project[]
 
-  const closeModal = () => {
-    setOpen(false)
-  }
-
-  const openModal = () => {
-    setOpen(true)
-  }
+  const closeModal = () => setOpen(false)
+  const openModal = () => setOpen(true)
 
   const scrollToNextItem = () => {
     const currentList = listRef.current
@@ -84,7 +81,7 @@ const CommandInterface: React.FC = () => {
 
       if (shortcutItem) {
         event.preventDefault()
-        void router.push(shortcutItem.commandInterfaceOptions)
+        void push(shortcutItem.commandInterfaceOptions)
       }
     } else if (event.key === 'Escape') {
       closeModal()
@@ -261,7 +258,7 @@ const CommandInterface: React.FC = () => {
   }
 
   const navigateTo = (path: string) => {
-    void router.push(path)
+    void push(path)
   }
 
   const showConfirmationLines = () => {

@@ -45,7 +45,7 @@ export type ChartProps = {
     name: string
     data: DataPoint[]
   }[]
-  multipleLines: boolean
+  multipleLines?: boolean
   selectedMetric: string
 }
 

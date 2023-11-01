@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { FaHackerNews, FaTwitter } from 'react-icons/fa'
 import { useUser } from '@supabase/auth-helpers-react'
 import ChartWrapper, { DataPoint } from '@/components/page/details/ChartWrapper'
 import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
 import defaultFilters from '@/components/page/overview/defaultFilters'
 import { defaultSort } from '@/components/page/overview/types'
-import Card from '@/components/pure/Card'
+import CommunitySentiment from '@/components/pure/CommunitySentiment'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import {
@@ -23,7 +22,7 @@ type DetailsProps = {
 }
 
 /**
- * Project detail component
+ * Project details component
  */
 const Details = ({ id }: DetailsProps) => {
   // States for navigation between projects
@@ -35,13 +34,7 @@ const Details = ({ id }: DetailsProps) => {
   // User data from Supabase auth session
   const user = useUser()
 
-  /**
-   * Get project details data using generated hook (returns array with 1 project if successful).
-   * @param {string} id - The ID of the project for which to fetch details.
-   * @returns {[{ data: any, fetching: boolean, error: any }]} Data is the data containing trending projects.
-   * Fetching is a boolean flag indicating whether the data is currently being fetched or not.
-   * Error contains any error information if the query encounters an error during the fetch.
-   */
+  // Get project details data using generated hook (returns array with 1 project if successful)
   const [{ data, fetching, error }, refetchProjectDetails] = useProjectDetailsQuery({
     variables: { id }
   })
@@ -96,14 +89,14 @@ const Details = ({ id }: DetailsProps) => {
 
   // Update project indices once projects are fetched
   useEffect(() => {
-    if (projects) {
-      updateProjectIndices(id, projects)
-    }
+    if (projects) updateProjectIndices(id, projects)
   }, [projects, id])
 
   // Display loading/ error messages conditionally
   if (fetching) return <Loading fullscreen />
   if (error || !project) return <Error />
+
+  const owner = project.organization || project.associatedPerson
 
   return (
     <>
@@ -119,12 +112,8 @@ const Details = ({ id }: DetailsProps) => {
           <ProjectInformation
             id={project.id as string}
             githubUrl={project.githubUrl as string}
-            image={
-              (project.organization?.avatarUrl || project.associatedPerson?.avatarUrl) as string
-            }
-            name={`${
-              (project.organization?.login || project.associatedPerson?.login) as string
-            } / ${project.name as string}`}
+            image={owner?.avatarUrl as string}
+            name={`${owner?.login as string} / ${project.name as string}`}
             url={project.githubUrl as string}
             explanation={project.eli5 || 'No explanation'}
             about={project.about || 'No description'}
@@ -134,44 +123,25 @@ const Details = ({ id }: DetailsProps) => {
             refetch={refetch}
           />
 
-          <div className='flex flex-col items-start'>
-            <ChartWrapper
-              datasets={[
-                {
-                  id: project.id as string,
-                  name: project.name as string,
-                  data:
-                    selectedMetric === 'Stars'
-                      ? (project.starHistory as DataPoint[])
-                      : (project.forkHistory as DataPoint[])
-                }
-              ]}
-              multipleLines={false}
-              selectedMetric={selectedMetric}
-              setSelectedMetric={setSelectedMetric}
-            />
-          </div>
+          <ChartWrapper
+            datasets={[
+              {
+                id: project.id as string,
+                name: project.name as string,
+                data: (selectedMetric === 'Stars'
+                  ? project.starHistory
+                  : project.forkHistory) as DataPoint[]
+              }
+            ]}
+            selectedMetric={selectedMetric}
+            setSelectedMetric={setSelectedMetric}
+          />
 
-          <div className='flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3'>
-            <div className='w-1/2'>
-              <Card
-                Icon={FaTwitter}
-                name='Top Tweets'
-                tweets={project.relatedTwitterPosts ?? undefined}
-                variant='twitter'
-              />
-            </div>
-
-            <div className='w-1/2'>
-              <Card
-                Icon={FaHackerNews}
-                name='Community Sentiment'
-                communitySentiment={project.hackernewsSentiment ?? undefined}
-                links={project.hackernewsStories as string[]}
-                variant='hackernews'
-              />
-            </div>
-          </div>
+          <CommunitySentiment
+            tweets={project.relatedTwitterPosts ?? undefined}
+            hackernewsSentiment={project.hackernewsSentiment ?? undefined}
+            hackernewsStories={project.hackernewsStories as string[]}
+          />
         </div>
 
         <RightSidebar project={project} />

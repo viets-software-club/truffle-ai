@@ -41,12 +41,7 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
 
 /**
  * Linechart with one or more datasets
- * @param {ChartWrapperProps} datasets - The datasets to be displayed on the chart.
- * @param {boolean} multipleLines - Whether to display multiple lines or not.
- * @param {string} selectedMetric - The selected metric.
- * @param {function} setSelectedMetric - The function to set the selected metric.
  */
-
 const ChartWrapper = ({
   datasets,
   multipleLines,
@@ -102,7 +97,7 @@ const ChartWrapper = ({
   }, [datasets])
 
   return (
-    <div className='flex w-full flex-row p-6'>
+    <div className='w-full p-6'>
       {datasets.length === 0 ? (
         <p>No data</p>
       ) : (

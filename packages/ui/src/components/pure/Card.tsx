@@ -3,7 +3,7 @@ import { AiOutlineRetweet, AiOutlineMessage } from 'react-icons/ai'
 import clsx from 'clsx'
 import { format } from 'date-fns'
 
-type Tweet = {
+export type Tweet = {
   userVerified: boolean
   userName: string
   tweetUrl: string
@@ -19,14 +19,14 @@ type CardProps = {
   name: string
   variant: 'twitter' | 'hackernews'
   tweets?: Tweet[]
-  communitySentiment?: string
+  hackernewsSentiment?: string
   links?: string[]
 }
 
 const twitterVariant = 'twitter'
 const hackernewsVariant = 'hackernews'
 
-const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardProps) => {
+const Card = ({ Icon, name, variant, tweets, hackernewsSentiment, links }: CardProps) => {
   const color = variant === 'twitter' ? 'text-twitter' : 'text-hackernews'
 
   return (
@@ -78,10 +78,10 @@ const Card = ({ Icon, name, variant, tweets, communitySentiment, links }: CardPr
       {variant === hackernewsVariant && (
         <div className='text-sm font-light text-gray-300 '>
           <p className='px-4 pb-4'>
-            {communitySentiment || 'No Hackernews posts found for this project'}
+            {hackernewsSentiment || 'No Hackernews posts found for this project'}
           </p>
 
-          {communitySentiment && (
+          {hackernewsSentiment && (
             <div className='flex flex-wrap gap-1 overflow-auto border-t border-gray-800 p-4 font-medium'>
               Sources:{' '}
               {links

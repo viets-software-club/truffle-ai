@@ -4,9 +4,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
 import Logo from '@/assets/logo.svg'
-import LoginForm from '@/components/page/login/LoginForm'
-import Button from '@/components/pure/Button'
-import Loading from '@/components/pure/Loading'
+import LoginForm from '@/components/domain/login/LoginForm'
+import Button from '@/components/shared/Button'
+import Loading from '@/components/shared/Loading'
 import { signInWithGoogle, signInWithPassword } from '@/util/login'
 
 /**

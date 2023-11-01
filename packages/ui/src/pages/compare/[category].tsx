@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
-import { defaultSort, PaginationParameters } from '@/components/page/overview/types'
-import CompareContent from '@/components/side-effects/Compare/CompareContent'
-import Page from '@/components/side-effects/Page'
-import ProjectsTable from '@/components/side-effects/ProjectsTable'
-import { PercentileStats } from '@/components/side-effects/ProjectsTable/columns'
-import withAuth from '@/components/side-effects/withAuth'
+import CompareContent from '@/components/domain/compare'
+import ProjectsTable from '@/components/domain/projects/ProjectsTable'
+import { PercentileStats } from '@/components/domain/projects/columns'
+import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
+import Page from '@/components/shared/Page'
+import withAuth from '@/components/shared/hoc/withAuth'
 import {
   Project,
   ProjectFilter,

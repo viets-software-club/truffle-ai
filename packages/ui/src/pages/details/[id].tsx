@@ -1,8 +1,8 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import Details from '@/components/side-effects/Details'
-import Page from '@/components/side-effects/Page'
-import withAuth from '@/components/side-effects/withAuth'
+import Details from '@/components/domain/details'
+import Page from '@/components/shared/Page'
+import withAuth from '@/components/shared/hoc/withAuth'
 
 /**
  * Project detail page (displays GitHub data, top tweets, etc.)

@@ -2,7 +2,7 @@ import { createElement, useState } from 'react'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { AppProps } from 'next/app'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
-import withUrql from '@/components/side-effects/withUrql'
+import withUrql from '@/components/shared/hoc/withUrql'
 import '@/styles/globals.css'
 
 /**

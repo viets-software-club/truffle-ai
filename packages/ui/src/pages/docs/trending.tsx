@@ -1,9 +1,9 @@
-import TrendingProject from '@/assets/TrendingProject.png'
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-import Heading from '@/components/page/docs/Heading'
-import Image from '@/components/page/docs/Image'
-import NormalBulletList from '@/components/page/docs/NormalBulletedList'
-import Paragraph from '@/components/page/docs/Paragraph'
+import TrendingProject from '@/assets/docs/trending-projects.png'
+import Heading from '@/components/domain/docs/Heading'
+import Image from '@/components/domain/docs/Image'
+import NormalBulletList from '@/components/domain/docs/NormalBulletedList'
+import DocsPageWrapper from '@/components/domain/docs/PageWrapper'
+import Paragraph from '@/components/domain/docs/Paragraph'
 
 const SidebarDocs = () => (
   <DocsPageWrapper>

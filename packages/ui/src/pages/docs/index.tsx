@@ -1,7 +1,7 @@
-import Card from '@/components/page/docs/Card'
-import Heading from '@/components/page/docs/Heading'
-import Page from '@/components/side-effects/Page'
-import withAuth from '@/components/side-effects/withAuth'
+import Card from '@/components/domain/docs/Card'
+import Heading from '@/components/domain/docs/Heading'
+import Page from '@/components/shared/Page'
+import withAuth from '@/components/shared/hoc/withAuth'
 
 const Docs = () => (
   <Page>

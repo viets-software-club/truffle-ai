@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: ./packages/graphql_server/Dockerfile
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}
     env_file:
       - .env
   # graphql-gateway:

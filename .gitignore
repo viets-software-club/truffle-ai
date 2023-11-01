@@ -45,4 +45,8 @@ test/traces
 .env.local
 .env*
 
-config/secrets
+config/envs/configMaps
+config/envs/secrets
+config/envs/generated-envs.yml
+configMap.*
+secret.*

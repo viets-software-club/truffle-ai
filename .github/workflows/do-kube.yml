@@ -45,6 +45,7 @@ jobs:
           ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}
       - name: Print rendered template
         run: cat ${{inputs.template}}
+        
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Verify deployment

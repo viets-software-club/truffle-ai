@@ -1,11 +1,8 @@
-.husky
 dist
-.mesh
+config/kubernetes/deploy-*
+.deployment
 .env*
-env.sh
-.dockerignore
+.husky
+.mesh
 .meshrc.yaml
 .next
-config/kubernetes/deploy-*
-.github
-.deployment

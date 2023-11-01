@@ -2,7 +2,7 @@
 # run this file only from ../../
 
 # build stage
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 ## init envs
 ENV NODE_ENV=build
 ## setup workspace
@@ -20,7 +20,7 @@ RUN npm run build -w graphql_server
 #########################################################################
 
 # serve stage
-FROM node:18-alpine as serve
+FROM node:18-alpine AS serve
 ## init envs
 ENV NODE_ENV production
 ## setup workspaces

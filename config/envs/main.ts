@@ -108,8 +108,7 @@ const createEnvFileFromConfigMapAndSecrets = async (configMapAndSecretFile: stri
       const {data}: {data: {[key: string]: string}} = jsonDocument
       for (const [key, value] of Object.entries(data)) {
         const newValue = jsonDocument.kind === "Secret" ? Base64.fromBase64String(value).toString() : value
-
-        const line = newValue.includes('\n') ? `${key}=${newValue}` : `${key}=${newValue}\n`
+        const line = typeof newValue === 'string' && newValue?.includes('\n') ? `${key}=${newValue}` : `${key}=${newValue}\n`
         await Deno.writeTextFile(join(outDir, `.env.${jsonDocument.metadata.namespace}`), line, {create: true, append: true})
 
       }

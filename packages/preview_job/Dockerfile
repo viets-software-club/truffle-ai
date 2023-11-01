@@ -1,5 +1,15 @@
+# This is a multi-stage Dockerfile
+# run this file only from ../../
+
 FROM alpine:latest
-RUN curl -sL https://github.com/digitalocean/doctl/releases/download/v<version>/doctl-<version>-linux-amd64.tar.gz | tar -xzv
+# setup workdir
+WORKDIR /app
+# install curl
+RUN apk --no-cache add curl
+# install sudo
 RUN set -ex && apk --no-cache add sudo
-RUN sudo mv ~/doctl /usr/local/bin
+# get doctl and install
+RUN curl -sL https://github.com/digitalocean/doctl/releases/download/v1.100.0/doctl-1.100.0-linux-amd64.tar.gz | tar -xzv
+RUN sudo mv /app/doctl /usr/local/bin
+# run script
 CMD ["./destroy_pods_ns_commit.sh"]

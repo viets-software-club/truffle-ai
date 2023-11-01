@@ -2,3 +2,5 @@ NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
 NEXT_PUBLIC_API_URL: https://api.truffle.tools
 NEXT_PUBLIC_SITE_URL: https://truffle.tools
 NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
+UI_PORT: 3000
+NEXT_PUBLIC_PORT: 3000

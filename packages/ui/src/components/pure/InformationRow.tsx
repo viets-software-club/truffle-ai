@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react'
-import GithubStatItem from '@/components/pure/Sidebar/Box/GithubStatItem'
+import GithubStatItem from '@/components/pure/Sidebar/GithubStatItem'
 
 type InformationRowProps = {
   githubStats: ({ id: ID } & ComponentProps<typeof GithubStatItem>)[]
@@ -32,7 +32,6 @@ const InformationRow = ({ githubStats, name, tags }: InformationRowProps) => (
         IconMetric={data.IconMetric}
         value={data.value}
         growth={data.growth}
-        paddingOn={false}
       />
     ))}
   </div>

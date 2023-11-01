@@ -7,15 +7,8 @@ import TopBar from '@/components/page/overview/TopBar'
 import { PaginationParameters } from '@/components/page/overview/types'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
-import createColumns from '@/components/side-effects/ProjectsTable/columns'
+import createColumns, { PercentileStats } from '@/components/side-effects/ProjectsTable/columns'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
-
-export type PercentileStats = {
-  topTenPercent: object
-  topTwentyPercent: object
-  bottomTenPercent: object
-  bottomTwentyPercent: object
-}
 
 type ProjectsTableProps = {
   data: Project[]
@@ -55,12 +48,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
 }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
 
-  const { topTenPercent, topTwentyPercent, bottomTenPercent, bottomTwentyPercent } = percentileStats
-
-  const columns = useMemo(
-    () => createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent),
-    [bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent]
-  )
+  const columns = useMemo(() => createColumns(percentileStats), [percentileStats])
 
   // Initialize TanStack table
   const table = useReactTable({

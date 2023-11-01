@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 import { defaultSort, PaginationParameters } from '@/components/page/overview/types'
 import Page from '@/components/side-effects/Page'
-import ProjectsTable, { PercentileStats } from '@/components/side-effects/ProjectsTable'
+import ProjectsTable from '@/components/side-effects/ProjectsTable'
+import { PercentileStats } from '@/components/side-effects/ProjectsTable/columns'
 import withAuth from '@/components/side-effects/withAuth'
 import {
   PageInfo,

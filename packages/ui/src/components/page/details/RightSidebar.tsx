@@ -7,7 +7,12 @@ import {
   StarIcon,
   GitPullRequestIcon
 } from '@primer/octicons-react'
-import Sidebar from '@/components/pure/Sidebar'
+import Box from '@/components/pure/Sidebar/Box'
+import CompanyItem from '@/components/pure/Sidebar/CompanyItem'
+import FounderItem from '@/components/pure/Sidebar/FounderItem'
+import GithubStatItem from '@/components/pure/Sidebar/GithubStatItem'
+import LanguagesItem from '@/components/pure/Sidebar/LanguagesItem'
+import SmallSidebar from '@/components/pure/Sidebar/SmallSidebar'
 import { Project } from '@/graphql/generated/gql'
 import SendToAffinity, { SendToAffinityProps } from '../settings/SendData/SendToAffinity'
 import GitHubMetricIcon from './GitHubMetricIcon'
@@ -35,61 +40,53 @@ const RightSidebar = ({ project }: Props) => {
 
   return (
     // @TODO Add historical data for showing growth
-    <Sidebar.Small>
-      <Sidebar.Box title='GitHub Stats'>
-        <Sidebar.Box.GithubStatItem id='Stars' Icon={StarIcon} value={project?.starCount || 0} />
-        <Sidebar.Box.GithubStatItem
+    <SmallSidebar>
+      <Box title='GitHub Stats'>
+        <GithubStatItem id='Stars' Icon={StarIcon} value={project?.starCount || 0} />
+        <GithubStatItem
           Icon={PeopleIcon}
           value={project?.contributorCount || 0}
           id='Contributors'
         />
-        <Sidebar.Box.GithubStatItem
-          Icon={IssueOpenedIcon}
-          value={project?.issueCount || 0}
-          id='Issues'
-        />
-        <Sidebar.Box.GithubStatItem
+        <GithubStatItem Icon={IssueOpenedIcon} value={project?.issueCount || 0} id='Issues' />
+        <GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
           value={project.issuesPerContributor || 0}
           id='Issues/ Contributor'
         />
-        <Sidebar.Box.GithubStatItem
-          Icon={RepoForkedIcon}
-          value={project?.forkCount || 0}
-          id='Forks'
-        />
-        <Sidebar.Box.GithubStatItem
+        <GithubStatItem Icon={RepoForkedIcon} value={project?.forkCount || 0} id='Forks' />
+        <GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
           value={project.forksPerContributor || 0}
           id='Forks/ Contributor'
         />
-        <Sidebar.Box.GithubStatItem
+        <GithubStatItem
           Icon={GitPullRequestIcon}
           value={project.pullRequestCount || 0}
           id='Pull requests'
         />
-        <Sidebar.Box.GithubStatItem
+        <GithubStatItem
           Icon={FaGithub}
           link={project.githubUrl as string}
           id={project.githubUrl as string}
         />
-      </Sidebar.Box>
+      </Box>
 
       {project.languages?.length && (
-        <Sidebar.Box title='Languages'>
-          <Sidebar.Box.LanguagesItem
+        <Box title='Languages'>
+          <LanguagesItem
             languages={project.languages as unknown as Array<{ name: string; color: string }>}
           />
-        </Sidebar.Box>
+        </Box>
       )}
 
       {(project.organization?.twitterUsername || project.organization?.websiteUrl) && (
-        <Sidebar.Box title='Company'>
-          <Sidebar.Box.CompanyItem
+        <Box title='Company'>
+          <CompanyItem
             twitterLink={project.organization?.twitterUsername as string}
             websiteLink={project.organization?.websiteUrl as string}
           />
-        </Sidebar.Box>
+        </Box>
       )}
 
       {project.name &&
@@ -98,8 +95,8 @@ const RightSidebar = ({ project }: Props) => {
           project.associatedPerson?.email ||
           project.associatedPerson?.twitterUsername ||
           project.associatedPerson?.websiteUrl) && (
-          <Sidebar.Box title='Founder'>
-            <Sidebar.Box.FounderItem
+          <Box title='Founder'>
+            <FounderItem
               projectName={project.name}
               name={project.associatedPerson?.name as string}
               github={project.associatedPerson?.githubUrl as string}
@@ -107,20 +104,16 @@ const RightSidebar = ({ project }: Props) => {
               twitter={project.associatedPerson?.twitterUsername as string}
               website={project.associatedPerson?.websiteUrl as string}
             />
-          </Sidebar.Box>
+          </Box>
         )}
 
-      <Sidebar.Box title='Integrations'>
-        <div className='flex flex-col justify-between'>
-          <div className='inline-flex px-7 py-2.5'>
-            <div className='flex flex-row items-center justify-center gap-[15px]'>
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <SendToAffinity {...sendToAffinityProps} />
-            </div>
-          </div>
+      <Box title='Integrations'>
+        <div className='py-2.5'>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <SendToAffinity {...sendToAffinityProps} />
         </div>
-      </Sidebar.Box>
-    </Sidebar.Small>
+      </Box>
+    </SmallSidebar>
   )
 }
 

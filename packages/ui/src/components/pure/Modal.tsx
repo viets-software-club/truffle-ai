@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onClose, children, unstyled }: ModalProps) => (
         <div className='fixed inset-0 bg-gray-950/25' />
       </Transition.Child>
 
-      <div className='fixed inset-0 flex items-center justify-center'>
+      <div className='fixed inset-x-0 top-1/4 flex justify-center'>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-150'

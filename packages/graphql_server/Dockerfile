@@ -1,33 +1,35 @@
-FROM node:18-alpine as build
+# This is a multi-stage Dockerfile
+# run this file only from ../../
 
-## Set NODE_ENV to something other than development
+# build stage
+FROM node:18-alpine as build
+## init envs
 ENV NODE_ENV=build
-RUN apk update && apk add bash
-## Setup workspaces
+## setup workspace
 WORKDIR /app
 COPY package*.json ./
-COPY env.sh ./
-
-## Install dependencies
-COPY ./packages/graphql_server/package*.json ./packages/graphql_server/
 COPY ./config ./config
+COPY ./packages/graphql_server ./packages/graphql_server/
+## install packages
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w graphql_server
 RUN apk del build-dependencies
-# RUN npm run build -w graphql_server
+## build ./dist
+RUN npm run build -w graphql_server
 
-# # Serve stage
-# FROM node:18-alpine as serve
+#########################################################################
 
-# ENV NODE_ENV production
-# WORKDIR /app
-# COPY env.sh ./
-# COPY package*.json ./
-
-# ## Install production dependencies
-# WORKDIR /app/packages/graphql_server
-# COPY --from=build /app/packages/graphql_server/package*.json ./
-# COPY --from=build /app/packages/graphql_server/dist ./dist
-# RUN npm ci --omit=dev
-
-# CMD ["npm", "run", "serve:prod"]
+# serve stage
+FROM node:18-alpine as serve
+## init envs
+ENV NODE_ENV production
+## setup workspaces
+WORKDIR /app
+COPY package*.json ./
+WORKDIR /app/packages/graphql_server
+COPY --from=build /app/packages/graphql_server/package*.json ./
+COPY --from=build /app/packages/graphql_server/dist ./dist
+## install production dependencies
+RUN npm ci --omit=dev
+## serve
+CMD ["npm", "run", "serve:prod"]

@@ -11,6 +11,7 @@
     "dev": "$npm_package_config_env_dev && mesh dev",
     "build": "$npm_package_config_env_dev && mesh build",
     "serve": "$npm_package_config_env_dev && mesh start",
+    "serve:prod": "mesh start",
     "lint": "eslint ."
   },
   "dependencies": {

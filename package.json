@@ -3,7 +3,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; ln -fs $PWD/.env ./packages/ui/.env.local; fi;",
+    "postinstall": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; ln -fs $PWD/.env ./packages/ui/.env.local; fi;",
     "test": "npm run prettier:check && npm run lint",
     "dev": "concurrently -n gateway,server,repo_job,ui -c 'yellow,magenta,blue,green' 'npm run dev -w graphql_gateway' 'npm run dev -w graphql_server' 'npm run dev -w repo_job' 'npm run dev -w ui'",
     "dev:backend": "concurrently -n gateway,server,repo_job -c 'yellow,magenta,blue' 'npm run dev -w graphql_gateway' 'npm run dev -w graphql_server' 'npm run dev -w repo_job'",
@@ -44,7 +44,7 @@
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-sonarjs": "^0.19.0",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8"
   },

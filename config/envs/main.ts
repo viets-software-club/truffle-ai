@@ -1,4 +1,4 @@
-import {walk, parseAllDocuments, stringify} from './deps.ts'
+import {walk, join, parseAllDocuments, parse, stringify, decode, Base64} from './deps.ts'
 
 const CONFIG_MAP_DIR = './configMaps'
 const SECRET_DIR = './secrets'
@@ -89,8 +89,42 @@ const getSecrets = async (appName: string, directory: string): Promise<string[]>
 }
 
 
+const createEnvFileFromConfigMapAndSecrets = async (configMapAndSecretFile: string, outDir: string) => {
+  await namespaces.map(async namespace => {
+    const filePath = join(outDir, `.env.${namespace}`);
+    await Deno.writeTextFile(filePath, '');
+  })
+  const ymlDocuments = parseAllDocuments(await Deno.readTextFile(configMapAndSecretFile));
+  await ymlDocuments.forEach(async (ymlDocument) => {
+    const jsonDocument = ymlDocument.toJSON()
+    // if(jsonDocument.data) {
+    //   const {data}: {data: {[key: string]: string}} = jsonDocument
+    //   for (const [key, value] of Object.entries(data)) {
+    //     console.log(Base64.fromBase64String(value).toString());
+    //     jsonDocument.data[key] = Base64.fromBase64String(value).toString()
+    //   }
+    // }
+    if(jsonDocument.data) {
+      const {data}: {data: {[key: string]: string}} = jsonDocument
+      for (const [key, value] of Object.entries(data)) {
+        const newValue = jsonDocument.kind === "Secret" ? Base64.fromBase64String(value).toString() : value
 
-const generateConfigMapsAndSecretsFile = async (outputFile: string, appName: string, configMapDir: string, secretsDir: string) => {
+        const line = newValue.includes('\n') ? `${key}=${newValue}` : `${key}=${newValue}\n`
+        await Deno.writeTextFile(join(outDir, `.env.${jsonDocument.metadata.namespace}`), line, {create: true, append: true})
+
+      }
+    }
+    // console.log(jsonDocument.data)
+    // if(jsonDocument.data) {
+    //   const output = stringify(jsonDocument.data);
+    //   Deno.writeTextFile(join(outDir, `.env.${jsonDocument.metadata.namespace}`), output, {create: true, append: true})
+    // }
+  })
+}
+
+
+
+const generateConfigMapsAndSecretsFile = async (outputFile: string, appName: string, configMapDir: string, secretsDir: string, convertSecretsToBase64: boolean) => {
   const configMaps = await getConfigMaps(appName, configMapDir)
   const secrets = await getSecrets(appName, secretsDir)
   const data = [...configMaps, ...secrets].join('---\n')
@@ -98,4 +132,5 @@ const generateConfigMapsAndSecretsFile = async (outputFile: string, appName: str
 }
 
 const appName = prompt("Please enter the app prefix (truffle):") ?? "truffle";
-await generateConfigMapsAndSecretsFile("generated-envs.yml", appName, CONFIG_MAP_DIR, SECRET_DIR)
+await generateConfigMapsAndSecretsFile("generated-envs.yml", appName, CONFIG_MAP_DIR, SECRET_DIR, false)
+await createEnvFileFromConfigMapAndSecrets("./generated-envs.yml", "../../")

@@ -44,3 +44,5 @@ test/traces
 .env
 .env.local
 .env*
+
+config/secrets

@@ -27,7 +27,7 @@ spec:
               image: ${PREVIEW_CRONJOB_IMAGE}
               envFrom:
                 - configMapRef:
-                    name: ${APP}-common-nodejs-config
+                    name: ${APP}-nodejs-config
                 - configMapRef:
                     name: ${APP}-preview-cronjob-config
                 - secretRef:

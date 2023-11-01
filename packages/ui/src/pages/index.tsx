@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import defaultFilters from '@/components/page/overview/defaultFilters'
-import { defaultSort, paginationParameters } from '@/components/page/overview/types'
+import { defaultSort, PaginationParameters } from '@/components/page/overview/types'
 import Page from '@/components/side-effects/Page'
-import ProjectsTable from '@/components/side-effects/ProjectsTable'
+import ProjectsTable, { PercentileStats } from '@/components/side-effects/ProjectsTable'
 import withAuth from '@/components/side-effects/withAuth'
 import {
   PageInfo,
@@ -13,21 +13,21 @@ import {
 } from '@/graphql/generated/gql'
 import getPercentile from '@/util/getPercentile'
 
+const PAGE_SIZE = 30
+
 const TrendingProjects = () => {
-  const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
-  const [pagination, setPagination] = useState<paginationParameters>({
+  const [pagination, setPagination] = useState<PaginationParameters>({
     first: PAGE_SIZE,
     last: null,
     after: null,
     before: null
   })
   const [totalCount, setTotalCount] = useState(0)
-
-  const [percentileStats, setPercentileStats] = useState({
+  const [percentileStats, setPercentileStats] = useState<PercentileStats>({
     topTenPercent: {},
     topTwentyPercent: {},
     bottomTenPercent: {},

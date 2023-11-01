@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
-import { defaultSort, paginationParameters } from '@/components/page/overview/types'
+import { defaultSort, PaginationParameters } from '@/components/page/overview/types'
 import Page from '@/components/side-effects/Page'
-import ProjectsTable from '@/components/side-effects/ProjectsTable'
+import ProjectsTable, { PercentileStats } from '@/components/side-effects/ProjectsTable'
 import withAuth from '@/components/side-effects/withAuth'
 import {
   PageInfo,
@@ -25,7 +25,7 @@ const Bookmarks = () => {
   const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
-  const [pagination, setPagination] = useState<paginationParameters>({
+  const [pagination, setPagination] = useState<PaginationParameters>({
     first: PAGE_SIZE,
     last: null,
     after: null,
@@ -34,7 +34,7 @@ const Bookmarks = () => {
   const [totalCount, setTotalCount] = useState(0)
   const user = useUser()
 
-  const [percentileStats, setPercentileStats] = useState({
+  const [percentileStats, setPercentileStats] = useState<PercentileStats>({
     topTenPercent: {},
     topTwentyPercent: {},
     bottomTenPercent: {},

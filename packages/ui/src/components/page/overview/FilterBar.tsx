@@ -5,7 +5,7 @@ import FilterItemModal from '@/components/page/overview/FilterItemModal'
 import SortModal from '@/components/page/overview/SortModal'
 import Button from '@/components/pure/Button'
 import { PageInfo, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
-import { FilterOption, TimeFilterOption, paginationParameters } from './types'
+import { FilterOption, TimeFilterOption, PaginationParameters } from './types'
 
 type FilterBarProps = {
   filters: ProjectFilter
@@ -16,7 +16,7 @@ type FilterBarProps = {
   pageSize: number
   updateFilters: (filter: ProjectFilter) => void
   setSorting: (sorting: ProjectOrderBy | null) => void
-  setPagination: Dispatch<SetStateAction<paginationParameters>>
+  setPagination: Dispatch<SetStateAction<PaginationParameters>>
 }
 const FilterBar = ({
   filters,

@@ -1,19 +1,21 @@
-import { Dispatch, FC, SetStateAction, useState, useMemo } from 'react'
-import {
-  useReactTable,
-  getCoreRowModel,
-  ColumnOrderState,
-  getFilteredRowModel
-} from '@tanstack/react-table'
+import { Dispatch, FC, SetStateAction, useState, useMemo, ReactNode } from 'react'
+import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { CombinedError } from 'urql'
 import FilterBar from '@/components/page/overview/FilterBar'
 import Table from '@/components/page/overview/Table'
 import TopBar from '@/components/page/overview/TopBar'
-import { paginationParameters } from '@/components/page/overview/types'
+import { PaginationParameters } from '@/components/page/overview/types'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
 import createColumns from '@/components/side-effects/ProjectsTable/columns'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+
+export type PercentileStats = {
+  topTenPercent: object
+  topTwentyPercent: object
+  bottomTenPercent: object
+  bottomTwentyPercent: object
+}
 
 type ProjectsTableProps = {
   data: Project[]
@@ -25,20 +27,15 @@ type ProjectsTableProps = {
   totalCount: number
   pageInfo: PageInfo
   pageSize: number
-  percentileStats: {
-    topTenPercent: object
-    topTwentyPercent: object
-    bottomTenPercent: object
-    bottomTwentyPercent: object
-  }
+  percentileStats: PercentileStats
   setSorting: (sort: ProjectOrderBy | null) => void
   updateFilters: (filters: ProjectFilter) => void
-  setPagination: Dispatch<SetStateAction<paginationParameters>>
+  setPagination: Dispatch<SetStateAction<PaginationParameters>>
+  beforeTable?: ReactNode
 }
 
 /**
  * Table for displaying trending projects
- *
  */
 const ProjectsTable: FC<ProjectsTableProps> = ({
   data,
@@ -53,12 +50,13 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   percentileStats,
   setSorting,
   updateFilters,
-  setPagination
+  setPagination,
+  beforeTable
 }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
-  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
 
   const { topTenPercent, topTwentyPercent, bottomTenPercent, bottomTwentyPercent } = percentileStats
+
   const columns = useMemo(
     () => createColumns(bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent),
     [bottomTenPercent, topTenPercent, topTwentyPercent, bottomTwentyPercent]
@@ -69,14 +67,10 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
     data,
     columns,
     state: {
-      columnVisibility,
-      columnOrder
+      columnVisibility
     },
-    enableColumnFilters: true,
     onColumnVisibilityChange: setColumnVisibility,
-    onColumnOrderChange: setColumnOrder,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel()
+    getCoreRowModel: getCoreRowModel()
   })
 
   return (
@@ -105,6 +99,8 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
       )}
 
       <div className='flex w-full flex-col pt-[120px]'>
+        {beforeTable}
+
         {fetching && <Loading />}
 
         {error && <Error />}

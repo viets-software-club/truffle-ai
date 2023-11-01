@@ -51,7 +51,7 @@ export const defaultSort = {
   name: OrderByDirection.AscNullsLast
 }
 
-export type paginationParameters = {
+export type PaginationParameters = {
   first: number | null
   after: PageInfo['endCursor']
   last: number | null

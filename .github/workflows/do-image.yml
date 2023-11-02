@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.digital_ocean_accesstoken }}
       - id: gen-image-name
         env:
-          name: "${{inputs.package_name}}"
+          name: '${{inputs.package_name}}'
         run: echo "image_name=${name/\_/-}" >> $GITHUB_OUTPUT
       # - uses: ./.github/workflows/do-init.yml
       - run: echo ${{steps.gen-image-name.outputs.image_name}}

@@ -16,7 +16,7 @@ on:
         required: true
 jobs:
   build-image:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     environment: ${{ startsWith(github.ref_name, 'refs/pull') && 'commit' || github.ref_name }}
     env:
       environment: ${{ startsWith(github.ref_name, 'refs/pull') && 'commit' || github.ref_name }}
@@ -63,5 +63,3 @@ jobs:
       - name: Verify commit ingress deployment
         if: env.environment == 'commit'
         run: kubectl rollout status --timeout 240s ingress/${{vars.APP}}-commit-virtual-host-ingress
-
-      

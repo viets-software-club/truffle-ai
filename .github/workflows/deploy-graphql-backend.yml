@@ -4,10 +4,12 @@ on:
     types:
       - synchronize
     branches: ['main', 'staging']
-    paths: ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
+    paths:
+      ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
   push:
     branches: ['main', 'staging']
-    paths: ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
+    paths:
+      ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
 jobs:
   build-graphql-gateway-image:
     uses: ./.github/workflows/do-image.yml

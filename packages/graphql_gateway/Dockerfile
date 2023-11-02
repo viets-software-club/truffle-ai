@@ -22,11 +22,11 @@ COPY ./config ./config
 COPY ./packages/graphql_gateway ./packages/graphql_gateway/
 COPY ./packages/graphql_server/src/graphql/schema.ts ./packages/graphql_server/src/graphql/schema.ts
 ## install packages
-RUN apk --virtual build-dependencies add python3 make g++
+RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w graphql_gateway
 RUN apk del build-dependencies
 ## build .mesh
-RUN npm run build
+RUN npm run build -w graphql_gateway
 
 #########################################################################
 

@@ -12,7 +12,7 @@ COPY package*.json ./
 COPY ./config ./config
 COPY ./packages/ui ./packages/ui/
 ## install packages
-RUN apk --virtual build-dependencies add python3 make g++
+RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w ui
 RUN apk del build-dependencies
 ## build .next

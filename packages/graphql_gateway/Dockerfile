@@ -37,6 +37,7 @@ ENV NODE_ENV production
 ## setup workspaces
 WORKDIR /app
 COPY package*.json ./
+COPY ./config ./config
 
 ## Copy schema file from 'graphql_server' service
 COPY ./packages/graphql_server/src/graphql/schema.ts ./packages/graphql_server/src/graphql/schema.ts

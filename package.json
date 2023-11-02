@@ -3,10 +3,10 @@
   "license": "MIT",
   "private": true,
   "config": {
-    "env": ". ./config/envs/source-envs.sh"
+    "env": "./config/envs/source-envs.sh"
   },
   "scripts": {
-    "postinstall": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; ln -fs $PWD/.env ./packages/ui/.env.local; fi;",
+    "postinstall": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
     "test": "npm run prettier:check && npm run lint",
     "dev": "$npm_package_config_env concurrently -n gateway,server,repo_job,ui -c 'yellow,magenta,blue,green' 'npm run dev -w graphql_gateway' 'npm run dev -w graphql_server' 'npm run dev -w repo_job' 'npm run dev -w ui'",
     "dev:backend": "$npm_package_config_env concurrently -n gateway,server,repo_job -c 'yellow,magenta,blue' 'npm run dev -w graphql_gateway' 'npm run dev -w graphql_server' 'npm run dev -w repo_job'",
@@ -25,12 +25,11 @@
     "lint:services": "concurrently -n gateway,server -c 'yellow,magenta' 'npm run lint -w graphql_gateway' 'npm run lint -w graphql_server'",
     "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "compose:production": "docker compose -f config/docker-compose/docker-compose.production.yml --env-file .env.production up",
-    "compose:staging": "docker compose -f config/docker-compose/docker-compose.staging.yml --env-file .env.staging up",
-    "compose:commit": "docker compose -f config/docker-compose/docker-compose.commit.yml .env.commit up",
+    "compose:production": "npm_package_config_env docker compose -f config/docker-compose/docker-compose.production.yml --env-file .env.production up",
+    "compose:staging": "$npm_package_config_env && docker compose -f config/docker-compose/docker-compose.staging.yml --env-file .env.staging up",
+    "compose:commit": "npm_package_config_env docker compose -f config/docker-compose/docker-compose.commit.yml .env.commit up",
     "generate:k8s": "cd config/envs && deno task generate:k8s",
     "generate:envs": "cd config/envs && deno task generate:envs"
-
   },
   "workspaces": [
     "packages/*",
@@ -50,6 +49,7 @@
     "concurrently": "^8.0.1",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-config-sonarjs": "^1.2.0",
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-sonarjs": "^0.19.0",

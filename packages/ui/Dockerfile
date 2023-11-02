@@ -4,7 +4,7 @@
 # build stage
 FROM node:18-alpine AS build
 ## init envs
-ENV NODE_ENV build
+ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 ## setup workspaces
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY package*.json ./
 COPY ./config ./config
 COPY ./packages/ui ./packages/ui/
 ## install packages
-RUN apk --no-cache --virtual build-dependencies add python3 make g++
+RUN apk --virtual build-dependencies add python3 make g++
 RUN npm ci -w ui
 RUN apk del build-dependencies
 ## build .next
@@ -37,8 +37,9 @@ RUN mkdir .next
 RUN chown nextjs:nodejs .next
 ## set user
 USER nextjs
-COPY --from=build /app/packages/ui/public ./public
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./.next/standalone
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.env.local .next/standalone/packages/ui/.env.local
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./.next/static
 ## serve
-CMD ["node", "packages/ui/server.js"]
+CMD ["node", ".next/standalone/packages/ui/server.js"]

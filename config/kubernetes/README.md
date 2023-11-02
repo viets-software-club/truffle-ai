@@ -1,0 +1,1 @@
+- deploy-namespaces, deploy-load-balancer and deploy-ingress must be manually applied.

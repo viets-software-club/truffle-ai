@@ -41,3 +41,22 @@ spec:
                 name: ${APP}-ui-config
             - secretRef:
                 name: ${APP}-ui-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${APP}-${PREFIX}-ui-service
+  namespace: ${NAMESPACE}
+  annotations:
+    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+  labels:
+    app: ${APP}-${PREFIX}-ui-deployment
+spec:
+  type: ClusterIP
+  selector:
+    app: ${APP}-${PREFIX}-ui-deployment
+  ports:
+  - name: ${APP}-${PREFIX}-ui-port
+    protocol: TCP
+    port: 3000
+    targetPort: ${UI_PORT}

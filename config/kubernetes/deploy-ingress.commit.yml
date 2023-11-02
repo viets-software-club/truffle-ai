@@ -14,13 +14,13 @@ spec:
         path: "/api"
         backend:
           service:
-            name: ${APP}-${PREFIX}-graphql-backend-port
+            name: ${APP}-${PREFIX}-graphql-backend-service
             port:
               number: 3001
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: ${APP}-${PREFIX}-ui-port
+            name: ${APP}-${PREFIX}-ui-service
             port:
               number: 3001

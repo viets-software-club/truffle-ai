@@ -36,7 +36,6 @@ FROM node:18-alpine AS serve
 ENV NODE_ENV production
 ## setup workspaces
 WORKDIR /app
-COPY env.sh ./
 COPY package*.json ./
 
 ## Copy schema file from 'graphql_server' service

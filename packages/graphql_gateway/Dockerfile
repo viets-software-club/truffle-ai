@@ -44,8 +44,9 @@ COPY ./packages/graphql_server/src/graphql/schema.ts ./packages/graphql_server/s
 ## Install production dependencies
 WORKDIR /app/packages/graphql_gateway
 COPY --from=build /app/packages/graphql_gateway/package*.json ./
-COPY --from=build /app/packages/graphql_gateway/dist ./dist
-
+COPY --from=build /app/packages/graphql_gateway ./
+RUN apk --virtual build-dependencies add python3 make g++
 RUN npm ci --omit=dev
+RUN apk del build-dependencies
 
 CMD ["npm", "run", "serve:prod"]

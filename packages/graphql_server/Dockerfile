@@ -30,6 +30,8 @@ WORKDIR /app/packages/graphql_server
 COPY --from=build /app/packages/graphql_server/package*.json ./
 COPY --from=build /app/packages/graphql_server/dist ./dist
 ## install production dependencies
+RUN apk --virtual build-dependencies add python3 make g++
 RUN npm ci --omit=dev
+RUN apk del build-dependencies
 ## serve
 CMD ["npm", "run", "serve:prod"]

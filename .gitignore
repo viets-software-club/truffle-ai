@@ -46,5 +46,5 @@ test/traces
 .env*
 
 config/envs/secrets
-config/envs/generated-envs.yml
+config/envs/generated-k8s.yml
 secret.*

@@ -25,9 +25,12 @@
     "lint:services": "concurrently -n gateway,server -c 'yellow,magenta' 'npm run lint -w graphql_gateway' 'npm run lint -w graphql_server'",
     "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "compose:production": "docker compose -f config/docker-compose/docker-compose.production.yml up",
-    "compose:staging": "docker compose -f config/docker-compose/docker-compose.staging.yml up",
-    "compose:commit": "docker compose -f config/docker-compose/docker-compose.commit.yml up"
+    "compose:production": "docker compose -f config/docker-compose/docker-compose.production.yml --env-file .env.production up",
+    "compose:staging": "docker compose -f config/docker-compose/docker-compose.staging.yml --env-file .env.staging up",
+    "compose:commit": "docker compose -f config/docker-compose/docker-compose.commit.yml .env.commit up",
+    "generate:k8s": "cd config/envs && deno task generate:k8s",
+    "generate:envs": "cd config/envs && deno task generate:envs"
+
   },
   "workspaces": [
     "packages/*",

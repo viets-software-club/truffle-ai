@@ -3,3 +3,4 @@
 - Kustomize was discussed, but doesn't offer the features needed when passing dynamic values -> envsubst was used instead
 - Deno will be used when possible for new services
 - We have static sites, so we can show loading screens the fastest, the frontend app does not communicate directly with the backend (e.g. it doesn't do ssr), we can therefore put the frontend in a separate Kubernetes Pod, and we also do not need a service to connect them
+- --env-file in docker is not the same as env_file in the docker compose file, the former is used for the compose file the latter is used for containers

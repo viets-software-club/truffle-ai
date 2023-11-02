@@ -26,16 +26,12 @@ services:
     build:
       context: ../../
       dockerfile: ./packages/repo_job/Dockerfile
-      ports:
-       - 8998:8998
     env_file:
       - ../../.env.staging
   preview-job:
     build:
       context: ../../
       dockerfile: ./packages/preview_job/Dockerfile
-    ports:
-      - 8999:8999
     env_file:
       - ../../.env.staging
   ui:

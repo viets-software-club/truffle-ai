@@ -3,15 +3,15 @@ name: truffle-ai
 services:
   graphql-server:
     build:
-      context: ../
+      context: ../../
       dockerfile: ./packages/graphql_server/Dockerfile
     ports:
       - ${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}
     env_file:
-      - ../.env.commit
+      - ../../.env.commit
   graphql-gateway:
     build:
-      context: ../
+      context: ../../
       dockerfile: ./packages/graphql_gateway/Dockerfile
       args:
         - SUPABASE_URL=${SUPABASE_URL}
@@ -21,24 +21,24 @@ services:
     ports:
       - ${GRAPHQL_GATEWAY_PORT}:${GRAPHQL_GATEWAY_PORT}
     env_file:
-      - ../.env.commit
+      - ../../.env.commit
   repo-job:
     build:
-      context: ../
+      context: ../../
       dockerfile: ./packages/repo_job/Dockerfile
     env_file:
-      - ../.env.commit
+      - ../../.env.commit
   preview-job:
     build:
-      context: ../
+      context: ../../
       dockerfile: ./packages/preview_job/Dockerfile
     env_file:
-      - ../.env.commit
+      - ../../.env.commit
   ui:
     build:
-      context: ../
+      context: ../../
       dockerfile: ./packages/ui/Dockerfile
     ports:
       - ${UI_PORT}:${UI_PORT}
     env_file:
-      - ../.env.commit
+      - ../../.env.commit

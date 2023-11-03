@@ -31,7 +31,7 @@ jobs:
       - id: gen-image-name
         env:
           name: '${{inputs.package_name}}'
-        run: echo "image_name=${name/\_/-}" >> $GITHUB_OUTPUT
+        run: echo "image_name=${{vars.APP}}-${name/\_/-}" >> $GITHUB_OUTPUT
       # - uses: ./.github/workflows/do-init.yml
       - run: echo ${{steps.gen-image-name.outputs.image_name}}
       - name: Build ${{steps.gen-image-name.outputs.image_name}} image
@@ -39,4 +39,4 @@ jobs:
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
       - name: Push ${{steps.gen-image-name.outputs.image_name}} image to DigitalOcean Container Registry
-        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}}:$(echo $GITHUB_SHA | head -c7)
+        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7)

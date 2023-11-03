@@ -32,6 +32,7 @@ jobs:
       - name: Delete
         run: kubectl delete cronjob --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
   deploy:
+    if: ${{ always() }}
     needs: [delete-pod]
     strategy:
       matrix:

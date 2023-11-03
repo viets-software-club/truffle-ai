@@ -15,6 +15,14 @@ on:
       digital_ocean_accesstoken:
         required: true
 jobs:
+  delete-pod:
+    if: inputs.delete_name
+    runs-on: ubuntu-latest
+    env:
+      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    steps:
+      - name: Delete
+        run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
   deploy:
     strategy:
       matrix:
@@ -32,9 +40,6 @@ jobs:
           token: ${{ secrets.digital_ocean_accesstoken }}
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
-      - name: Delete
-        if: inputs.delete_name
-        run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
       - name: Create .deployment dir
         run:  mkdir $GITHUB_WORKSPACE/.deployment
       - name: Build manifest

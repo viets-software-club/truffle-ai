@@ -1,4 +1,4 @@
-name: 'Deploy preview_cronjob'
+name: 'Deploy preview-cronjob'
 on:
   pull_request:
     types: [synchronize]

@@ -1,4 +1,4 @@
-name: 'Deploy repo_cronjob'
+name: 'Deploy repo-cronjob'
 on:
   pull_request:
     types:

@@ -1,4 +1,4 @@
-name: 'Deploy graphql_gateway, graphql_server'
+name: 'Deploy graphql-backend'
 on:
   pull_request:
     types:

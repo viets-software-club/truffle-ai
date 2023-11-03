@@ -34,12 +34,12 @@ jobs:
         if: inputs.delete_name
         run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
       - name: Create .deployment dir
-        run:  mkdir $GITHUB_WORKSPACE/.deployment && env && echo "${{toJSON(github.event)}}"
+        run:  mkdir $GITHUB_WORKSPACE/.deployment && env && echo "${{ toJSON(github) }}"
       - name: Build manifest
         run: >
           APP=${{vars.APP}}
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
+          COMMIT_MESSAGE=$(git show -s --format=%s)
           CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
@@ -53,7 +53,7 @@ jobs:
         run: >
           APP=${{vars.APP}}
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
+          COMMIT_MESSAGE=$(git show -s --format=%s)
           CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
           ENVIRONMENT=${{ env.environment }}

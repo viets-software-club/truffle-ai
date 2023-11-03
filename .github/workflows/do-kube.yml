@@ -42,15 +42,14 @@ jobs:
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}
+          ${{inputs.template_args}} $GITHUB_WORKSPACE/config/kubernetes/build-single.sh ${{inputs.template}}
       - name: Print rendered template
-        run: cat ${{inputs.template}}
+        run: pwd && cat ${{inputs.template}}
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Verify deployment
         run: kubectl rollout status --timeout 240s deployment/${{inputs.template}}
-      - name: Deploy commit ingress
-        if: env.environment == 'commit'
+      - name: Deploy ingress
         run: >
           APP=${{vars.APP}}
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)

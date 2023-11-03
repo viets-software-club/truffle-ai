@@ -21,6 +21,14 @@ jobs:
     env:
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     steps:
+      - name: Checkout $GITHUB_REF
+        uses: actions/checkout@v4
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.digital_ocean_accesstoken }}
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Delete
         run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
   deploy:
@@ -55,7 +63,7 @@ jobs:
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{matrix.template}}.yml
       - name: Verify deployment
-        run: kubectl rollout status --timeout 240s deployment/${{matrix.template}}-deployment
+        run: kubectl rollout status --timeout 240s deployment/${{matrix.template}}
       # - name: Build commit ingress manifest
       #   run: >
       #     APP=${{vars.APP}}

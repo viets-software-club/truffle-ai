@@ -35,8 +35,8 @@ jobs:
       # - uses: ./.github/workflows/do-init.yml
       - run: echo ${{steps.gen-image-name.outputs.image_name}}
       - name: Build ${{steps.gen-image-name.outputs.image_name}} image
-        run: docker build ${{inputs.build_args}} --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} -t ${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
+        run: docker build ${{inputs.build_args}} --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} -t ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:${{env.environment}} -t ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:latest -t ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7) -f ./packages/${{inputs.package_name}}/Dockerfile .
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
       - name: Push ${{steps.gen-image-name.outputs.image_name}} image to DigitalOcean Container Registry
-        run: docker push ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7)
+        run: docker push --all-tags ${{vars.CONTAINER_REGISTRY_URL}}/${{steps.gen-image-name.outputs.image_name}}:$(echo $GITHUB_SHA | head -c7)

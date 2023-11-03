@@ -34,7 +34,7 @@ jobs:
         if: inputs.delete_name
         run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
       - name: Create .deployment dir
-        run:  mkdir $GITHUB_WORKSPACE/.deployment
+        run:  mkdir $GITHUB_WORKSPACE/.deployment && env
       - name: Build manifest
         run: >
           APP=${{vars.APP}}

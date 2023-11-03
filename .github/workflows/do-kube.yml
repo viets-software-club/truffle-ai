@@ -77,7 +77,7 @@ jobs:
         run: >
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
-          kubectl rollout status --timeout 240s cronjob/${{vars.APP}}-$(echo ${PREFIX})-${{matrix.template}}
+          kubectl rollout status --timeout 240s cronjob/${{vars.APP}}-$PREFIX-${{matrix.template}}
       # - name: Build commit ingress manifest
       #   run: >
       #     APP=${{vars.APP}}

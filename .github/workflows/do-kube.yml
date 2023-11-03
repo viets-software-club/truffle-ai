@@ -48,8 +48,8 @@ jobs:
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Verify deployment
-        run: kubectl rollout status --timeout 240s deployment/${{inputs.template}}
-      - name: Build ingress manifest
+        run: kubectl rollout status --timeout 240s deployment/${{inputs.template}}-deployment
+      - name: Build commit ingress manifest
         run: >
           APP=${{vars.APP}}
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
@@ -58,10 +58,10 @@ jobs:
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          env envsubst < $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.yml > $GITHUB_WORKSPACE/.deployment/deploy-ingress.yml
-      - name: Deploy ingress manifest
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.yml
-      - name: Verify ingress deployment
+          env envsubst < $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.commit.yml > $GITHUB_WORKSPACE/.deployment/deploy-ingress.commit.yml
+      - name: Deploy commit ingress manifest
+        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.commit.yml
+      - name: Verify commit ingress deployment
         run: >
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           kubectl rollout status --timeout 240s ingress/${{vars.APP}}-$(echo $PREFIX)-virtual-host-ingress

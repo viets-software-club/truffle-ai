@@ -23,4 +23,4 @@ spec:
           service:
             name: ${APP}-${PREFIX}-ui-service
             port:
-              number: 3001
+              number: 3000

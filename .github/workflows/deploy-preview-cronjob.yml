@@ -12,8 +12,7 @@ jobs:
     uses: ./.github/workflows/do-image.yml
     with:
       package_name: preview_job
-    secrets:
-      digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    secrets: inherit
   deploy-preview-cronjob:
     needs: [build-preview-cronjob-image]
     uses: ./.github/workflows/do-kube.yml
@@ -21,5 +20,4 @@ jobs:
       delete_name: 'preview-cronjob'
       templates: "['preview-cronjob']"
       template_args: PREVIEW_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-preview-cronjob:${COMMIT_TAG}
-    secrets:
-      digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    secrets: inherit

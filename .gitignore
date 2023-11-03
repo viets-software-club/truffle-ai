@@ -47,3 +47,4 @@ test/traces
 config/envs/generated-k8s.yml
 secret.*
 test*
+config/envs/external-secrets

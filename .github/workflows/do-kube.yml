@@ -42,7 +42,7 @@ jobs:
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          ${{inputs.template_args}} $GITHUB_WORKSPACE/config/kubernetes/build-single.sh ${{inputs.template}}
+          ${{inputs.template_args}} $GITHUB_WORKSPACE/config/kubernetes/build-single.sh $GITHUB_WORKSPACE/config/kubernetes/${{inputs.template}}.yml ${{inputs.template}}.yml
       - name: Print rendered template
         run: pwd && cat ${{inputs.template}}
       - name: Deploy manifest

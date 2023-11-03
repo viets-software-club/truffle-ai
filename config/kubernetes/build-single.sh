@@ -17,5 +17,5 @@
 # REPO_CRONJOB_IMAGE
 
 mkdir ./deployment;
-touch ./deployment/$1;
-env envsubst < $1 > ./deployment/$1.yml;
+touch ./deployment/$2;
+env envsubst < $1 > ./deployment/$2;

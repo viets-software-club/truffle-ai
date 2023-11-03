@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${APP}-${PREFIX}-graphql-backend-service
+  namespace: ${NAMESPACE}
+  annotations:
+    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+  labels:
+    app: ${APP}-${PREFIX}-grapqhl-backend-deployment
+spec:
+  type: ClusterIP
+  selector:
+    app: ${APP}-${PREFIX}-grapqhl-backend-deployment
+  ports:
+  - name: ${APP}-${PREFIX}-graphql-gateway-port
+    protocol: TCP
+    port: 3001
+    targetPort: ${GRAPHQL_GATEWAY_PORT}

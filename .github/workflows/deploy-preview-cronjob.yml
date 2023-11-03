@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/do-kube.yml
     with:
       delete_name: 'preview-cronjob'
-      template: 'deploy-preview-cronjob'
+      templates: "['preview-cronjob']"
       template_args: PREVIEW_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-preview-cronjob:${COMMIT_TAG}
     secrets:
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

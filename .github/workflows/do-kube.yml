@@ -2,7 +2,7 @@ name: 'DO kube'
 on:
   workflow_call:
     inputs:
-      template:
+      templates:
         type: string
         required: true
       template_args:
@@ -15,7 +15,10 @@ on:
       digital_ocean_accesstoken:
         required: true
 jobs:
-  deploy-image:
+  deploy:
+    strategy:
+      matrix:
+        template: ${{ fromJSON(inputs.templates) }}
     runs-on: ubuntu-latest
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     env:
@@ -27,7 +30,6 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.digital_ocean_accesstoken }}
-      # - uses: ./.github/workflows/do-init.yml
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Delete
@@ -44,24 +46,24 @@ jobs:
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          ${{inputs.template_args}} env envsubst < $GITHUB_WORKSPACE/config/kubernetes/${{inputs.template}}.yml > $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
+          ${{inputs.template_args}} env envsubst < $GITHUB_WORKSPACE/config/kubernetes/templates/${{matrix.template}}.yml > $GITHUB_WORKSPACE/.deployment/${{matrix.template}}.yml
       - name: Deploy manifest
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
+        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{matrix.template}}.yml
       - name: Verify deployment
-        run: kubectl rollout status --timeout 240s deployment/${{inputs.template}}-deployment
-      - name: Build commit ingress manifest
-        run: >
-          APP=${{vars.APP}}
-          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          COMMIT_MESSAGE=$(git show -s --format=%s)
-          CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
-          PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
-          ENVIRONMENT=${{ env.environment }}
-          NAMESPACE=${{ env.environment }}
-          env envsubst < $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.commit.yml > $GITHUB_WORKSPACE/.deployment/deploy-ingress.commit.yml
-      - name: Deploy commit ingress manifest
-        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.commit.yml
-      - name: Verify commit ingress deployment
-        run: >
-          PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
-          kubectl rollout status --timeout 240s ingress/${{vars.APP}}-$(echo $PREFIX)-virtual-host-ingress
+        run: kubectl rollout status --timeout 240s deployment/${{matrix.template}}-deployment
+      # - name: Build commit ingress manifest
+      #   run: >
+      #     APP=${{vars.APP}}
+      #     COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+      #     COMMIT_MESSAGE=$(git show -s --format=%s)
+      #     CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
+      #     PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
+      #     ENVIRONMENT=${{ env.environment }}
+      #     NAMESPACE=${{ env.environment }}
+      #     env envsubst < $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.commit.yml > $GITHUB_WORKSPACE/.deployment/deploy-ingress.commit.yml
+      # - name: Deploy commit ingress manifest
+      #   run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.commit.yml
+      # - name: Verify commit ingress deployment
+      #   run: >
+      #     PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
+      #     kubectl rollout status --timeout 240s ingress/${{vars.APP}}-$(echo $PREFIX)-virtual-host-ingress

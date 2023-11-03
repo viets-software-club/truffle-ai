@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ${NAMESPACE}
+  name: ${APP}-${NAMESPACE}-graphql-server-service
+spec:
+  selector:
+    app: ${APP}-${PREFIX}-grapqhl-backend-deployment
+  ports:
+    - name: ${APP}-${PREFIX}-graphql-server-container
+      protocol: TCP
+      port: ${GRAPHQL_SERVER_PORT}
+      targetPort: ${GRAPHQL_SERVER_PORT}

@@ -21,7 +21,7 @@ jobs:
     needs: [build-ui-image]
     uses: ./.github/workflows/do-kube.yml
     with:
-      template: deploy-ui
+      templates: "['ui-deployment', 'ui-service']"
       template_args: >
         UI_PORT=${{vars.UI_PORT}}
         UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-ui:${COMMIT_TAG}

@@ -30,7 +30,7 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Delete
-        run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
+        run: kubectl delete cronjob --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
   deploy:
     needs: [delete-pod]
     strategy:
@@ -64,7 +64,17 @@ jobs:
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{matrix.template}}.yml
       - name: Verify deployment
+        if: endsWith( matrix.template, '-deployment' )
         run: kubectl rollout status --timeout 240s deployment/${{matrix.template}}
+      - name: Verify service
+        if: endsWith( matrix.template, '-service' )
+        run: kubectl rollout status --timeout 240s service/${{matrix.template}}
+      - name: Verify ingress
+        if: endsWith( matrix.template, '-ingress' )
+        run: kubectl rollout status --timeout 240s ingress/${{matrix.template}}
+      - name: Verify cronjob
+        if: endsWith( matrix.template, '-cronjob' )
+        run: kubectl rollout status --timeout 240s cronjob/${{matrix.template}}
       # - name: Build commit ingress manifest
       #   run: >
       #     APP=${{vars.APP}}

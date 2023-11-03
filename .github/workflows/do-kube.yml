@@ -75,11 +75,12 @@ jobs:
       #   run: >
       #     COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
       #     kubectl rollout status --timeout 240s service/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
-      - name: Verify ingress
-        if: endsWith( matrix.template, '-ingress' )
-        run: >
-          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          kubectl rollout status --timeout 240s ingress/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
+      # No status viewer has been implemented
+      # - name: Verify ingress
+      #   if: endsWith( matrix.template, '-ingress' )
+      #   run: >
+      #     COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+      #     kubectl rollout status --timeout 240s ingress/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
       # No status viewer has been implemented
       # - name: Verify cronjob
       #   if: endsWith( matrix.template, '-cronjob' )

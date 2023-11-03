@@ -22,7 +22,7 @@ jobs:
   build-graphql-server-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package_name: graphql_server
+      package: graphql_server
     secrets:
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-graphql-backend:

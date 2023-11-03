@@ -20,7 +20,7 @@ jobs:
     steps:
       - run: echo "Exposing env vars"
   build-graphql-gateway-image:
-    needs: [vars]
+    needs: vars
     uses: ./.github/workflows/do-image.yml
     with:
       package_name: graphql_gateway

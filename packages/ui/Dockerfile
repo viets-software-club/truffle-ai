@@ -48,7 +48,6 @@ RUN chown nextjs:nodejs .next
 USER nextjs
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./.next/standalone
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.env.local .next/standalone/packages/ui/.env.local
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./.next/static
 ## serve
 CMD ["node", ".next/standalone/packages/ui/server.js"]

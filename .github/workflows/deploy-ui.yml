@@ -9,14 +9,22 @@ on:
     branches: ['main', 'staging']
     paths: ['packages/ui', 'config/**', '.github/workflows/**']
 jobs:
-  build-ui-image:
-    uses: ./.github/workflows/do-image.yml
+  vars:
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    runs-on: ubuntu-latest
+    outputs:
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    steps:
+      - run: echo "Exposing env vars"
+  build-ui-image:
+    needs: vars
+    uses: ./.github/workflows/do-image.yml
     with:
       package_name: ui
-      build_args: --build-arg NEXT_PUBLIC_SUPABASE_URL=${{vars.SUPABASE_URL}}
+      build_args: --build-arg NEXT_PUBLIC_SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}}
     secrets:
-      build_args: --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+      build_args: --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ needs.vars.outputs.SUPABASE_ANON_KEY }}
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-ui:
     needs: [build-ui-image]

@@ -63,5 +63,5 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.yml
       - name: Verify ingress deployment
         run: >
-          PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
+          PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           kubectl rollout status --timeout 240s ingress/${{vars.APP}}-$(echo $PREFIX)-virtual-host-ingress

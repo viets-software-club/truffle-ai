@@ -4,7 +4,7 @@ metadata:
   name: ${APP}-commit-virtual-host-ingress
   namespace: commit
   annotations:
-    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+    kubernetes.io/change-cause: '${CHANGE_CAUSE}'
 spec:
   rules:
     - host: '${COMMIT_TAG}.commit.truffle.tools'

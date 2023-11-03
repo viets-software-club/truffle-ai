@@ -17,8 +17,10 @@ jobs:
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
     steps:
       - run: echo "Exposing env vars"
+      - run: ${{ vars.SUPABASE_GRAPHQL_URL }}
   build-graphql-gateway-image:
     needs: vars
     uses: ./.github/workflows/do-image.yml
@@ -26,7 +28,7 @@ jobs:
       package_name: graphql_gateway
       build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.vars.outputs.SUPABASE_URL }}
     secrets:
-      build_args: --build-arg SUPABASE_SERVICE_KEY=${{ needs.vars.outputs.SUPABASE_SERVICE_KEY }}
+      build_args: --build-arg SUPABASE_GRAPHQL_URL=${{needs.vars.outputs.SUPABASE_GRAPHQL_URL}} SUPABASE_SERVICE_KEY=${{ needs.vars.outputs.SUPABASE_SERVICE_KEY }}
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   build-graphql-server-image:
     uses: ./.github/workflows/do-image.yml

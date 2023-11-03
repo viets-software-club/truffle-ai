@@ -29,11 +29,11 @@ spec:
           image: ${UI_IMAGE}
           ports:
             - containerPort: ${UI_PORT}
-          resources:
-            limits:
-              cpu: 102m
-            requests:
-              cpu: 102m
+          # resources:
+          #   limits:
+          #     cpu: 102m
+          #   requests:
+          #     cpu: 102m
           envFrom:
             - configMapRef:
                 name: ${APP}-common-nodejs-config

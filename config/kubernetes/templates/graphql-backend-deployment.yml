@@ -29,11 +29,11 @@ spec:
           image: ${GRAPHQL_GATEWAY_IMAGE}
           ports:
             - containerPort: ${GRAPHQL_GATEWAY_PORT}
-          resources:
-            limits:
-              cpu: 102m
-            requests:
-              cpu: 102m
+          # resources:
+          #   limits:
+          #     cpu: 102m
+          #   requests:
+          #     cpu: 102m
           envFrom:
             - configMapRef:
                 name: ${APP}-nodejs-config

@@ -11,9 +11,9 @@ on:
       delete_name:
         type: string
         required: false
-    secrets:
-      digital_ocean_accesstoken:
-        required: true
+    # secrets:
+    #   digital_ocean_accesstoken:
+    #     required: true
 jobs:
   delete-pod:
     if: inputs.delete_name
@@ -26,7 +26,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.digital_ocean_accesstoken }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Delete

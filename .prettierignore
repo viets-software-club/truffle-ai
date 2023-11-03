@@ -1,5 +1,4 @@
 dist
-config/kubernetes/deploy-*
 .deployment
 .env*
 .husky

@@ -33,6 +33,8 @@ jobs:
       - name: Delete
         if: inputs.delete_name
         run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
+      - name: Create .deployment dir
+        run:  mkdir $GITHUB_WORKSPACE/.deployment
       - name: Build manifest
         run: >
           APP=${{vars.APP}}
@@ -42,7 +44,6 @@ jobs:
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          mkdir $GITHUB_WORKSPACE/.deployment &&
           ${{inputs.template_args}} env envsubst < $GITHUB_WORKSPACE/config/kubernetes/${{inputs.template}}.yml > $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml

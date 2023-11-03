@@ -9,7 +9,7 @@ on:
         type: string
         required: true
       delete_name:
-        type: boolean
+        type: string
         required: false
     secrets:
       digital_ocean_accesstoken:

@@ -10,6 +10,7 @@ metadata:
     service.beta.kubernetes.io/do-loadbalancer-size-unit: '1'
     service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: 'true'
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: 'true'
+    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: 'true'
   labels:
     app: ${APP}-load-balancer-service
 spec:

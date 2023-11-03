@@ -66,9 +66,7 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{matrix.template}}.yml
       - name: Verify deployment
         if: endsWith( matrix.template, '-deployment' )
-        run: >
-          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          kubectl rollout status --timeout 240s --namespace=${{ env.environment}} deployment/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}}
+        run: kubectl get deployments -n commit && kubectl rollout status --timeout 240s -n ${{ env.environment}} deployment/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}}
       # No status viewer has been implemented
       # - name: Verify service
       #   if: endsWith( matrix.template, '-service' )

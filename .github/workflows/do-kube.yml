@@ -15,7 +15,7 @@ on:
     #   digital_ocean_accesstoken:
     #     required: true
 jobs:
-  delete-pod:
+  delete-cronjob:
     if: inputs.delete_name
     runs-on: ubuntu-latest
     env:
@@ -33,7 +33,7 @@ jobs:
         run: kubectl delete cronjob --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
   deploy:
     if: ${{ always() }}
-    needs: [delete-pod]
+    needs: [delete-cronjob]
     strategy:
       matrix:
         template: ${{ fromJSON(inputs.templates) }}

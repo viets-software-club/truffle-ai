@@ -36,11 +36,13 @@ spec:
               cpu: 102m
           envFrom:
             - configMapRef:
-                name: ${APP}-common-nodejs-config
+                name: ${APP}-nodejs-config
             - configMapRef:
                 name: ${APP}-graphql-gateway-config
             - secretRef:
                 name: ${APP}-graphql-gateway-secret
+            - secretRef:
+                name: ${APP}-supabase-secret
         - name: ${APP}-${PREFIX}-graphql-server-container
           image: ${GRAPHQL_SERVER_IMAGE}
           ports:
@@ -52,8 +54,16 @@ spec:
               cpu: 102m
           envFrom:
             - configMapRef:
-                name: ${APP}-common-nodejs-config
+                name: ${APP}-nodejs-config
             - configMapRef:
                 name: ${APP}-graphql-server-config
             - secretRef:
                 name: ${APP}-graphql-server-secret
+            - secretRef:
+                name: ${APP}-supabase-secret
+            - secretRef:
+                name: ${APP}-open-api-secret
+            - secretRef:
+                name: ${APP}-scraping-bot-secret
+            - secretRef:
+                name: ${APP}-github-secret

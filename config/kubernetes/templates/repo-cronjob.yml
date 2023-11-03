@@ -29,9 +29,9 @@ spec:
               image: ${REPO_CRONJOB_IMAGE}
               envFrom:
                 - configMapRef:
-                    name: ${APP}-common-nodejs-config
+                    name: ${APP}-nodejs-config
                 - configMapRef:
                     name: ${APP}-repo-cronjob-config
                 - secretRef:
-                    name: ${APP}-${NAMESPACE}-repo-cronjob-secret
+                    name: ${APP}-repo-cronjob-secret
           restartPolicy: OnFailure

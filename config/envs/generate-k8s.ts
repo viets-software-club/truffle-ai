@@ -139,7 +139,7 @@ const generateConfigMapsAndSecretsFile = async (
   await Deno.writeTextFile(outputFile, data)
 }
 
-const appName = prompt('Please enter the app prefix (truffle):') ?? 'truffle'
+const appName = prompt('Please enter the app prefix (truffle-ai):') ?? 'truffle-ai'
 await generateConfigMapsAndSecretsFile(
   'generated-k8s.yml',
   appName,

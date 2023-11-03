@@ -35,4 +35,5 @@ jobs:
           SUPABASE_SERICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
         run: NODE_ENV=production npm run build

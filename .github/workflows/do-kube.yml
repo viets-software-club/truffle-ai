@@ -76,7 +76,7 @@ jobs:
         if: endsWith( matrix.template, '-cronjob' )
         run: >
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          kubectl rollout status --timeout 240s cronjob/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}-${{matrix.template}}
+          kubectl rollout status --timeout 240s cronjob/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}}
       # - name: Build commit ingress manifest
       #   run: >
       #     APP=${{vars.APP}}

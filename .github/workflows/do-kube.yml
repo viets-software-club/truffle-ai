@@ -42,7 +42,8 @@ jobs:
           PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          ${{inputs.template_args}} $GITHUB_WORKSPACE/config/kubernetes/build-single.sh $GITHUB_WORKSPACE/config/kubernetes/${{inputs.template}}.yml ${{inputs.template}}.yml
+          mkdir $GITHUB_WORKSPACE/.deployment &&
+          ${{inputs.template_args}} env envsubst < $GITHUB_WORKSPACE/config/kubernetes/${{inputs.template}}.yml > $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Verify deployment
@@ -56,7 +57,7 @@ jobs:
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          $GITHUB_WORKSPACE/config/kubernetes/build-single.sh $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.yml deploy-ingress.yml
+          env envsubst < $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.yml > $GITHUB_WORKSPACE/.deployment/deploy-ingress.yml
       - name: Deploy ingress manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.yml
       - name: Verify ingress deployment

@@ -39,7 +39,7 @@ jobs:
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
           COMMIT_MESSAGE=$(echo ${{ toJSON(github.event.head_commit.message) }})
           CHANGE_CAUSE=$(echo "$COMMIT_TAG: $COMMIT_MESSAGE")
-          PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
+          PREFIX="${{env.environment}}${{(env.environment == 'commit' && '-$COMMIT_TAG') || ''}}"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
           ${{inputs.template_args}} ../../config/kubernetes/build-single.sh ${{inputs.template}}

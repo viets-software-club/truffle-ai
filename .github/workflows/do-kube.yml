@@ -68,7 +68,7 @@ jobs:
         if: endsWith( matrix.template, '-deployment' )
         run: >
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
-          kubectl rollout status --timeout 240s deployment/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
+          kubectl rollout status --timeout 240s --namespace=${{ env.environment}} deployment/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}}
       # No status viewer has been implemented
       # - name: Verify service
       #   if: endsWith( matrix.template, '-service' )

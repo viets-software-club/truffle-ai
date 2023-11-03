@@ -2,16 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: ${NAMESPACE}
-  name: ${APP}-${PREFIX}-grapqhl-backend-deployment
+  name: ${APP}-${PREFIX}-graphql-backend-deployment
   annotations:
     kubernetes.io/change-cause: '${CHANGE_CAUSE}'
   labels:
-    app: ${APP}-${PREFIX}-grapqhl-backend-deployment
+    app: ${APP}-${PREFIX}-graphql-backend-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ${APP}-${PREFIX}-grapqhl-backend-deployment
+      app: ${APP}-${PREFIX}-graphql-backend-deployment
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -20,7 +20,7 @@ spec:
   template:
     metadata:
       labels:
-        app: ${APP}-${PREFIX}-grapqhl-backend-deployment
+        app: ${APP}-${PREFIX}-graphql-backend-deployment
       annotations:
         kubernetes.io/change-cause: '${CHANGE_CAUSE}'
     spec:

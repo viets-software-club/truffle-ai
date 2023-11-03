@@ -12,7 +12,7 @@ spec:
   selector:
     app: ${APP}-${PREFIX}-grapqhl-backend-deployment
   ports:
-  - name: ${APP}-${PREFIX}-graphql-gateway-port
-    protocol: TCP
-    port: 3001
-    targetPort: ${GRAPHQL_GATEWAY_PORT}
+    - name: ${APP}-${PREFIX}-graphql-gateway-port
+      protocol: TCP
+      port: 3001
+      targetPort: ${GRAPHQL_GATEWAY_PORT}

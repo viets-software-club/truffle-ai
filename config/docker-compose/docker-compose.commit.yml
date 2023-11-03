@@ -38,7 +38,7 @@ services:
     build:
       context: ../../
       dockerfile: ./packages/ui/Dockerfile
-    args:
+      args:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
         - API_GRAPHQL_URL=${NEXT_PUBLIC_API_GRAPHQL_URL}

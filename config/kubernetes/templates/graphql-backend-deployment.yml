@@ -4,7 +4,7 @@ metadata:
   namespace: ${NAMESPACE}
   name: ${APP}-${PREFIX}-grapqhl-backend-deployment
   annotations:
-    kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+    kubernetes.io/change-cause: '${CHANGE_CAUSE}'
   labels:
     app: ${APP}-${PREFIX}-grapqhl-backend-deployment
 spec:
@@ -22,7 +22,7 @@ spec:
       labels:
         app: ${APP}-${PREFIX}-grapqhl-backend-deployment
       annotations:
-        kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+        kubernetes.io/change-cause: '${CHANGE_CAUSE}'
     spec:
       containers:
         - name: ${APP}-${PREFIX}-graphql-gateway-container

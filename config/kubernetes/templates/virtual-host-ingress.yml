@@ -5,23 +5,23 @@ metadata:
   namespace: production
 spec:
   rules:
-  - host: "truffle.tools"
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: ${APP}-production-graphql-backend-port
-            port:
-              number: 3001
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: ${APP}-production-ui-port
-            port:
-              number: 3000
+    - host: 'truffle.tools'
+      http:
+        paths:
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: ${APP}-production-graphql-backend-port
+                port:
+                  number: 3001
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: ${APP}-production-ui-port
+                port:
+                  number: 3000
   ingressClassName: nginx
 ---
 apiVersion: networking.k8s.io/v1
@@ -31,23 +31,21 @@ metadata:
   namespace: staging
 spec:
   rules:
-  - host: "staging.truffle.tools"
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/api"
-        backend:
-          service:
-            name: ${APP}-staging-graphql-backend-port
-            port:
-              number: 3001
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: ${APP}-staging-ui-port
-            port:
-              number: 3000
+    - host: 'staging.truffle.tools'
+      http:
+        paths:
+          - pathType: Prefix
+            path: '/api'
+            backend:
+              service:
+                name: ${APP}-staging-graphql-backend-port
+                port:
+                  number: 3001
+          - pathType: Prefix
+            path: '/'
+            backend:
+              service:
+                name: ${APP}-staging-ui-port
+                port:
+                  number: 3000
   ingressClassName: nginx
- 
- 

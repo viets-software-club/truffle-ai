@@ -4,7 +4,7 @@ metadata:
   namespace: ${NAMESPACE}
   name: ${APP}-${PREFIX}-repo-cronjob
   annotations:
-    kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+    kubernetes.io/change-cause: '${CHANGE_CAUSE}'
   labels:
     name: repo-cronjob
 spec:
@@ -13,14 +13,14 @@ spec:
   jobTemplate:
     metadata:
       annotations:
-        kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+        kubernetes.io/change-cause: '${CHANGE_CAUSE}'
       labels:
         app: ${APP}-${PREFIX}-repo-cronjob
     spec:
       template:
         metadata:
           annotations:
-            kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+            kubernetes.io/change-cause: '${CHANGE_CAUSE}'
           labels:
             app: ${APP}-${PREFIX}-repo-cronjob
         spec:

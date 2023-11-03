@@ -9,10 +9,10 @@ on:
         type: string
         required: false
     # secrets:
-      # digital_ocean_accesstoken:
-      #   required: true
-      # build_args:
-      #   required: false
+    # digital_ocean_accesstoken:
+    #   required: true
+    # build_args:
+    #   required: false
 jobs:
   build-image:
     runs-on: ubuntu-latest

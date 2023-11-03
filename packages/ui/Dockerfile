@@ -2,7 +2,7 @@
 # run this file only from ../../
 
 # build stage
-FROM node:18-alpine AS build
+FROM node:21-alpine AS build
 ## init envs
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -15,7 +15,9 @@ COPY ./packages/ui ./packages/ui/
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w ui
 RUN apk del build-dependencies
-## build .next
+RUN apk update && apk add bash
+
+# build .next
 RUN npm run build -w ui
 
 #########################################################################

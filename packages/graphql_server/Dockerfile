@@ -2,7 +2,7 @@
 # run this file only from ../../
 
 # build stage
-FROM node:18-alpine AS build
+FROM node:21-alpine AS build
 ## init envs
 ENV NODE_ENV=build
 ## setup workspace
@@ -20,18 +20,15 @@ RUN npm run build -w graphql_server
 #########################################################################
 
 # serve stage
-FROM node:18-alpine AS serve
+FROM node:21-alpine AS serve
 ## init envs
 ENV NODE_ENV production
 ## setup workspaces
-WORKDIR /app
-COPY package*.json ./
 WORKDIR /app/packages/graphql_server
-COPY --from=build /app/packages/graphql_server/package*.json ./
+COPY --from=build /app/package-lock.json ./
+COPY --from=build /app/packages/graphql_server/package.json ./
 COPY --from=build /app/packages/graphql_server/dist ./dist
-## install production dependencies
-RUN apk --virtual build-dependencies add python3 make g++
+# install production dependencies
 RUN npm ci --omit=dev
-RUN apk del build-dependencies
 ## serve
 CMD ["npm", "run", "serve:prod"]

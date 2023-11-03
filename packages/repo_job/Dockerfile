@@ -2,7 +2,7 @@
 # run this file only from ../../
 
 # build stage
-FROM node:18-alpine AS build
+FROM node:21-alpine AS build
 ## init envs
 ENV NODE_ENV build
 ## setup workspaces
@@ -18,14 +18,13 @@ RUN npm run build -w repo_job
 #########################################################################
 
 # serve stage
-FROM node:18-alpine AS serve
+FROM node:21-alpine AS serve
 ## init envs
 ENV NODE_ENV production
 ## setup workspaces
-WORKDIR /app
-COPY package*.json ./
 WORKDIR /app/packages/repo_job
-COPY --from=build /app/packages/repo_job/package*.json ./
+COPY --from=build /app/package-lock.json ./
+COPY --from=build /app/packages/repo_job/package.json ./
 COPY --from=build /app/packages/repo_job/dist ./dist
 ## install production dependencies
 RUN npm ci --omit=dev

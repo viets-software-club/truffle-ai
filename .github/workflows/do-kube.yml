@@ -59,7 +59,8 @@ jobs:
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          kubectl apply -f ../../config/kubernetes/deploy-ingress.commit.yml
-      - name: Verify commit ingress deployment
-        if: env.environment == 'commit'
-        run: kubectl rollout status --timeout 240s ingress/${{vars.APP}}-commit-virtual-host-ingress
+          kubectl apply -f ../../config/kubernetes/deploy-ingress.yml
+      - name: Verify ingress deployment
+        run: >
+          PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
+          kubectl rollout status --timeout 240s ingress/${{vars.APP}}-$(echo $PREFIX)-virtual-host-ingress

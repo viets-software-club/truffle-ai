@@ -5,6 +5,8 @@ metadata:
   name: ${APP}-${PREFIX}-repo-cronjob-deployment
   annotations:
     kubernetes.io/change-cause: "${CHANGE_CAUSE}"
+  labels:
+    name: repo-cronjob
 spec:
   timeZone: 'Europe/Berlin'
   schedule: '10 * * * *'

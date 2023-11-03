@@ -19,7 +19,7 @@ jobs:
     needs: [build-repo-cronjob-image]
     uses: ./.github/workflows/do-kube.yml
     with:
-      delete_name: 'deploy-repo-cronjob'
+      delete_name: 'repo-cronjob'
       template: 'deploy-repo-cronjob'
       template_args: >
         REPO_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-repo-cronjob:${COMMIT_TAG}

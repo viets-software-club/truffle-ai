@@ -9,17 +9,17 @@ on:
         type: string
         required: true
       delete_name:
-        type: string
+        type: boolean
         required: false
     secrets:
       digital_ocean_accesstoken:
         required: true
 jobs:
-  build-image:
+  deploy-image:
     runs-on: ubuntu-latest
-    environment: ${{ startsWith(github.ref_name, 'refs/pull') && 'commit' || github.ref_name }}
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     env:
-      environment: ${{ startsWith(github.ref_name, 'refs/pull') && 'commit' || github.ref_name }}
+      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{vars.DO_KUBE_CLUSTER_NAME}}
       - name: Delete
         if: inputs.delete_name
-        run: kubectl delete pod --namespace=${{ env.environment }} ${{vars.APP}}-${{env.environment}}-${{inputs.delete_name}}
+        run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
       - name: Build manifest
         run: >
           APP=${{vars.APP}}

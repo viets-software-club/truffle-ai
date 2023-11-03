@@ -14,7 +14,7 @@ jobs:
   build-graphql-gateway-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package: graphql_gateway
+      package_name: graphql_gateway
       build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }}
     secrets:
       build_args: --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}
@@ -22,7 +22,7 @@ jobs:
   build-graphql-server-image:
     uses: ./.github/workflows/do-image.yml
     with:
-      package: graphql_server
+      package_name: graphql_server
     secrets:
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-graphql-backend:

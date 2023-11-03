@@ -31,7 +31,9 @@ spec:
                 - configMapRef:
                     name: ${APP}-nodejs-config
                 - configMapRef:
-                    name: ${APP}-preview-cronjob-config
+                    name: ${APP}-preview-job-config
                 - secretRef:
-                    name: ${APP}-preview-cronjob-secret
+                    name: ${APP}-preview-job-secret
+                - secretRef:
+                    name: ${APP}-digitalocean-secret
           restartPolicy: OnFailure

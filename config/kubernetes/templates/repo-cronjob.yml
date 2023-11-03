@@ -31,7 +31,7 @@ spec:
                 - configMapRef:
                     name: ${APP}-nodejs-config
                 - configMapRef:
-                    name: ${APP}-repo-cronjob-config
+                    name: ${APP}-repo-job-config
                 - secretRef:
-                    name: ${APP}-repo-cronjob-secret
+                    name: ${APP}-repo-job-secret
           restartPolicy: OnFailure

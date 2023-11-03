@@ -65,13 +65,19 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{matrix.template}}.yml
       - name: Verify deployment
         if: endsWith( matrix.template, '-deployment' )
-        run: kubectl rollout status --timeout 240s deployment/${{matrix.template}}
+        run: >
+          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+          kubectl rollout status --timeout 240s deployment/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
       - name: Verify service
         if: endsWith( matrix.template, '-service' )
-        run: kubectl rollout status --timeout 240s service/${{matrix.template}}
+        run: >
+          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+          kubectl rollout status --timeout 240s service/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
       - name: Verify ingress
         if: endsWith( matrix.template, '-ingress' )
-        run: kubectl rollout status --timeout 240s ingress/${{matrix.template}}
+        run: >
+          COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
+          kubectl rollout status --timeout 240s ingress/${{vars.APP}}-${{env.environment}}${{(env.environment == 'commit' && '-$(echo $GITHUB_SHA | head -c7)') || ''}}-${{matrix.template}} --namespace=${{ env.environment}}
       - name: Verify cronjob
         if: endsWith( matrix.template, '-cronjob' )
         run: >

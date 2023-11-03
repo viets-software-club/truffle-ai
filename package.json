@@ -40,10 +40,10 @@
   ],
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
+      "prettier --write .",
       "eslint --no-error-on-unmatched-pattern"
     ],
-    "*.{html,css,scss,sass,md,mdx,yml}": "prettier --write"
+    "*.{html,css,scss,sass,md,mdx,yml}": "prettier --write ."
   },
   "devDependencies": {
     "@truffle/eslint-config-base": "0.0.1",

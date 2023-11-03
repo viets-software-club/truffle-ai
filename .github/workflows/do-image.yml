@@ -8,11 +8,11 @@ on:
       build_args:
         type: string
         required: false
-    secrets:
-      digital_ocean_accesstoken:
-        required: true
-      build_args:
-        required: false
+    # secrets:
+      # digital_ocean_accesstoken:
+      #   required: true
+      # build_args:
+      #   required: false
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.digital_ocean_accesstoken }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - id: gen-image-name
         env:
           name: '${{inputs.package_name}}'

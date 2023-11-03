@@ -20,7 +20,6 @@ jobs:
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
     steps:
       - run: echo "Exposing env vars"
-      - run: ${{ vars.SUPABASE_GRAPHQL_URL }}
   build-graphql-gateway-image:
     needs: vars
     uses: ./.github/workflows/do-image.yml

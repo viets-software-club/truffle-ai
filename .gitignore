@@ -40,7 +40,6 @@ test/traces
 .eslintcache
 
 # Other
-.husky
 .env
 .env.local
 .env*

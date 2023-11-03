@@ -11,13 +11,22 @@ on:
     paths:
       ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
 jobs:
+  vars:
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    runs-on: ubuntu-latest
+    outputs:
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+    steps:
+      - run: echo "Exposing env vars"
   build-graphql-gateway-image:
+    needs: [vars]
     uses: ./.github/workflows/do-image.yml
     with:
       package_name: graphql_gateway
-      build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ vars.SUPABASE_URL }}
+      build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.vars.outputs.SUPABASE_URL }}
     secrets:
-      build_args: --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}
+      build_args: --build-arg SUPABASE_SERVICE_KEY=${{ needs.vars.outputs.SUPABASE_SERVICE_KEY }}
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   build-graphql-server-image:
     uses: ./.github/workflows/do-image.yml

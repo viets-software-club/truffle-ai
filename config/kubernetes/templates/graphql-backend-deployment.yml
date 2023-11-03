@@ -51,9 +51,9 @@ spec:
             - containerPort: ${GRAPHQL_SERVER_PORT}
           resources:
             limits:
-              cpu: 102m
+              cpu: 1m
             requests:
-              cpu: 102m
+              cpu: 1m
           envFrom:
             - configMapRef:
                 name: ${APP}-nodejs-config

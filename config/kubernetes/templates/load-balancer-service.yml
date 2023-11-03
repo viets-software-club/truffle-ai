@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: ${APP}-load-balancer-service
   annotations:
-    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+    kubernetes.io/change-cause: '${CHANGE_CAUSE}'
     service.beta.kubernetes.io/do-loadbalancer-name: '${APP}-load-balancer'
     service.beta.kubernetes.io/do-loadbalancer-certificate-id: '${CERTIFICATE_ID}'
     service.beta.kubernetes.io/do-loadbalancer-protocol: 'https'

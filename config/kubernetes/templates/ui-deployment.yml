@@ -4,7 +4,7 @@ metadata:
   namespace: ${NAMESPACE}
   name: ${APP}-${PREFIX}-ui-deployment
   annotations:
-    kubernetes.io/change-cause: ${CHANGE_CAUSE}
+    kubernetes.io/change-cause: "${CHANGE_CAUSE}"
   labels:
     app: ${APP}-${PREFIX}-ui-deployment
 spec:
@@ -22,7 +22,7 @@ spec:
       labels:
         app: ${APP}-${PREFIX}-ui-deployment
       annotations:
-        kubernetes.io/change-cause: ${CHANGE_CAUSE}
+        kubernetes.io/change-cause: "${CHANGE_CAUSE}"
     spec:
       containers:
         - name: ${APP}-${PREFIX}-ui-container

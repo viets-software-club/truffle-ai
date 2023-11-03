@@ -11,6 +11,7 @@ on:
 jobs:
   build-ui-image:
     uses: ./.github/workflows/do-image.yml
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     with:
       package_name: ui
       build_args: --build-arg NEXT_PUBLIC_SUPABASE_URL=${{vars.SUPABASE_URL}}

@@ -32,6 +32,7 @@ jobs:
       - name: Delete
         run: kubectl delete pod --namespace=${{ env.environment }} -l name=${{inputs.delete_name}}
   deploy:
+    needs: [delete-pod]
     strategy:
       matrix:
         template: ${{ fromJSON(inputs.templates) }}

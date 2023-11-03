@@ -43,13 +43,11 @@ jobs:
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
           ${{inputs.template_args}} $GITHUB_WORKSPACE/config/kubernetes/build-single.sh $GITHUB_WORKSPACE/config/kubernetes/${{inputs.template}}.yml ${{inputs.template}}.yml
-      - name: Print rendered template
-        run: pwd && cat ${{inputs.template}}
       - name: Deploy manifest
         run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/${{inputs.template}}.yml
       - name: Verify deployment
         run: kubectl rollout status --timeout 240s deployment/${{inputs.template}}
-      - name: Deploy ingress
+      - name: Build ingress manifest
         run: >
           APP=${{vars.APP}}
           COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)
@@ -58,7 +56,9 @@ jobs:
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"
           ENVIRONMENT=${{ env.environment }}
           NAMESPACE=${{ env.environment }}
-          kubectl apply -f ../../config/kubernetes/deploy-ingress.yml
+          $GITHUB_WORKSPACE/config/kubernetes/build-single.sh $GITHUB_WORKSPACE/config/kubernetes/deploy-ingress.yml deploy-ingress.yml
+      - name: Deploy ingress manifest
+        run: kubectl apply -f $GITHUB_WORKSPACE/.deployment/deploy-ingress.yml
       - name: Verify ingress deployment
         run: >
           PREFIX="${{env.environment}}$((env.environment = 'commit' ? '-$COMMIT_TAG' : ''))"

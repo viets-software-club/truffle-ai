@@ -38,6 +38,8 @@ spec:
             - configMapRef:
                 name: ${APP}-nodejs-config
             - configMapRef:
+                name: ${APP}-supabase-config
+            - configMapRef:
                 name: ${APP}-graphql-gateway-config
             - secretRef:
                 name: ${APP}-graphql-gateway-secret
@@ -57,6 +59,14 @@ spec:
                 name: ${APP}-nodejs-config
             - configMapRef:
                 name: ${APP}-graphql-server-config
+            - configMapRef:
+                name: ${APP}-github-config
+            - configMapRef:
+                name: ${APP}-scraping-bot-config
+            - configMapRef:
+                name: ${APP}-open-api-config
+            - configMapRef:
+                name: ${APP}-supabase-config
             - secretRef:
                 name: ${APP}-graphql-server-secret
             - secretRef:

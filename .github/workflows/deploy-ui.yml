@@ -25,7 +25,6 @@ jobs:
       package_name: ui
       build_args: --build-arg NEXT_PUBLIC_SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}} --build-arg NEXT_PUBLIC_API_GRAPHQL_URL=${{needs.vars.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
     secrets:
-      build_args: --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ needs.vars.outputs.SUPABASE_ANON_KEY }}
       digital_ocean_accesstoken: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
   deploy-ui:
     needs: [build-ui-image]

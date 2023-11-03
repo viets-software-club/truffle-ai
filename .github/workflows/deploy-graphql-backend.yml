@@ -41,6 +41,6 @@ jobs:
         GRAPHQL_GATEWAY_PORT=${{vars.GRAPHQL_GATEWAY_PORT}} \
         GRAPHQL_SERVER_PORT=${{vars.GRAPHQL_SERVER_PORT}} \
         UI_PORT=${{vars.UI_PORT}} \
-        GRAPHQL_SERVER_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-graphql-server:${COMMIT_TAG} \
-        GRAPHQL_GATEWAY_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-graphql-gateway:${COMMIT_TAG} \
+        GRAPHQL_SERVER_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/graphql-server:${COMMIT_TAG} \
+        GRAPHQL_GATEWAY_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/graphql-gateway:${COMMIT_TAG} \
     secrets: inherit

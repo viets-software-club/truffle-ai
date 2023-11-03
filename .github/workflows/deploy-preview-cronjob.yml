@@ -19,5 +19,5 @@ jobs:
     with:
       delete_name: 'preview-cronjob'
       templates: "['preview-cronjob']"
-      template_args: PREVIEW_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}-preview-cronjob:${COMMIT_TAG}
+      template_args: PREVIEW_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/preview-cronjob:${COMMIT_TAG}
     secrets: inherit

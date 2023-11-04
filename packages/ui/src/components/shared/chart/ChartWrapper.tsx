@@ -97,7 +97,7 @@ const ChartWrapper = ({
   }, [datasets])
 
   return (
-    <div className='w-full p-6'>
+    <div className='w-full px-4 py-6 lg:p-6'>
       {datasets.length === 0 ? (
         <p>No data</p>
       ) : (

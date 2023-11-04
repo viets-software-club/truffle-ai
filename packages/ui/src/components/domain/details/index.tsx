@@ -15,6 +15,7 @@ import {
   useProjectDetailsQuery,
   useProjectIdsQuery
 } from '@/graphql/generated/gql'
+import GithubStats from './GithubStats'
 import Navbar from './Navbar'
 
 type DetailsProps = {
@@ -107,8 +108,8 @@ const Details = ({ id }: DetailsProps) => {
         projectsLength={projects?.length}
       />
 
-      <div className='flex grow'>
-        <div className='w-[calc(100%-250px)] flex-row pt-[60px]'>
+      <div className='flex grow flex-col pt-[60px] lg:flex-row'>
+        <div className='border-b border-white/5 md:border-none lg:w-[calc(100%-250px)]'>
           <ProjectInformation
             id={project.id as string}
             githubUrl={project.githubUrl as string}
@@ -122,6 +123,10 @@ const Details = ({ id }: DetailsProps) => {
             category={category}
             refetch={refetch}
           />
+
+          <div className='md:hidden'>
+            <GithubStats project={project} />
+          </div>
 
           <ChartWrapper
             datasets={[

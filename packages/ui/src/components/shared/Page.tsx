@@ -9,7 +9,7 @@ const Page = ({ children }: PropsWithChildren) => (
   <div className='flex min-h-screen w-full text-white/90'>
     <NavSidebar />
     <CommandInterface />
-    <main className='ml-56 w-full text-white/90'>{children}</main>
+    <main className='w-full text-white/90 lg:ml-56'>{children}</main>
   </div>
 )
 

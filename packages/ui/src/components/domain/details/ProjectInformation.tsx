@@ -61,8 +61,8 @@ const ProjectInformation = ({
   }
 
   return (
-    <div className='border-b border-white/5 px-7 py-6'>
-      <div className='mb-6 flex flex-row items-center justify-between'>
+    <div className='border-b border-white/5 px-4 py-6 lg:px-7'>
+      <div className='mb-6 flex flex-col-reverse items-start justify-between gap-6 md:flex-row md:items-center'>
         <div className='flex flex-row items-center'>
           <div className='relative mr-4 h-8 w-8 overflow-hidden rounded-md'>
             <Image src={image} alt='logo' fill sizes='32px' />
@@ -101,7 +101,7 @@ const ProjectInformation = ({
         </div>
       </div>
 
-      <div className='flex w-full gap-6'>
+      <div className='flex w-full flex-col gap-6 xl:flex-row'>
         <div className='flex w-[250px] shrink-0 flex-col gap-2'>
           <span className='text-xs font-semibold uppercase text-white/50'>About</span>
           <p className='text-sm font-light'>{about}</p>

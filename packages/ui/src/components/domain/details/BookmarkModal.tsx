@@ -121,7 +121,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
         <Input placeholder='Category' value={newCategory} onChange={handleChange} />
 
         {/* Error message */}
-        {error && <p className='text-sm text-red-500'>{error}</p>}
+        {error && <p className='text-sm text-red-400'>{error}</p>}
 
         <div
           className={clsx(
@@ -131,8 +131,8 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
           {/* Delete button */}
           {isBookmarked && (
             <Button
-              variant='noBorderNoBG'
-              className='text-red-500'
+              variant='error'
+              size='large'
               onClick={!fetchingDelete ? handleDelete : undefined}>
               {fetchingDelete ? 'Deleting' : 'Delete'}
             </Button>
@@ -141,9 +141,9 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
           {/* Submit button */}
           <Button
             variant='highlighted'
+            size='large'
             disabled={fetchingAdd || fetchingEdit}
-            type='submit'
-            className='text-white'>
+            type='submit'>
             {fetchingAdd || fetchingEdit ? 'Loading...' : 'Save'}
           </Button>
         </div>

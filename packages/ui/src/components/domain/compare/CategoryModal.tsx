@@ -63,11 +63,16 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
         <Input placeholder='Category' value={newCategory} onChange={handleChange} />
 
         {/* Error message */}
-        {error && <p className='text-sm text-red-500'>{defaultErrorMessage}</p>}
+        {error && <p className='text-sm text-red-400'>{defaultErrorMessage}</p>}
 
         <div className='flex w-full items-center justify-end'>
           {/* Submit button */}
-          <Button variant='highlighted' disabled={fetching} type='submit' className='text-white'>
+          <Button
+            variant='highlighted'
+            size='large'
+            disabled={fetching}
+            type='submit'
+            className='text-white'>
             {fetching ? 'Loading...' : 'Save'}
           </Button>
         </div>

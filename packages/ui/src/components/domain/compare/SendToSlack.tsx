@@ -13,6 +13,7 @@ const SendToSlack = ({ message }: SendToSlackProps) => {
   const [loading, setLoading] = useState(false)
 
   const sendSlackMessage = async () => {
+    setStatus('')
     setLoading(true)
     const template = localStorage.getItem('slackMessageMultiple') ?? ''
     const res = await sendSlackNotification(`${template}\n${message}\n`)
@@ -32,7 +33,12 @@ const SendToSlack = ({ message }: SendToSlackProps) => {
       </Button>
 
       {status === 'success' && <Banner variant='success' message='Slack notification sent' />}
-      {status === 'error' && <Banner variant='error' message='Error sending notification' />}
+      {status === 'error' && (
+        <Banner
+          variant='error'
+          message="Couldn't send a notification to Slack. Did you set up a webhook in settings?"
+        />
+      )}
     </>
   )
 }

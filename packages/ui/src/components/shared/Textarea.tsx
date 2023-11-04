@@ -6,7 +6,7 @@ const Textarea = (
   <textarea
     // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
-    className='h-96 w-full min-w-[250px] rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm text-white focus:outline focus:outline-indigo-500'
+    className='h-96 w-full min-w-[250px] rounded-md border border-white/5 bg-white/5 px-3 py-2.5 text-sm text-white outline-none backdrop-blur-xl transition-all duration-75 placeholder:text-white/40 focus:ring-2 focus:ring-indigo-500'
   />
 )
 

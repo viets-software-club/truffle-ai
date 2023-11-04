@@ -30,7 +30,7 @@ const DefaultFilters = () => {
 
   return (
     <>
-      <p className='mb-6 text-sm font-normal text-gray-400'>
+      <p className='mb-6 text-sm font-normal text-white/75'>
         Anything below these values will be filtered out of your results on the trending page.
       </p>
 
@@ -46,7 +46,7 @@ const DefaultFilters = () => {
         ))}
       </div>
 
-      <Button variant='highlighted' onClick={showBannerFunc}>
+      <Button variant='highlighted' size='large' onClick={showBannerFunc}>
         Update
       </Button>
 

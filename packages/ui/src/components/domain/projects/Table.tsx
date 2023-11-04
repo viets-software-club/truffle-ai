@@ -18,7 +18,7 @@ const Table = ({ table }: TableProps) => (
           {headerGroup.headers.map(header => (
             <th
               key={header.id}
-              className='pb-2 text-left text-xs font-medium uppercase text-gray-500'>
+              className='pb-2 text-left text-xs font-medium uppercase text-white/50'>
               {header.isPlaceholder
                 ? null
                 : flexRender(header.column.columnDef.header, header.getContext())}
@@ -30,7 +30,7 @@ const Table = ({ table }: TableProps) => (
 
     <tbody>
       {table.getRowModel().rows.map(row => (
-        <tr key={row.id} className='cursor-pointer hover:bg-gray-800'>
+        <tr key={row.id} className='cursor-pointer transition-colors duration-75 hover:bg-white/10'>
           {row.getVisibleCells().map((cell, cellIndex) => {
             const isFirstChild = cellIndex === 0
             const isLastChild = cellIndex === row.getVisibleCells().length - 1

@@ -26,13 +26,13 @@ const TimeFrameSelector: FC<TimeFrameSelectorProps> = ({
     </Menu.Button>
 
     <MenuItemsTransition>
-      <Menu.Items className='absolute left-0 z-30 mt-2 origin-top-right rounded-md bg-gray-700 p-1 shadow-lg focus:outline-none'>
+      <Menu.Items className='absolute left-0 z-30 mt-2 origin-top-right rounded-md border border-white/5 bg-white/5 p-1 backdrop-blur-xl focus:outline-none'>
         {Object.entries(TimeFilterOption).map(([label, timeFrame]) => (
           <Menu.Item
             as='button'
             key={timeFrame}
             onClick={() => handleChange(timeFrame)}
-            className='min-w-[150px] rounded-md p-2 text-left text-sm text-gray-100 hover:bg-gray-600'>
+            className='min-w-[150px] rounded-md p-2 text-left text-sm text-white/90 transition-colors duration-75 hover:bg-white/5'>
             {label}
           </Menu.Item>
         ))}

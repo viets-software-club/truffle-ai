@@ -13,23 +13,27 @@ const DeleteAccount = () => {
     void deleteAccount(supabaseClient)
   }
 
+  const handleConfirmDelete = () => {
+    setConfirmDelete(true)
+  }
+
   return (
     <>
-      <p className='pb-6 text-sm font-normal text-gray-300'>
+      <p className='pb-6 text-sm font-normal text-white/75'>
         If you delete your account, all your data will be lost.
       </p>
 
       {!confirmDelete ? (
-        <Button onClick={() => setConfirmDelete(true)} variant='red' className='text-white'>
+        <Button onClick={handleConfirmDelete} variant='error' size='large'>
           <FiTrash2 />
           Delete account
         </Button>
       ) : (
         <>
-          <p className='pb-6 text-sm font-normal text-red-500'>Are you sure?</p>
+          <p className='pb-6 text-sm font-normal text-red-400'>Are you sure?</p>
 
           <Link href='/logout'>
-            <Button onClick={handleDeleteAccount} variant='red' className='text-white'>
+            <Button onClick={handleDeleteAccount} variant='error' size='large'>
               <FiTrash2 />
               Yes, delete
             </Button>

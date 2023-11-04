@@ -21,8 +21,7 @@ type ColorObject = {
   [key: string]: string
 }
 
-const singleColors = ['teal', 'red', 'mustard', 'yellow', 'orange', 'purple', 'blue', 'green']
-const grayColors = fullConfig.theme?.colors?.gray as ColorObject
+const singleColors = ['teal', 'mustard', 'yellow', 'orange', 'purple', 'blue']
 const indigoColors = fullConfig.theme?.colors?.indigo as ColorObject
 const colorValues = ['300', '500']
 
@@ -31,7 +30,7 @@ const singleColorValues = singleColors
   .filter(Boolean)
 
 const colors = colorValues
-  .flatMap(value => [grayColors?.[value], indigoColors?.[value]].filter(Boolean))
+  .flatMap(value => [indigoColors?.[value]].filter(Boolean))
   .concat(singleColorValues)
 
 export type DataPoint = {
@@ -66,14 +65,14 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => (
         left: 0,
         bottom: 5
       }}>
-      <CartesianGrid strokeDasharray='3 3' vertical={false} stroke={grayColors['800']} />
+      <CartesianGrid strokeDasharray='3 3' vertical={false} stroke='rgba(255,255,255,0.1)' />
 
       <XAxis
         dataKey='date'
         type='number'
         tick={{ fontSize: '12', fontWeight: 'light' }}
         tickFormatter={formatDate}
-        stroke={grayColors['500']}
+        stroke='rgba(255,255,255,0.5)'
         allowDataOverflow
         domain={['dataMin', 'dataMax']}
       />
@@ -81,7 +80,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => (
       <YAxis
         label={{ value: selectedMetric, dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
         tick={{ fontSize: '12', fontWeight: 'light' }}
-        stroke={grayColors['500']}
+        stroke='rgba(255,255,255,0.5)'
         tickFormatter={formatNumber}
         domain={[0, 'dataMax']}
       />
@@ -89,7 +88,7 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => (
       {!multipleLines && (
         <Tooltip
           content={<CustomTooltip />}
-          cursor={{ stroke: grayColors['100'], strokeWidth: 1 }}
+          cursor={{ stroke: 'rgba(255,255,255,0.75)', strokeWidth: 1 }}
         />
       )}
 
@@ -119,6 +118,8 @@ const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => (
             stroke={colors[index % colors.length]}
             dot={false}
             activeDot={{ r: 4 }}
+            strokeWidth={2}
+            strokeLinecap='round'
           />
         ))}
     </LineChart>

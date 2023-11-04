@@ -45,7 +45,7 @@ const SlackSettings = () => {
       />
 
       <div className='mt-2'>
-        <Button variant='highlighted' onClick={handleClick}>
+        <Button variant='highlighted' size='large' onClick={handleClick}>
           {slackLoading ? 'Loading...' : 'Update'}
         </Button>
       </div>

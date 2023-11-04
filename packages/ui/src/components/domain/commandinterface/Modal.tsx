@@ -40,10 +40,10 @@ const CommandInterfaceModal = ({
   <Modal isOpen={open} onClose={toggleModal} unstyled>
     <div
       ref={wrapperRef}
-      className='-mt-28 max-h-[450px] w-[650px] overflow-hidden rounded-lg border-[0.5px] border-gray-700/75 bg-gray-100/5 backdrop-blur-2xl transition-all duration-300'>
+      className='-mt-28 max-h-[450px] w-[650px] overflow-hidden rounded-lg border-[0.5px] border-white/5 bg-white/5 backdrop-blur-xl transition-all duration-300'>
       <form onSubmit={handleSubmit}>
         <input
-          className='block w-full appearance-none bg-transparent px-6 py-5 text-lg font-light text-gray-300 outline-none placeholder:text-gray-500'
+          className='block w-full appearance-none bg-transparent px-6 py-5 text-lg font-light text-white/75 outline-none placeholder:text-white/50'
           onChange={handleChange}
           value={searchWord}
           autoComplete='off'
@@ -55,7 +55,7 @@ const CommandInterfaceModal = ({
         />
       </form>
 
-      <div className='border-b-[0.5px] border-gray-500/25' />
+      <div className='border-b-[0.5px] border-white/10' />
 
       <div
         ref={listRef}

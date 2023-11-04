@@ -1,15 +1,14 @@
-import { FC } from 'react'
 import { Menu } from '@headlessui/react'
 
 type FilterMenuItemProps = { label: string; handleClick: () => void }
 
-const FilterMenuItem: FC<FilterMenuItemProps> = ({ label, handleClick }) => (
+const FilterMenuItem = ({ label, handleClick }: FilterMenuItemProps) => (
   <Menu.Item key={label}>
     <button
       type='button'
-      className='flex w-44 flex-row items-center space-x-2 px-4 py-2 hover:bg-gray-600'
+      className='w-full rounded-md px-4 py-2 text-left text-white/90 transition-colors duration-75 hover:bg-white/5'
       onClick={handleClick}>
-      <p className='text-sm text-gray-100'>{label}</p>
+      {label}
     </button>
   </Menu.Item>
 )

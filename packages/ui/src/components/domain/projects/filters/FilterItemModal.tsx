@@ -66,7 +66,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
       {({ open, close }) => (
         <>
           {/* Filterbar button (greyed out when no filter value has been selected) */}
-          <Popover.Button>
+          <Popover.Button as='div'>
             <FilterItemModalTrigger value={value} type={type} column={column} open={open} />
           </Popover.Button>
 
@@ -74,7 +74,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
           <MenuItemsTransition>
             <Popover.Panel
               className={clsx(
-                'absolute left-0 z-40 mt-2 w-44 rounded-md bg-gray-700 shadow-lg outline-none',
+                'absolute left-0 z-40 mt-2 w-44 rounded-md border border-white/5 bg-white/5 shadow-sm shadow-white/5 outline-none backdrop-blur-xl transition-all duration-75',
                 {
                   block: open,
                   hidden: !open
@@ -96,7 +96,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                   </div>
 
                   {/* Remove icon */}
-                  <Button onClick={removeFilter} variant='noBorderNoBG'>
+                  <Button onClick={removeFilter} variant='unstyled'>
                     <TbTrash />
                   </Button>
                 </div>
@@ -111,7 +111,7 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                   <input
                     placeholder='Type a value...'
                     type={type === 'string' ? 'text' : 'number'}
-                    className='w-full rounded bg-gray-850 px-2 py-1 text-sm text-gray-300 outline-none'
+                    className='w-full rounded bg-white/5 px-2 py-1 text-sm text-white outline-none placeholder:text-white/50'
                     value={value}
                     onChange={handleChange}
                   />

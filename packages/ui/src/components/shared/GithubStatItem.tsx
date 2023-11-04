@@ -4,10 +4,10 @@ import formatNumber from '@/util/formatNumber'
 import Tooltip from './TooltipItem'
 
 enum Color {
-  DEFAULT = 'text-gray-300',
+  DEFAULT = 'text-white/75',
   GREEN = 'text-green-500',
   LIGHT_GREEN = 'text-green-300',
-  RED = 'text-red-500',
+  RED = 'text-red-400',
   LIGHT_RED = 'text-red-300'
 }
 
@@ -89,7 +89,7 @@ const GithubStatItem = ({
         </a>
       )}
 
-      {growth && <span className='not-italic leading-3 text-gray-500'>{growth}</span>}
+      {growth && <span className='not-italic leading-3 text-white/50'>{growth}</span>}
 
       <Tooltip id={id} />
     </div>

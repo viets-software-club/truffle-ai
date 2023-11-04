@@ -7,7 +7,7 @@ type CompanyProps = {
 }
 
 const CompanyItem = ({ twitterLink, websiteLink }: CompanyProps) => (
-  <div className='flex flex-col justify-between gap-4 py-2.5 text-gray-500'>
+  <div className='flex flex-col justify-between gap-4 py-2.5 text-white/50'>
     {twitterLink && (
       <div>
         <a

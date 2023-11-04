@@ -36,7 +36,7 @@ const createColumns = ({
         header: 'Logo',
         enableColumnFilter: false,
         cell: info => (
-          <div className='relative ml-2 h-6 w-6 overflow-hidden rounded-md'>
+          <div className='relative ml-3 h-6 w-6 overflow-hidden rounded-md'>
             <Image src={info.getValue() as string} alt='logo' fill sizes='24px' />
           </div>
         )
@@ -54,10 +54,10 @@ const createColumns = ({
           const [owner, name] = info.getValue().split(' / ')
           return (
             <div>
-              <span className='text-sm font-medium text-gray-500'>
+              <span className='text-sm font-medium text-white/50'>
                 {owner.slice(0, 15)} /&nbsp;
               </span>
-              {owner.length > 16 && <span className='text-sm text-gray-500'>...</span>}
+              {owner.length > 16 && <span className='text-sm text-white/50'>...</span>}
               <span className='text-sm font-bold'>{name.slice(0, 31)}</span>
               {name.length > 32 && <span className='text-sm'>...</span>}
             </div>

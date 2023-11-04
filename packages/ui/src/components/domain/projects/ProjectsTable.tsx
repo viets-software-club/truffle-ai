@@ -9,6 +9,7 @@ import { PaginationParameters } from '@/components/domain/projects/types'
 import Error from '@/components/shared/Error'
 import Loading from '@/components/shared/Loading'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import ProjectListItem from './ProjectListItem'
 
 type ProjectsTableProps = {
   data: Project[]
@@ -97,7 +98,25 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
           <p className='w-full p-12 text-center text-sm text-white/75'>No projects found</p>
         )}
 
-        {data.length > 0 && !error && <Table table={table} />}
+        {data.length > 0 && !error && (
+          <div className='mx-4 my-2 md:w-full md:overflow-hidden lg:mx-6 lg:my-3.5'>
+            <div className='hidden w-full overflow-x-scroll md:block'>
+              <div className='w-[1400px] 2xl:w-full'>
+                <Table table={table} />
+              </div>
+            </div>
+
+            <div className='flex flex-col gap-1 md:hidden'>
+              {data.map(project => (
+                <ProjectListItem
+                  key={project.id as string}
+                  project={project}
+                  percentileStats={percentileStats}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   )

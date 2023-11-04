@@ -11,7 +11,7 @@ type TableProps = {
  * Generic table component using @tanstack/react-table
  */
 const Table = ({ table }: TableProps) => (
-  <table className='mx-6 my-3.5'>
+  <table className='w-full'>
     <thead>
       {table.getHeaderGroups().map(headerGroup => (
         <tr key={headerGroup.id}>

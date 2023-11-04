@@ -32,13 +32,13 @@ const Settings = () => {
   }
 
   return (
-    <div className='flex'>
+    <div className='flex flex-col'>
       <Sidebar sections={sections} onClick={scrollTo} />
 
       <CommandInterface />
 
-      <div className='ml-64 w-full overflow-auto px-20 py-10 text-white'>
-        <h2 className='mt-8 border-b border-white/5 pb-4 text-xl font-medium'>General</h2>
+      <div className='w-full overflow-auto px-6 py-4 text-white lg:ml-64 lg:p-10 xl:px-20'>
+        <h2 className='border-b border-white/5 pb-4 text-xl font-medium lg:mt-8'>General</h2>
 
         <Section title='General' subtitle='Default filters' refs={refs}>
           <DefaultFilters />

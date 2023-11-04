@@ -68,7 +68,7 @@ const Login = () => {
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-tr from-gray-900 to-indigo-500/30'>
-      <div className='flex w-[400px] flex-col items-center justify-center gap-8 rounded-2xl border border-white/5 bg-white/5 px-8 py-10 backdrop-blur-xl'>
+      <div className='flex w-full max-w-sm flex-col items-center justify-center gap-8 border-white/5 px-6 py-10 md:w-[400px] md:max-w-none md:rounded-2xl md:border md:bg-white/5 md:px-8 md:backdrop-blur-xl'>
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
         <Image src={Logo} alt='Logo' className='h-10 w-10' />
 

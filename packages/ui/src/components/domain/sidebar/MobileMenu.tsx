@@ -20,7 +20,7 @@ const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
   return (
     <>
       {/* Navbar */}
-      <nav className='fixed inset-x-0 top-0 z-40 flex h-[60px] w-full items-center justify-between border-b border-white/5 bg-gray-900 px-7 text-white/90 lg:hidden'>
+      <nav className='fixed inset-x-0 top-0 z-40 flex h-[60px] w-full items-center justify-between border-b border-white/5 bg-gray-900 px-4 text-white/90 lg:hidden'>
         <Link href='/' className='flex items-center gap-2'>
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image src={Logo} alt='Logo' className='h-6 w-6' />

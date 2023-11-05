@@ -18,4 +18,21 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  .custom-scrollbar {
+    @apply pb-4;
+    scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.5);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply h-2;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply rounded-full bg-white/10;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-white/50;
+  }
 }

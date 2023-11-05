@@ -100,7 +100,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
 
         {data.length > 0 && !error && (
           <div className='mx-4 my-2 md:w-full md:max-w-[calc(100vw-32px)] md:overflow-hidden lg:mx-6 lg:my-3.5 lg:max-w-[calc(100vw-224px-48px)]'>
-            <div className='hidden w-full overflow-x-scroll md:block'>
+            <div className='custom-scrollbar 2xl:no-scrollbar hidden w-full overflow-x-scroll md:block'>
               <div className='w-[1400px] 2xl:w-full'>
                 <Table table={table} />
               </div>

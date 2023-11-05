@@ -37,7 +37,7 @@ const Settings = () => {
 
       <CommandInterface />
 
-      <div className='w-full overflow-auto px-6 py-4 text-white lg:ml-64 lg:p-10 xl:px-20'>
+      <div className='w-full px-6 py-4 text-white lg:ml-64 lg:w-auto lg:p-10 xl:px-20'>
         <h2 className='border-b border-white/5 pb-4 text-xl font-medium lg:mt-8'>General</h2>
 
         <Section title='General' subtitle='Default filters' refs={refs}>

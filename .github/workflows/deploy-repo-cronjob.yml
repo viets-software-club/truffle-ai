@@ -10,15 +10,15 @@ on:
     paths: ['packages/repo_job', 'config/**', '.github/workflows/**']
 jobs:
   build-repo-cronjob-image:
-    uses: ./.github/workflows/do-image.yml
+    uses: ./.github/workflows/ghcr-image.yml
     with:
       package_name: repo_job
     secrets: inherit
-  deploy-repo-cronjob:
-    needs: [build-repo-cronjob-image]
-    uses: ./.github/workflows/do-kube.yml
-    with:
-      delete_name: 'repo-cronjob'
-      templates: "['repo-cronjob']"
-      template_args: REPO_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/repo-cronjob:${COMMIT_TAG}
-    secrets: inherit
+  # deploy-repo-cronjob:
+  #   needs: [build-repo-cronjob-image]
+  #   uses: ./.github/workflows/do-kube.yml
+  #   with:
+  #     delete_name: 'repo-cronjob'
+  #     templates: "['repo-cronjob']"
+  #     template_args: REPO_CRONJOB_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/repo-cronjob:${COMMIT_TAG}
+  #   secrets: inherit

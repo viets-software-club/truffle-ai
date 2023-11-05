@@ -1,0 +1,46 @@
+name: 'DO image'
+on:
+  workflow_call:
+    inputs:
+      package_name:
+        required: true
+        type: string
+      build_args:
+        type: string
+        required: false
+      environment:
+        type: string
+        required: true
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      container_registry_domain: ghcr.io
+      app_namespace: ${{vars.APP}}
+      image_namespace: ${{inputs.environment}}
+      image_repository_url: ghcr.io/${{vars.APP}}/${{inputs.environment}}
+    steps:
+      - name: Checkout $GITHUB_REF
+        uses: actions/checkout@v4
+      - name: Generate image name from package name
+        id: image-name
+        env:
+          name: '${{inputs.package_name}}'
+        run: echo "name=${name/\_/-}" >> $GITHUB_OUTPUT
+      - name: Build image
+        run: |
+          docker build \
+          ${{inputs.build_args}} \
+          --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
+          --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
+          -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:$(echo $GITHUB_SHA | head -c7) \
+          -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:${{inputs.environment}}-$(echo $GITHUB_SHA | head -c7) \
+          -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:latest
+          -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:${{inputs.environment}}-latest \
+          --label "org.opencontainers.image.source=https://github.com/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}" \
+          --label "org.opencontainers.image.description=${{steps.image-name.outputs.name}}" \
+          --label "org.opencontainers.image.licenses=MIT \
+          -f ./packages/${{inputs.package_name}}/Dockerfile ."
+      - name: Push image to ghcr
+        run: docker push --all-tags ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}

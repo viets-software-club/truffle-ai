@@ -36,7 +36,7 @@ const Modal = ({ isOpen, onClose, children, unstyled }: ModalProps) => (
             as='div'
             className={clsx(
               !unstyled &&
-                'flex w-[400px] max-w-[94vw] flex-col gap-4 rounded-xl border border-white/5 bg-white/5 p-6 text-left shadow-sm shadow-white/5 backdrop-blur-xl'
+                'flex w-[400px] max-w-[94vw] flex-col gap-4 rounded-xl border border-white/5 bg-white/5 p-4 text-left shadow-sm shadow-white/5 backdrop-blur-xl md:p-6'
             )}>
             {children}
           </Dialog.Panel>

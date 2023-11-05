@@ -8,12 +8,6 @@ type SidebarProps = PropsWithChildren<{
   footer: ReactNode
 }>
 
-/**
- * Sidebar component which renders a sidebar with a title, a footer, and children elements.
- * @param {ReactNode} footer - The footer content to be displayed at the bottom of the sidebar.
- * @param {string} title - The title for the sidebar.
- * @returns {ReactNode} Returns a sidebar component with provided footer and title, and children elements.
- */
 const Sidebar = ({ footer, title, ...props }: SidebarProps) => (
   <aside className='fixed z-30 hidden h-screen w-56 flex-col justify-between border-r border-white/5 lg:flex'>
     <div>

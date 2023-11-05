@@ -108,7 +108,7 @@ const Details = ({ id }: DetailsProps) => {
         projectsLength={projects?.length}
       />
 
-      <div className='flex grow flex-col pt-[60px] lg:flex-row'>
+      <div className='flex grow flex-col lg:flex-row'>
         <div className='border-b border-white/5 md:border-none lg:w-[calc(100%-250px)]'>
           <ProjectInformation
             id={project.id as string}

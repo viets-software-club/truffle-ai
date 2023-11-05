@@ -61,7 +61,7 @@ const TopBar = ({
   )[0][0]
 
   return (
-    <div className='fixed inset-x-0 z-20 flex h-[60px] flex-row items-center justify-between border-b border-white/5 px-4 md:px-6 lg:left-56'>
+    <div className='flex h-[60px] w-full flex-row items-center justify-between border-b border-white/5 px-4 md:px-6'>
       <div className='flex flex-row gap-3'>
         {!hideTimeFrame && ( // only show on trending page
           <TimeFrameSelector

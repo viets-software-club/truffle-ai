@@ -87,7 +87,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         />
       )}
 
-      <div className='flex w-full flex-col pt-[120px]'>
+      <div className='flex w-full flex-col'>
         {beforeTable}
 
         {fetching && <Loading />}

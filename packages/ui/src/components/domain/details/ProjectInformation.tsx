@@ -102,14 +102,14 @@ const ProjectInformation = ({
       </div>
 
       <div className='flex w-full flex-col gap-6 xl:flex-row'>
-        <div className='flex w-[250px] shrink-0 flex-col gap-2'>
+        <div className='flex shrink-0 flex-col gap-2 xl:w-[250px]'>
           <span className='text-xs font-semibold uppercase text-white/50'>About</span>
           <p className='text-sm font-light'>{about}</p>
         </div>
 
         <div className='flex flex-col gap-2'>
           <span className='text-xs font-semibold uppercase text-white/50'>Explanation</span>
-          <p className='max-w-[750px] text-sm font-light'>{explanation}</p>
+          <p className='text-sm font-light lg:max-w-[750px]'>{explanation}</p>
         </div>
       </div>
 

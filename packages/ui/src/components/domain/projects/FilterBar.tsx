@@ -66,7 +66,7 @@ const FilterBar = ({
   const { hasNextPage, hasPreviousPage } = pageInfo
 
   return (
-    <div className='fixed inset-x-0 top-[60px] z-10 flex flex-row justify-between border-b border-white/5 px-6 py-2.5 lg:left-56'>
+    <div className='flex flex-row justify-between border-b border-white/5 px-6 py-2.5'>
       <div className='hidden flex-row gap-3 md:flex'>
         {/* Sorting */}
         {sorting && <SortModal sorting={sorting} setSorting={setSorting} />}

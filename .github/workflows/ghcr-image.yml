@@ -19,7 +19,7 @@ jobs:
       container_registry_domain: ghcr.io
       app_namespace: ${{vars.APP}}
       image_namespace: ${{inputs.environment}}
-      image_repository_url: ghcr.io/${{vars.APP}}/${{inputs.environment}}
+      image_repository_url: ghcr.io/${{vars.ORG_NAME}}/${{vars.APP}}/${{inputs.environment}}
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4

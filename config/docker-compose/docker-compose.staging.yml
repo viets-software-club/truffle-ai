@@ -4,7 +4,7 @@ services:
   graphql-server:
     build:
       context: ../../
-      dockerfile: ./packages/graphql_server/Dockerfile
+      dockerfile: ./packages/graphql-server/Dockerfile
     ports:
       - ${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}
     env_file:
@@ -12,7 +12,7 @@ services:
   graphql-gateway:
     build:
       context: ../../
-      dockerfile: ./packages/graphql_gateway/Dockerfile
+      dockerfile: ./packages/graphql-gateway/Dockerfile
       args:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
@@ -25,13 +25,13 @@ services:
   repo-job:
     build:
       context: ../../
-      dockerfile: ./packages/repo_job/Dockerfile
+      dockerfile: ./packages/repo-job/Dockerfile
     env_file:
       - ../../.env.staging
   preview-job:
     build:
       context: ../../
-      dockerfile: ./packages/preview_job/Dockerfile
+      dockerfile: ./packages/preview-job/Dockerfile
     env_file:
       - ../../.env.staging
   ui:

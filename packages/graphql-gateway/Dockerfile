@@ -39,7 +39,7 @@ WORKDIR /app
 # COPY package*.json ./
 # COPY ./config ./config
 
-## Copy schema file from 'graphql_server' service
+## Copy schema file from 'graphql-server' service
 COPY ./packages/graphql-server/src/graphql/schema.ts ./packages/graphql-server/src/graphql/schema.ts
 
 ## Install production dependencies

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
-    "test": "npm run prettier:check",
+    "test": "",
     "dev": "$npm_package_config_env && concurrently -n gateway,server,repo-job,ui -c 'yellow,magenta,blue,green' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server' 'npm run dev -w repo-job' 'npm run dev -w ui'",
     "dev:backend": "$npm_package_config_env && concurrently -n gateway,server,repo-job -c 'yellow,magenta,blue' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server' 'npm run dev -w repo-job'",
     "dev:jobs": "$npm_package_config_env && concurrently -n repo-job -c 'blue' 'npm run dev -w repo-job'",

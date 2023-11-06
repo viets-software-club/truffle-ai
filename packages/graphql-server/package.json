@@ -1,5 +1,5 @@
 {
-  "name": "graphql_server",
+  "name": "graphql-server",
   "version": "0.0.1",
   "description": "A server with data available over a graphql endpoint",
   "license": "MIT",

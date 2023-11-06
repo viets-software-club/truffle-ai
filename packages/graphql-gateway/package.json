@@ -1,5 +1,5 @@
 {
-  "name": "graphql_gateway",
+  "name": "graphql-gateway",
   "version": "0.0.1",
   "description": "A gateway to graphql apis",
   "license": "MIT",

@@ -23,7 +23,7 @@ jobs:
     needs: vars
     uses: ./.github/workflows/ghcr-image.yml
     with:
-      environment: ${{ env.environment }}
+      environment: $environment
       package_name: ui
       build_args: --build-arg SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.vars.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
     secrets: inherit

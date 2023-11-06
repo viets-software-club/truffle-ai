@@ -11,6 +11,7 @@ jobs:
   build-preview-cronjob-image:
     uses: ./.github/workflows/ghcr-image.yml
     with:
+      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
       package_name: preview_job
     secrets: inherit
   # deploy-preview-cronjob:

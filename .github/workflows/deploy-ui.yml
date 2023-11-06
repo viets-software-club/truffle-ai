@@ -8,11 +8,9 @@ on:
   push:
     branches: ['main', 'staging']
     paths: ['packages/ui', 'config/**', '.github/workflows/**']
-env:
-  environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
 jobs:
   vars:
-    environment: $environment
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     runs-on: ubuntu-latest
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
@@ -23,7 +21,7 @@ jobs:
     needs: vars
     uses: ./.github/workflows/ghcr-image.yml
     with:
-      environment: $environment
+      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
       package_name: ui
       build_args: --build-arg SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.vars.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
     secrets: inherit

@@ -8,9 +8,11 @@ on:
   push:
     branches: ['main', 'staging']
     paths: ['packages/ui', 'config/**', '.github/workflows/**']
+env:
+  environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
 jobs:
   vars:
-    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    environment: $environment
     runs-on: ubuntu-latest
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
@@ -19,17 +21,18 @@ jobs:
       - run: echo "Exposing env vars"
   build-ui-image:
     needs: vars
-    uses: ./.github/workflows/do-image.yml
+    uses: ./.github/workflows/gchr-image.yml
     with:
+      environment: ${{ env.environment }}
       package_name: ui
       build_args: --build-arg SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.vars.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
     secrets: inherit
-  deploy-ui:
-    needs: [build-ui-image]
-    uses: ./.github/workflows/do-kube.yml
-    with:
-      templates: "['ui-deployment', 'ui-service', 'commit-virtual-host-ingress']"
-      template_args: |
-        UI_PORT=${{vars.UI_PORT}} \
-        UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/ui:${COMMIT_TAG} \
-    secrets: inherit
+  # deploy-ui:
+  #   needs: [build-ui-image]
+  #   uses: ./.github/workflows/do-kube.yml
+  #   with:
+  #     templates: "['ui-deployment', 'ui-service', 'commit-virtual-host-ingress']"
+  #     template_args: |
+  #       UI_PORT=${{vars.UI_PORT}} \
+  #       UI_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/ui:${COMMIT_TAG} \
+  #   secrets: inherit

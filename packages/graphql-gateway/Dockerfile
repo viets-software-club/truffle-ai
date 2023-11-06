@@ -19,14 +19,14 @@ RUN apk update && apk add bash
 WORKDIR /app
 COPY package*.json ./
 COPY ./config ./config
-COPY ./packages/graphql_gateway ./packages/graphql_gateway/
-COPY ./packages/graphql_server/src/graphql/schema.ts ./packages/graphql_server/src/graphql/schema.ts
+COPY ./packages/graphql-gateway ./packages/graphql-gateway/
+COPY ./packages/graphql-server/src/graphql/schema.ts ./packages/graphql-server/src/graphql/schema.ts
 ## install packages
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
-RUN npm ci -w graphql_gateway
+RUN npm ci -w graphql-gateway
 RUN apk del build-dependencies
 ## build .mesh
-RUN npm run build -w graphql_gateway
+RUN npm run build -w graphql-gateway
 
 #########################################################################
 
@@ -40,13 +40,13 @@ WORKDIR /app
 # COPY ./config ./config
 
 ## Copy schema file from 'graphql_server' service
-COPY ./packages/graphql_server/src/graphql/schema.ts ./packages/graphql_server/src/graphql/schema.ts
+COPY ./packages/graphql-server/src/graphql/schema.ts ./packages/graphql-server/src/graphql/schema.ts
 
 ## Install production dependencies
-WORKDIR /app/packages/graphql_gateway
+WORKDIR /app/packages/graphql-gateway
 COPY --from=build /app/package-lock.json ./
-COPY --from=build /app/packages/graphql_gateway/package.json ./
-COPY --from=build /app/packages/graphql_gateway/.mesh ./.mesh
+COPY --from=build /app/packages/graphql-gateway/package.json ./
+COPY --from=build /app/packages/graphql-gateway/.mesh ./.mesh
 RUN npm ci --omit=dev
 
 CMD ["npm", "run", "serve:prod"]

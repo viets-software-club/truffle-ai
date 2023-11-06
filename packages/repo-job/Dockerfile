@@ -9,11 +9,11 @@ ENV NODE_ENV build
 WORKDIR /app
 COPY package*.json ./
 COPY ./config ./config
-COPY ./packages/repo_job ./packages/repo_job/
+COPY ./packages/repo-job ./packages/repo-job/
 ## install packages
-RUN npm ci -w repo_job
+RUN npm ci -w repo-job
 ## build ./dist
-RUN npm run build -w repo_job
+RUN npm run build -w repo-job
 
 #########################################################################
 
@@ -24,8 +24,8 @@ ENV NODE_ENV production
 ## setup workspaces
 WORKDIR /app/packages/repo_job
 COPY --from=build /app/package-lock.json ./
-COPY --from=build /app/packages/repo_job/package.json ./
-COPY --from=build /app/packages/repo_job/dist ./dist
+COPY --from=build /app/packages/repo-job/package.json ./
+COPY --from=build /app/packages/repo-job/dist ./dist
 ## install production dependencies
 RUN npm ci --omit=dev
 ## serve

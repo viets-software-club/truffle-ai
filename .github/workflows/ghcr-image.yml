@@ -15,6 +15,9 @@ jobs:
   build-image:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+      packages: write
     env:
       container_registry_domain: ghcr.io
       app_namespace: ${{vars.APP}}
@@ -23,6 +26,12 @@ jobs:
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.container_registry_domain }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate image name from package name
         id: image-name
         env:

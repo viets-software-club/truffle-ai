@@ -21,7 +21,7 @@ jobs:
       - run: echo "Exposing env vars"
   build-ui-image:
     needs: vars
-    uses: ./.github/workflows/gchr-image.yml
+    uses: ./.github/workflows/ghcr-image.yml
     with:
       environment: ${{ env.environment }}
       package_name: ui

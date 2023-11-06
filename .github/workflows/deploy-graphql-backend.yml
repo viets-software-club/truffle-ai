@@ -5,11 +5,11 @@ on:
       - synchronize
     branches: ['main', 'staging']
     paths:
-      ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
+      ['packages/graphql-gateway', 'packages/graphql-server', 'config/**', '.github/workflows/**']
   push:
     branches: ['main', 'staging']
     paths:
-      ['packages/graphql_gateway', 'packages/graphql_server', 'config/**', '.github/workflows/**']
+      ['packages/graphql-gateway', 'packages/graphql-server', 'config/**', '.github/workflows/**']
 jobs:
   vars:
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
@@ -34,15 +34,3 @@ jobs:
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
       package_name: graphql_server
     secrets: inherit
-  # deploy-graphql-backend:
-  #   needs: [build-graphql-gateway-image, build-graphql-server-image]
-  #   uses: ./.github/workflows/do-kube.yml
-  #   with:
-  #     templates: "['graphql-backend-deployment', 'graphql-backend-service', 'graphql-server-service', 'commit-virtual-host-ingress']"
-  #     template_args: |
-  #       GRAPHQL_GATEWAY_PORT=${{vars.GRAPHQL_GATEWAY_PORT}} \
-  #       GRAPHQL_SERVER_PORT=${{vars.GRAPHQL_SERVER_PORT}} \
-  #       UI_PORT=${{vars.UI_PORT}} \
-  #       GRAPHQL_SERVER_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/graphql-server:${COMMIT_TAG} \
-  #       GRAPHQL_GATEWAY_IMAGE=${{vars.CONTAINER_REGISTRY_URL}}/${{vars.APP}}-${ENVIRONMENT}/graphql-gateway:${COMMIT_TAG} \
-  #   secrets: inherit

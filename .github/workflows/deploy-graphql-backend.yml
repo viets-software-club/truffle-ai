@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/ghcr-image.yml
     with:
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-      package_name: graphql_gateway
+      package_name: graphql-gateway
       build_args: --build-arg GRAPHQL_SERVER_URL=${{ vars.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.vars.outputs.SUPABASE_URL }} --build-arg SUPABASE_GRAPHQL_URL=${{needs.vars.outputs.SUPABASE_GRAPHQL_URL}}
     secrets: inherit
   build-graphql-server-image:
@@ -38,5 +38,5 @@ jobs:
     uses: ./.github/workflows/ghcr-image.yml
     with:
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-      package_name: graphql_server
+      package_name: graphql-server
     secrets: inherit

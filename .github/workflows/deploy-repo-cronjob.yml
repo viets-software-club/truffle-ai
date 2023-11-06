@@ -4,10 +4,10 @@ on:
     types:
       - synchronize
     branches: ['main', 'staging']
-    paths: ['packages/repo_job', 'config/**', '.github/workflows/**']
+    paths: ['packages/repo-job', 'config/**', '.github/workflows/**']
   push:
     branches: ['main', 'staging']
-    paths: ['packages/repo_job', 'config/**', '.github/workflows/**']
+    paths: ['packages/repo-job', 'config/**', '.github/workflows/**']
 jobs:
   build-repo-cronjob-image:
     permissions:
@@ -16,5 +16,5 @@ jobs:
     uses: ./.github/workflows/ghcr-image.yml
     with:
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-      package_name: repo_job
+      package_name: repo-job
     secrets: inherit

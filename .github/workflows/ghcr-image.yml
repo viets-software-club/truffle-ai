@@ -36,7 +36,7 @@ jobs:
           --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
           -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:$(echo $GITHUB_SHA | head -c7) \
           -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:${{inputs.environment}}-$(echo $GITHUB_SHA | head -c7) \
-          -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:latest
+          -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:latest \
           -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:${{inputs.environment}}-latest \
           --label "org.opencontainers.image.source=https://github.com/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}" \
           --label "org.opencontainers.image.description=${{steps.image-name.outputs.name}}" \

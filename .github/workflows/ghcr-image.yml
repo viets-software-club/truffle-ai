@@ -40,7 +40,7 @@ jobs:
           -t ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}:${{inputs.environment}}-latest \
           --label "org.opencontainers.image.source=https://github.com/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}" \
           --label "org.opencontainers.image.description=${{steps.image-name.outputs.name}}" \
-          --label "org.opencontainers.image.licenses=MIT \
-          -f ./packages/${{inputs.package_name}}/Dockerfile ."
+          --label "org.opencontainers.image.licenses=MIT" \
+          -f ./packages/${{inputs.package_name}}/Dockerfile .
       - name: Push image to ghcr
         run: docker push --all-tags ${{env.image_repository_url}}/${{steps.image-name.outputs.name}}

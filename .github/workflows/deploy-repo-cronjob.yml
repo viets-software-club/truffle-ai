@@ -10,6 +10,9 @@ on:
     paths: ['packages/repo_job', 'config/**', '.github/workflows/**']
 jobs:
   build-repo-cronjob-image:
+    permissions:
+      contents: read
+      packages: write
     uses: ./.github/workflows/ghcr-image.yml
     with:
       environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}

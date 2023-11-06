@@ -18,6 +18,9 @@ jobs:
     steps:
       - run: echo "Exposing env vars"
   build-ui-image:
+    permissions:
+      contents: read
+      packages: write
     needs: vars
     uses: ./.github/workflows/ghcr-image.yml
     with:

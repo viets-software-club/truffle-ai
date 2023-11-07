@@ -23,6 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{github.sha}}
           sparse-checkout: |
             .git
       - run: echo "Outputting variables for following jobs"

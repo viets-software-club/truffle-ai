@@ -1,14 +1,24 @@
 name: 'Terraform Apply'
 on:
   workflow_dispatch:
+inputs:
+  environment:
+    description: 'Environment'
+    required: true
+    default: 'commit'
+    type: choice
+    options:
+      - commit
+      - staging
+      - production
 env:
   TF_CLOUD_ORGANIZATION: ${{ vars.ORG_NAME }}
   TF_API_TOKEN: '${{ secrets.TF_API_TOKEN }}'
-  TF_WORKSPACE: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+  TF_WORKSPACE: ${{ inputs.environment }}
   CONFIG_DIRECTORY: './config/terraform'
 jobs:
   terraform:
-    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    environment: ${{ inputs.environment }}
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
     permissions:
@@ -16,8 +26,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: vars
-        run: echo "${{toJSON(github)}}"
       - name: Upload Configuration
         uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
         id: apply-upload

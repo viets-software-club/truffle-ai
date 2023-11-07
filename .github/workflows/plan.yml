@@ -49,4 +49,5 @@ jobs:
     uses: ./.github/workflows/terraform-plan.yml
     with:
       ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-    secrets: inherit
+    secrets:
+      TF_API_TOKENL: ${{ secrets.TF_API_TOKEN }}

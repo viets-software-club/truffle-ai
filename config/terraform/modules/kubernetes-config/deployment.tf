@@ -7,14 +7,14 @@ locals {
 resource "kubernetes_deployment" "graphql_backend" {
   metadata {
     annotations = {
-      "kubernetes.io/change-cause" : locals.change_cause
+      "kubernetes.io/change-cause" : var.change_cause
     }
     generate_name = null
     labels = {
-      app : locals.graphql_backend_app_selector
+      app : local.graphql_backend_app_selector
     }
     namespace = kubernetes_namespace.this.metadata.0.name
-    name      = locals.graphql_backend
+    name      = local.graphql_backend
   }
   spec {
     # min_ready_seconds = null
@@ -31,17 +31,17 @@ resource "kubernetes_deployment" "graphql_backend" {
     }
     selector {
       match_labels = {
-        app : locals.graphql_backend_app_selector
+        app : local.graphql_backend_app_selector
       }
     }
     template {
       metadata {
         annotations = {
-          "kubernetes.io/change-cause" : locals.change_cause
+          "kubernetes.io/change-cause" : var.change_cause
         }
         generate_name = null
         labels = {
-          app : locals.graphql_backend_app_selector
+          app : local.graphql_backend_app_selector
         }
       }
       spec {
@@ -57,8 +57,8 @@ resource "kubernetes_deployment" "graphql_backend" {
           # image_pull_policy
           # lifecycle
           # lifeness_probe
-          name  = "${vars.prefix}-graphql-gateway-container"
-          image = "${vars.image_repository_url}/graphql-gateway-image"
+          name  = "${var.prefix}-graphql-gateway-container"
+          image = "${var.image_repository_url}/graphql-gateway-image"
           port {
             container_port = 3001
           }
@@ -81,8 +81,8 @@ resource "kubernetes_deployment" "graphql_backend" {
           # working_dir
         }
         container {
-          name  = "${vars.prefix}-graphql-server-container"
-          image = "${vars.image_repository_url}/graphql-server-image"
+          name  = "${var.prefix}-graphql-server-container"
+          image = "${var.image_repository_url}/graphql-server-image"
           port {
             container_port = 3002
           }
@@ -131,14 +131,14 @@ resource "kubernetes_deployment" "graphql_backend" {
 resource "kubernetes_deployment" "ui" {
   metadata {
     annotations = {
-      "kubernetes.io/change-cause" : locals.change_cause
+      "kubernetes.io/change-cause" : var.change_cause
     }
     generate_name = null
     labels = {
-      app : locals.ui_app_selector
+      app : local.ui_app_selector
     }
     namespace = kubernetes_namespace.this.metadata.0.name
-    name      = "${locals.ui}-deployment"
+    name      = "${local.ui}-deployment"
   }
   spec {
     replicas               = 2
@@ -152,25 +152,25 @@ resource "kubernetes_deployment" "ui" {
     }
     selector {
       match_labels = {
-        app : locals.ui_app_selector
+        app : local.ui_app_selector
       }
     }
     template {
       metadata {
         annotations = {
-          "kubernetes.io/change-cause" : locals.change_cause
+          "kubernetes.io/change-cause" : var.change_cause
         }
         generate_name = null
         labels = {
-          app : locals.ui_app_selector
+          app : local.ui_app_selector
         }
       }
       spec {
         active_deadline_seconds         = 600
         automount_service_account_token = true
         container {
-          name  = "${locals.ui}-container"
-          image = "${vars.image_repository_url}/ui-image"
+          name  = "${local.ui}-container"
+          image = "${var.image_repository_url}/ui-image"
           port {
             container_port = 3000
           }

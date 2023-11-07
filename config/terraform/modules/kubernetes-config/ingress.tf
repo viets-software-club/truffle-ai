@@ -32,14 +32,14 @@ resource "kubernetes_ingress" "this" {
         path {
           path = "/api"
           backend {
-            service_name = kubernetes_service.graphql_backend.metadata.0.name
+            service_name = kubernetes_service.graphql_backend_service.metadata.0.name
             service_port = 3001
           }
         }
         path {
           path = "/"
           backend {
-            service_name = kubernetes_service.ui.metadata.0.name
+            service_name = kubernetes_service.ui_service.metadata.0.name
             service_port = 3000
           }
         }

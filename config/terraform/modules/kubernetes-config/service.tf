@@ -17,7 +17,7 @@ resource "kubernetes_service" "graphql_backend_service" {
 
 resource "kubernetes_service" "ui_service" {
   metadata {
-    name      = "${var.prefix}-graphql-backend-service"
+    name      = "${var.prefix}-ui-service"
     namespace = kubernetes_namespace.this.metadata.0.name
   }
   spec {

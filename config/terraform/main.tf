@@ -20,7 +20,7 @@ module "kubernetes-config" {
   write_kubeconfig     = var.write_kubeconfig
   domain               = var.domain
   subdomain            = var.is_prod_workspace ? "" : terraform.workspace
-  prefix               = var.is_dev_workspace ? "${var.repo_name}-${terrform.workspace}-${var.git_commit_tag}" : "${var.repo_name}-${terrform.workspace}"
+  prefix               = var.is_dev_workspace ? "${var.repo_name}-${terraform.workspace}-${var.git_commit_tag}" : "${var.repo_name}-${terraform.workspace}"
   change_cause         = "${var.git_commit_tag}: ${var.git_commit_message}"
   namespace_prefix     = var.repo_name
   image_repository_url = var.image_repository_url

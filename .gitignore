@@ -52,3 +52,4 @@ envs.yaml
 secret
 .terraform
 .terraform*
+!secret.tf

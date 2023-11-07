@@ -45,13 +45,11 @@ jobs:
           ref: ${{github.event.pull_request.head.sha}}
           sparse-checkout: |
             .git
-      - run: echo "Outputting variables for following jobs"
-      - run: echo "GIT_COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)"
-      - run: echo "GIT_COMMIT_MESSAGE=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})"
       - id: git_commit_tag
-        run: echo "git_commit_tag=$(echo $GITHUB_SHA | head -c7)" >> "$GITHUB_OUTPUT"
+        run: if [[ -n "${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' | head -c7)" >> "$GITHUB_OUTPUT"; else echo "git_commit_tag=${{github.sha}}" >> "$GITHUB_OUTPUT"; fi
       - id: git_commit_message
-        run: echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"
+        run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=${{github.event.head_commit.message}}" >> "$GITHUB_OUTPUT"; fi
+
   image:
     name: 'Image'
     permissions:
@@ -72,11 +70,6 @@ jobs:
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit
-  test:
-    needs: variables
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "${{needs.variables.outputs.GIT_COMMIT_TAG}}"
   terraform-plan:
     name: 'Terraform Plan'
     permissions:

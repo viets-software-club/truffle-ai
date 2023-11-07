@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-provider "digitalocean" {
-  # Provider is configured using environment variables:
-  # DIGITALOCEAN_TOKEN, DIGITALOCEAN_ACCESS_TOKEN
-}
+# provider "digitalocean" {
+#   # Provider is configured using environment variables:
+#   # DIGITALOCEAN_TOKEN, DIGITALOCEAN_ACCESS_TOKEN
+# }

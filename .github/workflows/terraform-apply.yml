@@ -1,16 +1,16 @@
 name: 'Terraform Apply'
 on:
   workflow_dispatch:
-inputs:
-  environment:
-    description: 'Environment'
-    required: true
-    default: 'commit'
-    type: choice
-    options:
-      - commit
-      - staging
-      - production
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'commit'
+        type: choice
+        options:
+          - commit
+          - staging
+          - production
 env:
   TF_CLOUD_ORGANIZATION: ${{ vars.ORG_NAME }}
   TF_API_TOKEN: '${{ secrets.TF_API_TOKEN }}'

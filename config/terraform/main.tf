@@ -18,6 +18,7 @@ module "kubernetes-config" {
   change_cause         = "${var.git_commit_tag}: ${var.git_commit_message}"
   namespace_prefix     = var.repo_name
   image_repository_url = var.image_repository_url
+  image_tag            = var.git_commit_tag
 }
 
 module "dns-records" {

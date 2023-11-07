@@ -58,7 +58,7 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
           # lifecycle
           # lifeness_probe
           name  = "${var.prefix}-graphql-gateway-container"
-          image = "${var.image_repository_url}/graphql-gateway-image"
+          image = "${var.image_repository_url}/graphql-gateway:${var.image_tag}"
           port {
             container_port = 3001
           }
@@ -82,7 +82,7 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
         }
         container {
           name  = "${var.prefix}-graphql-server-container"
-          image = "${var.image_repository_url}/graphql-server-image"
+          image = "${var.image_repository_url}/graphql-server:${var.image_tag}"
           port {
             container_port = 3002
           }
@@ -170,7 +170,7 @@ resource "kubernetes_deployment" "ui_deployment" {
         automount_service_account_token = true
         container {
           name  = "${local.ui}-container"
-          image = "${var.image_repository_url}/ui-image"
+          image = "${var.image_repository_url}/ui-image:${var.image_tag}"
           port {
             container_port = 3000
           }

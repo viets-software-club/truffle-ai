@@ -33,3 +33,6 @@ variable "image_repository_url" {
 variable "change_cause" {
   type = string
 }
+variable "image_tag" {
+  type = string
+}

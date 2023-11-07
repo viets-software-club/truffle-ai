@@ -27,9 +27,9 @@ jobs:
           sparse-checkout: |
             .git
       - id: git_commit_tag
-        run: if [[ -n "${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' | head -c7)" >> "$GITHUB_OUTPUT"; else echo "git_commit_tag=${{github.sha}}" >> "$GITHUB_OUTPUT"; fi
+        run: if [[ -n "${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' | head -c20)" >> "$GITHUB_OUTPUT"; else echo "git_commit_tag=$(${{github.sha}} | head -c20)" >> "$GITHUB_OUTPUT"; fi
       - id: git_commit_message
-        run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}} | head -c63)" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=$(${{github.event.head_commit.message}} | head -c63)" >> "$GITHUB_OUTPUT"; fi
+        run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}} | head -c35)" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=$(${{github.event.head_commit.message}} | head -c35)" >> "$GITHUB_OUTPUT"; fi
 
   image:
     name: 'Image'

@@ -18,8 +18,14 @@ jobs:
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
       NEXT_PUBLIC_API_GRAPHQL_URL: ${{ vars.NEXT_PUBLIC_API_GRAPHQL_URL }}
+      GIT_COMMIT_TAG: ${{ steps.git_commit_message.outputs.GIT_COMMIT_TAG }}
+      GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.GIT_COMMIT_MESSAGE }}
     steps:
       - run: echo "Outputting variables for following jobs"
+      - id: git_commit_tag
+        run: echo "GIT_COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)" >> GITHUB_OUTPUT
+      - id: git_commit_message
+        run: echo "GIT_COMMIT_MESSAGE=$(git show -s --format=%s)" >> GITHUB_OUTPUT
   image:
     name: 'Image'
     permissions:
@@ -45,8 +51,10 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    needs: image
+    needs: [variables, image]
     uses: ./.github/workflows/terraform-plan.yml
     with:
+      GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
+      GIT_COMMIT_MESSAGE: ${{needs.variables.outputs.GIT_COMMIT_MESSAGE}}
       ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     secrets: inherit

@@ -5,13 +5,19 @@ on:
       ENVIRONMENT:
         type: string
         required: true
+      GIT_COMMIT_TAG:
+        type: string
+        required: true
+      GIT_COMMIT_MESSAGE:
+        type: string
+        required: true
 env:
   TF_CLOUD_ORGANIZATION: ${{ vars.ORG_NAME }}
   TF_API_TOKEN: '${{ secrets.TF_API_TOKEN }}'
   TF_WORKSPACE: ${{ inputs.ENVIRONMENT }}
   CONFIG_DIRECTORY: './config/terraform'
-  TF_VAR_git_commit_tag: $(echo $GITHUB_SHA | head -c7)
-  TF_VAR_git_commit_message: $(git show -s --format=%s)
+  TF_VAR_git_commit_tag: ${{ inputs.GIT_COMMIT_TAG }}
+  TF_VAR_git_commit_message: ${{ inputs.GIT_COMMIT_MESSAGE }}
 jobs:
   terraform:
     name: 'Terraform Plan'

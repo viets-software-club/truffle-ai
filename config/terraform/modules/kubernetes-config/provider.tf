@@ -28,9 +28,7 @@ provider "helm" {
     )
   }
 }
-data "digitalocean_kubernetes_cluster" "this" {
-  name = var.cluster_name
-}
+
 provider "kubernetes" {
   host  = data.digitalocean_kubernetes_cluster.this.endpoint
   token = data.digitalocean_kubernetes_cluster.this.kube_config[0].token

@@ -9,7 +9,7 @@ module "doks-cluster" {
 
 module "kubernetes-config" {
   source                        = "./modules/kubernetes-config"
-  cluster_name                  = local.cluster_name
+  cluster_name                  = module.doks-cluster.cluster_name
   cluster_id                    = module.doks-cluster.cluster_id
   write_kubeconfig              = var.write_kubeconfig
   domain                        = var.domain

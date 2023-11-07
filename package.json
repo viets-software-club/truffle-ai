@@ -32,7 +32,9 @@
     "compose-build:staging": "$npm_package_config_env && docker compose -f config/docker-compose/docker-compose.staging.yml --env-file .env.staging build",
     "compose-build:commit": "$npm_package_config_env && docker compose -f config/docker-compose/docker-compose.commit.yml --env-file .env.commit build",
     "generate:k8s": "cd config/envs && deno task generate:k8s",
-    "generate:envs": "cd config/envs && deno task generate:envs"
+    "generate:envs": "cd config/envs && deno task generate:envs",
+    "generate:configMaps": "cd config/envs && deno task generate:configMaps"
+
   },
   "workspaces": [
     "packages/*",

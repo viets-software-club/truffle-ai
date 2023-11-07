@@ -36,3 +36,24 @@ variable "change_cause" {
 variable "image_tag" {
   type = string
 }
+variable "config_map_dir" {
+  type = string
+}
+variable "secret_github_api_token" {
+  type = string
+}
+variable "secret_open_api_key" {
+  type = string
+}
+variable "secret_scraping_bot_user_name" {
+  type = string
+}
+variable "secret_scraping_bot_api_key" {
+  type = string
+}
+variable "secret_supabase_anon_key" {
+  type = string
+}
+variable "secret_supabase_service_key" {
+  type = string
+}

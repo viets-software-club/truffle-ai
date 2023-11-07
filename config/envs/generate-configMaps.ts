@@ -134,8 +134,8 @@ const generateConfigMapsAndSecretsFile = async (
   convertSecretsToBase64: boolean
 ) => {
   const configMaps = await getConfigMaps(appName, configMapDir)
-  const secrets = await getSecrets(appName, secretsDir)
-  const data = [...configMaps, ...secrets].join('---\n')
+  // const secrets = await getSecrets(appName, secretsDir)
+  const data = [...configMaps].join('---\n')
   await Deno.writeTextFile(outputFile,data)
 }
 

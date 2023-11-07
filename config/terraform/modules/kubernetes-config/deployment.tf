@@ -52,7 +52,27 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
           # args
           # command
           # env
-          # env_from
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-nodejs-config"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-graphql-gateway-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-graphql-gateway-secret"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-supabase-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-supabase-secret"
+            }
+          }
           # image
           # image_pull_policy
           # lifecycle
@@ -81,6 +101,51 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
           # working_dir
         }
         container {
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-nodejs-config"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-github-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-github-secret"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-graphql-server-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-graphql-server-secret"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-open-api-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-open-api-secret"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-scraping-bot-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-scraping-bot-secret"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-supabase-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-supabase-secret"
+            }
+          }
           name  = "${var.prefix}-graphql-server-container"
           image = "${var.image_repository_url}/graphql-server:${var.image_tag}"
           port {
@@ -169,6 +234,14 @@ resource "kubernetes_deployment" "ui_deployment" {
         active_deadline_seconds         = 600
         automount_service_account_token = true
         container {
+          env_from {
+            config_map_ref {
+              name = "${var.namespace_prefix}-ui-config"
+            }
+            secret_ref {
+              name = "${var.namespace_prefix}-ui-secret"
+            }
+          }
           name  = "${local.ui}-container"
           image = "${var.image_repository_url}/ui-image:${var.image_tag}"
           port {

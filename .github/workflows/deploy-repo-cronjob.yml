@@ -1,20 +1,20 @@
-name: 'Deploy repo-cronjob'
-on:
-  pull_request:
-    types:
-      - synchronize
-    branches: ['main', 'staging']
-    paths: ['packages/repo-job', 'config/**', '.github/workflows/**']
-  push:
-    branches: ['main', 'staging']
-    paths: ['packages/repo-job', 'config/**', '.github/workflows/**']
-jobs:
-  build-repo-cronjob-image:
-    permissions:
-      contents: read
-      packages: write
-    uses: ./.github/workflows/ghcr-image.yml
-    with:
-      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-      package_name: repo-job
-    secrets: inherit
+# name: 'Deploy repo-cronjob'
+# on:
+#   pull_request:
+#     types:
+#       - synchronize
+#     branches: ['main', 'staging']
+#     paths: ['packages/repo-job', 'config/**', '.github/workflows/**']
+#   push:
+#     branches: ['main', 'staging']
+#     paths: ['packages/repo-job', 'config/**', '.github/workflows/**']
+# jobs:
+#   build-repo-cronjob-image:
+#     permissions:
+#       contents: read
+#       packages: write
+#     uses: ./.github/workflows/ghcr-image.yml
+#     with:
+#       ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+#       PACKAGE_NAME: repo-job
+#     secrets: inherit

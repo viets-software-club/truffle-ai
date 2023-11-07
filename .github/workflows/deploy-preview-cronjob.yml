@@ -1,19 +1,19 @@
-name: 'Deploy preview-cronjob'
-on:
-  pull_request:
-    types: [synchronize]
-    branches: ['main', 'staging']
-    paths: ['packages/preview-job', 'config/**', '.github/workflows/**']
-  push:
-    branches: ['main', 'staging']
-    paths: ['packages/preview-job', 'config/**', '.github/workflows/**']
-jobs:
-  build-preview-cronjob-image:
-    permissions:
-      contents: read
-      packages: write
-    uses: ./.github/workflows/ghcr-image.yml
-    with:
-      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-      package_name: preview-job
-    secrets: inherit
+# name: 'Deploy preview-cronjob'
+# on:
+#   pull_request:
+#     types: [synchronize]
+#     branches: ['main', 'staging']
+#     paths: ['packages/preview-job', 'config/**', '.github/workflows/**']
+#   push:
+#     branches: ['main', 'staging']
+#     paths: ['packages/preview-job', 'config/**', '.github/workflows/**']
+# jobs:
+#   build-preview-cronjob-image:
+#     permissions:
+#       contents: read
+#       packages: write
+#     uses: ./.github/workflows/ghcr-image.yml
+#     with:
+#       ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+#       PACKAGE_NAME: preview-job
+#     secrets: inherit

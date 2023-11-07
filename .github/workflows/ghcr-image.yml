@@ -2,16 +2,16 @@ name: 'DO image'
 on:
   workflow_call:
     inputs:
-      package_name:
+      PACKAGE_NAME:
         required: true
         type: string
-      build_args:
+      BUILD_ARGS:
         type: string
         required: false
-      image_description:
+      IMAGE_DESCRIPTION:
         type: string
         required: false
-      environment:
+      ENVIRONMENT:
         type: string
         required: true
 permissions:
@@ -20,35 +20,35 @@ permissions:
 jobs:
   build-image:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.ENVIRONMENT }}
     env:
-      container_registry_domain: ghcr.io
-      image_source: https://github.com/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}
-      image_license: MIT
-      image_description: ${{ inputs.image_description || inputs.package_name}}
-      image_repository_url: ghcr.io/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}/${{inputs.environment}}
+      CONTAINER_REGISTRY_DOMAIN: ghcr.io
+      IMAGE_SOURCE: https://github.com/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}
+      IMAGE_LICENSE: MIT
+      IMAGE_DESCRIPTION: ${{ inputs.IMAGE_DESCRIPTION || inputs.PACKAGE_NAME}}
+      IMAGE_REPOSITORY_URL: ghcr.io/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}/${{inputs.ENVIRONMENT}}
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
-          registry: ${{ env.container_registry_domain }}
+          registry: ${{ env.CONTAINER_REGISTRY_DOMAIN }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
         run: |
           docker build \
-          ${{inputs.build_args}} \
+          ${{inputs.BUILD_ARGS}} \
           --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
           --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
-          -t ${{env.image_repository_url}}/${{inputs.package_name}}:$(echo $GITHUB_SHA | head -c7) \
-          -t ${{env.image_repository_url}}/${{inputs.package_name}}:${{inputs.environment}}-$(echo $GITHUB_SHA | head -c7) \
-          -t ${{env.image_repository_url}}/${{inputs.package_name}}:latest \
-          -t ${{env.image_repository_url}}/${{inputs.package_name}}:${{inputs.environment}}-latest \
-          --label "org.opencontainers.image.source=${{env.image_source}}" \
-          --label "org.opencontainers.image.description=${{env.image_description}}" \
-          --label "org.opencontainers.image.licenses=${{env.image_license}}" \
-          -f ./packages/${{inputs.package_name}}/Dockerfile .
+          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:$(echo $GITHUB_SHA | head -c7) \
+          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.ENVIRONMENT}}-$(echo $GITHUB_SHA | head -c7) \
+          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:latest \
+          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.ENVIRONMENT}}-latest \
+          --label "org.opencontainers.image.source=${{env.IMAGE_SOURCE}}" \
+          --label "org.opencontainers.image.description=${{env.IMAGE_DESCRIPTION}}" \
+          --label "org.opencontainers.image.licenses=${{env.IMAGE_LICENSE}}" \
+          -f ./packages/${{inputs.PACKAGE_NAME}}/Dockerfile .
       - name: Push image to ghcr
-        run: docker push --all-tags ${{env.image_repository_url}}/${{inputs.package_name}}
+        run: docker push --all-tags ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}

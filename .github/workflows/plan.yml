@@ -27,6 +27,7 @@ jobs:
           sparse-checkout: |
             .git
       - run: echo "Outputting variables for following jobs"
+      - run: echo "${{toJSON(github.event)}}"
       - run: echo "GIT_COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)"
       - run: echo "GIT_COMMIT_MESSAGE=$(git show -s --format=%s)"
       - id: git_commit_tag

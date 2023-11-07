@@ -5,7 +5,7 @@ resource "kubernetes_service" "graphql_backend_service" {
   }
   spec {
     selector = {
-      app = kubernetes_deployment.this.metadata.0.name
+      app = kubernetes_deployment.graphql_backend_deployment.metadata.0.name
     }
 
     port {
@@ -22,7 +22,7 @@ resource "kubernetes_service" "ui_service" {
   }
   spec {
     selector = {
-      app = kubernetes_deployment.this.metadata.0.name
+      app = kubernetes_deployment.ui_deployment.metadata.0.name
     }
 
     port {
@@ -39,7 +39,7 @@ resource "kubernetes_service" "graphql_server_service" {
   }
   spec {
     selector = {
-      app = kubernetes_deployment.this.metadata.0.name
+      app = kubernetes_deployment.graphql_backend_deployment.metadata.0.name
     }
 
     port {

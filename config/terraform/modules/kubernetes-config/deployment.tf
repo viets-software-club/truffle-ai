@@ -4,7 +4,7 @@ locals {
   graphql_backend              = "${var.prefix}-graphql-backend"
   ui                           = "${var.prefix}-ui"
 }
-resource "kubernetes_deployment" "graphql_backend" {
+resource "kubernetes_deployment" "graphql_backend_deployment" {
   metadata {
     annotations = {
       "kubernetes.io/change-cause" : var.change_cause
@@ -128,7 +128,7 @@ resource "kubernetes_deployment" "graphql_backend" {
   wait_for_rollout = true
 }
 
-resource "kubernetes_deployment" "ui" {
+resource "kubernetes_deployment" "ui_deployment" {
   metadata {
     annotations = {
       "kubernetes.io/change-cause" : var.change_cause

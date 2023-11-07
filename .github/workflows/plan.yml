@@ -37,8 +37,8 @@ jobs:
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
       NEXT_PUBLIC_API_GRAPHQL_URL: ${{ vars.NEXT_PUBLIC_API_GRAPHQL_URL }}
-      # GIT_COMMIT_TAG: ${{ steps.git_commit_message.outputs.GIT_COMMIT_TAG }}
-      # GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.GIT_COMMIT_MESSAGE }}
+      GIT_COMMIT_TAG: ${{ steps.git_commit_message.outputs.commit_tag }}
+      GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.commit_message }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,9 +49,9 @@ jobs:
       - run: echo "GIT_COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)"
       - run: echo "GIT_COMMIT_MESSAGE=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})"
       - id: git_commit_tag
-        run: echo "GIT_COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)" >> GITHUB_OUTPUT
+        run: echo "commit_tag=$(echo $GITHUB_SHA | head -c7)" >> GITHUB_OUTPUT
       - id: git_commit_message
-        run: echo "GIT_COMMIT_MESSAGE=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> GITHUB_OUTPUT
+        run: echo "commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> GITHUB_OUTPUT
   image:
     name: 'Image'
     permissions:

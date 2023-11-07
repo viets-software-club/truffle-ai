@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-graphql-server-config
-  namespace: truffle-ai
+  name: truffle-ai-graphql-server-config
+  namespace: commit
 data:
   GRAPHQL_SERVER_PORT: "3002"
   GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
@@ -10,8 +10,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-supabse-config
-  namespace: truffle-ai
+  name: truffle-ai-supabse-config
+  namespace: commit
 data:
   SUPABASE_REFERENCE_ID: cpapirdmtzjahhavfbab
   SUPABASE_URL: https://cpapirdmtzjahhavfbab.supabase.co
@@ -20,24 +20,24 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-github-config
-  namespace: truffle-ai
+  name: truffle-ai-github-config
+  namespace: commit
 data:
   GITHUB_API_URL: https://api.github.com/graphql
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-graphql-gateway-config
-  namespace: truffle-ai
+  name: truffle-ai-graphql-gateway-config
+  namespace: commit
 data:
   GRAPHQL_GATEWAY_PORT: "3001"
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-ui-config
-  namespace: truffle-ai
+  name: truffle-ai-ui-config
+  namespace: commit
 data:
   NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
   NEXT_PUBLIC_API_URL: https://api.truffle.tools
@@ -49,30 +49,30 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-scraping-bot-config
-  namespace: truffle-ai
+  name: truffle-ai-scraping-bot-config
+  namespace: commit
 data:
   SCRAPING_BOT_API_ENDPOINT: http://api.scraping-bot.io/scrape/data-scraper
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-repo-job-config
-  namespace: truffle-ai
+  name: truffle-ai-repo-job-config
+  namespace: commit
 data:
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-open-api-config
-  namespace: truffle-ai
+  name: truffle-ai-open-api-config
+  namespace: commit
 data:
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-nodejs-config
-  namespace: truffle-ai
+  name: truffle-ai-nodejs-config
+  namespace: commit
 data:
   NODE_ENV: production
   TZ: Europe/Berlin
@@ -80,7 +80,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: commit-preview-job-config
-  namespace: truffle-ai
+  name: truffle-ai-preview-job-config
+  namespace: commit
 data:
 ---

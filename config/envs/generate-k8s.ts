@@ -1,149 +1,151 @@
-import { walk, parseAllDocuments, stringify } from './deps.ts'
-
-const CONFIG_MAP_DIR = './configMaps'
-const SECRET_DIR = './secrets'
-const namespaces = ['production', 'staging', 'commit']
+import { camelCase, parseAllDocuments, stringify, walk } from "./deps.ts";
+const namespaces = ["production", "staging", "commit"];
 
 const addSpacesToStringfiedData = (str: string) => {
-  const lines = str.split('\n')
-  lines.pop()
-  return lines.map((elem) => '  ' + elem + '\n').join('')
-}
-const createConfigMap = (
-  appName: string,
-  configMapName: string,
+  const lines = str.split("\n");
+  lines.pop();
+  return lines.map((elem) => "  " + elem + "\n").join("");
+};
+const createResource = (
+  kind: string,
   namespace: string,
-  data: object | null
+  repoName: string,
+  resourceName: string,
+  data: object | null,
 ): string => {
-  return `apiVersion: v1\nkind: ConfigMap\nmetadata:
-  name: ${appName}-${configMapName}-config
+  return `apiVersion: v1\nkind: ${kind}\nmetadata:
+  name: ${repoName}-${resourceName}-config
   namespace: ${namespace}
 data:
-${data != null ? addSpacesToStringfiedData(stringify(data)) : ''}`
-}
+${data != null ? addSpacesToStringfiedData(stringify(data)) : ""}---
+`;
+};
 
-const createSecret = (
-  appName: string,
-  secretName: string,
+const writeResource = async (
+  destDir: string,
+  kind: string,
   namespace: string,
-  data?: object | null
-): string => {
-  return `apiVersion: v1\nkind: Secret\nmetadata:
-  name: ${appName}-${secretName}-secret
-  namespace: ${namespace}
-data:
-${data != null ? addSpacesToStringfiedData(stringify(data)) : ''}`
-}
-
-const getConfigMaps = async (appName: string, directory: string): Promise<string[]> => {
-  const files = walk(directory, {
-    maxDepth: 1,
-    includeDirs: false,
-    includeSymlinks: false,
-    exts: ['.yml']
-  })
-  let configMaps: string[] = []
-  for await (const file of files) {
-    if (file.name.startsWith('configMap.') && file.name.length > 14) {
-      const confiMapName = file.name.substring('configMap.'.length, file.name.length - 4)
-      const ymlDocumentsInFile = parseAllDocuments(await Deno.readTextFile(file.path))
-      if (ymlDocumentsInFile.length === 0) {
-        console.info(`${file.name} is empty`)
-        configMaps = configMaps.concat(
-          namespaces.flatMap((namespace) => {
-            return createConfigMap(appName, confiMapName, namespace, null)
-          })
-        )
-        continue
-      }
-      if (ymlDocumentsInFile.length !== 1 && ymlDocumentsInFile.length !== namespaces.length) {
-        console.error(
-          'Aborting. Some configMap specifies namespaces but does not include all namespaces!!! This can not be!'
-        )
-        Deno.exit()
-      }
-      configMaps = configMaps.concat(
-        ymlDocumentsInFile.flatMap((ymlDocument) => {
-          const jsonDocument = ymlDocument.toJSON()
-          const { namespace, ...jsonDocumentWithoutNamespace } = jsonDocument
-          if (namespace?.length > 0) {
-            return createConfigMap(appName, confiMapName, namespace, jsonDocumentWithoutNamespace)
-          } else {
-            return namespaces.flatMap((namespace) => {
-              return createConfigMap(appName, confiMapName, namespace, jsonDocumentWithoutNamespace)
-            })
-          }
-        })
-      )
-    }
-  }
-  return configMaps
-}
-
-const getSecrets = async (appName: string, directory: string): Promise<string[]> => {
-  const files = walk(directory, {
-    maxDepth: 1,
-    includeDirs: false,
-    includeSymlinks: false,
-    exts: ['.yml']
-  })
-  let secrets: string[] = []
-  for await (const file of files) {
-    if (file.name.startsWith('secret.') && file.name.length > 11) {
-      const secret = file.name.substring('secret.'.length, file.name.length - 4)
-      const ymlDocumentsInFile = parseAllDocuments(await Deno.readTextFile(file.path))
-      if (ymlDocumentsInFile.length === 0) {
-        console.info(`${file.name} is empty`)
-
-        secrets = secrets.concat(
-          namespaces.flatMap((namespace) => {
-            return createSecret(appName, secret, namespace, null)
-          })
-        )
-        continue
-      }
-      if (ymlDocumentsInFile.length !== 1 && ymlDocumentsInFile.length !== namespaces.length) {
-        console.error(
-          'Aborting. Some secret specifies namespaces but does not include all namespaces!!! This can not be!'
-        )
-        Deno.exit()
-      }
-      secrets = secrets.concat(
-        ymlDocumentsInFile.flatMap((ymlDocument) => {
-          const jsonDocument = ymlDocument.toJSON()
-          const { namespace, ...jsonDocumentWithoutNamespace } = jsonDocument
-          if (namespace) {
-            return createSecret(appName, secret, namespace, jsonDocumentWithoutNamespace)
-          } else {
-            return namespaces.flatMap((namespace) => {
-              return createSecret(appName, secret, namespace, jsonDocumentWithoutNamespace)
-            })
-          }
-        })
-      )
-    }
-  }
-  return secrets
-}
-
-const generateConfigMapsAndSecretsFile = async (
-  outputFile: string,
-  appName: string,
-  configMapDir: string,
-  secretsDir: string,
-  convertSecretsToBase64: boolean
+  repoName: string,
+  name: string,
+  data: object,
 ) => {
-  const configMaps = await getConfigMaps(appName, configMapDir)
-  const secrets = await getSecrets(appName, secretsDir)
-  const data = [...configMaps, ...secrets].join('---\n')
-  await Deno.writeTextFile(outputFile,data)
-}
+  await Deno.writeTextFile(
+    `${destDir}/${camelCase(kind)}s.${namespace}.yml`,
+    createResource(kind, namespace, repoName, name, data),
+    {
+      create: true,
+      append: true,
+    },
+  );
+};
+const writeResources = async (
+  destDir: string,
+  kind: string,
+  repoName: string,
+  name: string,
+  data: object,
+) => {
+  await namespaces.map(async (namespace: string) => {
+    await Deno.writeTextFile(
+      `${destDir}/${camelCase(kind)}s.${namespace}.yml`,
+      createResource(kind, namespace, repoName, name, data),
+      {
+        create: true,
+        append: true,
+      },
+    );
+  });
+};
 
-const appName = prompt('Please enter the app prefix (truffle-ai):') ?? 'truffle-ai'
-await generateConfigMapsAndSecretsFile(
-  'configMaps.yaml',
-  appName,
-  CONFIG_MAP_DIR,
-  SECRET_DIR,
-  false
-)
+const make = async (
+  kind: string,
+  inputDir: string,
+  destDir: string,
+  repoName: string,
+) => {
+  const files = walk(inputDir, {
+    maxDepth: 1,
+    includeDirs: false,
+    includeSymlinks: false,
+    exts: [".yml"],
+  });
+  for await (const file of files) {
+    if (file.name.startsWith("secretExample")) {
+      continue;
+    }
+    if (!file.name.startsWith(`${camelCase(kind)}.`)) {
+      console.error(
+        `There is another file as ${kind}. in the directory. Exiting.`,
+      );
+      Deno.exit();
+    }
+    if (!file.name.endsWith(".yml")) {
+      console.error(
+        "There is another file as .yml in the directory. Exiting.",
+      );
+      Deno.exit();
+    }
+    const resourceName = file.name.substring(
+      kind.length + 1,
+      file.name.indexOf(".", kind.length + 1),
+    );
+    const ymlDocumentsInFile = parseAllDocuments(
+      await Deno.readTextFile(file.path),
+    );
+    if (ymlDocumentsInFile.length > 1) {
+      console.error("Not possible to have multi document yml");
+      Deno.exit();
+    }
+    if (file.name.split(".").length === 4) {
+      const namespace = file.name.split(".")[2];
+      writeResource(
+        destDir,
+        kind,
+        namespace,
+        repoName,
+        resourceName,
+        ymlDocumentsInFile[0]?.toJSON() ?? null,
+      );
+    } else if (file.name.split(".").length === 3) {
+      writeResources(
+        destDir,
+        kind,
+        repoName,
+        resourceName,
+        ymlDocumentsInFile[0]?.toJSON() ?? null,
+      );
+    } else {
+      console.error("ConfigMap path format wrong.");
+      Deno.exit();
+    }
+  }
+};
+
+const generateNamespacedResource = async (
+  kind: string,
+  inputDir: string,
+  destDir: string,
+  repoName: string,
+) => {
+  await namespaces.map(async (namespace) => {
+    await Deno.writeTextFile(
+      `${destDir}/${camelCase(kind)}s.${namespace}.yml`,
+      "",
+    );
+  });
+  await make(kind, inputDir, destDir, repoName);
+};
+
+const repoName = "truffle-ai";
+await generateNamespacedResource(
+  "ConfigMap",
+  "./configMaps",
+  "../terraform/modules/kubernetes-config/configMaps",
+  repoName,
+);
+await generateNamespacedResource(
+  "Secret",
+  "./secrets",
+  "../terraform/modules/kubernetes-config/secrets",
+  repoName,
+);

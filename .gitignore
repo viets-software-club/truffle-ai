@@ -49,3 +49,4 @@ secret.*
 test*
 config/envs/external-secrets
 envs.yaml
+secret

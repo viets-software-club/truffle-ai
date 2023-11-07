@@ -40,3 +40,12 @@ jobs:
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit
+  terraform-plan:
+    name: 'Terraform Plan'
+    permissions:
+      contents: read
+      pull-requests: write
+    needs: image
+    uses: ./.github/workflows/terraform-plan.yml
+    with:
+      ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}

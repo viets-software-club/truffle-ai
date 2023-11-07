@@ -4,6 +4,7 @@ terraform {
 
     workspaces {
       project = "truffle-ai"
+      tags    = ["remote"]
     }
   }
 }

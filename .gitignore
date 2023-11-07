@@ -50,3 +50,5 @@ test*
 config/envs/external-secrets
 envs.yaml
 secret
+.terraform
+.terraform*

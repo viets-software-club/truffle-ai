@@ -10,6 +10,8 @@ env:
   TF_API_TOKEN: '${{ secrets.TF_API_TOKEN }}'
   TF_WORKSPACE: ${{ inputs.ENVIRONMENT }}
   CONFIG_DIRECTORY: './config/terraform'
+  TF_VAR_git_commit_tag: $(echo $GITHUB_SHA | head -c7)
+  TF_VAR_git_commit_message: $(git show -s --format=%s)
 jobs:
   terraform:
     name: 'Terraform Plan'

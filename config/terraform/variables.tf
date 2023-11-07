@@ -17,6 +17,9 @@ variable "git_commit_tag" {
 variable "git_commit_message" {
   type = string
 }
+variable "org_name" {
+  type = string
+}
 variable "repo_name" {
   type    = string
   default = "truffle-ai"

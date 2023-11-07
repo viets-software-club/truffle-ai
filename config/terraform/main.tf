@@ -2,12 +2,6 @@ locals {
   cluster_name = "${var.repo_name}-cluster"
 }
 
-data "kubernetes_ingress" "this" {
-  metadata {
-    name = "${var.repo_name}-${terraform.workspace}"
-  }
-}
-
 module "doks-cluster" {
   source       = "./modules/doks-cluster"
   cluster_name = local.cluster_name

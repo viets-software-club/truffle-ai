@@ -17,8 +17,29 @@ env:
   TF_WORKSPACE: ${{ inputs.environment }}
   CONFIG_DIRECTORY: './config/terraform'
 jobs:
-  terraform:
+  variables:
+    name: 'Variables'
     environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    outputs:
+      GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
+      GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{github.event.pull_request.head.sha}}
+          sparse-checkout: |
+            .git
+      - id: git_commit_tag
+        run: echo "git_commit_tag=${{github.sha}}" >> "$GITHUB_OUTPUT"
+      - id: git_commit_message
+        run: echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"
+  terraform:
+    needs: variables
+    environment: ${{ inputs.environment }}
+    env:
+      TF_VAR_git_commit_tag: '"${{ needs.variables.outputs.GIT_COMMIT_TAG }}"'
+      TF_VAR_git_commit_message: '"${{ needs.variables.outputs.GIT_COMMIT_MESSAGE }}"'
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
     permissions:

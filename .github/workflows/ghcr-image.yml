@@ -18,7 +18,8 @@ permissions:
   contents: read
   packages: write
 jobs:
-  build-image:
+  ghcr-image:
+    name: 'GitHub Container Registry'
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     env:

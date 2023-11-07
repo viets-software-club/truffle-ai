@@ -1,4 +1,4 @@
-name: 'Deploy Images'
+name: 'Plan Deployment'
 on:
   pull_request:
     types:
@@ -10,6 +10,7 @@ on:
     paths: ['packages/**', 'config/**', '.github/workflows/**']
 jobs:
   variables:
+    name: 'Variables'
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     runs-on: ubuntu-latest
     outputs:
@@ -19,7 +20,8 @@ jobs:
       NEXT_PUBLIC_API_GRAPHQL_URL: ${{ vars.NEXT_PUBLIC_API_GRAPHQL_URL }}
     steps:
       - run: echo "Outputting variables for following jobs"
-  images:
+  image:
+    name: 'Image'
     permissions:
       contents: read
       packages: write
@@ -38,14 +40,3 @@ jobs:
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit
-  # ui:
-  #   permissions:
-  #     contents: read
-  #     packages: write
-  #   needs: vars
-  #   uses: ./.github/workflows/ghcr-image.yml
-  #   with:
-  #     ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-  #     PACKAGE_NAME: ui
-  #     BUILD_ARGS: --build-arg SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.vars.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
-  #   secrets: inherit

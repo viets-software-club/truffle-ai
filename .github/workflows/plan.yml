@@ -45,7 +45,7 @@ jobs:
             BUILD_ARGS: --build-arg SUPABASE_URL=${{needs.variables.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.variables.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
           - PACKAGE_NAME: graphql-gateway
             BUILD_ARGS: --build-arg GRAPHQL_SERVER_URL=${{ needs.variables.outputs.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.variables.outputs.SUPABASE_URL }} --build-arg SUPABASE_GRAPHQL_URL=${{needs.variables.outputs.SUPABASE_GRAPHQL_URL}}
-    uses: ./.github/workflows/ghcr-image.yml
+    uses: ./.github/workflows/reusable-ghcr-image.yml
     with:
       ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
@@ -57,7 +57,7 @@ jobs:
       contents: read
       pull-requests: write
     needs: [variables, image]
-    uses: ./.github/workflows/terraform-plan.yml
+    uses: ./.github/workflows/reusable-terraform-plan.yml
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
       GIT_COMMIT_MESSAGE: ${{needs.variables.outputs.GIT_COMMIT_MESSAGE}}

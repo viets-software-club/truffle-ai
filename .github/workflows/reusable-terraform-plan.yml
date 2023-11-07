@@ -19,7 +19,7 @@ env:
   TF_VAR_git_commit_tag: '"${{ inputs.GIT_COMMIT_TAG }}"'
   TF_VAR_git_commit_message: '"${{ inputs.GIT_COMMIT_MESSAGE }}"'
 jobs:
-  terraform:
+  plan:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
     permissions:
@@ -41,7 +41,7 @@ jobs:
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.plan-upload.outputs.configuration_version_id }}
-          plan_only: false
+          plan_only: true
       - name: Get Plan Output
         uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
         id: plan-output

@@ -54,6 +54,11 @@ jobs:
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit
+  test:
+    needs: variables
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{needs.variables.outputs.GIT_COMMIT_TAG}}"
   terraform-plan:
     name: 'Terraform Plan'
     permissions:

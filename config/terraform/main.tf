@@ -1,5 +1,5 @@
 locals {
-  cluster_name = "${var.repo_name}-cluster2"
+  cluster_name = "${var.repo_name}-cluster"
 }
 
 module "doks-cluster" {

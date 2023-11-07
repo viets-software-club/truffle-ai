@@ -18,8 +18,8 @@ jobs:
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
       NEXT_PUBLIC_API_GRAPHQL_URL: ${{ vars.NEXT_PUBLIC_API_GRAPHQL_URL }}
-      GIT_COMMIT_TAG: ${{ steps.git_commit_message.outputs.GIT_COMMIT_TAG }}
-      GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.GIT_COMMIT_MESSAGE }}
+      # GIT_COMMIT_TAG: ${{ steps.git_commit_message.outputs.GIT_COMMIT_TAG }}
+      # GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.GIT_COMMIT_MESSAGE }}
     steps:
       - uses: actions/checkout@v4
         with:

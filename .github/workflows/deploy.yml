@@ -1,4 +1,4 @@
-name: 'Deploy'
+name: 'Deploy Images'
 on:
   pull_request:
     types:
@@ -9,7 +9,7 @@ on:
     branches: ['main', 'staging']
     paths: ['packages/**', 'config/**', '.github/workflows/**']
 jobs:
-  vars:
+  variables:
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     runs-on: ubuntu-latest
     outputs:
@@ -20,20 +20,24 @@ jobs:
     steps:
       - run: echo "Outputting variables for following jobs"
   images:
-    needs: vars
+    permissions:
+      contents: read
+      packages: write
+    needs: variables
     strategy:
       matrix:
         PACKAGE_NAME: [ui, graphql-gateway, graphql-server, repo-job, preview-job]
         include:
           - PACKAGE_NAME: ui
-            BUILD_ARGS: --build-arg SUPABASE_URL=${{needs.vars.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.vars.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
+            BUILD_ARGS: --build-arg SUPABASE_URL=${{needs.variables.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.variables.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
           - PACKAGE_NAME: graphql-gateway
-            BUILD_ARGS: --build-arg GRAPHQL_SERVER_URL=${{ needs.vars.outputs.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.vars.outputs.SUPABASE_URL }} --build-arg SUPABASE_GRAPHQL_URL=${{needs.vars.outputs.SUPABASE_GRAPHQL_URL}}
+            BUILD_ARGS: --build-arg GRAPHQL_SERVER_URL=${{ needs.variables.outputs.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.variables.outputs.SUPABASE_URL }} --build-arg SUPABASE_GRAPHQL_URL=${{needs.variables.outputs.SUPABASE_GRAPHQL_URL}}
     uses: ./.github/workflows/ghcr-image.yml
     with:
       ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
+    secrets: inherit
   # ui:
   #   permissions:
   #     contents: read

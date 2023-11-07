@@ -45,7 +45,7 @@ resource "kubernetes_cron_job" "preview_cronjob" {
           }
           spec {
             container {
-              name  = "${prefix}-preview-cronjob-container"
+              name  = "${var.prefix}-preview-cronjob-container"
               image = "${var.image_repository_url}/preview-job:${var.image_tag}"
             }
           }
@@ -95,7 +95,7 @@ resource "kubernetes_cron_job" "repo_cronjob" {
           }
           spec {
             container {
-              name  = "${prefix}-repo-cronjob-container"
+              name  = "${var.prefix}-repo-cronjob-container"
               image = "${var.image_repository_url}/repo-job:${var.image_tag}"
             }
           }

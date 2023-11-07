@@ -1,5 +1,5 @@
 data "kubectl_file_documents" "docs" {
-  content = file("${path.module}/configMaps.yaml")
+  content = file("${path.module}/configMaps.${terraform.workspace}.yml")
 }
 
 resource "kubectl_manifest" "test" {

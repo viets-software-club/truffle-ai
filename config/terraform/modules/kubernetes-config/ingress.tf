@@ -1,6 +1,6 @@
 resource "helm_release" "nginx_ingress" {
   name      = "nginx-ingress-controller"
-  namespace = "kubernetes_namespace.${terraform.workspace}.metadata.0.name"
+  namespace = kubernetes_namespace.this.metadata.0.name
 
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "nginx-ingress-controller"

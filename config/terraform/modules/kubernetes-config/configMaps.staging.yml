@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-graphql-server-config
+  namespace: truffle-ai
+data:
+  GRAPHQL_SERVER_PORT: '3002'
+  GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-github-config
+  namespace: truffle-ai
+data:
+  GITHUB_API_URL: https://api.github.com/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-graphql-gateway-config
+  namespace: truffle-ai
+data:
+  GRAPHQL_GATEWAY_PORT: '3001'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-ui-config
+  namespace: truffle-ai
+data:
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
+  NEXT_PUBLIC_API_URL: https://api.truffle.tools
+  NEXT_PUBLIC_SITE_URL: https://truffle.tools
+  NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
+  UI_PORT: '3000'
+  NEXT_PUBLIC_PORT: '3000'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-scraping-bot-config
+  namespace: truffle-ai
+data:
+  SCRAPING_BOT_API_ENDPOINT: http://api.scraping-bot.io/scrape/data-scraper
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-repo-job-config
+  namespace: truffle-ai
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-open-api-config
+  namespace: truffle-ai
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-nodejs-config
+  namespace: truffle-ai
+data:
+  NODE_ENV: production
+  TZ: Europe/Berlin
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-preview-job-config
+  namespace: truffle-ai
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: staging-supabase-config
+  namespace: truffle-ai
+data:
+  SUPABASE_REFERENCE_ID: iowrwceetpycxkpuqssj
+  SUPABASE_URL: https://iowrwceetpycxkpuqssj.supabase.co
+  SUPABASE_GRAPHQL_URL: https://iowrwceetpycxkpuqssj.supabase.co/graphql/v1
+---
+

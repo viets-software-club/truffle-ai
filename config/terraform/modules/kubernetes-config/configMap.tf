@@ -1,5 +1,5 @@
 data "kubectl_file_documents" "docs" {
-  content = file("${path.root}/configMaps.yaml")
+  content = file("../../configMaps.yaml")
 }
 
 resource "kubectl_manifest" "test" {

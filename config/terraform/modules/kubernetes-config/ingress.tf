@@ -27,7 +27,7 @@ resource "kubernetes_ingress" "this" {
   }
   spec {
     rule {
-      host = var.subdomain ? "${var.subdomain}.${var.domain}" : var.domain
+      host = try(var.subdomain, false) ? "${var.subdomain}.${var.domain}" : var.domain
       http {
         path {
           path = "/api"

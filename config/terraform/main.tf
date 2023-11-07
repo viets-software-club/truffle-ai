@@ -19,7 +19,7 @@ module "kubernetes-config" {
   cluster_id           = module.doks-cluster.cluster_id
   write_kubeconfig     = var.write_kubeconfig
   domain               = var.domain
-  subdomain            = var.is_prod_workspace ? "" : terraform.workspace
+  subdomain            = var.is_dev_workspace ? "*.${terraform.workspace}" : (var.is_prod_workspace ? "" : terraform.workspace)
   prefix               = var.is_dev_workspace ? "${var.repo_name}-${terraform.workspace}-${var.git_commit_tag}" : "${var.repo_name}-${terraform.workspace}"
   change_cause         = "${var.git_commit_tag}: ${var.git_commit_message}"
   namespace_prefix     = var.repo_name
@@ -29,6 +29,6 @@ module "kubernetes-config" {
 module "dns-records" {
   source           = "./modules/dns-records"
   domain           = var.domain
-  load_balancer_ip = data.kubernetes_ingress.this.status.0.load_balancer.0.ingress.0.ip
+  load_balancer_ip = module.kubernetes-config.load_balancer_ip
 
 }

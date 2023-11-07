@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{github.sha}}
+          ref: ${{github.event.pull_request.head.sha}}
           sparse-checkout: |
             .git
       - run: echo "Outputting variables for following jobs"
@@ -32,7 +32,7 @@ jobs:
       - id: git_commit_tag
         run: echo "GIT_COMMIT_TAG=$(echo $GITHUB_SHA | head -c7)" >> GITHUB_OUTPUT
       - id: git_commit_message
-        run: echo "GIT_COMMIT_MESSAGE=$(git log --format=%s -n 1 $GITHUB_SHA)" >> GITHUB_OUTPUT
+        run: echo "GIT_COMMIT_MESSAGE=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> GITHUB_OUTPUT
   image:
     name: 'Image'
     permissions:

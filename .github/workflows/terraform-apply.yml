@@ -1,5 +1,6 @@
 name: 'Terraform Apply'
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 env:
   TF_CLOUD_ORGANIZATION: ${{ vars.ORG_NAME }}
   TF_API_TOKEN: '${{ secrets.TF_API_TOKEN }}'

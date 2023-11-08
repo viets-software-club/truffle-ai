@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
         run: |
-          docker build \
+          docker buildx build \
           ${{inputs.BUILD_ARGS}} \
           --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
           --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
@@ -58,4 +58,4 @@ jobs:
           --label "org.opencontainers.image.licenses=${{env.IMAGE_LICENSE}}" \
           -f ./packages/${{inputs.PACKAGE_NAME}}/Dockerfile .
       - name: Push image to ghcr
-        run: docker push --all-tags ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}
+        run: docker push --all-tags ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:latest

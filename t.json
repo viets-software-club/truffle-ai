@@ -1,7 +1,0 @@
-{
-  "auths": {
-    "ghcr.io": {
-      "auth": "${base64encode(var.secret_ghcr_access_token)}"
-    }
-  }
-}

@@ -26,6 +26,10 @@ module "kubernetes-config" {
   secret_supabase_anon_key      = var.secret_supabase_anon_key
   secret_supabase_service_key   = var.secret_supabase_service_key
   config_map_dir                = "config/envs"
+  cluster_raw_config            = module.doks-cluster.cluster_raw_config
+  cluster_ca_certificate        = module.doks-cluster.cluster_ca_certificate
+  cluster_endpoint              = module.doks-cluster.cluster_endpoint
+  cluster_token                 = module.doks-cluster.cluster_endpoint
 }
 
 module "dns-records" {

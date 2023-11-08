@@ -11,10 +11,10 @@ output "cluster_raw_config" {
 }
 
 output "cluster_endpoint" {
-  value = data.digitalocean_kubernetes_cluster.this.endpoint
+  value = digitalocean_kubernetes_cluster.this.endpoint
 }
 output "cluster_token" {
-  value = data.digitalocean_kubernetes_cluster.this.kube_config[0].token
+  value = digitalocean_kubernetes_cluster.this.kube_config[0].token
 }
 output "cluster_ca_certificate" {
   value = digitalocean_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate

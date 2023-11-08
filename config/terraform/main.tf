@@ -38,7 +38,7 @@ module "kubernetes-config" {
   prefix                 = var.is_dev_workspace ? "${var.repo_name}-${terraform.workspace}-${local.resource_prefix}" : "${var.repo_name}-${terraform.workspace}"
   change_cause           = "${local.git_commit_tag_shortened}: ${local.git_commit_message_shortened}"
   repo_name              = var.repo_name
-  image_repository_url   = var.image_repository_url
+  image_repository_url   = "${var.image_repository_url}/${terraform.workspace}"
   image_tag              = var.image_tag
   config_map_dir         = "config/envs"
   cluster_raw_config     = module.doks-cluster.cluster_raw_config

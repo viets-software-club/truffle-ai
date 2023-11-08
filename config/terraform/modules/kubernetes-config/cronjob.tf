@@ -8,7 +8,7 @@ locals {
 resource "kubernetes_cron_job" "preview_cronjob" {
   metadata {
     name      = local.preview_cronjob
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
     annotations = {
       "kubernetes.io/change-cause" : var.change_cause
     }
@@ -45,7 +45,7 @@ resource "kubernetes_cron_job" "preview_cronjob" {
           }
           spec {
             container {
-                env_from {
+              env_from {
                 config_map_ref {
                   name = "${var.namespace_prefix}-nodejs-config"
                 }
@@ -71,7 +71,7 @@ resource "kubernetes_cron_job" "preview_cronjob" {
 resource "kubernetes_cron_job" "repo_cronjob" {
   metadata {
     name      = local.repo_cronjob
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
     annotations = {
       "kubernetes.io/change-cause" : var.change_cause
     }

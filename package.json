@@ -32,8 +32,12 @@
     "compose-build:staging": "$npm_package_config_env && docker compose -f config/docker-compose/docker-compose.staging.yml --env-file .env.staging build",
     "compose-build:commit": "$npm_package_config_env && docker compose -f config/docker-compose/docker-compose.commit.yml --env-file .env.commit build",
     "generate:k8s": "cd config/envs && deno task generate:k8s",
-    "generate:envs": "cd config/envs && deno task generate:envs"
-
+    "generate:envs": "cd config/envs && deno task generate:envs",
+    "doctl:connect": "doctl kubernetes cluster kubeconfig save truffle-ai-cluster",
+    "terraform:create-cluster": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform apply -target=module.doks-cluster",
+    "terraform:init-cluster": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform apply -target=module.init-doks-cluster",
+    "terraform:apply": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform apply",
+    "terraform:plan": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform plan"
   },
   "workspaces": [
     "packages/*",

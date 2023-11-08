@@ -1,6 +1,6 @@
 resource "helm_release" "nginx_ingress" {
   name      = "nginx-ingress-controller"
-  namespace = kubernetes_namespace.this.metadata.0.name
+  namespace = data.kubernetes_namespace.this.metadata.0.name
 
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "nginx-ingress-controller"
@@ -19,7 +19,7 @@ resource "kubernetes_ingress" "this" {
   wait_for_load_balancer = true
   metadata {
     name      = "test-ingress"
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
     annotations = {
       "kubernetes.io/ingress.class"          = "nginx"
       "ingress.kubernetes.io/rewrite-target" = "/"

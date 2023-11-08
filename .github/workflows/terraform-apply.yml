@@ -31,7 +31,7 @@ jobs:
           sparse-checkout: |
             .git
       - id: git_commit_tag
-        run: echo "git_commit_tag=$(${{github.sha}} | head -c20)" >> "$GITHUB_OUTPUT"
+        run: echo "git_commit_tag=$(${{github.sha}} | head -c19)" >> "$GITHUB_OUTPUT"
       - id: git_commit_message
         run: echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}} | head -c35)" >> "$GITHUB_OUTPUT"
   terraform:

@@ -13,7 +13,7 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
     labels = {
       app : local.graphql_backend_app_selector
     }
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
     name      = local.graphql_backend
   }
   spec {
@@ -202,7 +202,7 @@ resource "kubernetes_deployment" "ui_deployment" {
     labels = {
       app : local.ui_app_selector
     }
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
     name      = "${local.ui}-deployment"
   }
   spec {

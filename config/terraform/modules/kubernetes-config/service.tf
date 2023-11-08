@@ -1,7 +1,7 @@
 resource "kubernetes_service" "graphql_backend_service" {
   metadata {
     name      = "${var.prefix}-graphql-backend-service"
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   spec {
     selector = {
@@ -18,7 +18,7 @@ resource "kubernetes_service" "graphql_backend_service" {
 resource "kubernetes_service" "ui_service" {
   metadata {
     name      = "${var.prefix}-ui-service"
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   spec {
     selector = {
@@ -35,7 +35,7 @@ resource "kubernetes_service" "ui_service" {
 resource "kubernetes_service" "graphql_server_service" {
   metadata {
     name      = "${var.prefix}-graphql-server-service"
-    namespace = kubernetes_namespace.this.metadata.0.name
+    namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   spec {
     selector = {

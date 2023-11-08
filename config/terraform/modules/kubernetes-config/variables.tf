@@ -5,7 +5,6 @@ variable "cluster_name" {
 variable "cluster_id" {
   type = string
 }
-
 variable "write_kubeconfig" {
   type    = bool
   default = false
@@ -55,5 +54,17 @@ variable "secret_supabase_anon_key" {
   type = string
 }
 variable "secret_supabase_service_key" {
+  type = string
+}
+variable "cluster_raw_config" {
+  type = string
+}
+variable "cluster_endpoint" {
+  type = string
+}
+variable "cluster_token" {
+  type = string
+}
+variable "cluster_ca_certificate" {
   type = string
 }

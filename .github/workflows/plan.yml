@@ -12,7 +12,8 @@ jobs:
   variables:
     name: 'Variables'
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
-    runs-on: ubuntu-latest
+    runs-on:
+      labels: truffle-runner
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}

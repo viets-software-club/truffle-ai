@@ -20,7 +20,8 @@ permissions:
 jobs:
   ghcr-image:
     name: 'GitHub Container Registry'
-    runs-on: ubuntu-latest
+    runs-on:
+      labels: truffle-runner
     environment: ${{ inputs.ENVIRONMENT }}
     env:
       CONTAINER_REGISTRY_DOMAIN: ghcr.io

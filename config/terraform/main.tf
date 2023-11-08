@@ -1,5 +1,7 @@
 locals {
-  cluster_name = "${var.repo_name}-cluster"
+  cluster_name                 = "${var.repo_name}-cluster"
+  git_commit_tag_shortened     = substr(var.git_commit_tag, 0, 13)
+  git_commit_message_shortened = substr(var.git_commit_message, 0, 30)
 }
 
 module "doks-cluster" {
@@ -7,32 +9,36 @@ module "doks-cluster" {
   cluster_name = local.cluster_name
 }
 module "init-doks-cluster" {
-  source       = "./modules/init-doks-cluster"
-  cluster_name = local.cluster_name
-}
-module "kubernetes-config" {
-  source                        = "./modules/kubernetes-config"
-  cluster_name                  = module.doks-cluster.cluster_name
-  cluster_id                    = module.doks-cluster.cluster_id
-  write_kubeconfig              = var.write_kubeconfig
-  domain                        = var.domain
-  subdomain                     = var.is_dev_workspace ? "*.${terraform.workspace}" : (var.is_prod_workspace ? "" : terraform.workspace)
-  prefix                        = var.is_dev_workspace ? "${var.repo_name}-${terraform.workspace}-${var.git_commit_tag}" : "${var.repo_name}-${terraform.workspace}"
-  change_cause                  = "${var.git_commit_tag}: ${var.git_commit_message}"
-  namespace_prefix              = var.repo_name
-  image_repository_url          = var.image_repository_url
-  image_tag                     = var.git_commit_tag
+  source                        = "./modules/init-doks-cluster"
+  cluster_name                  = local.cluster_name
   secret_github_api_token       = var.secret_github_api_token
   secret_open_api_key           = var.secret_open_api_key
   secret_scraping_bot_api_key   = var.secret_scraping_bot_api_key
   secret_scraping_bot_user_name = var.secret_scraping_bot_user_name
   secret_supabase_anon_key      = var.secret_supabase_anon_key
   secret_supabase_service_key   = var.secret_supabase_service_key
-  config_map_dir                = "config/envs"
-  cluster_raw_config            = module.doks-cluster.cluster_raw_config
-  cluster_ca_certificate        = module.doks-cluster.cluster_ca_certificate
-  cluster_endpoint              = module.doks-cluster.cluster_endpoint
-  cluster_token                 = module.doks-cluster.cluster_endpoint
+  secret_ghcr_access_token      = var.secret_ghcr_access_token
+  namespace_prefix              = var.repo_name
+
+}
+module "kubernetes-config" {
+  source                 = "./modules/kubernetes-config"
+  cluster_name           = module.doks-cluster.cluster_name
+  cluster_id             = module.doks-cluster.cluster_id
+  write_kubeconfig       = var.write_kubeconfig
+  domain                 = var.domain
+  subdomain              = var.is_dev_workspace ? "*.${terraform.workspace}" : (var.is_prod_workspace ? "" : terraform.workspace)
+  prefix                 = var.is_dev_workspace ? "${var.repo_name}-${terraform.workspace}-${local.git_commit_tag_shortened}" : "${var.repo_name}-${terraform.workspace}"
+  change_cause           = "${local.git_commit_tag_shortened}: ${local.git_commit_message_shortened}"
+  namespace_prefix       = var.repo_name
+  image_repository_url   = var.image_repository_url
+  image_tag              = var.image_tag
+  config_map_dir         = "config/envs"
+  cluster_raw_config     = module.doks-cluster.cluster_raw_config
+  cluster_ca_certificate = module.doks-cluster.cluster_ca_certificate
+  cluster_endpoint       = module.doks-cluster.cluster_endpoint
+  cluster_token          = module.doks-cluster.cluster_endpoint
+
 }
 
 module "dns-records" {

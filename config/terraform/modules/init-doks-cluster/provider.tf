@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.7.0"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
   }
 }
 
@@ -19,4 +23,10 @@ provider "kubernetes" {
     data.digitalocean_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate
   )
 
+}
+provider "kubectl" {
+  host                   = data.digitalocean_kubernetes_cluster.this.endpoint
+  token                  = data.digitalocean_kubernetes_cluster.this.kube_config[0].token
+  cluster_ca_certificate = base64decode(data.digitalocean_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate)
+  load_config_file       = false
 }

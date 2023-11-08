@@ -34,10 +34,10 @@
     "generate:k8s": "cd config/envs && deno task generate:k8s",
     "generate:envs": "cd config/envs && deno task generate:envs",
     "doctl:connect": "doctl kubernetes cluster kubeconfig save truffle-ai-cluster",
-    "terraform:create-cluster": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform apply -target=module.doks-cluster",
-    "terraform:init-cluster": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform apply -target=module.init-doks-cluster",
-    "terraform:apply": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform apply",
-    "terraform:plan": "cd config/terraform && TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1 | head -c16) TF_VAR_git_commit_message=\"run from command line\" terraform plan"
+    "terraform:create-cluster": "cd config/terraform && TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply -target=module.doks-cluster",
+    "terraform:init-cluster": "cd config/terraform && TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply -target=module.init-doks-cluster",
+    "terraform:apply": "cd config/terraform && TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply",
+    "terraform:plan": "cd config/terraform && TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=exp$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform plan"
   },
   "workspaces": [
     "packages/*",

@@ -12,10 +12,6 @@ terraform {
       source  = "hashicorp/helm"
       version = ">= 2.0.1"
     }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.7.0"
-    }
   }
 }
 
@@ -43,9 +39,3 @@ provider "kubernetes" {
   # }
 }
 
-provider "kubectl" {
-  host                   = data.digitalocean_kubernetes_cluster.this.endpoint
-  token                  = data.digitalocean_kubernetes_cluster.this.kube_config[0].token
-  cluster_ca_certificate = base64decode(data.digitalocean_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate)
-  load_config_file       = false
-}

@@ -5,7 +5,7 @@ locals {
   repo_cronjob                 = "${var.prefix}-repo-cronjob"
 }
 
-resource "kubernetes_cron_job" "preview_cronjob" {
+resource "kubernetes_cron_job_v1" "preview_cronjob" {
   metadata {
     name      = local.preview_cronjob
     namespace = data.kubernetes_namespace.this.metadata.0.name

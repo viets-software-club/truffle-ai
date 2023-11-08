@@ -255,7 +255,7 @@ resource "kubernetes_deployment" "ui_deployment" {
             }
           }
           name  = "${local.ui}-container"
-          image = "${var.image_repository_url}/ui-image:${var.image_tag}"
+          image = "${var.image_repository_url}/ui:${var.image_tag}"
           port {
             container_port = 3000
           }

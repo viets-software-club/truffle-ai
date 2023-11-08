@@ -16,10 +16,10 @@ resource "digitalocean_kubernetes_cluster" "this" {
     size       = "s-1vcpu-1gb"
     node_count = 1
     auto_scale = false
-    min_nodes  = 1
-    max_nodes  = 1
-    tags       = null
-    labels     = null
+    # min_nodes  = 1
+    # max_nodes  = 1
+    tags   = null
+    labels = null
   }
   tags = null
   maintenance_policy {

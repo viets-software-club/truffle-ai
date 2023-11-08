@@ -13,7 +13,7 @@ env:
   GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: nscloud-ubuntu-22.04-amd64-4x16
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     strategy:
       matrix:

@@ -21,8 +21,7 @@ env:
 jobs:
   plan:
     name: 'Terraform Plan'
-    runs-on:
-      labels: truffle-runner
+    runs-on: nscloud-ubuntu-22.04-amd64-4x16
     permissions:
       contents: read
       pull-requests: write

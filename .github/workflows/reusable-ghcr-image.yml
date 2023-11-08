@@ -20,8 +20,7 @@ permissions:
 jobs:
   ghcr-image:
     name: 'GitHub Container Registry'
-    runs-on:
-      labels: truffle-runner
+    runs-on: nscloud-ubuntu-22.04-amd64-4x16
     environment: ${{ inputs.ENVIRONMENT }}
     env:
       CONTAINER_REGISTRY_DOMAIN: ghcr.io

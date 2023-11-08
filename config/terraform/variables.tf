@@ -11,11 +11,13 @@ variable "domain" {
   type = string
 }
 variable "git_commit_tag" {
-  type = string
+  type    = string
+  default = "no-tag"
 }
 
 variable "git_commit_message" {
-  type = string
+  type    = string
+  default = "no message"
 }
 variable "org_name" {
   type = string

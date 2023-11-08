@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
       }
       spec {
         # affinity
-        active_deadline_seconds         = 600
+        # active_deadline_seconds         = 600 (not supported, throws error)
         automount_service_account_token = true
         container {
           # args
@@ -61,14 +61,18 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
             config_map_ref {
               name = "${var.namespace_prefix}-graphql-gateway-config"
             }
-            secret_ref {
-              name = "${var.namespace_prefix}-graphql-gateway-secret"
-            }
           }
           env_from {
             config_map_ref {
               name = "${var.namespace_prefix}-supabase-config"
             }
+          }
+          env_from {
+            secret_ref {
+              name = "${var.namespace_prefix}-graphql-gateway-secret"
+            }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-supabase-secret"
             }
@@ -110,6 +114,8 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
             config_map_ref {
               name = "${var.namespace_prefix}-github-config"
             }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-github-secret"
             }
@@ -118,6 +124,8 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
             config_map_ref {
               name = "${var.namespace_prefix}-graphql-server-config"
             }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-graphql-server-secret"
             }
@@ -126,6 +134,8 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
             config_map_ref {
               name = "${var.namespace_prefix}-open-api-config"
             }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-open-api-secret"
             }
@@ -134,6 +144,8 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
             config_map_ref {
               name = "${var.namespace_prefix}-scraping-bot-config"
             }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-scraping-bot-secret"
             }
@@ -142,6 +154,8 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
             config_map_ref {
               name = "${var.namespace_prefix}-supabase-config"
             }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-supabase-secret"
             }
@@ -231,13 +245,14 @@ resource "kubernetes_deployment" "ui_deployment" {
         }
       }
       spec {
-        active_deadline_seconds         = 600
         automount_service_account_token = true
         container {
           env_from {
             config_map_ref {
               name = "${var.namespace_prefix}-ui-config"
             }
+          }
+          env_from {
             secret_ref {
               name = "${var.namespace_prefix}-ui-secret"
             }

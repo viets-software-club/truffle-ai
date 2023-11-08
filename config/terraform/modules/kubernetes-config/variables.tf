@@ -56,6 +56,9 @@ variable "secret_supabase_anon_key" {
 variable "secret_supabase_service_key" {
   type = string
 }
+variable "secret_ghcr_access_token" {
+  type = string
+}
 variable "cluster_raw_config" {
   type = string
 }

@@ -6,7 +6,10 @@ module "doks-cluster" {
   source       = "./modules/doks-cluster"
   cluster_name = local.cluster_name
 }
-
+module "init-doks-cluster" {
+  source       = "./modules/init-doks-cluster"
+  cluster_name = local.cluster_name
+}
 module "kubernetes-config" {
   source                        = "./modules/kubernetes-config"
   cluster_name                  = module.doks-cluster.cluster_name
@@ -36,5 +39,4 @@ module "dns-records" {
   source           = "./modules/dns-records"
   domain           = var.domain
   load_balancer_ip = module.kubernetes-config.load_balancer_ip
-
 }

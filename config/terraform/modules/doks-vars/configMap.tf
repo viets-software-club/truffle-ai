@@ -3,7 +3,6 @@ data "kubectl_file_documents" "docs" {
 }
 
 resource "kubectl_manifest" "test" {
-  depends_on = [var.cluster_id]
-  for_each   = data.kubectl_file_documents.docs.manifests
-  yaml_body  = each.value
+  for_each  = data.kubectl_file_documents.docs.manifests
+  yaml_body = each.value
 }

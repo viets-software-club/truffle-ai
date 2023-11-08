@@ -1,6 +1,6 @@
 resource "kubernetes_secret" "github_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-github-secret"
+    name      = "${var.repo_name}-github-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -9,7 +9,7 @@ resource "kubernetes_secret" "github_secret" {
 }
 resource "kubernetes_secret" "graphql_gateway_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-graphql-gateway-secret"
+    name      = "${var.repo_name}-graphql-gateway-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -17,7 +17,7 @@ resource "kubernetes_secret" "graphql_gateway_secret" {
 }
 resource "kubernetes_secret" "graphql_server_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-graphql-server-secret"
+    name      = "${var.repo_name}-graphql-server-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -25,7 +25,7 @@ resource "kubernetes_secret" "graphql_server_secret" {
 }
 resource "kubernetes_secret" "open_api_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-open-api-secret"
+    name      = "${var.repo_name}-open-api-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -34,7 +34,7 @@ resource "kubernetes_secret" "open_api_secret" {
 }
 resource "kubernetes_secret" "preview_job_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-preview-job-secret"
+    name      = "${var.repo_name}-preview-job-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -42,7 +42,7 @@ resource "kubernetes_secret" "preview_job_secret" {
 }
 resource "kubernetes_secret" "repo_job_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-repo-job-secret"
+    name      = "${var.repo_name}-repo-job-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -50,7 +50,7 @@ resource "kubernetes_secret" "repo_job_secret" {
 }
 resource "kubernetes_secret" "scraping_bot_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-scraping-bot-secret"
+    name      = "${var.repo_name}-scraping-bot-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -60,7 +60,7 @@ resource "kubernetes_secret" "scraping_bot_secret" {
 }
 resource "kubernetes_secret" "supabase_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-supabase-secret"
+    name      = "${var.repo_name}-supabase-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -70,7 +70,7 @@ resource "kubernetes_secret" "supabase_secret" {
 }
 resource "kubernetes_secret" "ui_secret" {
   metadata {
-    name      = "${var.namespace_prefix}-ui-secret"
+    name      = "${var.repo_name}-ui-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   data = {
@@ -80,11 +80,23 @@ resource "kubernetes_secret" "ui_secret" {
 
 resource "kubernetes_secret" "ghcr_dockerconfigjson" {
   metadata {
-    name      = "${var.namespace_prefix}-dockerconfigjson-secret"
+    name      = "${var.repo_name}-dockerconfigjson-secret"
     namespace = data.kubernetes_namespace.this.metadata.0.name
   }
   type = "kubernetes.io/dockerconfigjson"
+  # data = {
+  #   ".dockerconfigjson" = base64encode("{\"auths\":{\"ghcr.io\":{\"auth\":\"${base64encode("${var.secret_ghcr_username}:${var.secret_ghcr_access_token}")}\"}}}")
+  # }
   data = {
-    ".dockerconfigjson" = base64encode("{\"auths\":{\"ghcr.io\":{\"auth\":\"${base64encode(var.secret_ghcr_access_token)}\"}}}")
+    ".dockerconfigjson" = jsonencode({
+      auths = {
+        "ghcr.io" = {
+          "username" = var.secret_ghcr_access_token
+          # "password" = var.registry_password
+          # "email"    = var.registry_email
+          "auth" = base64encode("${var.secret_ghcr_username}:${var.secret_ghcr_access_token}")
+        }
+      }
+    })
   }
 }

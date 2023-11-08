@@ -13,6 +13,7 @@ resource "helm_release" "nginx_ingress" {
     name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name"
     value = format("%s-nginx-ingress", var.cluster_name)
   }
+
 }
 
 resource "kubernetes_ingress" "this" {

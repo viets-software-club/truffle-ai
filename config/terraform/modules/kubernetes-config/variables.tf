@@ -18,7 +18,7 @@ variable "subdomain" {
 variable "domain" {
   type = string
 }
-variable "namespace_prefix" {
+variable "repo_name" {
   type = string
 }
 variable "namespaces" {

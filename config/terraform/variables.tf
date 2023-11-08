@@ -65,3 +65,10 @@ variable "secret_supabase_service_key" {
 variable "secret_ghcr_access_token" {
   type = string
 }
+variable "secret_ghcr_username" {
+  type = string
+}
+variable "is_cli" {
+  type    = bool
+  default = false
+}

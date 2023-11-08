@@ -47,15 +47,15 @@ resource "kubernetes_cron_job" "preview_cronjob" {
             container {
               env_from {
                 config_map_ref {
-                  name = "${var.namespace_prefix}-nodejs-config"
+                  name = "${var.repo_name}-nodejs-config"
                 }
               }
               env_from {
                 config_map_ref {
-                  name = "${var.namespace_prefix}-preview-job-config"
+                  name = "${var.repo_name}-preview-job-config"
                 }
                 secret_ref {
-                  name = "${var.namespace_prefix}-preview-job-secret"
+                  name = "${var.repo_name}-preview-job-secret"
                 }
               }
               name  = "${var.prefix}-preview-cronjob-container"
@@ -110,15 +110,15 @@ resource "kubernetes_cron_job" "repo_cronjob" {
             container {
               env_from {
                 config_map_ref {
-                  name = "${var.namespace_prefix}-nodejs-config"
+                  name = "${var.repo_name}-nodejs-config"
                 }
               }
               env_from {
                 config_map_ref {
-                  name = "${var.namespace_prefix}-repo-job-config"
+                  name = "${var.repo_name}-repo-job-config"
                 }
                 secret_ref {
-                  name = "${var.namespace_prefix}-repo-job-secret"
+                  name = "${var.repo_name}-repo-job-secret"
                 }
               }
               name  = "${var.prefix}-repo-cronjob-container"

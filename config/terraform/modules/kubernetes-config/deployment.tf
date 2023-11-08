@@ -54,27 +54,27 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
           # env
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-nodejs-config"
+              name = "${var.repo_name}-nodejs-config"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-graphql-gateway-config"
+              name = "${var.repo_name}-graphql-gateway-config"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-supabase-config"
+              name = "${var.repo_name}-supabase-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-graphql-gateway-secret"
+              name = "${var.repo_name}-graphql-gateway-secret"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-supabase-secret"
+              name = "${var.repo_name}-supabase-secret"
             }
           }
           # image
@@ -107,57 +107,57 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
         container {
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-nodejs-config"
+              name = "${var.repo_name}-nodejs-config"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-github-config"
+              name = "${var.repo_name}-github-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-github-secret"
+              name = "${var.repo_name}-github-secret"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-graphql-server-config"
+              name = "${var.repo_name}-graphql-server-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-graphql-server-secret"
+              name = "${var.repo_name}-graphql-server-secret"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-open-api-config"
+              name = "${var.repo_name}-open-api-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-open-api-secret"
+              name = "${var.repo_name}-open-api-secret"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-scraping-bot-config"
+              name = "${var.repo_name}-scraping-bot-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-scraping-bot-secret"
+              name = "${var.repo_name}-scraping-bot-secret"
             }
           }
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-supabase-config"
+              name = "${var.repo_name}-supabase-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-supabase-secret"
+              name = "${var.repo_name}-supabase-secret"
             }
           }
           name  = "${var.prefix}-graphql-server-container"
@@ -184,9 +184,6 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
         # host_network
         # host_pid
         # hostname
-        image_pull_secrets {
-          name = "ghrc-secret"
-        }
         # node_name
         # node_selector
         # priority_class_name
@@ -249,12 +246,12 @@ resource "kubernetes_deployment" "ui_deployment" {
         container {
           env_from {
             config_map_ref {
-              name = "${var.namespace_prefix}-ui-config"
+              name = "${var.repo_name}-ui-config"
             }
           }
           env_from {
             secret_ref {
-              name = "${var.namespace_prefix}-ui-secret"
+              name = "${var.repo_name}-ui-secret"
             }
           }
           name  = "${local.ui}-container"
@@ -274,10 +271,7 @@ resource "kubernetes_deployment" "ui_deployment" {
         dns_policy           = "ClusterFirst"
         enable_service_links = true
         host_ipc             = false
-        image_pull_secrets {
-          name = "ghrc-secret"
-        }
-        restart_policy = "Always"
+        restart_policy       = "Always"
       }
     }
   }

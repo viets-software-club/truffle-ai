@@ -70,7 +70,7 @@ resource "kubernetes_cron_job_v1" "preview_cronjob" {
   }
 }
 
-resource "kubernetes_cron_job" "repo_cronjob" {
+resource "kubernetes_cron_job_v1" "repo_cronjob" {
   metadata {
     name      = local.repo_cronjob
     namespace = data.kubernetes_namespace.this.metadata.0.name

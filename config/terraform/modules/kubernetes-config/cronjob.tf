@@ -54,6 +54,8 @@ resource "kubernetes_cron_job_v1" "preview_cronjob" {
                 config_map_ref {
                   name = "${var.repo_name}-preview-job-config"
                 }
+              }
+              env_from {
                 secret_ref {
                   name = "${var.repo_name}-preview-job-secret"
                 }
@@ -117,6 +119,8 @@ resource "kubernetes_cron_job" "repo_cronjob" {
                 config_map_ref {
                   name = "${var.repo_name}-repo-job-config"
                 }
+              }
+              env_from {
                 secret_ref {
                   name = "${var.repo_name}-repo-job-secret"
                 }

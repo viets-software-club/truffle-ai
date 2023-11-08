@@ -140,12 +140,12 @@ const repoName = "truffle-ai";
 await generateNamespacedResource(
   "ConfigMap",
   "./configMaps",
-  "../terraform/modules/kubernetes-config/configMaps",
+  "../terraform/modules/doks-vars/configMaps",
   repoName,
 );
 await generateNamespacedResource(
   "Secret",
   "./secrets",
-  "../terraform/modules/kubernetes-config/secrets",
+  "../terraform/modules/doks-vars/secrets",
   repoName,
 );

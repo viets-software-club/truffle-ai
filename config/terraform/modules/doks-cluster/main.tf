@@ -13,7 +13,7 @@ resource "digitalocean_kubernetes_cluster" "this" {
   registry_integration = false
   node_pool {
     name       = "worker-pool"
-    size       = "s-1vcpu-1gb"
+    size       = "s-1vcpu-2gb"
     node_count = 1
     auto_scale = false
     # min_nodes  = 1

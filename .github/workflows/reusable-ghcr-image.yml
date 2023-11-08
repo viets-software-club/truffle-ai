@@ -31,8 +31,12 @@ jobs:
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        # Install CLI and authenticate to Namespace
+      - name: Install and configure Namespace CLI
+        uses: namespacelabs/nscloud-setup@v0
+      # Setup Docker build to use your Namespace workspace builder
+      - name: Configure Namespace powered Buildx
+        uses: namespacelabs/nscloud-setup-buildx-action@v0
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:

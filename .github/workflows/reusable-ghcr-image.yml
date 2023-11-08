@@ -20,7 +20,7 @@ permissions:
 jobs:
   ghcr-image:
     name: 'GitHub Container Registry'
-    runs-on: nscloud-ubuntu-22.04-amd64-4x16
+    runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     env:
       CONTAINER_REGISTRY_DOMAIN: ghcr.io
@@ -31,12 +31,6 @@ jobs:
     steps:
       - name: Checkout $GITHUB_REF
         uses: actions/checkout@v4
-        # Install CLI and authenticate to Namespace
-      - name: Install and configure Namespace CLI
-        uses: namespacelabs/nscloud-setup@v0
-      # Setup Docker build to use your Namespace workspace builder
-      - name: Configure Namespace powered Buildx
-        uses: namespacelabs/nscloud-setup-buildx-action@v0
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -45,14 +39,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
         run: |
-          docker buildx build \
+          DOCKER_BUILDKIT=1 docker build \
           ${{inputs.BUILD_ARGS}} \
           --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
           --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
+          --build-arg BUILDKIT_INLINE_CACHE=1 \
           -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:$(echo $GITHUB_SHA | head -c7) \
           -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.ENVIRONMENT}}-$(echo $GITHUB_SHA | head -c7) \
           -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:latest \
-          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}} \
           -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.ENVIRONMENT}}-latest \
           --label "org.opencontainers.image.source=${{env.IMAGE_SOURCE}}" \
           --label "org.opencontainers.image.description=${{env.IMAGE_DESCRIPTION}}" \

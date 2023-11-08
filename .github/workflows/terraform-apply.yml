@@ -20,7 +20,7 @@ jobs:
   variables:
     name: 'Variables'
     environment: ${{ inputs.environment }}
-    runs-on: nscloud-ubuntu-22.04-amd64-4x16
+    runs-on: ubuntu-latest
     outputs:
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}

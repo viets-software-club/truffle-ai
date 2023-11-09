@@ -1,17 +1,11 @@
-locals {
-  graphql_backend_app_selector = "${var.prefix}-graphql-backend-selector"
-  ui_app_selector              = "${var.prefix}-ui-selector"
-  graphql_backend              = "${var.prefix}-graphql-backend"
-  ui                           = "${var.prefix}-ui"
-}
 resource "kubernetes_deployment" "graphql_backend_deployment" {
   metadata {
     annotations = {
-      "kubernetes.io/change-cause" : var.change_cause
+      "kubernetes.io/change-cause" = var.change_cause
     }
     generate_name = null
     labels = {
-      app : local.graphql_backend_app_selector
+      app = local.graphql_backend_app_selector
     }
     namespace = data.kubernetes_namespace.this.metadata.0.name
     name      = local.graphql_backend
@@ -31,17 +25,17 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
     }
     selector {
       match_labels = {
-        app : local.graphql_backend_app_selector
+        app = local.graphql_backend_app_selector
       }
     }
     template {
       metadata {
         annotations = {
-          "kubernetes.io/change-cause" : var.change_cause
+          "kubernetes.io/change-cause" = var.change_cause
         }
         generate_name = null
         labels = {
-          app : local.graphql_backend_app_selector
+          app = local.graphql_backend_app_selector
         }
       }
       spec {
@@ -207,11 +201,11 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
 resource "kubernetes_deployment" "ui_deployment" {
   metadata {
     annotations = {
-      "kubernetes.io/change-cause" : var.change_cause
+      "kubernetes.io/change-cause" = var.change_cause
     }
     generate_name = null
     labels = {
-      app : local.ui_app_selector
+      app = local.ui_app_selector
     }
     namespace = data.kubernetes_namespace.this.metadata.0.name
     name      = "${local.ui}-deployment"
@@ -228,17 +222,17 @@ resource "kubernetes_deployment" "ui_deployment" {
     }
     selector {
       match_labels = {
-        app : local.ui_app_selector
+        app = local.ui_app_selector
       }
     }
     template {
       metadata {
         annotations = {
-          "kubernetes.io/change-cause" : var.change_cause
+          "kubernetes.io/change-cause" = var.change_cause
         }
         generate_name = null
         labels = {
-          app : local.ui_app_selector
+          app = local.ui_app_selector
         }
       }
       spec {
@@ -277,3 +271,4 @@ resource "kubernetes_deployment" "ui_deployment" {
   }
   wait_for_rollout = true
 }
+

@@ -41,7 +41,6 @@
     "terraform:apply": "cd config/terraform && TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply",
     "terraform:plan": "cd config/terraform && TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform plan",
     "terraform:destroy": "cd config/terraform && TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform destroy"
-
   },
   "workspaces": [
     "packages/*",

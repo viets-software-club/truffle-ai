@@ -50,3 +50,10 @@ variable "cluster_token" {
 variable "cluster_ca_certificate" {
   type = string
 }
+
+locals {
+  graphql_backend_app_selector = "${var.prefix}-graphql-backend-selector"
+  ui_app_selector              = "${var.prefix}-ui-selector"
+  graphql_backend              = "${var.prefix}-graphql-backend"
+  ui                           = "${var.prefix}-ui"
+}

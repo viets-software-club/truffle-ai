@@ -34,7 +34,7 @@ module "kubernetes-config" {
   cluster_id             = module.doks-cluster.cluster_id
   write_kubeconfig       = var.write_kubeconfig
   domain                 = var.domain
-  subdomain              = var.is_dev_workspace ? "*.${terraform.workspace}" : (var.is_prod_workspace ? "" : terraform.workspace)
+  subdomain              = var.is_dev_workspace ? "${var.git_commit_tag}.${terraform.workspace}" : (var.is_prod_workspace ? "" : terraform.workspace)
   prefix                 = var.is_dev_workspace ? "${var.repo_name}-${terraform.workspace}-${local.resource_prefix}" : "${var.repo_name}-${terraform.workspace}"
   change_cause           = "${local.git_commit_tag_shortened}: ${local.git_commit_message_shortened}"
   repo_name              = var.repo_name

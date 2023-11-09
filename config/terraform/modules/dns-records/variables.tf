@@ -1,6 +1,6 @@
-variable "load_balancer_ip" {
+variable "domain" {
   type = string
 }
-variable "domain" {
+variable "load_balancer_ip" {
   type = string
 }

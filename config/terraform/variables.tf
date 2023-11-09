@@ -42,7 +42,8 @@ variable "image_repository_url" {
   default = "ghcr.io/viets-software-club/truffle-ai"
 }
 variable "image_tag" {
-  type = string
+  type    = string
+  default = ""
 }
 variable "secret_github_api_token" {
   type = string

@@ -123,7 +123,7 @@ resource "kubernetes_ingress_v1" "this" {
       http {
         path {
           path_type = "Prefix"
-          path = "/api"
+          path = "/graphql"
           backend {
             service {
               name = kubernetes_service.graphql_backend_service.metadata.0.name

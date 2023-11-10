@@ -5,7 +5,7 @@ metadata:
   namespace: staging
 data:
   GRAPHQL_SERVER_PORT: "3002"
-  GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
+  GRAPHQL_SERVER_URL: http://0.0.0.0:3002/api/graphql
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -29,9 +29,9 @@ metadata:
   name: truffle-ai-ui-config
   namespace: staging
 data:
-  NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
-  NEXT_PUBLIC_API_URL: https://api.truffle.tools
-  NEXT_PUBLIC_SITE_URL: https://truffle.tools
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://0.0.0.0/api/graphql
+  NEXT_PUBLIC_API_URL: https://0.0.0.0/api
+  NEXT_PUBLIC_SITE_URL: https://0.0.0.0
   NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
   UI_PORT: "3000"
   NEXT_PUBLIC_PORT: "3000"

@@ -1,0 +1,494 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-graphql-server-config
+  namespace: production
+data:
+  GRAPHQL_SERVER_PORT: '3002'
+  GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-graphql-server-config
+  namespace: staging
+data:
+  GRAPHQL_SERVER_PORT: '3002'
+  GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-graphql-server-config
+  namespace: commit
+data:
+  GRAPHQL_SERVER_PORT: '3002'
+  GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-github-config
+  namespace: production
+data:
+  GITHUB_API_URL: https://api.github.com/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-github-config
+  namespace: staging
+data:
+  GITHUB_API_URL: https://api.github.com/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-github-config
+  namespace: commit
+data:
+  GITHUB_API_URL: https://api.github.com/graphql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-graphql-gateway-config
+  namespace: production
+data:
+  GRAPHQL_GATEWAY_PORT: '3001'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-graphql-gateway-config
+  namespace: staging
+data:
+  GRAPHQL_GATEWAY_PORT: '3001'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-graphql-gateway-config
+  namespace: commit
+data:
+  GRAPHQL_GATEWAY_PORT: '3001'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-ui-config
+  namespace: production
+data:
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
+  NEXT_PUBLIC_API_URL: https://api.truffle.tools
+  NEXT_PUBLIC_SITE_URL: https://truffle.tools
+  NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
+  UI_PORT: '3000'
+  NEXT_PUBLIC_PORT: '3000'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-ui-config
+  namespace: staging
+data:
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
+  NEXT_PUBLIC_API_URL: https://api.truffle.tools
+  NEXT_PUBLIC_SITE_URL: https://truffle.tools
+  NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
+  UI_PORT: '3000'
+  NEXT_PUBLIC_PORT: '3000'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-ui-config
+  namespace: commit
+data:
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://api.truffle.tools/graphql
+  NEXT_PUBLIC_API_URL: https://api.truffle.tools
+  NEXT_PUBLIC_SITE_URL: https://truffle.tools
+  NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
+  UI_PORT: '3000'
+  NEXT_PUBLIC_PORT: '3000'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-scraping-bot-config
+  namespace: production
+data:
+  SCRAPING_BOT_API_ENDPOINT: http://api.scraping-bot.io/scrape/data-scraper
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-scraping-bot-config
+  namespace: staging
+data:
+  SCRAPING_BOT_API_ENDPOINT: http://api.scraping-bot.io/scrape/data-scraper
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-scraping-bot-config
+  namespace: commit
+data:
+  SCRAPING_BOT_API_ENDPOINT: http://api.scraping-bot.io/scrape/data-scraper
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-supabase-config
+  namespace: production
+data:
+  SUPABASE_REFERENCE_ID: yipnhkmklmbuxjwzpipg
+  SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
+  SUPABASE_GRAPHQL_URL: https://yipnhkmklmbuxjwzpipg.supabase.co/graphql/v1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-supabase-config
+  namespace: staging
+data:
+  SUPABASE_REFERENCE_ID: iowrwceetpycxkpuqssj
+  SUPABASE_URL: https://iowrwceetpycxkpuqssj.supabase.co
+  SUPABASE_GRAPHQL_URL: https://iowrwceetpycxkpuqssj.supabase.co/graphql/v1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-supabase-config
+  namespace: commit
+data:
+  SUPABASE_REFERENCE_ID: cpapirdmtzjahhavfbab
+  SUPABASE_URL: https://cpapirdmtzjahhavfbab.supabase.co
+  SUPABASE_GRAPHQL_URL: https://cpapirdmtzjahhavfbab.supabase.co/graphql/v1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-repo-job-config
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-repo-job-config
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-repo-job-config
+  namespace: commit
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-open-api-config
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-open-api-config
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-open-api-config
+  namespace: commit
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-nodejs-config
+  namespace: production
+data:
+  NODE_ENV: production
+  TZ: Europe/Berlin
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-nodejs-config
+  namespace: staging
+data:
+  NODE_ENV: production
+  TZ: Europe/Berlin
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-nodejs-config
+  namespace: commit
+data:
+  NODE_ENV: production
+  TZ: Europe/Berlin
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-preview-job-config
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-preview-job-config
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-preview-job-config
+  namespace: commit
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-graphql-gateway-secret
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-graphql-gateway-secret
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-graphql-gateway-secret
+  namespace: commit
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-github-secret
+  namespace: production
+data:
+  GITHUB_API_TOKEN: Z2hwX1VHekVNM3VZeVNxZnkyWGtybUFUVWdGN1Q0QlQ5bTN1blRoQg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-github-secret
+  namespace: staging
+data:
+  GITHUB_API_TOKEN: Z2hwX1VHekVNM3VZeVNxZnkyWGtybUFUVWdGN1Q0QlQ5bTN1blRoQg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-github-secret
+  namespace: commit
+data:
+  GITHUB_API_TOKEN: Z2hwX1VHekVNM3VZeVNxZnkyWGtybUFUVWdGN1Q0QlQ5bTN1blRoQg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-supabase-secret
+  namespace: production
+data:
+  SUPABASE_ANON_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5scGNHNW9hMjFyYkcxaWRYaHFkM3B3YVhCbklpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUyT1Rjek56UTJPREFzSW1WNGNDSTZNakF4TWprMU1EWTRNSDAuQWJaZzg1SU5HQmF5UGlHcHM5LTAtdUpvcjA1U1RENHI4WkQ1X2ZSd0Zwcwo=
+  SUPABASE_SERVICE_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5scGNHNW9hMjFyYkcxaWRYaHFkM3B3YVhCbklpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVFk1TnpNM05EWTRNQ3dpWlhod0lqb3lNREV5T1RVd05qZ3dmUS5GSzQzbUt6bTNBcmd0dzhDRG5sMG8tTE1lOHZzWlNYeWtZZzV1bWw4c1pNCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-supabase-secret
+  namespace: staging
+data:
+  SUPABASE_ANON_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1sdmQzSjNZMlZsZEhCNVkzaHJjSFZ4YzNOcUlpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUyT1Rjek9EVTVOalFzSW1WNGNDSTZNakF4TWprMk1UazJOSDAueVA4VGxCUUdxM2VlcW5odHhUN01TaWF3bXNRbE1HbnRGWFlyZ0F1aHg1awo=
+  SUPABASE_SERVICE_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1sdmQzSjNZMlZsZEhCNVkzaHJjSFZ4YzNOcUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVFk1TnpNNE5UazJOQ3dpWlhod0lqb3lNREV5T1RZeE9UWTBmUS5oa2RKMHM1R2dHQ3owVmp5UTkzV2d2SWoyYmRRMGxXMlRsXy16UkVfaWtZCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-supabase-secret
+  namespace: commit
+data:
+  SUPABASE_ANON_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1Od1lYQnBjbVJ0ZEhwcVlXaG9ZWFptWW1GaUlpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUyT1RnMk5EazBNVFVzSW1WNGNDSTZNakF4TkRJeU5UUXhOWDAuLXJCRFNwdWstQmVaVjNSMTVfVjdES0ZEU09kbGt3ekJHbzQ5dUh0Z1EzRQo=
+  SUPABASE_SERVICE_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1Od1lYQnBjbVJ0ZEhwcVlXaG9ZWFptWW1GaUlpd2ljbTlzWlNJNkluTmxjblpwWTJWZmNtOXNaU0lzSW1saGRDSTZNVFk1T0RZME9UUXhOU3dpWlhod0lqb3lNREUwTWpJMU5ERTFmUS5MWWpqd2dicmtaSW0wU0pXNkUyNEpBWFlFblhrWlZzYkZhenFGU0pkU0tZCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-repo-job-secret
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-repo-job-secret
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-repo-job-secret
+  namespace: commit
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-digitalocean-secret
+  namespace: production
+data:
+  DIGITALOCEAN_ACCESS_TOKEN: ZG9wX3YxX2JmYmQyY2Q0NjE0N2MwNTcwMTkwMjcxNjlmNTY0OTc0ZjIzNjY2MjMwMGZmNzhiYTBkNTgyZDgwOTY1MDVhODkK
+  DIGITALOCEAN_CLUSTER_NAME: dHJ1ZmZsZS1haS1jbHVzdGVyCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-digitalocean-secret
+  namespace: staging
+data:
+  DIGITALOCEAN_ACCESS_TOKEN: ZG9wX3YxX2JmYmQyY2Q0NjE0N2MwNTcwMTkwMjcxNjlmNTY0OTc0ZjIzNjY2MjMwMGZmNzhiYTBkNTgyZDgwOTY1MDVhODkK
+  DIGITALOCEAN_CLUSTER_NAME: dHJ1ZmZsZS1haS1jbHVzdGVyCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-digitalocean-secret
+  namespace: commit
+data:
+  DIGITALOCEAN_ACCESS_TOKEN: ZG9wX3YxX2JmYmQyY2Q0NjE0N2MwNTcwMTkwMjcxNjlmNTY0OTc0ZjIzNjY2MjMwMGZmNzhiYTBkNTgyZDgwOTY1MDVhODkK
+  DIGITALOCEAN_CLUSTER_NAME: dHJ1ZmZsZS1haS1jbHVzdGVyCg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-graphql-server-secret
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-graphql-server-secret
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-graphql-server-secret
+  namespace: commit
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-open-api-secret
+  namespace: production
+data:
+  OPENAI_API_KEY: c2stNUVnVjQzSjA1UmN1ZEJBTFFSdmhUM0JsYmtGSlpweG14TklmQmRiT0Zsa1liQW9q
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-open-api-secret
+  namespace: staging
+data:
+  OPENAI_API_KEY: c2stNUVnVjQzSjA1UmN1ZEJBTFFSdmhUM0JsYmtGSlpweG14TklmQmRiT0Zsa1liQW9q
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-open-api-secret
+  namespace: commit
+data:
+  OPENAI_API_KEY: c2stNUVnVjQzSjA1UmN1ZEJBTFFSdmhUM0JsYmtGSlpweG14TklmQmRiT0Zsa1liQW9q
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-scraping-bot-secret
+  namespace: production
+data:
+  SCRAPING_BOT_USER_NAME: dHlwZXNjcmlwdDIwMjMK
+  SCRAPING_BOT_API_KEY: ZFR1UVZpcTVSWE4yWENSb01BRnpZQnQ5MA==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-scraping-bot-secret
+  namespace: staging
+data:
+  SCRAPING_BOT_USER_NAME: dHlwZXNjcmlwdDIwMjMK
+  SCRAPING_BOT_API_KEY: ZFR1UVZpcTVSWE4yWENSb01BRnpZQnQ5MA==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-scraping-bot-secret
+  namespace: commit
+data:
+  SCRAPING_BOT_USER_NAME: dHlwZXNjcmlwdDIwMjMK
+  SCRAPING_BOT_API_KEY: ZFR1UVZpcTVSWE4yWENSb01BRnpZQnQ5MA==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-ui-secret
+  namespace: production
+data:
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5scGNHNW9hMjFyYkcxaWRYaHFkM3B3YVhCbklpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUyT1Rjek56UTJPREFzSW1WNGNDSTZNakF4TWprMU1EWTRNSDAuQWJaZzg1SU5HQmF5UGlHcHM5LTAtdUpvcjA1U1RENHI4WkQ1X2ZSd0Zwcwo=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-ui-secret
+  namespace: staging
+data:
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1sdmQzSjNZMlZsZEhCNVkzaHJjSFZ4YzNOcUlpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUyT1Rjek9EVTVOalFzSW1WNGNDSTZNakF4TWprMk1UazJOSDAueVA4VGxCUUdxM2VlcW5odHhUN01TaWF3bXNRbE1HbnRGWFlyZ0F1aHg1awo=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-ui-secret
+  namespace: commit
+data:
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW1Od1lYQnBjbVJ0ZEhwcVlXaG9ZWFptWW1GaUlpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUyT1RnMk5EazBNVFVzSW1WNGNDSTZNakF4TkRJeU5UUXhOWDAuLXJCRFNwdWstQmVaVjNSMTVfVjdES0ZEU09kbGt3ekJHbzQ5dUh0Z1EzRQo=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-preview-job-secret
+  namespace: production
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-preview-job-secret
+  namespace: staging
+data:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: truffle-ai-preview-job-secret
+  namespace: commit
+data:

@@ -3,7 +3,7 @@ data "digitalocean_kubernetes_versions" "this" {
 }
 
 resource "digitalocean_kubernetes_cluster" "this" {
-  name                 = var.cluster_name
+  name                 = "${var.repo_name}-cluster"
   region               = "fra1"
   version              = data.digitalocean_kubernetes_versions.this.latest_version # Grab the latest version slug from `doctl kubernetes options versions`
   vpc_uuid             = null

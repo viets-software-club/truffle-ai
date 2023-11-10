@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "dev:k8s": "deno run --allow-read --allow-write --watch generate-k8s-env.ts",
+    "dev:envs": "deno run --allow-read --allow-write --watch generate-env.ts",
+    "generate:k8s": "deno run --allow-read --allow-write  generate-k8s-env.ts",
+    "generate:envs": "deno run --allow-read --allow-write generate-env.ts"
+  }
+}

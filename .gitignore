@@ -53,3 +53,4 @@ secret
 .terraform
 .terraform*
 !secret.tf
+.tfstate

@@ -3,12 +3,12 @@
   "license": "MIT",
   "private": true,
   "config": {
-    "env": "./config/envs/source-env-vars.sh"
+    "env": "./config/variables/source-env-vars.sh"
   },
   "scripts": {
     "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
     "test": "",
-    "dev": "dev() { for i in \"$@\"; do $npm_package_config_env npm run build -w \"$i\"; done; }; dev",
+    "dev": "dev() { for i in \"$@\"; do $npm_package_config_env npm run dev -w \"$i\"; done; }; dev",
     "dev:app": "$npm_package_config_env concurrently -n gateway,server,repo-job,ui -c 'yellow,magenta,blue,green' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server' 'npm run dev -w repo-job' 'npm run dev -w ui'",
     "dev:jobs": "$npm_package_config_env concurrently -n repo-job -c 'blue' 'npm run dev -w repo-job'",
     "dev:graphql-backend": "$npm_package_config_env concurrently -n gateway,server -c 'yellow,magenta' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server'",
@@ -16,7 +16,7 @@
     "build:app": "$npm_package_config_env concurrently -n gateway,server,repo-job,ui -c 'yellow,magenta,blue,green' 'npm run build -w graphql-gateway' 'npm run build -w graphql-server' 'npm run build -w repo-job' 'npm run build -w ui'",
     "build:jobs": "$npm_package_config_env concurrently -n repo-job -c 'blue,cyan' 'npm run build -w repo-job' 'npm run build -w preview-job'",
     "build:graphql-backend": "$npm_package_config_env concurrently -n gateway,server -c 'yellow,magenta' 'npm run build -w graphql-gateway' 'npm run build -w graphql-server'",
-    "serve": "serve() { for i in \"$@\"; do $npm_package_config_env npm run build -w \"$i\"; done; }; serve",
+    "serve": "serve() { for i in \"$@\"; do $npm_package_config_env npm run serve -w \"$i\"; done; }; serve",
     "serve:app": "$npm_package_config_env concurrently -n gateway,server,ui -c 'yellow,magenta,green' 'sleep 2 && npm run serve -w graphql-gateway' 'npm run serve -w graphql-server' 'npm run serve -w ui'",
     "serve:graphql-backend": "$npm_package_config_env concurrently -n gateway,server -c 'yellow,magenta' 'sleep 2 && npm run serve -w graphql-gateway' 'npm run serve -w graphql-server'",
     "lint": "concurrently -n gateway,server,ui,repo-job,preview-job -c 'yellow,magenta,green,blue,cyan' 'npm run lint -w graphql-gateway' 'npm run lint -w graphql-server' 'npm run lint -w repo-job' 'npm run lint -w ui'",

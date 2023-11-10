@@ -1,1 +1,2 @@
 GRAPHQL_GATEWAY_PORT: '3001'
+GRAPHQL_PUBLIC_URL: https://0.0.0.0/api/graphql

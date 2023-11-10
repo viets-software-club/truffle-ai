@@ -6,11 +6,13 @@ FROM node:21-alpine AS build
 ## init envs
 ARG SUPABASE_URL
 ARG SUPABASE_ANON_KEY
-ARG API_GRAPHQL_URL
+ARG GRAPHQL_URL
+ARG SITE_URL
 ENV NODE_ENV build
 ENV NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-ENV NEXT_PUBLIC_API_GRAPHQL_URL=${API_GRAPHQL_URL}
+ENV NEXT_PUBLIC_API_GRAPHQL_URL=${GRAPHQL_URL}
+ENV NEXT_PUBLIC_SITE_URL={SITE_URL}
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 ## setup workspaces
@@ -22,7 +24,6 @@ COPY ./packages/ui ./packages/ui/
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w ui
 RUN apk del build-dependencies
-RUN apk update && apk add bash
 
 # build .next
 RUN npm run build -w ui

@@ -17,7 +17,8 @@ jobs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
-      NEXT_PUBLIC_API_GRAPHQL_URL: ${{ vars.NEXT_PUBLIC_API_GRAPHQL_URL }}
+      GRAPHQL_GATEWAY_URL: ${{ vars.GRAPHQL_GATEWAY_URL }}
+      GRAPHQL_PUBLIC_URL: ${{ vars.GRAPHQL_PUBLIC_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
     steps:
@@ -42,7 +43,7 @@ jobs:
         PACKAGE_NAME: [ui, graphql-gateway, graphql-server, repo-job, preview-job]
         include:
           - PACKAGE_NAME: ui
-            BUILD_ARGS: --build-arg SUPABASE_URL=${{needs.variables.outputs.SUPABASE_URL}} --build-arg API_GRAPHQL_URL=${{needs.variables.outputs.NEXT_PUBLIC_API_GRAPHQL_URL}}
+            BUILD_ARGS: --build-arg SUPABASE_URL=${{needs.variables.outputs.SUPABASE_URL}} --build-arg GRAPHQL_URL=${{needs.variables.outputs.GRAPHQL_PUBLIC_URL}}
           - PACKAGE_NAME: graphql-gateway
             BUILD_ARGS: --build-arg GRAPHQL_SERVER_URL=${{ needs.variables.outputs.GRAPHQL_SERVER_URL }} --build-arg SUPABASE_URL=${{ needs.variables.outputs.SUPABASE_URL }} --build-arg SUPABASE_GRAPHQL_URL=${{needs.variables.outputs.SUPABASE_GRAPHQL_URL}}
     uses: ./.github/workflows/reusable-ghcr-image.yml

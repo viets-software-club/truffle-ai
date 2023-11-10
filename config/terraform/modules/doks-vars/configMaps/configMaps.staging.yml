@@ -22,6 +22,7 @@ metadata:
   namespace: staging
 data:
   GRAPHQL_GATEWAY_PORT: "3001"
+  GRAPHQL_PUBLIC_URL: https://0.0.0.0/api/graphql
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -29,12 +30,16 @@ metadata:
   name: truffle-ai-ui-config
   namespace: staging
 data:
-  NEXT_PUBLIC_API_GRAPHQL_URL: https://0.0.0.0/api/graphql
-  NEXT_PUBLIC_API_URL: https://0.0.0.0/api
-  NEXT_PUBLIC_SITE_URL: https://0.0.0.0
-  NEXT_PUBLIC_SUPABASE_URL: http://0.0.0.0:3002
+  NEXT_PUBLIC_SUPABASE_URL: https://iowrwceetpycxkpuqssj.supabase.co
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truffle-ai-ui-config
+  namespace: staging
+data:
   UI_PORT: "3000"
-  NEXT_PUBLIC_PORT: "3000"
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://0.0.0.0/api/graphql
 ---
 apiVersion: v1
 kind: ConfigMap

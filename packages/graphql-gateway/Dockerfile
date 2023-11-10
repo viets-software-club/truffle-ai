@@ -47,4 +47,4 @@ COPY --from=build /app/packages/graphql-gateway/package.json ./
 COPY --from=build /app/packages/graphql-gateway/.mesh ./.mesh
 RUN npm ci --omit=dev
 
-CMD ["npm", "run", "serve:prod"]
+CMD ["npm", "run", "serve"]

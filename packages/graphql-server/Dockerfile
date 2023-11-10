@@ -31,4 +31,4 @@ COPY --from=build /app/packages/graphql-server/dist ./dist
 # install production dependencies
 RUN npm ci --omit=dev
 ## serve
-CMD ["npm", "run", "serve:prod"]
+CMD ["npm", "run", "serve"]

@@ -39,16 +39,14 @@ ENV PORT=${UI_PORT}
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV HOSTNAME "0.0.0.0"
-## add nodejs group and nextjs user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-## set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-## set user
-USER nextjs
+
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./public
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./.next/standalone
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./.next/static
+
+USER nextjs
 ## serve
 CMD ["node", ".next/standalone/packages/ui/server.js"]

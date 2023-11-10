@@ -3,6 +3,7 @@ name: truffle-ai
 services:
   graphql-server:
     build:
+      container_name: graphql-server
       context: ../../
       dockerfile: ./packages/graphql-server/Dockerfile
     ports:
@@ -11,6 +12,7 @@ services:
       - ../../.env.commit
   graphql-gateway:
     build:
+      container_name: graphql-gateway
       context: ../../
       dockerfile: ./packages/graphql-gateway/Dockerfile
       args:
@@ -23,18 +25,21 @@ services:
     env_file:
       - ../../.env.commit
   repo-job:
+    container_name: repo-job
     build:
       context: ../../
       dockerfile: ./packages/repo-job/Dockerfile
     env_file:
       - ../../.env.commit
   preview-job:
+    container_name: preview-job
     build:
       context: ../../
       dockerfile: ./packages/preview-job/Dockerfile
     env_file:
       - ../../.env.commit
   ui:
+    container_name: ui
     build:
       context: ../../
       dockerfile: ./packages/ui/Dockerfile

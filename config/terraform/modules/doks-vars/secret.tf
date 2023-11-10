@@ -4,7 +4,7 @@ resource "kubernetes_secret" "github_secret" {
     namespace = var.namespace_name
   }
   data = {
-    GITHUB_API_TOKEN = var.secret_github_api_token
+    GITHUB_API_TOKEN = base64encode(var.secret_github_api_token)
   }
 }
 resource "kubernetes_secret" "graphql_gateway_secret" {
@@ -29,7 +29,7 @@ resource "kubernetes_secret" "open_api_secret" {
     namespace = var.namespace_name
   }
   data = {
-    OPEN_API_KEY = var.secret_open_api_key
+    OPEN_API_KEY = base64encode(var.secret_open_api_key)
   }
 }
 resource "kubernetes_secret" "preview_job_secret" {
@@ -55,7 +55,7 @@ resource "kubernetes_secret" "scraping_bot_secret" {
   }
   data = {
     SCRAPING_BOT_USER_NAME = var.secret_scraping_bot_user_name
-    SCRAPING_BOT_API_KEY   = var.secret_scraping_bot_api_key
+    SCRAPING_BOT_API_KEY   = base64encode(var.secret_scraping_bot_api_key)
   }
 }
 resource "kubernetes_secret" "supabase_secret" {

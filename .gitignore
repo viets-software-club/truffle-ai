@@ -3,13 +3,15 @@ dist
 out
 build
 target
+
+# Next.js
 .next
-/ui/.next
-secrets.yml
-.vscode
-secrets.*
-.deployment
+
+# GraphQL Gateway
 .mesh
+
+# GitHub Actions
+.deployment
 
 # Dependencies
 node_modules
@@ -19,16 +21,13 @@ package-lock.json
 *.log
 pids
 
-# Test output
-test/**/out*
-test/**/next-env.d.ts
-.DS_Store
-test/tmp/**
-test/traces
+# Tests
+test/**
+*.test.*
 
 # Editors
 **/.idea
-**/.#*
+.vscode
 .nvmrc
 
 # Vercel
@@ -39,18 +38,22 @@ test/traces
 *.tsbuildinfo
 .eslintcache
 
-# Other
-.env
-.env.local
+# Secrets and Envs
 .env*
-
-config/envs/generated-k8s.yml
 secret.*
-test*
-config/envs/external-secrets
-envs.yaml
-secret
-.terraform
-.terraform*
+secrets.*
 !secret.tf
-.tfstate
+secrets
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraformrc
+terraform.rc
+.terraform*
+
+# Other
+.DS_Store

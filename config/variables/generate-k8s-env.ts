@@ -1,4 +1,11 @@
-import { camelCase, parseAllDocuments, path, stringify, walk } from "./deps.ts";
+import {
+  Base64,
+  camelCase,
+  parseAllDocuments,
+  path,
+  stringify,
+  walk,
+} from "./deps.ts";
 const namespaces = ["production", "staging", "commit"];
 
 const addSpacesToStringfiedData = (str: string) => {
@@ -6,18 +13,31 @@ const addSpacesToStringfiedData = (str: string) => {
   lines.pop();
   return lines.map((elem) => "  " + elem + "\n").join("");
 };
+const encode = (data: { [key: string]: string }) => {
+  const newData = {};
+  for (const [key, value] of Object.entries(data)) {
+    Object.assign(newData, { [key]: Base64.fromString(value) });
+  }
+  return newData;
+};
 const createResource = (
   kind: string,
   namespace: string,
   repoName: string,
   resourceName: string,
-  data: object | null,
+  data: { [key: string]: string } | null,
 ): string => {
   return `apiVersion: v1\nkind: ${kind}\nmetadata:
   name: ${repoName}-${resourceName}-config
   namespace: ${namespace}
 data:
-${data != null ? addSpacesToStringfiedData(stringify(data)) : ""}---
+${
+    data != null
+      ? addSpacesToStringfiedData(
+        stringify(kind === "Secret" ? encode(data) : data),
+      )
+      : ""
+  }---
 `;
 };
 
@@ -27,7 +47,7 @@ const writeResource = async (
   namespace: string,
   repoName: string,
   name: string,
-  data: object,
+  data: { [key: string]: string } | null,
 ) => {
   await Deno.writeTextFile(
     `${destDir}/${camelCase(kind)}s.${namespace}.yml`,
@@ -43,7 +63,7 @@ const writeResources = async (
   kind: string,
   repoName: string,
   name: string,
-  data: object,
+  data: { [key: string]: string } | null,
 ) => {
   await namespaces.map(async (namespace: string) => {
     await Deno.writeTextFile(
@@ -92,6 +112,9 @@ const make = async (
     const ymlDocumentsInFile = parseAllDocuments(
       await Deno.readTextFile(file.path),
     );
+    if (ymlDocumentsInFile.length === 0) {
+      console.info(`${file.path} is empty`);
+    }
     if (ymlDocumentsInFile.length > 1) {
       console.error("Not possible to have multi document yml");
       Deno.exit();
@@ -137,8 +160,10 @@ const generateNamespacedResource = async (
 };
 
 const repoName = "truffle-ai";
-const outConfigMap = path.dirname("../terraform/modules/doks-vars/configMaps");
-const outSecret = path.dirname("../terraform/modules/doks-vars/secrets");
+const outConfigMap = path.resolve(
+  "../terraform/modules/doks-vars/configMaps",
+);
+const outSecret = path.resolve("../terraform/modules/doks-vars/secrets");
 console.info(`Writing ConfigMaps to ${outConfigMap}`);
 await generateNamespacedResource(
   "ConfigMap",
@@ -146,6 +171,7 @@ await generateNamespacedResource(
   outConfigMap,
   repoName,
 );
+console.info("-".repeat(20));
 console.info(`Writing Secrets to ${outSecret}`);
 await generateNamespacedResource(
   "Secret",
@@ -153,3 +179,5 @@ await generateNamespacedResource(
   outSecret,
   repoName,
 );
+console.info("-".repeat(20));
+console.info("Finished writing k8s envs");

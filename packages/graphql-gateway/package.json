@@ -8,7 +8,6 @@
     "dev": "mesh dev",
     "build": "mesh build",
     "serve": "mesh start",
-    "serve:prod": "mesh start",
     "lint": "eslint ."
   },
   "dependencies": {

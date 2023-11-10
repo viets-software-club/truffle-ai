@@ -5,12 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "serve": "next start",
-    "codegen": "export $(cat .env.local | grep -v \"#\" | xargs) && graphql-codegen --config codegen.config.ts",
     "lint": "eslint ./src",
-    "lint:debug": "eslint ./src --debug",
-    "lint:fix": "eslint ./src --fix",
-    "prettier:all": "prettier --write .",
-    "prettier:check": "prettier --check .",
+    "codegen": "export $(cat .env.local | grep -v \"#\" | xargs) && graphql-codegen --config codegen.config.ts",
     "react:update-react-imports": "npx react-codemod update-react-imports"
   },
   "dependencies": {

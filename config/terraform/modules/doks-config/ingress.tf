@@ -122,6 +122,7 @@ resource "kubernetes_ingress_v1" "this" {
       host = var.subdomain != "" ? "${var.subdomain}.${var.domain}" : var.domain
       http {
         path {
+          path_type = "Prefix"
           path = "/api"
           backend {
             service {
@@ -133,6 +134,7 @@ resource "kubernetes_ingress_v1" "this" {
           }
         }
         path {
+          path_type = "Prefix"
           path = "/"
           backend {
             service {

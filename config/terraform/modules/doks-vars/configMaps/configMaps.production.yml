@@ -27,15 +27,6 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: truffle-ai-ui-config
-  namespace: production
-data:
-  UI_PORT: "3000"
-  NEXT_PUBLIC_API_GRAPHQL_URL: https://0.0.0.0/api/graphql
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: truffle-ai-scraping-bot-config
   namespace: production
 data:
@@ -88,4 +79,6 @@ metadata:
   namespace: production
 data:
   NEXT_PUBLIC_SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
+  UI_PORT: "3000"
+  NEXT_PUBLIC_API_GRAPHQL_URL: https://0.0.0.0/api/graphql
 ---

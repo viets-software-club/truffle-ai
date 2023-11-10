@@ -29,4 +29,4 @@ COPY --from=build /app/packages/repo-job/dist ./dist
 ## install production dependencies
 RUN npm ci --omit=dev
 ## serve
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start"]

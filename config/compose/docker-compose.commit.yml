@@ -2,8 +2,8 @@ version: '3.9'
 name: truffle-ai
 services:
   graphql-server:
+    container_name: graphql-server
     build:
-      container_name: graphql-server
       context: ../../
       dockerfile: ./packages/graphql-server/Dockerfile
     ports:
@@ -11,8 +11,8 @@ services:
     env_file:
       - ../../.env.commit
   graphql-gateway:
+    container_name: graphql-gateway
     build:
-      container_name: graphql-gateway
       context: ../../
       dockerfile: ./packages/graphql-gateway/Dockerfile
       args:

@@ -1,7 +1,7 @@
 import { validateEmail, validatePassword } from "@/util/validate";
 import { SupabaseClient } from "@supabase/auth-helpers-react";
 
-const redirectUrl = `${window.location.host}/`;
+const redirectUrl = typeof window !== "undefined" ? `${window.location.host}/` : '';
 
 export const signInWithGoogle = async (supabaseClient: SupabaseClient) => {
   const { error } = await supabaseClient.auth.signInWithOAuth({

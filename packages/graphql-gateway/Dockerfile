@@ -45,6 +45,8 @@ WORKDIR /app/packages/graphql-gateway
 COPY --from=build /app/package-lock.json ./
 COPY --from=build /app/packages/graphql-gateway/package.json ./
 COPY --from=build /app/packages/graphql-gateway/.mesh ./.mesh
+COPY --from=build /app/packages/graphql-gateway/src ./src
+
 RUN npm ci --omit=dev
 
 CMD ["npm", "run", "serve"]

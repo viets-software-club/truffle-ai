@@ -8,3 +8,6 @@ output "load_balancer_ip" {
 output "cert_uuid" {
   value = module.certificate.cert_uuid
 }
+output "host" {
+  value = data.kubernetes_service.nginx_ingress_controller.spec.rule.host
+}

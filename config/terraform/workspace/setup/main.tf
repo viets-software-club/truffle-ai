@@ -1,12 +1,12 @@
-# module "certificate" {
-#   source    = "../../modules/certificate"
-#   repo_name = var.repo_name
-#   domain    = var.domain
-# }
+module "certificate" {
+  source    = "../../modules/certificate"
+  repo_name = var.repo_name
+  domain    = var.domain
+}
 module "doks" {
   source    = "../../modules/doks"
   repo_name = var.repo_name
-  cert_uuid = "" //module.certificate.cert_uuid
+  cert_uuid = module.certificate.cert_uuid
 }
 module "dns" {
   source           = "../../modules/dns"

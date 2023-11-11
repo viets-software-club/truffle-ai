@@ -1,10 +1,10 @@
 resource "kubernetes_namespace" "this" {
   metadata {
     annotations   = null
-    name          = terraform.workspace
+    name          = var.namespace_name
     generate_name = null
     labels = {
-      name = "${terraform.workspace}"
+      name = var.namespace_name
     }
   }
 }

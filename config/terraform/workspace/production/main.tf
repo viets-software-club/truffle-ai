@@ -9,7 +9,7 @@ module "init-env" {
   secret_ghcr_access_token      = var.secret_ghcr_access_token
   secret_ghcr_username          = var.secret_ghcr_username
   repo_name                     = var.repo_name
-  image_tag                     = var.image_tag
+  image_tag                     = "latest"
   git_commit_tag                = var.git_commit_tag
   git_commit_message            = var.git_commit_message
   is_prefix_commit_sha          = false

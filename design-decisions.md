@@ -5,3 +5,4 @@
 - We have static sites, so we can show loading screens the fastest, the frontend app does not communicate directly with the backend (e.g. it doesn't do ssr), we can therefore put the frontend in a separate Kubernetes Pod, and we also do not need a service to connect them
 - --env-file in docker is not the same as env_file in the docker compose file, the former is used for the compose file the latter is used for containers
 - Secrets in Github Actions for reusable workflows have to be defined in the caller workflow and again in the reusable workflow, one can skip the former with the inherit property
+- Merge terraform/setup with env when moving to multiple clusters for each environment! Due to using one cluster the terraform/setup workspace was created

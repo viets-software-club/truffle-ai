@@ -11,7 +11,7 @@ on:
 jobs:
   variables:
     name: 'Variables'
-    environment: staging
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     runs-on: ubuntu-latest
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
@@ -49,7 +49,7 @@ jobs:
     uses: ./.github/workflows/reusable-ghcr-image.yml
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
-      ENVIRONMENT: staging
+      ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit

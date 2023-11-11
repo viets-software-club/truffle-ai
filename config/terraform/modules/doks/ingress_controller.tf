@@ -13,14 +13,14 @@ resource "helm_release" "nginx_ingress" {
     value = "${var.repo_name}-cluster-nginx-ingress"
     type  = "string"
   }
-  set {
-    name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id"
-    value = var.cert_uuid
-    type  = "string"
-  }
+  # set {
+  #   name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id"
+  #   value = var.cert_uuid
+  #   type  = "string"
+  # }
   set {
     name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-protocol"
-    value = "https"
+    value = "http"
   }
   set {
     name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-size-unit"
@@ -32,11 +32,11 @@ resource "helm_release" "nginx_ingress" {
     value = "false"
     type  = "string"
   }
-  set {
-    name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-redirect-http-to-https"
-    value = "true"
-    type  = "string"
-  }
+  # set {
+  #   name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-redirect-http-to-https"
+  #   value = "true"
+  #   type  = "string"
+  # }
   set {
     name  = "service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-enable-proxy-protocol"
     value = "true"
@@ -53,7 +53,7 @@ resource "helm_release" "nginx_ingress" {
     type  = "string"
   }
   set {
-    name  = "service.targetPorts.https"
+    name  = "service.targetPorts.http"
     value = "80"
     type  = "string"
   }

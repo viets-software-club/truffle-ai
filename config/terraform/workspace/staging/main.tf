@@ -13,7 +13,6 @@ module "init-env" {
   git_commit_tag                = var.git_commit_tag
   git_commit_message            = var.git_commit_message
   is_prefix_commit_sha          = false
-  image_repository_url          = var.image_repository_url
   fqdn                          = "staging.${var.domain}"
   namespace_name                = terraform.workspace
 }

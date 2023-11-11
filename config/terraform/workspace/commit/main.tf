@@ -16,3 +16,9 @@ module "init-env" {
   fqdn                          = "${var.git_commit_tag}.commit.${var.domain}"
   namespace_name                = terraform.workspace
 }
+
+module "cleanup" {
+  source         = "../../modules/doks-cleanup"
+  namespace_name = terraform.workspace
+  repo_name      = var.repo_name
+}

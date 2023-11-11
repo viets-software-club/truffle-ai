@@ -161,9 +161,9 @@ const generateNamespacedResource = async (
 
 const repoName = "truffle-ai";
 const outConfigMap = path.resolve(
-  "../terraform/modules/doks-vars/configMaps",
+  "../terraform/_configMaps",
 );
-const outSecret = path.resolve("../terraform/modules/doks-vars/secrets");
+const outSecret = path.resolve("../terraform/_secrets");
 console.info(`Writing ConfigMaps to ${outConfigMap}`);
 await generateNamespacedResource(
   "ConfigMap",

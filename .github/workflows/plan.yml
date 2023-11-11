@@ -40,7 +40,7 @@ jobs:
     needs: variables
     strategy:
       matrix:
-        PACKAGE_NAME: [ui, graphql-gateway, graphql-server, repo-job, preview-job]
+        PACKAGE_NAME: [ui, graphql-gateway, graphql-server, repo-job]
         include:
           - PACKAGE_NAME: ui
             BUILD_ARGS: --build-arg SUPABASE_URL="${{needs.variables.outputs.SUPABASE_URL}}" --build-arg GRAPHQL_URL="${{needs.variables.outputs.GRAPHQL_PUBLIC_URL}}"

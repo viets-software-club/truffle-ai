@@ -31,12 +31,6 @@ variable "secret_ghcr_username" {
   type      = string
   sensitive = true
 }
-variable "fqdn" {
-  type = string
-}
-variable "image_repository_url" {
-  type = string
-}
 variable "image_tag" {
   type = string
 }

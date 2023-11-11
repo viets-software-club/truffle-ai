@@ -29,7 +29,7 @@
     "variables:k8s": "cd config/variables && deno task generate:k8s",
     "variables:env": "cd config/variables && deno task generate:env",
     "doctl:doks-save": "doctl kubernetes cluster kubeconfig save truffle-ai-cluster",
-    "terraform": "t() { cd config/terraform/workspace/$1 && terraform ${@:2}; }; t",
+    "terraform": "t() { cd config/terraform/workspace/$1 && TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform ${@:2}; }; t",
     "terraform:cluster": "cd config/terraform/workspace/cluster && TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply -auto-approve",
     "terraform:setup": "cd config/terraform/workspace/setup && TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply -auto-approve",
     "terraform:initialize": "npm run terraform:cluster; npm run terraform:setup",

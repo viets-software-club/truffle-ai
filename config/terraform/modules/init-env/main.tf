@@ -33,7 +33,7 @@ module "doks-single-deploy" {
   namespace_name       = var.namespace_name
   resource_prefix      = local.resource_prefix
   fqdn                 = var.fqdn
-  image_repository_url = var.image_repository_url
+  image_repository_url = "${var.image_repository_url}/${terraform.workspace}"
   image_tag            = var.image_tag
   change_cause         = local.change_cause
   repo_name            = var.repo_name

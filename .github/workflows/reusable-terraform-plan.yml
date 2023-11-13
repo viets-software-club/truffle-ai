@@ -17,6 +17,7 @@ env:
   TF_WORKSPACE: ${{ inputs.ENVIRONMENT }}
   CONFIG_DIRECTORY: './config/terraform'
   TF_VAR_git_commit_tag: '"${{ inputs.GIT_COMMIT_TAG }}"'
+  TF_VAR_git_commit_tags: '["${{ inputs.GIT_COMMIT_TAG }}"]'
   TF_VAR_git_commit_message: '"${{ inputs.GIT_COMMIT_MESSAGE }}"'
   TF_VAR_image_tag: '"${{ inputs.GIT_COMMIT_TAG }}"'
 jobs:

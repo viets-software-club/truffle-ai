@@ -14,7 +14,7 @@ export default function withUrql<P extends JSX.IntrinsicAttributes>(
     const session = useSession()
 
     const client = new Client({
-      url: process.env.GRAPHQL_URL,
+      url: process.env.NEXT_PUBLIC_GRAPHQL_URL,
       exchanges: [fetchExchange],
       fetchOptions: () => {
         if (!session?.access_token) return {}

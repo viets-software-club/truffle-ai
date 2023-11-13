@@ -240,17 +240,17 @@ resource "kubernetes_deployment" "ui_deployment" {
         container {
           env_from {
             config_map_ref {
-              name = "${var.repo_name}-${var.resource_prefix}-graphql-url-config"
-            }
-          }
-          env_from {
-            config_map_ref {
               name = "${var.repo_name}-ui-config"
             }
           }
           env_from {
             secret_ref {
               name = "${var.repo_name}-ui-secret"
+            }
+          }
+          env_from {
+            config_map_ref {
+              name = "${var.repo_name}-${var.resource_prefix}-graphql-url-config"
             }
           }
           name  = "${local.ui}-container"

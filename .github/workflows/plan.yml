@@ -11,9 +11,9 @@ on:
 jobs:
   variables:
     name: 'Variables'
-    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || (github.ref_name == 'production' && 'production') || 'staging' }}
+    environment: production
     env:
-      environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || (github.ref_name == 'production' && 'production') || 'staging' }}
+      environment: production
     runs-on: ubuntu-latest
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
@@ -23,7 +23,7 @@ jobs:
       # GRAPHQL_PUBLIC_URL: ${{ vars.GRAPHQL_PUBLIC_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
-      GRAPHQL_URL: ${{ format('${0}${1}truffle.tools/api/graphql', env.environment == 'staging' && '' || '${{ steps.git_commit_tag.outputs.git_commit_tag }}.', env.environment == 'production' && '' || '${{env.environment}}.') }}
+      GRAPHQL_URL: ${{ format('${0}${1}truffle.tools/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('${0}.',env.environment)) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/reusable-ghcr-image.yml
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
-      ENVIRONMENT: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || (github.ref_name == 'production' && 'production') || 'staging' }}
+      ENVIRONMENT: production
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit

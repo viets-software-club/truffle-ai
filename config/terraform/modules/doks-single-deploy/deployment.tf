@@ -248,11 +248,11 @@ resource "kubernetes_deployment" "ui_deployment" {
               name = "${var.repo_name}-ui-secret"
             }
           }
-          env_from {
-            config_map_ref {
-              name = "${var.repo_name}-${var.resource_prefix}-graphql-url-config"
-            }
-          }
+          # env_from {
+          #   config_map_ref {
+          #     name = "${var.repo_name}-${var.resource_prefix}-graphql-url-config"
+          #   }
+          # }
           name  = "${local.ui}-container"
           image = "${var.image_repository_url}/ui:${var.image_tag}"
           port {

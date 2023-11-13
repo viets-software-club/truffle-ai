@@ -14,7 +14,7 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
     # min_ready_seconds = null
     # paused = null
     # progress_deadline_seconds = null
-    replicas               = 2
+    replicas               = 1
     revision_history_limit = 0
     strategy {
       type = "RollingUpdate"
@@ -75,7 +75,7 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
           # image_pull_policy
           # lifecycle
           # lifeness_probe
-          name  = "${local.resource_prefix}-graphql-gateway-container"
+          name  = "${var.resource_prefix}-graphql-gateway-container"
           image = "${var.image_repository_url}/graphql-gateway:${var.image_tag}"
           port {
             container_port = 3001
@@ -154,19 +154,19 @@ resource "kubernetes_deployment" "graphql_backend_deployment" {
               name = "${var.repo_name}-supabase-secret"
             }
           }
-          name  = "${local.resource_prefix}-graphql-server-container"
+          name  = "${var.resource_prefix}-graphql-server-container"
           image = "${var.image_repository_url}/graphql-server:${var.image_tag}"
           port {
             container_port = 3002
           }
-          resources {
-            limits = {
-              cpu = "5m"
-            }
-            requests = {
-              cpu = "5m"
-            }
-          }
+          # resources {
+          #   limits = {
+          #     cpu = "200m"
+          #   }
+          #   requests = {
+          #     cpu = "1m"
+          #   }
+          # }
         }
         # readiness_gate
         # init_container
@@ -211,7 +211,7 @@ resource "kubernetes_deployment" "ui_deployment" {
     name      = "${local.ui}-deployment"
   }
   spec {
-    replicas               = 2
+    replicas               = 1
     revision_history_limit = 0
     strategy {
       type = "RollingUpdate"
@@ -240,6 +240,11 @@ resource "kubernetes_deployment" "ui_deployment" {
         container {
           env_from {
             config_map_ref {
+              name = "${var.repo_name}-${var.resource_prefix}-graphql-url-config"
+            }
+          }
+          env_from {
+            config_map_ref {
               name = "${var.repo_name}-ui-config"
             }
           }
@@ -253,14 +258,14 @@ resource "kubernetes_deployment" "ui_deployment" {
           port {
             container_port = 3000
           }
-          resources {
-            limits = {
-              cpu = "5m"
-            }
-            requests = {
-              cpu = "5m"
-            }
-          }
+          # resources {
+          #   limits = {
+          #     cpu = "100m"
+          #   }
+          #   requests = {
+          #     cpu = "1m"
+          #   }
+          # }
         }
         dns_policy           = "ClusterFirst"
         enable_service_links = true

@@ -25,5 +25,7 @@ locals {
   graphql_backend              = "${var.resource_prefix}-graphql-backend"
   ui                           = "${var.resource_prefix}-ui"
   change_cause                 = substr(var.change_cause, 0, 63)
-  resource_prefix              = substr(var.resource_prefix, 0, 20)
+}
+variable "is_dev" {
+  type = bool
 }

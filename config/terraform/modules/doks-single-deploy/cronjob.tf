@@ -1,8 +1,8 @@
 locals {
-  preview_cronjob_app_selector = "${local.resource_prefix}-graphql-backend-selector"
-  repo_cronjob_app_selector    = "${local.resource_prefix}-repo-cronjob-selector"
-  preview_cronjob              = "${local.resource_prefix}-preview-cronjob"
-  repo_cronjob                 = "${local.resource_prefix}-repo-cronjob"
+  preview_cronjob_app_selector = "${var.resource_prefix}-graphql-backend-selector"
+  repo_cronjob_app_selector    = "${var.resource_prefix}-repo-cronjob-selector"
+  preview_cronjob              = "${var.resource_prefix}-preview-cronjob"
+  repo_cronjob                 = "${var.resource_prefix}-repo-cronjob"
 }
 
 resource "kubernetes_cron_job_v1" "repo_cronjob" {
@@ -19,9 +19,10 @@ resource "kubernetes_cron_job_v1" "repo_cronjob" {
   }
   spec {
 
-    concurrency_policy        = "Replace"
-    failed_jobs_history_limit = 5
-    schedule                  = "10 * * * *"
+    concurrency_policy            = "Replace"
+    failed_jobs_history_limit     = 1
+    successful_jobs_history_limit = 1
+    schedule                      = "10 * * * *"
     job_template {
       metadata {
         annotations = {
@@ -45,6 +46,14 @@ resource "kubernetes_cron_job_v1" "repo_cronjob" {
           }
           spec {
             container {
+              # resources {
+              #   limits = {
+              #     cpu = "5m"
+              #   }
+              #   requests = {
+              #     cpu = "5m"
+              #   }
+              # }
               env_from {
                 config_map_ref {
                   name = "${var.repo_name}-nodejs-config"
@@ -60,7 +69,7 @@ resource "kubernetes_cron_job_v1" "repo_cronjob" {
                   name = "${var.repo_name}-repo-job-secret"
                 }
               }
-              name  = "${local.resource_prefix}-repo-cronjob-container"
+              name  = "${var.resource_prefix}-repo-cronjob-container"
               image = "${var.image_repository_url}/repo-job:${var.image_tag}"
             }
           }

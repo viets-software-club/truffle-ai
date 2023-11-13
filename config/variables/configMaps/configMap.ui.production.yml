@@ -1,3 +1,3 @@
 NEXT_PUBLIC_SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
 UI_PORT: '3000'
-NEXT_PUBLIC_API_GRAPHQL_URL: https://0.0.0.0/api/graphql
+GRAPHQL_URL: https://0.0.0.0/graphql

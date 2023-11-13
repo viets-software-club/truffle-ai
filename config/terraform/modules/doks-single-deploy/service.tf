@@ -1,6 +1,6 @@
 resource "kubernetes_service" "graphql_backend_service" {
   metadata {
-    name      = "${local.resource_prefix}-graphql-backend-service"
+    name      = "${var.resource_prefix}-graphql-backend-service"
     namespace = var.namespace_name
   }
   spec {
@@ -17,7 +17,7 @@ resource "kubernetes_service" "graphql_backend_service" {
 
 resource "kubernetes_service" "ui_service" {
   metadata {
-    name      = "${local.resource_prefix}-ui-service"
+    name      = "${var.resource_prefix}-ui-service"
     namespace = var.namespace_name
   }
   spec {
@@ -34,7 +34,7 @@ resource "kubernetes_service" "ui_service" {
 
 resource "kubernetes_service" "graphql_server_service" {
   metadata {
-    name      = "${local.resource_prefix}-graphql-server-service"
+    name      = "${var.resource_prefix}-graphql-server-service"
     namespace = var.namespace_name
   }
   spec {

@@ -52,3 +52,6 @@ variable "domain" {
 variable "is_cli" {
   type = bool
 }
+variable "git_commit_tags" {
+  type = set(string)
+}

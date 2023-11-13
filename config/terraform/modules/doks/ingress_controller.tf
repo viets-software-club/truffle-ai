@@ -57,4 +57,5 @@ resource "helm_release" "nginx_ingress" {
     value = "80"
     type  = "string"
   }
+  timeout = 960
 }

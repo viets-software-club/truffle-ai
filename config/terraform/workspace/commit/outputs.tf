@@ -1,3 +1,3 @@
-output "host_url" {
-  value = module.init-env.host_url
+output "host_urls" {
+  value = local.hosts
 }

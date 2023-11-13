@@ -21,6 +21,7 @@ jobs:
       GRAPHQL_PUBLIC_URL: ${{ vars.GRAPHQL_PUBLIC_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
+
     steps:
       - uses: actions/checkout@v4
         with:

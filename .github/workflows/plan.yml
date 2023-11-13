@@ -11,9 +11,9 @@ on:
 jobs:
   variables:
     name: 'Variables'
-    environment: production
+    environment: staging
     env:
-      environment: production
+      environment: staging
     runs-on: ubuntu-latest
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/reusable-ghcr-image.yml
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
-      ENVIRONMENT: production
+      ENVIRONMENT: staging
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
     secrets: inherit

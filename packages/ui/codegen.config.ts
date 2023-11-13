@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 const config: CodegenConfig = {
   schema: [
     {
-      [process.env.GRAPHQL_URL]: {
+      [process.env.NEXT_PUBLIC_GRAPHQL_URL]: {
         headers: {
           Authorization: `Bearer development`
         }

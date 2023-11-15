@@ -1,4 +1,5 @@
 const REPO_NAME = Deno.env.get('REPO_NAME')
+const ORG_NAME = Deno.env.get('REPO_NAME')
 
 const environment = prompt('Which environment (commit)') || Deno.env.get('NAMESPACE', 'commit')
 const sha = prompt('What commit sha?') || Deno.env.get('GIT_COMMIT_TAG', null)

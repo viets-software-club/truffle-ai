@@ -43,4 +43,4 @@ let deployCmd = new Deno.Command('helm', { args })
 let { code, stdout, stderr } = await deployCmd.output()
 
 // stdout & stderr are a Uint8Array
-console.log('deployed', new TextDecoder().decode(stdout))
+console.log('deployed\n\n', new TextDecoder().decode(stdout))

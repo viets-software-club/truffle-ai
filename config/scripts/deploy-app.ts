@@ -12,7 +12,10 @@ const shortSha = hasTag ? sha.substring(0, 7) : ''
 const NAMESPACE = hasTag ? `${environment}-${shortSha}` : environment
 const RESOURCE_PREFIX = NAMESPACE
 const CHANGE_CAUSE = hasTag ? `${shortSha}: ${promptedChangeCause}` : promptedChangeCause
-const certificateCmd = new Deno.Command('doctl compute certificate list', [
+const certificateCmd = new Deno.Command('doctl', [
+  'compute',
+  'certificate',
+  'list',
   '--format ID',
   '--no-header'
 ])

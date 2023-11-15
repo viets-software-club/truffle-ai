@@ -1,0 +1,42 @@
+name: Helm
+on:
+  pull_request:
+    types:
+      - synchronize
+    branches: ['main', 'staging']
+    paths: ['packages/**', 'config/**', '.github/workflows/**']
+  push:
+    branches: ['main', 'staging']
+    paths: ['packages/**', 'config/**', '.github/workflows/**']
+jobs:
+  publish:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Chart Checkout
+        uses: actions/checkout@v2
+      - name: Helm Installation
+        uses: azure/setup-helm@v1.1
+        with:
+          version: v3.7.0
+      - name: Helm Repository Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: ${{vars.ORG_NAME}}/${{vars.RELEASE_REPO_NAME}}
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          fetch-depth: 0
+          persist-credentials: true
+          ref: main
+          path: ${{vars.REPO_NAME}}
+      - name: Helm Package
+        run: helm package config/app-chart --version "0.1.0+$(git rev-parse --short "$GITHUB_SHA")" -d helm-chart-repository
+      - name: Helm Push
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "bot@truffle.tools"
+          git config --global user.name "TruffleAI Bot"
+          CHART_PACKAGE_NAME="my-chart-0.1.0+$(git rev-parse --short "$GITHUB_SHA").tgz"
+          cd helm-chart-repository
+          git add "$CHART_PACKAGE_NAME"
+          git commit -m "$CHART_PACKAGE_NAME"
+          git push origin main

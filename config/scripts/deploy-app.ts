@@ -1,4 +1,4 @@
-const REPO_NAME = Deno.env.get("REPO_NAME", "truffle-ai")
+const REPO_NAME = Deno.env.get("REPO_NAME")
 
 const environment = prompt("Which environment (commit)") || Deno.env.get("NAMESPACE", "commit");
 const sha = prompt("What commit sha?") || Deno.env.get("GIT_COMMIT_TAG", null)
@@ -18,7 +18,7 @@ if(!certificateId) {
     certificateId = new TextDecoder().decode(stdout)
 }
 
-const IMAGE_REPOSITORY_URL = `ghcr.io/viets-software-club/truffle-ai/${environment}`
+const IMAGE_REPOSITORY_URL = `ghcr.io/${ORG_NAME}/${REPO_NAME}/${environment}`
 const IMAGE_TAG = sha
 
 const args = [

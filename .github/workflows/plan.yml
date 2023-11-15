@@ -20,7 +20,6 @@ jobs:
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
       GRAPHQL_GATEWAY_URL: ${{ vars.GRAPHQL_GATEWAY_URL }}
-      # GRAPHQL_PUBLIC_URL: ${{ vars.GRAPHQL_PUBLIC_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
       GRAPHQL_URL: ${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('{0}.',env.environment), vars.DOMAIN) }}

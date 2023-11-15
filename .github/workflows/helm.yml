@@ -35,7 +35,7 @@ jobs:
         run: |
           git config --global user.email "bot@truffle.tools"
           git config --global user.name "TruffleAI Bot"
-          CHART_PACKAGE_NAME="my-chart-0.1.0+$(git rev-parse --short "$GITHUB_SHA").tgz"
+          CHART_PACKAGE_NAME="app-chart-0.1.0+$(git rev-parse --short "$GITHUB_SHA").tgz"
           cd helm-chart-repository
           git add "$CHART_PACKAGE_NAME"
           git commit -m "$CHART_PACKAGE_NAME"

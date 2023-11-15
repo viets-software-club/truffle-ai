@@ -1,6 +1,0 @@
-{
-  "tasks": {
-    "deploy-app": "deno run --allow-env deploy-app.ts",
-    "add-app": "deno run --allow-env add-app.ts"
-  }
-}

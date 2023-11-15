@@ -5,8 +5,8 @@ let addCmd = new Deno.Command(`helm repo add ${ORG_NAME}`, {
   args: [`https://raw.githubusercontent.com/${ORG_NAME}/${REPO_NAME}/main/`]
 })
 
-let { code, stdout, stderr } = await addCmd.output()
-console.log(new TextDecoder().decode(stdout))
+let add = await addCmd.output()
+console.log(new TextDecoder().decode(add.stdout))
 let updateCmd = new Deno.Command('helm repo update')
-let { code, stdout, stderr } = await updateCmd.output()
-console.log(new TextDecoder().decode(stdout))
+let update = await updateCmd.output()
+console.log(new TextDecoder().decode(update.stdout))

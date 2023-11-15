@@ -1,0 +1,39 @@
+name: 'Variables'
+on:
+  workflow_call:
+    inputs:
+      REF:
+        required: true
+        type: string
+      REF_NAME:
+        required: true
+        type: string
+permissions:
+  contents: read
+  packages: write
+jobs:
+  variables:
+    name: 'Variables'
+    environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'production' && 'production') || 'staging' }}
+    env:
+      environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (nputs.REF_NAME == 'production' && 'production') || 'staging' }}
+    runs-on: ubuntu-latest
+    outputs:
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
+      SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
+      GRAPHQL_GATEWAY_URL: ${{ vars.GRAPHQL_GATEWAY_URL }}
+      GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
+      GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
+      GRAPHQL_URL: ${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('{0}.',env.environment), vars.DOMAIN) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{github.event.pull_request.head.sha}}
+          sparse-checkout: |
+            .git
+      - id: git_commit_tag
+        run: if [[ -n "${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' )" >> "$GITHUB_OUTPUT"; else echo "git_commit_tag=$(${{github.sha}})" >> "$GITHUB_OUTPUT"; fi
+      - id: git_commit_message
+        run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=$(${{github.event.head_commit.message}})" >> "$GITHUB_OUTPUT"; fi
+      - run: echo '${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('{0}.',env.environment), vars.DOMAIN) }}'

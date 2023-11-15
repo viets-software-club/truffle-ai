@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "deploy": "deno run --allow-env deploy.ts"
+  }
+}

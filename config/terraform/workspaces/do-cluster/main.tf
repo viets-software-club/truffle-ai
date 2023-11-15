@@ -3,7 +3,7 @@ data "digitalocean_kubernetes_versions" "this" {
 }
 
 resource "digitalocean_kubernetes_cluster" "this" {
-  name                 = "${var.repo_name}-cluster"
+  name                 = var.cluster_name
   region               = "fra1"
   version              = data.digitalocean_kubernetes_versions.this.latest_version # Grab the latest version slug from `doctl kubernetes options versions`
   vpc_uuid             = null
@@ -13,7 +13,7 @@ resource "digitalocean_kubernetes_cluster" "this" {
   registry_integration = false
   node_pool {
     name       = "worker-pool"
-    size       = "s-1vcpu-2gb"
+    size       = "s-2vcpu-2gb"
     node_count = 1
     auto_scale = false
     tags       = null

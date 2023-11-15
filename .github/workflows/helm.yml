@@ -25,18 +25,9 @@ jobs:
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
           fetch-depth: 0
           persist-credentials: true
-          ref: main
-          path: ${{vars.REPO_NAME}}
+          path: helm-chart-repository
       - name: Helm Package
         run: helm package config/app-chart --version "0.1.0+$(git rev-parse --short "$GITHUB_SHA")" -d helm-chart-repository
-      - name: Move
-        run: cd helm-chart-repository
-      - name: Checkout ${{vars.RELEASE_REPO_NAME}}
-        uses: actions/checkout@v3
-        with:
-          repository: ${{vars.REPO_NAME}}
-          ref: 'main'
-          token:  ${{ secrets.BOT_GITHUB_TOKEN }}
       - name: Helm Push
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}

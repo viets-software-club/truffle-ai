@@ -17,7 +17,7 @@ resource "kubernetes_ingress_v1" "this" {
         http {
           path {
             path_type = "Prefix"
-            path      = "/api/*"
+            path      = "/api"
             backend {
               service {
                 name = "${rule.value["resource_prefix"]}-graphql-backend-service"

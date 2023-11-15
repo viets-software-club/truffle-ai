@@ -71,6 +71,7 @@ data:
   SUPABASE_REFERENCE_ID: yipnhkmklmbuxjwzpipg
   SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
   SUPABASE_GRAPHQL_URL: https://yipnhkmklmbuxjwzpipg.supabase.co/graphql/v1
+  NEXT_PUBLIC_SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -78,7 +79,6 @@ metadata:
   name: truffle-ai-ui-config
   namespace: production
 data:
-  NEXT_PUBLIC_SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
   UI_PORT: "3000"
-  GRAPHQL_URL: https://0.0.0.0/graphql
+  NEXT_PUBLIC_GRAPHQL_URL: https://0.0.0.0/api/graphql
 ---

@@ -1,3 +1,4 @@
+const RELEASE_REPO_NAME = Deno.env.get('RELEASE_REPO_NAME')
 const REPO_NAME = Deno.env.get('REPO_NAME')
 const ORG_NAME = Deno.env.get('ORG_NAME')
 

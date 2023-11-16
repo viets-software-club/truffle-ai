@@ -1,4 +1,5 @@
 const ORG_NAME = Deno.env.get('ORG_NAME')
+const RELEASE_REPO_NAME = Deno.env.get('RELEASE_REPO_NAME')
 const REPO_NAME = Deno.env.get('REPO_NAME')
 const GITHUB_TOKEN = Deno.env.get('GITHUB_TOKEN')
 let addCmd = new Deno.Command('helm', {
@@ -6,7 +7,7 @@ let addCmd = new Deno.Command('helm', {
     'repo',
     'add',
     ORG_NAME,
-    `https://raw.githubusercontent.com/${ORG_NAME}/${REPO_NAME}/main/`
+    `https://raw.githubusercontent.com/${ORG_NAME}/${RELEASE_REPO_NAME}/main/`
   ]
 })
 

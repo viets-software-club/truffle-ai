@@ -36,7 +36,7 @@ jobs:
           persist-credentials: true
           path: helm-chart-repository
       - name: Helm Package
-        run: helm package config/app-chart --version "0.1.0+${{ needs.variables.outputs.GIT_COMMIT_TAG }}" -d helm-chart-repository
+        run: helm package config/app-chart --version "0.1.${{github.run_number}}+${{ needs.variables.outputs.GIT_COMMIT_TAG }}" -d helm-chart-repository
       - name: Helm Push
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}

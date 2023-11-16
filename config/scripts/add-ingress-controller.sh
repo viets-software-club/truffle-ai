@@ -1,0 +1,2 @@
+CERT_ID=$(doctl compute certificate list --format ID --no-header)
+helm upgrade --values ./config/ingress-controller/values.yaml --set-json 'nginx-ingress-controller.service.annotations={"service.beta.kubernetes.io/do-loadbalancer-name": "$(echo $REPO_NAME)-nginx-ingress-controller", "service.beta.kubernetes.io/do-loadbalancer-certificate-id": "$(echo $CERT_ID)"}' my-release oci://ghcr.io/nginxinc/charts/nginx-ingress

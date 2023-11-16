@@ -1,7 +1,6 @@
 {
   "tasks": {
     "deploy-app": "deno run --allow-run --allow-env config/scripts/deploy-app.ts",
-    "add-app": "deno run --allow-run --allow-env config/scripts/add-app.ts",
     "dev:k8s": "deno run --allow-read --allow-write --watch config/variables/generate-k8s-env.ts",
     "dev:env": "deno run --allow-read --allow-write --watch config/variables/generate-env.ts",
     "generate:k8s": "deno run --allow-read --allow-write  config/variables/generate-k8s-env.ts",

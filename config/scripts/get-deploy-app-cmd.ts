@@ -8,8 +8,6 @@ const promptedChangeCause = prompt('What is the change cause?') || 'none'
 const promptedVersion = prompt('What is the version?') || null
 const hasTag = !!sha
 let certificateId = prompt('What is the certificate uuid (auto-filled via doctl)') // doctl compute certificate list --format ID --no-header
-const isSure = confirm('Are you sure about your settings?')
-if (!isSure) Deno.exit('Goodbye')
 
 const shortSha = hasTag ? sha.substring(0, 7) : ''
 const NAMESPACE = hasTag ? `${environment}-${shortSha}` : environment
@@ -32,12 +30,9 @@ const HOST =
     : environment === 'production'
     ? 'truffle.tools'
     : 'staging.truffle.tools'
-console.log('res', RESOURCE_PREFIX)
 
 const args = [
   'upgrade',
-  '--set-json',
-  `'nginx-ingress-controller.service.annotations={"service.beta.kubernetes.io/do-loadbalancer-name": "${REPO_NAME}-nginx-ingress-controller", "service.beta.kubernetes.io/do-loadbalancer-certificate-id": "${certificateId}"}'`,
   '--set',
   `image.repositoryUrl=${IMAGE_REPOSITORY_URL}`,
   '--set',
@@ -65,7 +60,11 @@ args.push(`chart-${RESOURCE_PREFIX}`, `${ORG_NAME}/app-chart`)
 console.log('Deploy Command:\n', 'helm', args.join(' '))
 // let deployCmd = new Deno.Command('helm', { args })
 
+// console.log(await deployCmd.output())
+// console.log(await deployCmd.output())
+// console.log(await deployCmd.output())
 // let { code, stdout, stderr } = await deployCmd.output()
-
-// // stdout & stderr are a Uint8Array
+// stdout && console.log(new TextDecoder().decode(stdout))
+// stderr && console.log(new TextDecoder().decode(stderr))
+// // // stdout & stderr are a Uint8Array
 // console.log('deployed\n\n', new TextDecoder().decode(stdout), new TextDecoder().decode(stderr))

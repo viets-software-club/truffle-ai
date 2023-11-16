@@ -7,9 +7,9 @@ metadata:
   labels:
     job: repo-job
 spec:
-  concurrency_policy: Replace
-  failed_jobs_history_limit: 1
-  successful_jobs_history_limit: 1
+  concurrencyPolicy: Replace
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
   schedule: "10 * * * *"
   jobTemplate:
     metadata:

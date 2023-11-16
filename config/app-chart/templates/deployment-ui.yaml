@@ -8,7 +8,7 @@ metadata:
     app: {{ .Values.resPrefix }}-ui-selector
 spec:
   replicas: 1
-  revision_history_limit: 0
+  revisionHistoryLimit: 0
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -33,7 +33,6 @@ spec:
           envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-ui-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-ui-secret
       dnsPolicy: ClusterFirst

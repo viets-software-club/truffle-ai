@@ -8,7 +8,7 @@ metadata:
     app: {{.Values.resPrefix }}-graphql-backend-selector
 spec:
   replicas: 1
-  revision_history_limit: 0
+  revisionHistoryLimit: 0
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -33,16 +33,12 @@ spec:
           envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-nodejs-config-map
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-graphql-gateway-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-graphql-gateway-secret
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-supabase-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-supabase-secret
         - name: graphql-server
@@ -52,34 +48,24 @@ spec:
           envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-nodejs-config-map
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-graphql-server-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-graphql-server-secret
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-open-api-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-open-api-secret
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-scraping-bot-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-scraping-bot-secret
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-supabase-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-supabase-secret
-          envFrom:
             - configMapRef:
               name: {{ .Values.resPrefix }}-github-config-map
-          envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-github-secret         
       dnsPolicy: ClusterFirst

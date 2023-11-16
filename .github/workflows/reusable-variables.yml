@@ -8,6 +8,21 @@ on:
       REF_NAME:
         required: true
         type: string
+    outputs:
+      SUPABASE_URL: 
+        value: ${{ jobs.variables.outputs.SUPABASE_URL }}
+      GRAPHQL_SERVER_URL:  
+        value: ${{ jobs.variables.outputs.GRAPHQL_SERVER_URL }}
+      SUPABASE_GRAPHQL_URL:  
+        value: ${{ jobs.variables.outputs.SUPABASE_GRAPHQL_URL }}
+      GRAPHQL_GATEWAY_URL:  
+        value: ${{ jobs.variables.outputs.GRAPHQL_GATEWAY_URL }}
+      GIT_COMMIT_TAG:  
+        value: ${{ jobs.variables.outputs.GIT_COMMIT_TAG }}
+      GIT_COMMIT_MESSAGE:  
+        value: ${{ jobs.variables.outputs.GIT_COMMIT_MESSAGE }}
+      GRAPHQL_URL:  
+        value: ${{ jobs.variables.outputs.GRAPHQL_URL  }}
 jobs:
   variables:
     name: 'Variables'

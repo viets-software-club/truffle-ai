@@ -16,7 +16,7 @@ jobs:
     name: 'Variables'
     environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'production' && 'production') || 'staging' }}
     env:
-      environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (nputs.REF_NAME == 'production' && 'production') || 'staging' }}
+      environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'production' && 'production') || 'staging' }}
     runs-on: ubuntu-latest
     outputs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}

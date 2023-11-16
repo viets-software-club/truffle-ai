@@ -32,7 +32,7 @@
     "variables:k8s": "deno task generate:k8s",
     "variables:env": "deno task generate:env",
     "variables:values": "deno task generate:values",
-    "doctl:doks-save": "doctl kubernetes cluster kubeconfig save truffle-ai-cluster",
+    "doks:save": "doctl kubernetes cluster kubeconfig save truffle-ai-cluster",
     "terraform": "t() { cd config/terraform/workspace/\"$1\" && TF_VAR_git_commit_tags=$(git log --branches=\"*\" -n 3 --format=format:%H | jq -R -s -c 'split(\"\n\")') TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform \"${@:2}\"; }; t",
     "terraform:cluster": "cd config/terraform/workspace/cluster && TF_VAR_git_commit_tags=$(git log --branches=\"*\" -n 3 --format=format:%H | jq -R -s -c 'split(\"\n\")') TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply -auto-approve",
     "terraform:setup": "cd config/terraform/workspace/setup && TF_VAR_git_commit_tags=$(git log --branches=\"*\" -n 3 --format=format:%H | jq -R -s -c 'split(\"\n\")') TF_VAR_is_cli=true TF_VAR_image_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_tag=$(git log --format=\"%H\" -n 1) TF_VAR_git_commit_message=\"run from command line\" terraform apply -auto-approve",

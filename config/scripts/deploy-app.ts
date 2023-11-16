@@ -41,7 +41,9 @@ const args = [
   '--atomic',
   '--install',
   '--create-namespace',
-  `--namespace=${NAMESPACE}`
+  `--namespace=${NAMESPACE}`,
+  `${ORG_NAME}`,
+  `0.1.0+${sha}`
 ]
 
 let deployCmd = new Deno.Command('helm', { args })

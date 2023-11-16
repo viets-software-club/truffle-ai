@@ -96,7 +96,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
+resPrefix: res-prefix
 nginx-ingress-controller:
   name: nginx-ingress-controller
   config:

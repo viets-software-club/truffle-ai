@@ -27,7 +27,7 @@ spec:
         spec:
           containers:
           - name: {{.Values.resPrefix}}-repo-cronjob-container
-            image: {{.Values.image.respositoryUrl}}/{{.Values.image.name}}:{{.Values.image.tag}}
+            image: "{{.Values.image.respositoryUrl}}/{{.Values.image.name}}:{{.Values.image.tag}}"
             envFrom:
             - configMapRef:
                 name: {{.Values.resPrefix}}-nodejs-configmap

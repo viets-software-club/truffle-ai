@@ -18,6 +18,7 @@ jobs:
     secrets: inherit
   package-helm:
     name: Helm
+    needs: variables
     runs-on: ubuntu-20.04
     steps:
       - name: Chart Checkout

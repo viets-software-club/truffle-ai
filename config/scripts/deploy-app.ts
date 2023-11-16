@@ -40,7 +40,7 @@ const args = [
   '--set',
   `resPrefix="${RESOURCE_PREFIX}"`,
   '--set',
-  `changeCause=${CHANGE_CAUSE}`,
+  `changeCause="${CHANGE_CAUSE}"`,
   '--atomic',
   '--install',
   '--create-namespace',

@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ $.Values.resPrefix}}-{{ $key }}
 data:
-{{- range $key, $value := $values }}
-  {{$key}}: {{$value}}
+{{- range $key1, $value := $values }}
+  {{$key1}}: {{$value}}
   {{- end }}
 {{- end }}

@@ -107,13 +107,10 @@ nginx-ingress-controller:
     targetPorts:
       https: "80"
     annotations:
-      service:
-        ".beta":
-          ".kubernetes.io":
-            do-loadbalancer-name: "<ingress-controller>"
-            do-loadbalancer-certificate-id: "<certificate-id>"
-            do-loadbalancer-protocol: "https"
-            do-loadbalancer-size-unit: "1"
-            do-loadbalancer-disable-lets-encrypt-dns-records: "false"
-            do-loadbalancer-redirect-http-to-https: "true"
-            do-loadbalancer-enable-proxy-protocol: "true"
+      "service.beta.kubernetes.io/do-loadbalancer-name": "<ingress-controller>"
+      "service.beta.kubernetes.io/do-loadbalancer-certificate-id": "<certificate-id>"
+      "service.beta.kubernetes.io/do-loadbalancer-protocol": "https"
+      "service.beta.kubernetes.io/do-loadbalancer-size-unit": "1"
+      "service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records": "false"
+      "service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https": "true"
+      "service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol": "true"

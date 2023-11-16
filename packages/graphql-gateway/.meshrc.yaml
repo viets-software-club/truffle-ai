@@ -1,5 +1,5 @@
 serve:
-  endpoint: /graphql
+  endpoint: /api/graphql
   playground: true
   port: 3001
 sources:

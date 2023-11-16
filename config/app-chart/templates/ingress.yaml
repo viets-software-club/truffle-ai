@@ -22,6 +22,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Values.resPrefix }}-graphql-ui-service
+            name: {{ .Values.resPrefix }}-ui-service
             port:
               number: 3000

@@ -32,9 +32,9 @@ spec:
             - containerPort: 3000
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-ui-config-map
+                name: {{ .Values.resPrefix }}-ui-config-map
             - secretRef:
-              name: {{ .Values.resPrefix }}-ui-secret
+                name: {{ .Values.resPrefix }}-ui-secret
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       hostIPC: false

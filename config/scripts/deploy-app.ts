@@ -53,8 +53,10 @@ const args = [
   '--install',
   '--create-namespace',
   `--namespace=${NAMESPACE}`,
-  `--values=_configMaps/values.${environment}.yml`,
-  `--values=_secrets/values.${environment}.yml`
+  `--values`,
+  `_configMaps/values.${environment}.yml`,
+  `--values`,
+  `_secrets/values.${environment}.yml`
 ]
 
 if (promptedVersion) {

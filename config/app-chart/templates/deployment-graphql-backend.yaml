@@ -46,7 +46,7 @@ spec:
             - secretRef:
               name: {{ .Values.resPrefix }}-supabase-secret
         - name: graphql-server
-          image: "{{ .Values.image.respositoryUrl }}/graphql-server:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repositoryUrl }}/graphql-server:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3002
           envFrom:

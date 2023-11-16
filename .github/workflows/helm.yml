@@ -19,7 +19,7 @@ jobs:
   package-helm:
     name: Helm
     needs: variables
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Chart Checkout
         uses: actions/checkout@v2

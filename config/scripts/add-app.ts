@@ -7,6 +7,10 @@ let addCmd = new Deno.Command('helm', {
     'repo',
     'add',
     ORG_NAME,
+    '--username',
+    `${GITHUB_TOKEN}`,
+    '--password',
+    `${GITHUB_TOKEN}`,
     `https://raw.githubusercontent.com/${ORG_NAME}/${RELEASE_REPO_NAME}/main/`
   ]
 })

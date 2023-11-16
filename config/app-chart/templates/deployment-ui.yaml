@@ -35,6 +35,10 @@ spec:
                 name: {{ .Values.resPrefix }}-ui-config-map
             - secretRef:
                 name: {{ .Values.resPrefix }}-ui-secret
+            - configMapRef:
+                name: {{ .Values.resPrefix }}-supabase-config-map
+            - secretRef:
+                name: {{ .Values.resPrefix }}-supabase-secret
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       hostIPC: false

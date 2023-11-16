@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{.Values.resPrefix}}-graphql-backend-deployment
+  name: {{ .Values.resPrefix }}-graphql-backend-deployment
   annotations:
-    "kubernetes.io/change-cause": ${{.Values.changeCause}}
+    "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
   labels:
-    app: {{.Values.resPrefix}}-graphql-backend-selector
+    app: {{.Values.resPrefix }}-graphql-backend-selector
 spec:
   replicas: 1
   revision_history_limit: 0
@@ -16,72 +16,72 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: {{.Values.resPrefix}}-graphql-backend-selector
+      app: {{ .Values.resPrefix }}-graphql-backend-selector
   template:
     metadata:
       annotations:
-        "kubernetes.io/change-cause": {{.Values.changeCause}}
+        "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
       labels:
-        app: {{.Values.resPrefix}}-graphql-backend-selector
+        app: {{ .Values.resPrefix }}-graphql-backend-selector
     spec:
       automountServiceAccountToken: true
       containers:
         - name: graphql-gateway
-          image: "{{.Values.image.respositoryUrl}}/graphql-gateway:{{.Values.image.tag}}"
+          image: "{{ .Values.image.repositoryUrl }}/graphql-gateway:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3001
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-nodejs-configmap
+              name: {{ .Values.resPrefix }}-nodejs-configmap
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-graphql-gateway-configmap
+              name: {{ .Values.resPrefix }}-graphql-gateway-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-graphql-gateway-secret
+              name: {{ .Values.resPrefix }}-graphql-gateway-secret
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-supabase-configmap
+              name: {{ .Values.resPrefix }}-supabase-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-supabase-secret
+              name: {{ .Values.resPrefix }}-supabase-secret
         - name: graphql-server
-          image: "{{.Values.image.respositoryUrl}}/graphql-server:{{.Values.image.tag}}"
+          image: "{{ .Values.image.respositoryUrl }}/graphql-server:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3002
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-nodejs-configmap
+              name: {{ .Values.resPrefix }}-nodejs-configmap
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-graphql-server-configmap
+              name: {{ .Values.resPrefix }}-graphql-server-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-graphql-server-secret
+              name: {{ .Values.resPrefix }}-graphql-server-secret
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-open-api-configmap
+              name: {{ .Values.resPrefix }}-open-api-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-open-api-secret
+              name: {{ .Values.resPrefix }}-open-api-secret
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-scraping-bot-configmap
+              name: {{ .Values.resPrefix }}-scraping-bot-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-scraping-bot-secret
+              name: {{ .Values.resPrefix }}-scraping-bot-secret
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-supabase-configmap
+              name: {{ .Values.resPrefix }}-supabase-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-supabase-secret
+              name: {{ .Values.resPrefix }}-supabase-secret
           envFrom:
             - configMapRef:
-              name: {{.Values.resPrefix}}-github-configmap
+              name: {{ .Values.resPrefix }}-github-configmap
           envFrom:
             - secretRef:
-              name: {{.Values.resPrefix}}-github-secret         
+              name: {{ .Values.resPrefix }}-github-secret         
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       hostIPC: false

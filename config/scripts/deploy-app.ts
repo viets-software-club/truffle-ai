@@ -2,8 +2,8 @@ const RELEASE_REPO_NAME = Deno.env.get('RELEASE_REPO_NAME')
 const REPO_NAME = Deno.env.get('REPO_NAME')
 const ORG_NAME = Deno.env.get('ORG_NAME')
 
-const environment = prompt('Which environment (commit)') || Deno.env.get('ENVIRONMENT', 'commit')
-const sha = prompt('What commit sha?') || Deno.env.get('GIT_COMMIT_TAG', null)
+const environment = prompt('Which environment (commit)') || Deno.env.get('ENVIRONMENT') || 'commit'
+const sha = prompt('What commit sha?') || Deno.env.get('GIT_COMMIT_TAG')
 const promptedChangeCause = prompt('What is the change cause?') || ''
 const hasTag = !!sha
 let certificateId = prompt('What is the certificate uuid (auto-filled via doctl)') // doctl compute certificate list --format ID --no-header
@@ -44,9 +44,14 @@ const args = [
   '--install',
   '--create-namespace',
   `--namespace=${NAMESPACE}`,
-  `chart-${RESOURCE_PREFIX}`,
-  `${ORG_NAME}/app-chart`
+  `--values=_configMaps/values.${environment}.yml`,
+  `--values=_secrets/values.${environment}.yml`
 ]
+
+if (hasTag) {
+  args.push('--version', `0.1.0+${sha}`)
+}
+args.push(`chart-${RESOURCE_PREFIX}`, `${ORG_NAME}/app-chart`)
 
 let deployCmd = new Deno.Command('helm', { args })
 

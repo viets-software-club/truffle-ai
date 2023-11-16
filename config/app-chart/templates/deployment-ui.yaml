@@ -27,7 +27,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: ui
-          image: nginx:1.14.2
+          image: "{{ .Values.image.repositoryUrl }}/ui:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3000
           envFrom:

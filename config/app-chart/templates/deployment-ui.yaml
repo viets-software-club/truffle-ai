@@ -32,7 +32,7 @@ spec:
             - containerPort: 3000
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-ui-configmap
+              name: {{ .Values.resPrefix }}-ui-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-ui-secret

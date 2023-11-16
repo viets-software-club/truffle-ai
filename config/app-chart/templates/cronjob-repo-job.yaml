@@ -30,11 +30,11 @@ spec:
             image: "{{.Values.image.repositoryUrl}}/repo-job:{{.Values.image.tag}}"
             envFrom:
             - configMapRef:
-                name: {{ .Values.resPrefix }}-nodejs-configmap
+                name: {{ .Values.resPrefix }}-nodejs-config-map
             - configMapRef:
-                name: {{ .Values.resPrefix }}-supabase-configmap
+                name: {{ .Values.resPrefix }}-supabase-config-map
             - configMapRef:
-                name: {{ .Values.resPrefix }}-repo-job-configmap
+                name: {{ .Values.resPrefix }}-repo-job-config-map
             restartPolicy: OnFailure
 
 

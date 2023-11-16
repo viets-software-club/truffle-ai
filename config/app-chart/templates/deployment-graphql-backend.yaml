@@ -32,16 +32,16 @@ spec:
             - containerPort: 3001
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-nodejs-configmap
+              name: {{ .Values.resPrefix }}-nodejs-config-map
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-graphql-gateway-configmap
+              name: {{ .Values.resPrefix }}-graphql-gateway-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-graphql-gateway-secret
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-supabase-configmap
+              name: {{ .Values.resPrefix }}-supabase-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-supabase-secret
@@ -51,34 +51,34 @@ spec:
             - containerPort: 3002
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-nodejs-configmap
+              name: {{ .Values.resPrefix }}-nodejs-config-map
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-graphql-server-configmap
+              name: {{ .Values.resPrefix }}-graphql-server-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-graphql-server-secret
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-open-api-configmap
+              name: {{ .Values.resPrefix }}-open-api-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-open-api-secret
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-scraping-bot-configmap
+              name: {{ .Values.resPrefix }}-scraping-bot-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-scraping-bot-secret
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-supabase-configmap
+              name: {{ .Values.resPrefix }}-supabase-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-supabase-secret
           envFrom:
             - configMapRef:
-              name: {{ .Values.resPrefix }}-github-configmap
+              name: {{ .Values.resPrefix }}-github-config-map
           envFrom:
             - secretRef:
               name: {{ .Values.resPrefix }}-github-secret         

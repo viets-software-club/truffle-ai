@@ -44,7 +44,7 @@ const args = [
   '--install',
   '--create-namespace',
   `--namespace=${NAMESPACE}`,
-  `0.1.0+${sha}`,
+  `chart-${RESOURCE_PREFIX}`,
   `${ORG_NAME}/app-chart`
 ]
 

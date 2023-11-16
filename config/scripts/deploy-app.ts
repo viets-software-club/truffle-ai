@@ -26,6 +26,12 @@ if (!certificateId) {
 
 const IMAGE_REPOSITORY_URL = `ghcr.io/${ORG_NAME}/${REPO_NAME}/${environment}`
 const IMAGE_TAG = sha
+const HOST =
+  environment === 'commit'
+    ? `${sha}.commit.truffle.tools`
+    : environment === 'production'
+    ? 'truffle.tools'
+    : 'staging.truffle.tools'
 console.log('res', RESOURCE_PREFIX)
 const args = [
   'upgrade',
@@ -41,6 +47,8 @@ const args = [
   `resPrefix=${RESOURCE_PREFIX}`,
   '--set',
   `changeCause=${CHANGE_CAUSE}`,
+  '--set',
+  `host=${HOST}`,
   '--atomic',
   '--install',
   '--create-namespace',

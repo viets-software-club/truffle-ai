@@ -98,6 +98,7 @@ tolerations: []
 affinity: {}
 resPrefix: res-prefix
 changeCause: none
+host: undefined
 nginx-ingress-controller:
   name: nginx-ingress-controller
   config:

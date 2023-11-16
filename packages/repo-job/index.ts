@@ -4,7 +4,7 @@ console.log('Repo job run at', new Date().toLocaleString())
 
 void axios
   .get(
-    `http://truffle-ai-graphql-server-service:${
+    `http://truffle-ai-graphql-backend-deployment:${
       process.env.GRAPHQL_SERVER_PORT as string
     }/updateDatabase`
   )

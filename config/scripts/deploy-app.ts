@@ -4,7 +4,7 @@ const ORG_NAME = Deno.env.get('ORG_NAME')
 
 const environment = prompt('Which environment (commit)') || Deno.env.get('ENVIRONMENT') || 'commit'
 const sha = prompt('What commit sha?') || Deno.env.get('GIT_COMMIT_TAG')
-const promptedChangeCause = prompt('What is the change cause?') || ''
+const promptedChangeCause = prompt('What is the change cause?') || 'none'
 const promptedVersion = prompt('What is the version?') || null
 const hasTag = !!sha
 let certificateId = prompt('What is the certificate uuid (auto-filled via doctl)') // doctl compute certificate list --format ID --no-header
@@ -30,17 +30,17 @@ console.log('res', RESOURCE_PREFIX)
 const args = [
   'upgrade',
   '--set',
-  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name="${REPO_NAME}-nginx-ingress-controller"`,
+  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name=${REPO_NAME}-nginx-ingress-controller`,
   '--set',
-  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id="${certificateId}"`,
+  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id=${certificateId}`,
   '--set',
   `image.repositoryUrl=${IMAGE_REPOSITORY_URL}`,
   '--set',
   `image.tag=${IMAGE_TAG}`,
   '--set',
-  `resPrefix="${RESOURCE_PREFIX}"`,
+  `resPrefix=${RESOURCE_PREFIX}`,
   '--set',
-  `changeCause="${CHANGE_CAUSE}"`,
+  `changeCause=${CHANGE_CAUSE}`,
   '--atomic',
   '--install',
   '--create-namespace',

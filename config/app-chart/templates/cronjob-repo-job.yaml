@@ -35,6 +35,8 @@ spec:
                 name: {{ .Values.resPrefix }}-supabase-config-map
             - configMapRef:
                 name: {{ .Values.resPrefix }}-repo-job-config-map
+            - configMapRef:
+                name: {{ .Values.resPrefix }}-graphql-server-config-map
           restartPolicy: 'OnFailure'
 
 

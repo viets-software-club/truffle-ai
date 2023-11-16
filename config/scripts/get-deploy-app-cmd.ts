@@ -50,7 +50,8 @@ const args = [
   `--values`,
   `_configMaps/values.${environment}.yml`,
   `--values`,
-  `_secrets/values.${environment}.yml`
+  `_secrets/values.${environment}.yml`,
+  '--dry-run'
 ]
 
 if (promptedVersion) {

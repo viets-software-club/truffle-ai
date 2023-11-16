@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $.Values.resPrefix}}-{{ $key }}
+  name: {{- $.Values.resPrefix -}}-{{- $key -}}
 data:
 {{- range $key1, $value := $values }}
-  {{$key1}}: {{$value}}
+  {{$key1 | quote}}: {{$value}}
   {{- end }}
 {{- end }}

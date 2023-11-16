@@ -19,6 +19,7 @@ const certificateCmd = new Deno.Command('doctl', {
 if (!certificateId) {
   let { code, stdout, stderr } = await certificateCmd.output()
   certificateId = new TextDecoder().decode(stdout)
+  stderr && console.error(new TextDecoder().decode(stderr))
 }
 
 const IMAGE_REPOSITORY_URL = `ghcr.io/${ORG_NAME}/${REPO_NAME}/${environment}`
@@ -42,4 +43,4 @@ let deployCmd = new Deno.Command('helm', { args })
 let { code, stdout, stderr } = await deployCmd.output()
 
 // stdout & stderr are a Uint8Array
-console.log('deployed\n\n', new TextDecoder().decode(stdout))
+console.log('deployed\n\n', new TextDecoder().decode(stdout), new TextDecoder().decode(stderr))

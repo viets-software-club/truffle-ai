@@ -11,7 +11,15 @@ let addCmd = new Deno.Command('helm', {
 })
 
 let add = await addCmd.output()
-console.log('added helm repo\n', new TextDecoder().decode(add.stdout))
+console.log(
+  'added helm repo\n',
+  new TextDecoder().decode(add.stdout),
+  new TextDecoder().decode(add.stderr)
+)
 let updateCmd = new Deno.Command('helm', { args: ['repo', 'update'] })
 let update = await updateCmd.output()
-console.log('updated helm repos\n\n', new TextDecoder().decode(update.stdout))
+console.log(
+  'updated helm repos\n\n',
+  new TextDecoder().decode(update.stdout),
+  new TextDecoder().decode(update.stderr)
+)

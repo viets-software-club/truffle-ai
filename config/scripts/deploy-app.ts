@@ -44,7 +44,7 @@ const args = [
   '--set',
   `image.tag=${IMAGE_TAG}`,
   '--set',
-  `resPrefix=${RESOURCE_PREFIX}`,
+  `resPrefix=aber`,
   '--set',
   `changeCause=${CHANGE_CAUSE}`,
   '--set',

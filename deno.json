@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "deploy-app": "deno run --allow-env config/scripts/deploy-app.ts",
-    "add-app": "deno run --allow-env config/scripts/add-app.ts"
+    "deploy-app": "deno run --allow-run --allow-env config/scripts/deploy-app.ts",
+    "add-app": "deno run --allow-run --allow-env config/scripts/add-app.ts"
   }
 }

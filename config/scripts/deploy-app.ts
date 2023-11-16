@@ -5,6 +5,7 @@ const ORG_NAME = Deno.env.get('ORG_NAME')
 const environment = prompt('Which environment (commit)') || Deno.env.get('ENVIRONMENT') || 'commit'
 const sha = prompt('What commit sha?') || Deno.env.get('GIT_COMMIT_TAG')
 const promptedChangeCause = prompt('What is the change cause?') || ''
+const promptedVersion = prompt('What is the version?') || null
 const hasTag = !!sha
 let certificateId = prompt('What is the certificate uuid (auto-filled via doctl)') // doctl compute certificate list --format ID --no-header
 const isSure = confirm('Are you sure about your settings?')
@@ -25,7 +26,7 @@ if (!certificateId) {
 
 const IMAGE_REPOSITORY_URL = `ghcr.io/${ORG_NAME}/${REPO_NAME}/${environment}`
 const IMAGE_TAG = sha
-
+console.log('res', RESOURCE_PREFIX)
 const args = [
   'upgrade',
   '--set',
@@ -37,7 +38,7 @@ const args = [
   '--set',
   `image.tag=${IMAGE_TAG}`,
   '--set',
-  `resPrefix=${RESOURCE_PREFIX}`,
+  `resPrefix="${RESOURCE_PREFIX}"`,
   '--set',
   `changeCause=${CHANGE_CAUSE}`,
   '--atomic',
@@ -48,8 +49,8 @@ const args = [
   `--values=_secrets/values.${environment}.yml`
 ]
 
-if (hasTag) {
-  args.push('--version', `0.1.0+${sha}`)
+if (promptedVersion) {
+  args.push('--version', promptedVersion)
 }
 args.push(`chart-${RESOURCE_PREFIX}`, `${ORG_NAME}/app-chart`)
 

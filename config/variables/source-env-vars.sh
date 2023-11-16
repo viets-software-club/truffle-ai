@@ -1,6 +1,6 @@
 #!/bin/bash
 export $(cat .env.common | grep -v \"#\" | xargs)
-export GIT_COMMIT_TAG=$(git log --format=\"%H\" -n 1)
+export GIT_COMMIT_TAG=$(git rev-parse HEAD)
 if [ "$ENVIRONMENT" = "production" ] 
 then
 echo 'sourcing .env.production'

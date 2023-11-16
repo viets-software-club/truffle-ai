@@ -13,13 +13,9 @@ const shortSha = hasTag ? sha.substring(0, 7) : ''
 const NAMESPACE = hasTag ? `${environment}-${shortSha}` : environment
 const RESOURCE_PREFIX = NAMESPACE
 const CHANGE_CAUSE = hasTag ? `${shortSha}: ${promptedChangeCause}` : promptedChangeCause
-const certificateCmd = new Deno.Command('doctl', [
-  'compute',
-  'certificate',
-  'list',
-  '--format ID',
-  '--no-header'
-])
+const certificateCmd = new Deno.Command('doctl', {
+  args: ['compute', 'certificate', 'list', '--format', 'ID', '--no-header']
+})
 if (!certificateId) {
   let { code, stdout, stderr } = await certificateCmd.output()
   certificateId = new TextDecoder().decode(stdout)
@@ -34,7 +30,6 @@ const args = [
   `--set nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id=${certificateId}`,
   `--set image.repositoryUrl=${IMAGE_REPOSITORY_URL}`,
   `--set image.tag=${IMAGE_TAG}`,
-  `--namespace ${NAMESPACE}`,
   `--set resPrefix=${RESOURCE_PREFIX}`,
   '--atomic',
   '--install',

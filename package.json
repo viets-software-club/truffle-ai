@@ -11,7 +11,7 @@
     "deploy-app": "$npm_package_config_env deno task deploy-app",
     "helm:update": "$npm_package_config_env ./config/scripts/update-helm-repos.sh",
     "helm:add": "$npm_package_config_env ./config/scripts/install-helm-repos.sh && $npm_package_config_env ./config/scripts/update-helm-repos.sh",
-    "add-ingress": "$npm_package_config_env ./config/scripts/add-ingress-controller.sh",
+    "add-ingress": "$npm_package_config_env node ./config/scripts/add-ingress-controller.js",
     "dev": "dev() { for i in \"$@\"; do $npm_package_config_env npm run dev -w \"$i\"; done; }; dev",
     "dev:app": "$npm_package_config_env concurrently -n gateway,server,repo-job,ui -c 'yellow,magenta,blue,green' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server' 'npm run dev -w repo-job' 'npm run dev -w ui'",
     "dev:jobs": "$npm_package_config_env concurrently -n repo-job -c 'blue' 'npm run dev -w repo-job'",

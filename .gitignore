@@ -45,6 +45,7 @@ secrets.*
 !secret.tf
 secrets
 _secrets
+!config/app-chart/templates/secrets.yaml
 
 # Terraform
 **/.terraform/*

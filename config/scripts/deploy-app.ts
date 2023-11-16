@@ -44,7 +44,7 @@ const args = [
   '--set',
   `image.tag=${IMAGE_TAG}`,
   '--set',
-  `resPrefix=aber`,
+  `resPrefix=${RESOURCE_PREFIX}`,
   '--set',
   `changeCause=${CHANGE_CAUSE}`,
   '--set',
@@ -64,9 +64,9 @@ if (promptedVersion) {
 }
 args.push(`chart-${RESOURCE_PREFIX}`, `${ORG_NAME}/app-chart`)
 
-let deployCmd = new Deno.Command('helm', { args })
+let deployCmd = new Deno.Command('helm', { args, stdin: 'piped' })
 
-let { code, stdout, stderr } = await deployCmd.output()
+// let { code, stdout, stderr } = await deployCmd.output()
 
-// stdout & stderr are a Uint8Array
-console.log('deployed\n\n', new TextDecoder().decode(stdout), new TextDecoder().decode(stderr))
+// // stdout & stderr are a Uint8Array
+// console.log('deployed\n\n', new TextDecoder().decode(stdout), new TextDecoder().decode(stderr))

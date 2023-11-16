@@ -100,19 +100,19 @@ affinity: {}
 nginx-ingress-controller:
   name: nginx-ingress-controller
   config:
-    use-proxy-protocol: true
-    use-forwarded-headers: true
+    use-proxy-protocol: "true"
+    use-forwarded-headers: "true"
   service:
     type: "LoadBalancer"
     targetPorts:
-      https: 80
+      https: "80"
     annotations:
       service:
         ".beta":
           ".kubernetes.io":
-            do-loadbalancer-name: <ingress-controller>
+            do-loadbalancer-name: "<ingress-controller>"
             do-loadbalancer-certificate-id: "<certificate-id>"
-            do-loadbalancer-protocol: https
+            do-loadbalancer-protocol: "https"
             do-loadbalancer-size-unit: "1"
             do-loadbalancer-disable-lets-encrypt-dns-records: "false"
             do-loadbalancer-redirect-http-to-https: "true"

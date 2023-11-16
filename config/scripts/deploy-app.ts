@@ -30,9 +30,9 @@ console.log('res', RESOURCE_PREFIX)
 const args = [
   'upgrade',
   '--set',
-  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name=${REPO_NAME}-nginx-ingress-controller`,
+  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-name="${REPO_NAME}-nginx-ingress-controller"`,
   '--set',
-  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id=${certificateId}`,
+  `nginx-ingress-controller.service.annotations.service\\.beta\\.kubernetes\\.io/do-loadbalancer-certificate-id="${certificateId}"`,
   '--set',
   `image.repositoryUrl=${IMAGE_REPOSITORY_URL}`,
   '--set',

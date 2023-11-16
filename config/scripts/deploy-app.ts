@@ -38,12 +38,14 @@ const args = [
   `image.tag=${IMAGE_TAG}`,
   '--set',
   `resPrefix=${RESOURCE_PREFIX}`,
+  '--set',
+  `changeCause=${CHANGE_CAUSE}`,
   '--atomic',
   '--install',
   '--create-namespace',
   `--namespace=${NAMESPACE}`,
-  `${ORG_NAME}`,
-  `0.1.0+${sha}`
+  `0.1.0+${sha}`,
+  `${ORG_NAME}/app-chart`
 ]
 
 let deployCmd = new Deno.Command('helm', { args })

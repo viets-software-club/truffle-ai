@@ -48,4 +48,3 @@ jobs:
           git add "$CHART_PACKAGE_NAME"
           git commit -m "$CHART_PACKAGE_NAME"
           git push origin main
-          

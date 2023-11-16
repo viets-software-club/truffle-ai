@@ -23,6 +23,7 @@ COPY ./packages/graphql-server/src/graphql/schema.ts ./packages/graphql-server/s
 RUN apk --no-cache --virtual build-dependencies add python3 make g++
 RUN npm ci -w graphql-gateway
 RUN apk del build-dependencies
+ENV DEBUG 1
 ## build .mesh
 RUN npm run build -w graphql-gateway
 
@@ -48,5 +49,5 @@ COPY --from=build /app/packages/graphql-gateway/.mesh ./.mesh
 COPY --from=build /app/packages/graphql-gateway/src ./src
 
 RUN npm ci --omit=dev
-
+ENV DEBUG 1
 CMD ["npm", "run", "serve"]

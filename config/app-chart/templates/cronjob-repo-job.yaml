@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: what-repo-cronjob
   annotations:
-    "kubernetes.io/change-cause": "what"
+    "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
   labels:
     job: repo-job
 spec:
@@ -14,27 +14,27 @@ spec:
   jobTemplate:
     metadata:
       annotations:
-        "kubernetes.io/change-cause": "what"
+        "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
       labels:
         job: repo-job
     spec:
       template:
         metadata:
           annotations:
-            "kubernetes.io/change-cause": "what"
+            "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
           labels:
             job: repo-job
         spec:
           containers:
-          - name: what-repo-cronjob-container
+          - name: {{ .Values.resPrefix }}-repo-cronjob-container
             image: "{{.Values.image.repositoryUrl}}/repo-job:{{.Values.image.tag}}"
             envFrom:
             - configMapRef:
-                name: what-nodejs-configmap
+                name: {{ .Values.resPrefix }}-nodejs-configmap
             - configMapRef:
-                name: what-supabase-configmap
+                name: {{ .Values.resPrefix }}-supabase-configmap
             - configMapRef:
-                name: what-repo-job-configmap
+                name: {{ .Values.resPrefix }}-repo-job-configmap
             restartPolicy: OnFailure
 
 

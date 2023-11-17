@@ -45,7 +45,7 @@ jobs:
           sparse-checkout: |
             .git
       - id: git_commit_tag
-        run: if [[ -n "${{github.event.pull_request.head.sha}}" ]]; then echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' )" >> "$GITHUB_OUTPUT"; else echo "git_commit_tag=$(${{github.sha}})" >> "$GITHUB_OUTPUT"; fi
+        run: if [[ -n "${{github.event.pull_request.head.sha}}" ]]; then echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' )" >> "$GITHUB_OUTPUT"; else echo "git_commit_tag=${{github.sha}}" >> "$GITHUB_OUTPUT"; fi
       - id: git_commit_message
         run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=$(${{github.event.head_commit.message}})" >> "$GITHUB_OUTPUT"; fi
       - run: echo '${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('{0}.',env.environment), vars.DOMAIN) }}'

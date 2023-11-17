@@ -1,13 +1,13 @@
-import { createColumnHelper } from '@tanstack/react-table'
 import { AiOutlineFork, AiOutlineStar } from 'react-icons/ai'
 import { BsPeople } from 'react-icons/bs'
-import { VscIssues } from 'react-icons/vsc'
 import { GoGitPullRequest } from 'react-icons/go'
-import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
-import { Project } from '@/graphql/generated/gql'
+import { VscIssues } from 'react-icons/vsc'
 import Image from 'next/image'
 import { IssueOpenedIcon, PersonIcon, RepoForkedIcon } from '@primer/octicons-react'
+import { createColumnHelper } from '@tanstack/react-table'
 import GitHubMetricIcon from '@/components/page/details/GitHubMetricIcon'
+import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
+import { Project } from '@/graphql/generated/gql'
 
 type TenPercent = { [key in keyof Project]?: number | null }
 
@@ -26,9 +26,9 @@ const createColumns = (
       {
         header: 'Logo',
         enableColumnFilter: false,
-        cell: (info) => (
-          <div className="relative ml-2 h-6 w-6 overflow-hidden rounded-[5px]">
-            <Image src={info.getValue() as string} alt="logo" fill sizes="24px" />
+        cell: info => (
+          <div className='relative ml-2 h-6 w-6 overflow-hidden rounded-md'>
+            <Image src={info.getValue() as string} alt='logo' fill sizes='24px' />
           </div>
         )
       }
@@ -41,16 +41,16 @@ const createColumns = (
         id: 'Name',
         header: 'Name',
         enableColumnFilter: true,
-        cell: (info) => {
+        cell: info => {
           const [owner, name] = info.getValue().split(' / ')
           return (
             <div>
-              <span className="text-14 font-medium text-gray-500">
+              <span className='text-sm font-medium text-gray-500'>
                 {owner.slice(0, 15)} /&nbsp;
               </span>
-              {owner.length > 16 && <span className="text-14 text-gray-500">...</span>}
-              <span className="text-14 font-bold">{name.slice(0, 31)}</span>
-              {name.length > 32 && <span className="text-14">...</span>}
+              {owner.length > 16 && <span className='text-sm text-gray-500'>...</span>}
+              <span className='text-sm font-bold'>{name.slice(0, 31)}</span>
+              {name.length > 32 && <span className='text-sm'>...</span>}
             </div>
           )
         }
@@ -61,7 +61,7 @@ const createColumns = (
       id: 'Stars',
       header: 'Stars',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           Icon={AiOutlineStar}
           paddingOn={false}
@@ -79,7 +79,7 @@ const createColumns = (
       id: 'Issues',
       header: 'Issues',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           Icon={VscIssues}
           paddingOn={false}
@@ -97,7 +97,7 @@ const createColumns = (
       id: 'Forks',
       header: 'Forks',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           Icon={AiOutlineFork}
           paddingOn={false}
@@ -115,7 +115,7 @@ const createColumns = (
       id: 'Contrib.',
       header: 'Contrib.',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           Icon={BsPeople}
           paddingOn={false}
@@ -134,7 +134,7 @@ const createColumns = (
       id: 'Forks/Contrib.',
       header: 'Forks/Contrib.',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
           paddingOn={false}
@@ -148,7 +148,7 @@ const createColumns = (
       id: 'Issues/Contrib.',
       header: 'Issues/Contrib.',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
           paddingOn={false}
@@ -162,7 +162,7 @@ const createColumns = (
       id: 'PR',
       header: 'Open PRs',
       enableColumnFilter: true,
-      cell: (info) => (
+      cell: info => (
         <GitHubStatisticItem
           Icon={GoGitPullRequest}
           paddingOn={false}

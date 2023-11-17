@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import Page from '@/components/side-effects/Page'
-import withAuth from '@/components/side-effects/withAuth'
-import ProjectsTable from '@/components/side-effects/ProjectsTable'
 import defaultFilters from '@/components/page/overview/defaultFilters'
 import { defaultSort, paginationParameters } from '@/components/page/overview/types'
+import Page from '@/components/side-effects/Page'
+import ProjectsTable from '@/components/side-effects/ProjectsTable'
+import withAuth from '@/components/side-effects/withAuth'
 import {
   PageInfo,
   Project,
@@ -53,7 +53,7 @@ const TrendingProjects = () => {
     if (urqlData) {
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
-      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),

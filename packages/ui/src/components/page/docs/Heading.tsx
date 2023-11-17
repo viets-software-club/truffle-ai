@@ -7,13 +7,13 @@ type HeadingProps = {
 const headingClasses = (type: HeadingProps['type'], customClasses: string) => {
   switch (type) {
     case 'h1':
-      return `text-24 font-semibold text-gray-300 ${customClasses}`
+      return `text-2xl font-semibold text-gray-300 ${customClasses}`
     case 'h2':
-      return `text-20 font-semibold text-gray-300 pt-6 ${customClasses}`
+      return `text-xl font-semibold text-gray-300 pt-6 ${customClasses}`
     case 'h3':
-      return `text-14 font-medium text-gray-300 ${customClasses}`
+      return `text-sm font-medium text-gray-300 ${customClasses}`
     default:
-      return `text-14 font-normal ${customClasses}`
+      return `text-sm font-normal ${customClasses}`
   }
 }
 

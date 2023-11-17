@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import resolveConfig from 'tailwindcss/resolveConfig'
+import { AiOutlineCalendar } from 'react-icons/ai'
+import { FiChevronDown } from 'react-icons/fi'
+import { Menu } from '@headlessui/react'
 import {
   LineChart,
   Line,
@@ -10,9 +12,7 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts'
-import { FiChevronDown } from 'react-icons/fi'
-import { AiOutlineCalendar } from 'react-icons/ai'
-import { Menu } from '@headlessui/react'
+import resolveConfig from 'tailwindcss/resolveConfig'
 import CustomTooltip from '@/components/page/details/CustomTooltip'
 import Button from '@/components/pure/Button'
 import formatDate from '@/util/formatDate'
@@ -32,13 +32,13 @@ const grayColors = fullConfig.theme?.colors?.gray as ColorObject
 const indigoColors = fullConfig.theme?.colors?.indigo as ColorObject
 const colorValues = ['300', '500']
 
-let colors = colorValues.flatMap((value) =>
+let colors = colorValues.flatMap(value =>
   [grayColors?.[value], indigoColors?.[value]].filter(Boolean)
 )
 
 // Add single colors to the array
 const singleColorValues = singleColors
-  .map((colorName) => fullConfig.theme?.colors?.[colorName] as string)
+  .map(colorName => fullConfig.theme?.colors?.[colorName] as string)
   .filter(Boolean)
 
 colors = colors.concat(singleColorValues)
@@ -72,7 +72,7 @@ type ChartProps = {
 const filterDataByTimeframe = (data: DataPoint[], months: number) => {
   const now = new Date()
   const pastDate = now.setMonth(now.getMonth() - months)
-  return data.filter((d) => new Date(d.date).getTime() >= pastDate)
+  return data.filter(d => new Date(d.date).getTime() >= pastDate)
 }
 
 /**
@@ -98,16 +98,16 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
     }
     setIsDataNormalized(true)
     const earliestDate = Math.min(
-      ...datasets.flatMap((dataset) => dataset.data.map((point) => new Date(point.date).getTime()))
+      ...datasets.flatMap(dataset => dataset.data.map(point => new Date(point.date).getTime()))
     )
 
-    const normalizedData = chartData.map((dataset) => ({
+    const normalizedData = chartData.map(dataset => ({
       ...dataset,
-      data: dataset.data.map((point) => ({
+      data: dataset.data.map(point => ({
         ...point,
         date: new Date(
           new Date(point.date).getTime() -
-            (Math.min(...dataset.data.map((p) => new Date(p.date).getTime())) - earliestDate)
+            (Math.min(...dataset.data.map(p => new Date(p.date).getTime())) - earliestDate)
         ).toISOString()
       }))
     }))
@@ -118,10 +118,10 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
   const handleTimeframeChange = useCallback(
     (value?: number) => () => {
       if (value) {
-        const selectedOption = timeframeOptions.find((option) => option.value === value)
+        const selectedOption = timeframeOptions.find(option => option.value === value)
         setTimeframeModalValue(selectedOption ? selectedOption.label : timeframeOptions[0].label)
 
-        const filteredData = chartDataOriginal.map((dataset) => ({
+        const filteredData = chartDataOriginal.map(dataset => ({
           ...dataset,
           data: filterDataByTimeframe(dataset.data, value)
         }))
@@ -140,26 +140,25 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
   }, [datasets])
 
   return (
-    <div className="flex w-full flex-row p-6">
+    <div className='flex w-full flex-row p-6'>
       {datasets.length === 0 ? (
         <p>No data</p>
       ) : (
-        <div className="flex w-full flex-col gap-3">
-          <div className="flex flex-row gap-3 ">
-            <Menu as="div" className="relative">
-              <Menu.Button as="div">
-                <Button Icon={FiChevronDown} variant="normal" text={selectedMetric} order="ltr" />
+        <div className='flex w-full flex-col gap-3'>
+          <div className='flex flex-row gap-3 '>
+            <Menu as='div' className='relative'>
+              <Menu.Button as='div'>
+                <Button Icon={FiChevronDown} variant='normal' text={selectedMetric} order='ltr' />
               </Menu.Button>
 
               <MenuItemsTransition>
-                <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-left rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
-                  {dataOptions.map((metric) => (
+                <Menu.Items className='absolute left-0 z-30 mt-2 origin-top-left rounded-md bg-gray-700 p-1 shadow-lg focus:outline-none'>
+                  {dataOptions.map(metric => (
                     <Menu.Item
-                      as="button"
+                      as='button'
                       key={metric}
                       onClick={() => setSelectedMetric(metric)}
-                      className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
-                    >
+                      className='min-w-[150px] rounded-md p-2 text-left text-sm text-gray-100 hover:bg-gray-600'>
                       {metric}
                     </Menu.Item>
                   ))}
@@ -167,25 +166,24 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
               </MenuItemsTransition>
             </Menu>
 
-            <Menu as="div" className="relative">
-              <Menu.Button as="div">
+            <Menu as='div' className='relative'>
+              <Menu.Button as='div'>
                 <Button
                   Icon={AiOutlineCalendar}
-                  variant="normal"
+                  variant='normal'
                   text={timeframeModalValue}
-                  order="ltr"
+                  order='ltr'
                 />
               </Menu.Button>
 
               <MenuItemsTransition>
-                <Menu.Items className="absolute left-0 z-30 mt-2 origin-top-right rounded-[5px] bg-gray-700 p-1 shadow-lg focus:outline-none">
-                  {timeframeOptions.map((option) => (
+                <Menu.Items className='absolute left-0 z-30 mt-2 origin-top-right rounded-md bg-gray-700 p-1 shadow-lg focus:outline-none'>
+                  {timeframeOptions.map(option => (
                     <Menu.Item
-                      as="button"
+                      as='button'
                       key={option.label}
                       onClick={handleTimeframeChange(option.value)}
-                      className="min-w-[150px] rounded-[5px] p-2 text-left text-14 text-gray-100 hover:bg-gray-600"
-                    >
+                      className='min-w-[150px] rounded-md p-2 text-left text-sm text-gray-100 hover:bg-gray-600'>
                       {option.label}
                     </Menu.Item>
                   ))}
@@ -194,11 +192,11 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
             </Menu>
 
             {multipleLines && (
-              <Button variant="normal" text="Normalize Data" onClick={handleDataNormalization} />
+              <Button variant='normal' text='Normalize Data' onClick={handleDataNormalization} />
             )}
           </div>
 
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width='100%' height={300}>
             <LineChart
               height={310}
               margin={{
@@ -206,13 +204,12 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
                 right: 10,
                 left: 0,
                 bottom: 5
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={grayColors['800']} />
+              }}>
+              <CartesianGrid strokeDasharray='3 3' vertical={false} stroke={grayColors['800']} />
 
               <XAxis
-                dataKey="date"
-                type="number"
+                dataKey='date'
+                type='number'
                 tick={{ fontSize: '12', fontWeight: 'light' }}
                 tickFormatter={formatDate}
                 stroke={grayColors['500']}
@@ -249,15 +246,15 @@ const Chart = ({ datasets, multipleLines, selectedMetric, setSelectedMetric }: C
                     key={dataset.id}
                     data={
                       dataset.data
-                        ? dataset.data.map((item) => ({
+                        ? dataset.data.map(item => ({
                             ...item,
                             date: new Date(item.date).getTime()
                           }))
                         : []
                     }
-                    dataKey="count"
+                    dataKey='count'
                     name={dataset.name}
-                    type="monotone"
+                    type='monotone'
                     stroke={colors[index % colors.length]}
                     dot={false}
                     activeDot={{ r: 4 }}

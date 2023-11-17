@@ -1,19 +1,18 @@
-import Heading from '@/components/page/docs/Heading'
-import Paragraph from '@/components/page/docs/Paragraph'
-
-import NormalBulletList from '@/components/page/docs/NormalBulletedList'
 import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
+import Heading from '@/components/page/docs/Heading'
+import NormalBulletList from '@/components/page/docs/NormalBulletedList'
+import Paragraph from '@/components/page/docs/Paragraph'
 
 const SidebarDocs = () => (
   <DocsPageWrapper>
-    <Heading type="h1">Navbar</Heading>
+    <Heading type='h1'>Navbar</Heading>
 
     <Paragraph>
       The navigation sidebar of our tool is split into four main sections, providing easy access to
       various functionalities of the application.
     </Paragraph>
 
-    <Heading type="h2">Top Section</Heading>
+    <Heading type='h2'>Top Section</Heading>
 
     <Paragraph>
       Next to TruffleAI, the user will see the user button, which opens a modal with three options:
@@ -27,7 +26,7 @@ const SidebarDocs = () => (
       ]}
     />
 
-    <Heading type="h2">Overview Section</Heading>
+    <Heading type='h2'>Overview Section</Heading>
 
     <Paragraph>
       The Overview section gives the user a snapshot of their main areas of interest:
@@ -40,14 +39,14 @@ const SidebarDocs = () => (
       ]}
     />
 
-    <Heading type="h2">Categories Section</Heading>
+    <Heading type='h2'>Categories Section</Heading>
 
     <Paragraph>
       The Categories section allows the user to see all their bookmark categories as well as the
       projects they include at one glance.
     </Paragraph>
 
-    <Heading type="h2">Bottom Section</Heading>
+    <Heading type='h2'>Bottom Section</Heading>
 
     <Paragraph>The Bottom section provides access to additional support and settings.</Paragraph>
   </DocsPageWrapper>

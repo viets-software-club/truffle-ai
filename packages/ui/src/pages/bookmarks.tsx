@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
-import Page from '@/components/side-effects/Page'
-import withAuth from '@/components/side-effects/withAuth'
-import ProjectsTable from '@/components/side-effects/ProjectsTable'
 import { defaultSort, paginationParameters } from '@/components/page/overview/types'
+import Page from '@/components/side-effects/Page'
+import ProjectsTable from '@/components/side-effects/ProjectsTable'
+import withAuth from '@/components/side-effects/withAuth'
 import {
   PageInfo,
   Project,
@@ -50,7 +50,7 @@ const Bookmarks = () => {
 
   // Get array with all bookmarked project ids
   const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
-    (edge) => edge.node.project?.id as string
+    edge => edge.node.project?.id as string
   ) as string[]
 
   const [{ data: urqlData, fetching: fetchingProjects, error: errorProjects }] =
@@ -72,7 +72,7 @@ const Bookmarks = () => {
     if (urqlData) {
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
-      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),

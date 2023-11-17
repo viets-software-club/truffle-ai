@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
 import { FaHackerNews, FaTwitter } from 'react-icons/fa'
-import Loading from '@/components/pure/Loading'
-import Button from '@/components/pure/Button'
-import Error from '@/components/pure/Error'
+import { FiX as X, FiChevronUp as ChevronUp, FiChevronDown as ChevronDown } from 'react-icons/fi'
+import Link from 'next/link'
+import { useUser } from '@supabase/auth-helpers-react'
 import Chart, { DataPoint } from '@/components/page/details/Chart'
+import ProjectInformation from '@/components/page/details/ProjectInformation'
 import RightSidebar from '@/components/page/details/RightSidebar'
+import defaultFilters from '@/components/page/overview/defaultFilters'
+import { defaultSort } from '@/components/page/overview/types'
+import Button from '@/components/pure/Button'
+import Card from '@/components/pure/Card'
+import Error from '@/components/pure/Error'
+import Loading from '@/components/pure/Loading'
 import {
   Bookmark,
   Project,
@@ -14,11 +19,6 @@ import {
   useProjectDetailsQuery,
   useProjectIdsQuery
 } from '@/graphql/generated/gql'
-import ProjectInformation from '@/components/page/details/ProjectInformation'
-import { defaultSort } from '@/components/page/overview/types'
-import defaultFilters from '@/components/page/overview/defaultFilters'
-import Card from '@/components/pure/Card'
-import { useUser } from '@supabase/auth-helpers-react'
 
 type DetailsProps = {
   id: string
@@ -62,11 +62,11 @@ const Details = ({ id }: DetailsProps) => {
   })
 
   // First entry of returned collection contains project details
-  const project = data?.projectCollection?.edges?.map((edge) => edge.node)[0] as Project
+  const project = data?.projectCollection?.edges?.map(edge => edge.node)[0] as Project
   // List of all project IDs for navigation
-  const projects = projectIds?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  const projects = projectIds?.projectCollection?.edges?.map(edge => edge.node) as Project[]
   // Array of length 1 with bookmark details if bookmarked, otherwise empty array
-  const bookmarks = bookmarkIds?.bookmarkCollection?.edges?.map((edge) => edge.node) as Bookmark[]
+  const bookmarks = bookmarkIds?.bookmarkCollection?.edges?.map(edge => edge.node) as Bookmark[]
 
   // Whether project is bookmarked or not
   const isBookmarked = bookmarks?.length > 0 && bookmarks[0].project?.id === id
@@ -75,7 +75,7 @@ const Details = ({ id }: DetailsProps) => {
 
   // Set IDs of previous and next project for navigation buttons
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {
-    const currentIndex = projectList.findIndex((p) => p.id === currentId)
+    const currentIndex = projectList.findIndex(p => p.id === currentId)
 
     const newPreviousProjectId =
       currentIndex > 0 ? (projectList[currentIndex - 1].id as string) : undefined
@@ -109,49 +109,49 @@ const Details = ({ id }: DetailsProps) => {
 
   return (
     <>
-      <div className="fixed z-10 flex h-[60px] w-full items-center justify-between border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500">
-        <div className="flex flex-row items-center gap-3">
-          <Link href="/">
-            <X key="2" className="h-4 w-4 text-gray-500" />
+      <div className='fixed z-10 flex h-[60px] w-full items-center justify-between border-b border-solid border-gray-800 bg-gray-900 px-3 pl-7 text-gray-500'>
+        <div className='flex flex-row items-center gap-3'>
+          <Link href='/'>
+            <X key='2' className='h-4 w-4 text-gray-500' />
           </Link>
 
           {nextProjectId ? (
             <Link href={`/details/${nextProjectId}`}>
-              <Button variant="onlyIcon" Icon={ChevronUp} />
+              <Button variant='onlyIcon' Icon={ChevronUp} />
             </Link>
           ) : (
             <Button
               disabled={!nextProjectId}
-              variant="onlyIcon"
+              variant='onlyIcon'
               Icon={ChevronUp}
-              iconColor="text-gray-600"
+              iconColor='text-gray-600'
             />
           )}
 
           {previousProjectId ? (
             <Link href={`/details/${previousProjectId}`}>
-              <Button variant="onlyIcon" Icon={ChevronDown} />
+              <Button variant='onlyIcon' Icon={ChevronDown} />
             </Link>
           ) : (
             <Button
               disabled={!previousProjectId}
-              variant="onlyIcon"
+              variant='onlyIcon'
               Icon={ChevronDown}
-              iconColor="text-gray-600"
+              iconColor='text-gray-600'
             />
           )}
 
-          <div className="flex flex-row items-center">
-            <p className="text-14 text-white">
+          <div className='flex flex-row items-center'>
+            <p className='text-sm text-white'>
               {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
             </p>
-            <p className="text-14 text-gray-500">/&nbsp;{projects?.length}</p>
+            <p className='text-sm text-gray-500'>/&nbsp;{projects?.length}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex grow">
-        <div className="w-[calc(100%-250px)] flex-row pt-[60px]">
+      <div className='flex grow'>
+        <div className='w-[calc(100%-250px)] flex-row pt-[60px]'>
           <ProjectInformation
             id={project.id as string}
             githubUrl={project.githubUrl as string}
@@ -170,7 +170,7 @@ const Details = ({ id }: DetailsProps) => {
             refetch={refetch}
           />
 
-          <div className="flex flex-col items-start">
+          <div className='flex flex-col items-start'>
             <Chart
               datasets={[
                 {
@@ -188,24 +188,24 @@ const Details = ({ id }: DetailsProps) => {
             />
           </div>
 
-          <div className="flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3">
-            <div className="w-1/2">
+          <div className='flex flex-row gap-4 border-t border-gray-800 py-2 pl-7 pr-3'>
+            <div className='w-1/2'>
               <Card
                 Icon={FaTwitter}
-                name="Top Tweets"
+                name='Top Tweets'
                 tweets={project.relatedTwitterPosts ?? undefined}
-                variant="twitter"
+                variant='twitter'
                 key={project.id as string}
               />
             </div>
 
-            <div className="w-1/2">
+            <div className='w-1/2'>
               <Card
                 Icon={FaHackerNews}
-                name="Community Sentiment"
+                name='Community Sentiment'
                 communitySentiment={project.hackernewsSentiment ?? undefined}
                 links={project.hackernewsStories as string[]}
-                variant="hackernews"
+                variant='hackernews'
                 key={project.id as string}
               />
             </div>

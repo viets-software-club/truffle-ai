@@ -6,12 +6,12 @@ import {
   getFilteredRowModel
 } from '@tanstack/react-table'
 import { CombinedError } from 'urql'
+import FilterBar from '@/components/page/overview/FilterBar'
+import Table from '@/components/page/overview/Table'
+import TopBar from '@/components/page/overview/TopBar'
+import { paginationParameters } from '@/components/page/overview/types'
 import Error from '@/components/pure/Error'
 import Loading from '@/components/pure/Loading'
-import TopBar from '@/components/page/overview/TopBar'
-import Table from '@/components/page/overview/Table'
-import FilterBar from '@/components/page/overview/FilterBar'
-import { paginationParameters } from '@/components/page/overview/types'
 import createColumns from '@/components/side-effects/ProjectsTable/columns'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
 
@@ -104,13 +104,13 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         />
       )}
 
-      <div className="flex w-full flex-col pt-[120px]">
+      <div className='flex w-full flex-col pt-[120px]'>
         {fetching && <Loading />}
 
         {error && <Error />}
 
         {data.length === 0 && !error && !fetching && (
-          <p className="w-full p-12 text-center text-14 text-gray-300">No projects found</p>
+          <p className='w-full p-12 text-center text-sm text-gray-300'>No projects found</p>
         )}
 
         {data.length > 0 && !error && <Table table={table} />}

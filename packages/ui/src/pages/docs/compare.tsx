@@ -1,18 +1,17 @@
-import Image from '@/components/page/docs/Image'
-import Heading from '@/components/page/docs/Heading'
-import Paragraph from '@/components/page/docs/Paragraph'
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-import NormalBulletList from '@/components/page/docs/NormalBulletedList'
-
 import ComparePage from '@/assets/ComparePage.png'
+import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
+import Heading from '@/components/page/docs/Heading'
+import Image from '@/components/page/docs/Image'
+import NormalBulletList from '@/components/page/docs/NormalBulletedList'
+import Paragraph from '@/components/page/docs/Paragraph'
 
 const CompareDocs = () => (
   <DocsPageWrapper>
-    <Heading type="h1">Compare projects</Heading>
+    <Heading type='h1'>Compare projects</Heading>
 
     {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
     {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
-    <Image src={ComparePage.src} alt="Compare page" />
+    <Image src={ComparePage.src} alt='Compare page' />
 
     <Paragraph>
       This page helps the user compare projects bookmarked into the same category. The user can

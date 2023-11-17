@@ -1,13 +1,12 @@
-import Image from '@/components/page/docs/Image'
-import Heading from '@/components/page/docs/Heading'
-import Paragraph from '@/components/page/docs/Paragraph'
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-
 import CommandInterface from '@/assets/commandInterface.png'
+import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
+import Heading from '@/components/page/docs/Heading'
+import Image from '@/components/page/docs/Image'
+import Paragraph from '@/components/page/docs/Paragraph'
 
 const CIDocs = () => (
   <DocsPageWrapper>
-    <Heading type="h1">Command interface</Heading>
+    <Heading type='h1'>Command interface</Heading>
 
     <Paragraph>
       Using Cmd/Ctrl + K, the user can open up a command interface which allows quicker navigation
@@ -18,7 +17,7 @@ const CIDocs = () => (
 
     {/* eslint-disable @typescript-eslint/no-unsafe-assignment */}
     {/* eslint-disable @typescript-eslint/no-unsafe-member-access */}
-    <Image src={CommandInterface.src} alt="Command Interface" />
+    <Image src={CommandInterface.src} alt='Command Interface' />
 
     <Paragraph>
       For actions or navigation items that require additional input or confirmation, such as sending

@@ -1,9 +1,9 @@
 import { PropsWithChildren, ReactNode } from 'react'
 import Link from 'next/link'
 import Box from './Box/Box'
+import ProfileDropdownMenu from './ProfileDropdownMenu'
 import Section from './Section'
 import SmallSidebar from './Small'
-import ProfileDropdownMenu from './ProfileDropdownMenu'
 
 type SidebarProps = PropsWithChildren<{
   title: string
@@ -17,12 +17,12 @@ type SidebarProps = PropsWithChildren<{
  * @returns {ReactNode} Returns a sidebar component with provided footer and title, and children elements.
  */
 const Sidebar = ({ footer, ...props }: SidebarProps) => (
-  <aside className="fixed z-30 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800 bg-gray-900">
+  <aside className='fixed z-30 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800 bg-gray-900'>
     <div>
       {/* Top bar with title and profile modal button */}
-      <div className="flex h-[59px] w-full items-center justify-between px-7 text-gray-100">
-        <Link href="/">
-          <span className="mr-2 text-18 font-medium">{props.title}</span>
+      <div className='flex h-[59px] w-full items-center justify-between px-7 text-gray-100'>
+        <Link href='/'>
+          <span className='mr-2 text-lg font-medium'>{props.title}</span>
         </Link>
 
         <ProfileDropdownMenu />
@@ -31,7 +31,7 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
       {props.children}
     </div>
 
-    <footer className="border-t border-solid border-gray-800 p-2">{footer}</footer>
+    <footer className='border-t border-solid border-gray-800 p-2'>{footer}</footer>
   </aside>
 )
 

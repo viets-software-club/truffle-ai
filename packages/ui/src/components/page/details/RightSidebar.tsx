@@ -1,3 +1,4 @@
+import { FaGithub } from 'react-icons/fa'
 import {
   IssueOpenedIcon,
   PeopleIcon,
@@ -6,11 +7,10 @@ import {
   StarIcon,
   GitPullRequestIcon
 } from '@primer/octicons-react'
-import { FaGithub } from 'react-icons/fa'
-import { Project } from '@/graphql/generated/gql'
 import Sidebar from '@/components/pure/Sidebar'
-import GitHubMetricIcon from './GitHubMetricIcon'
+import { Project } from '@/graphql/generated/gql'
 import SendToAffinity, { SendToAffinityProps } from '../settings/SendData/SendToAffinity'
+import GitHubMetricIcon from './GitHubMetricIcon'
 
 type Props = {
   project: Project
@@ -36,37 +36,37 @@ const RightSidebar = ({ project }: Props) => {
   return (
     // @TODO Add historical data for showing growth
     <Sidebar.Small>
-      <Sidebar.Box title="GitHub Stats">
-        <Sidebar.Box.GithubStatItem id="Stars" Icon={StarIcon} value={project?.starCount || 0} />
+      <Sidebar.Box title='GitHub Stats'>
+        <Sidebar.Box.GithubStatItem id='Stars' Icon={StarIcon} value={project?.starCount || 0} />
         <Sidebar.Box.GithubStatItem
           Icon={PeopleIcon}
           value={project?.contributorCount || 0}
-          id="Contributors"
+          id='Contributors'
         />
         <Sidebar.Box.GithubStatItem
           Icon={IssueOpenedIcon}
           value={project?.issueCount || 0}
-          id="Issues"
+          id='Issues'
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
           value={project.issuesPerContributor || 0}
-          id="Issues/ Contributor"
+          id='Issues/ Contributor'
         />
         <Sidebar.Box.GithubStatItem
           Icon={RepoForkedIcon}
           value={project?.forkCount || 0}
-          id="Forks"
+          id='Forks'
         />
         <Sidebar.Box.GithubStatItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
           value={project.forksPerContributor || 0}
-          id="Forks/ Contributor"
+          id='Forks/ Contributor'
         />
         <Sidebar.Box.GithubStatItem
           Icon={GitPullRequestIcon}
           value={project.pullRequestCount || 0}
-          id="Pull requests"
+          id='Pull requests'
         />
         <Sidebar.Box.GithubStatItem
           Icon={FaGithub}
@@ -76,7 +76,7 @@ const RightSidebar = ({ project }: Props) => {
       </Sidebar.Box>
 
       {project.languages?.length && (
-        <Sidebar.Box title="Languages">
+        <Sidebar.Box title='Languages'>
           <Sidebar.Box.LanguagesItem
             languages={project.languages as unknown as Array<{ name: string; color: string }>}
           />
@@ -84,7 +84,7 @@ const RightSidebar = ({ project }: Props) => {
       )}
 
       {(project.organization?.twitterUsername || project.organization?.websiteUrl) && (
-        <Sidebar.Box title="Company">
+        <Sidebar.Box title='Company'>
           <Sidebar.Box.CompanyItem
             twitterLink={project.organization?.twitterUsername as string}
             websiteLink={project.organization?.websiteUrl as string}
@@ -98,7 +98,7 @@ const RightSidebar = ({ project }: Props) => {
           project.associatedPerson?.email ||
           project.associatedPerson?.twitterUsername ||
           project.associatedPerson?.websiteUrl) && (
-          <Sidebar.Box title="Founder">
+          <Sidebar.Box title='Founder'>
             <Sidebar.Box.FounderItem
               projectName={project.name}
               name={project.associatedPerson?.name as string}
@@ -110,10 +110,10 @@ const RightSidebar = ({ project }: Props) => {
           </Sidebar.Box>
         )}
 
-      <Sidebar.Box title="Integrations">
-        <div className="flex flex-col justify-between">
-          <div className="inline-flex px-7 py-2.5">
-            <div className="flex flex-row items-center justify-center gap-[15px]">
+      <Sidebar.Box title='Integrations'>
+        <div className='flex flex-col justify-between'>
+          <div className='inline-flex px-7 py-2.5'>
+            <div className='flex flex-row items-center justify-center gap-[15px]'>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <SendToAffinity {...sendToAffinityProps} />
             </div>

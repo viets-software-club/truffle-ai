@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router'
 import React, { FormEvent, RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { MdArrowForward } from 'react-icons/md'
-import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { defaultSort } from '@/components/page/overview/types'
-import emailTemplate from '@/util/emailTemplate'
+import { useRouter } from 'next/router'
 import defaultFilters from '@/components/page/overview/defaultFilters'
-import defaultList from './DefaultRecommendationList'
-import CommandInterfaceOptions from './CommandInterfaceOptions'
+import { defaultSort } from '@/components/page/overview/types'
+import { Project, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import emailTemplate from '@/util/emailTemplate'
 import CommandInterfaceModal from './CommandInterfaceModal'
+import CommandInterfaceOptions from './CommandInterfaceOptions'
+import defaultList from './DefaultRecommendationList'
 import { RecommendationRowType } from './types'
 
 /**
@@ -40,7 +40,7 @@ const CommandInterface: React.FC = () => {
     }
   })
 
-  const projects = data?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+  const projects = data?.projectCollection?.edges?.map(edge => edge.node) as Project[]
 
   const closeModal = () => {
     setOpen(false)
@@ -79,7 +79,7 @@ const CommandInterface: React.FC = () => {
       }
 
       const shortcutItem = defaultList.find(
-        (item) => item.shortcutKey?.toLowerCase() === event.key.toLowerCase()
+        item => item.shortcutKey?.toLowerCase() === event.key.toLowerCase()
       )
 
       if (shortcutItem) {
@@ -122,7 +122,7 @@ const CommandInterface: React.FC = () => {
 
     if (recommendationList.length === 0) {
       setRecommendationList(
-        defaultList.filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+        defaultList.filter(item => pathname.includes(item.pageRestriction ?? '') && !item.hide)
       )
     }
 
@@ -136,15 +136,15 @@ const CommandInterface: React.FC = () => {
   }, [selectedLine])
 
   const isMailRefEmpty = (): boolean =>
-    recommendationList.filter((item) => item.commandInterfaceOptions === 'mailto:').length !== 0
+    recommendationList.filter(item => item.commandInterfaceOptions === 'mailto:').length !== 0
 
   useEffect(() => {
     if (projects && isMailRefEmpty()) {
       setRecommendationList(
-        defaultList.map((item) => {
+        defaultList.map(item => {
           const newItem = { ...item }
           if (newItem.commandInterfaceOptions.includes('mailto:')) {
-            const project = projects.filter((projectItem) => projectItem.id === id)[0]
+            const project = projects.filter(projectItem => projectItem.id === id)[0]
             newItem.commandInterfaceOptions = emailTemplate(
               project?.associatedPerson?.email ?? '',
               project?.associatedPerson?.name ?? '',
@@ -212,7 +212,7 @@ const CommandInterface: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchWord(event.target.value)
     const search = event.target.value.trim()
-    const filteredDefaultList = defaultList.filter((index) => isCommandExistInList(index, search))
+    const filteredDefaultList = defaultList.filter(index => isCommandExistInList(index, search))
     const isSearchNotEmpty = search !== ''
     const isSearchContainingSymbol = search.includes('>') || search.includes('<')
     const isSingleFilteredResult = filteredDefaultList.length === 1
@@ -224,26 +224,26 @@ const CommandInterface: React.FC = () => {
           if (isMultipleSearchTerms) {
             const lastSearchTerm = search.split(' ').pop() as string
             setRecommendationList(
-              prevProjectRecommendationList.filter((rowItem) =>
+              prevProjectRecommendationList.filter(rowItem =>
                 isCommandExistInList(rowItem, lastSearchTerm)
               )
             )
-          } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
+          } else if (!defaultList.some(index => isCommandExactlyExistInList(index, search))) {
             setIsProjectListOn(false)
             setRecommendationList(
               defaultList
-                .filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
-                .filter((rowItem) => isCommandExistInList(rowItem, search))
+                .filter(item => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+                .filter(rowItem => isCommandExistInList(rowItem, search))
             )
           } else {
             setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
           }
-        } else if (!defaultList.some((index) => isCommandExactlyExistInList(index, search))) {
+        } else if (!defaultList.some(index => isCommandExactlyExistInList(index, search))) {
           setIsProjectListOn(false)
           setRecommendationList(
             defaultList
-              .filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
-              .filter((rowItem) => isCommandExistInList(rowItem, search))
+              .filter(item => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+              .filter(rowItem => isCommandExistInList(rowItem, search))
           )
         } else {
           setProjectNamesAsRow(filteredDefaultList[0]?.commandInterfaceOptions ?? [])
@@ -255,7 +255,7 @@ const CommandInterface: React.FC = () => {
     } else {
       setIsProjectListOn(false)
       setRecommendationList(
-        defaultList.filter((item) => pathname.includes(item.pageRestriction ?? '') && !item.hide)
+        defaultList.filter(item => pathname.includes(item.pageRestriction ?? '') && !item.hide)
       )
     }
   }
@@ -320,7 +320,7 @@ const CommandInterface: React.FC = () => {
           : searchWordAsArray.slice(0, 2).join(' ')
       }
 
-      const [command] = recommendationList.filter((row) =>
+      const [command] = recommendationList.filter(row =>
         row.menuText.toLocaleLowerCase().includes(commandName.toLocaleLowerCase())
       )
       handleNavigation(

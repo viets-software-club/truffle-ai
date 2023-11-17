@@ -55,9 +55,4 @@ const RecommendationRow: React.FC<RecommendationRowCommandProps> = ({
   </div>
 )
 
-RecommendationRow.defaultProps = {
-  Icon: null,
-  subtitle: null
-}
-
 export default RecommendationRow

@@ -1,24 +1,21 @@
 import { ChangeEvent, useState } from 'react'
-import { AiOutlineNumber } from 'react-icons/ai'
-import { IoTextOutline } from 'react-icons/io5'
 import { TbRefresh, TbTrash } from 'react-icons/tb'
-import { Menu, Popover } from '@headlessui/react'
-import { ChevronDownIcon } from '@primer/octicons-react'
+import { Popover } from '@headlessui/react'
 import clsx from 'clsx'
 import Button from '@/components/pure/Button'
 import { IntFilter, ProjectFilter, StringFilter } from '@/graphql/generated/gql'
+import FilterItemModalTrigger from './FilterItemModalTrigger'
 import FilterMenuItem from './FilterMenuItem'
 import MenuItemsTransition from './MenuItemsTransition'
+import OperatorSelector from './OperatorSelector'
 import { FilterOption, IntFilterOperator, StringFilterOperator, filterOptions } from './types'
+
+const isIntFilter = (filter: StringFilter | IntFilter) => (filter as IntFilter).gt !== undefined
 
 type FilterItemModalProps = {
   currentKey: FilterOption['key']
   filters: ProjectFilter
   updateFilters: (filter: ProjectFilter) => void
-}
-
-function isIntFilter(filter: StringFilter | IntFilter): filter is IntFilter {
-  return (filter as IntFilter).gt !== undefined
 }
 
 const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModalProps) => {
@@ -28,16 +25,9 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
     | StringFilterOperator
     | IntFilterOperator
 
-  let defFilterNumber
   const filter = filters?.[currentKey]
-  let val
-  if (filter && isIntFilter(filter)) {
-    val = filter[currentOperator as IntFilterOperator]
-  }
-
-  if (typeof val === 'number' && val !== -1) {
-    defFilterNumber = val
-  }
+  const defFilterNumber =
+    filter && isIntFilter(filter) ? filter[currentOperator as IntFilterOperator] : undefined
 
   const [value, setValue] = useState<string | number>(defFilterNumber || '')
 
@@ -72,38 +62,12 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
   ))
 
   return (
-    <Popover as='div' className='relative inline-block text-left'>
+    <Popover as='div' className='relative'>
       {({ open, close }) => (
         <>
-          {/* Filterbar button - greyed out when no filter value has been selected */}
-          <Popover.Button
-            className={clsx(
-              'flex h-[30px] flex-row  items-center space-x-2 rounded-md border border-gray-800 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700',
-              {
-                'bg-gray-850 ': value !== ''
-              }
-            )}>
-            <div className='flex flex-row items-center space-x-1'>
-              {/* Show number or text icon depending on type */}
-              {type === 'string' ? (
-                <IoTextOutline className='text-gray-500' />
-              ) : (
-                <AiOutlineNumber className='text-gray-500' />
-              )}
-
-              <p
-                className={clsx('text-sm', {
-                  'text-gray-500': value === ''
-                })}>
-                {column}
-              </p>
-
-              <ChevronDownIcon
-                className={clsx('text-gray-500 transition-transform duration-200', {
-                  'rotate-180': open
-                })}
-              />
-            </div>
+          {/* Filterbar button (greyed out when no filter value has been selected) */}
+          <Popover.Button>
+            <FilterItemModalTrigger value={value} type={type} column={column} open={open} />
           </Popover.Button>
 
           {/* Filterbar dropdown */}
@@ -118,30 +82,23 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
               )}>
               {/* Whole expanded dropdown */}
               <div className='p-2'>
-                <div className='flex flex-row justify-between'>
-                  <div className='flex flex-row space-x-2'>
+                <div className='flex justify-between'>
+                  <div className='flex space-x-2'>
                     {/* Filter/ column title */}
                     <p className='text-sm text-white'>{column}</p>
 
-                    {/* Operator selector */}
-                    <Menu as='div'>
-                      <Menu.Button className='flex flex-row items-center space-x-1 text-sm text-gray-500 outline-none'>
-                        <p className='text-sm font-medium text-gray-300'>{operator}</p>
-                        <ChevronDownIcon className='text-gray-500' />
-                      </Menu.Button>
-
-                      <MenuItemsTransition>
-                        <Menu.Items className='absolute right-0 z-40 mt-2 w-44 origin-top-right rounded-md bg-gray-700 shadow-lg focus:outline-none'>
-                          <div className='py-1'>
-                            {type === 'string' ? stringFilterOperators : intFilterOperators}
-                          </div>
-                        </Menu.Items>
-                      </MenuItemsTransition>
-                    </Menu>
+                    <OperatorSelector
+                      operator={operator}
+                      type={type}
+                      stringFilterOperators={stringFilterOperators}
+                      intFilterOperators={intFilterOperators}
+                    />
                   </div>
 
                   {/* Remove icon */}
-                  <Button onClick={removeFilter} variant='onlyIconNoBorderNoBG' Icon={TbTrash} />
+                  <Button onClick={removeFilter} variant='noBorderNoBG'>
+                    <TbTrash />
+                  </Button>
                 </div>
 
                 {/* Input */}
@@ -158,7 +115,9 @@ const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModal
                     value={value}
                     onChange={handleChange}
                   />
-                  <Button variant='onlyIcon' type='submit' Icon={TbRefresh} />
+                  <Button type='submit'>
+                    <TbRefresh />
+                  </Button>
                 </form>
               </div>
             </Popover.Panel>

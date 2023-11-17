@@ -1,9 +1,6 @@
 import { PropsWithChildren, ReactNode } from 'react'
 import Link from 'next/link'
-import Box from './Box/Box'
 import ProfileDropdownMenu from './ProfileDropdownMenu'
-import Section from './Section'
-import SmallSidebar from './Small'
 
 type SidebarProps = PropsWithChildren<{
   title: string
@@ -35,8 +32,4 @@ const Sidebar = ({ footer, ...props }: SidebarProps) => (
   </aside>
 )
 
-export default Object.assign(Sidebar, {
-  Box,
-  Section,
-  Small: SmallSidebar
-})
+export default Sidebar

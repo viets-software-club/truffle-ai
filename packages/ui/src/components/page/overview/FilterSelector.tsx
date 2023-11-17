@@ -15,7 +15,10 @@ type FilterSelectorProps = {
 const FilterSelector: FC<FilterSelectorProps> = ({ filters, addFilter }) => (
   <Menu as='div' className='relative'>
     <Menu.Button as='div'>
-      <Button Icon={AiOutlineFilter} text='Add filters' variant='normal' order='ltr' />
+      <Button>
+        <AiOutlineFilter />
+        Add filters
+      </Button>
     </Menu.Button>
 
     <MenuItemsTransition>

@@ -17,13 +17,10 @@ type SortingSelectorProps = {
 const SortingSelector: FC<SortingSelectorProps> = ({ sorting, updateSorting }) => (
   <Menu as='div' className='relative'>
     <Menu.Button as='div'>
-      <Button
-        Icon={TbArrowsSort}
-        text='Sorting'
-        variant='normal'
-        order='ltr'
-        className={clsx({ 'bg-gray-850': sorting })}
-      />
+      <Button className={clsx({ 'bg-gray-850': sorting })}>
+        <TbArrowsSort />
+        Sorting
+      </Button>
     </Menu.Button>
 
     <MenuItemsTransition>

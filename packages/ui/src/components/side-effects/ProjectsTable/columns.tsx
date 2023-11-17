@@ -6,18 +6,27 @@ import Image from 'next/image'
 import { IssueOpenedIcon, PersonIcon, RepoForkedIcon } from '@primer/octicons-react'
 import { createColumnHelper } from '@tanstack/react-table'
 import GitHubMetricIcon from '@/components/page/details/GitHubMetricIcon'
-import GitHubStatisticItem from '@/components/pure/Sidebar/Box/GithubStatItem'
+import GitHubStatisticItem from '@/components/pure/Sidebar/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 
 type TenPercent = { [key in keyof Project]?: number | null }
 
-const createColumns = (
-  topTenPercent: TenPercent,
-  bottomTenPercent: TenPercent,
-  topTwentyPercent: TenPercent,
+export type PercentileStats = {
+  topTenPercent: TenPercent
+  topTwentyPercent: TenPercent
+  bottomTenPercent: TenPercent
   bottomTwentyPercent: TenPercent
-) => {
+}
+
+// eslint-disable-next-line max-lines-per-function
+const createColumns = ({
+  topTenPercent,
+  topTwentyPercent,
+  bottomTenPercent,
+  bottomTwentyPercent
+}: PercentileStats) => {
   const columnHelper = createColumnHelper<Project>()
+
   return [
     // Logo column definition
     columnHelper.accessor(
@@ -64,13 +73,12 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           Icon={AiOutlineStar}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={info.getValue() as number}
-          greenValue={bottomTenPercent.starCount as number}
-          lightGreenValue={topTwentyPercent.starCount as number}
-          redValue={topTenPercent.starCount as number}
-          lightRedValue={bottomTwentyPercent.starCount as number}
+          greenValue={topTenPercent.starCount}
+          lightGreenValue={topTwentyPercent.starCount}
+          redValue={bottomTwentyPercent.starCount}
+          lightRedValue={bottomTenPercent.starCount}
+          reverseStats
         />
       )
     }),
@@ -82,13 +90,12 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           Icon={VscIssues}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={info.getValue() as number}
-          greenValue={bottomTenPercent.issueCount as number}
-          lightGreenValue={topTwentyPercent.issueCount as number}
-          redValue={topTenPercent.issueCount as number}
-          lightRedValue={bottomTwentyPercent.issueCount as number}
+          greenValue={topTenPercent.issueCount}
+          lightGreenValue={topTwentyPercent.issueCount}
+          redValue={bottomTwentyPercent.issueCount}
+          lightRedValue={bottomTenPercent.issueCount}
+          reverseStats
         />
       )
     }),
@@ -100,13 +107,11 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           Icon={AiOutlineFork}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={info.getValue() as number}
-          greenValue={bottomTenPercent.forkCount as number}
-          lightGreenValue={topTwentyPercent.forkCount as number}
-          redValue={topTenPercent.forkCount as number}
-          lightRedValue={bottomTwentyPercent.forkCount as number}
+          greenValue={topTenPercent.forkCount}
+          lightGreenValue={topTwentyPercent.forkCount}
+          redValue={bottomTwentyPercent.forkCount}
+          lightRedValue={bottomTenPercent.forkCount}
         />
       )
     }),
@@ -118,17 +123,14 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           Icon={BsPeople}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={(info.getValue() as number) || 0}
-          greenValue={bottomTenPercent.contributorCount as number}
-          lightGreenValue={topTwentyPercent.contributorCount as number}
-          redValue={topTenPercent.contributorCount as number}
-          lightRedValue={bottomTwentyPercent.contributorCount as number}
+          greenValue={topTenPercent.contributorCount}
+          lightGreenValue={topTwentyPercent.contributorCount}
+          redValue={bottomTwentyPercent.contributorCount}
+          lightRedValue={bottomTenPercent.contributorCount}
         />
       )
     }),
-
     // Forks per Contributor column definition
     columnHelper.accessor('forksPerContributor', {
       id: 'Forks/Contrib.',
@@ -137,9 +139,11 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={info.getValue() as number}
+          greenValue={topTenPercent.forksPerContributor}
+          lightGreenValue={topTwentyPercent.forksPerContributor}
+          redValue={bottomTwentyPercent.forksPerContributor}
+          lightRedValue={bottomTenPercent.forksPerContributor}
         />
       )
     }),
@@ -151,9 +155,11 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={info.getValue() as number}
+          greenValue={topTenPercent.issuesPerContributor}
+          lightGreenValue={topTwentyPercent.issuesPerContributor}
+          redValue={bottomTwentyPercent.issuesPerContributor}
+          lightRedValue={bottomTenPercent.issuesPerContributor}
         />
       )
     }),
@@ -165,13 +171,12 @@ const createColumns = (
       cell: info => (
         <GitHubStatisticItem
           Icon={GoGitPullRequest}
-          paddingOn={false}
-          outerPaddingOn={false}
           value={(info.getValue() as number) || 0}
-          greenValue={bottomTenPercent.pullRequestCount as number}
-          lightGreenValue={topTwentyPercent.pullRequestCount as number}
-          redValue={topTenPercent.pullRequestCount as number}
-          lightRedValue={bottomTwentyPercent.pullRequestCount as number}
+          greenValue={topTenPercent.pullRequestCount}
+          lightGreenValue={topTwentyPercent.pullRequestCount}
+          redValue={bottomTwentyPercent.pullRequestCount}
+          lightRedValue={bottomTenPercent.pullRequestCount}
+          reverseStats
         />
       )
     })

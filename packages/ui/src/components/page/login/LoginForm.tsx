@@ -33,16 +33,13 @@ const LoginForm: FC<LoginFormProps> = ({ loading, error, handleSubmit }) => (
       </div>
     )}
     <Button
-      order='ltr'
-      text={loading ? 'Loading...' : 'Log in'}
       variant='highlighted'
       type='submit'
       name='provider'
       value='email'
-      textColor='text-white'
-      iconColor='text-white'
-      className='mt-4 w-full justify-center py-3'
-    />
+      className='mt-4 w-full justify-center py-3 text-white'>
+      {loading ? 'Loading...' : 'Log in'}
+    </Button>
   </form>
 )
 

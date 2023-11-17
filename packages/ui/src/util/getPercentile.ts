@@ -5,7 +5,9 @@ const NUMERIC_FIELDS = [
   'forkCount',
   'issueCount',
   'pullRequestCount',
-  'starCount'
+  'starCount',
+  'forksPerContributor',
+  'issuesPerContributor'
 ] as const
 
 type NumericField = (typeof NUMERIC_FIELDS)[number]
@@ -17,7 +19,9 @@ const getPercentile = (projects: Project[], percentile: number, sortDescending =
     forkCount: null,
     issueCount: null,
     pullRequestCount: null,
-    starCount: null
+    starCount: null,
+    forksPerContributor: null,
+    issuesPerContributor: null
   }
 
   NUMERIC_FIELDS.forEach(field => {

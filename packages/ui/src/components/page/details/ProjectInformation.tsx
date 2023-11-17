@@ -89,23 +89,15 @@ const ProjectInformation = ({
         </div>
 
         <div className='flex flex-row items-center justify-end gap-2'>
-          <Button
-            onClick={sendSlackMessage}
-            variant='normal'
-            text={slackLoading ? 'Loading...' : 'Send to Slack'}
-            Icon={FaSlack}
-            order='ltr'
-            textColor='white'
-          />
+          <Button onClick={sendSlackMessage} className='text-white'>
+            <FaSlack />
+            {slackLoading ? 'Loading...' : 'Send to Slack'}
+          </Button>
 
-          <Button
-            onClick={toggleBookmarkModal}
-            variant='normal'
-            text={isBookmarked ? 'Edit bookmark' : 'Bookmark'}
-            Icon={Bookmark}
-            order='ltr'
-            textColor='text-gray-100'
-          />
+          <Button onClick={toggleBookmarkModal} className='text-gray-100'>
+            <Bookmark />
+            {isBookmarked ? 'Edit bookmark' : 'Bookmark'}
+          </Button>
         </div>
       </div>
 

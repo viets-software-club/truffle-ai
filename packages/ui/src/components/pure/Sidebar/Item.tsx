@@ -44,11 +44,4 @@ const Item = ({ Icon, imageSrc, text, path, secondaryItem, highlighted }: ItemPr
   </div>
 )
 
-Item.defaultProps = {
-  Icon: null,
-  imageSrc: null,
-  secondaryItem: false,
-  highlighted: false
-}
-
 export default Item

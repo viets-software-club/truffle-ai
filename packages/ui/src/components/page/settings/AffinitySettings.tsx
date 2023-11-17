@@ -39,7 +39,9 @@ const AffinitySettings = () => {
         onChange={e => setListId(e.target.value)}
       />
       <div className='mb-64 mt-6'>
-        <Button variant='highlighted' text='Update' onClick={showBannerFunc} />
+        <Button variant='highlighted' onClick={showBannerFunc}>
+          Update
+        </Button>
         {showBanner && <Banner variant='success' message='Values updated' />}
       </div>
     </>

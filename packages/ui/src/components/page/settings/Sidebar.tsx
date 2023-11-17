@@ -1,14 +1,12 @@
 import { FiUser, FiHash, FiChevronLeft, FiSettings } from 'react-icons/fi'
 import Link from 'next/link'
-import clsx from 'clsx'
 
 type SidebarProps = {
   sections: Record<string, string[]>
-  activeSection: string
   onClick: (id: string) => void
 }
 
-const Sidebar = ({ sections, activeSection, onClick }: SidebarProps) => {
+const Sidebar = ({ sections, onClick }: SidebarProps) => {
   const icons: Record<string, JSX.Element> = {
     General: <FiSettings />,
     Account: <FiUser />,
@@ -39,10 +37,7 @@ const Sidebar = ({ sections, activeSection, onClick }: SidebarProps) => {
                 type='button'
                 key={id}
                 id={id}
-                className={clsx(
-                  'w-full cursor-pointer rounded-md px-6 py-2.5 text-left text-xs not-italic leading-3 text-gray-100 hover:bg-gray-800',
-                  { 'bg-gray-600': activeSection === id }
-                )}
+                className='w-full cursor-pointer rounded-md px-6 py-2.5 text-left text-xs not-italic leading-3 text-gray-100 hover:bg-gray-800'
                 onClick={() => onClick(id)}>
                 {subSection}
               </button>

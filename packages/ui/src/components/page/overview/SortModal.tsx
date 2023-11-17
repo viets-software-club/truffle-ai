@@ -17,9 +17,6 @@ import { filterOptions } from './types'
 const ASC = OrderByDirection.AscNullsLast
 const DESC = OrderByDirection.DescNullsLast
 
-const textGray100 = 'text-gray-100'
-const textGray500 = 'text-gray-500'
-
 type SortModalProps = {
   sorting: ProjectOrderBy
   setSorting: (sort: ProjectOrderBy | null) => void
@@ -44,7 +41,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
         <>
           <Popover.Button className='flex h-[30px] flex-row items-center space-x-2 rounded-md border border-gray-800 bg-gray-850 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700'>
             <div className='flex flex-row items-center space-x-1'>
-              <SortIcon className={textGray500} />
+              <SortIcon className='text-gray-500' />
 
               <p className='text-sm text-gray-100'>{column}</p>
 
@@ -68,11 +65,9 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
               <div className='flex flex-col space-y-3 p-2'>
                 <div className='flex flex-row justify-between'>
                   <p className='text-sm text-gray-100'>{column}</p>
-                  <Button
-                    onClick={() => setSorting(null)}
-                    variant='onlyIconNoBorderNoBG'
-                    Icon={TbTrash}
-                  />
+                  <Button onClick={() => setSorting(null)}>
+                    <TbTrash />
+                  </Button>
                 </div>
 
                 <div className='flex flex-row space-x-1'>
@@ -81,26 +76,20 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
                       setSorting({ [currentKey]: ASC })
                       close()
                     }}
-                    variant={currentDirection === ASC ? 'highlighted' : 'normal'}
-                    text='Asc.'
-                    Icon={currentKey === 'name' ? BsSortAlphaUpAlt : BsSortNumericUp}
-                    order='ltr'
-                    iconColor={currentDirection === ASC ? textGray100 : textGray500}
-                    textColor={currentDirection === ASC ? textGray100 : textGray500}
-                  />
+                    variant={currentDirection === ASC ? 'highlighted' : 'default'}
+                    className={clsx(currentDirection === ASC ? 'text-gray-100' : 'text-gray-500')}>
+                    {currentKey === 'name' ? <BsSortAlphaUpAlt /> : <BsSortNumericUp />}Asc.
+                  </Button>
 
                   <Button
                     onClick={() => {
                       setSorting({ [currentKey]: DESC })
                       close()
                     }}
-                    variant={currentDirection === DESC ? 'highlighted' : 'normal'}
-                    text='Desc.'
-                    Icon={currentKey === 'name' ? BsSortAlphaDown : BsSortNumericDownAlt}
-                    order='ltr'
-                    iconColor={currentDirection === DESC ? textGray100 : textGray500}
-                    textColor={currentDirection === DESC ? textGray100 : textGray500}
-                  />
+                    variant={currentDirection === DESC ? 'highlighted' : 'default'}
+                    className={clsx(currentDirection === DESC ? 'text-gray-100' : 'text-gray-500')}>
+                    {currentKey === 'name' ? <BsSortAlphaDown /> : <BsSortNumericDownAlt />}Desc.
+                  </Button>
                 </div>
               </div>
             </Popover.Panel>

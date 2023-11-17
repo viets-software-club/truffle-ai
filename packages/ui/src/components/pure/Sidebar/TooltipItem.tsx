@@ -13,8 +13,4 @@ const TooltipItem = ({ id }: TooltipItemProps) => (
   </Tooltip>
 )
 
-TooltipItem.defaultProps = {
-  id: null
-}
-
 export default TooltipItem

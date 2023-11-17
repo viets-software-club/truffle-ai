@@ -19,7 +19,10 @@ const TimeFrameSelector: FC<TimeFrameSelectorProps> = ({
 }) => (
   <Menu as='div' className='relative'>
     <Menu.Button as='div'>
-      <Button Icon={AiOutlineCalendar} variant='normal' text={currentTimeFilterLabel} order='ltr' />
+      <Button>
+        <AiOutlineCalendar />
+        {currentTimeFilterLabel}
+      </Button>
     </Menu.Button>
 
     <MenuItemsTransition>

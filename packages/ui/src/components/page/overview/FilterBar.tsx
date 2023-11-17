@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction, useMemo } from 'react'
 import { FiChevronLeft as ChevronLeft, FiChevronRight as ChevronRight } from 'react-icons/fi'
+import clsx from 'clsx'
 import FilterItemModal from '@/components/page/overview/FilterItemModal'
 import SortModal from '@/components/page/overview/SortModal'
 import Button from '@/components/pure/Button'
 import { PageInfo, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
-import { FilterOption, TimeFilterOption, paginationParameters } from './types'
+import { FilterOption, TimeFilterOption, PaginationParameters } from './types'
 
 type FilterBarProps = {
   filters: ProjectFilter
@@ -15,7 +16,7 @@ type FilterBarProps = {
   pageSize: number
   updateFilters: (filter: ProjectFilter) => void
   setSorting: (sorting: ProjectOrderBy | null) => void
-  setPagination: Dispatch<SetStateAction<paginationParameters>>
+  setPagination: Dispatch<SetStateAction<PaginationParameters>>
 }
 const FilterBar = ({
   filters,
@@ -82,20 +83,16 @@ const FilterBar = ({
       <div className='flex flex-row items-center'>
         {totalEntries > 1 && (hasNextPage || hasPreviousPage) && (
           <div className='mr-2 flex gap-3'>
-            <Button
-              disabled={!pageInfo.hasPreviousPage}
-              onClick={handleClickLeft}
-              variant='onlyIcon'
-              Icon={ChevronLeft}
-              iconColor={!pageInfo.hasPreviousPage ? 'text-gray-600' : 'text-white-600'}
-            />
-            <Button
-              disabled={!pageInfo.hasNextPage}
-              onClick={handleClickRight}
-              variant='onlyIcon'
-              Icon={ChevronRight}
-              iconColor={!pageInfo.hasNextPage ? 'text-gray-600' : 'text-white-600'}
-            />
+            <Button disabled={!pageInfo.hasPreviousPage} onClick={handleClickLeft}>
+              <ChevronLeft
+                className={clsx(!pageInfo.hasPreviousPage ? 'text-gray-600' : 'text-white')}
+              />
+            </Button>
+            <Button disabled={!pageInfo.hasNextPage} onClick={handleClickRight}>
+              <ChevronRight
+                className={clsx(!pageInfo.hasNextPage ? 'text-gray-600' : 'text-white')}
+              />
+            </Button>
           </div>
         )}
         <p className='text-sm'>Showing {currentEntries}&nbsp;</p>

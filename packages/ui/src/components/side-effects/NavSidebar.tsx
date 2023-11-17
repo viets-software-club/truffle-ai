@@ -4,11 +4,13 @@ import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/pure/Sidebar'
 import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import Item from '../pure/Sidebar/Item'
+import Section from '../pure/Sidebar/Section'
 
 const renderFooter = () => (
   <>
-    <Sidebar.Section.Item Icon={FiSettings} text='Settings' path='/settings' />
-    <Sidebar.Section.Item Icon={FiBookOpen} text='Documentation' path='/docs' />
+    <Item Icon={FiSettings} text='Settings' path='/settings' />
+    <Item Icon={FiBookOpen} text='Documentation' path='/docs' />
   </>
 )
 
@@ -37,19 +39,19 @@ const NavSidebar = () => {
   // @TODO highlight current page in sidebar
   return (
     <Sidebar title='TruffleAI' footer={renderFooter()}>
-      <Sidebar.Section title='Overview'>
-        <Sidebar.Section.Item Icon={FiCompass} text='Trending projects' path='/' />
-        <Sidebar.Section.Item Icon={FiBookmark} text='All bookmarks' path='/bookmarks' />
-      </Sidebar.Section>
+      <Section title='Overview'>
+        <Item Icon={FiCompass} text='Trending projects' path='/' />
+        <Item Icon={FiBookmark} text='All bookmarks' path='/bookmarks' />
+      </Section>
 
-      <Sidebar.Section title='Categories'>
+      <Section title='Categories'>
         {bookmarks
           // Get a list of unique categories to display as folders
           .map(({ category }) => category)
           .filter((value, index, array) => array.indexOf(value) === index)
           .map(category => (
             <div key={category}>
-              <Sidebar.Section.Item
+              <Item
                 key={category}
                 Icon={FiFolder}
                 text={category as string}
@@ -63,7 +65,7 @@ const NavSidebar = () => {
                   const { name, organization, associatedPerson } = project
 
                   return (
-                    <Sidebar.Section.Item
+                    <Item
                       key={project.id as string}
                       imageSrc={(organization?.avatarUrl || associatedPerson?.avatarUrl) as string}
                       text={name as string}
@@ -74,7 +76,7 @@ const NavSidebar = () => {
                 })}
             </div>
           ))}
-      </Sidebar.Section>
+      </Section>
     </Sidebar>
   )
 }

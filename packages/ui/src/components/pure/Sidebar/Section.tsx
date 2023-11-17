@@ -1,6 +1,5 @@
 import { PropsWithChildren } from 'react'
 import clsx from 'clsx'
-import Item from './Item'
 
 type SectionProps = PropsWithChildren<{ title: string }>
 
@@ -20,6 +19,4 @@ const Section = ({ children, title }: SectionProps) => (
   </div>
 )
 
-export default Object.assign(Section, {
-  Item
-})
+export default Section

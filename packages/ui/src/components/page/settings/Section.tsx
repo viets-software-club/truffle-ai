@@ -9,6 +9,7 @@ type SectionProps = {
 
 const Section = ({ title, subtitle, children, refs }: SectionProps) => {
   const id = `${title} - ${subtitle}`
+
   return (
     <div
       ref={ref => {

@@ -1,10 +1,11 @@
 import { FormEvent, useState } from 'react'
 import { AiOutlineGoogle } from 'react-icons/ai'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
+import Logo from '@/assets/logo.svg'
 import LoginForm from '@/components/page/login/LoginForm'
 import Button from '@/components/pure/Button'
-import Logo from '@/components/pure/Icons/Logo'
 import Loading from '@/components/pure/Loading'
 import { signInWithGoogle, signInWithPassword } from '@/util/login'
 
@@ -68,19 +69,18 @@ const Login = () => {
   return (
     <main className='flex min-h-screen flex-col items-center justify-center bg-radial-gradient'>
       <div className='flex w-[300px] flex-col items-center justify-center gap-6'>
-        <Logo className='h-10 w-10' />
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+        <Image src={Logo} alt='Logo' className='h-10 w-10' />
+
         <h1 className='text-xl font-medium text-gray-100'>Log in to Truffle</h1>
 
         <Button
-          text='Continue with Google'
-          Icon={AiOutlineGoogle}
           onClick={handleGoogleLogin}
-          order='ltr'
-          iconColor='text-white'
-          textColor='text-white'
           variant='highlighted'
-          className='w-full justify-center py-3'
-        />
+          className='w-full justify-center py-3 text-white'>
+          <AiOutlineGoogle />
+          Continue with Google
+        </Button>
 
         {error === 'invalid_email' && (
           <div className='text-center text-sm text-red-500'>

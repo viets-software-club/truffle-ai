@@ -46,7 +46,9 @@ const UpdateEmailTemplate = () => {
         onChange={e => setEmail(e.target.value)}
       />
       <div className='mt-5'>
-        <Button variant='highlighted' text='Update' onClick={showBannerFunc} />
+        <Button variant='highlighted' onClick={showBannerFunc}>
+          Update
+        </Button>
         {showBanner && <Banner variant='success' message='Email updated' />}
       </div>
     </>

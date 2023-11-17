@@ -42,6 +42,8 @@ Contains the frontend of Truffle AI, a [Next.js](https://nextjs.org/) applicatio
 Note: services are served continuously and jobs are run once.
 
 ```zsh
+kubectl config set-context --current --namespace=<namespace-name>
+
 npm ci # installs all dependencies from package-lock.json
 npm run prepare # installs pre-commit hook (running lint-staged on staged files) and creates symlink for .env in ui package
 
@@ -71,6 +73,22 @@ docker compose up # builds and runs created Docker containers
 You can use [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to run specialized commands of the individual packages from the root directory.
 
 ```zsh
+SUPABASE_REFERENCE_ID # supabase reference id
+SUPABASE_URL # supabase url
+SUPABASE_GRAPHQL_URL # supabase graphql url
+SUPABASE_SERVICE_KEY # supabase service key
+SUPABASE_ANON_KEY # supabase anon key
+GATEWAY_PORT # port number
+SERVER_PORT # port number
+SERVER_URL # url to graphql_server
+SERVER_GRAPHQL_URL # url to graphql route on graphql-server
+NODE_ENV # development|production
+GITHUB_API_URL # github api url
+GITHUB_API_TOKEN # github api token
+OPENAI_API_KEY # openAI api key
+SCRAPING_BOT_API_KEY
+SCRAPING_BOT_USER_NAME
+SCRAPING_BOT_API_ENDPOINT
 npm run dev -w ui # starts the frontend dev server
 npm run codegen -w ui # generates types and hooks for new GraphQL queries in the ui package
 npm run update-types -w graphql_server # updates Supabase GraphQL types in graphql server

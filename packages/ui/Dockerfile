@@ -1,62 +1,51 @@
-FROM node:18-alpine AS base
+# This is a multi-stage Dockerfile
+# run this file only from ../../
 
-# Install dependencies only when needed
-FROM base AS deps
-
-## Set NODE_ENV to something other than development
+# build stage
+FROM node:21-alpine AS build
+## init envs
+ARG SUPABASE_URL
+ARG SUPABASE_ANON_KEY
+ARG GRAPHQL_URL
 ENV NODE_ENV build
-
-## Setup workspaces
+ENV NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+ENV NEXT_PUBLIC_GRAPHQL_URL=${GRAPHQL_URL}
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+## setup workspaces
 WORKDIR /app
 COPY package*.json ./
-
-## Install dependencies
-COPY ./packages/ui/package*.json ./packages/ui/
-COPY ./packages/config ./packages/config
-RUN apk --no-cache --virtual build-dependencies add python3 make g++
+COPY ./config ./config
+COPY ./packages/ui ./packages/ui/
+## install packages
+RUN apk --no-cache --virtual build-dependencies add python3 make g++ libc6-compat
 RUN npm ci -w ui
 RUN apk del build-dependencies
 
-# Rebuild the source code only when needed
-FROM base AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY ./packages/config ./packages/config
-COPY ./packages/ui ./packages/ui
-COPY package*.json ./
-
-## Disable telemetry during the build
-ENV NEXT_TELEMETRY_DISABLED 1
-
+# build .next
 RUN npm run build -w ui
 
-# Production image, copy all the files and run next
-FROM base AS runner
-WORKDIR /app/packages/ui
+#########################################################################
 
+# serve stage
+FROM node:21-alpine AS serve
+WORKDIR /
+## init envs
+ARG UI_PORT
+ENV PORT=${UI_PORT}
 ENV NODE_ENV production
-## Disable telemetry during runtime
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV HOSTNAME "0.0.0.0"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
 
-COPY --from=build /app/packages/ui/public ./public
-
-## Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-## Automatically leverage output traces to reduce image size
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./packages/ui/public
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./.next/static
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./packages/ui/.next/static
 
 USER nextjs
 
-EXPOSE 3000
-ENV PORT 3000
-
-## Set hostname to localhost
-ENV HOSTNAME "0.0.0.0"
-
-CMD ["node", "server.js"]
+## serve
+CMD ["node", "./packages/ui/server.js"]

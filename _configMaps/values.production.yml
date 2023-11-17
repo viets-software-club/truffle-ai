@@ -1,0 +1,25 @@
+configMaps:
+  repo-job-config-map:
+  preview-job-config-map:
+  open-api-config-map:
+  scraping-bot-config-map:
+    SCRAPING_BOT_API_ENDPOINT: http://api.scraping-bot.io/scrape/data-scraper
+  graphql-server-config-map:
+    GRAPHQL_SERVER_PORT: "3002"
+    GRAPHQL_SERVER_URL: http://0.0.0.0:3002/graphql
+  supabase-config-map:
+    SUPABASE_REFERENCE_ID: yipnhkmklmbuxjwzpipg
+    SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
+    SUPABASE_GRAPHQL_URL: https://yipnhkmklmbuxjwzpipg.supabase.co/graphql/v1
+    NEXT_PUBLIC_SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
+  github-config-map:
+    GITHUB_API_URL: https://api.github.com/graphql
+  ui-config-map:
+    UI_PORT: "3000"
+    NEXT_PUBLIC_GRAPHQL_URL: https://0.0.0.0/api/graphql
+  nodejs-config-map:
+    NODE_ENV: production
+    TZ: Europe/Berlin
+  graphql-gateway-config-map:
+    GRAPHQL_GATEWAY_PORT: "3001"
+    GRAPHQL_PUBLIC_URL: https://0.0.0.0/api/graphql

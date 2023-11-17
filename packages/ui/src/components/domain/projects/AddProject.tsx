@@ -67,10 +67,10 @@ const AddProject = () => {
 
       <Modal isOpen={open} onClose={toggleModal}>
         <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
-          <p className='text-base font-semibold text-white'>Add Project</p>
+          <p className='text-lg font-semibold text-white'>Add Project</p>
 
           <div className='flex w-full flex-col gap-1.5'>
-            <p className='text-sm font-medium text-gray-500'>GitHub URL</p>
+            <p className='text-sm font-medium text-white/50'>GitHub URL</p>
             <Input
               placeholder='https://github.com/facebook/react'
               value={projectUrl}
@@ -79,7 +79,7 @@ const AddProject = () => {
           </div>
 
           <div className='flex w-full flex-col gap-1.5'>
-            <p className='text-sm font-medium text-gray-500'>Category</p>
+            <p className='text-sm font-medium text-white/50'>Category</p>
             <Input
               placeholder='Artificial Intelligence'
               value={category}
@@ -91,10 +91,15 @@ const AddProject = () => {
           {success && <p className='text-sm text-green-500'>{success}</p>}
 
           {/* Error message */}
-          {error && <p className='text-sm text-red-500'>{error}</p>}
+          {error && <p className='text-sm text-red-400'>{error}</p>}
 
           <div className='flex w-full justify-end'>
-            <Button variant='highlighted' disabled={fetching} type='submit' className='text-white'>
+            <Button
+              variant='highlighted'
+              size='large'
+              disabled={fetching}
+              type='submit'
+              className='text-white'>
               {fetching ? 'Loading...' : 'Save'}
             </Button>
           </div>

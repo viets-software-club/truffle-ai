@@ -3,38 +3,41 @@ import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
-  variant?:
-    | 'default'
-    | 'highlighted'
-    | 'noBorderNoBG'
-    | 'noBG'
-    | 'normalHighlighted'
-    | 'filter'
-    | 'red'
+  variant?: 'default' | 'highlighted' | 'unstyled' | 'error'
+  size?: 'default' | 'large' | 'xl'
 }
 
 const baseClassNames =
-  'flex min-h-[30px] items-center gap-1.5 rounded-md text-sm leading-none outline-none transition-all duration-200 hover:bg-opacity-80'
+  'flex min-h-[30px] items-center gap-1.5 rounded-md text-sm leading-none outline-none transition-all duration-150 shadow-white/50 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed'
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
-  ['default', 'bg-gray-850 border border-gray-800 px-2 py-1.5 [&_svg]:text-gray-500'],
-  ['normalHighlighted', 'bg-gray-700 border border-gray-800 px-2 py-1.5'],
-  ['noBG', 'border border-gray-800 px-2 py-1.5'],
-  ['noBorderNoBG', 'px-2 py-1.5'],
-  ['highlighted', 'border border-indigo-500 bg-indigo-500 px-2 py-1.5'],
-  ['filter', 'border border-dashed border-gray-800 px-2 py-1.5'],
-  ['red', 'bg-red-500 px-2 py-1.5']
+  ['default', 'bg-white/5 border border-white/5 [&_svg]:text-white/50'],
+  ['highlighted', 'bg-indigo-500 hover:bg-opacity-75 text-white font-medium'],
+  ['error', 'bg-red-400 text-white'],
+  ['unstyled', '']
+])
+
+const sizeToButtonSizeClassNames = new Map<ButtonProps['size'], string>([
+  ['default', 'p-2'],
+  ['large', 'px-3 py-2.5'],
+  ['xl', 'p-3.5']
 ])
 
 const Button = ({
   variant = 'default',
+  size = 'default',
   className,
   type = 'button',
   children,
   ...props
 }: ButtonProps) => {
   const classNames = twMerge(
-    clsx(baseClassNames, variantToButtonVariantClassNames.get(variant), className)
+    clsx(
+      baseClassNames,
+      variantToButtonVariantClassNames.get(variant),
+      sizeToButtonSizeClassNames.get(size),
+      className
+    )
   )
 
   return (

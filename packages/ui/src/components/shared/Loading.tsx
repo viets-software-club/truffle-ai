@@ -12,7 +12,7 @@ type LoadingProps = {
 const Loading = ({ fullscreen }: LoadingProps) => (
   <div
     className={clsx(
-      'flex grow flex-col items-center justify-center text-gray-300',
+      'flex grow flex-col items-center justify-center text-white/75',
       fullscreen ? 'h-screen' : 'py-40'
     )}>
     <LoadingSpinner />

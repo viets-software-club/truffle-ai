@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactNode } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import ProfileDropdownMenu from './ProfileDropdownMenu'
+import Logo from '@/assets/logo.svg'
 
 type SidebarProps = PropsWithChildren<{
   title: string
@@ -10,25 +11,25 @@ type SidebarProps = PropsWithChildren<{
 /**
  * Sidebar component which renders a sidebar with a title, a footer, and children elements.
  * @param {ReactNode} footer - The footer content to be displayed at the bottom of the sidebar.
- * @param {string} props.title - The title for the sidebar.
+ * @param {string} title - The title for the sidebar.
  * @returns {ReactNode} Returns a sidebar component with provided footer and title, and children elements.
  */
-const Sidebar = ({ footer, ...props }: SidebarProps) => (
-  <aside className='fixed z-30 flex h-screen w-56 flex-initial flex-col justify-between border-r border-gray-800 bg-gray-900'>
+const Sidebar = ({ footer, title, ...props }: SidebarProps) => (
+  <aside className='fixed z-30 flex h-screen w-56 flex-initial flex-col justify-between border-r border-white/5'>
     <div>
       {/* Top bar with title and profile modal button */}
-      <div className='flex h-[59px] w-full items-center justify-between px-7 text-gray-100'>
-        <Link href='/'>
-          <span className='mr-2 text-lg font-medium'>{props.title}</span>
+      <div className='flex h-[59px] w-full items-center justify-between px-7 text-white/90'>
+        <Link href='/' className='flex items-center gap-2'>
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image src={Logo} alt='Logo' className='h-6 w-6' />
+          <span className='text-lg font-medium'>{title}</span>
         </Link>
-
-        <ProfileDropdownMenu />
       </div>
 
       {props.children}
     </div>
 
-    <footer className='border-t border-solid border-gray-800 p-2'>{footer}</footer>
+    <footer className='border-t border-solid border-white/5 p-2'>{footer}</footer>
   </aside>
 )
 

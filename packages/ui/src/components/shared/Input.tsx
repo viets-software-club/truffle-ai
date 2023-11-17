@@ -2,10 +2,12 @@ import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-const Input = (
-  props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
-) => {
-  const { className } = props
+type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
+  size?: 'default' | 'large'
+}
+
+const Input = (props: InputProps) => {
+  const { className, size } = props
 
   return (
     <input
@@ -13,7 +15,11 @@ const Input = (
       {...props}
       className={twMerge(
         clsx(
-          'min-w-[250px] rounded-md border border-gray-800/75 bg-gray-900/50 px-3 py-2 text-sm text-white focus:outline focus:outline-indigo-500',
+          'min-w-[250px] rounded-md border border-white/5 bg-white/5 text-white outline-none transition-all duration-75 placeholder:text-white/40 focus:ring-2 focus:ring-indigo-500',
+          {
+            'px-3 py-2.5 text-sm': size !== 'large',
+            'p-3.5': size === 'large'
+          },
           className
         )
       )}

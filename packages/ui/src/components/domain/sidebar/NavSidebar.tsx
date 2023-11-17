@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { FiBookOpen, FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
+import { FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
+import { LuLogOut } from 'react-icons/lu'
 import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/domain/sidebar'
@@ -10,7 +11,7 @@ import Section from './Section'
 const renderFooter = () => (
   <>
     <Item Icon={FiSettings} text='Settings' path='/settings' />
-    <Item Icon={FiBookOpen} text='Documentation' path='/docs' />
+    <Item Icon={LuLogOut} text='Log out' path='/logout' />
   </>
 )
 

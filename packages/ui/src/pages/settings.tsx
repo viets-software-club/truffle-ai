@@ -19,7 +19,7 @@ const sections = {
   Integrations: ['Notifications', 'Affinity']
 }
 
-const Separator = () => <div className='h-1 border-b border-gray-800' />
+const Separator = () => <div className='h-1 border-b border-white/5' />
 
 /**
  * Settings page
@@ -38,7 +38,7 @@ const Settings = () => {
       <CommandInterface />
 
       <div className='ml-64 w-full overflow-auto px-20 py-10 text-white'>
-        <h2 className='mt-8 border-b border-gray-800 pb-4 text-xl font-medium'>General</h2>
+        <h2 className='mt-8 border-b border-white/5 pb-4 text-xl font-medium'>General</h2>
 
         <Section title='General' subtitle='Default filters' refs={refs}>
           <DefaultFilters />
@@ -50,11 +50,14 @@ const Settings = () => {
           <EmailTemplate />
         </Section>
 
-        <h2 className='mt-8 border-b border-gray-800 pb-4 text-xl font-medium'>Account</h2>
+        <h2 className='mt-8 border-b border-white/5 pb-4 text-xl font-medium'>Account</h2>
 
         <Section title='Account' subtitle='Log out' refs={refs}>
+          <p className='pb-6 text-sm font-normal text-white/75'>
+            Log out of your account. You will be redirected to the login page.
+          </p>
           <Link href='/logout'>
-            <Button variant='highlighted' className='text-white'>
+            <Button variant='highlighted' size='large' className='text-white'>
               Log out
             </Button>
           </Link>
@@ -66,10 +69,12 @@ const Settings = () => {
           <DeleteAccount />
         </Section>
 
-        <h2 className='mt-8 border-b border-gray-800 pb-4 text-xl font-medium'>Integrations</h2>
+        <h2 className='mt-8 border-b border-white/5 pb-4 text-xl font-medium'>Integrations</h2>
 
         <Section title='Integrations' subtitle='Notifications' refs={refs}>
-          <p className='mb-4 text-sm font-normal'>Slack notifications</p>
+          <p className='mb-4 text-sm font-normal text-white/75'>
+            Connect a Slack channel you want to share interesting projects with.
+          </p>
           <SlackSettings />
         </Section>
 

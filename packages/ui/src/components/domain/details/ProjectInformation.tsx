@@ -61,10 +61,10 @@ const ProjectInformation = ({
   }
 
   return (
-    <div className='border-b border-gray-800 px-7 py-6'>
+    <div className='border-b border-white/5 px-7 py-6'>
       <div className='mb-6 flex flex-row items-center justify-between'>
         <div className='flex flex-row items-center'>
-          <div className='relative mr-4 h-8 w-8 overflow-hidden rounded-md bg-gray-600'>
+          <div className='relative mr-4 h-8 w-8 overflow-hidden rounded-md'>
             <Image src={image} alt='logo' fill sizes='32px' />
           </div>
 
@@ -82,7 +82,7 @@ const ProjectInformation = ({
               .map(cat => (
                 <p
                   key={cat}
-                  className='mx-1 rounded-md bg-gray-850 px-2 py-0.5 text-xs font-normal text-gray-300'>
+                  className='mx-1 rounded-md bg-white/5 px-2 py-0.5 text-xs font-normal text-white/75'>
                   {cat}
                 </p>
               ))}
@@ -94,7 +94,7 @@ const ProjectInformation = ({
             {slackLoading ? 'Loading...' : 'Send to Slack'}
           </Button>
 
-          <Button onClick={toggleBookmarkModal} className='text-gray-100'>
+          <Button onClick={toggleBookmarkModal} className='text-white/90'>
             <Bookmark />
             {isBookmarked ? 'Edit bookmark' : 'Bookmark'}
           </Button>
@@ -103,12 +103,12 @@ const ProjectInformation = ({
 
       <div className='flex w-full gap-6'>
         <div className='flex w-[250px] shrink-0 flex-col gap-2'>
-          <span className='text-xs font-semibold uppercase text-gray-500'>About</span>
+          <span className='text-xs font-semibold uppercase text-white/50'>About</span>
           <p className='text-sm font-light'>{about}</p>
         </div>
 
         <div className='flex flex-col gap-2'>
-          <span className='text-xs font-semibold uppercase text-gray-500'>Explanation</span>
+          <span className='text-xs font-semibold uppercase text-white/50'>Explanation</span>
           <p className='max-w-[750px] text-sm font-light'>{explanation}</p>
         </div>
       </div>

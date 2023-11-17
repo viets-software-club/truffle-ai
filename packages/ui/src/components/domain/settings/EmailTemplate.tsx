@@ -35,7 +35,7 @@ const UpdateEmailTemplate = () => {
 
   return (
     <>
-      <p className='mb-6 text-sm font-normal text-gray-400'>
+      <p className='mb-6 text-sm font-normal text-white/75'>
         Here, you have the option to customize the email template that will be automatically sent to
         the founders of a project on its detail page.
         <br /> Use {'{founderName}'} and {'{projectName}'} as placeholders for the actual values.
@@ -46,7 +46,7 @@ const UpdateEmailTemplate = () => {
         onChange={e => setEmail(e.target.value)}
       />
       <div className='mt-5'>
-        <Button variant='highlighted' onClick={showBannerFunc}>
+        <Button variant='highlighted' size='large' onClick={showBannerFunc}>
           Update
         </Button>
         {showBanner && <Banner variant='success' message='Email updated' />}

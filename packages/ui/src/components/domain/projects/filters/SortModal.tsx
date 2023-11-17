@@ -39,24 +39,22 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
     <Popover as='div' className='relative inline-block text-left'>
       {({ open, close }) => (
         <>
-          <Popover.Button className='flex h-[30px] flex-row items-center space-x-2 rounded-md border border-gray-800 bg-gray-850 px-2 py-1.5 text-sm outline-none transition-colors duration-100 hover:bg-gray-700'>
-            <div className='flex flex-row items-center space-x-1'>
-              <SortIcon className='text-gray-500' />
-
-              <p className='text-sm text-gray-100'>{column}</p>
-
+          <Popover.Button as='div'>
+            <Button>
+              <SortIcon className='text-white/20' />
+              {column}
               <ChevronDownIcon
-                className={clsx('text-gray-500 transition-transform duration-200', {
+                className={clsx('text-white/20 transition-transform duration-200', {
                   'rotate-180': open
                 })}
               />
-            </div>
+            </Button>
           </Popover.Button>
 
           <MenuItemsTransition>
             <Popover.Panel
               className={clsx(
-                'absolute left-0 z-40 mt-2 rounded-md bg-gray-700 shadow-lg focus:outline-none',
+                'absolute left-0 z-40 mt-2 rounded-md border border-white/5 bg-white/5 p-1 backdrop-blur-xl focus:outline-none',
                 {
                   block: open,
                   hidden: !open
@@ -64,7 +62,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
               )}>
               <div className='flex flex-col space-y-3 p-2'>
                 <div className='flex flex-row justify-between'>
-                  <p className='text-sm text-gray-100'>{column}</p>
+                  <p className='text-sm text-white/90'>{column}</p>
                   <Button onClick={() => setSorting(null)}>
                     <TbTrash />
                   </Button>
@@ -77,7 +75,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
                       close()
                     }}
                     variant={currentDirection === ASC ? 'highlighted' : 'default'}
-                    className={clsx(currentDirection === ASC ? 'text-gray-100' : 'text-gray-500')}>
+                    className={clsx(currentDirection === ASC ? 'text-white/90' : 'text-white/50')}>
                     {currentKey === 'name' ? <BsSortAlphaUpAlt /> : <BsSortNumericUp />}Asc.
                   </Button>
 
@@ -87,7 +85,7 @@ const SortModal = ({ sorting, setSorting }: SortModalProps) => {
                       close()
                     }}
                     variant={currentDirection === DESC ? 'highlighted' : 'default'}
-                    className={clsx(currentDirection === DESC ? 'text-gray-100' : 'text-gray-500')}>
+                    className={clsx(currentDirection === DESC ? 'text-white/90' : 'text-white/50')}>
                     {currentKey === 'name' ? <BsSortAlphaDown /> : <BsSortNumericDownAlt />}Desc.
                   </Button>
                 </div>

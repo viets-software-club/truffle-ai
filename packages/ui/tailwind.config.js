@@ -16,16 +16,12 @@ module.exports = {
       colors: {
         teal: '#01B3C0',
         red: {
-          300: '#e57069',
-          500: '#c5534b'
+          300: '#e57069'
         },
         mustard: '#988300',
         yellow: '#F3CA4D',
         orange: '#F3A04B',
-        purple: {
-          300: '#BC88FD',
-          500: '#8c8fd9'
-        },
+        purple: '#BC88FD',
         blue: '#4FA8FD',
         green: {
           300: '#3ad48d',
@@ -34,7 +30,7 @@ module.exports = {
         indigo: {
           100: '#E1E8FF',
           300: '#A6B5FD',
-          500: '#585cc8',
+          500: '#575BC7',
           700: '#4439CB',
           900: '#322F82'
         },
@@ -45,19 +41,14 @@ module.exports = {
           600: '#2E2F48',
           700: '#27283C',
           800: '#2D2E3D',
-          850: '#202231',
-          900: '#1A1B24'
+          850: '#222',
+          900: '#111'
         },
         twitter: '#1DA1F2',
         hackernews: '#FF6600'
       },
       borderRadius: {
-        md: '5px'
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'radial-gradient': 'radial-gradient(circle at 50% -70%, #191D3B, #191D3B, #191A23)'
+        md: '7px'
       }
     }
   },

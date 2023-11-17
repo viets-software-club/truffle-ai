@@ -1,3 +1,5 @@
+import Input from '@/components/shared/Input'
+
 export type defaultFilters = {
   stars: number
   forks: number
@@ -12,14 +14,11 @@ type filterInputProps = {
 }
 
 const FilterInput = ({ filterType, filters, setFilters, saveSettings }: filterInputProps) => (
-  <div className='flex flex-col rounded pr-4 text-white'>
-    <p className='mb-2 text-sm font-normal'>
-      {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
-    </p>
-    <input
+  <div className='flex flex-col gap-2 rounded pr-4 text-white'>
+    <p className='text-sm'>{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</p>
+    <Input
       type='number'
       value={filters[filterType as keyof defaultFilters]}
-      className='rounded-md border border-gray-800 bg-gray-900 px-3 py-2 text-sm text-white focus:outline focus:outline-indigo-500'
       onChange={e => {
         const num = Number(e.target.value)
         setFilters({ ...filters, [filterType]: num })

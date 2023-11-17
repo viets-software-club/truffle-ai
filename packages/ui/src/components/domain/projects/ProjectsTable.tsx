@@ -94,7 +94,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         {error && <Error />}
 
         {data.length === 0 && !error && !fetching && (
-          <p className='w-full p-12 text-center text-sm text-gray-300'>No projects found</p>
+          <p className='w-full p-12 text-center text-sm text-white/75'>No projects found</p>
         )}
 
         {data.length > 0 && !error && <Table table={table} />}

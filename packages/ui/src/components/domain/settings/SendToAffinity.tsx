@@ -8,6 +8,7 @@ const SendToAffinity = (props: AffinityData) => {
   const [affinityLoading, setAffinityLoading] = useState(false)
 
   const handleClick = async () => {
+    setNotificationStatus('')
     setAffinityLoading(true)
     const response = await sendToAffinity(props)
     setNotificationStatus(response)
@@ -27,7 +28,10 @@ const SendToAffinity = (props: AffinityData) => {
         <Banner variant='success' message='Slack notification sent' />
       )}
       {notificationStatus === 'error' && (
-        <Banner variant='error' message='Error sending to Affinity' />
+        <Banner
+          variant='error'
+          message="Couldn't send project to Affinity. Did you add your API token in settings?"
+        />
       )}
     </div>
   )

@@ -23,7 +23,7 @@ const emailTemplate = (email: string, founderName: string, projectName: string) 
 }
 
 const FounderItem = ({ name, mail, projectName, github, twitter, website }: FounderProps) => (
-  <div className='flex flex-row items-center justify-center gap-[15px] py-2.5 text-gray-500'>
+  <div className='flex flex-row items-center justify-center gap-[15px] py-2.5 text-white/50'>
     <span className='text-xs not-italic leading-3'>{name}</span>
     {mail && (
       <>
@@ -32,7 +32,7 @@ const FounderItem = ({ name, mail, projectName, github, twitter, website }: Foun
           target='_blank'
           rel='noreferrer'
           data-tooltip-id={mail}>
-          <AiFillMail className='h-[14px] w-[14px] text-gray-500' />
+          <AiFillMail className='h-[14px] w-[14px] text-white/50' />
         </a>
         <Tooltip id={mail} />
       </>
@@ -44,7 +44,7 @@ const FounderItem = ({ name, mail, projectName, github, twitter, website }: Foun
           target='_blank'
           rel='noreferrer'
           data-tooltip-id={twitter}>
-          <FaTwitter className='h-[14px] w-[14px] text-gray-500' />
+          <FaTwitter className='h-[14px] w-[14px] text-white/50' />
         </a>
         <Tooltip id={twitter} />
       </>
@@ -52,14 +52,14 @@ const FounderItem = ({ name, mail, projectName, github, twitter, website }: Foun
     {website && (
       <>
         <a href={website} target='_blank' rel='noreferrer' data-tooltip-id={website}>
-          <LinkIcon className='h-[14px] w-[14px] text-gray-500' />
+          <LinkIcon className='h-[14px] w-[14px] text-white/50' />
         </a>
         <Tooltip id={website} />
       </>
     )}
     {github && (
       <a href={github} target='_blank' rel='noreferrer' data-tooltip-id={github}>
-        <FaGithub className='h-[14px] w-[14px] text-gray-500' />
+        <FaGithub className='h-[14px] w-[14px] text-white/50' />
         <Tooltip id={github} />
       </a>
     )}

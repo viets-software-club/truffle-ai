@@ -15,9 +15,9 @@ const Navbar = ({
   previousProjectId,
   projectsLength
 }: NavbarProps) => (
-  <div className='fixed z-10 flex h-[60px] w-full items-center gap-3 border-b border-gray-800 px-3 pl-7'>
+  <div className='fixed z-10 flex h-[60px] w-full items-center gap-3 border-b border-white/5 px-3 pl-7'>
     <Link href='/'>
-      <FiX key='2' className='h-4 w-4 text-gray-500' />
+      <FiX key='2' className='h-4 w-4 text-white/50' />
     </Link>
 
     {nextProjectId ? (
@@ -28,7 +28,7 @@ const Navbar = ({
       </Link>
     ) : (
       <Button disabled={!nextProjectId}>
-        <FiChevronUp className='text-gray-600' />
+        <FiChevronUp className='text-white/50' />
       </Button>
     )}
 
@@ -40,7 +40,7 @@ const Navbar = ({
       </Link>
     ) : (
       <Button disabled={!previousProjectId}>
-        <FiChevronDown className='text-gray-600' />
+        <FiChevronDown className='text-white/50' />
       </Button>
     )}
 
@@ -48,7 +48,7 @@ const Navbar = ({
       <p className='text-sm text-white'>
         {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
       </p>
-      <p className='text-sm text-gray-500'>/&nbsp;{projectsLength}</p>
+      <p className='text-sm text-white/50'>/&nbsp;{projectsLength}</p>
     </div>
   </div>
 )

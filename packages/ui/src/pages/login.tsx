@@ -67,35 +67,40 @@ const Login = () => {
   if (sessionLoading) return <Loading fullscreen />
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-center bg-radial-gradient'>
-      <div className='flex w-[300px] flex-col items-center justify-center gap-6'>
+    <main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-tr from-gray-900 to-indigo-500/30'>
+      <div className='flex w-[400px] flex-col items-center justify-center gap-8 rounded-2xl border border-white/5 bg-white/5 px-8 py-10 backdrop-blur-xl'>
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
         <Image src={Logo} alt='Logo' className='h-10 w-10' />
 
-        <h1 className='text-xl font-medium text-gray-100'>Log in to Truffle</h1>
+        <h1 className='text-2xl font-bold text-white/90'>Welcome to Truffle</h1>
 
         <Button
           onClick={handleGoogleLogin}
           variant='highlighted'
-          className='w-full justify-center py-3 text-white'>
+          size='xl'
+          className='w-full justify-center'>
           <AiOutlineGoogle />
           Continue with Google
         </Button>
 
         {error === 'invalid_email' && (
-          <div className='text-center text-sm text-red-500'>
+          <div className='text-center text-sm text-red-400'>
             Invalid google email or password. Please note that only invited users or La Famiglia
             employees can sign in.
           </div>
         )}
 
-        <hr className='w-full border-b-[.5px] border-gray-100/10' />
+        <div className='flex w-full items-center gap-3'>
+          <div className='h-0.5 w-full bg-white/5' />
+          <p className='shrink-0 text-center text-sm text-white/50'>or log in with email</p>
+          <div className='h-0.5 w-full bg-white/5' />
+        </div>
 
         <LoginForm handleSubmit={handleSubmit} loading={loading} error={isError} />
       </div>
 
-      <div className='absolute bottom-4 self-center text-xs text-gray-300'>
-        © 2023 La Famiglia x Rostlab
+      <div className='absolute bottom-4 self-center text-sm text-white/60'>
+        © {new Date().getFullYear()} La Famiglia
       </div>
     </main>
   )

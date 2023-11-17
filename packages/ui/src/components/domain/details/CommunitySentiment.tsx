@@ -12,7 +12,7 @@ const CommunitySentiment = ({
   hackernewsSentiment,
   hackernewsStories
 }: CommunitySentimentProps) => (
-  <div className='grid grid-cols-2 gap-4 border-t border-gray-800 py-2 pl-7 pr-3'>
+  <div className='grid grid-cols-2 gap-4 border-t border-white/5 py-2 pl-7 pr-3'>
     <Card Icon={FaTwitter} name='Top Tweets' tweets={tweets} variant='twitter' />
 
     <Card

@@ -1,7 +1,7 @@
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-import Heading from '@/components/page/docs/Heading'
-import NormalBulletList from '@/components/page/docs/NormalBulletedList'
-import Paragraph from '@/components/page/docs/Paragraph'
+import Heading from '@/components/domain/docs/Heading'
+import NormalBulletList from '@/components/domain/docs/NormalBulletedList'
+import DocsPageWrapper from '@/components/domain/docs/PageWrapper'
+import Paragraph from '@/components/domain/docs/Paragraph'
 
 const SidebarDocs = () => (
   <DocsPageWrapper>

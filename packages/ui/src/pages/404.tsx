@@ -1,7 +1,7 @@
 import { LuArrowUpRight } from 'react-icons/lu'
 import { useRouter } from 'next/router'
-import Button from '@/components/pure/Button'
-import withAuth from '@/components/side-effects/withAuth'
+import Button from '@/components/shared/Button'
+import withAuth from '@/components/shared/hoc/withAuth'
 
 const FourOFour = () => {
   const router = useRouter()

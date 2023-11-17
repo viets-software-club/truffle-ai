@@ -1,8 +1,8 @@
-import AllBookmarks from '@/assets/AllBookmarks.png'
-import DocsPageWrapper from '@/components/page/docs/DocsPageWrapper'
-import Heading from '@/components/page/docs/Heading'
-import Image from '@/components/page/docs/Image'
-import Paragraph from '@/components/page/docs/Paragraph'
+import AllBookmarks from '@/assets/docs/bookmarks-page.png'
+import Heading from '@/components/domain/docs/Heading'
+import Image from '@/components/domain/docs/Image'
+import DocsPageWrapper from '@/components/domain/docs/PageWrapper'
+import Paragraph from '@/components/domain/docs/Paragraph'
 
 const BookmarksDocs = () => (
   <DocsPageWrapper>

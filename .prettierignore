@@ -1,7 +1,7 @@
-.husky
 dist
-.mesh
+.deployment
 .env*
-env.sh
-.dockerignore
+.husky
+.mesh
 .meshrc.yaml
+.next

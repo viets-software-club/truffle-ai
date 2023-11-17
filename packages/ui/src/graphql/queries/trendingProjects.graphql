@@ -1,5 +1,19 @@
-query TrendingProjects($orderBy: ProjectOrderBy!, $filter: ProjectFilter!, $first: Int, $last: Int, $after: Cursor, $before: Cursor) {
-  projectCollection(filter: $filter, orderBy: [$orderBy], first: $first, last: $last, after: $after, before: $before) {
+query TrendingProjects(
+  $orderBy: ProjectOrderBy!
+  $filter: ProjectFilter!
+  $first: Int
+  $last: Int
+  $after: Cursor
+  $before: Cursor
+) {
+  projectCollection(
+    filter: $filter
+    orderBy: [$orderBy]
+    first: $first
+    last: $last
+    after: $after
+    before: $before
+  ) {
     edges {
       node {
         id

@@ -13,7 +13,7 @@ const defaultErrorMessage = 'Something went wrong. Please try again later.'
 
 type BookmarkModalProps = {
   open: boolean
-  toggleModal: () => void
+  close: () => void
   projectID: string
   category: string
   isBookmarked: boolean
@@ -22,7 +22,7 @@ type BookmarkModalProps = {
 
 const BookmarkModal: FC<BookmarkModalProps> = ({
   open,
-  toggleModal,
+  close,
   projectID,
   category,
   isBookmarked,
@@ -112,7 +112,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   }
 
   return (
-    <Modal isOpen={open} onClose={toggleModal}>
+    <Modal isOpen={open} onClose={close}>
       <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
         <p className='text-base font-semibold text-white'>
           {isBookmarked ? 'Edit bookmark' : 'Add bookmark'}

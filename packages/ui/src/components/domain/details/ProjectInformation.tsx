@@ -123,7 +123,7 @@ const ProjectInformation = ({
 
       <BookmarkModal
         open={bookmarkModalOpen}
-        toggleModal={toggleBookmarkModal}
+        close={() => setBookmarkModalOpen(false)}
         projectID={id}
         category={category}
         isBookmarked={isBookmarked}

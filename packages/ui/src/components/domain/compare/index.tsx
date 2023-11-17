@@ -78,7 +78,7 @@ const CompareContent = ({ data, category }: CompareContentProps) => {
 
       <CategoryModal
         open={categoryModalOpen}
-        toggleModal={toggleCategoryModal}
+        close={() => setCategoryModalOpen(false)}
         category={category}
         redirect={redirect}
       />

@@ -13,7 +13,7 @@ const baseClassNames =
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
   [
     'default',
-    'bg-white/5 border border-white/5 [&_svg]:text-white/50 hover:bg-white/[7%] hover:border-white/[7%]'
+    'bg-white/[2%] border border-white/5 [&_svg]:text-white/50 hover:bg-white/[7%] hover:border-white/[7%]'
   ],
   [
     'highlighted',

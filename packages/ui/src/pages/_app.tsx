@@ -2,6 +2,7 @@ import { createElement, useState } from 'react'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { AppProps } from 'next/app'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
+import SEO from '@/components/shared/SEO'
 import withUrql from '@/components/shared/hoc/withUrql'
 import '@/styles/globals.css'
 
@@ -20,11 +21,15 @@ const App = ({
 
   // Provide the Supabase client and initial session using SessionContextProvider
   return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}>
-      {createElement(withUrql(Component), pageProps)}
-    </SessionContextProvider>
+    <>
+      <SEO />
+
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}>
+        {createElement(withUrql(Component), pageProps)}
+      </SessionContextProvider>
+    </>
   )
 }
 

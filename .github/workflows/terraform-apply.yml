@@ -1,0 +1,71 @@
+name: 'Terraform Apply'
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'commit'
+        type: choice
+        options:
+          - commit
+          - staging
+          - production
+env:
+  TF_CLOUD_ORGANIZATION: ${{ vars.ORG_NAME }}
+  TF_API_TOKEN: '${{ secrets.TF_API_TOKEN }}'
+  TF_WORKSPACE: ${{ inputs.environment }}
+  CONFIG_DIRECTORY: './config/terraform'
+jobs:
+  variables:
+    name: 'Variables'
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    outputs:
+      GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
+      GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{github.event.pull_request.head.sha}}
+          sparse-checkout: |
+            .git
+      - id: git_commit_tag
+        run: echo "git_commit_tag=$(${{github.sha}} | head -c19)" >> "$GITHUB_OUTPUT"
+      - id: git_commit_message
+        run: echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}} | head -c35)" >> "$GITHUB_OUTPUT"
+  terraform:
+    needs: variables
+    environment: ${{ inputs.environment }}
+    env:
+      TF_VAR_git_commit_tags: '["${{ needs.variables.outputs.GIT_COMMIT_TAG }}"]'
+      TF_VAR_git_commit_tag: '"${{ needs.variables.outputs.GIT_COMMIT_TAG }}"'
+      TF_VAR_git_commit_message: '"${{ needs.variables.outputs.GIT_COMMIT_MESSAGE }}"'
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: vars
+        run: echo "${{toJSON(github)}}"
+      - name: Upload Configuration
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
+        id: apply-upload
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: ${{ env.CONFIG_DIRECTORY }}
+      - name: Create Apply Run
+        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
+        id: apply-run
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
+      - name: Apply
+        uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
+        if: fromJSON(steps.apply-run.outputs.payload).data.attributes.actions.IsConfirmable
+        id: apply
+        with:
+          run: ${{ steps.apply-run.outputs.run_id }}
+          comment: 'Apply Run from GitHub Actions CI ${{ github.sha }}'

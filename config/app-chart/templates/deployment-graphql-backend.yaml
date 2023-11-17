@@ -38,6 +38,8 @@ spec:
             - secretRef:
                 name: {{ .Values.resPrefix }}-graphql-gateway-secret
             - configMapRef:
+                name: {{ .Values.resPrefix }}-graphql-server-config-map
+            - configMapRef:
                 name: {{ .Values.resPrefix }}-supabase-config-map
             - secretRef:
                 name: {{ .Values.resPrefix }}-supabase-secret

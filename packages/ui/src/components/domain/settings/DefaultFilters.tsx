@@ -34,7 +34,7 @@ const DefaultFilters = () => {
         Anything below these values will be filtered out of your results on the trending page.
       </p>
 
-      <div className='mb-6 flex flex-row'>
+      <div className='mb-6 flex flex-row flex-wrap gap-4'>
         {Object.keys(filters).map(filterType => (
           <FilterInput
             key={filterType}

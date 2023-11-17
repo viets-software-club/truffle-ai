@@ -29,7 +29,7 @@ const SlackSettings = () => {
   }
 
   return (
-    <div className='flex flex-col items-start gap-[15px]'>
+    <div className='flex flex-col items-stretch gap-4 sm:items-start'>
       <Input
         type='text'
         placeholder={savedSlackWebhookURL || 'Slack channel webhook URL'}

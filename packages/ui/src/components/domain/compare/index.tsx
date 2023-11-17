@@ -40,13 +40,13 @@ const CompareContent = ({ data, category }: CompareContentProps) => {
 
   return (
     <>
-      <div className='flex flex-row items-center justify-between px-6 pt-3.5'>
+      <div className='flex w-full flex-col-reverse justify-between gap-6 px-4 pt-4 sm:flex-row sm:items-center md:px-6 md:pt-3.5'>
         <div className='flex flex-col'>
           <p className='text-xs font-medium uppercase text-white/50'>Compare</p>
           <h1 className='text-2xl font-medium'>{category}</h1>
         </div>
 
-        <div className='flex flex-row items-center justify-end gap-2'>
+        <div className='flex flex-row items-center gap-2 sm:justify-end'>
           <SendToSlack message={slackMessage} />
 
           <Button className='text-white' onClick={toggleCategoryModal}>

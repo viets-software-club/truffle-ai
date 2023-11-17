@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { AiOutlineNumber } from 'react-icons/ai'
 import { IoTextOutline } from 'react-icons/io5'
 import { TbArrowsSort } from 'react-icons/tb'
@@ -13,8 +12,8 @@ type SortingSelectorProps = {
   updateSorting: (sort: ProjectOrderBy | null) => void
 }
 
-const SortingSelector: FC<SortingSelectorProps> = ({ sorting, updateSorting }) => (
-  <Menu as='div' className='relative'>
+const SortingSelector = ({ sorting, updateSorting }: SortingSelectorProps) => (
+  <Menu as='div' className='relative hidden md:block'>
     <Menu.Button as='div'>
       <Button>
         <TbArrowsSort />

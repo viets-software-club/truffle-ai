@@ -66,8 +66,8 @@ const FilterBar = ({
   const { hasNextPage, hasPreviousPage } = pageInfo
 
   return (
-    <div className='fixed top-[60px] z-10 flex w-11/12 flex-row justify-between border-b border-white/5 px-6 py-2.5 pr-28'>
-      <div className='flex flex-row gap-3'>
+    <div className='flex flex-row justify-between border-b border-white/5 px-6 py-2.5'>
+      <div className='hidden flex-row gap-3 md:flex'>
         {/* Sorting */}
         {sorting && <SortModal sorting={sorting} setSorting={setSorting} />}
         {/* Separator - only show when at least 1 filter is active
@@ -80,7 +80,7 @@ const FilterBar = ({
       </div>
 
       {/* Row count */}
-      <div className='flex flex-row items-center'>
+      <div className='flex items-center py-2 md:py-0'>
         {totalEntries > 1 && (hasNextPage || hasPreviousPage) && (
           <div className='mr-2 flex gap-3'>
             <Button disabled={!pageInfo.hasPreviousPage} onClick={handleClickLeft}>

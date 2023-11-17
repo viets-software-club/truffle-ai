@@ -30,7 +30,7 @@ const Card = ({ Icon, name, variant, tweets, hackernewsSentiment, links }: CardP
   const color = variant === 'twitter' ? 'text-twitter' : 'text-hackernews'
 
   return (
-    <div className='my-4 h-auto rounded-lg border border-white/5'>
+    <div className='h-auto rounded-lg border border-white/5'>
       <div className='flex flex-row items-center p-4'>
         <Icon className={clsx('mr-2 h-6 w-6', color)} />
         <h3 className='text-lg font-bold'>{name}</h3>

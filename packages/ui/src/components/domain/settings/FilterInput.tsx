@@ -14,7 +14,7 @@ type filterInputProps = {
 }
 
 const FilterInput = ({ filterType, filters, setFilters, saveSettings }: filterInputProps) => (
-  <div className='flex flex-col gap-2 rounded pr-4 text-white'>
+  <div className='flex w-full flex-col gap-2 text-white sm:w-auto'>
     <p className='text-sm'>{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</p>
     <Input
       type='number'

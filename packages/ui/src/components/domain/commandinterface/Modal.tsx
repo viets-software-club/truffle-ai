@@ -40,7 +40,7 @@ const CommandInterfaceModal = ({
   <Modal isOpen={open} onClose={toggleModal} unstyled>
     <div
       ref={wrapperRef}
-      className='-mt-28 max-h-[450px] w-[650px] overflow-hidden rounded-lg border-[0.5px] border-white/5 bg-white/5 backdrop-blur-xl transition-all duration-300'>
+      className='-mt-28 hidden max-h-[450px] w-[650px] overflow-hidden rounded-lg border-[0.5px] border-white/5 bg-white/5 backdrop-blur-xl transition-all duration-300 lg:block'>
       <form onSubmit={handleSubmit}>
         <input
           className='block w-full appearance-none bg-transparent px-6 py-5 text-lg font-light text-white/75 outline-none placeholder:text-white/50'

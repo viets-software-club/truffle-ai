@@ -50,11 +50,7 @@ export type ChartProps = {
 
 /**
  * Linechart with one or more datasets
- * @param {ChartProps} datasets - The datasets to be displayed on the chart.
- * @param {boolean} multipleLines - Whether to display multiple lines or not.
- * @param {string} selectedMetric - The selected metric.
  */
-
 const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => (
   <ResponsiveContainer width='100%' height={300}>
     <LineChart

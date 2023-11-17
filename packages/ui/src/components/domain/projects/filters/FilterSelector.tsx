@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { AiOutlineFilter, AiOutlineNumber } from 'react-icons/ai'
 import { IoTextOutline } from 'react-icons/io5'
 import { Menu } from '@headlessui/react'
@@ -12,8 +11,8 @@ type FilterSelectorProps = {
   addFilter: (key: string, type: FilterType) => void
 }
 
-const FilterSelector: FC<FilterSelectorProps> = ({ filters, addFilter }) => (
-  <Menu as='div' className='relative'>
+const FilterSelector = ({ filters, addFilter }: FilterSelectorProps) => (
+  <Menu as='div' className='relative hidden md:block'>
     <Menu.Button as='div'>
       <Button>
         <AiOutlineFilter />

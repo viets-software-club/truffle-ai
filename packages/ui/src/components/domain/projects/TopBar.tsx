@@ -61,27 +61,20 @@ const TopBar = ({
   )[0][0]
 
   return (
-    <div className='fixed left-56 right-0 z-20 flex h-[60px] flex-row items-center justify-between border-b border-white/5 px-6'>
-      {/* Time frame (only show on trending page) */}
+    <div className='flex h-[60px] w-full flex-row items-center justify-between border-b border-white/5 px-4 md:px-6'>
       <div className='flex flex-row gap-3'>
-        {!hideTimeFrame && (
+        {!hideTimeFrame && ( // only show on trending page
           <TimeFrameSelector
             currentTimeFilterLabel={currentTimeFilterLabel}
             handleChange={updateTimeFrame}
           />
         )}
-
-        {/* Sorting */}
         <SortingSelector sorting={sorting} updateSorting={updateSorting} />
-
-        {/* Filtering */}
         <FilterSelector filters={filters} addFilter={addFilter} />
       </div>
 
       <div className='flex gap-3'>
-        {/* Edit columns */}
         <EditColumns columns={columns} />
-
         <AddProject />
       </div>
     </div>

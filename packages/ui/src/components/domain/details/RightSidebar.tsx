@@ -1,31 +1,21 @@
-import { FaGithub } from 'react-icons/fa'
-import {
-  IssueOpenedIcon,
-  PeopleIcon,
-  PersonIcon,
-  RepoForkedIcon,
-  StarIcon,
-  GitPullRequestIcon
-} from '@primer/octicons-react'
 import CompanyItem from '@/components/domain/details/CompanyItem'
 import FounderItem from '@/components/domain/details/FounderItem'
 import LanguagesItem from '@/components/domain/details/LanguagesItem'
 import Box from '@/components/domain/sidebar/Box'
 import SmallSidebar from '@/components/domain/sidebar/SmallSidebar'
-import GithubStatItem from '@/components/shared/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
 import { AffinityData } from '@/util/sendToAffinity'
-import GitHubMetricIcon from '../../shared/GitHubMetricIcon'
 import SendToAffinity from '../settings/SendToAffinity'
+import GithubStats from './GithubStats'
 
-type Props = {
+type RightSidebarProps = {
   project: Project
 }
 
 /**
  * Right sidebar for project details page
  */
-const RightSidebar = ({ project }: Props) => {
+const RightSidebar = ({ project }: RightSidebarProps) => {
   const affinityAPIKey = localStorage.getItem('affinityKey')
   const affinityListID = localStorage.getItem('affinityListId')
 
@@ -40,38 +30,10 @@ const RightSidebar = ({ project }: Props) => {
   }
 
   return (
-    // @TODO Add historical data for showing growth
     <SmallSidebar>
-      <Box title='GitHub Stats'>
-        <GithubStatItem id='Stars' Icon={StarIcon} value={project?.starCount || 0} />
-        <GithubStatItem
-          Icon={PeopleIcon}
-          value={project?.contributorCount || 0}
-          id='Contributors'
-        />
-        <GithubStatItem Icon={IssueOpenedIcon} value={project?.issueCount || 0} id='Issues' />
-        <GithubStatItem
-          IconMetric={<GitHubMetricIcon Icon={IssueOpenedIcon} Icon2={PersonIcon} />}
-          value={project.issuesPerContributor || 0}
-          id='Issues/ Contributor'
-        />
-        <GithubStatItem Icon={RepoForkedIcon} value={project?.forkCount || 0} id='Forks' />
-        <GithubStatItem
-          IconMetric={<GitHubMetricIcon Icon={RepoForkedIcon} Icon2={PersonIcon} />}
-          value={project.forksPerContributor || 0}
-          id='Forks/ Contributor'
-        />
-        <GithubStatItem
-          Icon={GitPullRequestIcon}
-          value={project.pullRequestCount || 0}
-          id='Pull requests'
-        />
-        <GithubStatItem
-          Icon={FaGithub}
-          link={project.githubUrl as string}
-          id={project.githubUrl as string}
-        />
-      </Box>
+      <div className='hidden lg:block'>
+        <GithubStats project={project} />
+      </div>
 
       {project.languages?.length && (
         <Box title='Languages'>

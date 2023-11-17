@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { RiCheckboxFill, RiCheckboxBlankLine } from 'react-icons/ri'
 import { TbColumns2 } from 'react-icons/tb'
 import { Menu } from '@headlessui/react'
@@ -11,11 +11,11 @@ type EditColumnsProps = {
   columns: Column<Project, unknown>[]
 }
 
-const EditColumns: FC<EditColumnsProps> = ({ columns }) => {
+const EditColumns = ({ columns }: EditColumnsProps) => {
   const [open, setOpen] = useState<boolean>(false)
 
   return (
-    <Menu as='div' className='relative'>
+    <Menu as='div' className='relative hidden md:block'>
       <Menu.Button as='div'>
         <Button onClick={() => setOpen(!open)}>
           <TbColumns2 />

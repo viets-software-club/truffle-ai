@@ -8,12 +8,18 @@ type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HT
 }
 
 const baseClassNames =
-  'flex min-h-[30px] items-center gap-1.5 rounded-md text-sm leading-none outline-none transition-all duration-150 shadow-white/50 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed'
+  'flex min-h-[30px] items-center gap-1.5 rounded-md text-sm leading-none outline-none transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed'
 
 const variantToButtonVariantClassNames = new Map<ButtonProps['variant'], string>([
-  ['default', 'bg-white/5 border border-white/5 [&_svg]:text-white/50'],
-  ['highlighted', 'bg-indigo-500 hover:bg-opacity-75 text-white font-medium'],
-  ['error', 'bg-red-400 text-white'],
+  [
+    'default',
+    'bg-white/5 border border-white/5 [&_svg]:text-white/50 hover:bg-white/[7%] hover:border-white/[7%]'
+  ],
+  [
+    'highlighted',
+    'border border-indigo-500 bg-indigo-500 hover:bg-opacity-90 text-white font-medium'
+  ],
+  ['error', 'border border-red-400 bg-red-400 text-white hover:bg-opacity-90'],
   ['unstyled', '']
 ])
 

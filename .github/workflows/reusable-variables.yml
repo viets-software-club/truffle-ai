@@ -40,7 +40,7 @@ jobs:
       GRAPHQL_GATEWAY_URL: ${{ vars.GRAPHQL_GATEWAY_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
-      GRAPHQL_URL: ${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('{0}.',env.environment), vars.DOMAIN) }}
+      GRAPHQL_URL: ${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', (env.environment == 'production' && '') || format('{0}.', env.environment), vars.DOMAIN) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,3 +53,4 @@ jobs:
         run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=$(${{github.event.head_commit.message}})" >> "$GITHUB_OUTPUT"; fi
       - run: echo '${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment == 'production' && '' || format('{0}.',env.environment), vars.DOMAIN) }}'
       - run:  echo "git_commit_tag=$(echo '${{github.event.pull_request.head.sha}}' )"
+      - run echo " ${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.',steps.git_commit_tag.outputs.git_commit_tag) || '', (env.environment == 'production' && '') || format('{0}.', env.environment), vars.DOMAIN) }}"

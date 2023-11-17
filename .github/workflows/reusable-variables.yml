@@ -23,14 +23,17 @@ on:
         value: ${{ jobs.variables.outputs.GIT_COMMIT_MESSAGE }}
       GRAPHQL_URL:  
         value: ${{ jobs.variables.outputs.GRAPHQL_URL  }}
+      ENVIRONMENT:  
+        value: ${{ jobs.variables.outputs.ENVIRONMENT  }}
 jobs:
   variables:
     name: 'Variables'
-    environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'production' && 'production') || 'staging' }}
+    environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'main' && 'production') || 'staging' }}
     env:
-      environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'production' && 'production') || 'staging' }}
+      environment: ${{ startsWith(inputs.REF, 'refs/pull') && 'commit' || (inputs.REF_NAME == 'main' && 'production') || 'staging' }}
     runs-on: ubuntu-latest
     outputs:
+      ENVIRONMENT: ${{ env.environment }}
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}

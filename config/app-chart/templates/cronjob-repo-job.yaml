@@ -10,7 +10,7 @@ spec:
   concurrencyPolicy: Replace
   failedJobsHistoryLimit: 1
   successfulJobsHistoryLimit: 1
-  schedule: "*/4 * * * *"
+  schedule: "10 * * * *"
   jobTemplate:
     metadata:
       annotations:

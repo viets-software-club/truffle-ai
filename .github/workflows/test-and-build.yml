@@ -1,23 +1,20 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-name: Node.js CI
+name: Test & Build
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'staging', 'commit']
   pull_request:
-    branches: ['main']
+    branches: ['main', 'staging', 'commit']
 env:
-  SUPABASE_REFERENCE_ID: ${{ vars.SUPABASE_REFERENCE_ID }}
-  SUPABASE_URL: ${{ vars.SUPABASE_URL }}
   SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
-  GATEWAY_PORT: ${{ vars.GATEWAY_PORT }}
-  SERVER_PORT: ${{ vars.SERVER_PORT }}
-  SERVER_URL: ${{ vars.SERVER_URL }}
-  SERVER_GRAPHQL_URL: ${{ vars.SERVER_GRAPHQL_URL }}
+  GRAPHQL_GATEWAY_PORT: ${{ vars.GRAPHQL_GATEWAY_PORT }}
+  GRAPHQL_SERVER_PORT: ${{ vars.GRAPHQL_SERVER_PORT }}
+  GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     strategy:
       matrix:
         node-version: [18.x]
@@ -35,5 +32,12 @@ jobs:
         run: NODE_ENV=test npm run test
       - name: Build
         env:
-          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
+          SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          GRAPHQL_URL: ${{ vars.GRAPHQL_URL }}
         run: NODE_ENV=production npm run build

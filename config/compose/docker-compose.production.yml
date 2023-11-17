@@ -1,0 +1,48 @@
+version: '3.9'
+name: truffle-ai
+services:
+  graphql-server:
+    build:
+      context: ../../
+      dockerfile: ./packages/graphql_server/Dockerfile
+    ports:
+      - ${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}
+    env_file:
+      - ../../.env.production
+  graphql-gateway:
+    build:
+      context: ../../
+      dockerfile: ./packages/graphql-gateway/Dockerfile
+      args:
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+        - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
+        - GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL}
+    ports:
+      - ${GRAPHQL_GATEWAY_PORT}:${GRAPHQL_GATEWAY_PORT}
+    env_file:
+      - ../../.env.production
+  repo-job:
+    build:
+      context: ../../
+      dockerfile: ./packages/repo-job/Dockerfile
+    env_file:
+      - ../../.env.production
+  preview-job:
+    build:
+      context: ../../
+      dockerfile: ./packages/preview-job/Dockerfile
+    env_file:
+      - ../../.env.production
+  ui:
+    build:
+      context: ../../
+      dockerfile: ./packages/ui/Dockerfile
+      args:
+        - SUPABASE_URL=${SUPABASE_URL}
+        - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+        - GRAPHQL_URL=${GRAPHQL_PUBLIC_URL}
+    ports:
+      - ${UI_PORT}:${UI_PORT}
+    env_file:
+      - ../../.env.production

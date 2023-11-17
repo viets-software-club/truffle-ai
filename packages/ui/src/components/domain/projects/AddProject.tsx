@@ -60,12 +60,12 @@ const AddProject = () => {
 
   return (
     <div>
-      <Button onClick={toggleModal} variant='highlighted' className='text-white'>
+      <Button onClick={toggleModal} variant='highlighted'>
         <AiOutlinePlus />
         Add Project
       </Button>
 
-      <Modal isOpen={open} onClose={toggleModal}>
+      <Modal isOpen={open} onClose={() => setOpen(false)}>
         <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
           <p className='text-lg font-semibold text-white'>Add Project</p>
 

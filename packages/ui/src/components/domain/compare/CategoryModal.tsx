@@ -9,11 +9,11 @@ const defaultErrorMessage = 'Something went wrong. Please try again later.'
 type CategoryModalProps = {
   open: boolean
   category: string
-  toggleModal: () => void
+  close: () => void
   redirect: (newCategory: string) => void
 }
 
-const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, redirect }) => {
+const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect }) => {
   const [newCategory, setNewCategory] = useState<string>(category)
   const [error, setError] = useState<string | null>(null)
 
@@ -56,7 +56,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, toggleModal, category, re
   }
 
   return (
-    <Modal isOpen={open} onClose={toggleModal}>
+    <Modal isOpen={open} onClose={close}>
       <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
         <p className='text-base font-semibold text-white'>Rename category</p>
 

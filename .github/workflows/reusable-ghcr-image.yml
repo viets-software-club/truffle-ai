@@ -72,7 +72,7 @@ jobs:
             "-f"
             "/packages/${{inputs.PACKAGE_NAME}}/Dockerfile"
           );
-          for tag in "${{inputs.IMAGE_TAGS}}"; do args+="-t"; args+="${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"; done;
+          for tag in "${{inputs.IMAGE_TAGS}}"; do args+=("-t"); args+=("${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"); done;
           DOCKER_BUILDKIT=1 docker build "${args[@]}" .
       - name: Push image to ghcr
         run: docker push --all-tags ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}
@@ -93,7 +93,7 @@ jobs:
 
         # 
         # declare -a args=();
-        # for tag in "commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit- commit- dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit-latest"; do args+="-t" args+="ghcr.io/viets-software-club/truffle-ai/dev/graphql-server:$tag"; done;
+        # for tag in "commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit- commit- dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit-latest"; do args+=("-t") args+=("ghcr.io/viets-software-club/truffle-ai/dev/graphql-server:$tag"); done;
 
         # docker build . $(for tag in $(printf "commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit- commit- dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit-latest "); do echo -n "-t ghcr.io/viets-software-club/truffle-ai/dev/graphql-server:$tag"; done;)
 
@@ -122,3 +122,5 @@ jobs:
           #   "-f"
           #   "/packages/wow/Dockerfile"
           # );
+          # args+="hey"
+          

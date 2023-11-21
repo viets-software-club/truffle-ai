@@ -72,7 +72,8 @@ jobs:
             "-f"
             "/packages/${{inputs.PACKAGE_NAME}}/Dockerfile"
           );
-          for tag in "${{inputs.IMAGE_TAGS}}"; do args+=("-t"); args+=("${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"); done;
+          tag_str="${{inputs.IMAGE_TAGS}}"
+          for tag in ${tag_str}; do args+=("-t"); args+=("${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"); done;
           DOCKER_BUILDKIT=1 docker build "${args[@]}" .
       - name: Push image to ghcr
         run: docker push --all-tags ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}
@@ -124,3 +125,31 @@ jobs:
           # );
           # args+="hey"
           
+
+  #          declare -a args=(
+  #   "--build-arg"
+  #   "SUPABASE_ANON_KEY=***"
+  #   "--build-arg"
+  #   "SUPABASE_SERVICE_KEY=***"
+  #   "--build-arg"
+  #   "BUILDKIT_INLINE_CACHE=1"
+  #   "-t"
+  #   "ghcr.io/viets-software-club/truffle-ai/dev/repo-job:$(echo "d932ff876804c1bc24f317af128820951410fca7" | head -c 7)"
+  #   "-t"
+  #   "ghcr.io/viets-software-club/truffle-ai/dev/repo-job:$(echo "d932ff876804c1bc24f317af128820951410fca7" | head -c 14)"
+  #   "-t"
+  #   "ghcr.io/viets-software-club/truffle-ai/dev/repo-job:d932ff876804c1bc24f317af128820951410fca7"
+  #   "-t"
+  #   "ghcr.io/viets-software-club/truffle-ai/dev/repo-job:latest"
+  #   "--label"
+  #   "org.opencontainers.image.source=https://github.com/viets-software-club/truffle-ai"
+  #   "--label"
+  #   "org.opencontainers.image.description=repo-job"
+  #   "--label"
+  #   "org.opencontainers.image.licenses=MIT"
+  #   "-f"
+  #   "/packages/repo-job/Dockerfile"
+  # );
+  # str="commit-d932ff876804c1bc24f317af128820951410fca7 commit- commit- dev-d932ff876804c1bc24f317af128820951410fca7 dev-commit-d932ff876804c1bc24f317af128820951410fca7 0.0.1-dev-d932ff876804c1bc24f317af128820951410fca7 0.0.1-dev-commit-d932ff876804c1bc24f317af128820951410fca7 commit-latest"
+  # for tag in ${str}; do args+=("-t"); args+=("ghcr.io/viets-software-club/truffle-ai/dev/repo-job:$tag"); done;
+  # DOCKER_BUILDKIT=1 docker build "${args[@]}" .

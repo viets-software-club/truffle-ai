@@ -53,7 +53,9 @@ jobs:
           --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
           --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
           --build-arg BUILDKIT_INLINE_CACHE=1 \
-          $(for tag in $(printf "${{inputs.IMAGE_TAGS}}"); do echo "-t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag \\"; done;)
+          <<EOF
+          for tag in $(printf "${{inputs.IMAGE_TAGS}}"); do echo "-t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag \\"; done;)
+          EOF
           -t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 7) \
           -t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 14) \
           -t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:${{inputs.GIT_COMMIT_TAG}} \
@@ -64,3 +66,6 @@ jobs:
           -f ./packages/${{inputs.PACKAGE_NAME}}/Dockerfile .
       - name: Push image to ghcr
         run: docker push --all-tags ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}
+
+
+        echo "hey $(for tag in $(printf "commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit- commit- dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-c5c3a9ea660ec67b31a161524dcc1d7206569840 0.0.1-dev-commit-c5c3a9ea660ec67b31a161524dcc1d7206569840 commit-latest "); do echo "-t ghcr.io/viets-software-club/truffle-ai/dev/graphql-server:$tag \\"; done;)"

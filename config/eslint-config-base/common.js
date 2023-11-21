@@ -19,7 +19,8 @@ module.exports = {
     '.mesh',
     '.dockerignore',
     '.husky',
-    '.eslintrc.js'
+    '.eslintrc.js',
+    'config/scripts/**'
   ],
   rules: {
     'import/no-unresolved': 'error',

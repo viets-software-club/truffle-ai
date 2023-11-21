@@ -20,9 +20,6 @@ on:
       IMAGE_REPOSITORY:
         type: string
         required: true
-      IMAGE_TAGS:
-        type: string
-        required: true
 permissions:
   contents: read
   packages: write

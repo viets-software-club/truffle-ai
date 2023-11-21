@@ -8,7 +8,7 @@ on:
       GIT_COMMIT_TAG:
         type: string
         required: true
-      ARGS:
+      BUILD_ARGS:
         type: string
         required: false
       IMAGE_DESCRIPTION:
@@ -18,6 +18,9 @@ on:
         type: string
         required: true
       IMAGE_REPOSITORY:
+        type: string
+        required: true
+      IMAGE_TAGS:
         type: string
         required: true
 permissions:
@@ -45,19 +48,33 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
         run: |
-          DOCKER_BUILDKIT=1 docker build \
-          ${{inputs.ARGS}} \
-          --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
-          --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
-          --build-arg BUILDKIT_INLINE_CACHE=1 \
-          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.GIT_COMMIT_TAG}} \
-          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.ENVIRONMENT}}-${{inputs.GIT_COMMIT_TAG}} \
-          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:latest \
-          -t ${{env.IMAGE_REPOSITORY_URL}}/${{inputs.PACKAGE_NAME}}:${{inputs.ENVIRONMENT}}-latest \
-          --label "org.opencontainers.image.source=${{env.IMAGE_SOURCE}}" \
-          --label "org.opencontainers.image.description=${{env.IMAGE_DESCRIPTION}}" \
-          --label "org.opencontainers.image.licenses=${{env.IMAGE_LICENSE}}" \
-          -f ./packages/${{inputs.PACKAGE_NAME}}/Dockerfile .
+          declare -a args=(
+            "--build-arg"
+            "SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}}"
+            "--build-arg"
+            "SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}"
+            "--build-arg"
+            "BUILDKIT_INLINE_CACHE=1"
+            "-t"
+            "${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 7)"
+            "-t"
+            "${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 14)"
+            "-t"
+            "${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:${{inputs.GIT_COMMIT_TAG}}"
+            "-t"
+            "${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:latest"
+            "--label"
+            "org.opencontainers.image.source=${{env.IMAGE_SOURCE}}"
+            "--label"
+            "org.opencontainers.image.description=${{env.IMAGE_DESCRIPTION}}"
+            "--label"
+            "org.opencontainers.image.licenses=${{env.IMAGE_LICENSE}}"
+            "-f"
+            "./packages/${{inputs.PACKAGE_NAME}}/Dockerfile"
+          );
+          tag_str="${{inputs.IMAGE_TAGS}}"
+          for tag in ${tag_str}; do args+=("-t"); args+=("${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"); done;
+          DOCKER_BUILDKIT=1 docker build ${{inputs.BUILD_ARGS}} "${args[@]}" .
       - name: Push image to ghcr
         run: docker push --all-tags ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}
 #   docker build \

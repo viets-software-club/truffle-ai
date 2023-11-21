@@ -54,6 +54,6 @@ jobs:
       - id: date_time_stamp
         run: echo "stamp=$(date +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT";
       - id: git_commit_tag_n7
-        run: echo "${{steps.git_commit_tag.outputs.git_commit_tag}}" | head -c 7 >> "$GITHUB_OUTPUT";
+        run: echo "git_commit_tag_n7=${{steps.git_commit_tag.outputs.git_commit_tag}}" | head -c 7 >> "$GITHUB_OUTPUT";
       - id: git_commit_tag_n14
-        run: echo "${{steps.git_commit_tag.outputs.git_commit_tag}}" | head -c 7 >> "$GITHUB_OUTPUT";
+        run: echo "git_commit_tag_n14=${{steps.git_commit_tag.outputs.git_commit_tag}}" | head -c 7 >> "$GITHUB_OUTPUT";

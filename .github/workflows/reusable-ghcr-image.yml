@@ -8,7 +8,7 @@ on:
       GIT_COMMIT_TAG:
         type: string
         required: true
-      BUILD_ARGS:
+      ARGS:
         type: string
         required: false
       IMAGE_DESCRIPTION:

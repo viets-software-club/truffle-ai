@@ -53,7 +53,7 @@ jobs:
           --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \
           --build-arg SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }} \
           --build-arg BUILDKIT_INLINE_CACHE=1 \
-          $(for tag in "${{inputs.IMAGE_TAGS}}"; do echo "-t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag \"; done;)
+          $(for tag in $(printf "${{inputs.IMAGE_TAGS}}"); do echo "-t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag \"; done;)
           -t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 7) \
           -t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 14) \
           -t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:${{inputs.GIT_COMMIT_TAG}} \

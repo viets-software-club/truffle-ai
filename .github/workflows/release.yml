@@ -17,12 +17,11 @@ jobs:
       - id: tag
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
   image:
-    needs: release_tag
     name: 'Image'
     permissions:
       contents: read
       packages: write
-    needs: variables
+    needs: [variables, release_tag]
     strategy:
       matrix:
         PACKAGE_NAME: [ui, graphql-gateway, graphql-server, repo-job]
@@ -42,6 +41,7 @@ jobs:
         ${{needs.release_tag.outputs.RELEASE_TAG}}
     secrets: inherit
   release:
+    needs: image
     name: Release
     steps:
     - name: Get release tag

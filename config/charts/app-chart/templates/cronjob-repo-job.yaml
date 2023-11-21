@@ -26,17 +26,17 @@ spec:
             job: repo-job
         spec:
           containers:
-          - name: {{ .Values.resPrefix }}-repo-cronjob-container
+          - name: repo-cronjob-container
             image: "{{.Values.image.repositoryUrl}}/repo-job:{{.Values.image.tag}}"
             envFrom:
             - configMapRef:
-                name: {{ .Values.resPrefix }}-nodejs-config-map
+                name: nodejs-config-map
             - configMapRef:
-                name: {{ .Values.resPrefix }}-supabase-config-map
+                name: supabase-config-map
             - configMapRef:
-                name: {{ .Values.resPrefix }}-repo-job-config-map
+                name: repo-job-config-map
             - configMapRef:
-                name: {{ .Values.resPrefix }}-graphql-server-config-map
+                name: graphql-server-config-map
           restartPolicy: 'OnFailure'
 
 

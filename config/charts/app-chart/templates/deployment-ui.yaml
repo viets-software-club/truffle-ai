@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.resPrefix }}-ui-deployment
+  name: ui-deployment
   annotations:
     "kubernetes.io/change-cause": "{{.Values.changeCause}}"
   labels:
-    app: {{ .Values.resPrefix }}-ui-deployment
+    app: ui-deployment
 spec:
   replicas: 1
   revisionHistoryLimit: 0
@@ -16,13 +16,13 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: {{ .Values.resPrefix }}-ui-deployment
+      app: ui-deployment
   template:
     metadata:
       annotations:
         "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
       labels:
-        app: {{ .Values.resPrefix }}-ui-deployment
+        app: ui-deployment
     spec:
       automountServiceAccountToken: true
       containers:
@@ -32,13 +32,13 @@ spec:
             - containerPort: 3000
           envFrom:
             - configMapRef:
-                name: {{ .Values.resPrefix }}-ui-config-map
+                name: ui-config-map
             - secretRef:
-                name: {{ .Values.resPrefix }}-ui-secret
+                name: ui-secret
             - configMapRef:
-                name: {{ .Values.resPrefix }}-supabase-config-map
+                name: supabase-config-map
             - secretRef:
-                name: {{ .Values.resPrefix }}-supabase-secret
+                name: supabase-secret
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       hostIPC: false

@@ -3,6 +3,7 @@ on:
   pull_request:
     types:
       - synchronize
+      - opened
     branches: ['main', 'staging']
     paths: ['packages/**', 'config/**', '.github/workflows/**']
   push:

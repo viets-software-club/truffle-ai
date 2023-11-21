@@ -72,7 +72,7 @@ jobs:
             "-f"
             "/packages/${{inputs.PACKAGE_NAME}}/Dockerfile"
           );
-          for tag in $(printf "${{inputs.IMAGE_TAGS}}"); do args+="-t" args+="${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"; done;
+          for tag in $(printf "${{inputs.IMAGE_TAGS}}"); do args+="-t"; args+="${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"; done;
           DOCKER_BUILDKIT=1 docker build ${args[@]} .
       - name: Push image to ghcr
         run: docker push --all-tags ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}

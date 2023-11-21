@@ -50,7 +50,6 @@ jobs:
         run: |
           args=()
           for tag in $(printf "${{inputs.IMAGE_TAGS}}"); do args+=("-t ${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag \\"); done;
-          IFS=' ' read -r -a args_array <<< "${{inputs.IMAGE_TAGS}}"
           DOCKER_BUILDKIT=1 docker build \
           ${{inputs.BUILD_ARGS}} \
           --build-arg SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}} \

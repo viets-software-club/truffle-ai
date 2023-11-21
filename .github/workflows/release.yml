@@ -1,0 +1,67 @@
+on:
+  push:
+    tags: [ 'v*.*.*' ]
+jobs:
+  variables:
+    name: Variables
+    uses: ./.github/workflows/reusable-variables.yml
+    with:
+      REF_NAME: ${{ github.ref_name }}
+    secrets: inherit
+  release_tag:
+    name: Get release tag
+    runs-on: ubuntu-latest
+    outputs:
+      RELEASE_TAG: ${{steps.tag.outputs.RELEASE_TAG}}
+    steps:
+      - id: tag
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+  image:
+    needs: release_tag
+    name: 'Image'
+    permissions:
+      contents: read
+      packages: write
+    needs: variables
+    strategy:
+      matrix:
+        PACKAGE_NAME: [ui, graphql-gateway, graphql-server, repo-job]
+        include:
+          - PACKAGE_NAME: ui
+            BUILD_ARGS: --build-arg SUPABASE_URL="${{needs.variables.outputs.SUPABASE_URL}}" --build-arg GRAPHQL_URL="${{needs.variables.outputs.GRAPHQL_URL}}"
+          - PACKAGE_NAME: graphql-gateway
+            BUILD_ARGS: --build-arg GRAPHQL_SERVER_URL="${{ needs.variables.outputs.GRAPHQL_SERVER_URL }}" --build-arg SUPABASE_URL="${{ needs.variables.outputs.SUPABASE_URL }}" --build-arg SUPABASE_GRAPHQL_URL="${{needs.variables.outputs.SUPABASE_GRAPHQL_URL}}"
+    uses: ./.github/workflows/reusable-ghcr-image.yml
+    with:
+      GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
+      ENVIRONMENT: ${{needs.variables.outputs.ENVIRONMENT}}
+      PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
+      BUILD_ARGS: ${{matrix.BUILD_ARGS}}
+      IMAGE_REPOSITORY: stable
+      IMAGE_TAGS: |
+        ${{needs.release_tag.outputs.RELEASE_TAG}}
+    secrets: inherit
+  release:
+    name: Release
+    - name: Get release tag
+      run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Create
+        uses: "actions/github-script@v6"
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          script: |
+            try {
+              const response = await github.rest.repos.createRelease({
+                draft: false,
+                generate_release_notes: true,
+                name: process.env.RELEASE_TAG,
+                owner: context.repo.owner,
+                prerelease: false,
+                repo: context.repo.repo,
+                tag_name: process.env.RELEASE_TAG,
+              });
+              core.exportVariable('RELEASE_ID', response.data.id);
+              core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
+            } catch (error) {
+              core.setFailed(error.message);
+            }

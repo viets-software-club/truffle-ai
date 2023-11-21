@@ -36,6 +36,8 @@ jobs:
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
       GRAPHQL_GATEWAY_URL: ${{ vars.GRAPHQL_GATEWAY_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
+      GIT_COMMIT_TAG_N7: ${{ steps.git_commit_tag_n7.outputs.git_commit_tag }}
+      GIT_COMMIT_TAG_N14: ${{ steps.git_commit_tag_n14.outputs.git_commit_tag }}
       GIT_COMMIT_MESSAGE: ${{ steps.git_commit_message.outputs.git_commit_message }}
       GRAPHQL_URL: ${{ format('https://{0}{1}{2}/api/graphql', env.environment == 'commit' && format('{0}.', steps.git_commit_tag.outputs.git_commit_tag) || '', env.environment != 'production' && format('{0}.', env.environment) || '', vars.DOMAIN) }}
       DATETIME: ${{steps.date_time_stamp.outputs.stamp}}
@@ -51,3 +53,7 @@ jobs:
         run: if [[ -n "$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" ]]; then echo "git_commit_message=$(git log --format=%s -n 1 ${{github.event.pull_request.head.sha}})" >> "$GITHUB_OUTPUT"; else echo "git_commit_message=$(${{github.event.head_commit.message}})" >> "$GITHUB_OUTPUT"; fi
       - id: date_time_stamp
         run: echo "stamp=$(date +%Y%m%d%H%M)" >> "$GITHUB_OUTPUT";
+      - id: git_commit_tag_n7
+        run: echo ${{steps.git_commit_tag.outputs.git_commit_tag}} | head -c 7 >> "$GITHUB_OUTPUT";
+      - id: git_commit_tag_n14
+        run: echo ${{steps.git_commit_tag.outputs.git_commit_tag}} | head -c 7 >> "$GITHUB_OUTPUT";

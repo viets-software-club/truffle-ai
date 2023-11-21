@@ -37,7 +37,7 @@ jobs:
       PACKAGE_NAME: ${{matrix.PACKAGE_NAME}}
       BUILD_ARGS: ${{matrix.BUILD_ARGS}}
       IMAGE_REPOSITORY: stable
-      IMAGE_TAGS: |
+      IMAGE_TAGS: >-
         ${{needs.release_tag.outputs.RELEASE_TAG}}
     secrets: inherit
   release:

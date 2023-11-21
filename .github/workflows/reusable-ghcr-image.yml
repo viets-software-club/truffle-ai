@@ -23,9 +23,6 @@ on:
       IMAGE_TAGS:
         type: string
         required: true
-      VERs:
-        type: string
-        required: true
 permissions:
   contents: read
   packages: write

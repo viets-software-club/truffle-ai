@@ -2,4 +2,4 @@
 // adds repository to helm
 import 'zx/globals'
 
-$`helm repo add ${$.env.RELEASE_REPO_NAME} --username ${$.env.GITHUB_TOKEN} --password ${$.env.GITHUB_TOKEN} https://raw.githubusercontent.com/${$.env.ORG_NAME}/$(echo ${$.env.RELEASE_REPO_NAME})/main/`
+$`helm repo add truffle-ai-stable --username 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 --password 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 oci://ghcr.io/viets-software-club/truffle-ai/stable/app-chart`

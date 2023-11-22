@@ -25,7 +25,7 @@ const args = [
   '--namespace',
   namespace,
   '--set',
-  `image.repositoryUrl=ghcr.io/${orgName}/${repoName}/`,
+  `image.repositoryUrl=ghcr.io/${orgName}/${repoName}/dev`,
   '--set',
   `image.tag=${sha}`,
   `--set`,

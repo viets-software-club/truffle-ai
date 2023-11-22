@@ -31,9 +31,9 @@ on:
 jobs:
   variables:
     name: 'Variables'
-    environment: ${{ (inputs.REF_NAME == 'main' && 'production') || (inputs.REF_NAME == 'main' && 'staging') || 'commit' }}
+    environment: ${{ (inputs.REF_NAME == 'main' && 'production') || (inputs.REF_NAME == 'staging' && 'staging') || 'commit' }}
     env:
-      environment: ${{ (inputs.REF_NAME == 'main' && 'production') || (inputs.REF_NAME == 'main' && 'staging') || 'commit' }}
+      environment: ${{ (inputs.REF_NAME == 'main' && 'production') || (inputs.REF_NAME == 'staging' && 'staging') || 'commit' }}
     runs-on: ubuntu-latest
     outputs:
       ENVIRONMENT: ${{ env.environment }}

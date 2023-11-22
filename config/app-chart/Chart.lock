@@ -1,6 +1,0 @@
-dependencies:
-- name: nginx-ingress-controller
-  repository: https://charts.bitnami.com/bitnami
-  version: 9.9.2
-digest: sha256:3054d80d9117747027822cd7f03b00858efd445967d599125a1e3e09e31bef6c
-generated: "2023-11-15T20:36:01.529987041Z"

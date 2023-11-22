@@ -4,7 +4,7 @@ metadata:
   name: graphql-backend-service
 spec:
   selector:
-    app: {{ .Values.resPrefix }}-graphql-backend-deployment
+    app: graphql-backend-deployment
   ports:
     - name: graphql-gateway-port
       protocol: TCP
@@ -18,10 +18,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.resPrefix }}-ui-service
+  name: ui-service
 spec:
   selector:
-    app: {{ .Values.resPrefix }}-ui-deployment
+    app: ui-deployment
   ports:
     - protocol: TCP
       port: 3000

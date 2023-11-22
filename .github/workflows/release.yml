@@ -40,6 +40,26 @@ jobs:
       IMAGE_TAGS: >-
         ${{needs.release_tag.outputs.RELEASE_TAG}}
     secrets: inherit
+  helm:
+    name: Helm
+    needs: variables
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout chart
+        uses: actions/checkout@v2
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Helm Package App
+        run: helm package config/charts/app-chart
+      - name: Login Helm
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login -u ${{ github.actor }} --password-stdin
+      - name: Push Helm
+        run: helm push app-chart-0.1.0.tgz oci://ghcr.io/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}/stable/app-chart
   release:
     needs: image
     name: Release

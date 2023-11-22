@@ -17,7 +17,7 @@ type ProjectInformationProps = {
   about: string
   categories: string[]
   isBookmarked: boolean
-  category: string
+  category?: string
   refetch: () => void
 }
 

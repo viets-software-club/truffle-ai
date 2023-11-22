@@ -1,12 +1,14 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react'
+import { FC, FormEvent, useState } from 'react'
+import { useUser } from '@supabase/auth-helpers-react'
 import clsx from 'clsx'
 import Button from '@/components/shared/Button'
-import Input from '@/components/shared/Input'
 import Modal from '@/components/shared/Modal'
+import Select from '@/components/shared/Select'
 import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
-  useEditBookmarkCategoryMutation
+  useEditBookmarkCategoryMutation,
+  useFilteredBookmarksQuery
 } from '@/graphql/generated/gql'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'
@@ -20,17 +22,23 @@ type BookmarkModalProps = {
   refetch: () => void
 }
 
+// @TODO allow adding multiple categories
 const BookmarkModal: FC<BookmarkModalProps> = ({
   open,
   close,
   projectID,
-  category,
+  category: currentCategory,
   isBookmarked,
   refetch
 }) => {
-  const [newCategory, setNewCategory] = useState<string>(category)
+  const [newCategories, setNewCategories] = useState<string[]>([currentCategory])
   const [error, setError] = useState<string | null>(null)
 
+  const user = useUser()
+
+  const [{ data: bookmarks }] = useFilteredBookmarksQuery({
+    variables: { userId: user?.id as string }
+  })
   const [{ fetching: fetchingAdd }, addBookmarkMutation] = useAddBookmarkMutation()
   const [{ fetching: fetchingDelete }, deleteBookmarkMutation] = useDeleteBookmarkMutation()
   const [{ fetching: fetchingEdit }, editBookmarkCategoryMutation] =
@@ -40,10 +48,10 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const addOrEditBookmark = async () => {
     try {
       // Don't do anything if the category is the same or empty
-      if (newCategory === category || newCategory.length === 0) return
+      if (newCategories[0] === currentCategory || newCategories.length === 0) return
 
       if (isBookmarked) {
-        const res = await editBookmarkCategoryMutation({ projectID, newCategory })
+        const res = await editBookmarkCategoryMutation({ projectID, newCategory: newCategories[0] })
         const responseCode = parseInt(res?.data?.editBookmarkCategory?.code as string, 10)
 
         // If the mutation was successful, show success message
@@ -54,7 +62,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
           setError(res?.data?.editBookmarkCategory?.message || defaultErrorMessage)
         }
       } else {
-        const res = await addBookmarkMutation({ projectID, category: newCategory })
+        const res = await addBookmarkMutation({ projectID, category: newCategories[0] })
         const responseCode = parseInt(res?.data?.addBookmark?.code as string, 10)
 
         // If the mutation was successful, show success message
@@ -88,10 +96,6 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
     }
   }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewCategory(e.target.value)
-  }
-
   const handleSubmit = (e: FormEvent) => {
     // Prevent default form submission
     e.preventDefault()
@@ -111,6 +115,12 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
     void deleteBookmark()
   }
 
+  // Get unique array of categories
+  const categories = bookmarks?.bookmarkCollection?.edges
+    ?.map(({ node: { category } }) => category)
+    .filter((value, index, array) => array.indexOf(value) === index)
+    .filter(value => value !== undefined && value !== null) as string[]
+
   return (
     <Modal isOpen={open} onClose={close}>
       <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
@@ -118,7 +128,14 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
           {isBookmarked ? 'Edit bookmark' : 'Add bookmark'}
         </p>
 
-        <Input placeholder='Category' value={newCategory} onChange={handleChange} />
+        {categories && (
+          <Select
+            values={categories}
+            selected={newCategories}
+            setSelected={setNewCategories}
+            placeholder='Search or select categories'
+          />
+        )}
 
         {/* Error message */}
         {error && <p className='text-sm text-red-400'>{error}</p>}

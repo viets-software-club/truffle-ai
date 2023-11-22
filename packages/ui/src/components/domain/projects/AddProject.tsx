@@ -1,8 +1,10 @@
 import { FormEvent, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { useUser } from '@supabase/auth-helpers-react'
 import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
-import { useAddProjectByUrlMutation } from '@/graphql/generated/gql'
+import Select from '@/components/shared/Select'
+import { useAddProjectByUrlMutation, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 import Modal from '../../shared/Modal'
 
 const defaultSuccessMessage =
@@ -17,14 +19,19 @@ const AddProject = () => {
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [projectUrl, setProjectUrl] = useState<string>('')
-  const [category, setCategory] = useState<string>('')
+  const [categories, setCategories] = useState<string[]>([])
 
+  const user = useUser()
+
+  const [{ data: bookmarks }] = useFilteredBookmarksQuery({
+    variables: { userId: user?.id as string }
+  })
   const [{ fetching }, addProjectByUrlMutation] = useAddProjectByUrlMutation()
 
   // Sends mutation that adds a project by its URL
   const addProject = async () => {
     try {
-      const res = await addProjectByUrlMutation({ url: projectUrl, category })
+      const res = await addProjectByUrlMutation({ url: projectUrl, category: categories[0] })
       const responseCode = parseInt(res?.data?.addProjectByUrl?.code as string, 10)
 
       // If the mutation was successful, show success message
@@ -48,7 +55,7 @@ const AddProject = () => {
     setSuccess(null)
 
     // If the project URL or category is empty, don't submit
-    if (projectUrl.length === 0 || category.length === 0) return
+    if (projectUrl.length === 0 || categories.length === 0) return
 
     // Add project
     void addProject()
@@ -57,6 +64,12 @@ const AddProject = () => {
   const toggleModal = () => {
     setOpen(!open)
   }
+
+  // Get unique array of categories
+  const existingCategories = bookmarks?.bookmarkCollection?.edges
+    ?.map(({ node }) => node.category)
+    .filter((value, index, array) => array.indexOf(value) === index)
+    .filter(value => value !== undefined && value !== null) as string[]
 
   return (
     <div>
@@ -78,14 +91,17 @@ const AddProject = () => {
             />
           </div>
 
-          <div className='flex w-full flex-col gap-1.5'>
-            <p className='text-sm font-medium text-white/50'>Category</p>
-            <Input
-              placeholder='Artificial Intelligence'
-              value={category}
-              onChange={e => setCategory(e.target.value)}
-            />
-          </div>
+          {existingCategories && (
+            <div className='flex w-full flex-col gap-1.5'>
+              <p className='text-sm font-medium text-white/50'>Category</p>
+              <Select
+                values={existingCategories}
+                selected={categories}
+                setSelected={setCategories}
+                placeholder='Search or select categories'
+              />
+            </div>
+          )}
 
           {/* Success message */}
           {success && <p className='text-sm text-green-500'>{success}</p>}

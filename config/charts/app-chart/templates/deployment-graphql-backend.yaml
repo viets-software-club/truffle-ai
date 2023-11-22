@@ -27,7 +27,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: graphql-gateway
-          image: "{{ .Values.image.repositoryUrl }}/graphql-gateway:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repositoryUrl }}/graphql-gateway:{{ default .Chart.AppVersion .Values.image.tag }}"
           ports:
             - containerPort: 3001
           envFrom:
@@ -44,7 +44,7 @@ spec:
             - secretRef:
                 name: supabase-secret
         - name: graphql-server
-          image: "{{ .Values.image.repositoryUrl }}/graphql-server:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repositoryUrl }}/graphql-server:{{ default .Chart.AppVersion .Values.image.tag }}"
           ports:
             - containerPort: 3002
           envFrom:

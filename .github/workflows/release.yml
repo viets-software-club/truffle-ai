@@ -58,7 +58,7 @@ jobs:
       - name: Helm Package App
         run: helm package config/charts/app-chart
       - name: Login Helm
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login --username ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
       - name: Push Helm
         run: helm push app-chart-0.1.0.tgz oci://ghcr.io/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}/stable/app-chart
   release:

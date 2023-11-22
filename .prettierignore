@@ -6,3 +6,4 @@ dist
 .meshrc.yaml
 .next
 config/charts/**
+package.json

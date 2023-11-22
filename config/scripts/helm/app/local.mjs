@@ -7,7 +7,7 @@ console.log()
 const changeCause = (await $`git log --oneline --format="%h %s" -n 1`).stdout.substring(0, 63)
 const repoName = process.env.REPO_NAME
 const orgName = process.env.ORG_NAME
-const env = process.env.ENVIRONMENT
+const env = process.env.ENVIRONMENT || 'commit'
 const promptTag = await question('Include git commit tag?\n')
 const hasTag = promptTag === 'y' || promptTag === ''
 const promptDryRun = await question('Dry Run?\n')
@@ -28,8 +28,8 @@ const args = [
   `image.repositoryUrl=ghcr.io/${orgName}/${repoName}/dev`,
   '--set',
   `image.tag=${sha}`,
-  `--set`,
-  `changeCause=${changeCause}`,
+  `--set-json`,
+  `changeCause=${JSON.stringify(changeCause)}`,
   '--set-json',
   `hosts=${JSON.stringify(hosts)}`,
   '--values',

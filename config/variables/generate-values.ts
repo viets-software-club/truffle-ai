@@ -19,7 +19,9 @@ const createResource = (
   resourceName: string,
   data: { [key: string]: string } | null
 ): string => {
-  return `  ${resourceName}-${kind === 'Secret' ? 'secret' : 'config-map'}:
+  return `  ${resourceName}-${kind === 'Secret' ? 'secret' : 'config-map'}: ${
+    data == null ? '{}' : ''
+  }
 ${
   data != null ? addSpacesToStringfiedData(stringify(kind === 'Secret' ? encode(data) : data)) : ''
 }`

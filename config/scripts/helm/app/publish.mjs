@@ -5,7 +5,7 @@ $.verbose = true
 const changeCause = 'Production'
 const repoName = process.env.REPO_NAME
 const orgName = process.env.ORG_NAME
-const env = process.env.ENVIRONMENT
+const env = 'production'
 const promptDryRun = await question('Dry Run?\n')
 const isDryRun = promptDryRun === 'y' || promptDryRun === ''
 const namespace = env
@@ -19,8 +19,8 @@ const args = [
   namespace,
   '--set',
   `image.repositoryUrl=ghcr.io/${orgName}/${repoName}/stable`,
-  `--set`,
-  `changeCause=${changeCause}`,
+  `--set-json`,
+  `changeCause=${JSON.stringify(changeCause)}`,
   '--set-json',
   `hosts=${JSON.stringify(hosts)}`,
   '--values',

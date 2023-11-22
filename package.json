@@ -6,7 +6,7 @@
     "env": "./config/variables/source-env-variables.sh"
   },
   "scripts": {
-    "prepare": "if [ \"$NODE_ENV\" != \"production\" ] && [ \"$NODE_ENV\" != \"test\" ] && [ \"$NODE_ENV\" != \"build\" ]; then husky install; fi;",
+    "husky:install": "husky install;",
     "test": "npm run prettier:check && npm run lint",
     "alias:install": "cat ./config/alias/aliases.txt >> ~/.bashrc",
     "helm": "./config/scripts/run-scripts/list.mjs helm",
@@ -22,7 +22,7 @@
         "helm:ingress:ip": "$npm_package_config_env ./config/scripts/helm/ingress/ip.mjs",
       "helm:list": "./config/scripts/helm/list.mjs",
     "dev": "dev() { for i in \"$@\"; do $npm_package_config_env npm run dev -w \"$i\"; done; }; dev",
-      "dev:app": "$npm_package_config_env concurrently -n gateway,server,ui -c 'yellow,magenta,cyan' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server' 'npm run dev -w ui'",
+      "dev:app": "$npm_package_config_env \"concurrently -n gateway,server,ui -c 'yellow,magenta,cyan' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server' 'npm run dev -w ui'\"",
       "dev:jobs": "$npm_package_config_env concurrently -n repo-job -c 'green' 'npm run dev -w repo-job'",
       "dev:graphql-backend": "$npm_package_config_env concurrently -n gateway,server -c 'yellow,magenta' 'npm run dev -w graphql-gateway' 'npm run dev -w graphql-server'",
     "build": "build() { for i in \"$@\"; do $npm_package_config_env npm run build -w \"$i\"; done; }; build",

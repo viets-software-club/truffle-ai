@@ -63,7 +63,7 @@ const Details = ({ id }: DetailsProps) => {
   // Whether project is bookmarked or not
   const isBookmarked = bookmarks?.length > 0 && bookmarks[0].project?.id === id
   // Current category of if project is bookmarked
-  const category = isBookmarked ? (bookmarks[0].category as string) : ''
+  const category = isBookmarked ? (bookmarks[0].category as string) : undefined
 
   // Set IDs of previous and next project for navigation buttons
   const updateProjectIndices = (currentId: string, projectList: Project[]) => {

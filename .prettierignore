@@ -5,3 +5,4 @@ dist
 .mesh
 .meshrc.yaml
 .next
+config/charts/**

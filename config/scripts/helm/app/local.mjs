@@ -35,8 +35,10 @@ const args = [
   '--values',
   `outputs/_configMaps/values.${env}.yml`,
   '--values',
-  `outputs/_secrets/values.${env}.yml`
+  `outputs/_secrets/values.${env}.yml`,
+  '--cleanup-on-fail'
 ]
 if (isDryRun) args.push('--dry-run')
-await spinner('working...', () => $`helm upgrade ${args} ${chartName} ./config/charts/app-chart`)
+const upgradeCommand = $`helm upgrade ${args} ${chartName} ./config/charts/app-chart`
+await spinner('working...', () => upgradeCommand)
 console.log(hosts)

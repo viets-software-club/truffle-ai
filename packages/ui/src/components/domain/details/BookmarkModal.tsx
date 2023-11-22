@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from 'react'
+import { FC, FormEvent, useEffect, useState } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 import clsx from 'clsx'
 import Button from '@/components/shared/Button'
@@ -17,7 +17,7 @@ type BookmarkModalProps = {
   open: boolean
   close: () => void
   projectID: string
-  category: string
+  category?: string
   isBookmarked: boolean
   refetch: () => void
 }
@@ -31,7 +31,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   isBookmarked,
   refetch
 }) => {
-  const [newCategories, setNewCategories] = useState<string[]>([currentCategory])
+  const [newCategories, setNewCategories] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
 
   const user = useUser()
@@ -47,8 +47,8 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   // Sends mutation that adds a project to a category or edits the category of a bookmark
   const addOrEditBookmark = async () => {
     try {
-      // Don't do anything if the category is the same or empty
-      if (newCategories[0] === currentCategory || newCategories.length === 0) return
+      // Don't do anything if there is no category selected
+      if (newCategories.length === 0) return
 
       if (isBookmarked) {
         const res = await editBookmarkCategoryMutation({ projectID, newCategory: newCategories[0] })
@@ -114,6 +114,10 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
     // Delete bookmark
     void deleteBookmark()
   }
+
+  useEffect(() => {
+    if (currentCategory) setNewCategories([currentCategory])
+  }, [currentCategory])
 
   // Get unique array of categories
   const categories = bookmarks?.bookmarkCollection?.edges

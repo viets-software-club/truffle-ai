@@ -5,3 +5,6 @@ dist
 .mesh
 .meshrc.yaml
 .next
+config/charts/**
+package.json
+packages/ui/public/

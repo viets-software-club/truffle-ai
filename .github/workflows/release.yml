@@ -43,7 +43,7 @@ jobs:
     secrets: inherit
   helm:
     name: Helm
-    needs: variables
+    needs: [variables, release_tag]
     permissions:
       contents: read
       packages: write
@@ -56,11 +56,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Helm Package App
-        run: helm package config/charts/app-chart
+        run: helm package config/charts/app-chart --version ${{needs.release_tag.outputs.RELEASE_TAG}} --app-version ${{needs.release_tag.outputs.RELEASE_TAG}}
       - name: Login Helm
         run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
       - name: Push Helm
-        run: helm push app-chart-0.0.1.tgz oci://ghcr.io/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}/stable/app-chart
+        run: helm push app-chart-${{needs.release_tag.outputs.RELEASE_TAG}}.tgz oci://ghcr.io/${{vars.ORG_NAME}}/${{vars.REPO_NAME}}/stable
   release:
     name: Release
     runs-on: ubuntu-latest

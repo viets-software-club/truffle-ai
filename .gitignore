@@ -60,4 +60,3 @@ terraform.rc
 # Other
 .DS_Store
 /outputs
-aliases.txt

@@ -6,27 +6,27 @@ on:
         required: true
         type: string
     outputs:
-      SUPABASE_URL: 
+      SUPABASE_URL:
         value: ${{ jobs.variables.outputs.SUPABASE_URL }}
-      GRAPHQL_SERVER_URL:  
+      GRAPHQL_SERVER_URL:
         value: ${{ jobs.variables.outputs.GRAPHQL_SERVER_URL }}
-      SUPABASE_GRAPHQL_URL:  
+      SUPABASE_GRAPHQL_URL:
         value: ${{ jobs.variables.outputs.SUPABASE_GRAPHQL_URL }}
-      GRAPHQL_GATEWAY_URL:  
+      GRAPHQL_GATEWAY_URL:
         value: ${{ jobs.variables.outputs.GRAPHQL_GATEWAY_URL }}
       GIT_COMMIT_TAG_N7:
         value: ${{ jobs.variables.outputs.GIT_COMMIT_TAG_N7 }}
       GIT_COMMIT_TAG_N14:
         value: ${{ jobs.variables.outputs.GIT_COMMIT_TAG_N14 }}
-      GIT_COMMIT_TAG:  
+      GIT_COMMIT_TAG:
         value: ${{ jobs.variables.outputs.GIT_COMMIT_TAG }}
-      GIT_COMMIT_MESSAGE:  
+      GIT_COMMIT_MESSAGE:
         value: ${{ jobs.variables.outputs.GIT_COMMIT_MESSAGE }}
-      GRAPHQL_URL:  
+      GRAPHQL_URL:
         value: ${{ jobs.variables.outputs.GRAPHQL_URL }}
-      ENVIRONMENT:  
+      ENVIRONMENT:
         value: ${{ jobs.variables.outputs.ENVIRONMENT }}
-      DATETIME:  
+      DATETIME:
         value: ${{ jobs.variables.outputs.DATETIME }}
 jobs:
   variables:

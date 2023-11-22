@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    tags: [ 'v*.*.*' ]
+    tags: ['v*.*.*']
 jobs:
   variables:
     name: Variables
@@ -67,25 +67,25 @@ jobs:
     runs-on: ubuntu-latest
     needs: image
     steps:
-    - name: Get release tag
-      run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-    - name: Create
-      uses: "actions/github-script@v7"
-      with:
-        script: |
-          try {
-            const response = await github.rest.repos.createRelease({
-              draft: false,
-              generate_release_notes: true,
-              body: "## Packages\n[Packages](https://github.com/orgs/${{vars.ORG_NAME}}/packages) see all stable releases",
-              name: process.env.RELEASE_TAG,
-              owner: context.repo.owner,
-              prerelease: true,
-              repo: context.repo.repo,
-              tag_name: process.env.RELEASE_TAG,
-            });
-            core.exportVariable('RELEASE_ID', response.data.id);
-            core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
-          } catch (error) {
-            core.setFailed(error.message);
-          }
+      - name: Get release tag
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Create
+        uses: 'actions/github-script@v7'
+        with:
+          script: |
+            try {
+              const response = await github.rest.repos.createRelease({
+                draft: false,
+                generate_release_notes: true,
+                body: "## Packages\n[Packages](https://github.com/orgs/${{vars.ORG_NAME}}/packages) see all stable releases",
+                name: process.env.RELEASE_TAG,
+                owner: context.repo.owner,
+                prerelease: true,
+                repo: context.repo.repo,
+                tag_name: process.env.RELEASE_TAG,
+              });
+              core.exportVariable('RELEASE_ID', response.data.id);
+              core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
+            } catch (error) {
+              core.setFailed(error.message);
+            }

@@ -60,3 +60,8 @@ terraform.rc
 # Other
 .DS_Store
 /outputs
+
+# Service worker
+**/public/fallback-*.js
+**/public/workbox-*.js
+**/public/sw.js

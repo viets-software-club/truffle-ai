@@ -1,5 +1,5 @@
 alias nr='npm run'
 alias k='kubectl'
-alias envp='ENVIRONMENT=production'
-alias envs='ENVIRONMENT=staging'
-alias envc='ENVIRONMENT=commit'
+alias envp='export ENVIRONMENT=production'
+alias envs='export ENVIRONMENT=staging'
+alias envc='export ENVIRONMENT=commit'

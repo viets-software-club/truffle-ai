@@ -76,8 +76,8 @@ jobs:
           try {
             const response = await github.rest.repos.createRelease({
               draft: false,
-              body: "## Packages\n[Packages](https://github.com/orgs/${{vars.ORG_NAME}}/packages) see all stable releases",
               generate_release_notes: true,
+              body: "## Packages\n[Packages](https://github.com/orgs/${{vars.ORG_NAME}}/packages) see all stable releases",
               name: process.env.RELEASE_TAG,
               owner: context.repo.owner,
               prerelease: true,

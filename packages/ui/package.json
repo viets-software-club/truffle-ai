@@ -10,6 +10,10 @@
     "react:update-react-imports": "npx react-codemod update-react-imports"
   },
   "dependencies": {
+    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/typescript": "^3.0.4",
+    "@graphql-codegen/typescript-operations": "^3.0.4",
+    "@graphql-codegen/typescript-urql": "^3.7.3",
     "@headlessui/react": "^1.7.14",
     "@primer/octicons-react": "^19.1.0",
     "@supabase/auth-helpers-nextjs": "^0.7.2",
@@ -19,10 +23,12 @@
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
+    "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "next": "^13.5.4",
+    "next-pwa": "^5.6.0",
     "next-urql": "^5.0.1",
     "postcss": "^8.4.31",
     "react": "18.2.0",
@@ -33,13 +39,10 @@
     "recharts": "^2.6.2",
     "sass": "^1.62.1",
     "sharp": "^0.32.6",
+    "tailwind-merge": "^1.14.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.2",
-    "urql": "^4.0.4",
-    "@graphql-codegen/cli": "^3.3.1",
-    "@graphql-codegen/typescript": "^3.0.4",
-    "@graphql-codegen/typescript-operations": "^3.0.4",
-    "@graphql-codegen/typescript-urql": "^3.7.3"
+    "urql": "^4.0.4"
   },
   "devDependencies": {
     "@truffle/eslint-config-base": "0.0.1",
@@ -52,7 +55,6 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tailwindcss": "^3.11.0",
-    "prettier-plugin-tailwindcss": "^0.2.8",
     "typescript": "^5.0.4"
   },
   "types": "./index.d.ts"

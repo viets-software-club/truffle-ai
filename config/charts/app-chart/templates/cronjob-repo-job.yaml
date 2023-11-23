@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: what-repo-cronjob
+  annotations:
+    "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
+  labels:
+    job: repo-job
+spec:
+  concurrencyPolicy: Replace
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  schedule: "10 * * * *"
+  jobTemplate:
+    metadata:
+      annotations:
+        "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
+      labels:
+        job: repo-job
+    spec:
+      template:
+        metadata:
+          annotations:
+            "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
+          labels:
+            job: repo-job
+        spec:
+          containers:
+          - name: repo-cronjob-container
+            image: "{{.Values.image.repositoryUrl}}/repo-job:{{ default .Chart.AppVersion .Values.image.tag }}"
+            envFrom:
+            - configMapRef:
+                name: nodejs-config-map
+            - configMapRef:
+                name: supabase-config-map
+            - configMapRef:
+                name: repo-job-config-map
+            - configMapRef:
+                name: graphql-server-config-map
+          restartPolicy: 'OnFailure'
+
+
+
+  

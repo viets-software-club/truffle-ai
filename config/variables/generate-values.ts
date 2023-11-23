@@ -1,3 +1,4 @@
+// Generates value files for deployment
 import { Base64, camelCase, parseAllDocuments, path, stringify, walk } from './deps.ts'
 const namespaces = ['production', 'staging', 'commit']
 
@@ -18,7 +19,9 @@ const createResource = (
   resourceName: string,
   data: { [key: string]: string } | null
 ): string => {
-  return `  ${resourceName}-${kind === 'Secret' ? 'secret' : 'config-map'}:
+  return `  ${resourceName}-${kind === 'Secret' ? 'secret' : 'config-map'}: ${
+    data == null ? '{}' : ''
+  }
 ${
   data != null ? addSpacesToStringfiedData(stringify(kind === 'Secret' ? encode(data) : data)) : ''
 }`
@@ -110,8 +113,8 @@ const generateNamespacedResource = async (kind: string, inputDir: string, destDi
   await make(kind, inputDir, destDir)
 }
 export const mainModuleDir = path.dirname(path.fromFileUrl(Deno.mainModule))
-const outConfigMap = path.resolve(path.join(mainModuleDir, '../../_configMaps'))
-const outSecret = path.resolve(path.join(mainModuleDir, '../../_secrets'))
+const outConfigMap = path.resolve(path.join(mainModuleDir, '../../outputs/_configMaps'))
+const outSecret = path.resolve(path.join(mainModuleDir, '../../outputs/_secrets'))
 console.info(`Writing ConfigMaps to ${outConfigMap}`)
 await generateNamespacedResource('ConfigMap', './config/variables/configMaps', outConfigMap)
 console.info('-'.repeat(20))

@@ -31,7 +31,16 @@ module.exports = {
     ],
     'import/extensions': ['error', { tsx: 'never' }],
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
-    'react-hooks/exhaustive-deps': 'off'
+    'react-hooks/exhaustive-deps': 'off',
+    'react/require-default-props': 'off',
+    'max-lines-per-function': [
+      'error',
+      {
+        max: 150,
+        skipBlankLines: true,
+        skipComments: true
+      }
+    ]
   },
   ignorePatterns: [
     ...common.ignorePatterns,

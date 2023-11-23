@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import Page from '@/components/side-effects/Page'
-import withAuth from '@/components/side-effects/withAuth'
-import ProjectsTable from '@/components/side-effects/ProjectsTable'
-import defaultFilters from '@/components/page/overview/defaultFilters'
-import { defaultSort, paginationParameters } from '@/components/page/overview/types'
+import ProjectsTable from '@/components/domain/projects/ProjectsTable'
+import { PercentileStats } from '@/components/domain/projects/columns'
+import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
+import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
+import Page from '@/components/shared/Page'
+import withAuth from '@/components/shared/hoc/withAuth'
 import {
   PageInfo,
   Project,
@@ -13,21 +14,21 @@ import {
 } from '@/graphql/generated/gql'
 import getPercentile from '@/util/getPercentile'
 
+const PAGE_SIZE = 30
+
 const TrendingProjects = () => {
-  const PAGE_SIZE = 30
   const [data, setData] = useState<Project[]>([])
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
-  const [pagination, setPagination] = useState<paginationParameters>({
+  const [pagination, setPagination] = useState<PaginationParameters>({
     first: PAGE_SIZE,
     last: null,
     after: null,
     before: null
   })
   const [totalCount, setTotalCount] = useState(0)
-
-  const [percentileStats, setPercentileStats] = useState({
+  const [percentileStats, setPercentileStats] = useState<PercentileStats>({
     topTenPercent: {},
     topTwentyPercent: {},
     bottomTenPercent: {},
@@ -53,7 +54,7 @@ const TrendingProjects = () => {
     if (urqlData) {
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
-      const projectData = urqlData?.projectCollection?.edges?.map((edge) => edge.node) as Project[]
+      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),

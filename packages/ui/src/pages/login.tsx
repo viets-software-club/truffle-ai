@@ -1,11 +1,12 @@
 import { FormEvent, useState } from 'react'
-import { useRouter } from 'next/router'
 import { AiOutlineGoogle } from 'react-icons/ai'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useUser, useSessionContext, useSupabaseClient } from '@supabase/auth-helpers-react'
-import LoginForm from '@/components/page/login/LoginForm'
-import Loading from '@/components/pure/Loading'
-import Button from '@/components/pure/Button'
-import Logo from '@/components/pure/Icons/Logo'
+import Logo from '@/assets/logo.svg'
+import LoginForm from '@/components/domain/login/LoginForm'
+import Button from '@/components/shared/Button'
+import Loading from '@/components/shared/Loading'
 import { signInWithGoogle, signInWithPassword } from '@/util/login'
 
 /**
@@ -66,36 +67,40 @@ const Login = () => {
   if (sessionLoading) return <Loading fullscreen />
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-radial-gradient">
-      <div className="flex w-[300px] flex-col items-center justify-center gap-6">
-        <Logo className="h-10 w-10" />
-        <h1 className="text-xl font-medium text-gray-100">Log in to Truffle</h1>
+    <main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-tr from-gray-900 to-indigo-500/30'>
+      <div className='flex w-full max-w-sm flex-col items-center justify-center gap-8 border-white/5 px-6 py-10 md:w-[400px] md:max-w-none md:rounded-2xl md:border md:bg-white/5 md:px-8 md:backdrop-blur-xl'>
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+        <Image src={Logo} alt='Logo' className='h-10 w-10' />
+
+        <h1 className='text-2xl font-bold text-white/90'>Welcome to Truffle</h1>
 
         <Button
-          text="Continue with Google"
-          Icon={AiOutlineGoogle}
           onClick={handleGoogleLogin}
-          order="ltr"
-          iconColor="text-white"
-          textColor="text-white"
-          variant="highlighted"
-          className="w-full justify-center py-3"
-        />
+          variant='highlighted'
+          size='xl'
+          className='w-full justify-center'>
+          <AiOutlineGoogle />
+          Continue with Google
+        </Button>
 
         {error === 'invalid_email' && (
-          <div className="text-center text-sm text-red-500">
+          <div className='text-center text-sm text-red-400'>
             Invalid google email or password. Please note that only invited users or La Famiglia
             employees can sign in.
           </div>
         )}
 
-        <hr className="w-full border-b-[.5px] border-gray-100/10" />
+        <div className='flex w-full items-center gap-3'>
+          <div className='h-0.5 w-full bg-white/5' />
+          <p className='shrink-0 text-center text-sm text-white/50'>or log in with email</p>
+          <div className='h-0.5 w-full bg-white/5' />
+        </div>
 
         <LoginForm handleSubmit={handleSubmit} loading={loading} error={isError} />
       </div>
 
-      <div className="absolute bottom-4 self-center text-12 text-gray-300">
-        © 2023 La Famiglia x Rostlab
+      <div className='absolute bottom-4 self-center text-sm text-white/60'>
+        © {new Date().getFullYear()} La Famiglia
       </div>
     </main>
   )

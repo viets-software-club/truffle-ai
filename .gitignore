@@ -45,7 +45,7 @@ secrets.*
 !secret.tf
 secrets
 _secrets
-!config/app-chart/templates/secrets.yaml
+!config/charts/app-chart/templates/secrets.yaml
 
 # Terraform
 **/.terraform/*
@@ -59,3 +59,9 @@ terraform.rc
 
 # Other
 .DS_Store
+/outputs
+
+# Service worker
+**/public/fallback-*.js
+**/public/workbox-*.js
+**/public/sw.js

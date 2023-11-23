@@ -1,6 +1,7 @@
 serve:
   endpoint: /graphql
   playground: true
+  browser: false
   port: 3001
 sources:
   - name: Supabase

@@ -30,9 +30,6 @@ const args = [
   '--cleanup-on-fail'
 ]
 if (isDryRun) args.push('--dry-run')
-await spinner(
-  'working...',
-  () =>
-    $`helm upgrade ${args} ${chartName} oci://ghcr.io/${$.env.ORG_NAME}/${$.env.REPO_NAME}/stable/app-chart`
-)
+const upgradeCommand = $`helm upgrade ${args} ${chartName} oci://ghcr.io/${$.env.ORG_NAME}/${$.env.REPO_NAME}/stable/app-chart`
+await spinner('working...', () => upgradeCommand)
 console.log(hosts)

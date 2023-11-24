@@ -6,7 +6,6 @@ import RightSidebar from '@/components/domain/details/RightSidebar'
 import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
 import { defaultSort } from '@/components/domain/projects/types'
 import Error from '@/components/shared/Error'
-import Loading from '@/components/shared/Loading'
 import ChartWrapper, { DataPoint } from '@/components/shared/chart/ChartWrapper'
 import {
   Bookmark,
@@ -54,7 +53,7 @@ const Details = ({ id }: DetailsProps) => {
   })
 
   // First entry of returned collection contains project details
-  const project = data?.projectCollection?.edges?.map(edge => edge.node)[0] as Project
+  const project = data?.projectCollection?.edges?.map(edge => edge.node)[0] as Project | undefined
   // List of all project IDs for navigation
   const projects = projectIds?.projectCollection?.edges?.map(edge => edge.node) as Project[]
   // Array of length 1 with bookmark details if bookmarked, otherwise empty array
@@ -93,11 +92,10 @@ const Details = ({ id }: DetailsProps) => {
     if (projects) updateProjectIndices(id, projects)
   }, [projects, id])
 
-  // Display loading/ error messages conditionally
-  if (fetching) return <Loading fullscreen />
-  if (error || !project) return <Error />
+  // Display error message conditionally
+  if (error || (!fetching && !project)) return <Error />
 
-  const owner = project.organization || project.associatedPerson
+  const owner = project?.organization || project?.associatedPerson
 
   return (
     <>
@@ -106,36 +104,39 @@ const Details = ({ id }: DetailsProps) => {
         nextProjectId={nextProjectId}
         previousProjectId={previousProjectId}
         projectsLength={projects?.length}
+        loading={fetching}
       />
 
       <div className='flex grow flex-col lg:flex-row'>
         <div className='border-b border-white/5 md:border-none lg:w-[calc(100%-250px)]'>
           <ProjectInformation
-            id={project.id as string}
-            githubUrl={project.githubUrl as string}
+            id={project?.id as string}
+            githubUrl={project?.githubUrl as string}
             image={owner?.avatarUrl as string}
-            name={`${owner?.login as string} / ${project.name as string}`}
-            url={project.githubUrl as string}
-            explanation={project.eli5 || 'No explanation'}
-            about={project.about || 'No description'}
-            categories={project.categories as string[]}
+            name={`${owner?.login as string} / ${project?.name as string}`}
+            url={project?.githubUrl as string}
+            explanation={project?.eli5 || 'No explanation'}
+            about={project?.about || 'No description'}
+            categories={project?.categories as string[]}
             isBookmarked={isBookmarked}
             category={category}
+            loading={fetching}
             refetch={refetch}
           />
 
           <div className='md:hidden'>
-            <GithubStats project={project} />
+            <GithubStats project={project} loading={fetching} />
           </div>
 
           <ChartWrapper
+            loading={fetching}
             datasets={[
               {
-                id: project.id as string,
-                name: project.name as string,
+                id: project?.id as string,
+                name: project?.name as string,
                 data: (selectedMetric === 'Stars'
-                  ? project.starHistory
-                  : project.forkHistory) as DataPoint[]
+                  ? project?.starHistory
+                  : project?.forkHistory) as DataPoint[]
               }
             ]}
             selectedMetric={selectedMetric}
@@ -143,13 +144,14 @@ const Details = ({ id }: DetailsProps) => {
           />
 
           <CommunitySentiment
-            tweets={project.relatedTwitterPosts ?? undefined}
-            hackernewsSentiment={project.hackernewsSentiment ?? undefined}
-            hackernewsStories={project.hackernewsStories as string[]}
+            tweets={project?.relatedTwitterPosts ?? undefined}
+            hackernewsSentiment={project?.hackernewsSentiment ?? undefined}
+            hackernewsStories={project?.hackernewsStories as string[]}
+            loading={fetching}
           />
         </div>
 
-        <RightSidebar project={project} />
+        <RightSidebar project={project} loading={fetching} />
       </div>
     </>
   )

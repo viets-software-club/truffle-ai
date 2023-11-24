@@ -4,6 +4,7 @@ import { LuLogOut } from 'react-icons/lu'
 import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/domain/sidebar'
+import Skeleton from '@/components/shared/Skeleton'
 import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 import Item from './Item'
 import MobileMenu from './MobileMenu'
@@ -24,7 +25,7 @@ const NavSidebar = () => {
   const user = useUser()
 
   // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData }] = useFilteredBookmarksQuery({
+  const [{ data: urqlData, fetching }] = useFilteredBookmarksQuery({
     variables: { userId: user?.id as string }
   })
 
@@ -45,39 +46,48 @@ const NavSidebar = () => {
         </Section>
 
         <Section title='Categories'>
-          {bookmarks
-            // Get a list of unique categories to display as folders
-            .map(({ category }) => category)
-            .filter((value, index, array) => array.indexOf(value) === index)
-            .map(category => (
-              <div key={category}>
-                <Item
-                  key={category}
-                  Icon={FiFolder}
-                  text={category as string}
-                  path={`/compare/${category as string}`}
-                />
-                {/* Display all projects in a category under their corresponding folder */}
-                {bookmarks
-                  .filter(bookmark => bookmark.category === category)
-                  .map(({ project }) => {
-                    if (!project) return null
-                    const { name, organization, associatedPerson } = project
+          {fetching ? (
+            <div className='mt-2 flex flex-col gap-3'>
+              <Skeleton className='ml-5 h-6 !w-40' />
+              <Skeleton className='ml-5 h-6 !w-40' />
+              <Skeleton className='ml-5 h-6 !w-40' />
+              <Skeleton className='ml-5 h-6 !w-40' />
+            </div>
+          ) : (
+            bookmarks
+              // Get a list of unique categories to display as folders
+              .map(({ category }) => category)
+              .filter((value, index, array) => array.indexOf(value) === index)
+              .map(category => (
+                <div key={category}>
+                  <Item
+                    key={category}
+                    Icon={FiFolder}
+                    text={category as string}
+                    path={`/compare/${category as string}`}
+                  />
+                  {/* Display all projects in a category under their corresponding folder */}
+                  {bookmarks
+                    .filter(bookmark => bookmark.category === category)
+                    .map(({ project }) => {
+                      if (!project) return null
+                      const { name, organization, associatedPerson } = project
 
-                    return (
-                      <Item
-                        key={project.id as string}
-                        imageSrc={
-                          (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
-                        }
-                        text={name as string}
-                        path={`/details/${project.id as string}`}
-                        secondaryItem
-                      />
-                    )
-                  })}
-              </div>
-            ))}
+                      return (
+                        <Item
+                          key={project.id as string}
+                          imageSrc={
+                            (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
+                          }
+                          text={name as string}
+                          path={`/details/${project.id as string}`}
+                          secondaryItem
+                        />
+                      )
+                    })}
+                </div>
+              ))
+          )}
         </Section>
       </Sidebar>
 

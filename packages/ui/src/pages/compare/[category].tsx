@@ -34,7 +34,8 @@ const ComparePage: NextPage = () => {
 
   const user = useUser()
 
-  const [data, setData] = useState<Project[]>([])
+  const [data, setData] = useState<Project[]>()
+  const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
@@ -57,29 +58,28 @@ const ComparePage: NextPage = () => {
   }
 
   // Fetches all bookmarked project ids of a user in the given category
-  const [{ data: bookmarkData, fetching: fetchingBookmarks, error: errorBookmarks }] =
-    useBookmarkIdsQuery({ variables: { userId: user?.id as string, category } })
+  const [{ data: bookmarkData, error: errorBookmarks }] = useBookmarkIdsQuery({
+    variables: { userId: user?.id as string, category }
+  })
 
   // Get array with all bookmarked project ids
   const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
     edge => edge.node.project?.id as string
   ) as string[]
 
-  const [{ data: urqlData, fetching: fetchingProjects, error: errorProjects }] =
-    useTrendingProjectsQuery({
-      variables: {
-        orderBy: sorting || defaultSort,
-        filter: {
-          ...filters,
-          id: {
-            in: bookmarkIds
-          }
-        },
-        ...pagination
-      }
-    })
+  const [{ data: urqlData, error: errorProjects }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: sorting || defaultSort,
+      filter: {
+        ...filters,
+        id: {
+          in: bookmarkIds
+        }
+      },
+      ...pagination
+    }
+  })
 
-  const fetching = fetchingBookmarks || fetchingProjects
   const error = errorBookmarks || errorProjects
 
   // Only update table data when urql data changes
@@ -88,7 +88,7 @@ const ComparePage: NextPage = () => {
       setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
       const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
-
+      setLoading(false)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),
         bottomTenPercent: getPercentile(projectData, 0.1, false),
@@ -104,16 +104,16 @@ const ComparePage: NextPage = () => {
         data={data}
         filters={filters}
         sorting={sorting}
-        fetching={fetching}
+        fetching={loading}
         error={error}
         setSorting={setSorting}
         updateFilters={updateFilters}
-        totalCount={data.length} // @TODO: Fix totalCount
+        totalCount={data?.length ?? 0} // @TODO: Fix totalCount
         pageInfo={pageInfo as PageInfo}
         setPagination={setPagination}
         pageSize={PAGE_SIZE}
         percentileStats={percentileStats}
-        beforeTable={<CompareContent data={data} category={category} />}
+        beforeTable={<CompareContent data={data} category={category} loading={loading} />}
       />
     </Page>
   )

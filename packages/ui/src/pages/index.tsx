@@ -17,7 +17,8 @@ import getPercentile from '@/util/getPercentile'
 const PAGE_SIZE = 30
 
 const TrendingProjects = () => {
-  const [data, setData] = useState<Project[]>([])
+  const [data, setData] = useState<Project[]>()
+  const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
@@ -39,7 +40,7 @@ const TrendingProjects = () => {
     setFilters(filter)
   }
   // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
+  const [{ data: urqlData, error }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
       filter: {
@@ -56,6 +57,7 @@ const TrendingProjects = () => {
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
       const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
+      setLoading(false)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),
         bottomTenPercent: getPercentile(projectData, 0.1, false),
@@ -71,7 +73,7 @@ const TrendingProjects = () => {
         data={data}
         filters={filters}
         sorting={sorting}
-        fetching={fetching}
+        fetching={loading}
         error={error}
         setSorting={setSorting}
         updateFilters={updateFilters}

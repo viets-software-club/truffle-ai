@@ -2,20 +2,9 @@
 
 Truffle AI is a platform helping VC analysts find early stage tech startups. It automatically collects traces founders leave on the internet, visualizes them in a compelling way and makes it easy for investors to keep track of and potentially reach out to startups they discover.
 
-## Getting Started
-
-You can run the application locally using NodeJS or Docker. We recommend using [NodeJS](https://nodejs.org/) for development and [Docker](https://www.docker.com/products/docker-desktop/) with [Kubernetes](https://kubernetes.io/) for production.
-
-Make sure to set up the correct environment variables before starting to develop and build:
-
-- Create `.env` in the root directory (refer to `.env.example` for a list of all required variables)
-- Run `npm ci` to install all necessary packages and create a symlink for .env in the ui package
-
-Install the [recommended VS Code extensions](./.vscode/extensions.json) for the best development experience.
+This monorepo contains four microservices which make this possible, as well as the necessary configuration files to deploy them to a Kubernetes cluster.
 
 ## Packages
-
-The project consists of four microservices:
 
 ### `graphql-gateway`
 
@@ -35,59 +24,75 @@ Consists of a simple cron job that is run in a specified time interval and notif
 
 Contains the frontend of Truffle AI, a [Next.js](https://nextjs.org/) application using [TailwindCSS](https://tailwindcss.com/) for styling and [urql](https://github.com/urql-graphql/urql) as GraphQL client.
 
-## Important commands
+## Development
 
-### General
+The following section describes how to get started, run and build services and features the most important commands needed. Refer to [package.json](./package.json) for a full list of available commands.
 
-Note: services are served continuously and jobs are run once.
+### Setting up environment
 
-```zsh
-npm ci # installs all dependencies from package-lock.json
-npm run prepare # installs pre-commit hook (running lint-staged on staged files) and creates symlink for .env in ui package
+- Make sure you have installed a recent version of [Node.js](https://nodejs.org/)
+- Set up environment variables by creating `.env.common` as well as `.env.<environment>` files for commit, staging and production in the root directory (refer to `.env.example` for a list of all required variables)
+- Run `npm i` to install dependencies
+- (Install [recommended VS Code extensions](./.vscode/extensions.json) for the best development experience)
 
-npm run dev <package> # starts <package> in dev mode
-npm run dev:jobs # starts all jobs in dev mode
-npm run dev:services # starts all services in dev mode
-npm run dev:backend # starts graphql-gateway, graphql-server and repo-job in dev mode
+### Running services locally
 
-npm run build <package> # builds <package>
-npm run build:jobs # builds all jobs
-npm run build:services # builds all services
-npm run build:backend # builds graphql-gateway, graphql-server and repo-job
-npm run serve <package> # serves <package> if previously built
+- To run GraphQL server, gateway and UI concurrently in development mode, use `npm run dev:app`
+- Alternatively, run any individual service using `npm run dev <service>`
 
-npm run prettier:check # checks all packages for formatting issues with Prettier
-npm run prettier:fix # automatically fixes formatting issues in all packages with Pettier
-npm run lint # lints all packages with ESLint
-npm run test # runs prettier:check and lint
-```
+### During development
 
-### Package specific
+- Whenever the Supabase schema changes, use `npm run update-types` to update the types in GraphQL server
+- After you update queries or mutations in the UI package, use `npm run codegen` to regenerate types and custom hooks
+- You can use [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to run specialized commands of the individual packages from the root directory
 
-You can use [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) to run specialized commands of the individual packages from the root directory.
+### Building services
 
-```zsh
-npm run dev -w ui # starts the frontend dev server
-npm run codegen -w ui # generates types and hooks for new GraphQL queries in the ui package
-npm run update-types -w graphql-server # updates Supabase GraphQL types in graphql server
-npm run react:update-react-imports -w ui # removes redundant import statements of 'react' in components
-```
+- To create production builds of all services concurrently, use `npm run build:all`
+- Alternatively, build any individual service using `npm run dev <service>`
 
-### Deployment (wip)
+### Code formatting and linting
 
-```zsh
-docker compose build # builds Docker containers
-docker compose up # builds and runs created Docker containers
+- All services are checked for formatting issues using [Prettier](https://prettier.io/) and linted with [ESLint](https://eslint.org/) whenever you push changes
+- To install a precommit hook that checks all your staged files for formatting and linting errors before you commit, run `npm run husky:install` (disabled by default due to large size of the repo)
+- To manually check for formatting or linting errors, use `npm run prettier:check` (replace check with write to fix automatically fixable errors) or `npm run lint`
 
-npm run deploy-app # runs deploy-app script using deno
-npm run helm:update # updates helm repo
+## Deployment
+
+Along with the packages mentioned above, this repository also includes a lot of configuration files required to set up the infrastructure initially and deploy to it.
+
+### Create a Kubernetes cluster
+
+- Create a DigitalOcean account and add your payment details
+- Add DNS records to your domain registrar that point to DigitalOcean's nameservers to be able to manage DNS records
+- ...
+- Set up a Kubernetes cluster as well as DNS records using Terraform, run `npm run terraform`
+
+### Build Docker images
+
+- Each package contains a multi-stage Dockerfile to create an optimized Docker image
+- To ensure that environment variables are passed correctly, the Dockerfiles should only be executed from the root directory though
+- This can be done using Docker compose by running `npm run compose:up` (or down)
+
+### Push Docker images to container registry
+
+- Docker images are automatically built and pushed to the [Github container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) using Github Actions whenever you push changes
+
+### Deploy Ingress controller
 
 ...
 
-kubectl config set-context --current --namespace=<namespace-name> # changes Kubernetes namespace
-```
+### Create and install Helm chart
 
-### Design decisions
+- Make sure you have set the correct environment variables in `.env.<environment>`
+- Run `npm run k8s:<environment>` to change the Kubernetes cluster configuration to the given environment
+- Run `npm run alias:install` to install aliases
+- Run `npm run variables:env` and `npm run variables:values` to generate config and secret maps
+- To deploy to the dev cluster, run `npm run helm:app:local` to create and install a new Helm chart (dry run is enabled by default)
+- To deploy to the prod cluster, run `npm run helm:app:publish`
+- To uninstall previously installed charts, use `npm run helm:app:uninstall:<environment>`
+
+## Design decisions
 
 - Multi client-side GraphQL connects are not a general thing, that's why we use a GraphQL gateway instead
 - `graphql-gateway` depends on `graphql-server` so they should be in the same Kubernetes pod
@@ -96,4 +101,4 @@ kubectl config set-context --current --namespace=<namespace-name> # changes Kube
 - We have static sites, so we can show loading screens the fastest, the frontend app does not communicate directly with the backend (e.g. it doesn't do SSR), we can therefore put the frontend in a separate Kubernetes Pod, and we also do not need a service to connect them
 - `--env-file` in Docker is not the same as `env_file` in the Docker compose file, the former is used for the compose file the latter is used for containers
 - Secrets in Github Actions for reusable workflows have to be defined in the caller workflow and again in the reusable workflow, one can skip the former with the inherit property
-- Merge terraform/setup with env when moving to multiple clusters for each environment! Due to using one cluster the terraform/setup workspace was created
+- Merge terraform/setup with env when moving to multiple clusters for each environment. Due to using one cluster the terraform/setup workspace was created

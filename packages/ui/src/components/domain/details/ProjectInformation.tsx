@@ -51,7 +51,8 @@ const ProjectInformation = ({
   const sendSlackMessage = () => {
     setSlackLoading(true)
 
-    const savedMessage = localStorage.getItem('slackMessage') || ''
+    const savedMessage =
+      (typeof window !== 'undefined' && localStorage.getItem('slackMessage')) || ''
     const message = `${savedMessage}: <${githubUrl}|${name}>`
 
     void handleNotificationWrapper(message)

@@ -15,7 +15,8 @@ const SendToSlack = ({ message }: SendToSlackProps) => {
   const sendSlackMessage = async () => {
     setStatus('')
     setLoading(true)
-    const template = localStorage.getItem('slackMessageMultiple') ?? ''
+    const template =
+      (typeof window !== 'undefined' && localStorage.getItem('slackMessageMultiple')) ?? ''
     const res = await sendSlackNotification(`${template}\n${message}\n`)
     setLoading(false)
     setStatus(res)

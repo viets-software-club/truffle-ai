@@ -6,6 +6,7 @@ const changeCause = 'Production'
 const repoName = process.env.REPO_NAME
 const orgName = process.env.ORG_NAME
 const env = 'production'
+const promptVersion = await question('Version?\n')
 const promptDryRun = await question('Dry Run?\n')
 const isDryRun = promptDryRun === 'y' || promptDryRun === ''
 const namespace = env
@@ -27,7 +28,9 @@ const args = [
   `outputs/_configMaps/values.${env}.yml`,
   '--values',
   `outputs/_secrets/values.${env}.yml`,
-  '--cleanup-on-fail'
+  '--cleanup-on-fail',
+  '--version',
+  promptVersion
 ]
 if (isDryRun) args.push('--dry-run')
 const upgradeCommand = $`helm upgrade ${args} ${chartName} oci://ghcr.io/${$.env.ORG_NAME}/${$.env.REPO_NAME}/stable/app-chart`

@@ -23,7 +23,7 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
 
   // Redirects to new category page after renaming
   const redirect = (newCategory: string) => {
-    void router.replace(`/compare/${newCategory}`)
+    void router.replace(`/compare/${encodeURIComponent(newCategory)}`)
   }
 
   const toggleCategoryModal = () => {

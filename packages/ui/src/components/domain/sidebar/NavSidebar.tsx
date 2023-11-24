@@ -64,7 +64,7 @@ const NavSidebar = () => {
                     key={category}
                     Icon={FiFolder}
                     text={category as string}
-                    path={`/compare/${category as string}`}
+                    path={`/compare/${encodeURIComponent(category as string)}`}
                   />
                   {/* Display all projects in a category under their corresponding folder */}
                   {bookmarks

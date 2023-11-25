@@ -35,17 +35,17 @@ const Details = ({ id }: DetailsProps) => {
   const user = useUser()
 
   // Get project details data using generated hook (returns array with 1 project if successful)
-  const [{ data, fetching, error }, refetchProjectDetails] = useProjectDetailsQuery({
+  const [{ data, fetching, error }] = useProjectDetailsQuery({
     variables: { id }
   })
 
-  const [{ data: bookmarkIds }, refetchBookmarkIds] = useBookmarkIdsQuery({
+  const [{ data: bookmarkIds }] = useBookmarkIdsQuery({
     variables: { userId: user?.id as string, projectId: id }
   })
 
   // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
   // + add proper pagination
-  const [{ data: projectIds }, refetchProjectIds] = useProjectIdsQuery({
+  const [{ data: projectIds }] = useProjectIdsQuery({
     variables: {
       orderBy: defaultSort,
       filter: defaultFilters
@@ -81,12 +81,6 @@ const Details = ({ id }: DetailsProps) => {
     setNextProjectId(newNextProjectId)
   }
 
-  const refetch = () => {
-    refetchProjectDetails()
-    refetchBookmarkIds()
-    refetchProjectIds()
-  }
-
   // Update project indices once projects are fetched
   useEffect(() => {
     if (projects) updateProjectIndices(id, projects)
@@ -97,6 +91,8 @@ const Details = ({ id }: DetailsProps) => {
 
   const owner = project?.organization || project?.associatedPerson
 
+  const loading = fetching && !project
+
   return (
     <>
       <Navbar
@@ -104,7 +100,7 @@ const Details = ({ id }: DetailsProps) => {
         nextProjectId={nextProjectId}
         previousProjectId={previousProjectId}
         projectsLength={projects?.length}
-        loading={fetching}
+        loading={loading}
       />
 
       <div className='flex grow flex-col lg:flex-row'>
@@ -120,16 +116,15 @@ const Details = ({ id }: DetailsProps) => {
             categories={project?.categories as string[]}
             isBookmarked={isBookmarked}
             category={category}
-            loading={fetching}
-            refetch={refetch}
+            loading={loading}
           />
 
           <div className='md:hidden'>
-            <GithubStats project={project} loading={fetching} />
+            <GithubStats project={project} loading={loading} />
           </div>
 
           <ChartWrapper
-            loading={fetching}
+            loading={loading}
             datasets={[
               {
                 id: project?.id as string,
@@ -147,11 +142,11 @@ const Details = ({ id }: DetailsProps) => {
             tweets={project?.relatedTwitterPosts ?? undefined}
             hackernewsSentiment={project?.hackernewsSentiment ?? undefined}
             hackernewsStories={project?.hackernewsStories as string[]}
-            loading={fetching}
+            loading={loading}
           />
         </div>
 
-        <RightSidebar project={project} loading={fetching} />
+        <RightSidebar project={project} loading={loading} />
       </div>
     </>
   )

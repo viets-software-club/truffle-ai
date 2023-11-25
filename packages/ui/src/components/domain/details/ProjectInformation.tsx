@@ -20,7 +20,6 @@ type ProjectInformationProps = {
   isBookmarked: boolean
   category?: string
   loading?: boolean
-  refetch: () => void
 }
 
 /**
@@ -37,8 +36,7 @@ const ProjectInformation = ({
   categories,
   isBookmarked,
   category,
-  loading,
-  refetch
+  loading
 }: ProjectInformationProps) => {
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
   const [slackLoading, setSlackLoading] = useState(false)
@@ -154,7 +152,6 @@ const ProjectInformation = ({
         projectID={id}
         category={category}
         isBookmarked={isBookmarked}
-        refetch={refetch}
       />
     </div>
   )

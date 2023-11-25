@@ -36,7 +36,7 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(
       }
     }, [emailError, error, errorDescription, isLoading, user])
 
-    if ((isLoading || !user) && showLoading) return <Loading fullscreen />
+    if (isLoading || !user) return <Loading fullscreen showSpinner={showLoading} />
 
     return React.createElement(WrappedComponent, props)
   }

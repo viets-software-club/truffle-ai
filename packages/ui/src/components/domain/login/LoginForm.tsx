@@ -3,12 +3,11 @@ import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
 
 type LoginFormProps = {
-  loading: boolean
   error: boolean
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-const LoginForm: FC<LoginFormProps> = ({ loading, error, handleSubmit }) => (
+const LoginForm: FC<LoginFormProps> = ({ error, handleSubmit }) => (
   <form
     onSubmit={handleSubmit}
     noValidate
@@ -28,7 +27,7 @@ const LoginForm: FC<LoginFormProps> = ({ loading, error, handleSubmit }) => (
       name='provider'
       value='email'
       className='mt-4 w-full justify-center'>
-      {loading ? 'Loading...' : 'Log in'}
+      Log in
     </Button>
   </form>
 )

@@ -103,6 +103,8 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
                 <Skeleton className='h-12' />
                 <Skeleton className='h-12' />
                 <Skeleton className='h-12' />
+                <Skeleton className='h-12' />
+                <Skeleton className='h-12' />
               </div>
             ) : data?.length === 0 ? (
               <p className='w-full p-12 text-center text-sm text-white/75'>No projects found</p>

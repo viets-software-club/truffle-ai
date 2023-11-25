@@ -6,6 +6,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/domain/sidebar'
 import Skeleton from '@/components/shared/Skeleton'
 import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import useSidebarCategories from '@/stores/useSidebarCategories'
 import Item from './Item'
 import MobileMenu from './MobileMenu'
 import Section from './Section'
@@ -17,12 +18,11 @@ const renderFooter = () => (
   </>
 )
 
-// @TODO loading state + error handling
-
 const NavSidebar = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
 
   const user = useUser()
+  const { categoriesLength, setCategoriesLength } = useSidebarCategories()
 
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching }] = useFilteredBookmarksQuery({
@@ -32,9 +32,20 @@ const NavSidebar = () => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setBookmarks(urqlData?.bookmarkCollection?.edges?.map(edge => edge.node) as Bookmark[])
+      const edges = urqlData?.bookmarkCollection?.edges
+
+      setBookmarks(edges?.map(edge => edge.node) as Bookmark[])
+
+      const bookmarksLength = edges?.length as number
+      const newCategoriesLength = Array.from(new Set(edges?.map(edge => edge.node.category))).length
+
+      // Only update categoriesLength if it has changed
+      if (newCategoriesLength !== categoriesLength)
+        setCategoriesLength(newCategoriesLength + bookmarksLength)
     }
   }, [urqlData])
+
+  const uniqueCategories = Array.from(new Set(bookmarks.map(bookmark => bookmark.category)))
 
   // @TODO highlight current page in sidebar
   return (
@@ -46,47 +57,43 @@ const NavSidebar = () => {
         </Section>
 
         <Section title='Categories'>
-          {fetching ? (
+          {fetching && !urqlData ? (
             <div className='mt-2 flex flex-col gap-3'>
-              <Skeleton className='ml-5 h-6 !w-40' />
-              <Skeleton className='ml-5 h-6 !w-40' />
-              <Skeleton className='ml-5 h-6 !w-40' />
-              <Skeleton className='ml-5 h-6 !w-40' />
+              {Array.from(Array(categoriesLength).keys()).map(c => (
+                <Skeleton key={c} className='ml-5 h-6 !w-40' />
+              ))}
             </div>
           ) : (
-            bookmarks
-              // Get a list of unique categories to display as folders
-              .map(({ category }) => category)
-              .filter((value, index, array) => array.indexOf(value) === index)
-              .map(category => (
-                <div key={category}>
-                  <Item
-                    key={category}
-                    Icon={FiFolder}
-                    text={category as string}
-                    path={`/compare/${encodeURIComponent(category as string)}`}
-                  />
-                  {/* Display all projects in a category under their corresponding folder */}
-                  {bookmarks
-                    .filter(bookmark => bookmark.category === category)
-                    .map(({ project }) => {
-                      if (!project) return null
-                      const { name, organization, associatedPerson } = project
+            // Display categories as folders
+            uniqueCategories.map(category => (
+              <div key={category}>
+                <Item
+                  key={category}
+                  Icon={FiFolder}
+                  text={category as string}
+                  path={`/compare/${encodeURIComponent(category as string)}`}
+                />
+                {/* Display all projects in a category under their corresponding folder */}
+                {bookmarks
+                  .filter(bookmark => bookmark.category === category)
+                  .map(({ project }) => {
+                    if (!project) return null
+                    const { name, organization, associatedPerson } = project
 
-                      return (
-                        <Item
-                          key={project.id as string}
-                          imageSrc={
-                            (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
-                          }
-                          text={name as string}
-                          path={`/details/${project.id as string}`}
-                          secondaryItem
-                        />
-                      )
-                    })}
-                </div>
-              ))
+                    return (
+                      <Item
+                        key={project.id as string}
+                        imageSrc={
+                          (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
+                        }
+                        text={name as string}
+                        path={`/details/${project.id as string}`}
+                        secondaryItem
+                      />
+                    )
+                  })}
+              </div>
+            ))
           )}
         </Section>
       </Sidebar>

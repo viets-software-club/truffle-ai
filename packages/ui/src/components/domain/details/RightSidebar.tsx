@@ -48,7 +48,7 @@ const RightSidebar = ({ project, loading }: RightSidebarProps) => {
         </Box>
       ) : project ? (
         <>
-          {project.languages?.length && (
+          {project.languages && project.languages?.length > 0 && (
             <Box title='Languages'>
               <LanguagesItem
                 languages={project.languages as unknown as Array<{ name: string; color: string }>}

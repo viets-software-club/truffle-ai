@@ -63,5 +63,5 @@ terraform.rc
 
 # Service worker
 **/public/fallback-*.js
-**/public/workbox-*.js
-**/public/sw.js
+**/public/workbox-*.js*
+**/public/sw*.js*

@@ -4,7 +4,6 @@ import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
-import withAuth from '@/components/shared/hoc/withAuth'
 import {
   PageInfo,
   Project,
@@ -14,15 +13,17 @@ import {
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import getPercentile from '@/util/getPercentile'
+import { NextPageWithLayout } from './_app'
 
 // @TODO add category column to table
 
 /**
  * Project table with all bookmarks of a user
  */
-const Bookmarks = () => {
+const Bookmarks: NextPageWithLayout = () => {
   const PAGE_SIZE = 30
-  const [data, setData] = useState<Project[]>([])
+  const [data, setData] = useState<Project[]>()
+  const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<ProjectFilter>({})
   const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
@@ -46,27 +47,27 @@ const Bookmarks = () => {
     setFilters(filter)
   }
 
-  const [{ data: bookmarkData, fetching: fetchingBookmarks, error: errorBookmarks }] =
-    useBookmarkIdsQuery({ variables: { userId: user?.id as string } })
+  const [{ data: bookmarkData, error: errorBookmarks }] = useBookmarkIdsQuery({
+    variables: { userId: user?.id as string }
+  })
 
   // Get array with all bookmarked project ids
   const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
     edge => edge.node.project?.id as string
   ) as string[]
 
-  const [{ data: urqlData, fetching: fetchingProjects, error: errorProjects }] =
-    useTrendingProjectsQuery({
-      variables: {
-        orderBy: sorting || defaultSort,
-        filter: {
-          ...filters,
-          id: {
-            in: bookmarkIds
-          }
-        },
-        ...pagination
-      }
-    })
+  const [{ data: urqlData, error: errorProjects }] = useTrendingProjectsQuery({
+    variables: {
+      orderBy: sorting || defaultSort,
+      filter: {
+        ...filters,
+        id: {
+          in: bookmarkIds
+        }
+      },
+      ...pagination
+    }
+  })
 
   // Only update table data when urql data changes
   useEffect(() => {
@@ -75,6 +76,7 @@ const Bookmarks = () => {
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
       const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
+      setLoading(false)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),
         bottomTenPercent: getPercentile(projectData, 0.1, false),
@@ -85,24 +87,25 @@ const Bookmarks = () => {
   }, [urqlData])
 
   return (
-    <Page>
-      <ProjectsTable
-        data={data}
-        filters={filters}
-        sorting={sorting}
-        fetching={fetchingProjects || fetchingBookmarks}
-        error={errorProjects || errorBookmarks}
-        hideTimeFrame
-        setSorting={setSorting}
-        updateFilters={updateFilters}
-        pageInfo={pageInfo as PageInfo}
-        totalCount={totalCount}
-        pageSize={PAGE_SIZE}
-        setPagination={setPagination}
-        percentileStats={percentileStats}
-      />
-    </Page>
+    <ProjectsTable
+      data={data}
+      filters={filters}
+      sorting={sorting}
+      fetching={loading}
+      error={errorProjects || errorBookmarks}
+      hideTimeFrame
+      setSorting={setSorting}
+      updateFilters={updateFilters}
+      pageInfo={pageInfo as PageInfo}
+      totalCount={totalCount}
+      pageSize={PAGE_SIZE}
+      setPagination={setPagination}
+      percentileStats={percentileStats}
+      loadingSkeletons={7}
+    />
   )
 }
 
-export default withAuth(Bookmarks)
+Bookmarks.getLayout = page => <Page>{page}</Page>
+
+export default Bookmarks

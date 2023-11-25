@@ -40,7 +40,8 @@ module.exports = {
         skipBlankLines: true,
         skipComments: true
       }
-    ]
+    ],
+    'no-nested-ternary': 'off'
   },
   ignorePatterns: [
     ...common.ignorePatterns,

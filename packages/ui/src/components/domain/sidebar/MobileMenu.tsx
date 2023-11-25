@@ -57,7 +57,7 @@ const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
           .map(category => (
             <div key={category} className='flex flex-col gap-2 border-b border-white/5 py-3'>
               <Link
-                href={`/compare/${category as string}`}
+                href={`/compare/${encodeURIComponent(category as string)}`}
                 className='mb-2 flex items-center gap-1 text-xs font-semibold text-white/50'>
                 <FiFolder />
                 {category}

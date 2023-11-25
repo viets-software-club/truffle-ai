@@ -4,8 +4,9 @@ import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
 
 const SlackSettings = () => {
-  const savedSlackWebhookURL = localStorage.getItem('slackWebhookURL')
-  const savedSlackMessage = localStorage.getItem('slackMessage')
+  const savedSlackWebhookURL =
+    typeof window !== 'undefined' && localStorage.getItem('slackWebhookURL')
+  const savedSlackMessage = typeof window !== 'undefined' && localStorage.getItem('slackMessage')
   const [webhookURL, setWebhookURL] = useState(savedSlackWebhookURL || '')
   const [message, setMessage] = useState(savedSlackMessage || '')
   const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
@@ -13,12 +14,8 @@ const SlackSettings = () => {
 
   // Update local storage whenever webhookURL or message changes
   useEffect(() => {
-    if (webhookURL) {
-      localStorage.setItem('slackWebhookURL', webhookURL)
-    }
-    if (message) {
-      localStorage.setItem('slackMessage', message)
-    }
+    if (webhookURL) localStorage.setItem('slackWebhookURL', webhookURL)
+    if (message) localStorage.setItem('slackMessage', message)
   }, [webhookURL, message])
 
   const handleClick = () => {

@@ -26,6 +26,7 @@ type ProjectsTableProps = {
   updateFilters: (filters: ProjectFilter) => void
   setPagination: Dispatch<SetStateAction<PaginationParameters>>
   beforeTable?: ReactNode
+  loadingSkeletons?: number
 }
 
 /**
@@ -45,7 +46,8 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   setSorting,
   updateFilters,
   setPagination,
-  beforeTable
+  beforeTable,
+  loadingSkeletons = 10
 }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
 
@@ -73,7 +75,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         updateFilters={updateFilters}
       />
 
-      {(Object.keys(filters).length > 0 || sorting) && (pageInfo || fetching) && (
+      {(Object.keys(filters).length > 0 || sorting) && (pageInfo || fetching) && !error && (
         <FilterBar
           loading={fetching && !data}
           filters={filters}
@@ -98,13 +100,9 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
             {/* Desktop */}
             {fetching && !data ? (
               <div className='flex flex-col gap-2'>
-                <Skeleton className='h-12' />
-                <Skeleton className='h-12' />
-                <Skeleton className='h-12' />
-                <Skeleton className='h-12' />
-                <Skeleton className='h-12' />
-                <Skeleton className='h-12' />
-                <Skeleton className='h-12' />
+                {Array.from(Array(loadingSkeletons).keys()).map(i => (
+                  <Skeleton key={i} className='h-12' />
+                ))}
               </div>
             ) : data?.length === 0 ? (
               <p className='w-full p-12 text-center text-sm text-white/75'>No projects found</p>

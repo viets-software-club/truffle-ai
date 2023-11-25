@@ -112,6 +112,7 @@ const ComparePage: NextPageWithLayout = () => {
       pageSize={PAGE_SIZE}
       percentileStats={percentileStats}
       beforeTable={<CompareContent data={data} category={category} loading={loading} />}
+      loadingSkeletons={4}
     />
   )
 }

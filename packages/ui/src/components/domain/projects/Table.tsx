@@ -38,11 +38,11 @@ const Table = ({ table }: TableProps) => (
             return (
               <td
                 key={cell.id}
-                className={clsx('p-2 pl-0 text-left', {
+                className={clsx('text-left', {
                   'rounded-l-lg': isFirstChild,
                   'rounded-r-lg': isLastChild
                 })}>
-                <Link href={`/details/${row.original.id as string}`}>
+                <Link href={`/details/${row.original.id as string}`} className='block p-2 pl-0'>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Link>
               </td>

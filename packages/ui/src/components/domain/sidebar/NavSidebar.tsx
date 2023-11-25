@@ -63,8 +63,8 @@ const NavSidebar = () => {
                 <Skeleton key={c} className='ml-5 h-6 !w-40' />
               ))}
             </div>
-          ) : (
-            // Display categories as folders
+          ) : // Display categories as folders
+          uniqueCategories.length > 0 ? (
             uniqueCategories.map(category => (
               <div key={category}>
                 <Item
@@ -94,6 +94,8 @@ const NavSidebar = () => {
                   })}
               </div>
             ))
+          ) : (
+            <p className='py-2.5 pl-5 text-xs text-white/90'>No bookmarks yet</p>
           )}
         </Section>
       </Sidebar>

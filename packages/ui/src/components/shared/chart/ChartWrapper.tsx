@@ -3,6 +3,7 @@ import { AiOutlineCalendar } from 'react-icons/ai'
 import { FiChevronDown } from 'react-icons/fi'
 import Button from '@/components/shared/Button'
 import DropdownMenu from '../DropdownMenu'
+import Skeleton from '../Skeleton'
 import Chart, { ChartProps } from './Chart'
 
 const timeframeOptions = [
@@ -24,6 +25,7 @@ export type DataPoint = {
 }
 
 type ChartWrapperProps = ChartProps & {
+  loading?: boolean
   setSelectedMetric: (metric: string) => void
 }
 
@@ -43,6 +45,7 @@ const filterDataByTimeframe = (data: DataPoint[], months: number) => {
  * Linechart with one or more datasets
  */
 const ChartWrapper = ({
+  loading,
   datasets,
   multipleLines,
   selectedMetric,
@@ -98,7 +101,9 @@ const ChartWrapper = ({
 
   return (
     <div className='w-full px-4 py-6 lg:p-6'>
-      {datasets.length === 0 ? (
+      {loading ? (
+        <Skeleton className='h-96' />
+      ) : datasets.length === 0 ? (
         <p>No data</p>
       ) : (
         <div className='flex w-full flex-col gap-3'>

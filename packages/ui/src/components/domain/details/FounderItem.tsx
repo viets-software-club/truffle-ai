@@ -23,7 +23,7 @@ const emailTemplate = (email: string, founderName: string, projectName: string) 
 }
 
 const FounderItem = ({ name, mail, projectName, github, twitter, website }: FounderProps) => (
-  <div className='flex flex-row items-center justify-center gap-[15px] py-2.5 text-white/50'>
+  <div className='flex flex-row items-center gap-[15px] py-2.5 text-white/50'>
     <span className='text-xs not-italic leading-3'>{name}</span>
     {mail && (
       <>

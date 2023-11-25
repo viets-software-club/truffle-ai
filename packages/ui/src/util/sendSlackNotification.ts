@@ -3,7 +3,7 @@ type ApiResponse = {
 }
 
 const sendSlackNotification = async (message: string) => {
-  const webhookURL = localStorage.getItem('slackWebhookURL')
+  const webhookURL = typeof window !== 'undefined' && localStorage.getItem('slackWebhookURL')
 
   try {
     const response = await fetch('/api/notify', {

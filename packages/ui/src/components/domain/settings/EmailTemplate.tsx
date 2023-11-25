@@ -19,7 +19,9 @@ Viet
 PS: if you have time, please check out my blog post on Building a Defensible ML company here: https://vietle.substack.com/p/defensible-machine-learning`
 
 const UpdateEmailTemplate = () => {
-  const [email, setEmail] = useState(localStorage.getItem('emailMessage') || initialTemplate)
+  const [email, setEmail] = useState(
+    (typeof window !== 'undefined' && localStorage.getItem('emailMessage')) || initialTemplate
+  )
   const [showBanner, setShowBanner] = useState(false)
 
   useEffect(() => {

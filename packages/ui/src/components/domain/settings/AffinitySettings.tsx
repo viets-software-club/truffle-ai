@@ -4,8 +4,12 @@ import Input from '@/components/shared/Input'
 import Banner from '../../shared/Banner'
 
 const AffinitySettings = () => {
-  const [affinityKey, setAffinityKey] = useState(localStorage.getItem('affinityKey') || '')
-  const [listId, setListId] = useState(localStorage.getItem('affinityListId') || '')
+  const [affinityKey, setAffinityKey] = useState(
+    (typeof window !== 'undefined' && localStorage.getItem('affinityKey')) || ''
+  )
+  const [listId, setListId] = useState(
+    (typeof window !== 'undefined' && localStorage.getItem('affinityListId')) || ''
+  )
   const [showBanner, setShowBanner] = useState(false)
 
   useEffect(() => {

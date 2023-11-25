@@ -7,13 +7,15 @@ type NavbarProps = {
   nextProjectId?: string
   previousProjectId?: string
   projectsLength?: number
+  loading?: boolean
 }
 
 const Navbar = ({
   currentProjectIndex,
   nextProjectId,
   previousProjectId,
-  projectsLength
+  projectsLength,
+  loading
 }: NavbarProps) => (
   <div className='flex h-[60px] w-full items-center gap-3 border-b border-white/5 bg-gray-900 px-4 lg:pl-7 lg:pr-3'>
     <Link href='/' className='mr-auto md:mr-0'>
@@ -44,12 +46,14 @@ const Navbar = ({
       </Button>
     )}
 
-    <div className='flex flex-row items-center'>
-      <p className='text-sm text-white'>
-        {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
-      </p>
-      <p className='text-sm text-white/50'>/&nbsp;{projectsLength}</p>
-    </div>
+    {!loading && (
+      <div className='flex flex-row items-center'>
+        <p className='text-sm text-white'>
+          {currentProjectIndex !== undefined ? currentProjectIndex + 1 : '0'}&nbsp;
+        </p>
+        <p className='text-sm text-white/50'>/&nbsp;{projectsLength}</p>
+      </div>
+    )}
   </div>
 )
 

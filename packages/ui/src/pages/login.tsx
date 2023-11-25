@@ -13,19 +13,19 @@ import { signInWithGoogle, signInWithPassword } from '@/util/login'
  * Login component. Displays a Google login button and handles the Google OAuth login flow.
  */
 const Login = () => {
-  const [loading, setLoading] = useState<boolean>(false)
-  const [isError, setIsError] = useState<boolean>(false)
-
   const user = useUser()
   const router = useRouter()
-  const { isLoading: sessionLoading } = useSessionContext()
-  const supabaseClient = useSupabaseClient()
   const { error } = router.query
+  const supabaseClient = useSupabaseClient()
+  const { isLoading: sessionLoading } = useSessionContext()
+
+  const [passwordError, setPasswordError] = useState(false)
+  const [googleError, setGoogleError] = useState(error !== undefined)
 
   const handleLogin = async (type: 'google' | 'email', email?: string, password?: string) => {
     try {
-      setIsError(false)
-      setLoading(true)
+      setPasswordError(false)
+      setGoogleError(false)
 
       switch (type) {
         case 'google':
@@ -37,11 +37,8 @@ const Login = () => {
         default:
           throw new Error('Invalid login type')
       }
-
-      setLoading(false)
     } catch {
-      setLoading(false)
-      setIsError(true)
+      setPasswordError(true)
     }
   }
 
@@ -61,12 +58,12 @@ const Login = () => {
   }
 
   // If a user is logged in, redirect them to the home page
-  if (user) void router.replace('/')
+  if (user) void router.push('/')
 
   // Show loading spinner if session state is still loading
   if (sessionLoading) return <Loading fullscreen />
 
-  return (
+  return !user ? (
     <main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-tr from-gray-900 to-indigo-500/30'>
       <div className='flex w-full max-w-sm flex-col items-center justify-center gap-8 border-white/5 px-6 py-10 md:w-[400px] md:max-w-none md:rounded-2xl md:border md:bg-white/5 md:px-8 md:backdrop-blur-xl'>
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
@@ -83,7 +80,7 @@ const Login = () => {
           Continue with Google
         </Button>
 
-        {error === 'invalid_email' && (
+        {googleError && (
           <div className='text-center text-sm text-red-400'>
             Invalid google email or password. Please note that only invited users or La Famiglia
             employees can sign in.
@@ -96,14 +93,14 @@ const Login = () => {
           <div className='h-0.5 w-full bg-white/5' />
         </div>
 
-        <LoginForm handleSubmit={handleSubmit} loading={loading} error={isError} />
+        <LoginForm handleSubmit={handleSubmit} error={passwordError} />
       </div>
 
       <div className='absolute bottom-4 self-center text-sm text-white/60'>
         © {new Date().getFullYear()} La Famiglia
       </div>
     </main>
-  )
+  ) : null
 }
 
 export default Login

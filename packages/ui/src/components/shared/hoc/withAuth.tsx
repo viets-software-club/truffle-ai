@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, PropsWithChildren, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useUser, useSessionContext } from '@supabase/auth-helpers-react'
 import Loading from '@/components/shared/Loading'
@@ -6,10 +6,8 @@ import Loading from '@/components/shared/Loading'
 /**
  * HOC for pages that require authentication
  */
-export default function withAuth<P extends JSX.IntrinsicAttributes>(
-  WrappedComponent: React.ComponentType<P>
-) {
-  return (props: React.PropsWithChildren<P>) => {
+export default function withAuth(WrappedComponent: FC<PropsWithChildren>) {
+  return (props: PropsWithChildren) => {
     const { isLoading, error } = useSessionContext()
     const router = useRouter()
     const user = useUser()

@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 import CommandInterface from '@/components/domain/commandinterface'
 import NavSidebar from '@/components/domain/sidebar/NavSidebar'
+import withAuth from './hoc/withAuth'
 
 /**
  * Standard page wrapper with sidebar, command interface and main content
@@ -13,4 +14,4 @@ const Page = ({ children }: PropsWithChildren) => (
   </div>
 )
 
-export default Page
+export default withAuth(Page)

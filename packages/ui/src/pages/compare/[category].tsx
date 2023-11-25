@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import CompareContent from '@/components/domain/compare'
@@ -7,7 +6,6 @@ import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
-import withAuth from '@/components/shared/hoc/withAuth'
 import {
   Project,
   ProjectFilter,
@@ -17,13 +15,14 @@ import {
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import getPercentile from '@/util/getPercentile'
+import { NextPageWithLayout } from '../_app'
 
 const PAGE_SIZE = 30
 
 /**
  * Compare projects page
  */
-const ComparePage: NextPage = () => {
+const ComparePage: NextPageWithLayout = () => {
   // Get project id from URL
   const {
     query: { category: categoryFromUrl }
@@ -99,24 +98,24 @@ const ComparePage: NextPage = () => {
   }, [urqlData])
 
   return (
-    <Page>
-      <ProjectsTable
-        data={data}
-        filters={filters}
-        sorting={sorting}
-        fetching={loading}
-        error={error}
-        setSorting={setSorting}
-        updateFilters={updateFilters}
-        totalCount={data?.length ?? 0} // @TODO: Fix totalCount
-        pageInfo={pageInfo as PageInfo}
-        setPagination={setPagination}
-        pageSize={PAGE_SIZE}
-        percentileStats={percentileStats}
-        beforeTable={<CompareContent data={data} category={category} loading={loading} />}
-      />
-    </Page>
+    <ProjectsTable
+      data={data}
+      filters={filters}
+      sorting={sorting}
+      fetching={loading}
+      error={error}
+      setSorting={setSorting}
+      updateFilters={updateFilters}
+      totalCount={data?.length ?? 0} // @TODO: Fix totalCount
+      pageInfo={pageInfo as PageInfo}
+      setPagination={setPagination}
+      pageSize={PAGE_SIZE}
+      percentileStats={percentileStats}
+      beforeTable={<CompareContent data={data} category={category} loading={loading} />}
+    />
   )
 }
 
-export default withAuth(ComparePage)
+ComparePage.getLayout = page => <Page>{page}</Page>
+
+export default ComparePage

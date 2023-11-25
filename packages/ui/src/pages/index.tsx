@@ -4,7 +4,6 @@ import { PercentileStats } from '@/components/domain/projects/columns'
 import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
-import withAuth from '@/components/shared/hoc/withAuth'
 import {
   PageInfo,
   Project,
@@ -13,10 +12,11 @@ import {
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import getPercentile from '@/util/getPercentile'
+import { NextPageWithLayout } from './_app'
 
 const PAGE_SIZE = 30
 
-const TrendingProjects = () => {
+const TrendingProjects: NextPageWithLayout = () => {
   const [data, setData] = useState<Project[]>()
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
@@ -68,23 +68,23 @@ const TrendingProjects = () => {
   }, [urqlData])
 
   return (
-    <Page>
-      <ProjectsTable
-        data={data}
-        filters={filters}
-        sorting={sorting}
-        fetching={loading}
-        error={error}
-        setSorting={setSorting}
-        updateFilters={updateFilters}
-        totalCount={totalCount}
-        pageInfo={pageInfo as PageInfo}
-        setPagination={setPagination}
-        pageSize={PAGE_SIZE}
-        percentileStats={percentileStats}
-      />
-    </Page>
+    <ProjectsTable
+      data={data}
+      filters={filters}
+      sorting={sorting}
+      fetching={loading}
+      error={error}
+      setSorting={setSorting}
+      updateFilters={updateFilters}
+      totalCount={totalCount}
+      pageInfo={pageInfo as PageInfo}
+      setPagination={setPagination}
+      pageSize={PAGE_SIZE}
+      percentileStats={percentileStats}
+    />
   )
 }
 
-export default withAuth(TrendingProjects)
+TrendingProjects.getLayout = page => <Page>{page}</Page>
+
+export default TrendingProjects

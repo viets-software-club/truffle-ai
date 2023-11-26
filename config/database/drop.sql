@@ -25,3 +25,4 @@ drop table if exists github_organization;
 drop table if exists github_user;
 drop table if exists github_repo;
 drop table if exists github_owner;
+drop table if exists project_bookmark;

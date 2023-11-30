@@ -26,6 +26,8 @@ export type DataPoint = {
 
 type ChartWrapperProps = ChartProps & {
   loading?: boolean
+  multipleLines?: boolean
+  selectedMetric: string
   setSelectedMetric: (metric: string) => void
 }
 
@@ -52,7 +54,9 @@ const ChartWrapper = ({
   setSelectedMetric
 }: ChartWrapperProps) => {
   const [timeframe, setTimeframe] = useState<number>(-1)
-  const [chartDataOriginal] = useState<ChartWrapperProps['datasets']>([...datasets])
+  const [chartDataOriginal, setChartDataOriginal] = useState<ChartWrapperProps['datasets']>([
+    ...datasets
+  ])
   const [chartData, setChartData] = useState(chartDataOriginal)
   const [isDataNormalized, setIsDataNormalized] = useState(false)
 
@@ -97,6 +101,7 @@ const ChartWrapper = ({
 
   useEffect(() => {
     setChartData([...datasets])
+    setChartDataOriginal([...datasets])
   }, [datasets])
 
   return (
@@ -125,11 +130,7 @@ const ChartWrapper = ({
             {multipleLines && <Button onClick={handleDataNormalization}>Normalize Data</Button>}
           </div>
 
-          <Chart
-            datasets={chartData}
-            multipleLines={multipleLines}
-            selectedMetric={selectedMetric}
-          />
+          <Chart datasets={chartData} />
         </div>
       )}
     </div>

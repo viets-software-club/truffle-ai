@@ -101,7 +101,6 @@ const Bookmarks: NextPageWithLayout = () => {
       pageSize={PAGE_SIZE}
       setPagination={setPagination}
       percentileStats={percentileStats}
-      loadingSkeletons={7}
     />
   )
 }

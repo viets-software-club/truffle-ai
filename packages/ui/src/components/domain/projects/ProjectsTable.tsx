@@ -47,7 +47,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   updateFilters,
   setPagination,
   beforeTable,
-  loadingSkeletons = 10
+  loadingSkeletons = 2
 }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
 

@@ -129,7 +129,7 @@ const Details = ({ id }: DetailsProps) => {
               {
                 id: project?.id as string,
                 name: project?.name as string,
-                data: (selectedMetric === 'Stars'
+                data: (selectedMetric === 'stars'
                   ? project?.starHistory
                   : project?.forkHistory) as DataPoint[]
               }

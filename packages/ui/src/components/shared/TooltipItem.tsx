@@ -1,16 +1,11 @@
 import { Tooltip } from 'react-tooltip'
 
-type TooltipItemProps = {
-  id?: string
-}
-
-const TooltipItem = ({ id }: TooltipItemProps) => (
+const TooltipItem = () => (
   <Tooltip
-    id={id}
-    place='bottom'
-    className='!z-20 !rounded-md !border !border-white/5 !bg-white/5 !p-2 !text-xs !backdrop-blur-xl'>
-    {id}
-  </Tooltip>
+    id='tooltip'
+    place='top'
+    className='!z-20 !max-w-[90vw] !rounded-md !border !border-white/5 !bg-gray-900 !p-3 !text-xs !opacity-100 md:!max-w-md'
+  />
 )
 
 export default TooltipItem

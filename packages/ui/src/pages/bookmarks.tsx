@@ -8,12 +8,14 @@ import {
   PageInfo,
   Project,
   ProjectFilter,
-  ProjectOrderBy,
   useBookmarkIdsQuery,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
+import { useBookmarkedProjectsState, useLastViewedPageState } from '@/stores/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from './_app'
+
+const PAGE_SIZE = 30
 
 // @TODO add category column to table
 
@@ -21,11 +23,11 @@ import { NextPageWithLayout } from './_app'
  * Project table with all bookmarks of a user
  */
 const Bookmarks: NextPageWithLayout = () => {
-  const PAGE_SIZE = 30
+  const { filters, setFilters, sorting, setSorting } = useBookmarkedProjectsState()
+  const { setLastViewedPage } = useLastViewedPageState()
+
   const [data, setData] = useState<Project[]>()
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState<ProjectFilter>({})
-  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<PaginationParameters>({
     first: PAGE_SIZE,
@@ -85,6 +87,10 @@ const Bookmarks: NextPageWithLayout = () => {
       })
     }
   }, [urqlData])
+
+  useEffect(() => {
+    setLastViewedPage('bookmarked')
+  }, [])
 
   return (
     <ProjectsTable

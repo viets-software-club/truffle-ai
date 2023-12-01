@@ -4,6 +4,7 @@ import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import SEO from '@/components/shared/SEO'
+import TooltipItem from '@/components/shared/TooltipItem'
 import UrqlProvider from '@/components/shared/hoc/UrqlProvider'
 import '@/styles/globals.css'
 
@@ -38,6 +39,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <UrqlProvider>{getLayout(<Component {...pageProps} />)}</UrqlProvider>
       </SessionContextProvider>
+
+      <TooltipItem />
     </>
   )
 }

@@ -109,7 +109,7 @@ const ChartWrapper = ({
       {loading ? (
         <Skeleton className='h-96' />
       ) : datasets.length === 0 ? (
-        <p>No data</p>
+        <p className='py-16 text-center text-sm text-white/75'>No data to display</p>
       ) : (
         <div className='flex w-full flex-col gap-3'>
           <div className='flex flex-row gap-3 '>

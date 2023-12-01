@@ -8,7 +8,7 @@ import emailTemplate from '@/util/emailTemplate'
 import CommandInterfaceModal from './Modal'
 import defaultList from './defaultList'
 import CommandInterfaceOptions from './options'
-import { RecommendationRowType } from './types'
+import { RecommendationRowType } from './RecommendationRow'
 
 /**
  * Command interface logic/ event listeners

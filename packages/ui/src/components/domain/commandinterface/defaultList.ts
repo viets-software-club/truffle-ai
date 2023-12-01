@@ -7,8 +7,8 @@ import {
   FiSettings as Settings
 } from 'react-icons/fi'
 import { MdArrowForward } from 'react-icons/md'
+import { RecommendationRowType } from './RecommendationRow'
 import CommandInterfaceOptions from './options'
-import { RecommendationRowType } from './types'
 
 const defaultList: RecommendationRowType[] = [
   {

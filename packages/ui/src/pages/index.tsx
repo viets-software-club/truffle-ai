@@ -1,26 +1,21 @@
 import { useState, useEffect } from 'react'
 import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
-import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
-import {
-  PageInfo,
-  Project,
-  ProjectFilter,
-  ProjectOrderBy,
-  useTrendingProjectsQuery
-} from '@/graphql/generated/gql'
+import { PageInfo, Project, ProjectFilter, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { useLastViewedPageState, useTrendingProjectsState } from '@/stores/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from './_app'
 
 const PAGE_SIZE = 30
 
 const TrendingProjects: NextPageWithLayout = () => {
+  const { filters, setFilters, sorting, setSorting } = useTrendingProjectsState()
+  const { setLastViewedPage } = useLastViewedPageState()
+
   const [data, setData] = useState<Project[]>()
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
-  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<PaginationParameters>({
     first: PAGE_SIZE,
@@ -66,6 +61,10 @@ const TrendingProjects: NextPageWithLayout = () => {
       })
     }
   }, [urqlData])
+
+  useEffect(() => {
+    setLastViewedPage('trending')
+  }, [])
 
   return (
     <ProjectsTable

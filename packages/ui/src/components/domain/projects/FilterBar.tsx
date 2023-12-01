@@ -50,11 +50,12 @@ const FilterBar = ({
     })
   }
 
-  // Filters (exclude time filter options)
+  // Filters (exclude time filter options + id)
   const filterItemModals = useMemo(
     () =>
       Object.keys(filters)
         .filter(key => !Object.values(TimeFilterOption).includes(key as TimeFilterOption))
+        .filter(key => key !== 'id')
         .map(key => (
           <FilterItemModal
             key={key}

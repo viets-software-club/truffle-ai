@@ -9,11 +9,12 @@ import Page from '@/components/shared/Page'
 import {
   Project,
   ProjectFilter,
-  ProjectOrderBy,
   PageInfo,
   useBookmarkIdsQuery,
-  useTrendingProjectsQuery
+  useTrendingProjectsQuery,
+  ProjectOrderBy
 } from '@/graphql/generated/gql'
+import { useCategoryProjectsState, useLastViewedPageState } from '@/stores/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from '../_app'
 
@@ -32,6 +33,10 @@ const ComparePage: NextPageWithLayout = () => {
     (typeof categoryFromUrl === 'string' ? categoryFromUrl : categoryFromUrl?.join('')) || ''
 
   const user = useUser()
+
+  const { setFilters: setCategoryFilters, setSorting: setCategorySorting } =
+    useCategoryProjectsState()
+  const { lastViewedPage, setLastViewedPage } = useLastViewedPageState()
 
   const [data, setData] = useState<Project[]>()
   const [loading, setLoading] = useState(true)
@@ -57,9 +62,10 @@ const ComparePage: NextPageWithLayout = () => {
   }
 
   // Fetches all bookmarked project ids of a user in the given category
-  const [{ data: bookmarkData, error: errorBookmarks }] = useBookmarkIdsQuery({
-    variables: { userId: user?.id as string, category }
-  })
+  const [{ data: bookmarkData, fetching: bookmarksFetching, error: errorBookmarks }] =
+    useBookmarkIdsQuery({
+      variables: { userId: user?.id as string, category }
+    })
 
   // Get array with all bookmarked project ids
   const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
@@ -97,6 +103,20 @@ const ComparePage: NextPageWithLayout = () => {
     }
   }, [urqlData])
 
+  useEffect(() => {
+    if (lastViewedPage !== category && bookmarkIds && !bookmarksFetching) {
+      setLastViewedPage(category)
+      setCategoryFilters({ ...filters, id: { in: bookmarkIds } })
+    }
+  }, [bookmarkIds])
+
+  useEffect(() => {
+    if (lastViewedPage === category && !bookmarksFetching) {
+      setCategoryFilters({ ...filters, id: bookmarkIds ? { in: bookmarkIds } : undefined })
+      setCategorySorting(sorting)
+    }
+  }, [filters, sorting])
+
   return (
     <ProjectsTable
       data={data}
@@ -112,7 +132,6 @@ const ComparePage: NextPageWithLayout = () => {
       pageSize={PAGE_SIZE}
       percentileStats={percentileStats}
       beforeTable={<CompareContent data={data} category={category} loading={loading} />}
-      loadingSkeletons={4}
     />
   )
 }

@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState, useMemo, ReactNode } from 'react'
+import { Dispatch, FC, SetStateAction, useMemo, ReactNode } from 'react'
 import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
 import { CombinedError } from 'urql'
 import FilterBar from '@/components/domain/projects/FilterBar'
@@ -9,6 +9,7 @@ import { PaginationParameters } from '@/components/domain/projects/types'
 import Error from '@/components/shared/Error'
 import Skeleton from '@/components/shared/Skeleton'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { useProjectTableVisibilityState } from '@/stores/useProjectTableState'
 import ProjectListItem from './ProjectListItem'
 
 type ProjectsTableProps = {
@@ -47,9 +48,9 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   updateFilters,
   setPagination,
   beforeTable,
-  loadingSkeletons = 10
+  loadingSkeletons = 2
 }) => {
-  const [columnVisibility, setColumnVisibility] = useState({})
+  const { columnVisibility, setColumnVisibility } = useProjectTableVisibilityState()
 
   const columns = useMemo(() => createColumns(percentileStats), [percentileStats])
 
@@ -77,7 +78,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
 
       {(Object.keys(filters).length > 0 || sorting) && (pageInfo || fetching) && !error && (
         <FilterBar
-          loading={fetching && !data}
+          loading={fetching}
           filters={filters}
           updateFilters={updateFilters}
           currentEntries={data?.length ?? 0}
@@ -98,7 +99,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
         {!error && (
           <div className='mx-4 my-2 md:w-full md:max-w-[calc(100vw-32px)] md:overflow-hidden lg:mx-6 lg:my-3.5 lg:max-w-[calc(100vw-224px-48px)]'>
             {/* Desktop */}
-            {fetching && !data ? (
+            {fetching ? (
               <div className='flex flex-col gap-2'>
                 {Array.from(Array(loadingSkeletons).keys()).map(i => (
                   <Skeleton key={i} className='h-12' />

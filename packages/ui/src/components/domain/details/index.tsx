@@ -3,7 +3,6 @@ import { useUser } from '@supabase/auth-helpers-react'
 import CommunitySentiment from '@/components/domain/details/CommunitySentiment'
 import ProjectInformation from '@/components/domain/details/ProjectInformation'
 import RightSidebar from '@/components/domain/details/RightSidebar'
-import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
 import { defaultSort } from '@/components/domain/projects/types'
 import Error from '@/components/shared/Error'
 import ChartWrapper, { DataPoint } from '@/components/shared/chart/ChartWrapper'
@@ -14,6 +13,12 @@ import {
   useProjectDetailsQuery,
   useProjectIdsQuery
 } from '@/graphql/generated/gql'
+import {
+  useBookmarkedProjectsState,
+  useCategoryProjectsState,
+  useLastViewedPageState,
+  useTrendingProjectsState
+} from '@/stores/useProjectTableState'
 import GithubStats from './GithubStats'
 import Navbar from './Navbar'
 
@@ -24,7 +29,27 @@ type DetailsProps = {
 /**
  * Project details component
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const Details = ({ id }: DetailsProps) => {
+  const { filters: trendingFilters, sorting: trendingSorting } = useTrendingProjectsState()
+  const { filters: bookmarkFilters, sorting: bookmarkSorting } = useBookmarkedProjectsState()
+  const { filters: categoryFilters, sorting: categorySorting } = useCategoryProjectsState()
+  const { lastViewedPage } = useLastViewedPageState()
+
+  const filters =
+    lastViewedPage === 'trending'
+      ? trendingFilters
+      : lastViewedPage === 'bookmarked'
+        ? bookmarkFilters
+        : categoryFilters
+
+  const sorting =
+    lastViewedPage === 'trending'
+      ? trendingSorting
+      : lastViewedPage === 'bookmarked'
+        ? bookmarkSorting
+        : categorySorting
+
   // States for navigation between projects
   const [currentProjectIndex, setCurrentProjectIndex] = useState<number>()
   const [previousProjectId, setPreviousProjectId] = useState<string>()
@@ -43,12 +68,13 @@ const Details = ({ id }: DetailsProps) => {
     variables: { userId: user?.id as string, projectId: id }
   })
 
-  // @TODO Make list of projects dependent on where the user came from (trending, bookmarked, compare)
-  // + add proper pagination
+  // @TODO Add pagination
   const [{ data: projectIds }] = useProjectIdsQuery({
     variables: {
-      orderBy: defaultSort,
-      filter: defaultFilters
+      orderBy: sorting || defaultSort,
+      filter: {
+        ...filters
+      }
     }
   })
 
@@ -129,7 +155,7 @@ const Details = ({ id }: DetailsProps) => {
               {
                 id: project?.id as string,
                 name: project?.name as string,
-                data: (selectedMetric === 'Stars'
+                data: (selectedMetric === 'stars'
                   ? project?.starHistory
                   : project?.forkHistory) as DataPoint[]
               }

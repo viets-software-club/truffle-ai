@@ -26,6 +26,8 @@ export type DataPoint = {
 
 type ChartWrapperProps = ChartProps & {
   loading?: boolean
+  multipleLines?: boolean
+  selectedMetric: string
   setSelectedMetric: (metric: string) => void
 }
 
@@ -52,7 +54,9 @@ const ChartWrapper = ({
   setSelectedMetric
 }: ChartWrapperProps) => {
   const [timeframe, setTimeframe] = useState<number>(-1)
-  const [chartDataOriginal] = useState<ChartWrapperProps['datasets']>([...datasets])
+  const [chartDataOriginal, setChartDataOriginal] = useState<ChartWrapperProps['datasets']>([
+    ...datasets
+  ])
   const [chartData, setChartData] = useState(chartDataOriginal)
   const [isDataNormalized, setIsDataNormalized] = useState(false)
 
@@ -97,6 +101,7 @@ const ChartWrapper = ({
 
   useEffect(() => {
     setChartData([...datasets])
+    setChartDataOriginal([...datasets])
   }, [datasets])
 
   return (
@@ -104,7 +109,7 @@ const ChartWrapper = ({
       {loading ? (
         <Skeleton className='h-96' />
       ) : datasets.length === 0 ? (
-        <p>No data</p>
+        <p className='py-16 text-center text-sm text-white/75'>No data to display</p>
       ) : (
         <div className='flex w-full flex-col gap-3'>
           <div className='flex flex-row gap-3 '>
@@ -125,11 +130,7 @@ const ChartWrapper = ({
             {multipleLines && <Button onClick={handleDataNormalization}>Normalize Data</Button>}
           </div>
 
-          <Chart
-            datasets={chartData}
-            multipleLines={multipleLines}
-            selectedMetric={selectedMetric}
-          />
+          <Chart datasets={chartData} />
         </div>
       )}
     </div>

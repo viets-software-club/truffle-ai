@@ -84,6 +84,7 @@ Along with the packages mentioned above, this repository also includes a lot of 
 
 ### Create and install Helm chart
 
+- Check out the branch you want to deploy
 - Make sure you have set the correct environment variables in `.env.<environment>`
 - Run `npm run k8s:<environment>` to change the Kubernetes cluster configuration to the given environment
 - Run `npm run alias:install` to install aliases

@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 import clsx from 'clsx'
 import formatNumber from '@/util/formatNumber'
-import Tooltip from './TooltipItem'
 
 enum Color {
   DEFAULT = 'text-white/75',
@@ -72,7 +71,8 @@ const GithubStatItem = ({
   return (
     <div
       className={clsx('flex flex-row items-center py-2.5 text-xs', gap, color)}
-      data-tooltip-id={id}>
+      data-tooltip-id='tooltip'
+      data-tooltip-content={id}>
       {Icon && <Icon className={clsx('h-[14px] w-[14px]', color)} />}
 
       {IconMetric}
@@ -90,8 +90,6 @@ const GithubStatItem = ({
       )}
 
       {growth && <span className='not-italic leading-3 text-white/50'>{growth}</span>}
-
-      <Tooltip id={id} />
     </div>
   )
 }

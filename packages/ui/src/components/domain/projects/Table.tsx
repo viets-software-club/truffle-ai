@@ -42,7 +42,17 @@ const Table = ({ table }: TableProps) => (
                   'rounded-l-lg': isFirstChild,
                   'rounded-r-lg': isLastChild
                 })}>
-                <Link href={`/details/${row.original.id as string}`} className='block p-2 pl-0'>
+                <Link
+                  href={`/details/${row.original.id as string}`}
+                  className='block p-2 pl-0'
+                  data-tooltip-id={cell.column.id === 'Name' ? 'tooltip' : undefined}
+                  data-tooltip-content={
+                    cell.column.id === 'Name'
+                      ? row.original.eli5 ?? row.original.about ?? 'No description'
+                      : undefined
+                  }
+                  data-tooltip-place='top'
+                  data-tooltip-offset={-5}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Link>
               </td>

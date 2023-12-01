@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import Link from 'next/link'
-import CommandInterface from '@/components/domain/commandinterface'
+import CommandMenu from '@/components/domain/cmdk'
 import AffinitySettings from '@/components/domain/settings/AffinitySettings'
 import DefaultFilters from '@/components/domain/settings/DefaultFilters'
 import DeleteAccount from '@/components/domain/settings/DeleteAccount'
@@ -35,7 +35,7 @@ const Settings = () => {
     <div className='flex flex-col'>
       <Sidebar sections={sections} onClick={scrollTo} />
 
-      <CommandInterface />
+      <CommandMenu />
 
       <div className='w-full px-6 py-4 text-white lg:ml-64 lg:w-auto lg:p-10 xl:px-20'>
         <h2 className='border-b border-white/5 pb-4 text-xl font-medium lg:mt-8'>General</h2>

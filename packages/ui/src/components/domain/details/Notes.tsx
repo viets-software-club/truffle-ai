@@ -11,6 +11,7 @@ const Notes = ({ projectId }: NotesProps) => {
 
   const [notes, setNotes] = useState<string>(persistedNotes || '')
   const [isEditing, setIsEditing] = useState(false)
+  const [textAreaScrollHeight, setTextAreaScrollHeight] = useState(0)
 
   useEffect(() => {
     setNotes(persistedNotes || '')
@@ -37,20 +38,26 @@ const Notes = ({ projectId }: NotesProps) => {
           <Textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
+            onFocus={e => setTextAreaScrollHeight(e.currentTarget.scrollHeight)}
+            onInput={e => setTextAreaScrollHeight(e.currentTarget.scrollHeight)}
             onBlur={() => {
               localStorage.setItem(`notes-${projectId}`, notes)
               setIsEditing(false)
             }}
-            className='h-auto min-w-0 p-2'
-            rows={notes.split('\n').length}
+            className='no-scrollbar h-auto min-w-0 resize-none p-2'
+            style={{
+              height: `${textAreaScrollHeight + 2}px`,
+              transition: 'border-color 0.2s ease-in-out'
+            }}
             autoFocus
           />
         ) : (
           <div className='flex flex-col gap-2'>
             {notes ? (
               <p className='text-sm text-white'>
-                {notes.split('\n').map(line => (
-                  <span key={line}>
+                {notes.split('\n').map((line, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <span key={index}>
                     {line}
                     <br />
                   </span>

@@ -64,33 +64,36 @@ const NavSidebar = () => {
             </div>
           ) : // Display categories as folders
           uniqueCategories.length > 0 ? (
-            uniqueCategories.map(category => (
-              <div key={category}>
-                <Group
-                  key={category}
-                  text={category as string}
-                  path={`/compare/${encodeURIComponent(category as string)}`}
-                  items={bookmarks
-                    .filter(bookmark => bookmark.category === category)
-                    .map(({ project }) => {
-                      if (!project) return null
-                      const { name, organization, associatedPerson } = project
+            uniqueCategories
+              .sort((a, b) => (a ?? '').localeCompare(b ?? ''))
+              .map(category => (
+                <div key={category}>
+                  <Group
+                    key={category}
+                    text={category as string}
+                    path={`/compare/${encodeURIComponent(category as string)}`}
+                    items={bookmarks
+                      .filter(bookmark => bookmark.category === category)
+                      .sort((a, b) => (a.project.name ?? '').localeCompare(b.project.name ?? ''))
+                      .map(({ project }) => {
+                        if (!project) return null
+                        const { name, organization, associatedPerson } = project
 
-                      return (
-                        <Item
-                          key={project.id as string}
-                          imageSrc={
-                            (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
-                          }
-                          text={name as string}
-                          path={`/details/${project.id as string}`}
-                          secondaryItem
-                        />
-                      )
-                    })}
-                />
-              </div>
-            ))
+                        return (
+                          <Item
+                            key={project.id as string}
+                            imageSrc={
+                              (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
+                            }
+                            text={name as string}
+                            path={`/details/${project.id as string}`}
+                            secondaryItem
+                          />
+                        )
+                      })}
+                  />
+                </div>
+              ))
           ) : (
             <p className='py-2.5 pl-5 text-xs text-white/90'>No bookmarks yet</p>
           )}

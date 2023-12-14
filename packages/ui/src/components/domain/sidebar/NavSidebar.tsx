@@ -5,7 +5,7 @@ import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/domain/sidebar'
 import Skeleton from '@/components/shared/Skeleton'
-import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import { Bookmark, PageInfo, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 import useSidebarCategories from '@/stores/useSidebarCategories'
 import Group from './Group'
 import Item from './Item'
@@ -19,30 +19,38 @@ const renderFooter = () => (
   </>
 )
 
+const PAGE_SIZE = 30
+
 const NavSidebar = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [pageInfo, setPageInfo] = useState<PageInfo>({
+    hasNextPage: true,
+    hasPreviousPage: false
+  })
 
   const user = useUser()
   const { categoriesLength, setCategoriesLength } = useSidebarCategories()
 
   // Fetch data from Supabase using generated Urql hook
   const [{ data: urqlData, fetching }] = useFilteredBookmarksQuery({
-    variables: { userId: user?.id as string }
+    variables: { userId: user?.id as string, first: PAGE_SIZE, after: pageInfo?.endCursor }
   })
 
   // Only update table data when urql data changes
   useEffect(() => {
-    if (urqlData) {
+    if (urqlData && pageInfo.hasNextPage) {
       const edges = urqlData?.bookmarkCollection?.edges
-
-      setBookmarks(edges?.map(edge => edge.node) as Bookmark[])
-
-      const newCategoriesLength = Array.from(new Set(edges?.map(edge => edge.node.category))).length
-
-      // Only update categoriesLength if it has changed
-      if (newCategoriesLength !== categoriesLength) setCategoriesLength(newCategoriesLength)
+      setBookmarks([...bookmarks, ...(edges?.map(edge => edge.node) as Bookmark[])])
+      setPageInfo(urqlData?.bookmarkCollection?.pageInfo as PageInfo)
     }
   }, [urqlData])
+
+  useEffect(() => {
+    const newCategoriesLength = Array.from(new Set(bookmarks?.map(b => b.category))).length
+
+    // Only update categoriesLength if it has changed
+    if (newCategoriesLength !== categoriesLength) setCategoriesLength(newCategoriesLength)
+  }, [bookmarks])
 
   const uniqueCategories = Array.from(new Set(bookmarks.map(bookmark => bookmark.category)))
 

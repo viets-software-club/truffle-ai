@@ -16,7 +16,7 @@ type ProjectInformationProps = {
   url: string
   explanation: string
   about: string
-  categories: string[]
+  // categories: string[]
   isBookmarked: boolean
   category?: string
   loading?: boolean
@@ -33,7 +33,6 @@ const ProjectInformation = ({
   name,
   explanation,
   about,
-  categories,
   isBookmarked,
   category,
   loading
@@ -85,17 +84,11 @@ const ProjectInformation = ({
             </a>
           )}
 
-          {categories?.length > 0 &&
-            categories[0] !== 'CategorizationError' &&
-            categories
-              .filter((value, index, array) => array.indexOf(value) === index)
-              .map(cat => (
-                <p
-                  key={cat}
-                  className='mx-1 rounded-md bg-white/5 px-2 py-0.5 text-xs font-normal text-white/75'>
-                  {cat}
-                </p>
-              ))}
+          {category && (
+            <span className='rounded-full border border-indigo-500/60 bg-indigo-500/60 px-3 py-1 text-xs text-white'>
+              {category}
+            </span>
+          )}
         </div>
 
         <div className='flex flex-row items-center justify-end gap-2'>

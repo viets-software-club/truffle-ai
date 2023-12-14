@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
+import { FiCompass, FiBookmark, FiSettings } from 'react-icons/fi'
 import { LuLogOut } from 'react-icons/lu'
 import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
@@ -7,6 +7,7 @@ import Sidebar from '@/components/domain/sidebar'
 import Skeleton from '@/components/shared/Skeleton'
 import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
 import useSidebarCategories from '@/stores/useSidebarCategories'
+import Group from './Group'
 import Item from './Item'
 import MobileMenu from './MobileMenu'
 import Section from './Section'
@@ -36,12 +37,10 @@ const NavSidebar = () => {
 
       setBookmarks(edges?.map(edge => edge.node) as Bookmark[])
 
-      const bookmarksLength = edges?.length as number
       const newCategoriesLength = Array.from(new Set(edges?.map(edge => edge.node.category))).length
 
       // Only update categoriesLength if it has changed
-      if (newCategoriesLength !== categoriesLength)
-        setCategoriesLength(newCategoriesLength + bookmarksLength)
+      if (newCategoriesLength !== categoriesLength) setCategoriesLength(newCategoriesLength)
     }
   }, [urqlData])
 
@@ -67,31 +66,29 @@ const NavSidebar = () => {
           uniqueCategories.length > 0 ? (
             uniqueCategories.map(category => (
               <div key={category}>
-                <Item
+                <Group
                   key={category}
-                  Icon={FiFolder}
                   text={category as string}
                   path={`/compare/${encodeURIComponent(category as string)}`}
-                />
-                {/* Display all projects in a category under their corresponding folder */}
-                {bookmarks
-                  .filter(bookmark => bookmark.category === category)
-                  .map(({ project }) => {
-                    if (!project) return null
-                    const { name, organization, associatedPerson } = project
+                  items={bookmarks
+                    .filter(bookmark => bookmark.category === category)
+                    .map(({ project }) => {
+                      if (!project) return null
+                      const { name, organization, associatedPerson } = project
 
-                    return (
-                      <Item
-                        key={project.id as string}
-                        imageSrc={
-                          (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
-                        }
-                        text={name as string}
-                        path={`/details/${project.id as string}`}
-                        secondaryItem
-                      />
-                    )
-                  })}
+                      return (
+                        <Item
+                          key={project.id as string}
+                          imageSrc={
+                            (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
+                          }
+                          text={name as string}
+                          path={`/details/${project.id as string}`}
+                          secondaryItem
+                        />
+                      )
+                    })}
+                />
               </div>
             ))
           ) : (

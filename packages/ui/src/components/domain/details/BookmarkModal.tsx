@@ -10,6 +10,7 @@ import {
   useEditBookmarkCategoryMutation,
   useFilteredBookmarksQuery
 } from '@/graphql/generated/gql'
+import useSidebarSync from '../sidebar/useSidebarSync'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'
 
@@ -33,6 +34,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
 
   const user = useUser()
+  const { sync } = useSidebarSync()
 
   const [{ data: bookmarks }] = useFilteredBookmarksQuery({
     variables: { userId: user?.id as string }
@@ -62,6 +64,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
 
         // If the mutation was successful, show success message
         if (responseCode >= 200 && responseCode < 300) {
+          sync()
           close()
         } else {
           // Otherwise, show error message
@@ -78,6 +81,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
 
         // If the mutation was successful, show success message
         if (responseCode >= 200 && responseCode < 300) {
+          sync()
           close()
         } else {
           // Otherwise, show error message
@@ -102,6 +106,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
 
       // If the mutation was successful, show success message
       if (responseCode >= 200 && responseCode < 300) {
+        sync()
         close()
       } else {
         // Otherwise, show error message

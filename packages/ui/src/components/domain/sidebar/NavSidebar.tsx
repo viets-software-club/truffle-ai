@@ -11,6 +11,7 @@ import Group from './Group'
 import Item from './Item'
 import MobileMenu from './MobileMenu'
 import Section from './Section'
+import useSidebarSync from './useSidebarSync'
 
 const renderFooter = () => (
   <>
@@ -29,21 +30,41 @@ const NavSidebar = () => {
   })
 
   const user = useUser()
+  const { counter } = useSidebarSync()
   const { categoriesLength, setCategoriesLength } = useSidebarCategories()
 
   // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching }] = useFilteredBookmarksQuery({
+  const [{ data: urqlData, fetching }, refetch] = useFilteredBookmarksQuery({
     variables: { userId: user?.id as string, first: PAGE_SIZE, after: pageInfo?.endCursor }
   })
 
-  // Only update table data when urql data changes
+  // Only update state when urql data changes
   useEffect(() => {
-    if (urqlData && pageInfo.hasNextPage) {
+    if (urqlData) {
       const edges = urqlData?.bookmarkCollection?.edges
-      setBookmarks([...bookmarks, ...(edges?.map(edge => edge.node) as Bookmark[])])
-      setPageInfo(urqlData?.bookmarkCollection?.pageInfo as PageInfo)
+      setBookmarks(
+        [...bookmarks, ...(edges?.map(edge => edge.node) as Bookmark[])].reduceRight(
+          (acc, bookmark) =>
+            acc.some(b => b.project?.id === bookmark.project?.id) ? acc : [...acc, bookmark],
+          [] as Bookmark[]
+        )
+      )
+
+      if (pageInfo.hasNextPage) {
+        setPageInfo(urqlData?.bookmarkCollection?.pageInfo as PageInfo)
+      }
     }
-  }, [urqlData])
+  }, [urqlData, pageInfo])
+
+  // Refetch when bookmarks are added or removed
+  useEffect(() => {
+    if (counter > 0) {
+      setPageInfo({ hasNextPage: true, hasPreviousPage: false, endCursor: null })
+      refetch({
+        requestPolicy: 'network-only'
+      })
+    }
+  }, [counter])
 
   useEffect(() => {
     const newCategoriesLength = Array.from(new Set(bookmarks?.map(b => b.category))).length
@@ -54,7 +75,6 @@ const NavSidebar = () => {
 
   const uniqueCategories = Array.from(new Set(bookmarks.map(bookmark => bookmark.category)))
 
-  // @TODO highlight current page in sidebar
   return (
     <>
       <Sidebar title='TruffleAI' footer={renderFooter()}>
@@ -80,25 +100,7 @@ const NavSidebar = () => {
                     key={category}
                     text={category as string}
                     path={`/compare/${encodeURIComponent(category as string)}`}
-                    items={bookmarks
-                      .filter(bookmark => bookmark.category === category)
-                      .sort((a, b) => (a.project.name ?? '').localeCompare(b.project.name ?? ''))
-                      .map(({ project }) => {
-                        if (!project) return null
-                        const { name, organization, associatedPerson } = project
-
-                        return (
-                          <Item
-                            key={project.id as string}
-                            imageSrc={
-                              (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
-                            }
-                            text={name as string}
-                            path={`/details/${project.id as string}`}
-                            secondaryItem
-                          />
-                        )
-                      })}
+                    bookmarks={bookmarks.filter(bookmark => bookmark.category === category)}
                   />
                 </div>
               ))

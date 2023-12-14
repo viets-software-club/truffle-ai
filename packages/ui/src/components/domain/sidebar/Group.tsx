@@ -1,29 +1,37 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HiOutlineFolder, HiOutlineFolderOpen } from 'react-icons/hi2'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ArrowRightIcon } from '@primer/octicons-react'
 import clsx from 'clsx'
+import { Bookmark } from '@/graphql/generated/gql'
+import Item from './Item'
 
 type GroupProps = {
   text: string
   path: string
-  items: ReactNode[]
+  bookmarks: Bookmark[]
 }
 
-const Group = ({ text, path, items }: GroupProps) => {
+const Group = ({ text, path, bookmarks }: GroupProps) => {
+  // Get project id and category from URL
   const {
-    query: { category: categoryFromUrl }
+    query: { category: categoryFromUrl, id: projectIdFromUrl }
   } = useRouter()
 
   const category =
     (typeof categoryFromUrl === 'string' ? categoryFromUrl : categoryFromUrl?.join('')) || ''
+  const projectId =
+    (typeof projectIdFromUrl === 'string' ? projectIdFromUrl : projectIdFromUrl?.join('')) || ''
 
   const [isExpanded, setIsExpanded] = useState(category === text)
 
+  // Expand group if user is on the corresponding compare page or on a project detail page which the category contains
   useEffect(() => {
-    setIsExpanded(category === text)
-  }, [category])
+    setIsExpanded(
+      category === text || bookmarks.some(bookmark => bookmark.project.id === projectId)
+    )
+  }, [category, projectId, bookmarks, text])
 
   const Icon = isExpanded ? HiOutlineFolderOpen : HiOutlineFolder
 
@@ -57,9 +65,24 @@ const Group = ({ text, path, items }: GroupProps) => {
           isExpanded ? 'visible opacity-100' : 'invisible opacity-0'
         )}
         style={{
-          maxHeight: isExpanded ? `${items.length * 36 + (items.length - 1) * 4}px` : '0px'
+          maxHeight: isExpanded ? `${bookmarks.length * 36 + (bookmarks.length - 1) * 4}px` : '0px'
         }}>
-        {items}
+        {bookmarks
+          .sort((a, b) => (a.project.name ?? '').localeCompare(b.project.name ?? ''))
+          .map(({ project }) => {
+            if (!project) return null
+            const { name, organization, associatedPerson } = project
+
+            return (
+              <Item
+                key={project.id as string}
+                imageSrc={(organization?.avatarUrl || associatedPerson?.avatarUrl) as string}
+                text={name as string}
+                path={`/details/${project.id as string}`}
+                secondaryItem
+              />
+            )
+          })}
       </div>
     </div>
   )

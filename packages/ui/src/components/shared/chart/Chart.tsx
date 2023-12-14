@@ -83,6 +83,7 @@ const ChartComponent = ({ datasets }: ChartProps) => {
           plugins: {
             ...chartOptions.plugins,
             legend: {
+              display: chartData.datasets.length > 1,
               ...chartOptions.plugins?.legend,
               onHover: handleLegendItemHover,
               onLeave: handleLegendItemLeave

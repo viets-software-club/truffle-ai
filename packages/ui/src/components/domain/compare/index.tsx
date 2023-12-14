@@ -82,7 +82,7 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
             id: project.id as string,
             name: project.name as string,
             data:
-              selectedMetric === 'Stars'
+              selectedMetric === 'stars'
                 ? (project.starHistory as DataPoint[])
                 : (project.forkHistory as DataPoint[])
           })) ?? []

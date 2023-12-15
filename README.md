@@ -90,7 +90,7 @@ Along with the packages mentioned above, this repository also includes a lot of 
 - Run `npm run alias:install` to install aliases
 - Run `npm run variables:env` and `npm run variables:values` to generate config and secret maps
 - To deploy to the dev cluster, run `npm run helm:app:local` to create and install a new Helm chart (dry run is enabled by default)
-- To deploy to the prod cluster, first create a new release by running `git tag <version>` and then `git push --tags`, then run `npm run helm:app:publish` and use the version you tagged the release with
+- To deploy to the prod cluster, first create a new release by running `git tag <version>` and then `git push --tags`, then run `npm run helm:app:publish` and use the version (without the v at the start) you tagged the release with
 - To uninstall previously installed charts, use `npm run helm:app:uninstall:<environment>`
 
 ## Design decisions

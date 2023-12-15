@@ -1,0 +1,75 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "dist/index/index.ts",
+  "targets": {
+    "main": false,
+    "browser": false,
+    "index": {
+      "context": "node",
+      "outputFormat": "esmodule",
+      "source": "src/index.ts",
+      "distDir": "dist/index"
+    },
+    "test": {
+      "context": "node",
+      "outputFormat": "esmodule",
+      "source": "test/index.ts",
+      "distDir": "dist/test"
+    },
+    "scrapingbot": {
+      "context": "node",
+      "outputFormat": "esmodule",
+      "source": [
+        "test/scrapingbot/twitterSearch.ts",
+        "test/scrapingbot/linkedinCompanyProfile.ts"
+      ],
+      "distDir": "dist/test/scrapingbot"
+    },
+    "scraping-browser": {
+      "context": "node",
+      "outputFormat": "esmodule",
+      "source": [
+        "test/scraping-browser/twitter.ts"
+      ],
+      "distDir": "dist/test/scraping-browser"
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch --target index",
+    "build": "parcel build --target index",
+    "build:test": "parcel build --target test --no-cache",
+    "build:test:scrapingbot": "parcel build --target scrapingbot --no-cache",
+    "build:test:scraping-browser": "parcel build --target scraping-browser --no-cache",
+    "watch:test": "parcel watch --target test",
+    "watch-run:test": "parcel watch --target test & node --watch ./dist/test/index.js",
+    "start:test": "node ./dist/test/index.js",
+    "start:test:scrapingbot:linkedinCompanyProfile": "node ./dist/test/scrapingbot/linkedinCompanyProfile.js",
+    "start:test:scrapingbot:twitterSearch": "node ./dist/test/scrapingbot/twitterSearch.js",
+    "start:test:scraping-browser:twitter": "node ./dist/test/scraping-browser/twitter.js",
+    "supabase:login": "npx supabase login",
+    "types:supabase": "echo \"If you are not logged in to supabase, do that first.\"; npx supabase gen types typescript --project-id \"$SUPABASE_REFERENCE_ID\" --schema 'public' > types/supabase.d.ts",
+    "types:codegen": "graphql-codegen --config codegen.ts",
+    "copy-dts": "copyfiles -u 1 \"src/**/*.d.ts\" dist"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "copyfiles": "^2.4.1",
+    "parcel": "^2.10.3",
+    "supabase": "^1.113.3",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "graphql": "^16.8.1",
+    "octokit": "^3.1.2",
+    "postgres": "^3.4.3",
+    "puppeteer-core": "^21.6.0",
+    "showdown": "^2.1.0"
+  }
+}

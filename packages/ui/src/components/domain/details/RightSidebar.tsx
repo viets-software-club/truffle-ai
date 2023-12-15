@@ -8,6 +8,7 @@ import { Project } from '@/graphql/generated/gql'
 import { AffinityData } from '@/util/sendToAffinity'
 import SendToAffinity from '../settings/SendToAffinity'
 import GithubStats from './GithubStats'
+import Notes from './Notes'
 
 type RightSidebarProps = {
   project?: Project
@@ -89,6 +90,8 @@ const RightSidebar = ({ project, loading }: RightSidebarProps) => {
               <SendToAffinity {...sendToAffinityProps} />
             </div>
           </Box>
+
+          <Notes projectId={project.id as string} />
         </>
       ) : null}
     </SmallSidebar>

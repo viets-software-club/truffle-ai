@@ -1260,6 +1260,8 @@ export type FilteredBookmarksQueryVariables = Exact<{
   userId: Scalars['UUID']
   category?: InputMaybe<Scalars['String']>
   projectId?: InputMaybe<Scalars['UUID']>
+  first?: InputMaybe<Scalars['Int']>
+  after?: InputMaybe<Scalars['Cursor']>
 }>
 
 export type FilteredBookmarksQuery = {
@@ -1283,6 +1285,7 @@ export type FilteredBookmarksQuery = {
         }
       }
     }>
+    pageInfo: { __typename?: 'PageInfo'; hasNextPage: boolean; endCursor?: string | null }
   } | null
 }
 
@@ -1523,13 +1526,21 @@ export function useBookmarkIdsQuery(
   })
 }
 export const FilteredBookmarksDocument = gql`
-  query FilteredBookmarks($userId: UUID!, $category: String, $projectId: UUID) {
+  query FilteredBookmarks(
+    $userId: UUID!
+    $category: String
+    $projectId: UUID
+    $first: Int
+    $after: Cursor
+  ) {
     bookmarkCollection(
       filter: {
         userId: { eq: $userId }
         category: { eq: $category }
         projectId: { eq: $projectId }
       }
+      first: $first
+      after: $after
     ) {
       edges {
         node {
@@ -1548,6 +1559,10 @@ export const FilteredBookmarksDocument = gql`
             }
           }
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }

@@ -11,16 +11,11 @@ type ItemProps = {
   highlighted?: boolean
 }
 
-/**
- * Item for main sidebar (3 types: overview, category/ folder, project)
- */
 const Item = ({ Icon, imageSrc, text, path, secondaryItem, highlighted }: ItemProps) => (
   <div
     className={clsx(
       'relative flex flex-col justify-between rounded-md transition-colors duration-75 hover:bg-white/5',
-      {
-        'bg-white/10': highlighted
-      }
+      highlighted && 'bg-white/10'
     )}>
     <Link href={path}>
       <div className='inline-flex w-full items-center justify-between py-2.5 pl-5'>

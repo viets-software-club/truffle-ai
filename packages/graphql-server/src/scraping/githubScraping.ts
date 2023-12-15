@@ -27,6 +27,7 @@ export async function fetchTrendingRepos(timeMode2: timeMode) {
     trendingSplit.push(stringSplit[0])
     trendingSplit.push(stringSplit[1])
   })
+
   return trendingSplit
 }
 
@@ -61,7 +62,7 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
       continue
     }
   }
-  console.log("ReadMe couldn't be found")
+  console.log("Readme couldn't be found")
   return ' '
 }
 

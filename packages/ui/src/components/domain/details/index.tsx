@@ -139,7 +139,7 @@ const Details = ({ id }: DetailsProps) => {
             url={project?.githubUrl as string}
             explanation={project?.eli5 || 'No explanation'}
             about={project?.about || 'No description'}
-            categories={project?.categories as string[]}
+            // categories={project?.categories as string[]}
             isBookmarked={isBookmarked}
             category={category}
             loading={loading}

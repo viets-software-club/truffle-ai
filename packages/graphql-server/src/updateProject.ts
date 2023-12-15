@@ -1,23 +1,23 @@
-import supabaseClient from './supabaseClient'
-import {
-  getPersonID,
-  getProjectID,
-  updateSupabaseProject,
-  repoIsAlreadyInDB,
-  formatGithubStats,
-  getProjectAbout
-} from './supabaseUtils'
+import { GitHubInfo, ProjectFounder } from '../types/githubApi'
+import { ProjectUpdate } from '../types/supabaseUtils'
+import { TrendingState } from '../types/updateProject'
 import { getContributorCount, getRepoFounders, getRepositoryTopics } from './api/githubApi'
 import { getCategoriesFromGPT, getELI5FromReadMe, getHackernewsSentiment } from './api/openAIApi'
+import { getRepoForkRecords } from './githubHistory/forkHistory'
+import { getRepoStarRecords } from './githubHistory/starHistory'
 import { fetchRepositoryReadme } from './scraping/githubScraping'
 import { searchHackerNewsStories } from './scraping/hackerNewsScraping'
-import { getRepoStarRecords } from './githubHistory/starHistory'
-import { getGithubData } from './utils'
-import { GitHubInfo, ProjectFounder } from '../types/githubApi'
-import { TrendingState } from '../types/updateProject'
-import { ProjectUpdate } from '../types/supabaseUtils'
 import { getPostsForHashtag } from './scraping/twitterScraping'
-import { getRepoForkRecords } from './githubHistory/forkHistory'
+import supabaseClient from './supabaseClient'
+import {
+  formatGithubStats,
+  getPersonID,
+  getProjectAbout,
+  getProjectID,
+  repoIsAlreadyInDB,
+  updateSupabaseProject
+} from './supabaseUtils'
+import { getGithubData } from './utils'
 
 export {
   updateAllProjectInfo,
@@ -53,7 +53,7 @@ const updateAllProjectInfo = async (
   await updateProjectSentiment(repoName, owner)
   await updateProjectStarHistory(repoName, owner)
   await updateProjectForkHistory(repoName, owner)
-  await updateProjectTweets(repoName, owner)
+  // await updateProjectTweets(repoName, owner)
   await updateProjectCategories(repoName, owner)
   if (trendingState) {
     await updateProjectTrendingState(repoName, owner, trendingState)

@@ -40,15 +40,19 @@ export async function fetchTrendingRepos(timeMode2: timeMode) {
 export async function fetchRepositoryReadme(owner: string, name: string) {
   // these paths exists to check in multiple locations for the readme files
   const readmePaths: string[] = [
-    `https://raw.githubusercontent.com/${owner}/${name}/release/readme.md`,
-    `https://raw.githubusercontent.com/${owner}/${name}/dev/README.rst`,
-    `https://raw.githubusercontent.com/${owner}/${name}/main/README.md`,
-    `https://raw.githubusercontent.com/${owner}/${name}/master/README.md`
+    `release/readme.md`,
+    `dev/README.rst`,
+    `main/README.md`,
+    `master/README.md`,
+    `main/readme.md`,
+    `master/readme.md`
   ]
 
   for (let i = 0; i < readmePaths.length; i++) {
     try {
-      const response: AxiosResponse<string> = await axios.get(readmePaths[i])
+      const response: AxiosResponse<string> = await axios.get(
+        `https://raw.githubusercontent.com/${owner}/${name}/${readmePaths[i]}`
+      )
       const converter = new showdown.Converter()
 
       // Use the converter object to convert Markdown to HTML to String:
@@ -62,7 +66,7 @@ export async function fetchRepositoryReadme(owner: string, name: string) {
       continue
     }
   }
-  console.log("Readme couldn't be found")
+  console.error("Readme couldn't be found")
   return ' '
 }
 

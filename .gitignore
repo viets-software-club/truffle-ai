@@ -75,3 +75,5 @@ terraform.rc
 
 # Golang
 go.work.sum
+go-server
+go.sum

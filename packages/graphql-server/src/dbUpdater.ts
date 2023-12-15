@@ -122,7 +122,7 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
   for (let i = 0; i < repos.length / 2; i++) {
     const owner = repos[2 * i]
     const name = repos[2 * i + 1]
-    console.log('#### Processing', name, 'owned by', owner, '###')
+    console.log('Processing', name, 'owned by', owner)
     // if it is in the database already only the trending state has to be updated
     await createProject(name, owner, trendingState)
   }
@@ -168,7 +168,7 @@ export const createProject = async (
       )
       return false
     } else {
-      console.log('inserted project', repoName, 'owned by', owner)
+      console.log('Inserted project', repoName, 'owned by', owner)
       // update all the data sources. trending state may be null
       await updateAllProjectInfo(repoName, owner, trendingState)
       return true

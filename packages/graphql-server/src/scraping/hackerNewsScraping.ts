@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 import {
-  HackerNewsStoriesResponse,
-  HackerNewsStoriesResponseHitsArray,
-  HackerNewsStoriesResponseHit,
+  GetHackerNewsCommentsResponseHitArray,
   GetHackerNewsCommentsResponseHits,
-  GetHackerNewsCommentsResponseHitArray
+  HackerNewsStoriesResponse,
+  HackerNewsStoriesResponseHit,
+  HackerNewsStoriesResponseHitsArray
 } from '../../types/hackerNewsScraping'
 
 export { searchHackerNewsStories }
@@ -48,8 +48,8 @@ async function searchHackerNewsStories(name: string) {
     } else {
       return null
     }
-  } catch (error) {
-    console.log('Error fetching HTML code:', error)
+  } catch (e) {
+    console.error('Error in searchHackerNewsStories', e)
     return null
   }
 }
@@ -74,8 +74,8 @@ async function getHackerNewsCommentsByPostId(story_id: string) {
     }
 
     return comments
-  } catch (error) {
-    console.log('Error fetching data:', error)
+  } catch (e) {
+    console.error('Error in getHackerNewsCommentsByPostId', e)
   }
 }
 

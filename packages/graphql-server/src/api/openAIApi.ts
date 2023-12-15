@@ -47,8 +47,8 @@ async function getELI5FromReadMe(readMe: string) {
       const content: string = data.choices[0].message.content
       return content
     }
-  } catch (error) {
-    console.log('there was an error with the Eli5. Probably the ReadMe file ')
+  } catch (e) {
+    console.error('Error in getEli5FromReadme', e)
     return null
   }
 }
@@ -89,8 +89,8 @@ async function getHackernewsSentiment(comments: string) {
       const content: string = data.choices[0].message.content
       return content
     }
-  } catch (error) {
-    console.log('OpenAI request did not work out: ', error)
+  } catch (e) {
+    console.error('Error in getHackernewsSentiment:', e)
     return null
   }
 }
@@ -143,7 +143,8 @@ export const getCategoriesFromGPT = async (topics: string[] | null, description:
     return categoryNumbers.map((categoryNumber) => {
       return Category[Number(categoryNumber)]
     })
-  } catch (error) {
+  } catch (e) {
+    console.error('Error in getCategoriesFromGPT:', e)
     return [Category['9']]
   }
 }

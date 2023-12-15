@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
+import { RowPinningState } from '@tanstack/react-table'
 import CompareContent from '@/components/domain/compare'
 import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
@@ -14,7 +15,11 @@ import {
   useTrendingProjectsQuery,
   ProjectOrderBy
 } from '@/graphql/generated/gql'
-import { useCategoryProjectsState, useLastViewedPageState } from '@/stores/useProjectTableState'
+import {
+  useCategoryProjectsState,
+  useComparePageRowPinningState,
+  useLastViewedPageState
+} from '@/stores/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from '../_app'
 
@@ -37,6 +42,8 @@ const ComparePage: NextPageWithLayout = () => {
   const { setFilters: setCategoryFilters, setSorting: setCategorySorting } =
     useCategoryProjectsState()
   const { lastViewedPage, setLastViewedPage } = useLastViewedPageState()
+
+  const { rowPinning, setRowPinning } = useComparePageRowPinningState()
 
   const [data, setData] = useState<Project[]>()
   const [loading, setLoading] = useState(true)
@@ -132,6 +139,24 @@ const ComparePage: NextPageWithLayout = () => {
       pageSize={PAGE_SIZE}
       percentileStats={percentileStats}
       beforeTable={<CompareContent data={data} category={category} loading={loading} />}
+      hideTimeFrame
+      showPinned
+      rowPinning={{
+        top: rowPinning[category]
+      }}
+      setRowPinning={(
+        pinning: RowPinningState | ((prevState: RowPinningState) => RowPinningState)
+      ) => {
+        setRowPinning({
+          ...rowPinning,
+          [category]: [
+            ...(rowPinning[category] ?? []),
+            ...((typeof pinning === 'function'
+              ? pinning({ top: rowPinning[category] }).top
+              : pinning.top) ?? [])
+          ].filter((value, index, self) => self.indexOf(value) === index)
+        })
+      }}
     />
   )
 }

@@ -1,7 +1,6 @@
-import Link from 'next/link'
 import { useReactTable, flexRender } from '@tanstack/react-table'
-import clsx from 'clsx'
 import { Project } from '@/graphql/generated/gql'
+import TableRow from './TableRow'
 
 type TableProps = {
   table: ReturnType<typeof useReactTable<Project>>
@@ -29,36 +28,14 @@ const Table = ({ table }: TableProps) => (
     </thead>
 
     <tbody>
-      {table.getRowModel().rows.map(row => (
-        <tr key={row.id} className='cursor-pointer transition-colors duration-75 hover:bg-white/10'>
-          {row.getVisibleCells().map((cell, cellIndex) => {
-            const isFirstChild = cellIndex === 0
-            const isLastChild = cellIndex === row.getVisibleCells().length - 1
+      {/* Pinned rows */}
+      {table.getTopRows().map(row => (
+        <TableRow key={row.id} row={row} />
+      ))}
 
-            return (
-              <td
-                key={cell.id}
-                className={clsx('text-left', {
-                  'rounded-l-lg': isFirstChild,
-                  'rounded-r-lg': isLastChild
-                })}>
-                <Link
-                  href={`/details/${row.original.id as string}`}
-                  className='block p-2 pl-0'
-                  data-tooltip-id={cell.column.id === 'Name' ? 'tooltip' : undefined}
-                  data-tooltip-content={
-                    cell.column.id === 'Name'
-                      ? row.original.eli5 ?? row.original.about ?? 'No description'
-                      : undefined
-                  }
-                  data-tooltip-place='top'
-                  data-tooltip-offset={-5}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Link>
-              </td>
-            )
-          })}
-        </tr>
+      {/* Normal rows */}
+      {table.getCenterRows().map(row => (
+        <TableRow key={row.id} row={row} />
       ))}
     </tbody>
   </table>

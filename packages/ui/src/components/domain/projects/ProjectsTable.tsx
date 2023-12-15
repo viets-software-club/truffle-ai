@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useMemo, ReactNode } from 'react'
-import { useReactTable, getCoreRowModel } from '@tanstack/react-table'
+import { useReactTable, getCoreRowModel, RowPinningState } from '@tanstack/react-table'
 import { CombinedError } from 'urql'
 import FilterBar from '@/components/domain/projects/FilterBar'
 import Table from '@/components/domain/projects/Table'
@@ -28,11 +28,11 @@ type ProjectsTableProps = {
   setPagination: Dispatch<SetStateAction<PaginationParameters>>
   beforeTable?: ReactNode
   loadingSkeletons?: number
+  showPinned?: boolean
+  rowPinning?: RowPinningState
+  setRowPinning?: Dispatch<SetStateAction<RowPinningState>>
 }
 
-/**
- * Table for displaying trending projects
- */
 const ProjectsTable: FC<ProjectsTableProps> = ({
   data,
   filters,
@@ -48,19 +48,27 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   updateFilters,
   setPagination,
   beforeTable,
-  loadingSkeletons = 2
+  loadingSkeletons = 2,
+  showPinned = false,
+  rowPinning = {},
+  setRowPinning
 }) => {
   const { columnVisibility, setColumnVisibility } = useProjectTableVisibilityState()
 
-  const columns = useMemo(() => createColumns(percentileStats), [percentileStats])
+  const columns = useMemo(() => createColumns(percentileStats, showPinned), [percentileStats])
 
   // Initialize TanStack table
   const table = useReactTable({
     data: data ?? [],
     columns,
     state: {
-      columnVisibility
+      columnVisibility: {
+        ...columnVisibility,
+        Pin: showPinned
+      },
+      rowPinning
     },
+    onRowPinningChange: setRowPinning,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel()
   })
@@ -68,7 +76,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
   return (
     <>
       <TopBar
-        columns={table.getAllLeafColumns()}
+        columns={table.getAllLeafColumns().filter(column => column.id !== 'Pin')}
         filters={filters}
         hideTimeFrame={hideTimeFrame}
         sorting={sorting}

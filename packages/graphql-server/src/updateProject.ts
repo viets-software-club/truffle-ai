@@ -54,7 +54,7 @@ const updateAllProjectInfo = async (
   await updateProjectStarHistory(repoName, owner)
   await updateProjectForkHistory(repoName, owner)
   // await updateProjectTweets(repoName, owner)
-  await updateProjectCategories(repoName, owner)
+  // await updateProjectCategories(repoName, owner)
   if (trendingState) {
     await updateProjectTrendingState(repoName, owner, trendingState)
   }

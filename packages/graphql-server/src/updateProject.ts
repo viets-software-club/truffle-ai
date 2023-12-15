@@ -83,9 +83,9 @@ const updateProjectELI5 = async (name: string, owner: string) => {
     const readMe = (await fetchRepositoryReadme(owner, name)).slice(0, 2500)
     const description = await getELI5FromReadMe(readMe)
     const updated = await updateSupabaseProject(name, owner, { eli5: description })
-    updated && console.log('updated eli5 of ', name, 'owned by', owner)
+    updated && console.log('Updated eli5 of', name, 'owned by', owner)
   } catch (e) {
-    console.error('Error while fetching readme for ', name, 'owned by', owner)
+    console.error('Error while fetching readme for', name, 'owned by', owner)
     await updateSupabaseProject(name, owner, {
       eli5: 'ELI5/description could not be generated for this project'
     })
@@ -153,8 +153,7 @@ const updateProjectForkHistory = async (repoName: string, owner: string) => {
     )
     await updateSupabaseProject(repoName, owner, { fork_history: forkHistory })
   } catch (e) {
-    console.log('Error in updateProjectForkHistory:')
-    console.log(e)
+    console.error('Error in updateProjectForkHistory:', e)
   }
 }
 
@@ -168,7 +167,7 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
   if (!(await repoIsAlreadyInDB(name, owner))) return
   const githubStats: GitHubInfo | null = await getGithubData(name, owner)
   if (!githubStats) {
-    console.log('Could not get github stats for ', name, 'owned by', owner)
+    console.error('Could not get github stats for', name, 'owned by', owner)
     return
   }
 
@@ -192,9 +191,9 @@ const updateProjectGithubStats = async (name: string, owner: string) => {
   })
 
   if (!updated) {
-    console.log('Could not update github stats for ', name, 'owned by', owner)
+    console.error('Could not update github stats for', name, 'owned by', owner)
   } else {
-    console.log('Updated github stats for ', name, 'owned by', owner)
+    console.log('Updated github stats for', name, 'owned by', owner)
   }
 }
 
@@ -220,7 +219,7 @@ const updateProjectSentiment = async (repoName: string, owner: string) => {
   }
 
   if (!allComments) {
-    console.log('No comments found for ', repoName, 'owned by', owner)
+    console.error('No comments found for', repoName, 'owned by', owner)
     return
   }
 
@@ -231,9 +230,9 @@ const updateProjectSentiment = async (repoName: string, owner: string) => {
       hackernews_stories: allLinks
     })
   ) {
-    console.log('updated sentiment for ', repoName, 'owned by', owner)
+    console.log('Updated sentiment for', repoName, 'owned by', owner)
   } else {
-    console.log('Error while updating sentiment for ', repoName, 'owned by', owner)
+    console.error('Error while updating sentiment for', repoName, 'owned by', owner)
   }
 }
 
@@ -254,14 +253,13 @@ const updateProjectStarHistory = async (repoName: string, owner: string) => {
       MAX_NUMBER_OF_REQUESTS
     )
     if (!starHistory) {
-      console.log('No star history found for ', repoName, 'owned by', owner)
+      console.log('No star history found for', repoName, 'owned by', owner)
     } else {
       const updated = await updateSupabaseProject(repoName, owner, { star_history: starHistory })
-      if (updated) console.log('updated star history for ', repoName, 'owned by', owner)
+      if (updated) console.log('Updated star history for', repoName, 'owned by', owner)
     }
   } catch (e) {
-    console.log('Error in updateProjectStarHistory: ')
-    console.log(e)
+    console.error('Error in updateProjectStarHistory:', e)
   }
 }
 
@@ -283,7 +281,7 @@ const updateProjectTrendingState = async (
   projectUpdate[trendingState] = true
 
   const updated = await updateSupabaseProject(name, owner, projectUpdate)
-  updated ? console.log('updated trending state of ', name, ' to ', trendingState) : null
+  updated ? console.log('Updated trending state of', name, 'to', trendingState) : null
 }
 
 /**

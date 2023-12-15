@@ -30,7 +30,7 @@ export async function getRepoInfo(query: string, authToken: string): Promise<Git
     )
     return response.data.data.repository
   } catch (e) {
-    console.log(e)
+    console.error('Error in getRepoInfo:', e)
     return null
   }
 }
@@ -228,9 +228,8 @@ export async function getRepositoryTopics(
     const lastPageMatch = linkHeader?.match(/page=(\d+)>; rel="last"/)
     const lastPage: number = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
     return lastPage
-  } catch (error) {
-    console.error(error)
-    console.error('Error in getContributors')
+  } catch (e) {
+    console.error('Error in getContributors:', e)
     return 0
   }
 }

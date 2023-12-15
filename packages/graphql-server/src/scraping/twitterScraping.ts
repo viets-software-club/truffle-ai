@@ -25,8 +25,8 @@ export async function getPostsForHashtag(hashtag: string): Promise<TwitterPost[]
     if (!data.tweets || !Array.isArray(data.tweets)) return null
 
     return mapToTwitterPosts(data.tweets)
-  } catch (error) {
-    console.log("Error while fetching Twitter posts for hashtag '" + hashtag + "'")
+  } catch (e) {
+    console.log("Error while fetching Twitter posts for hashtag '" + hashtag + "':", e)
     return null
   }
 }

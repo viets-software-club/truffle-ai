@@ -1,10 +1,10 @@
+import { UserResponse } from '@supabase/supabase-js'
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import mercurius from 'mercurius'
-import { UserResponse } from '@supabase/supabase-js'
+import { automaticDbUpdater } from './dbUpdater'
 import resolvers from './graphql/resolvers'
 import schema from './graphql/schema'
 import supbaseClient from './supabaseClient'
-import { automaticDbUpdater } from './dbUpdater'
 
 const ENV = process.env.NODE_ENV || 'development'
 

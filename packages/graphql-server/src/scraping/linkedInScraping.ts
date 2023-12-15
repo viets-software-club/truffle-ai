@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { LinkedInCompanyProfile, CompanyDataResponse } from '../../types/linkedInScraping'
+import { CompanyDataResponse, LinkedInCompanyProfile } from '../../types/linkedInScraping'
 
 const username = process.env.SCRAPING_BOT_USER_NAME || ''
 const apiKey = process.env.SCRAPING_BOT_API_KEY || ''
@@ -77,9 +77,8 @@ export async function getCompanyInfosFromLinkedIn(
       hqLocation: finalData.Headquarters ?? '',
       specialties: finalData.Specialties ?? ''
     }
-  } catch (error) {
-    console.error("Error in getCompanyInfosFromLinkedIn for company '" + linkedInHandle + "'")
-    console.log(error)
+  } catch (e) {
+    console.error("Error in getCompanyInfosFromLinkedIn for company '" + linkedInHandle + "':", e)
     return null
   }
 }

@@ -5,9 +5,11 @@ import { VscIssues } from 'react-icons/vsc'
 import Image from 'next/image'
 import { IssueOpenedIcon, PersonIcon, RepoForkedIcon } from '@primer/octicons-react'
 import { createColumnHelper } from '@tanstack/react-table'
+import clsx from 'clsx'
 import GitHubMetricIcon from '@/components/shared/GitHubMetricIcon'
 import GitHubStatisticItem from '@/components/shared/GithubStatItem'
 import { Project } from '@/graphql/generated/gql'
+import Pin from './Pin'
 
 type TenPercent = { [key in keyof Project]?: number | null }
 
@@ -19,15 +21,22 @@ export type PercentileStats = {
 }
 
 // eslint-disable-next-line max-lines-per-function
-const createColumns = ({
-  topTenPercent,
-  topTwentyPercent,
-  bottomTenPercent,
-  bottomTwentyPercent
-}: PercentileStats) => {
+const createColumns = (
+  { topTenPercent, topTwentyPercent, bottomTenPercent, bottomTwentyPercent }: PercentileStats,
+  showPinned?: boolean
+) => {
   const columnHelper = createColumnHelper<Project>()
 
   return [
+    // Pin column definition
+    columnHelper.accessor(project => project, {
+      id: 'Pin',
+      header: '',
+      enableColumnFilter: false,
+      cell: ({ row }) => (
+        <Pin isPinned={row.getIsPinned()} pin={() => row.pin('top')} unpin={() => row.pin(false)} />
+      )
+    }),
     // Logo column definition
     columnHelper.accessor(
       ({ organization, associatedPerson }) =>
@@ -36,7 +45,8 @@ const createColumns = ({
         header: 'Logo',
         enableColumnFilter: false,
         cell: info => (
-          <div className='relative ml-3 h-6 w-6 overflow-hidden rounded-md'>
+          <div
+            className={clsx('relative h-6 w-6 overflow-hidden rounded-md', !showPinned && 'ml-3')}>
             <Image src={info.getValue() as string} alt='logo' fill sizes='24px' />
           </div>
         )

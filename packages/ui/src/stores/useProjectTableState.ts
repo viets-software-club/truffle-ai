@@ -120,3 +120,25 @@ export const useLastViewedPageState = create<LastViewedPageState>()(
     }
   )
 )
+
+interface ComparePageRowPinningState {
+  rowPinning: {
+    [categoryId: string]: string[]
+  }
+  setRowPinning: (rowPinning: { [categoryId: string]: string[] }) => void
+}
+
+export const useComparePageRowPinningState = create<ComparePageRowPinningState>()(
+  persist(
+    set => ({
+      rowPinning: {},
+      setRowPinning: (rowPinning: { [categoryId: string]: string[] }) => {
+        set({ rowPinning })
+      }
+    }),
+    {
+      storage: createJSONStorage(() => localStorage),
+      name: 'ComparePageRowPinningState'
+    }
+  )
+)

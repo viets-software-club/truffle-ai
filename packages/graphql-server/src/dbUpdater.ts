@@ -1,25 +1,24 @@
+import { ProjectInfo } from '../types/supabaseUtils'
+import { TrendingState } from '../types/updateProject'
+import { fetchTrendingRepos } from './scraping/githubScraping'
 import supabaseClient from './supabaseClient'
+import {
+  deleteNotTrendingAndNotBookmarkedProjects,
+  deleteStaleAssociatedPersons,
+  deleteStaleOrganizations,
+  getOrganizationID,
+  getPersonID,
+  getTrendingAndBookmarkedProjects,
+  purgeTrendingState,
+  repoIsAlreadyInDB
+} from './supabaseUtils'
 import {
   updateAllProjectInfo,
   updateProjectForkHistory,
   updateProjectGithubStats,
   updateProjectStarHistory,
-  updateProjectTrendingStatesForListOfRepos,
-  updateProjectTweets
+  updateProjectTrendingStatesForListOfRepos
 } from './updateProject'
-import {
-  getOrganizationID,
-  getPersonID,
-  purgeTrendingState,
-  repoIsAlreadyInDB,
-  deleteNotTrendingAndNotBookmarkedProjects,
-  getTrendingAndBookmarkedProjects,
-  deleteStaleOrganizations,
-  deleteStaleAssociatedPersons
-} from './supabaseUtils'
-import { fetchTrendingRepos } from './scraping/githubScraping'
-import { TrendingState } from '../types/updateProject'
-import { ProjectInfo } from '../types/supabaseUtils'
 
 export const automaticDbUpdater = async () => {
   console.log('Auto-DB-updater run at', new Date().toLocaleString())
@@ -136,7 +135,7 @@ const processTrendingRepos = async (repos: string[], trendingState: TrendingStat
 export const updateProjectDaily = async (project: ProjectInfo) => {
   await updateProjectGithubStats(project.name, project.owner)
   await updateProjectStarHistory(project.name, project.owner)
-  await updateProjectTweets(project.name, project.owner)
+  // await updateProjectTweets(project.name, project.owner)
 }
 
 /**

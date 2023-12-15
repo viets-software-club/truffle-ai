@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Chart } from 'react-chartjs-2'
-import type { ChartData } from 'chart.js'
+import type { ChartData, ChartEvent, LegendItem } from 'chart.js'
 import { Chart as ChartJS, registerables } from 'chart.js'
 import 'chartjs-adapter-moment'
 import resolveConfig from 'tailwindcss/resolveConfig'
@@ -27,6 +28,8 @@ const colors = colorValues
   .flatMap(value => [indigoColors?.[value]].filter(Boolean))
   .concat(singleColorValues)
 
+const gray = (fullConfig.theme?.colors?.gray as ColorObject)[800]
+
 export type DataPoint = {
   date: string
   count: number
@@ -44,18 +47,51 @@ export type ChartProps = {
  * Linechart with one or more datasets
  */
 const ChartComponent = ({ datasets }: ChartProps) => {
+  const [activeDatasetIndex, setActiveDatasetIndex] = useState<number>()
+
   const chartData: ChartData<'line'> = {
-    datasets: datasets.map(({ name, data }, index) => ({
-      data: data?.map(({ date, count }) => ({ x: new Date(date).getTime(), y: count })),
-      backgroundColor: `${colors[index % colors.length]}30`,
-      borderColor: colors[index % colors.length],
-      label: name
-    }))
+    datasets: datasets.map(({ name, data }, index) => {
+      const isActive = index === activeDatasetIndex || activeDatasetIndex === undefined
+      const baseColor = colors[index % colors.length]
+      const backgroundColor = `${isActive ? baseColor : gray}30`
+      const borderColor = isActive ? baseColor : gray
+
+      return {
+        data: data?.map(({ date, count }) => ({ x: new Date(date).getTime(), y: count })),
+        backgroundColor,
+        borderColor,
+        label: name
+      }
+    })
+  }
+
+  const handleLegendItemHover = (_e: ChartEvent, legendItem: LegendItem) => {
+    setActiveDatasetIndex(legendItem.datasetIndex)
+  }
+
+  const handleLegendItemLeave = () => {
+    setActiveDatasetIndex(undefined)
   }
 
   return (
     <div className='mt-6 h-96 w-full'>
-      <Chart type='line' data={chartData} options={chartOptions} className='!w-full' />
+      <Chart
+        type='line'
+        data={chartData}
+        options={{
+          ...chartOptions,
+          plugins: {
+            ...chartOptions.plugins,
+            legend: {
+              display: chartData.datasets.length > 1,
+              ...chartOptions.plugins?.legend,
+              onHover: handleLegendItemHover,
+              onLeave: handleLegendItemLeave
+            }
+          }
+        }}
+        className='!w-full'
+      />
     </div>
   )
 }

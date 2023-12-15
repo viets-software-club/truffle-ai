@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 import {
+  ContributorData,
+  GitHubCommitHistory,
+  GitHubInfo,
   GitHubOrganization,
   GitHubUser,
-  GitHubInfo,
-  GitHubCommitHistory,
   ProjectFounder,
-  RepositoryTopicsResponse,
-  ContributorData
+  RepositoryTopicsResponse
 } from '../../types/githubApi'
 
 const githubApiUrl = process.env.GITHUB_API_URL || ''
@@ -47,7 +47,7 @@ export async function getOrganizationInfo(
   const response: AxiosResponse<{ data: { organization: GitHubOrganization } }> = await axios.post(
     githubApiUrl,
     {
-      query: query
+      query
     },
     {
       headers: {
@@ -223,9 +223,9 @@ export async function getRepositoryTopics(
         }
       }
     )
-    // console.log(response.headers)
-    const linkHeader: string = response?.headers['link'] as string
-    const lastPageMatch: RegExpMatchArray | null = linkHeader.match(/page=(\d+)>; rel="last"/)
+
+    const linkHeader = response?.headers['link'] as string | undefined
+    const lastPageMatch = linkHeader?.match(/page=(\d+)>; rel="last"/)
     const lastPage: number = lastPageMatch ? parseInt(lastPageMatch[1]) : 1
     return lastPage
   } catch (error) {

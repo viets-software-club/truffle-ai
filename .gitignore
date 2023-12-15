@@ -72,3 +72,6 @@ terraform.rc
 
 # Parcel
 .parcel-cache
+
+# Golang
+go.work.sum

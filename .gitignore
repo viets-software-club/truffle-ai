@@ -65,3 +65,10 @@ terraform.rc
 **/public/fallback-*.js
 **/public/workbox-*.js
 **/public/sw.js
+
+# DBeaver
+.dbeaver
+.project
+
+# Parcel
+.parcel-cache

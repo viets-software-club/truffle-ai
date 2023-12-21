@@ -6,6 +6,7 @@ import BookmarkModal from '@/components/domain/details/BookmarkModal'
 import Banner from '@/components/shared/Banner'
 import Button from '@/components/shared/Button'
 import Skeleton from '@/components/shared/Skeleton'
+import Tag from '@/components/shared/Tag'
 import sendSlackNotification from '@/util/sendSlackNotification'
 
 type ProjectInformationProps = {
@@ -84,11 +85,7 @@ const ProjectInformation = ({
             </a>
           )}
 
-          {category && (
-            <span className='rounded-full border border-indigo-500/60 bg-indigo-500/60 px-3 py-1 text-xs text-white'>
-              {category}
-            </span>
-          )}
+          {category && <Tag>{category}</Tag>}
         </div>
 
         <div className='flex flex-row items-center justify-end gap-2'>

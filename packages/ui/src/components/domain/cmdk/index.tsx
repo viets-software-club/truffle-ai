@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { BiFolder } from 'react-icons/bi'
+import { BiFolder, BiSearch } from 'react-icons/bi'
 import { FiBookmark, FiCompass, FiLogOut, FiMail, FiSettings } from 'react-icons/fi'
 import { useRouter } from 'next/navigation'
 import { PlusIcon } from '@primer/octicons-react'
-import { useUser } from '@supabase/auth-helpers-react'
 import { Command } from 'cmdk'
 import Modal from '@/components/shared/Modal'
-import { useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import useBookmarks from '@/hooks/useBookmarks'
 import Group from './Group'
 import Item from './Item'
 import Placeholder from './Placeholder'
@@ -19,16 +18,7 @@ const CommandMenu = () => {
   const page = pages[pages.length - 1]
 
   const router = useRouter()
-
-  const user = useUser()
-
-  const [{ data: bookmarks, fetching: bookmarksFetching }] = useFilteredBookmarksQuery({
-    variables: { userId: user?.id as string }
-  })
-
-  const uniqueCategories = Array.from(
-    new Set(bookmarks?.bookmarkCollection?.edges.map(edge => edge.node.category))
-  )
+  const { bookmarks, categories, fetching } = useBookmarks()
 
   const close = () => {
     setOpen(false)
@@ -68,7 +58,7 @@ const CommandMenu = () => {
 
   const placeholder = () => {
     if (loading) return 'Loading…'
-    if (bookmarksFetching) return 'Loading bookmarks…'
+    if (fetching) return 'Loading bookmarks…'
     if (page === 'logout') return 'Are you sure?'
     if (page === 'compare') return 'Select a category'
     return 'Type a command or search…'
@@ -109,19 +99,43 @@ const CommandMenu = () => {
 
           {!page && (
             <>
-              <Group heading='Projects'>
-                <Item Icon={FiCompass} text='Trending' onSelect={() => navigate('/')} />
-                <Item Icon={FiBookmark} text='Bookmarks' onSelect={() => navigate('/bookmarks')} />
-                <Item Icon={BiFolder} text='Categories' onSelect={() => nextStep('compare')} />
+              <Group heading='Navigation'>
+                <Item
+                  Icon={FiCompass}
+                  text='Go to trending projects'
+                  onSelect={() => navigate('/')}
+                />
+                <Item
+                  Icon={FiBookmark}
+                  text='Go to all bookmarks'
+                  onSelect={() => navigate('/bookmarks')}
+                />
+                <Item
+                  Icon={FiSettings}
+                  text='Go to settings'
+                  onSelect={() => navigate('/settings')}
+                />
+              </Group>
+
+              <Group heading='Search'>
+                <Item
+                  Icon={BiFolder}
+                  text='Search categories'
+                  onSelect={() => nextStep('compare')}
+                />
+                <Item
+                  Icon={BiSearch}
+                  text='Search projects'
+                  onSelect={() => nextStep('projects')}
+                />
               </Group>
 
               <Group heading='Actions'>
-                <Item Icon={PlusIcon} text='Add Project' onSelect={() => nextStep('add')} />
-                <Item Icon={FiMail} text='Send Mail' onSelect={() => nextStep('mail')} />
+                <Item Icon={PlusIcon} text='Add project' onSelect={() => nextStep('add')} />
+                <Item Icon={FiMail} text='Contact founder' onSelect={() => nextStep('mail')} />
               </Group>
 
-              <Group heading='Profile'>
-                <Item Icon={FiSettings} text='Settings' onSelect={() => navigate('/settings')} />
+              <Group heading='Account'>
                 <Item Icon={FiLogOut} text='Logout' onSelect={() => nextStep('logout')} />
               </Group>
             </>
@@ -136,11 +150,23 @@ const CommandMenu = () => {
 
           {page === 'compare' && (
             <Group heading='Categories'>
-              {uniqueCategories.map(category => (
+              {categories.map(category => (
                 <Item
                   key={category}
-                  text={category as string}
-                  onSelect={() => navigate(`/compare/${encodeURIComponent(category as string)}`)}
+                  text={category}
+                  onSelect={() => navigate(`/compare/${encodeURIComponent(category)}`)}
+                />
+              ))}
+            </Group>
+          )}
+
+          {page === 'projects' && (
+            <Group heading='Projects'>
+              {bookmarks.map(bookmark => (
+                <Item
+                  key={bookmark.id as string}
+                  text={bookmark.project?.name as string}
+                  onSelect={() => navigate(`/details/${bookmark.project?.id}`)}
                 />
               ))}
             </Group>

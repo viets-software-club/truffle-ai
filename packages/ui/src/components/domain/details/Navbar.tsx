@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { FiX, FiChevronUp, FiChevronDown } from 'react-icons/fi'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import Button from '@/components/shared/Button'
 import { useProjectIdsQuery, Project } from '@/graphql/generated/gql'
 import {
@@ -12,11 +13,13 @@ import {
 import { defaultSort } from '../projects/types'
 
 type NavbarProps = {
-  id?: string
   loading?: boolean
 }
 
-const Navbar = ({ id, loading }: NavbarProps) => {
+const Navbar = ({ loading }: NavbarProps) => {
+  const projectId = useParams()?.id
+  const id = (typeof projectId === 'string' ? projectId : projectId?.join('')) || ''
+
   const { filters: trendingFilters, sorting: trendingSorting } = useTrendingProjectsState()
   const { filters: bookmarkFilters, sorting: bookmarkSorting } = useBookmarkedProjectsState()
   const { filters: categoryFilters, sorting: categorySorting } = useCategoryProjectsState()

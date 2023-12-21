@@ -4,16 +4,13 @@ import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
 import Select from '@/components/shared/Select'
 import { useAddProjectByUrlMutation } from '@/graphql/generated/gql'
-import useBookmarks from '@/hooks/useBookmarks'
+import useFetchBookmarks from '@/hooks/useFetchBookmarks'
 import Modal from '../../shared/Modal'
 
 const defaultSuccessMessage =
   'Project added successfully! Please give us a few minutes to fetch all the data.'
 const defaultErrorMessage = 'Failed to add project. Please make sure to provide a valid GitHub URL.'
 
-/**
- * Add project modal
- */
 const AddProject = () => {
   const [open, setOpen] = useState<boolean>(false)
   const [success, setSuccess] = useState<string | null>(null)
@@ -21,7 +18,7 @@ const AddProject = () => {
   const [projectUrl, setProjectUrl] = useState<string>('')
   const [categories, setCategories] = useState<string[]>([])
 
-  const { categories: existingCategories } = useBookmarks()
+  const { categories: existingCategories } = useFetchBookmarks()
   const [{ fetching }, addProjectByUrlMutation] = useAddProjectByUrlMutation()
 
   // Sends mutation that adds a project by its URL

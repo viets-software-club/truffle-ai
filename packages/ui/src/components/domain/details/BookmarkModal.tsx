@@ -8,7 +8,7 @@ import {
   useDeleteBookmarkMutation,
   useEditBookmarkCategoryMutation
 } from '@/graphql/generated/gql'
-import useBookmarks from '@/hooks/useFetchBookmarks'
+import useFetchBookmarks from '@/hooks/useFetchBookmarks'
 import useBookmarksSync from '../../../hooks/useBookmarksSync'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'
@@ -33,7 +33,7 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
 
   const { sync } = useBookmarksSync()
-  const { categories } = useBookmarks()
+  const { categories } = useFetchBookmarks()
 
   const [{ fetching: fetchingAdd }, addBookmarkMutation] = useAddBookmarkMutation()
   const [{ fetching: fetchingDelete }, deleteBookmarkMutation] = useDeleteBookmarkMutation()

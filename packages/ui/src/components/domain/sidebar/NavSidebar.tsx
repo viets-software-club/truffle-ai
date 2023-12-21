@@ -3,14 +3,14 @@ import { LuLogOut } from 'react-icons/lu'
 import { withRouter } from 'next/router'
 import Sidebar from '@/components/domain/sidebar'
 import Skeleton from '@/components/shared/Skeleton'
-import useBookmarks from '@/hooks/useFetchBookmarks'
+import useFetchBookmarks from '@/hooks/useFetchBookmarks'
 import Group from './Group'
 import Item from './Item'
 import MobileMenu from './MobileMenu'
 import Section from './Section'
 
 const NavSidebar = () => {
-  const { bookmarks, categories, fetching, categoriesLength } = useBookmarks()
+  const { bookmarks, categories, fetching, categoriesLength } = useFetchBookmarks()
 
   return (
     <>

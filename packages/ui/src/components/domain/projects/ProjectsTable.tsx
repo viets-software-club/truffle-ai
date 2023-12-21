@@ -9,7 +9,7 @@ import { PaginationParameters } from '@/components/domain/projects/types'
 import Error from '@/components/shared/Error'
 import Skeleton from '@/components/shared/Skeleton'
 import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
-import { useProjectTableVisibilityState } from '@/stores/useProjectTableState'
+import { useProjectTableVisibilityState } from '@/hooks/useProjectTableState'
 import ProjectListItem from './ProjectListItem'
 
 type ProjectsTableProps = {

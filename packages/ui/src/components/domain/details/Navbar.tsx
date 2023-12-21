@@ -1,7 +1,7 @@
 import { FiX, FiChevronUp, FiChevronDown } from 'react-icons/fi'
 import Link from 'next/link'
 import Button from '@/components/shared/Button'
-import { useLastViewedPageState } from '@/stores/useProjectTableState'
+import { useLastViewedPageState } from '@/hooks/useProjectTableState'
 
 type NavbarProps = {
   currentProjectIndex?: number

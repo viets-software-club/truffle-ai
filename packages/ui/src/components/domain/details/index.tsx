@@ -18,7 +18,7 @@ import {
   useCategoryProjectsState,
   useLastViewedPageState,
   useTrendingProjectsState
-} from '@/stores/useProjectTableState'
+} from '@/hooks/useProjectTableState'
 import GithubStats from './GithubStats'
 import Navbar from './Navbar'
 

@@ -1,10 +1,10 @@
 import { FormEvent, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { useUser } from '@supabase/auth-helpers-react'
 import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
 import Select from '@/components/shared/Select'
-import { useAddProjectByUrlMutation, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import { useAddProjectByUrlMutation } from '@/graphql/generated/gql'
+import useBookmarks from '@/hooks/useBookmarks'
 import Modal from '../../shared/Modal'
 
 const defaultSuccessMessage =
@@ -21,11 +21,7 @@ const AddProject = () => {
   const [projectUrl, setProjectUrl] = useState<string>('')
   const [categories, setCategories] = useState<string[]>([])
 
-  const user = useUser()
-
-  const [{ data: bookmarks }] = useFilteredBookmarksQuery({
-    variables: { userId: user?.id as string }
-  })
+  const { categories: existingCategories } = useBookmarks()
   const [{ fetching }, addProjectByUrlMutation] = useAddProjectByUrlMutation()
 
   // Sends mutation that adds a project by its URL
@@ -78,12 +74,6 @@ const AddProject = () => {
   const toggleModal = () => {
     setOpen(!open)
   }
-
-  // Get unique array of categories
-  const existingCategories = bookmarks?.bookmarkCollection?.edges
-    ?.map(({ node }) => node.category)
-    .filter((value, index, array) => array.indexOf(value) === index)
-    .filter(value => value !== undefined && value !== null) as string[]
 
   return (
     <div>

@@ -5,11 +5,14 @@ import { useRouter } from 'next/navigation'
 import { PlusIcon } from '@primer/octicons-react'
 import { Command } from 'cmdk'
 import Modal from '@/components/shared/Modal'
-import useBookmarks from '@/hooks/useBookmarks'
+import useFetchBookmarks from '@/hooks/useFetchBookmarks'
+import useFetchProjectDetails from '@/hooks/useFetchProjectDetails'
+import emailTemplate from '@/util/emailTemplate'
 import Group from './Group'
 import Item from './Item'
 import Placeholder from './Placeholder'
 
+// eslint-disable-next-line max-lines-per-function
 const CommandMenu = () => {
   const [loading] = useState(false)
   const [open, setOpen] = useState(false)
@@ -18,7 +21,12 @@ const CommandMenu = () => {
   const page = pages[pages.length - 1]
 
   const router = useRouter()
-  const { bookmarks, categories, fetching } = useBookmarks()
+
+  const { bookmarks, categories, fetching } = useFetchBookmarks()
+
+  const { project } = useFetchProjectDetails()
+
+  const founder = project?.associatedPerson
 
   const close = () => {
     setOpen(false)
@@ -132,7 +140,21 @@ const CommandMenu = () => {
 
               <Group heading='Actions'>
                 <Item Icon={PlusIcon} text='Add project' onSelect={() => nextStep('add')} />
-                <Item Icon={FiMail} text='Contact founder' onSelect={() => nextStep('mail')} />
+                {project && founder && founder.email && founder.name && (
+                  <Item
+                    Icon={FiMail}
+                    text='Contact founder'
+                    onSelect={() =>
+                      window.open(
+                        emailTemplate(
+                          founder.email as string,
+                          founder.name as string,
+                          project.name as string
+                        )
+                      )
+                    }
+                  />
+                )}
               </Group>
 
               <Group heading='Account'>

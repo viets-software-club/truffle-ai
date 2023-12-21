@@ -1,18 +1,18 @@
 import { FormEvent, useState } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
 import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
 import Select from '@/components/shared/Select'
 import { useAddProjectByUrlMutation } from '@/graphql/generated/gql'
+import useAddProjectModalState from '@/hooks/useAddProjectModalState'
 import useFetchBookmarks from '@/hooks/useFetchBookmarks'
-import Modal from '../../shared/Modal'
+import Modal from './Modal'
 
 const defaultSuccessMessage =
   'Project added successfully! Please give us a few minutes to fetch all the data.'
 const defaultErrorMessage = 'Failed to add project. Please make sure to provide a valid GitHub URL.'
 
 const AddProject = () => {
-  const [open, setOpen] = useState<boolean>(false)
+  const { isOpen, setIsOpen } = useAddProjectModalState()
   const [success, setSuccess] = useState<string | null>(null)
   const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
   const [projectUrl, setProjectUrl] = useState<string>('')
@@ -68,77 +68,66 @@ const AddProject = () => {
     void addProject()
   }
 
-  const toggleModal = () => {
-    setOpen(!open)
-  }
-
   return (
-    <div>
-      <Button onClick={toggleModal} variant='highlighted'>
-        <AiOutlinePlus />
-        Add Project
-      </Button>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        setIsOpen(false)
+        setProjectUrl('')
+        setCategories([])
+        setErrors({})
+        setSuccess(null)
+      }}>
+      <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
+        <p className='text-lg font-semibold text-white'>Add Project</p>
 
-      <Modal
-        isOpen={open}
-        onClose={() => {
-          setOpen(false)
-          setProjectUrl('')
-          setCategories([])
-          setErrors({})
-          setSuccess(null)
-        }}>
-        <form className='flex flex-col items-stretch gap-4' onSubmit={handleSubmit}>
-          <p className='text-lg font-semibold text-white'>Add Project</p>
+        <div className='flex w-full flex-col gap-1.5'>
+          <p className='text-sm font-medium text-white/50'>GitHub URL</p>
+          <Input
+            placeholder='https://github.com/facebook/react'
+            value={projectUrl}
+            onChange={e => {
+              setProjectUrl(e.target.value)
+              setErrors({ ...errors, url: undefined })
+            }}
+            error={errors.url}
+          />
+        </div>
 
+        {existingCategories && (
           <div className='flex w-full flex-col gap-1.5'>
-            <p className='text-sm font-medium text-white/50'>GitHub URL</p>
-            <Input
-              placeholder='https://github.com/facebook/react'
-              value={projectUrl}
-              onChange={e => {
-                setProjectUrl(e.target.value)
-                setErrors({ ...errors, url: undefined })
+            <p className='text-sm font-medium text-white/50'>Category</p>
+            <Select
+              values={existingCategories}
+              selected={categories}
+              setSelected={values => {
+                setCategories(values)
+                setErrors({ ...errors, category: undefined })
               }}
-              error={errors.url}
+              placeholder='Search or select categories'
+              error={errors.category}
             />
           </div>
+        )}
 
-          {existingCategories && (
-            <div className='flex w-full flex-col gap-1.5'>
-              <p className='text-sm font-medium text-white/50'>Category</p>
-              <Select
-                values={existingCategories}
-                selected={categories}
-                setSelected={values => {
-                  setCategories(values)
-                  setErrors({ ...errors, category: undefined })
-                }}
-                placeholder='Search or select categories'
-                error={errors.category}
-              />
-            </div>
-          )}
+        {/* Success message */}
+        {success && <p className='text-sm text-green-500'>{success}</p>}
 
-          {/* Success message */}
-          {success && <p className='text-sm text-green-500'>{success}</p>}
+        {/* Error message */}
+        {errors.default && <p className='text-sm text-red-400'>{errors.default}</p>}
 
-          {/* Error message */}
-          {errors.default && <p className='text-sm text-red-400'>{errors.default}</p>}
-
-          <div className='flex w-full justify-end'>
-            <Button
-              variant='highlighted'
-              size='large'
-              disabled={fetching}
-              type='submit'
-              className='text-white'>
-              {fetching ? 'Loading...' : 'Save'}
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    </div>
+        <div className='flex w-full justify-end'>
+          <Button
+            variant='highlighted'
+            size='large'
+            disabled={fetching}
+            type='submit'
+            className='text-white'>
+            {fetching ? 'Loading...' : 'Save'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   )
 }
 

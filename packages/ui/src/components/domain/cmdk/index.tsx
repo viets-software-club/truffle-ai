@@ -78,7 +78,7 @@ const CommandMenu = () => {
   }
 
   return (
-    <Modal isOpen={open} onClose={() => setOpen(false)} unstyled>
+    <Modal isOpen={open} onClose={() => setOpen(false)} unstyled className='hidden lg:block'>
       <Command
         onKeyDown={e => {
           // Escape goes to previous page
@@ -90,7 +90,7 @@ const CommandMenu = () => {
             else close()
           }
         }}
-        className='-mt-10 hidden w-[650px] overflow-hidden rounded-md border border-white/5 bg-white/5 shadow-lg backdrop-blur-xl lg:block'>
+        className='-mt-10 w-[650px] overflow-hidden rounded-md border border-white/5 bg-white/5 shadow-lg backdrop-blur-xl'>
         <Command.Input
           value={search}
           onValueChange={setSearch}

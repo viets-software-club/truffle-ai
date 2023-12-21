@@ -6,7 +6,7 @@ import useSidebarCategories from './useSidebarCategories'
 
 const PAGE_SIZE = 30
 
-const useBookmarks = () => {
+const useFetchBookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
   const [pageInfo, setPageInfo] = useState<PageInfo>({
     hasNextPage: true,
@@ -65,4 +65,4 @@ const useBookmarks = () => {
   return { bookmarks, categories, fetching, categoriesLength }
 }
 
-export default useBookmarks
+export default useFetchBookmarks

@@ -8,7 +8,7 @@ import {
   useDeleteBookmarkMutation,
   useEditBookmarkCategoryMutation
 } from '@/graphql/generated/gql'
-import useBookmarks from '@/hooks/useBookmarks'
+import useBookmarks from '@/hooks/useFetchBookmarks'
 import useBookmarksSync from '../../../hooks/useBookmarksSync'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'

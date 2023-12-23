@@ -40,6 +40,7 @@ test/**
 
 # Secrets and Envs
 /_*
+!_configMaps
 *.secret
 .env*
 secret.*

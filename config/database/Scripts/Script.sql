@@ -1,1 +1,0 @@
-select insert_hackernews(ARRAY[ROW('author', 4, 'query', 'comment_text', 6, 'story_title', 'story_url', NOW(), NOW(), ARRAY[ROW('wow2')::my_hackernews_tag])::my_hackernews_comment])

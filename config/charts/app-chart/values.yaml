@@ -5,10 +5,8 @@ image:
   tag: latest
   repositoryUrl: ""
 configMaps:
-  repo-job-config-map: {}
-  preview-job-config-map: {}
   open-api-config-map: {}
-  scraping-bot-config-map: 
+  scraping-bot-config-map:
     SCRAPING_BOT_API_ENDPOINT: null
   graphql-server-config-map:
     GRAPHQL_SERVER_PORT: null
@@ -32,7 +30,6 @@ secrets:
   ui-secret: {}
   digitalocean-secret:
     DIGITALOCEAN_ACCESS_TOKEN: null
-  preview-job-secret: {}
   scraping-bot-secret:
     SCRAPING_BOT_USER_NAME: null
     SCRAPING_BOT_API_KEY: null
@@ -41,8 +38,9 @@ secrets:
   supabase-secret:
     SUPABASE_ANON_KEY: null
     SUPABASE_SERVICE_KEY: null
+    SUPABASE_DATABASE_URL: null
+    SUPABASE_JWT_SECRET: null
   open-api-secret:
     OPENAI_API_KEY: null
   github-secret:
     GITHUB_API_TOKEN: null
-  repo-job-secret: {}

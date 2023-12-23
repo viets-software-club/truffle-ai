@@ -1,0 +1,7 @@
+version: "3"
+
+tasks:
+  merge:
+    desc: "Merges all .sql files in order"
+    cmds:
+      - ./scripts/task/merge.mjs

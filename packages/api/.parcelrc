@@ -1,8 +1,0 @@
-{
-  "extends": "@parcel/config-default",
-  "transformers": {
-    "bundle-text:*.graphql": [
-      "@parcel/transformer-inline-string"
-    ]
-  }
-}

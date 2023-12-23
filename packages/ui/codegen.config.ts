@@ -5,7 +5,7 @@ const config: CodegenConfig = {
     {
       [process.env.NEXT_PUBLIC_GRAPHQL_URL]: {
         headers: {
-          Authorization: `Bearer development`
+          Authorization: 'Bearer development'
         }
       }
     }

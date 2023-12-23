@@ -39,13 +39,14 @@ test/**
 .eslintcache
 
 # Secrets and Envs
+/_*
+*.secret
 .env*
 secret.*
 secrets.*
 !secret.tf
 secrets
 _secrets
-!config/charts/app-chart/templates/secrets.yaml
 
 # Terraform
 **/.terraform/*
@@ -75,5 +76,5 @@ terraform.rc
 
 # Golang
 go.work.sum
-go-server
+packages/graphql-server/graphql-server
 go.sum

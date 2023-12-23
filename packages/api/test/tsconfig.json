@@ -12,6 +12,6 @@
     "noImplicitAny": true
   },
   "types": ["node"],
-  "include": [ "../types", "./", "../types/global.d.ts", "../src"],
+  "include": [ "../types", "./", "../types/global.d.ts", "../src", "../../sbot/twitterSearch.ts", "../../sbot/linkedinCompanyProfile.ts"],
   "exclude": ["node_modules"]
 }

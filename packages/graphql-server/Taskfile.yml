@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  run:
+    cmds:
+      - go run main.go
+  build:
+    cmds:
+      - go build -o graphql-server main.go
+  start:
+    cmds:
+      - ./graphql-server
+  test:
+    cmds:
+      - fmtFiles=$(gofmt -l .) && vetFiles=$(go vet ./...) && [ -z "$fmtFiles" -a -z "$vetFiles" ]
+  format:
+    cmds:
+      - gofmt -w .

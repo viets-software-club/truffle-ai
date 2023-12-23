@@ -10,6 +10,6 @@ import (
 type Log struct{}
 
 func (l Log) Log(ctx context.Context, level tracelog.LogLevel, msg string, data map[string]any) {
-	log.Println(msg, data, "\n")
+	log.Println(msg, data)
 
 }

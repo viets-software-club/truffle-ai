@@ -29,10 +29,10 @@ func (s *ScrapingBotHtml) FetchUrl(ScrapingBoturl string) (string, error) {
 
 	client := &http.Client{}
 	res, err := client.Do(req)
-	defer res.Body.Close()
 	if err != nil {
 		return "", err
 	}
+	defer res.Body.Close()
 
 	readBytes, err := io.ReadAll(res.Body)
 	if err != nil {

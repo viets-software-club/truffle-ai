@@ -40,14 +40,15 @@ test/**
 
 # Secrets and Envs
 /_*
-!_configMaps
 *.secret
 .env*
 secret.*
 secrets.*
-!secret.tf
 secrets
 _secrets
+!_configMaps
+!_secrets/example.secret.*
+
 
 # Terraform
 **/.terraform/*

@@ -8,15 +8,19 @@ includes:
   k8s: ./config/taskfiles/Taskfile.k8s.yml
   db: ./config/taskfiles/Taskfile.db.yml
   prettier: ./config/taskfiles/Taskfile.prettier.yml
-  gql-gtw:
+  graphql-gateway:
     taskfile: ./config/taskfiles/Taskfile.npm.yml
     dir: ./packages/graphql-gateway
+    aliases:
+      - "gql-gtw"
   ui:
     taskfile: ./config/taskfiles/Taskfile.npm.yml
     dir: ./packages/ui
-  gql-srv:
+  graphql-server:
     taskfile: ./packages/graphql-server/Taskfile.yml
     dir: ./packages/graphql-server
+    aliases:
+      - "gql-srv"
   values:
     taskfile: ./packages/build-values/Taskfile.yml
     dir: ./packages/build-values

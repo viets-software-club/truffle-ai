@@ -16,7 +16,8 @@ const files = [
 	'functions/f_insert_algo_hn_comments.sql',
 	'functions/f_insert_algo_hn_queries_w_stories_and_comments_for_proj.sql',
 	'functions/f_insert_gthb_repo.sql',
-	'functions/f_insert_sbot_lin_keyword_for_proj.sql',
+	'functions/f_insert_sbot_lin_companies_for_proj.sql',
+	'functions/f_insert_sbot_lin_profiles_for_proj.sql',
 	'functions/f_insert_proj_repo_metadata_for_proj.sql',
 	'functions/f_insert_proj_repo.sql',
 	'functions/f_insert_proj_bookmark_w_cats.sql',
@@ -31,10 +32,13 @@ const files = [
 	'functions/f_tr_delete_unreferenced_gthb_repo_from_gthb_trending.sql',
 	'functions/f_tr_delete_unreferenced_gthb_repo.sql',
 	'functions/f_tr_delete_unreferenced_proj_repo.sql',
-	'functions/f_tr_delete_unreferenced_sbot_lin_keyword.sql',
+	'functions/f_tr_delete_unreferenced_sbot_lin_company.sql',
+	'functions/f_tr_delete_unreferenced_sbot_lin_profile.sql',
 	'functions/f_tr_signup_based_on_whitelist.sql',
+	'functions/f_select_data_science.sql',
 	'triggers.sql',
-	'policies.sql'
+	'policies.sql',
+	'grants.sql'
 ]
 
 fs.writeFileSync('./config/db/Scripts/merged.sql', '')

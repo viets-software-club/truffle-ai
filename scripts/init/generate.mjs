@@ -7,7 +7,7 @@ echo('Use the following in your .zshrc/.bashrc:\n')
 const dir = process.cwd()
 const env = 'development'
 
-const list = [`${dir}/scripts/source.sh`, `${dir}/config/alias/index.txt`]
+const list = [`${dir}/scripts/env/source.sh`, `${dir}/config/aliases/index.txt`]
 for (const entry of list) {
 	echo(chalk.cyan(`source ${entry}`))
 }

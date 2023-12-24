@@ -12,7 +12,8 @@ type T_f_insert_proj_repo struct {
 	Gthb_repo          T_f_insert_gthb_repo
 	Note               pgtype.Text
 	Proj_repo_metadata T_f_insert_proj_repo_metadata
-	Sbot_lin_keyword   T_f_insert_sbot_lin_keyword
+	Sbot_lin_companies pgtype.FlatArray[T_ivals_sbot_lin_company]
+	Sbot_lin_profiles  pgtype.FlatArray[T_ivals_sbot_lin_profile]
 }
 
 type T_f_insert_proj_bookmark_w_cats struct {

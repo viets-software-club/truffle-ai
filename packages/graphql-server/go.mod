@@ -1,6 +1,6 @@
 module github.com/viets-software-club/truffle-ai/graphql-server
 
-go 1.21.5
+go 1.21
 
 require (
 	github.com/99designs/gqlgen v0.17.41

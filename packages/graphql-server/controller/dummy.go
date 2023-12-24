@@ -3,6 +3,7 @@ package controller
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/viets-software-club/truffle-ai/graphql-server/db/types"
 )
@@ -10,7 +11,6 @@ import (
 var dummyTime = pgtype.Timestamptz{Time: time.Now().UTC(), Valid: true}
 var dummyText = pgtype.Text{String: "author1", Valid: true}
 var dummyInt = pgtype.Int8{Int64: 1234, Valid: true}
-var uuid pgtype.UUID
 var dummyUuid = pgtype.UUID{Bytes: [16]byte{
 	153, 124, 209, 240, 167, 183, 78, 235, 151, 2, 15, 131, 158, 167, 250, 34,
 }, Valid: true}
@@ -137,43 +137,18 @@ var dummyGthbRepo = types.T_f_insert_gthb_repo{
 	Stargazer_count:           dummyInt,
 }
 
-var dummySbotLinKeyword = types.T_f_insert_sbot_lin_keyword{
-	Keywords: dummyText,
-	Sbot_lin_company: types.T_ivals_sbot_lin_company{
-		About:                        dummyText,
-		Employees_amount_in_linkedin: dummyInt,
-		Followers:                    dummyInt,
-		Headquarters:                 dummyText,
-		Logo:                         dummyText,
-		Sbot_lin_company_image:       dummyText,
-		Sbot_lin_company_name:        dummyText,
-		Sbot_lin_company_type:        dummyText,
-		Sbot_lin_company_url:         dummyText,
-		Sphere:                       dummyText,
-		Website:                      dummyText,
-	},
-}
-var DummyObject = types.T_f_insert_proj_bookmark_w_cats{
-	Auth_users_id: dummyUuid,
-	Proj_cats: pgtype.FlatArray[pgtype.Text]{
-		dummyText,
-	},
-	Proj_repo: types.T_f_insert_proj_repo{
-		Algo_hn_queries: pgtype.FlatArray[types.T_f_insert_algo_hn_query_with_stories_and_comments]{
-			{
-				Algo_hn_comments: dummyAlgoHnComments,
-				Algo_hn_stories:  dummyAlgoHnStories,
-				Query:            dummyText,
-			},
-		},
-		Gthb_repo: dummyGthbRepo,
-		Note:      dummyText,
-		Proj_repo_metadata: types.T_f_insert_proj_repo_metadata{
-			Algo_hn_eli5: dummyText,
-			Repo_eli5:    dummyText,
-		},
-		Sbot_lin_keyword: dummySbotLinKeyword,
-	},
+var dummySbotLinCompany = types.T_ivals_sbot_lin_company{
+	About:                        dummyText,
+	Employees_amount_in_linkedin: dummyInt,
+	Followers:                    dummyInt,
+	Headquarters:                 dummyText,
+	Logo:                         dummyText,
+	Sbot_lin_company_image:       dummyText,
+	Sbot_lin_company_name:        dummyText,
+	Sbot_lin_company_type:        dummyText,
+	Sbot_lin_company_url:         dummyText,
+	Sphere:                       dummyText,
+	Website:                      dummyText,
 }
 
 var DummyOwner = types.T_f_insert_gthb_owner{
@@ -192,4 +167,37 @@ var DummyOwner = types.T_f_insert_gthb_owner{
 	Gthb_owner_url:           dummyText,
 	Gthb_user:                types.T_ivals_gthb_user{},
 	Repositories_total_count: dummyInt,
+}
+
+func getDummyObject(authUserId string) (types.T_f_insert_proj_bookmark_w_cats, error) {
+	var user_id_arr [16]byte
+	copy(user_id_arr[:], []byte(authUserId))
+	uuid, err := uuid.Parse(authUserId)
+	if err != nil {
+		return types.T_f_insert_proj_bookmark_w_cats{}, err
+	}
+	return types.T_f_insert_proj_bookmark_w_cats{
+		Auth_users_id: pgtype.UUID{Bytes: uuid, Valid: true},
+		Proj_cats: pgtype.FlatArray[pgtype.Text]{
+			dummyText,
+		},
+		Proj_repo: types.T_f_insert_proj_repo{
+			Algo_hn_queries: pgtype.FlatArray[types.T_f_insert_algo_hn_query_with_stories_and_comments]{
+				{
+					Algo_hn_comments: dummyAlgoHnComments,
+					Algo_hn_stories:  dummyAlgoHnStories,
+					Query:            dummyText,
+				},
+			},
+			Gthb_repo: dummyGthbRepo,
+			Note:      dummyText,
+			Proj_repo_metadata: types.T_f_insert_proj_repo_metadata{
+				Algo_hn_eli5: dummyText,
+				Repo_eli5:    dummyText,
+			},
+			Sbot_lin_companies: pgtype.FlatArray[types.T_ivals_sbot_lin_company]{dummySbotLinCompany},
+			Sbot_lin_profiles:  nil,
+		},
+	}, nil
+
 }

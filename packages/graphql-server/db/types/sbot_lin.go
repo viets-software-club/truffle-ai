@@ -30,14 +30,9 @@ type T_ivals_sbot_lin_profile struct {
 	Sbot_lin_profile_following pgtype.Int8
 }
 
-type T_f_insert_sbot_lin_keyword struct {
-	Keywords         pgtype.Text
-	Sbot_lin_company T_ivals_sbot_lin_company
-	Sbot_lin_profile T_ivals_sbot_lin_profile
-}
-
 var SbotLinTypes = []string{
 	"t_ivals_sbot_lin_company",
 	"t_ivals_sbot_lin_profile",
-	"t_f_insert_sbot_lin_keyword",
+	"_t_ivals_sbot_lin_company",
+	"_t_ivals_sbot_lin_profile",
 }

@@ -7,7 +7,9 @@ create type t_f_insert_proj_repo as (
   gthb_repo t_f_insert_gthb_repo,
   note text,
   proj_repo_metadata t_f_insert_proj_repo_metadata,
-  sbot_lin_keyword t_f_insert_sbot_lin_keyword
+  sbot_lin_companies t_ivals_sbot_lin_company[],
+  sbot_lin_profiles t_ivals_sbot_lin_profile[]
+
 );
 create type t_f_insert_proj_bookmark_w_cats as (
   auth_users_id uuid,

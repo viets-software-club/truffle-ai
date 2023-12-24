@@ -25,24 +25,20 @@ drop table if exists user_api_key cascade;
 drop table if exists twitter_user cascade;
 drop table if exists twitter_search cascade;
 drop table if exists twitter_search_and_twitter_user cascade;
-drop table if exists sbot_lin_keyword cascade;
-drop table if exists sbot_lin_ps cascade;
-drop table if exists sbot_lin_ps_upd cascade;
 drop table if exists proj_repo cascade;
 drop table if exists proj_bookmark cascade;
 drop table if exists algo_hn_story_and_algo_hn_tag cascade;
 drop table if exists algo_hn_comment_and_algo_hn_tag cascade;
 drop table if exists proj_repo_and_algo_hn_query cascade;
-drop table if exists proj_repo_and_sbot_lin_ps cascade;
 drop table if exists proj_repo_and_twitter_search cascade;
 drop table if exists user_admin cascade;
 drop table if exists gthb_repo_contr cascade;
 drop table if exists proj_cat_and_proj_bookmark cascade;
 drop table if exists sbot_lin_profile cascade;
 drop table if exists sbot_lin_company cascade;
-drop table if exists sbot_lin_keyword cascade;
-drop table if exists proj_repo_and_sbot_lin_keyword cascade;
 drop table if exists pinned_proj_bookmark cascade;
+drop table if exists proj_repo_and_sbot_lin_company cascade;
+drop table if exists proj_repo_and_sbot_lin_profile cascade;
 
 drop domain if exists d_gthb_owner_type cascade;
 drop domain if exists d_gthb_trending_date_range cascade;
@@ -60,25 +56,24 @@ drop type if exists t_ivals_gthb_repo_contr cascade;
 drop type if exists t_f_insert_gthb_contr cascade;
 drop type if exists t_f_insert_gthb_contr_owner cascade;
 drop type if exists t_ivals_sbot_lin_company cascade;
-
 drop type if exists t_ivals_sbot_lin_profile cascade;
-
-drop type if exists t_f_insert_sbot_lin_keyword cascade;
-
 drop type if exists t_ivals_algo_hn_tag cascade;
-
 drop type if exists t_ivals_algo_hn_query cascade;
-
 drop type if exists t_ivals_algo_hn_comment cascade;
-
 drop type if exists t_ivals_algo_hn_story cascade;
 
 drop type if exists t_f_insert_algo_hn_story cascade;
-
 drop type if exists t_f_insert_algo_hn_comment cascade;
-
 drop type if exists t_f_insert_algo_hn_query_with_stories_and_comments cascade;
 drop type if exists t_f_insert_proj_repo_metadata cascade;
 drop type if exists t_f_insert_proj_repo cascade;
 drop type if exists t_f_insert_proj_bookmark_w_cats cascade;
 drop type if exists t_f_insert_gthb_trending cascade;
+drop type if exists t_f_insert_sbot_lin_companies_for_proj cascade;
+drop type if exists t_f_insert_sbot_lin_profiles_for_proj cascade;
+
+drop policy if exists "authenticated can access proj_bookmark" on proj_bookmark cascade;
+drop policy if exists "authenticated can access proj_repo" on proj_repo cascade;
+drop policy if exists "authenticated can access proj_cat" on proj_cat cascade;
+drop policy if exists "authenticated can access gthb_repo" on gthb_repo cascade;
+drop policy if exists "admin can access user_whitelist" on user_whitelist cascade;

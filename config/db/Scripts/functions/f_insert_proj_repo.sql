@@ -12,10 +12,16 @@ begin
   if projectRepoArg.algo_hn_queries is not null then
     perform f_insert_algo_hn_queries_w_stories_and_comments_for_proj(projRepoId, projectRepoArg.algo_hn_queries);
   end if;
-  RAISE LOG 'sbotLinKeyword is %', projectRepoArg.sbot_lin_keyword::text;
+  -- RAISE LOG 'sbotLinKeyword is %', projectRepoArg.sbot_lin_keyword::text;
 
-  perform f_insert_sbot_lin_keyword_for_proj(projRepoId, projectRepoArg.sbot_lin_keyword);
- 
+  if projectRepoArg.sbot_lin_companies is not null then
+    perform f_insert_sbot_lin_companies_for_proj(projRepoId, projectRepoArg.sbot_lin_companies);
+  end if;
+
+  if projectRepoArg.sbot_lin_profiles is not null then
+    perform f_insert_sbot_lin_profiles_for_proj(projRepoId, projectRepoArg.sbot_lin_profiles);
+  end if;
+  
   return projRepoId;
 end;
 $$ language plpgsql;

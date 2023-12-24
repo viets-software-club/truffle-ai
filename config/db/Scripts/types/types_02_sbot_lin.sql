@@ -25,9 +25,3 @@ create type t_ivals_sbot_lin_profile as (
   sbot_lin_profile_url text,
   sbot_lin_profile_following bigint
 );
-
-create type t_f_insert_sbot_lin_keyword as (
-  keywords text,
-  sbot_lin_company t_ivals_sbot_lin_company,
-  sbot_lin_profile t_ivals_sbot_lin_profile
-);

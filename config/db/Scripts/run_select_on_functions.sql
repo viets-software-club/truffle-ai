@@ -542,8 +542,7 @@ select f_insert_proj_bookmark_w_cats(
 
 
 
-select f_insert_sbot_lin_keyword_for_proj(123, Row(
-        'keywords',
+select f_insert_sbot_lin_companies_for_proj(123, Array[
         Row(
           'about',
           123,
@@ -556,9 +555,8 @@ select f_insert_sbot_lin_keyword_for_proj(123, Row(
           'sbot_lin_company_url',
           'sphere',
           'website'
-        )::t_ivals_sbot_lin_company,
-        NULL
-      )::t_f_insert_sbot_lin_keyword);
+        )]::t_ivals_sbot_lin_company[]
+      );
 
 
 

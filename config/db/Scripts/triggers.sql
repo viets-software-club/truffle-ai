@@ -21,10 +21,15 @@ create or replace trigger tr_on_delete_delete_unreferenced_gthb_lang
   for each STATEMENT
   execute function f_tr_delete_unreferenced_gthb_lang();
 
-create or replace trigger tr_on_delete_delete_unreferenced_sbot_lin_keyword
-  after delete on proj_repo_and_sbot_lin_keyword
+create or replace trigger tr_on_delete_delete_unreferenced_sbot_lin_company
+  after delete on proj_repo_and_sbot_lin_company
   for each STATEMENT
-  execute function f_tr_delete_unreferenced_sbot_lin_keyword();
+  execute function f_tr_delete_unreferenced_sbot_lin_company();
+
+create or replace trigger tr_on_delete_delete_unreferenced_sbot_lin_profile
+  after delete on proj_repo_and_sbot_lin_profile
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_sbot_lin_profile();
 
 create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_repo
   after delete on proj_bookmark
@@ -43,7 +48,7 @@ create or replace trigger tr_on_delete_proj_repo_delete_unreferenced_gthb_repo
 
 create or replace trigger tr_signup_based_on_whitelist
   before insert on auth.users
-  for each row execute procedure f_tr_signup_based_on_whitelist();
+  for each row execute function f_tr_signup_based_on_whitelist();
 -- CREATE OR REPLACE FUNCTION delete_project_repo_if_empty() RETURNS TRIGGER AS $delete_project_repo_if_empty$
 --     DECLARE trendingCount INTEGER; bookmarkCount INTEGER;
 --     BEGIN

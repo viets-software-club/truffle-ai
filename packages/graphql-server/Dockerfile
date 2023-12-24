@@ -10,4 +10,4 @@ COPY *.go ./
 
 RUN go build -o /graphql-server
 
-CMD[ "/graphql-server"]
+CMD ["/graphql-server"]

@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-task biome:ci
+node_modules/.bin/biome ci .

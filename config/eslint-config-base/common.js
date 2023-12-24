@@ -20,7 +20,7 @@ module.exports = {
     '.dockerignore',
     '.husky',
     '.eslintrc.js',
-    'config/scripts/**'
+    'scripts/**'
   ],
   rules: {
     'import/no-unresolved': 'error',

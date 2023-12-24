@@ -5,6 +5,10 @@
   "config": {
     "env": ". ./scripts/env/source.sh"
   },
+  "workspaces": [
+    "packages/*",
+    "config/*"
+  ],
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "prettier --write .",
@@ -30,5 +34,8 @@
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "zx": "^7.2.3"
+  },
+  "dependencies": {
+    "graphql-gateway": "^1.0.3"
   }
 }

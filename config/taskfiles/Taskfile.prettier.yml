@@ -3,8 +3,8 @@ version: "3"
 write:
   desc: "Write prettier on all files"
   cmds:
-    - prettier --write .
+    - npx prettier --write .
 check:
   desc: "Check prettier on all files"
   cmds:
-    - prettier --check .
+    - npx prettier --check .

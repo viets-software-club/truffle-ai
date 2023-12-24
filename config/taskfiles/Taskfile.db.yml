@@ -4,4 +4,5 @@ tasks:
   merge:
     desc: "Merges all .sql files in order"
     cmds:
-      - ./scripts/task/merge.mjs
+      - echo
+      - zx ./scripts/db/merge.mjs

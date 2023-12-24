@@ -1,15 +1,15 @@
 version: "3"
 
 tasks:
-  run:
+  dev:
     cmds:
-      - go run main.go
+      - source ../../scripts/env/source.sh ../.. && go run .
   build:
     cmds:
-      - go build -o graphql-server main.go
+      - source ../../scripts/env/source.sh ../.. && go build -o {{.OUT}} .
   start:
     cmds:
-      - ./graphql-server
+      - source ../../scripts/env/source.sh ../.. && ./{{.OUT}}
   test:
     cmds:
       - fmtFiles=$(gofmt -l .) && vetFiles=$(go vet ./...) && [ -z "$fmtFiles" -a -z "$vetFiles" ]

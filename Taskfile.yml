@@ -61,9 +61,13 @@ tasks:
     cmds:
       - npx biome lint . --apply  
   biome:fix:
-    desc: "Run biome fix"
+    desc: "Run biome check with apply"
     cmds:
       - npx biome check . --apply
+  biome:ci:
+    desc: "Run biome ci"
+    cmds:
+      - npx biome ci .
   test:
     desc: "run test for all packages"
     cmds:

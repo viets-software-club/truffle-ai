@@ -5,12 +5,11 @@
     "dev": "next dev",
     "build": "next build",
     "serve": "next start",
-    "lint": "eslint ./src",
+    "test": "eslint ./src",
     "codegen": "export $(cat .env.local | grep -v \"#\" | xargs) && graphql-codegen --config codegen.config.ts",
     "react:update-react-imports": "npx react-codemod update-react-imports"
   },
   "dependencies": {
-    "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/typescript": "^3.0.4",
     "@graphql-codegen/typescript-operations": "^3.0.4",
     "@graphql-codegen/typescript-urql": "^3.7.3",
@@ -19,7 +18,6 @@
     "@supabase/auth-helpers-nextjs": "^0.7.2",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@tanstack/react-table": "^8.9.1",
-    "@types/node": "18.16.3",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
@@ -45,8 +43,10 @@
     "urql": "^4.0.4"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^3.3.1",
     "@truffle/eslint-config-base": "0.0.1",
     "@truffle/ts-config-base": "0.0.1",
+    "@types/node": "18.16.3",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
     "babel-loader": "^9.1.3",

@@ -41,7 +41,10 @@ const processAuthorizationHeader = async (req: FastifyRequest) => {
 		throw Error('Authorization header is not a valid Bearer token')
 	}
 	const jwt = authorizationHeader?.substring(7)
-	if (!jwt) throw Error('')
+	if (!jwt) {
+		logger.warn('No jwt')
+		throw Error('No jwt')
+	}
 
 	// Get user from Supabase if JWT is valid
 	const {
@@ -60,26 +63,26 @@ const processAuthorizationHeader = async (req: FastifyRequest) => {
 }
 
 const processUserApiKeyHeader = async (req: FastifyRequest) => {
-	if (typeof req.headers.userApiKey !== 'string') {
+	if (typeof req.headers.userapikey !== 'string') {
 		logger.info('User API Key is no string or empty')
 		throw Error('User API Key is no string or empty')
 	}
-	if (req.headers.userApiKey.trim() === '') {
+	if (req.headers.userapikey.trim() === '') {
 		logger.info('User API Key is empty')
 		throw Error('User API Key is empty')
 	}
-	const userApiKey = req.headers.userApiKey
+	const userApiKey = req.headers.userapikey
 	const { data, error: selectError } = await supabase
 		.from('user_api_key')
 		.select('auth_users_id')
 		.eq('user_api_key', userApiKey)
 	if (selectError) {
-		logger.info('Error when selecting userApiKey from db', selectError)
-		throw Error('Error when selecting userApiKey from db')
+		logger.info('Error when selecting userapikey from db', selectError)
+		throw Error('Error when selecting userapikey from db')
 	}
 	if (!data?.[0]?.auth_users_id) {
-		logger.warn("User ID couldn't be retrieved from db for userApiKey")
-		throw Error("User ID couldn't be retrieved from db for userApiKey")
+		logger.warn("User ID couldn't be retrieved from db for userapikey")
+		throw Error("User ID couldn't be retrieved from db for userapikey")
 	}
 
 	const {
@@ -97,7 +100,10 @@ const processUserApiKeyHeader = async (req: FastifyRequest) => {
 		throw Error('Error when getting User by ID')
 	}
 
-	if (!user) throw Error('User not found')
+	if (!user) {
+		logger.warn('User not found')
+		throw Error('User not found')
+	}
 
 	const jwt = jsonwebtoken.sign(
 		{
@@ -122,7 +128,7 @@ app.addHook('preHandler', async (req) => {
 	}
 
 	// if userApiKey header exists
-	if (req?.headers?.userApiKey) {
+	if (req?.headers?.userapikey) {
 		await processUserApiKeyHeader(req)
 	}
 })
@@ -162,5 +168,5 @@ void app.listen({ port: process.env.GRAPHQL_GATEWAY_PORT }, (err, address) => {
 		app.log.error(err)
 		process.exit(1)
 	}
-	app.log.error(`server listening on ${address}`)
+	app.log.info(`server listening on ${address}`)
 })

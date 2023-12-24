@@ -26,10 +26,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: Install Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install npm packages
-        run: NODE_ENV=test npm ci
+        run: NODE_ENV=development npm ci
       - name: Test
-        run: NODE_ENV=test npm run test
+        run: task test
       - name: Build
         env:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
@@ -40,4 +45,4 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           GRAPHQL_URL: ${{ vars.GRAPHQL_URL }}
-        run: NODE_ENV=production npm run build
+        run: NODE_ENV=production task build

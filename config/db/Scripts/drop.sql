@@ -42,6 +42,7 @@ drop table if exists sbot_lin_profile cascade;
 drop table if exists sbot_lin_company cascade;
 drop table if exists sbot_lin_keyword cascade;
 drop table if exists proj_repo_and_sbot_lin_keyword cascade;
+drop table if exists pinned_proj_bookmark cascade;
 
 drop domain if exists d_gthb_owner_type cascade;
 drop domain if exists d_gthb_trending_date_range cascade;

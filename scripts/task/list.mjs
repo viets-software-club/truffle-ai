@@ -5,7 +5,7 @@ import 'zx/globals'
 $.verbose = false
 console.warn('Use one of the following:\n')
 console.log(
-    (
-        await $`task --list-all | grep --color=always "${argv._[0]}" | awk '/^[[:space:]]/ {print "\\033[38;5;232m" $0 "\\033[0m"; next} {print}';`
-    ).stdout
+	(
+		await $`task --list-all | grep --color=always "${argv._[0]}" | awk '/^[[:space:]]/ {print "\\033[38;5;232m" $0 "\\033[0m"; next} {print}';`
+	).stdout
 )

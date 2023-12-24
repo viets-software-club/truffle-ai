@@ -1,9 +1,14 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
+const key = process.env.NEXT_PUBLIC_GRAPHQL_URL
+if(typeof key !== 'string')
+  console.error("Couldn't generate codegen")
+
+
 const config: CodegenConfig = {
   schema: [
     {
-      [process.env.NEXT_PUBLIC_GRAPHQL_URL]: {
+      [key]: {
         headers: {
           Authorization: 'Bearer development'
         }

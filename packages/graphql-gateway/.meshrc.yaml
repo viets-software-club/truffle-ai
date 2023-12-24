@@ -3,26 +3,27 @@ serve:
   playground: true
   browser: false
   port: 3001
+  fork: 1
 sources:
-  - name: Supabase
-    handler:
-      graphql:
-        endpoint: '{env.SUPABASE_GRAPHQL_URL}'
-        operationHeaders:
-          apiKey: '{env.SUPABASE_SERVICE_KEY}'
-          Content-Type: application/json
-          Authorization: '{context.headers["authorization"]}'
-        schemaHeaders:
-          apiKey: '{env.SUPABASE_SERVICE_KEY}'
-          Content-Type: application/json
-          Authorization: '{context.headers["authorization"]}'
   - name: Server
     handler:
       graphql:
         endpoint: '{env.GRAPHQL_SERVER_URL}'
-        source: ./../graphql-server/src/graphql/schema.ts
+        source: ./schema.js
         operationHeaders:
           Authorization: '{context.headers["authorization"]}'
         schemaHeaders:
           Authorization: '{context.headers["authorization"]}'
-additionalEnvelopPlugins: './src/envelopPlugins'
+  - name: Supabase
+    handler:
+      graphql:
+        method: POST
+        endpoint: '{env.SUPABASE_GRAPHQL_URL}'
+        operationHeaders:
+          apiKey: '{env.SUPABASE_ANON_KEY}'
+          Content-Type: application/json
+          Authorization: '{context.headers["authorization"]}'
+        schemaHeaders:
+          apiKey: '{env.SUPABASE_ANON_KEY}'
+          Content-Type: application/json
+          Authorization: '{context.headers["authorization"]}'

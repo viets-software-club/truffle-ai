@@ -157,7 +157,7 @@ app.route({
 	}
 })
 
-app.listen({ port: 3001 }, (err, address) => {
+void app.listen({ port: process.env.GRAPHQL_GATEWAY_PORT }, (err, address) => {
 	if (err) {
 		app.log.error(err)
 		process.exit(1)

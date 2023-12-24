@@ -24,12 +24,12 @@ func (r *mutationResolver) CreateBookmark(ctx context.Context, repo model.Reposi
 
 // RemoveBookmark is the resolver for the removeBookmark field.
 func (r *mutationResolver) RemoveBookmark(ctx context.Context, repo model.RepositoryInput) (bool, error) {
-	panic(fmt.Errorf("not implemented: RemoveBookmark - removeBookmark"))
+	return true, nil
 }
 
 // HelloWorld is the resolver for the helloWorld field.
 func (r *queryResolver) HelloWorld(ctx context.Context) (string, error) {
-	panic(fmt.Errorf("not implemented: HelloWorld - helloWorld"))
+	return "Hello world!", nil
 }
 
 // Mutation returns MutationResolver implementation.

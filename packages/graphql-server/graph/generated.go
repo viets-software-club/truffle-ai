@@ -246,7 +246,7 @@ func (ec *executionContext) field_Mutation_createBookmark_args(ctx context.Conte
 	var arg0 model.RepositoryInput
 	if tmp, ok := rawArgs["repo"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("repo"))
-		arg0, err = ec.unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgoᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx, tmp)
+		arg0, err = ec.unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgraphqlᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -270,7 +270,7 @@ func (ec *executionContext) field_Mutation_removeBookmark_args(ctx context.Conte
 	var arg0 model.RepositoryInput
 	if tmp, ok := rawArgs["repo"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("repo"))
-		arg0, err = ec.unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgoᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx, tmp)
+		arg0, err = ec.unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgraphqlᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -2899,7 +2899,7 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgoᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx context.Context, v interface{}) (model.RepositoryInput, error) {
+func (ec *executionContext) unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgraphqlᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx context.Context, v interface{}) (model.RepositoryInput, error) {
 	res, err := ec.unmarshalInputRepositoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }

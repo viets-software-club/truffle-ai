@@ -115,6 +115,26 @@ func (d *Database) CallInsertGthbOwner(githubOwner types.T_f_insert_gthb_owner) 
 	return nil
 }
 
+func (d *Database) CallDeleteProjBookmark(projBookmarkId int) error {
+
+	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_gthb_owner($1)", &projBookmarkId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (d *Database) CallDeleteProjBookmarkByProjRepoId(projRepoId int) error {
+
+	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_gthb_owner($1)", &projRepoId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // func (d *Database) UpsertGithubOwner(tx pgx.Tx, github_owner Insert_github_owner) (int, error) {
 
 // 	// Insert github_owner

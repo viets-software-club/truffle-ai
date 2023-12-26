@@ -6,14 +6,13 @@ declare
 begin
   foreach algoHnStory in array algoHnStories loop
     with story as (
-insert into algo_hn_story(algo_hn_query_id, algo_hn_story_object_id, algo_hn_story_url, author, created_at, points, story_text, title, updated_at)
+insert into algo_hn_story(algo_hn_query_id, algo_hn_story_object_id, algo_hn_story_url, author, created_at, points, title, updated_at)
 	values (queryId, algoHnStory.algo_hn_story_object_id, algoHnStory.algo_hn_story_url, algoHnStory.author, algoHnStory.created_at,
 	  algoHnStory.points, algoHnStory.story_text, algoHnStory.title, algoHnStory.updated_at)
       on conflict (algo_hn_story_object_id)
         do update set
 	  algo_hn_query_id = excluded.algo_hn_query_id, author = excluded.author, created_at = excluded.created_at, algo_hn_story_url =
-	    excluded.algo_hn_story_url, algo_hn_story_object_id = excluded.algo_hn_story_object_id, points = excluded.points, story_text =
-	    excluded.story_text, title = excluded.title, updated_at = excluded.updated_at
+	    excluded.algo_hn_story_url, algo_hn_story_object_id = excluded.algo_hn_story_object_id, points = excluded.points, title = excluded.title, updated_at = excluded.updated_at
         returning
           algo_hn_story_id
 ), tags as (

@@ -27,7 +27,6 @@ type T_ivals_algo_hn_story struct {
 	Algo_hn_story_url       pgtype.Text
 	Algo_hn_story_object_id pgtype.Int8
 	Points                  pgtype.Int8
-	Story_text              pgtype.Text
 	Title                   pgtype.Text
 	Updated_at              pgtype.Timestamptz
 }
@@ -39,7 +38,6 @@ type T_f_insert_algo_hn_story struct {
 	Author                  pgtype.Text
 	Created_at              pgtype.Timestamptz
 	Points                  pgtype.Int8
-	Story_text              pgtype.Text
 	Title                   pgtype.Text
 	Updated_at              pgtype.Timestamptz
 }

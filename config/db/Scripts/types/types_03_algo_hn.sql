@@ -23,7 +23,6 @@ create type t_ivals_algo_hn_story as (
   algo_hn_story_url text,
   algo_hn_story_object_id bigint,
   points bigint,
-  story_text text,
   title text,
   updated_at timestamp with time zone
 );
@@ -35,7 +34,6 @@ create type t_f_insert_algo_hn_story as (
   author text,
   created_at timestamp with time zone,
   points bigint,
-  story_text text,
   title text,
   updated_at timestamp with time zone
 );

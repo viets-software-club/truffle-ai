@@ -41,7 +41,6 @@ var dummyAlgoHnStories = pgtype.FlatArray[types.T_f_insert_algo_hn_story]{
 		Author:                  dummyText,
 		Created_at:              dummyTime,
 		Points:                  dummyInt,
-		Story_text:              dummyText,
 		Title:                   dummyText,
 		Updated_at:              dummyTime,
 		Algo_hn_story_object_id: dummyInt,

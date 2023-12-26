@@ -37,8 +37,9 @@ require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/google/go-github/v57 v57.0.0
-	github.com/google/uuid v1.4.0 // indirect
+	github.com/google/uuid v1.4.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/sashabaranov/go-openai v1.17.9
 	github.com/shurcooL/githubv4 v0.0.0-20231126234147-1cffa1f02456
 	github.com/sosodev/duration v1.1.0 // indirect
 	github.com/urfave/cli/v2 v2.25.5 // indirect

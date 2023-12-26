@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"time"
 )
 
 type HackernewsStoriesResponse struct {
@@ -34,18 +36,18 @@ type HackernewsStoriesResponse struct {
 				Value            string   `json:"value"`
 			} `json:"url"`
 		} `json:"_highlightResult"`
-		Tags        []string `json:"_tags"`
-		Author      string   `json:"author"`
-		Children    []int    `json:"children"`
-		CreatedAt   string   `json:"created_at"`
-		CreatedAtI  int      `json:"created_at_i"`
-		NumComments int      `json:"num_comments"`
-		ObjectID    string   `json:"objectID"`
-		Points      int      `json:"points"`
-		StoryID     int      `json:"story_id"`
-		Title       string   `json:"title"`
-		UpdatedAt   string   `json:"updated_at"`
-		URL         string   `json:"url"`
+		Tags        []string  `json:"_tags"`
+		Author      string    `json:"author"`
+		Children    []int     `json:"children"`
+		CreatedAt   time.Time `json:"created_at"`
+		CreatedAtI  int       `json:"created_at_i"`
+		NumComments int       `json:"num_comments"`
+		ObjectID    string    `json:"objectID"`
+		Points      int       `json:"points"`
+		StoryID     int       `json:"story_id"`
+		Title       string    `json:"title"`
+		UpdatedAt   time.Time `json:"updated_at"`
+		URL         url.URL   `json:"url"`
 	} `json:"hits"`
 	HitsPerPage         int    `json:"hitsPerPage"`
 	NbHits              int    `json:"nbHits"`
@@ -105,19 +107,19 @@ type HackernewsCommentsResponse struct {
 				Value        string   `json:"value"`
 			} `json:"story_url"`
 		} `json:"_highlightResult"`
-		Tags        []string `json:"_tags"`
-		Author      string   `json:"author"`
-		Children    []int    `json:"children"`
-		CommentText string   `json:"comment_text"`
-		CreatedAt   string   `json:"created_at"`
-		CreatedAtI  int      `json:"created_at_i"`
-		ObjectID    string   `json:"objectID"`
-		ParentID    int      `json:"parent_id"`
-		Points      *int     `json:"points"`
-		StoryID     int      `json:"story_id"`
-		StoryTitle  string   `json:"story_title"`
-		StoryURL    string   `json:"story_url"`
-		UpdatedAt   string   `json:"updated_at"`
+		Tags        []string  `json:"_tags"`
+		Author      string    `json:"author"`
+		Children    []int     `json:"children"`
+		CommentText string    `json:"comment_text"`
+		CreatedAt   time.Time `json:"created_at"`
+		CreatedAtI  int       `json:"created_at_i"`
+		ObjectID    string    `json:"objectID"`
+		ParentID    int       `json:"parent_id"`
+		Points      *int      `json:"points"`
+		StoryID     int       `json:"story_id"`
+		StoryTitle  string    `json:"story_title"`
+		StoryURL    url.URL   `json:"story_url"`
+		UpdatedAt   time.Time `json:"updated_at"`
 	} `json:"hits"`
 	HitsPerPage         int    `json:"hitsPerPage"`
 	NbHits              int    `json:"nbHits"`

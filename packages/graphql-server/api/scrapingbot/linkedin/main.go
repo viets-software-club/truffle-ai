@@ -64,6 +64,7 @@ type LinkedinProfile struct {
 		Img         string `json:"img"`
 		Link        string `json:"link"`
 	} `json:"activities"`
+	EducationsDetails    string      `json:"educations_details"`
 	RecommendationsCount interface{} `json:"recommendations_count"`
 	URL                  string      `json:"url"`
 	Name                 string      `json:"name"`

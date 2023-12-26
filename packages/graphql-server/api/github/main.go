@@ -57,18 +57,31 @@ func (g *GithubApi) QueryData(owner string, name string) (*GetRepository, error)
 	return &getRepository, nil
 }
 
-func (g *GithubApi) GetContributors(owner string, name string) ([]*github.Contributor, error) {
+func (g *GithubApi) QueryUser(login string) (*GetUser, error) {
+	var getUser GetUser
+	variables := map[string]interface{}{
+		"login": githubv4.String(login),
+	}
+	err := g.clientv4.Query(context.Background(), &getUser, variables)
+	if err != nil {
+		return nil, err
+	}
+	return &getUser, nil
+}
+
+func (g *GithubApi) GetContributors(owner string, name string) (*[]*github.Contributor, error) {
 	contrs, _, err := g.clientv3.Repositories.ListContributors(context.Background(), owner, name, nil)
-	return contrs, err
+	return &contrs, err
 }
 
-type StarHist struct {
-	date   github.Timestamp
-	amount int
+type Hist struct {
+	Date   github.Timestamp
+	Amount int
 }
+type IHist interface{ Hist }
 
-func (g *GithubApi) GetStarHistEven(totalStars int, amountPages int, owner string, name string) ([]StarHist, error) {
-	starHist := []StarHist{}
+func (g *GithubApi) GetStarHistEven(totalStars int, amountPages int, owner string, name string) (*[]Hist, error) {
+	starHist := []Hist{}
 	stepWidth := totalStars / amountPages
 	amountOfSteps := amountPages + 1
 	for i := 0; i < amountOfSteps; i++ {
@@ -77,20 +90,20 @@ func (g *GithubApi) GetStarHistEven(totalStars int, amountPages int, owner strin
 			Page:    i * stepWidth,
 		})
 		if err != nil {
-			return starHist, err
+			return &starHist, err
 		}
 		for j := 0; j < len(gazers); j++ {
-			starHist = append(starHist, StarHist{
-				date:   *gazers[j].StarredAt,
-				amount: i*stepWidth + j,
+			starHist = append(starHist, Hist{
+				Date:   *gazers[j].StarredAt,
+				Amount: i*stepWidth + j,
 			})
 		}
 	}
-	return starHist, nil
+	return &starHist, nil
 }
 
-func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner string, name string, includeFirstAndLastPage bool) ([]StarHist, error) {
-	starHist := []StarHist{}
+func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner string, name string, includeFirstAndLastPage bool) ([]Hist, error) {
+	starHist := []Hist{}
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	stepWidth := totalStars / amountPages
 	start := random.Intn(stepWidth) + 1
@@ -104,12 +117,56 @@ func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner stri
 			return starHist, err
 		}
 		for j := 0; j < len(gazers); j++ {
-			starHist = append(starHist, StarHist{
-				date:   *gazers[j].StarredAt,
-				amount: i*stepWidth + j,
+			starHist = append(starHist, Hist{
+				Date:   *gazers[j].StarredAt,
+				Amount: i*stepWidth + j,
 			})
 		}
 	}
 	return starHist, nil
 
+}
+
+func (g *GithubApi) GetForkHistEven(totalStars int, amountPages int, owner string, name string) (*[]Hist, error) {
+	starHist := []Hist{}
+	stepWidth := totalStars / amountPages
+	amountOfSteps := amountPages + 1
+	for i := 0; i < amountOfSteps; i++ {
+		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
+			PerPage: 30,
+			Page:    i * stepWidth,
+		})
+		if err != nil {
+			return &starHist, err
+		}
+		for j := 0; j < len(gazers); j++ {
+			starHist = append(starHist, Hist{
+				Date:   *gazers[j].StarredAt,
+				Amount: i*stepWidth + j,
+			})
+		}
+	}
+	return &starHist, nil
+}
+
+func (g *GithubApi) GetIssueHistEven(totalStars int, amountPages int, owner string, name string) (*[]Hist, error) {
+	starHist := []Hist{}
+	stepWidth := totalStars / amountPages
+	amountOfSteps := amountPages + 1
+	for i := 0; i < amountOfSteps; i++ {
+		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
+			PerPage: 30,
+			Page:    i * stepWidth,
+		})
+		if err != nil {
+			return &starHist, err
+		}
+		for j := 0; j < len(gazers); j++ {
+			starHist = append(starHist, Hist{
+				Date:   *gazers[j].StarredAt,
+				Amount: i*stepWidth + j,
+			})
+		}
+	}
+	return &starHist, nil
 }

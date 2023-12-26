@@ -19,7 +19,6 @@ func (r *mutationResolver) CreateBookmark(ctx context.Context, repo model.Reposi
 		return false, err
 	}
 	return true, nil
-	// panic(fmt.Errorf("not implemented: CreateBookmark - createBookmark"))
 }
 
 // RemoveBookmark is the resolver for the removeBookmark field.

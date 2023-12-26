@@ -8,5 +8,6 @@ type Query {
 }
 type Mutation {
   createBookmark(repo: RepositoryInput!, categories: [String!]!): Boolean!
-  removeBookmark(repo: RepositoryInput!): Boolean!
+  removeBookmark(projBookmarkId Int!): Boolean!
+  removeBookmarkByProjRepoId(projRepoId Int!): Boolean!
 }

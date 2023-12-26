@@ -39,6 +39,10 @@ drop table if exists sbot_lin_company cascade;
 drop table if exists pinned_proj_bookmark cascade;
 drop table if exists proj_repo_and_sbot_lin_company cascade;
 drop table if exists proj_repo_and_sbot_lin_profile cascade;
+drop table if exists gthb_repo_and_gthb_repo_topic cascade;
+drop table if exists gthb_repo_topic cascade;
+drop table if exists proj_classifier cascade;
+drop table if exists proj_repo_and_proj_classifier cascade;
 
 drop domain if exists d_gthb_owner_type cascade;
 drop domain if exists d_gthb_trending_date_range cascade;
@@ -77,3 +81,6 @@ drop policy if exists "authenticated can access proj_repo" on proj_repo cascade;
 drop policy if exists "authenticated can access proj_cat" on proj_cat cascade;
 drop policy if exists "authenticated can access gthb_repo" on gthb_repo cascade;
 drop policy if exists "admin can access user_whitelist" on user_whitelist cascade;
+drop policy if exists "admin can insert, select admins" on user_admin cascade;
+drop policy if exists "admin can only delete, update himself" on user_admin cascade;
+

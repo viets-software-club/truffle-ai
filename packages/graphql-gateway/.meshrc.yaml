@@ -8,22 +8,24 @@ sources:
   - name: Server
     handler:
       graphql:
-        endpoint: '{env.GRAPHQL_SERVER_URL}'
+        method: POST
+        endpoint: "{env.GRAPHQL_SERVER_URL}"
         source: ./schema.js
         operationHeaders:
           Authorization: '{context.headers["authorization"]}'
+          authusersid: '{context.headers["authusersid"]}'
         schemaHeaders:
           Authorization: '{context.headers["authorization"]}'
   - name: Supabase
     handler:
       graphql:
         method: POST
-        endpoint: '{env.SUPABASE_GRAPHQL_URL}'
+        endpoint: "{env.SUPABASE_GRAPHQL_URL}"
         operationHeaders:
-          apiKey: '{env.SUPABASE_ANON_KEY}'
+          apiKey: "{env.SUPABASE_ANON_KEY}"
           Content-Type: application/json
           Authorization: '{context.headers["authorization"]}'
         schemaHeaders:
-          apiKey: '{env.SUPABASE_ANON_KEY}'
+          apiKey: "{env.SUPABASE_ANON_KEY}"
           Content-Type: application/json
           Authorization: '{context.headers["authorization"]}'

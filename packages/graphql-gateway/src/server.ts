@@ -60,6 +60,7 @@ const processAuthorizationHeader = async (req: FastifyRequest) => {
 		throw Error("Couldn't get user")
 	}
 	req.headers.authorization = `Bearer ${jwt}`
+	req.headers.authusersid = user.id
 }
 
 const processUserApiKeyHeader = async (req: FastifyRequest) => {
@@ -85,15 +86,16 @@ const processUserApiKeyHeader = async (req: FastifyRequest) => {
 		throw Error("User ID couldn't be retrieved from db for userapikey")
 	}
 
+	const userId = data?.[0]?.auth_users_id as string
 	const {
 		data: { user },
 		error: userByIdError
-	} = await supabase.auth.admin.getUserById(data?.[0]?.auth_users_id as string)
+	} = await supabase.auth.admin.getUserById(userId)
 
 	if (userByIdError) {
 		logger.error(
 			'Error when getting User by ID',
-			data?.[0]?.auth_users_id,
+			userId,
 			", User doesn't seem to exist",
 			userByIdError
 		)
@@ -119,6 +121,7 @@ const processUserApiKeyHeader = async (req: FastifyRequest) => {
 		{ expiresIn: '1h' }
 	)
 	req.headers.authorization = `Bearer ${jwt}`
+	req.headers.authusersid = userId
 }
 
 app.addHook('preHandler', async (req) => {

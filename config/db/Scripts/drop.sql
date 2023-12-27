@@ -75,12 +75,15 @@ drop type if exists t_f_insert_proj_bookmark_w_cats cascade;
 drop type if exists t_f_insert_gthb_trending cascade;
 drop type if exists t_f_insert_sbot_lin_companies_for_proj cascade;
 drop type if exists t_f_insert_sbot_lin_profiles_for_proj cascade;
+drop type if exists t_ivals_gthb_repo_topic;
+drop type if exists t_ivals_proj_classifier;
 
 drop policy if exists "authenticated can access proj_bookmark" on proj_bookmark cascade;
 drop policy if exists "authenticated can access proj_repo" on proj_repo cascade;
 drop policy if exists "authenticated can access proj_cat" on proj_cat cascade;
 drop policy if exists "authenticated can access gthb_repo" on gthb_repo cascade;
 drop policy if exists "admin can access user_whitelist" on user_whitelist cascade;
-drop policy if exists "admin can insert, select admins" on user_admin cascade;
-drop policy if exists "admin can only delete, update himself" on user_admin cascade;
-
+drop policy if exists "admin can insert admins" on user_admin cascade;
+drop policy if exists "admin can select admins" on user_admin cascade;
+drop policy if exists "admin can only update himself" on user_admin cascade;
+drop policy if exists "admin can only delete himself" on user_admin cascade;

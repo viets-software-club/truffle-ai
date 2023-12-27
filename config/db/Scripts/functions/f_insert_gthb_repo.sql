@@ -11,6 +11,7 @@ declare
   stars t_ivals_gthb_star_hist[] := githubRepo.gthb_star_hists;
   forks t_ivals_gthb_fork_hist[] := githubRepo.gthb_fork_hists;
   issues t_ivals_gthb_issue_hist[] := githubRepo.gthb_issue_hists;
+  topic t_ivals_gthb_repo_topic;
 begin
   ownerId := f_insert_gthb_owner(githubRepo.gthb_owner);
 
@@ -28,10 +29,6 @@ begin
 	excluded.stargazer_count
     returning
       gthb_repo_id into repoId;
-
-
-RAISE LOG 'repo %', githubRepo;
-RAISE LOG 'contrs %', githubRepo.gthb_repo_contrs;
 
   foreach contr in array githubRepo.gthb_repo_contrs
     loop
@@ -64,39 +61,42 @@ RAISE LOG 'contrs %', githubRepo.gthb_repo_contrs;
   with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
   insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
 
+  with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
+  insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
+
   insert into gthb_star_hist(gthb_repo_id, gthb_star_hist_date, amount)
-  select
+   select
     repoId,
-    gthb_star_hist_date,
-    amount
+    s.gthb_star_hist_date,
+    s.amount
   from
-    unnest(stars)
+    unnest(stars) s
   on conflict (gthb_repo_id,
     gthb_star_hist_date)
     do update set
-      amount = excluded.amount;
+      amount = excluded.amount where excluded.amount > gthb_star_hist.amount;
   insert into gthb_fork_hist(gthb_repo_id, gthb_fork_hist_date, amount)
   select
     repoId,
-    gthb_fork_hist_date,
-    amount
+    f.gthb_fork_hist_date,
+    f.amount
   from
-    unnest(forks)
+    unnest(forks) f
   on conflict (gthb_repo_id,
     gthb_fork_hist_date)
     do update set
-      amount = excluded.amount;
+      amount = excluded.amount where excluded.amount > gthb_fork_hist.amount;
   insert into gthb_issue_hist(gthb_repo_id, gthb_issue_hist_date, amount)
-  select
+   select
     repoId,
-    gthb_issue_hist_date,
-    amount
+    i.gthb_issue_hist_date,
+    i.amount
   from
-    unnest(issues)
+    unnest(issues) i
   on conflict (gthb_repo_id,
     gthb_issue_hist_date)
     do update set
-      amount = excluded.amount;
+      amount = excluded.amount where excluded.amount > gthb_issue_hist.amount;
   return repoId;
 end;
 $$

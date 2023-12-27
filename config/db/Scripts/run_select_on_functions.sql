@@ -214,7 +214,6 @@ select f_insert_gthb_repo(
         5,
         Row(
           'avatar_url',
-          'User'::d_gthb_owner_type,
           'gthb_owner_login',
           'gthb_owner_url',
           Row(
@@ -235,6 +234,12 @@ select f_insert_gthb_repo(
     ]::t_f_insert_gthb_contr[],
     'gthb_repo_description',
     'gthb_repo_name',
+    array[
+      Row(
+      'topic_name',
+        50
+      )
+    ]::t_ivals_gthb_repo_topic[],
     'gthb_repo_url',
      array[
       Row(
@@ -284,7 +289,6 @@ select f_insert_proj_repo(
             'author',
             NOW(),
             123,
-            'story_text',
             'title',
             NOW()
           )
@@ -363,6 +367,12 @@ select f_insert_proj_repo(
     ]::t_f_insert_gthb_contr[],
     'gthb_repo_description',
     'gthb_repo_name',
+       array[
+      Row(
+        'topic_name',
+        50
+      )
+    ]::t_ivals_gthb_repo_topic[],
     'gthb_repo_url',
      array[
       Row(
@@ -422,7 +432,6 @@ select f_insert_proj_bookmark_w_cats(
             'author',
             NOW(),
             123,
-            'story_text',
             'title',
             NOW()
           )
@@ -480,7 +489,6 @@ select f_insert_proj_bookmark_w_cats(
         5,
         Row(
           'avatar_url',
-          'User'::d_gthb_owner_type,
           'gthb_owner_login',
           'gthb_owner_url',
           Row(
@@ -501,6 +509,12 @@ select f_insert_proj_bookmark_w_cats(
     ]::t_f_insert_gthb_contr[],
     'gthb_repo_description',
     'gthb_repo_name',
+    array[
+      Row(
+        'topic_name',
+        50
+      )
+    ]::t_ivals_gthb_repo_topic[],
     'gthb_repo_url',
      array[
       Row(
@@ -515,13 +529,14 @@ select f_insert_proj_bookmark_w_cats(
     30
   )::t_f_insert_gthb_repo,
   'note',
+  array[Row(
+    'Classifier'
+  )]::t_ivals_proj_classifier[],
   Row(
     'algo_hn_eli5',
     'repo_eli5'
   )::t_f_insert_proj_repo_metadata,
-     Row(
-        'keywords',
-        Row(
+      array[  Row(
           'about',
           123,
           123,
@@ -533,9 +548,8 @@ select f_insert_proj_bookmark_w_cats(
           'sbot_lin_company_url',
           'sphere',
           'website'
-        )::t_ivals_sbot_lin_company,
-        NULL
-      )::t_f_insert_sbot_lin_keyword
+        )]::t_ivals_sbot_lin_company[],
+      NULL
 )::t_f_insert_proj_repo
   )::t_f_insert_proj_bookmark_w_cats
 )

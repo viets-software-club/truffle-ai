@@ -12,8 +12,6 @@ begin
   if projectRepoArg.algo_hn_queries is not null then
     perform f_insert_algo_hn_queries_w_stories_and_comments_for_proj(projRepoId, projectRepoArg.algo_hn_queries);
   end if;
-  -- RAISE LOG 'sbotLinKeyword is %', projectRepoArg.sbot_lin_keyword::text;
-
   if projectRepoArg.sbot_lin_companies is not null then
     perform f_insert_sbot_lin_companies_for_proj(projRepoId, projectRepoArg.sbot_lin_companies);
   end if;
@@ -21,6 +19,8 @@ begin
   if projectRepoArg.sbot_lin_profiles is not null then
     perform f_insert_sbot_lin_profiles_for_proj(projRepoId, projectRepoArg.sbot_lin_profiles);
   end if;
+  with classifiers as (insert into proj_classifier (classifier) select * from unnest(projectRepoArg.proj_classifiers) on conflict (classifier) do update set classifier = excluded.classifier returning *)
+  insert into proj_repo_and_proj_classifier(proj_repo_id, proj_classifier_id) select projRepoId, classifiers.proj_classifier_id from classifiers on conflict(proj_repo_id, proj_classifier_id) do nothing;
   
   return projRepoId;
 end;

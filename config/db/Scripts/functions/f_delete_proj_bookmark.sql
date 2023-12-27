@@ -1,3 +1,4 @@
+drop function f_delete_proj_bookmark(bigint);
 create or replace function f_delete_proj_bookmark(projBookmarkId bigint)
   returns VOID
   as $$

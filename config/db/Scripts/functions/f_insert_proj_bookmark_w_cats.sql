@@ -1,7 +1,9 @@
 create or replace function f_insert_proj_bookmark_w_cats(bookmarkWithCats t_f_insert_proj_bookmark_w_cats) returns VOID as $$
-declare projRepoId bigint;
+declare
+projRepoId bigint;
 bookmarkId bigint;
-begin projRepoId := f_insert_proj_repo(bookmarkWithCats.proj_repo);
+begin
+projRepoId := f_insert_proj_repo(bookmarkWithCats.proj_repo);
 insert into proj_bookmark (proj_repo_id, auth_users_id)
 values(
     projRepoId,

@@ -76,6 +76,11 @@ create type t_f_insert_gthb_contr as (
   contributions bigint,
   gthb_owner t_f_insert_gthb_contr_owner
 );
+create type t_ivals_gthb_repo_topic as (
+  gthb_repo_topic_name text,
+  stargazer_count bigint
+);
+
 create type t_f_insert_gthb_repo as (
   created_at timestamp with time zone,
   fork_count bigint,
@@ -86,6 +91,7 @@ create type t_f_insert_gthb_repo as (
   gthb_repo_contrs t_f_insert_gthb_contr [],
   gthb_repo_description text,
   gthb_repo_name text,
+  gthb_repo_topics t_ivals_gthb_repo_topic[],
   gthb_repo_url text,
   gthb_star_hists t_ivals_gthb_star_hist [],
   homepage_url text,

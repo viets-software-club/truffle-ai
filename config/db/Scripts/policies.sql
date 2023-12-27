@@ -37,12 +37,23 @@ create policy "admin can access user_whitelist"
     select auth_users_id from user_admin
   ));
 
-create policy "admin can insert, select admins"
-  on user_admin for select, insert to authenticated
+create policy "admin can insert admins"
+  on user_admin for insert to authenticated
+  with check (auth.uid() in (
+    select auth_users_id from user_admin
+  ));
+
+create policy "admin can select admins"
+  on user_admin for select to authenticated
   using (auth.uid() in (
     select auth_users_id from user_admin
   ));
 
-create policy "admin can only delete, update himself"
-  on user_admin for delete, update to authenticated
+create policy "admin can only update himself"
+  on user_admin for update to authenticated
+  using (auth.uid() = user_admin.auth_users_id);
+
+
+create policy "admin can only delete himself"
+  on user_admin for delete to authenticated
   using (auth.uid() = user_admin.auth_users_id);

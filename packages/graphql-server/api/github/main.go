@@ -2,8 +2,12 @@ package github
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"math/rand"
 	"os"
+	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/google/go-github/v57/github"
@@ -80,26 +84,79 @@ type Hist struct {
 }
 type IHist interface{ Hist }
 
-func (g *GithubApi) GetStarHistEven(totalStars int, amountPages int, owner string, name string) (*[]Hist, error) {
-	starHist := []Hist{}
-	stepWidth := totalStars / amountPages
-	amountOfSteps := amountPages + 1
-	for i := 0; i < amountOfSteps; i++ {
-		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
-			PerPage: 30,
-			Page:    i * stepWidth,
-		})
-		if err != nil {
-			return &starHist, err
-		}
-		for j := 0; j < len(gazers); j++ {
-			starHist = append(starHist, Hist{
-				Date:   *gazers[j].StarredAt,
-				Amount: i*stepWidth + j,
-			})
+func getLastPageForHist(linkHeader string) (int, error) {
+	regex, err := regexp.Compile(`page=(\d+)>; rel="last"`)
+	if err != nil {
+		return 0, err
+	}
+	match := regex.FindStringSubmatch(linkHeader)
+	fmt.Println(match)
+	if len(match) <= 1 {
+		return 0, errors.New("no match for rel last")
+	}
+	return strconv.Atoi(match[1])
+}
+
+func (g *GithubApi) GetStarHistEven(amountPages int, owner string, name string) (*map[string]Hist, error) {
+	starHistMap := make(map[string]Hist)
+
+	appendGazersToMap := func(gazers []*github.Stargazer, prevAmount int) {
+		for i := 0; i < len(gazers); i++ {
+			starHistMap[gazers[i].StarredAt.String()] = Hist{
+				Date:   *gazers[i].StarredAt,
+				Amount: prevAmount + i,
+			}
 		}
 	}
-	return &starHist, nil
+	// get first page
+	firstGazers, response, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
+		PerPage: 30,
+		Page:    0,
+	})
+	appendGazersToMap(firstGazers, 0)
+
+	if err != nil {
+		return nil, err
+	}
+	// set last page number
+	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	if err != nil {
+		return nil, err
+	}
+
+	var pageCount int
+	if amountPages > lastPage {
+		pageCount = lastPage
+	} else {
+		pageCount = amountPages
+	}
+	stepWidth := float64(lastPage) / float64(pageCount)
+
+	// get all in between pages
+	for i := 1; i < pageCount-1; i++ {
+		page := int(float64(i) * stepWidth)
+		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
+			PerPage: 30,
+			Page:    page,
+		})
+		if err != nil {
+			return nil, err
+		}
+		appendGazersToMap(gazers, page*30)
+	}
+
+	// get last page
+	if lastPage != 0 {
+		lastGazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
+			PerPage: 30,
+			Page:    lastPage - 1,
+		})
+		if err != nil {
+			return nil, err
+		}
+		appendGazersToMap(lastGazers, lastPage*30)
+	}
+	return &starHistMap, nil
 }
 
 func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner string, name string, includeFirstAndLastPage bool) ([]Hist, error) {

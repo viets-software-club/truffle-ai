@@ -1,6 +1,8 @@
 package scrapingbot
 
 import (
+	"fmt"
+	"regexp"
 	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -15,6 +17,7 @@ func ConvertLinkedinCompanies(companies *[]linkedin.LinkedinCompany) (*pgtype.Fl
 		if err != nil {
 			return nil, err
 		}
+
 		pgCompanies = append(pgCompanies, types.T_ivals_sbot_lin_company{
 			About:                        pgtype.Text{String: company.About, Valid: true},
 			Employees_amount_in_linkedin: pgtype.Int8{Int64: int64(employeesAmount), Valid: true},
@@ -37,7 +40,21 @@ func ConvertLinkedinCompanies(companies *[]linkedin.LinkedinCompany) (*pgtype.Fl
 func ConvertLinkedinProfiles(profiles *[]linkedin.LinkedinProfile) (*pgtype.FlatArray[types.T_ivals_sbot_lin_profile], error) {
 	var pgProfiles pgtype.FlatArray[types.T_ivals_sbot_lin_profile]
 	for _, profile := range *profiles {
-		following, err := strconv.Atoi(profile.Following)
+		re := regexp.MustCompile("[0-9]+")
+		matched := re.FindString(profile.Following)
+		if matched == "" {
+			return nil, fmt.Errorf("no number found in string Following")
+		}
+		following, err := strconv.Atoi(matched)
+		if err != nil {
+			return nil, err
+		}
+
+		matched2 := re.FindString(profile.Followers)
+		if matched == "" {
+			return nil, fmt.Errorf("no number found in string Followers")
+		}
+		followers, err := strconv.Atoi(matched2)
 		if err != nil {
 			return nil, err
 		}
@@ -48,7 +65,7 @@ func ConvertLinkedinProfiles(profiles *[]linkedin.LinkedinProfile) (*pgtype.Flat
 			Current_company_link:       pgtype.Text{String: profile.CurrentCompany.Link, Valid: true},
 			Current_company_name:       pgtype.Text{String: profile.CurrentCompany.Name, Valid: true},
 			Education_details:          pgtype.Text{String: profile.EducationsDetails, Valid: true},
-			Followers:                  pgtype.Int8{Int64: int64(following), Valid: true},
+			Followers:                  pgtype.Int8{Int64: int64(followers), Valid: true},
 			Position:                   pgtype.Text{String: profile.Position, Valid: true},
 			Sbot_lin_profile_name:      pgtype.Text{String: profile.Name, Valid: true},
 			Sbot_lin_profile_url:       pgtype.Text{String: profile.URL, Valid: true},

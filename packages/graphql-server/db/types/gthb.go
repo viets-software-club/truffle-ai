@@ -2,6 +2,11 @@ package types
 
 import "github.com/jackc/pgx/v5/pgtype"
 
+type T_ivals_gthb_repo_topic struct {
+	Gthb_repo_topic_name pgtype.Text
+	Stargazer_count      pgtype.Int8
+}
+
 // Github Organization
 type T_ivals_gthb_org struct {
 	Created_at           pgtype.Timestamptz
@@ -63,6 +68,7 @@ type T_f_insert_gthb_repo struct {
 	Gthb_repo_contrs          pgtype.FlatArray[T_f_insert_gthb_contr]
 	Gthb_repo_description     pgtype.Text
 	Gthb_repo_name            pgtype.Text
+	Gthb_repo_topics          pgtype.FlatArray[T_ivals_gthb_repo_topic]
 	Gthb_repo_url             pgtype.Text
 	Gthb_star_hists           pgtype.FlatArray[T_ivals_gthb_star_hist]
 	Homepage_url              pgtype.Text
@@ -109,6 +115,8 @@ var GthbTypes = []string{
 	"t_ivals_gthb_owner",
 	"t_ivals_gthb_user",
 	"t_ivals_gthb_org",
+	"t_ivals_gthb_repo_topic",
+	"_t_ivals_gthb_repo_topic",
 	"t_ivals_gthb_repo",
 	"t_ivals_gthb_star_hist",
 	"_t_ivals_gthb_star_hist",

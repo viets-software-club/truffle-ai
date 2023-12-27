@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	githubv3 "github.com/google/go-github/v57/github"
@@ -9,9 +10,10 @@ import (
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/scrapingbot/linkedin"
 	convert "github.com/viets-software-club/truffle-ai/graphql-server/controller/convert"
+	githubScraper "github.com/viets-software-club/truffle-ai/graphql-server/scraper/github"
 )
 
-func (c *Controller) CreateBookmarkWithCategories(repoOwner string, repoName string, categories []string) error {
+func (c *Controller) CreateBookmarkWithCategories(authUserId string, repoOwner string, repoName string, categories []string) error {
 
 	if len(categories) == 0 {
 		return errors.New("no categories provided")
@@ -28,6 +30,10 @@ func (c *Controller) CreateBookmarkWithCategories(repoOwner string, repoName str
 		return err
 	}
 
+	readme, err := githubScraper.GetReadme(RawApi, repoOwner, repoName, string(repo.Repository.DefaultBranchRef.Name))
+	if err != nil {
+		return err
+	}
 	contributors, err := GithubApi.GetContributors(repoOwner, repoName)
 	if err != nil {
 		return err
@@ -36,45 +42,46 @@ func (c *Controller) CreateBookmarkWithCategories(repoOwner string, repoName str
 	for _, contributor := range *contributors {
 		user, err := GithubApi.QueryUser(*contributor.Login)
 		if err != nil {
-			return err
+			fmt.Println(err)
+			continue
 		}
 		contributorToUserMap[contributor] = user
 	}
 
-	repoEli5, err := PromptsApi.GenerateEli5FromReadme()
-	if err != nil {
-		return err
-	}
-	hackernewsSentiment, err := PromptsApi.GenerateHackernewsSentiment()
+	repoEli5, err := PromptsApi.GenerateEli5FromReadme(readme)
 	if err != nil {
 		return err
 	}
 
-	starHist, err := GithubApi.GetStarHistEven(int(repo.Repository.StargazerCount), 30, repoOwner, repoName)
+	starHist, err := GithubApi.GetStarHistEven(30, repoOwner, repoName)
 	if err != nil {
 		return err
 	}
-	issueHist, err := GithubApi.GetIssueHistEven(int(repo.Repository.StargazerCount), 30, repoOwner, repoName)
+	fmt.Println(starHist)
+
+	issueHist, err := GithubApi.GetStarHistEven(30, repoOwner, repoName)
 	if err != nil {
 		return err
 	}
-	forkHist, err := GithubApi.GetForkHistEven(int(repo.Repository.StargazerCount), 30, repoOwner, repoName)
+	forkHist, err := GithubApi.GetStarHistEven(30, repoOwner, repoName)
 	if err != nil {
 		return err
 	}
 
-	var linkedinCompanies *[]linkedin.LinkedinCompany
-	var linkedinProfiles *[]linkedin.LinkedinProfile
+	var linkedinCompanies []linkedin.LinkedinCompany
+	var linkedinProfiles []linkedin.LinkedinProfile
 	if repo.Repository.IsInOrganization {
-		linkedinCompanies, err = LinkedinApi.GetLinkedInCompanySearch(string(repo.Repository.Owner.Organization.Name))
+		linkedinCompany, err := LinkedinApi.GetLinkedinCompany(string(repo.Repository.Owner.Organization.Name))
 		if err != nil {
 			return err
 		}
+		linkedinCompanies = append(linkedinCompanies, *linkedinCompany)
 	} else {
-		linkedinProfiles, err = LinkedinApi.GetLinkedInProfileSearch(string(repo.Repository.Owner.Organization.Name))
+		linkedinProfile, err := LinkedinApi.GetLinkedinProfile(string(repo.Repository.Owner.Organization.Name))
 		if err != nil {
 			return err
 		}
+		linkedinProfiles = append(linkedinProfiles, *linkedinProfile)
 	}
 
 	hackernewsQuery := string(repo.Repository.Name)
@@ -88,7 +95,12 @@ func (c *Controller) CreateBookmarkWithCategories(repoOwner string, repoName str
 		return err
 	}
 
-	projBookmarkWithCats, err := convert.ConvertToProjBookmarkWithCats(&categories, repo, contributorToUserMap, starHist, issueHist, forkHist, linkedinCompanies, linkedinProfiles, hackernewsQuery, stories, comments, repoEli5, hackernewsSentiment)
+	hackernewsSentiment, err := PromptsApi.GenerateHackernewsSentiment(comments)
+	if err != nil {
+		return err
+	}
+
+	projBookmarkWithCats, err := convert.ConvertToProjBookmarkWithCats(authUserId, &categories, repo, contributorToUserMap, starHist, issueHist, forkHist, &linkedinCompanies, &linkedinProfiles, hackernewsQuery, stories, comments, repoEli5, hackernewsSentiment)
 	if err != nil {
 		return err
 	}

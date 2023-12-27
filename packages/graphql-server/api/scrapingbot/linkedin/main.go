@@ -17,7 +17,6 @@ import (
 type LinkedinCompany struct {
 	URL                       string   `json:"url"`
 	Name                      string   `json:"name"`
-	Founded                   string   `json:"founded"`
 	Sphere                    string   `json:"sphere"`
 	Followers                 int      `json:"followers"`
 	Logo                      string   `json:"logo"`
@@ -31,25 +30,19 @@ type LinkedinCompany struct {
 		Title    string `json:"title"`
 		Subtitle string `json:"subtitle"`
 	} `json:"employees"`
-	Updates       []interface{} `json:"updates"`
-	ShowMore      []interface{} `json:"show_more"`
-	Affiliated    []interface{} `json:"affiliated"`
-	BrowseJobs    []interface{} `json:"browse_jobs"`
-	CompanyID     interface{}   `json:"company_id"`
-	Timestamp     string        `json:"timestamp"`
-	Slogan        string        `json:"slogan"`
-	CrunchbaseURL interface{}   `json:"crunchbase_url"`
-	StockInfo     interface{}   `json:"stock_info"`
-	Funding       interface{}   `json:"funding"`
-	Investors     interface{}   `json:"investors"`
-	SimilarPages  []struct {
+	Updates      []interface{} `json:"updates"`
+	ShowMore     []interface{} `json:"show_more"`
+	Affiliated   []interface{} `json:"affiliated"`
+	BrowseJobs   []interface{} `json:"browse_jobs"`
+	CompanyID    interface{}   `json:"company_id"`
+	Timestamp    string        `json:"timestamp"`
+	Investors    []interface{} `json:"investors"`
+	SimilarPages []struct {
 		Name     string `json:"name"`
 		PageURL  string `json:"pageUrl"`
 		Activity string `json:"activity"`
 		Location string `json:"location"`
 	} `json:"similarPages"`
-	Website2     string `json:"Website"`
-	Industries   string `json:"Industries"`
 	CompanySize  string `json:"Company size"`
 	Headquarters string `json:"Headquarters"`
 	Type         string `json:"Type"`
@@ -119,14 +112,14 @@ func New(s *scrapingbot.ScrapingBotScraperConfig) *ScrapingBotLinkedin {
 
 func (s ScrapingBotLinkedin) GetLinkedInProfileSearch(name string) (*[]LinkedinProfile, error) {
 	res := []LinkedinProfile{}
-	err := scrape(s.scrapingBotScraper, "linkedinProfile", &map[string]string{
+	err := scrape(s.scrapingBotScraper, scraperLinkedinProfile, &map[string]string{
 		"url": fmt.Sprintf("https://www.linkedin.com/in/%s", name),
 	}, 10, 30, &res)
 	if err != nil {
 		return nil, err
 	}
 	if len(res) == 0 {
-		return nil, errors.New("Returned data contains no linkedin entry")
+		return nil, errors.New("returned data contains no linkedin entry")
 	}
 	return &res, nil
 }
@@ -140,7 +133,7 @@ func (s ScrapingBotLinkedin) GetLinkedInCompanySearch(keywords string) (*[]Linke
 		return nil, err
 	}
 	if len(res) == 0 {
-		return nil, errors.New("Returned data contains no linkedin entry")
+		return nil, errors.New("returned data contains no linkedin entry")
 	}
 	return &res, nil
 }
@@ -149,27 +142,27 @@ func (s ScrapingBotLinkedin) GetLinkedinProfile(keywords string) (*LinkedinProfi
 	res := []LinkedinProfile{}
 	err := scrape(s.scrapingBotScraper, "linkedinSearchResult", &map[string]string{
 		"keywords": keywords,
-	}, 2, 10, &res)
+	}, 5, 10, &res)
 	if err != nil {
 		return nil, err
 	}
 	if len(res) == 0 {
-		return nil, errors.New("Returned data contains no linkedin entry")
+		return nil, errors.New("returned data contains no linkedin entry")
 	}
 	return &res[0], nil
 }
 
 func (s ScrapingBotLinkedin) GetLinkedinCompany(name string) (*LinkedinCompany, error) {
 	res := []LinkedinCompany{}
-	err := scrape(s.scrapingBotScraper, "linkedinProfile",
+	err := scrape(s.scrapingBotScraper, scraperLinkedinCompany,
 		&map[string]string{
 			"url": fmt.Sprintf("https://www.linkedin.com/company/%s", name),
-		}, 2, 10, &res)
+		}, 5, 10, &res)
 	if err != nil {
 		return nil, err
 	}
 	if len(res) == 0 {
-		return nil, errors.New("Returned data contains no linkedin entry")
+		return nil, errors.New("returned data contains no linkedin entry")
 	}
 	return &res[0], nil
 }

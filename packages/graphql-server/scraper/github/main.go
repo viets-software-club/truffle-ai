@@ -11,7 +11,6 @@ import (
 // scraping bot html
 func GetReadme(scrapingBotHtml *raw.ScrapingBotHtml, owner string, repoName string, branch string) (string, error) {
 	return scrapingBotHtml.FetchUrl(fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/%s/README.md", owner, repoName, branch))
-
 }
 
 const (

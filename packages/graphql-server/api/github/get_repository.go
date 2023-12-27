@@ -37,8 +37,19 @@ type GetRepositoryOwner struct {
 	Organization GetRepositoryOwnerOrganization `graphql:"... on Organization"`
 	User         GetRepositoryOwnerUser         `graphql:"... on User"`
 }
+type GetRepositoryRepositoryTopics struct {
+	Edges []struct {
+		Node struct {
+			Topic struct {
+				Name           githubv4.String
+				StargazerCount githubv4.Int
+			}
+		}
+	}
+}
 type GetRepository struct {
 	Repository struct {
+		RepositoryTopics GetRepositoryRepositoryTopics `graphql:"repositoryTopics(first: 10)"`
 		DefaultBranchRef struct {
 			Name githubv4.String
 		}

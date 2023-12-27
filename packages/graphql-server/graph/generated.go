@@ -48,8 +48,9 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateBookmark func(childComplexity int, repo model.RepositoryInput, categories []string) int
-		RemoveBookmark func(childComplexity int, repo model.RepositoryInput) int
+		CreateBookmark             func(childComplexity int, repo model.RepositoryInput, categories []string) int
+		RemoveBookmark             func(childComplexity int, projBookmarkID int) int
+		RemoveBookmarkByProjRepoID func(childComplexity int, projRepoID int) int
 	}
 
 	Query struct {
@@ -59,7 +60,8 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateBookmark(ctx context.Context, repo model.RepositoryInput, categories []string) (bool, error)
-	RemoveBookmark(ctx context.Context, repo model.RepositoryInput) (bool, error)
+	RemoveBookmark(ctx context.Context, projBookmarkID int) (bool, error)
+	RemoveBookmarkByProjRepoID(ctx context.Context, projRepoID int) (bool, error)
 }
 type QueryResolver interface {
 	HelloWorld(ctx context.Context) (string, error)
@@ -106,7 +108,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.RemoveBookmark(childComplexity, args["repo"].(model.RepositoryInput)), true
+		return e.complexity.Mutation.RemoveBookmark(childComplexity, args["projBookmarkId"].(int)), true
+
+	case "Mutation.removeBookmarkByProjRepoId":
+		if e.complexity.Mutation.RemoveBookmarkByProjRepoID == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_removeBookmarkByProjRepoId_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RemoveBookmarkByProjRepoID(childComplexity, args["projRepoId"].(int)), true
 
 	case "Query.helloWorld":
 		if e.complexity.Query.HelloWorld == nil {
@@ -264,18 +278,33 @@ func (ec *executionContext) field_Mutation_createBookmark_args(ctx context.Conte
 	return args, nil
 }
 
-func (ec *executionContext) field_Mutation_removeBookmark_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_removeBookmarkByProjRepoId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 model.RepositoryInput
-	if tmp, ok := rawArgs["repo"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("repo"))
-		arg0, err = ec.unmarshalNRepositoryInput2githubᚗcomᚋvietsᚑsoftwareᚑclubᚋtruffleᚑaiᚋgraphqlᚑserverᚋgraphᚋmodelᚐRepositoryInput(ctx, tmp)
+	var arg0 int
+	if tmp, ok := rawArgs["projRepoId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projRepoId"))
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["repo"] = arg0
+	args["projRepoId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_removeBookmark_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 int
+	if tmp, ok := rawArgs["projBookmarkId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projBookmarkId"))
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["projBookmarkId"] = arg0
 	return args, nil
 }
 
@@ -401,7 +430,7 @@ func (ec *executionContext) _Mutation_removeBookmark(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().RemoveBookmark(rctx, fc.Args["repo"].(model.RepositoryInput))
+		return ec.resolvers.Mutation().RemoveBookmark(rctx, fc.Args["projBookmarkId"].(int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -436,6 +465,61 @@ func (ec *executionContext) fieldContext_Mutation_removeBookmark(ctx context.Con
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_removeBookmark_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_removeBookmarkByProjRepoId(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_removeBookmarkByProjRepoId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().RemoveBookmarkByProjRepoID(rctx, fc.Args["projRepoId"].(int))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_removeBookmarkByProjRepoId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_removeBookmarkByProjRepoId_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -2463,6 +2547,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "removeBookmarkByProjRepoId":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_removeBookmarkByProjRepoId(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2891,6 +2982,21 @@ func (ec *executionContext) unmarshalNBoolean2bool(ctx context.Context, v interf
 
 func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.SelectionSet, v bool) graphql.Marshaler {
 	res := graphql.MarshalBoolean(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")

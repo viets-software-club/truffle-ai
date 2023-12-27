@@ -8,12 +8,31 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/99designs/gqlgen/graphql"
+
 	"github.com/viets-software-club/truffle-ai/graphql-server/graph/model"
 )
 
 // CreateBookmark is the resolver for the createBookmark field.
 func (r *mutationResolver) CreateBookmark(ctx context.Context, repo model.RepositoryInput, categories []string) (bool, error) {
-	err := r.Controller.CreateBookmarkWithCategories(repo.Owner, repo.Name, categories)
+
+	opCtx := graphql.GetOperationContext(ctx)
+	authUserId := opCtx.Headers.Get("authusersid")
+	err := r.Controller.CreateBookmarkWithCategories(authUserId, repo.Owner, repo.Name, categories)
+	if err != nil {
+		fmt.Println("error")
+
+		fmt.Println(err)
+		return false, err
+	}
+	fmt.Println("success")
+
+	return true, nil
+}
+
+// RemoveBookmark is the resolver for the removeBookmark field.
+func (r *mutationResolver) RemoveBookmark(ctx context.Context, projBookmarkID int) (bool, error) {
+	err := r.Controller.RemoveBookmark(projBookmarkID)
 	if err != nil {
 		fmt.Println(err)
 		return false, err
@@ -21,8 +40,13 @@ func (r *mutationResolver) CreateBookmark(ctx context.Context, repo model.Reposi
 	return true, nil
 }
 
-// RemoveBookmark is the resolver for the removeBookmark field.
-func (r *mutationResolver) RemoveBookmark(ctx context.Context, repo model.RepositoryInput) (bool, error) {
+// RemoveBookmarkByProjRepoID is the resolver for the removeBookmarkByProjRepoId field.
+func (r *mutationResolver) RemoveBookmarkByProjRepoID(ctx context.Context, projRepoID int) (bool, error) {
+	err := r.Controller.RemoveBookmarkByProjRepoId(projRepoID)
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
 	return true, nil
 }
 

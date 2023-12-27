@@ -6,7 +6,7 @@ import (
 	"github.com/viets-software-club/truffle-ai/graphql-server/db/types"
 )
 
-func ConvertForkHist(hist *[]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_fork_hist], error) {
+func ConvertForkHist(hist *map[string]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_fork_hist], error) {
 	var forks pgtype.FlatArray[types.T_ivals_gthb_fork_hist]
 	for _, entry := range *hist {
 		forks = append(forks, types.T_ivals_gthb_fork_hist{
@@ -17,7 +17,7 @@ func ConvertForkHist(hist *[]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_
 	return &forks, nil
 }
 
-func ConvertStarHist(hist *[]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_star_hist], error) {
+func ConvertStarHist(hist *map[string]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_star_hist], error) {
 	var stars pgtype.FlatArray[types.T_ivals_gthb_star_hist]
 	for _, entry := range *hist {
 		stars = append(stars, types.T_ivals_gthb_star_hist{
@@ -28,7 +28,7 @@ func ConvertStarHist(hist *[]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_
 	return &stars, nil
 }
 
-func ConvertIssueHist(hist *[]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_issue_hist], error) {
+func ConvertIssueHist(hist *map[string]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_issue_hist], error) {
 	var issues pgtype.FlatArray[types.T_ivals_gthb_issue_hist]
 	for _, entry := range *hist {
 		issues = append(issues, types.T_ivals_gthb_issue_hist{

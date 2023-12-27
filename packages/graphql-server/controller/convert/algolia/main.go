@@ -28,7 +28,7 @@ func ConvertHackernewsStoriesResponse(hackernewsStoriesResponse *hackernews.Hack
 			return nil, err
 		}
 		pgHackernewsStories = append(pgHackernewsStories, types.T_f_insert_algo_hn_story{
-			Algo_hn_story_url:       pgtype.Text{String: story.URL.String(), Valid: true},
+			Algo_hn_story_url:       pgtype.Text{String: story.URL, Valid: true},
 			Algo_hn_story_object_id: pgtype.Int8{Int64: int64(objectId), Valid: true},
 			Algo_hn_tags:            *ConvertHackernewsTags(story.Tags),
 			Author:                  pgtype.Text{String: story.Author, Valid: true},
@@ -44,16 +44,21 @@ func ConvertHackernewsStoriesResponse(hackernewsStoriesResponse *hackernews.Hack
 func ConvertHackernewsCommentsResponse(hackernewsCommentsResponse *hackernews.HackernewsCommentsResponse) (*pgtype.FlatArray[types.T_f_insert_algo_hn_comment], error) {
 
 	var pgHackernewsComments pgtype.FlatArray[types.T_f_insert_algo_hn_comment]
-	for _, story := range hackernewsCommentsResponse.Hits {
+	for _, comment := range hackernewsCommentsResponse.Hits {
+		objectId, err := strconv.Atoi(comment.ObjectID)
+		if err != nil {
+			return nil, err
+		}
 		pgHackernewsComments = append(pgHackernewsComments, types.T_f_insert_algo_hn_comment{
-			Algo_hn_tags: *ConvertHackernewsTags(story.Tags),
-			Author:       pgtype.Text{String: story.Author, Valid: true},
-			Comment_text: pgtype.Text{String: story.CommentText, Valid: true},
-			Created_at:   pgtype.Timestamptz{Time: story.CreatedAt, Valid: true},
-			Story_id:     pgtype.Int8{Int64: int64(story.StoryID), Valid: true},
-			Story_title:  pgtype.Text{String: story.StoryTitle, Valid: true},
-			Story_url:    pgtype.Text{String: story.StoryURL.String(), Valid: true},
-			Updated_at:   pgtype.Timestamptz{Time: story.UpdatedAt, Valid: true},
+			Algo_hn_comment_object_id: pgtype.Int8{Int64: int64(objectId), Valid: true},
+			Algo_hn_tags:              *ConvertHackernewsTags(comment.Tags),
+			Author:                    pgtype.Text{String: comment.Author, Valid: true},
+			Comment_text:              pgtype.Text{String: comment.CommentText, Valid: true},
+			Created_at:                pgtype.Timestamptz{Time: comment.CreatedAt, Valid: true},
+			Story_id:                  pgtype.Int8{Int64: int64(comment.StoryID), Valid: true},
+			Story_title:               pgtype.Text{String: comment.StoryTitle, Valid: true},
+			Story_url:                 pgtype.Text{String: comment.StoryURL, Valid: true},
+			Updated_at:                pgtype.Timestamptz{Time: comment.UpdatedAt, Valid: true},
 		})
 	}
 	return &pgHackernewsComments, nil

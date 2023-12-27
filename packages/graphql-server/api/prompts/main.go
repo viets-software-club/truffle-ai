@@ -3,8 +3,10 @@ package controller
 import (
 	"context"
 	"fmt"
+	"os"
 
 	openai "github.com/sashabaranov/go-openai"
+	"github.com/viets-software-club/truffle-ai/graphql-server/api/algolia/hackernews"
 )
 
 type Prompts struct {
@@ -12,13 +14,13 @@ type Prompts struct {
 }
 
 func New() *Prompts {
-	client := openai.NewClient("OPENAI_API_KEY")
+	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 	return &Prompts{
 		client: client,
 	}
 }
 
-func (p *Prompts) GenerateEli5FromReadme() (string, error) {
+func (p *Prompts) GenerateEli5FromReadme(readme string) (string, error) {
 	resp, err := p.client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -40,7 +42,7 @@ func (p *Prompts) GenerateEli5FromReadme() (string, error) {
 	return resp.Choices[0].Message.Content, nil
 }
 
-func (p *Prompts) GenerateHackernewsSentiment() (string, error) {
+func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCommentsResponse) (string, error) {
 	resp, err := p.client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{

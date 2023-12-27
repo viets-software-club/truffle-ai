@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"time"
 )
 
@@ -47,7 +46,7 @@ type HackernewsStoriesResponse struct {
 		StoryID     int       `json:"story_id"`
 		Title       string    `json:"title"`
 		UpdatedAt   time.Time `json:"updated_at"`
-		URL         url.URL   `json:"url"`
+		URL         string    `json:"url"`
 	} `json:"hits"`
 	HitsPerPage         int    `json:"hitsPerPage"`
 	NbHits              int    `json:"nbHits"`
@@ -118,7 +117,7 @@ type HackernewsCommentsResponse struct {
 		Points      *int      `json:"points"`
 		StoryID     int       `json:"story_id"`
 		StoryTitle  string    `json:"story_title"`
-		StoryURL    url.URL   `json:"story_url"`
+		StoryURL    string    `json:"story_url"`
 		UpdatedAt   time.Time `json:"updated_at"`
 	} `json:"hits"`
 	HitsPerPage         int    `json:"hitsPerPage"`

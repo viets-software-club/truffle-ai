@@ -67,7 +67,6 @@ Deno.writeTextFile(
 	path.join(outDir, '.env.common'),
 	`REPO_NAME=
 ORG_NAME=
-GITHUB_TOKEN=
 RELEASE_REPO_NAME=
 PRODUCTION_CLUSTER=
 STAGING_CLUSTER=

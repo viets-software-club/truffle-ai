@@ -36,6 +36,8 @@ const files = [
 	'functions/f_tr_delete_unreferenced_sbot_lin_profile.sql',
 	'functions/f_tr_signup_based_on_whitelist.sql',
 	'functions/f_select_data_science.sql',
+	'functions/f_tr_delete_unreferenced_gthb_repo_topic.sql',
+	'functions/f_tr_delete_unreferenced_proj_classifier.sql',
 	'triggers.sql',
 	'policies.sql',
 	'grants.sql'

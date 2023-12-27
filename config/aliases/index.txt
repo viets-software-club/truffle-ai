@@ -1,4 +1,4 @@
 alias nr='pnpm run'
 alias k='kubectl'
-alias t=task
+alias t='task'
 alias npm='pnpm'

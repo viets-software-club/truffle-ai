@@ -1,10 +1,10 @@
-CREATE OR REPLACE FUNCTION f_tr_delete_unreferenced_proj_classifier() RETURNS TRIGGER AS $$
-BEGIN
-  DELETE FROM proj_classifier
-  WHERE NOT EXISTS (
-    SELECT 1 FROM proj_repo_and_proj_classifier
-    WHERE proj_repo_and_proj_classifier.proj_classifier_id = proj_classifier.proj_classifier_id
+create or replace function f_tr_delete_unreferenced_proj_classifier() returns trigger as $$
+begin
+  delete from proj_classifier
+  where not exists (
+    select 1 from proj_repo_and_proj_classifier
+    where proj_repo_and_proj_classifier.proj_classifier_id = proj_classifier.proj_classifier_id
   );
-  RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
+  return null;
+end;
+$$ language plpgsql;

@@ -6,7 +6,8 @@ projRepoId bigint;
 begin
   githubRepoId := f_insert_gthb_repo(projectRepoArg.gthb_repo);
 
-  insert into proj_repo (gthb_repo_id, note) values (githubRepoId, projectRepoArg.note) on conflict(gthb_repo_id) do update set note = excluded.note returning proj_repo_id into projRepoId;
+  -- not updateing note here
+  insert into proj_repo (gthb_repo_id, note) values (githubRepoId, projectRepoArg.note) on conflict(gthb_repo_id) do update set gthb_repo_id = excluded.gthb_repo_id returning proj_repo_id into projRepoId;
 
   perform f_insert_proj_repo_metadata_for_proj(projRepoId, projectRepoArg.proj_repo_metadata);
   if projectRepoArg.algo_hn_queries is not null then

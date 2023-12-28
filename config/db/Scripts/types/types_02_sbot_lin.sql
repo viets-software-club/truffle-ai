@@ -19,9 +19,9 @@ create type t_ivals_sbot_lin_profile as (
   current_company_link text,
   current_company_name text,
   education_details text,
-  followers bigint,
+  followers text,
   position text,
   sbot_lin_profile_name text,
   sbot_lin_profile_url text,
-  sbot_lin_profile_following bigint
+  sbot_lin_profile_following text
 );

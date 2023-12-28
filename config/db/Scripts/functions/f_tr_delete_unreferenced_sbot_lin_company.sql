@@ -1,10 +1,10 @@
-CREATE OR REPLACE FUNCTION f_tr_delete_unreferenced_sbot_lin_company() RETURNS TRIGGER AS $$
-BEGIN
-  DELETE FROM sbot_lin_company
-  WHERE NOT EXISTS (
-    SELECT 1 FROM proj_repo_and_sbot_lin_company
-    WHERE sbot_lin_company.sbot_lin_company_id = proj_repo_and_sbot_lin_company.sbot_lin_company_id
+create or replace function f_tr_delete_unreferenced_sbot_lin_company() returns trigger as $$
+begin
+  delete from sbot_lin_company
+  where not exists (
+    select 1 from proj_repo_and_sbot_lin_company
+    where sbot_lin_company.sbot_lin_company_id = proj_repo_and_sbot_lin_company.sbot_lin_company_id
   );
-  RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
+  return null;
+end;
+$$ language plpgsql;

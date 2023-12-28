@@ -7,4 +7,4 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;

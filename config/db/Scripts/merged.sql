@@ -993,7 +993,7 @@ declare
 begin 
   with lin_profile as (
     insert into sbot_lin_profile(sbot_lin_profile_url, sbot_lin_profile_name, position, current_company_name, current_company_link, avatar, about, city, followers, sbot_lin_profile_following, education_details)
-    select p.sbot_lin_profile_url, p.sbot_lin_profile_name, p.position, p.current_company_name, p.current_company_link, p.avatar, p.about, p.city, p.followers, p.sbot_lin_profile_following, p.education_details from unnest(profiles) p
+    select the_profile.sbot_lin_profile_url, the_profile.sbot_lin_profile_name, the_profile.position, the_profile.current_company_name, the_profile.current_company_link, the_profile.avatar, the_profile.about, the_profile.city, the_profile.followers, the_profile.sbot_lin_profile_following, the_profile.education_details from unnest(profiles) as the_profile
     on conflict(sbot_lin_profile_url) do update set sbot_lin_profile_name = excluded.sbot_lin_profile_name, position = excluded.position, current_company_name = excluded.current_company_name, current_company_link = excluded.current_company_link, avatar = excluded.avatar, about = excluded.about, city = excluded.city, followers = excluded.followers, sbot_lin_profile_following = excluded.sbot_lin_profile_following, education_details = excluded.education_details returning sbot_lin_profile_id
   )
   insert into proj_repo_and_sbot_lin_profile(proj_repo_id, sbot_lin_profile_id) select projRepoId, sbot_lin_profile_id from lin_profile on conflict(proj_repo_id, sbot_lin_profile_id) do nothing;
@@ -1114,12 +1114,33 @@ begin
 end;
 $$
 language plpgsql;
-drop function f_delete_proj_bookmark(bigint);
+drop function if exists f_delete_proj_bookmark(bigint);
 create or replace function f_delete_proj_bookmark(projBookmarkId bigint)
-  returns VOID
+  returns INTEGER
   as $$
+declare
+  deletedId bigint := 0;
 begin
-  delete from proj_bookmark where proj_bookmark_id = projBookmarkId;
+  delete from proj_bookmark where proj_bookmark_id = projBookmarkId returning proj_bookmark_id into deletedId;
+  if deletedId = 0 then
+    raise exception 'No bookmark found for proj_bookmark_id %', projBookmarkId;
+  end if;
+  return deletedId;
+end;
+$$
+language plpgsql;
+drop function if exists f_delete_proj_bookmark_by_proj_repo_id(bigint);
+create or replace function f_delete_proj_bookmark_by_proj_repo_id(projRepoId bigint)
+  returns INTEGER
+  as $$
+declare
+  deletedId bigint := 0;
+begin
+  delete from proj_bookmark where proj_repo_id = projRepoId returning proj_repo_id into deletedId;
+  if deletedId = 0 then
+    raise exception 'No bookmark found for projRepoId %', projRepoId;
+  end if;
+  return deletedId;
 end;
 $$
 language plpgsql;
@@ -1149,7 +1170,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_algo_hn_tag() returns trigger as $$
 begin
   delete from algo_hn_tag
@@ -1164,7 +1185,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_gthb_lang() returns trigger as $$
 begin
   delete from gthb_lang
@@ -1174,7 +1195,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_gthb_repo_from_gthb_trending() returns trigger as $$
 begin
   delete from gthb_repo
@@ -1189,7 +1210,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_gthb_repo() returns trigger as $$
 begin
   delete from gthb_repo
@@ -1199,7 +1220,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_proj_repo() returns trigger as $$
 begin
   delete from proj_repo
@@ -1214,7 +1235,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_sbot_lin_company() returns trigger as $$
 begin
   delete from sbot_lin_company
@@ -1224,8 +1245,9 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
-create or replace function f_tr_delete_unreferenced_sbot_lin_profile() returns trigger as $$
+$$ language plpgsql security definer;
+create or replace function f_tr_delete_unreferenced_sbot_lin_profile() returns trigger 
+as $$
 begin
   delete from sbot_lin_profile
   where not exists (
@@ -1234,10 +1256,11 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_signup_based_on_whitelist()
 returns trigger
 language plpgsql
+security definer
 as $$
 declare has_email boolean := FALSE;
 begin
@@ -1285,7 +1308,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_proj_classifier() returns trigger as $$
 begin
   delete from proj_classifier
@@ -1295,7 +1318,7 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;
 create or replace trigger tr_on_delete_delete_unreferenced_algo_hn_query
   after delete on proj_repo_and_algo_hn_query
   for each STATEMENT

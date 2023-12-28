@@ -1,6 +1,7 @@
 create or replace function f_tr_signup_based_on_whitelist()
 returns trigger
 language plpgsql
+security definer
 as $$
 declare has_email boolean := FALSE;
 begin

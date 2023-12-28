@@ -1,4 +1,5 @@
-create or replace function f_tr_delete_unreferenced_sbot_lin_profile() returns trigger as $$
+create or replace function f_tr_delete_unreferenced_sbot_lin_profile() returns trigger 
+as $$
 begin
   delete from sbot_lin_profile
   where not exists (
@@ -7,4 +8,4 @@ begin
   );
   return null;
 end;
-$$ language plpgsql;
+$$ language plpgsql security definer;

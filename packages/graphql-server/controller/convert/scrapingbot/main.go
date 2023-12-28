@@ -1,7 +1,6 @@
 package scrapingbot
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"

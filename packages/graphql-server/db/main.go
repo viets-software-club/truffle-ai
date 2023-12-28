@@ -116,6 +116,16 @@ func (d *Database) CallInsertGthbOwner(githubOwner types.T_f_insert_gthb_owner) 
 	return nil
 }
 
+func (d *Database) CallDeleteGthbTrending(dateRange string) error {
+
+	_, err := d.pool.Exec(d.ctx, "SELECT f_delete_gthb_trending_by_date_range($1)", &dateRange)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (d *Database) CallDeleteProjBookmark(projBookmarkId int) error {
 
 	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_gthb_owner($1)", &projBookmarkId)

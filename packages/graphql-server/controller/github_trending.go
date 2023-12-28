@@ -12,6 +12,29 @@ import (
 )
 
 func UpdateTrending(dateRange string) error {
+	err := DeleteTrending(dateRange)
+	if err != nil {
+		return err
+	}
+	err = InsertTrending(dateRange)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteTrending(dateRange string) error {
+
+	err := ControllerInstance.db.CallDeleteGthbTrending(dateRange)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func InsertTrending(dateRange string) error {
 
 	trendingReposToProjectDataMap, err := data.GetTrendingRepositoriesToProjectDataMap(dateRange)
 	if err != nil {

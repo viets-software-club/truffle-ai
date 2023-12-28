@@ -19,8 +19,7 @@ func main() {
 		port = defaultPort
 	}
 
-	// controller.UpdateTrending("daily")
-	// controller.RunCronjobs()
+	controller.RunCronjobs()
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		Controller: controller.ControllerInstance,
 	}}))

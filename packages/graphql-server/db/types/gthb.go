@@ -35,11 +35,11 @@ type T_ivals_gthb_user struct {
 // Github Owner
 type T_f_insert_gthb_owner struct {
 	Avatar_url               pgtype.Text
-	Gthb_org                 T_ivals_gthb_org
+	Gthb_org                 *T_ivals_gthb_org
 	Gthb_owner_type          pgtype.Text
 	Gthb_owner_login         pgtype.Text
 	Gthb_owner_url           pgtype.Text
-	Gthb_user                T_ivals_gthb_user
+	Gthb_user                *T_ivals_gthb_user
 	Repositories_total_count pgtype.Int8
 }
 
@@ -47,7 +47,7 @@ type T_f_insert_gthb_contr_owner struct {
 	Avatar_url               pgtype.Text
 	Gthb_owner_login         pgtype.Text
 	Gthb_owner_url           pgtype.Text
-	Gthb_user                T_ivals_gthb_user
+	Gthb_user                *T_ivals_gthb_user
 	Repositories_total_count pgtype.Int8
 }
 
@@ -64,7 +64,7 @@ type T_f_insert_gthb_repo struct {
 	Gthb_fork_hists           pgtype.FlatArray[T_ivals_gthb_fork_hist]
 	Gthb_issue_hists          pgtype.FlatArray[T_ivals_gthb_issue_hist]
 	Gthb_langs                pgtype.FlatArray[T_ivals_gthb_lang]
-	Gthb_owner                T_f_insert_gthb_owner
+	Gthb_owner                *T_f_insert_gthb_owner
 	Gthb_repo_contrs          pgtype.FlatArray[T_f_insert_gthb_contr]
 	Gthb_repo_description     pgtype.Text
 	Gthb_repo_name            pgtype.Text
@@ -134,4 +134,5 @@ var GthbTypes = []string{
 }
 var GthbTypes2 = []string{
 	"t_f_insert_gthb_trending",
+	"_t_f_insert_gthb_trending",
 }

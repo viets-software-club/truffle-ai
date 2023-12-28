@@ -1,4 +1,4 @@
-package controller
+package data
 
 import (
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"

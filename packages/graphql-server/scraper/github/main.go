@@ -1,6 +1,7 @@
 package github
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -26,20 +27,33 @@ type TrendingRepository struct {
 
 func GetTrendingRepositories(scrapingBotHtml *raw.ScrapingBotHtml, time string) ([]TrendingRepository, error) {
 	repos := []TrendingRepository{}
-	text, err := scrapingBotHtml.FetchUrl("https://github.com/trending")
+	text, err := scrapingBotHtml.FetchUrl(fmt.Sprintf("https://github.com/trending?since=%s", time))
 	if err != nil {
-		return repos, err
+		return nil, err
 	}
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(text))
 	if err != nil {
-		return repos, err
+		return nil, err
 	}
-	doc.Find("main .Box .Box-row a.Link").Each(func(i int, s *goquery.Selection) {
-		owner := s.Find("span").First().Text()
+
+	doc.Find("main .Box .Box-row h2 a.Link").Each(func(i int, s *goquery.Selection) {
+		ownerRepoArr := strings.Split(s.Text(), "/")
+
+		if len(ownerRepoArr) != 2 {
+			err = errors.New("extracted less or more text when getting trending repository identifiers")
+			return
+		}
+
+		ownerName := strings.TrimSpace(ownerRepoArr[0])
+		repoName := strings.TrimSpace(ownerRepoArr[1])
+
 		repos = append(repos, TrendingRepository{
-			Owner: owner[:len(owner)-2],
-			Name:  s.Text(),
+			Owner: ownerName,
+			Name:  repoName,
 		})
 	})
+	if err != nil {
+		return nil, err
+	}
 	return repos, nil
 }

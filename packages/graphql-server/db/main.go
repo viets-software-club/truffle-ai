@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/viets-software-club/truffle-ai/graphql-server/db/types"
@@ -86,7 +87,7 @@ func (d *Database) Open(hasLogging bool) error {
 //
 // );
 
-func (d *Database) CallInsertProjBookmarkWCats(projectBookmarkWithCategories types.T_f_insert_proj_bookmark_w_cats) error {
+func (d *Database) CallInsertProjBookmarkWCats(projectBookmarkWithCategories *types.T_f_insert_proj_bookmark_w_cats) error {
 
 	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_proj_bookmark_w_cats($1)", &projectBookmarkWithCategories)
 	if err != nil {
@@ -128,6 +129,16 @@ func (d *Database) CallDeleteProjBookmark(projBookmarkId int) error {
 func (d *Database) CallDeleteProjBookmarkByProjRepoId(projRepoId int) error {
 
 	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_gthb_owner($1)", &projRepoId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (d *Database) CallInsertProjClassifier(classifierArray *pgtype.FlatArray[types.T_ivals_proj_classifier]) error {
+
+	_, err := d.pool.Exec(d.ctx, "Insert into proj_classifier(classifier) select * from unnest($1::t_ivals_proj_classifier[])", nil)
 	if err != nil {
 		return err
 	}

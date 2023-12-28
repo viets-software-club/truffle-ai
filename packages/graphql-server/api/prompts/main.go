@@ -27,8 +27,12 @@ func (p *Prompts) GenerateEli5FromReadme(readme string) (string, error) {
 			Model: openai.GPT3Dot5Turbo,
 			Messages: []openai.ChatCompletionMessage{
 				{
+					Role:    openai.ChatMessageRoleSystem,
+					Content: "You are helping an investor invest in a company",
+				},
+				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: "Hello!",
+					Content: fmt.Sprintf("Below is a readme from a Github Repository, can you provide an explain like I am 5 description of the repo in maximal 500 letters:\n%s", readme),
 				},
 			},
 		},
@@ -49,8 +53,12 @@ func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCom
 			Model: openai.GPT3Dot5Turbo,
 			Messages: []openai.ChatCompletionMessage{
 				{
+					Role:    openai.ChatMessageRoleSystem,
+					Content: "You are helping an investor invest in a company",
+				},
+				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: "Hello!",
+					Content: fmt.Sprintf("Below is a Golang struct containing Hackernews Comments from Hackernews's Algolia API to a specific search term, the name of a Github Repository, can you provide the overall sentiment, the overall perception of the comments in a short statement of max. 500 letters, also make sure that the comments might have outliers that should not be considered as they don't talk about the project/Github Repository:\n%v", &comments),
 				},
 			},
 		},
@@ -71,8 +79,8 @@ func (p *Prompts) GenerateCategories() (string, error) {
 			Model: openai.GPT3Dot5Turbo,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
-					Content: "Hello!",
+					Role:    openai.ChatMessageRoleSystem,
+					Content: "You are helping an investor invest in a company",
 				},
 			},
 		},

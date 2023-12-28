@@ -149,6 +149,9 @@ func (s ScrapingBotLinkedin) GetLinkedinProfile(keywords string) (*LinkedinProfi
 	if len(res) == 0 {
 		return nil, errors.New("returned data contains no linkedin entry")
 	}
+	if res[0].Name == "" {
+		return nil, errors.New("couldn't get linkedin profile")
+	}
 	return &res[0], nil
 }
 
@@ -163,6 +166,9 @@ func (s ScrapingBotLinkedin) GetLinkedinCompany(name string) (*LinkedinCompany, 
 	}
 	if len(res) == 0 {
 		return nil, errors.New("returned data contains no linkedin entry")
+	}
+	if res[0].Name == "" {
+		return nil, errors.New("couldn't get linkedin company")
 	}
 	return &res[0], nil
 }

@@ -1,4 +1,4 @@
-package controller
+package mock
 
 import (
 	"time"
@@ -79,9 +79,9 @@ var dummyGthbRepo = types.T_f_insert_gthb_repo{
 			Color:          dummyText,
 		},
 	},
-	Gthb_owner: types.T_f_insert_gthb_owner{
+	Gthb_owner: &types.T_f_insert_gthb_owner{
 		Avatar_url: pgtype.Text{String: "avatar_url4", Valid: true},
-		Gthb_org: types.T_ivals_gthb_org{
+		Gthb_org: &types.T_ivals_gthb_org{
 			Created_at:           dummyTime,
 			Description_html:     dummyText,
 			Email:                dummyText,
@@ -93,7 +93,7 @@ var dummyGthbRepo = types.T_f_insert_gthb_repo{
 		Gthb_owner_type:          pgtype.Text{String: "Organization", Valid: true},
 		Gthb_owner_login:         dummyText,
 		Gthb_owner_url:           dummyText,
-		Gthb_user:                types.T_ivals_gthb_user{},
+		Gthb_user:                &types.T_ivals_gthb_user{},
 		Repositories_total_count: dummyInt,
 	},
 	Gthb_repo_contrs: pgtype.FlatArray[types.T_f_insert_gthb_contr]{
@@ -104,7 +104,7 @@ var dummyGthbRepo = types.T_f_insert_gthb_repo{
 				Avatar_url:       dummyText,
 				Gthb_owner_login: dummyText,
 				Gthb_owner_url:   dummyText,
-				Gthb_user: types.T_ivals_gthb_user{
+				Gthb_user: &types.T_ivals_gthb_user{
 					Bio:                   dummyText,
 					Bio_html:              dummyText,
 					Company:               dummyText,
@@ -152,7 +152,7 @@ var dummySbotLinCompany = types.T_ivals_sbot_lin_company{
 
 var DummyOwner = types.T_f_insert_gthb_owner{
 	Avatar_url: pgtype.Text{String: "avatar_url4", Valid: true},
-	Gthb_org: types.T_ivals_gthb_org{
+	Gthb_org: &types.T_ivals_gthb_org{
 		Created_at:           dummyTime,
 		Description_html:     dummyText,
 		Email:                dummyText,
@@ -164,11 +164,11 @@ var DummyOwner = types.T_f_insert_gthb_owner{
 	Gthb_owner_type:          pgtype.Text{String: "Organization", Valid: true},
 	Gthb_owner_login:         dummyText,
 	Gthb_owner_url:           dummyText,
-	Gthb_user:                types.T_ivals_gthb_user{},
+	Gthb_user:                &types.T_ivals_gthb_user{},
 	Repositories_total_count: dummyInt,
 }
 
-func getDummyObject(authUserId string) (types.T_f_insert_proj_bookmark_w_cats, error) {
+func GetDummyObject(authUserId string) (types.T_f_insert_proj_bookmark_w_cats, error) {
 	var user_id_arr [16]byte
 	copy(user_id_arr[:], []byte(authUserId))
 	uuid, err := uuid.Parse(authUserId)
@@ -180,7 +180,7 @@ func getDummyObject(authUserId string) (types.T_f_insert_proj_bookmark_w_cats, e
 		Proj_cats: pgtype.FlatArray[pgtype.Text]{
 			dummyText,
 		},
-		Proj_repo: types.T_f_insert_proj_repo{
+		Proj_repo: &types.T_f_insert_proj_repo{
 			Algo_hn_queries: pgtype.FlatArray[types.T_f_insert_algo_hn_query_with_stories_and_comments]{
 				{
 					Algo_hn_comments: dummyAlgoHnComments,
@@ -188,9 +188,9 @@ func getDummyObject(authUserId string) (types.T_f_insert_proj_bookmark_w_cats, e
 					Query:            dummyText,
 				},
 			},
-			Gthb_repo: dummyGthbRepo,
+			Gthb_repo: &dummyGthbRepo,
 			Note:      dummyText,
-			Proj_repo_metadata: types.T_f_insert_proj_repo_metadata{
+			Proj_repo_metadata: &types.T_f_insert_proj_repo_metadata{
 				Algo_hn_eli5: dummyText,
 				Repo_eli5:    dummyText,
 			},

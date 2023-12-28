@@ -19,9 +19,10 @@ func main() {
 		port = defaultPort
 	}
 
-	c := controller.New()
+	// controller.UpdateTrending("daily")
+	// controller.RunCronjobs()
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		Controller: c,
+		Controller: controller.ControllerInstance,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))

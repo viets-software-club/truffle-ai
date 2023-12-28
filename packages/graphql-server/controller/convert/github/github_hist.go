@@ -1,40 +1,52 @@
 package github
 
 import (
+	"errors"
+
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"
+	"github.com/viets-software-club/truffle-ai/graphql-server/controller/convert/helper"
 	"github.com/viets-software-club/truffle-ai/graphql-server/db/types"
 )
 
-func ConvertForkHist(hist *map[string]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_fork_hist], error) {
+func ConvertForkHistMapPtrToTIvalsGthbForkHistFlatArrayPtr(hist *github.ForkHistMap) (pgtype.FlatArray[types.T_ivals_gthb_fork_hist], error) {
 	var forks pgtype.FlatArray[types.T_ivals_gthb_fork_hist]
+	if hist == nil {
+		return nil, errors.New("hist can not be nil")
+	}
 	for _, entry := range *hist {
 		forks = append(forks, types.T_ivals_gthb_fork_hist{
-			Amount:              pgtype.Int8{Int64: int64(entry.Amount), Valid: true},
-			Gthb_fork_hist_date: pgtype.Timestamptz{Time: entry.Date.Time, Valid: true},
+			Amount:              helper.IntToPgInt8(entry.Amount),
+			Gthb_fork_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date.Time),
 		})
 	}
-	return &forks, nil
+	return forks, nil
 }
 
-func ConvertStarHist(hist *map[string]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_star_hist], error) {
+func ConvertStarHistMapPtrToTIvalsGthbStarHistFlatArrayPtr(hist *github.StarHistMap) (pgtype.FlatArray[types.T_ivals_gthb_star_hist], error) {
 	var stars pgtype.FlatArray[types.T_ivals_gthb_star_hist]
+	if hist == nil {
+		return nil, errors.New("hist can not be nil")
+	}
 	for _, entry := range *hist {
 		stars = append(stars, types.T_ivals_gthb_star_hist{
-			Amount:              pgtype.Int8{Int64: int64(entry.Amount), Valid: true},
-			Gthb_star_hist_date: pgtype.Timestamptz{Time: entry.Date.Time, Valid: true},
+			Amount:              helper.IntToPgInt8(entry.Amount),
+			Gthb_star_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date.Time),
 		})
 	}
-	return &stars, nil
+	return stars, nil
 }
 
-func ConvertIssueHist(hist *map[string]github.Hist) (*pgtype.FlatArray[types.T_ivals_gthb_issue_hist], error) {
+func ConvertIssueHistMapPtrToTIvalsGthbIssueHistFlatArrayPtr(hist *github.IssueHistMap) (pgtype.FlatArray[types.T_ivals_gthb_issue_hist], error) {
 	var issues pgtype.FlatArray[types.T_ivals_gthb_issue_hist]
+	if hist == nil {
+		return nil, errors.New("hist can not be nil")
+	}
 	for _, entry := range *hist {
 		issues = append(issues, types.T_ivals_gthb_issue_hist{
-			Amount:               pgtype.Int8{Int64: int64(entry.Amount), Valid: true},
-			Gthb_issue_hist_date: pgtype.Timestamptz{Time: entry.Date.Time, Valid: true},
+			Amount:               helper.IntToPgInt8(entry.Amount),
+			Gthb_issue_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date.Time),
 		})
 	}
-	return &issues, nil
+	return issues, nil
 }

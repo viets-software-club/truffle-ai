@@ -13,10 +13,10 @@ type T_f_insert_proj_repo_metadata struct {
 
 type T_f_insert_proj_repo struct {
 	Algo_hn_queries       pgtype.FlatArray[T_f_insert_algo_hn_query_with_stories_and_comments]
-	Gthb_repo             T_f_insert_gthb_repo
+	Gthb_repo             *T_f_insert_gthb_repo
 	Note                  pgtype.Text
 	Proj_repo_classifiers pgtype.FlatArray[T_ivals_proj_classifier]
-	Proj_repo_metadata    T_f_insert_proj_repo_metadata
+	Proj_repo_metadata    *T_f_insert_proj_repo_metadata
 	Sbot_lin_companies    pgtype.FlatArray[T_ivals_sbot_lin_company]
 	Sbot_lin_profiles     pgtype.FlatArray[T_ivals_sbot_lin_profile]
 }
@@ -24,7 +24,7 @@ type T_f_insert_proj_repo struct {
 type T_f_insert_proj_bookmark_w_cats struct {
 	Auth_users_id pgtype.UUID
 	Proj_cats     pgtype.FlatArray[pgtype.Text]
-	Proj_repo     T_f_insert_proj_repo
+	Proj_repo     *T_f_insert_proj_repo
 }
 
 var ProjTypes = []string{

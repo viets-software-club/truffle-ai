@@ -37,6 +37,14 @@ type GetRepositoryOwner struct {
 	Organization GetRepositoryOwnerOrganization `graphql:"... on Organization"`
 	User         GetRepositoryOwnerUser         `graphql:"... on User"`
 }
+type GetRepositoryLanguages struct {
+	Edges []struct {
+		Node struct {
+			Color githubv4.String
+			Name  githubv4.String
+		}
+	}
+}
 type GetRepositoryRepositoryTopics struct {
 	Edges []struct {
 		Node struct {
@@ -61,14 +69,7 @@ type GetRepository struct {
 		Issues           struct {
 			TotalCount githubv4.Int
 		}
-		Languages struct {
-			Edges []struct {
-				Node struct {
-					Color githubv4.String
-					Name  githubv4.String
-				}
-			}
-		} `graphql:"languages(first: 100)"`
+		Languages    GetRepositoryLanguages `graphql:"languages(first: 100)"`
 		Name         githubv4.String
 		Owner        GetRepositoryOwner
 		PullRequests struct {

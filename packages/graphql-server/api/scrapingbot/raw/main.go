@@ -2,6 +2,7 @@ package raw
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -17,14 +18,14 @@ func New(s *scrapingbot.ScrapingBotScraperConfig) *ScrapingBotHtml {
 		scrapingBotScraper: s,
 	}
 }
-func (s *ScrapingBotHtml) FetchUrl(ScrapingBoturl string) (string, error) {
+func (s *ScrapingBotHtml) FetchUrl(url string) (string, error) {
 
-	body := []byte(`{"url": "https://www.scraping-bot.io/rawHtmlPage.html"}`)
+	body := []byte(fmt.Sprintf(`{"url": "%s"}`, url))
 	req, err := http.NewRequest("POST", "http://api.scraping-bot.io/scrape/raw-html", bytes.NewBuffer(body))
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", s.scrapingBotScraper.Auth)
 
 	client := &http.Client{}

@@ -23,11 +23,11 @@ type T_ivals_sbot_lin_profile struct {
 	Current_company_link       pgtype.Text
 	Current_company_name       pgtype.Text
 	Education_details          pgtype.Text
-	Followers                  pgtype.Int8
+	Followers                  pgtype.Text
 	Position                   pgtype.Text
 	Sbot_lin_profile_name      pgtype.Text
 	Sbot_lin_profile_url       pgtype.Text
-	Sbot_lin_profile_following pgtype.Int8
+	Sbot_lin_profile_following pgtype.Text
 }
 
 var SbotLinTypes = []string{

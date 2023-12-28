@@ -11,6 +11,8 @@ type Controller struct {
 	db *db.Database
 }
 
+var ControllerInstance = New()
+
 func (c *Controller) Close() {
 	c.db.Close()
 }
@@ -22,7 +24,7 @@ func New() *Controller {
 	}
 }
 
-func runCronjobs() error {
+func RunCronjobs() error {
 
 	s, err := gocron.NewScheduler(gocron.WithLocation(time.UTC))
 
@@ -33,7 +35,7 @@ func runCronjobs() error {
 	// daily
 	_, err = s.NewJob(
 		gocron.CronJob("0 3 * * *", false),
-		gocron.NewTask(updateTrending, "daily"),
+		gocron.NewTask(UpdateTrending, "daily"),
 	)
 	if err != nil {
 		return err
@@ -41,7 +43,7 @@ func runCronjobs() error {
 	// weekly
 	_, err = s.NewJob(
 		gocron.CronJob("0 4 * * 0", false),
-		gocron.NewTask(updateTrending, "weekly"),
+		gocron.NewTask(UpdateTrending, "weekly"),
 	)
 	if err != nil {
 		return err
@@ -49,7 +51,7 @@ func runCronjobs() error {
 	// monthly
 	_, err = s.NewJob(
 		gocron.CronJob("0 5 2 * *", false),
-		gocron.NewTask(updateTrending, "monthly"),
+		gocron.NewTask(UpdateTrending, "monthly"),
 	)
 	if err != nil {
 		return err

@@ -25,6 +25,7 @@ const files = [
 	'functions/f_insert_gthb_trendings.sql',
 	'functions/f_delete_gthb_trending_by_date_range.sql',
 	'functions/f_delete_proj_bookmark.sql',
+	'functions/f_delete_proj_bookmark_by_proj_repo_id.sql',
 	'functions/f_delete_user.sql',
 	'functions/f_tr_delete_unreferenced_algo_hn_query.sql',
 	'functions/f_tr_delete_unreferenced_algo_hn_tag.sql',

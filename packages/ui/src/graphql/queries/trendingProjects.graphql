@@ -18,6 +18,8 @@ query TrendingProjects(
       node {
         id
         name
+        about
+        eli5
         starCount
         issueCount
         forkCount

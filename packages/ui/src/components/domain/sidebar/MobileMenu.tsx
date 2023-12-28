@@ -17,11 +17,13 @@ type MobileMenuProps = {
 const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
+  const handleMenuClose = () => setIsOpen(false)
+
   return (
     <>
       {/* Navbar */}
       <nav className='fixed inset-x-0 top-0 z-40 flex h-[60px] w-full items-center justify-between border-b border-white/5 bg-gray-900 px-4 text-white/90 lg:hidden'>
-        <Link href='/' className='flex items-center gap-2'>
+        <Link href='/' className='flex items-center gap-2' onClick={handleMenuClose}>
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image src={Logo} alt='Logo' className='h-6 w-6' />
           <span className='text-lg font-medium'>{title}</span>
@@ -43,11 +45,26 @@ const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
           }
         )}>
         <div className='flex flex-col border-b border-white/5 py-3'>
-          <p className='mb-2 text-xs font-semibold text-white/50'>Navigation</p>
-          <MobileNavLink Icon={FiCompass} path='/' text='Trending projects' />
-          <MobileNavLink Icon={FiBookmark} path='/bookmarks' text='All bookmarks' />
-          <MobileNavLink Icon={FiSettings} path='/settings' text='Settings' />
-          <MobileNavLink Icon={LuLogOut} path='/logout' text='Log out' />
+          <p className='mb-2 text-sm font-semibold text-white/50'>Navigation</p>
+          <MobileNavLink
+            Icon={FiCompass}
+            path='/'
+            text='Trending projects'
+            onClick={handleMenuClose}
+          />
+          <MobileNavLink
+            Icon={FiBookmark}
+            path='/bookmarks'
+            text='All bookmarks'
+            onClick={handleMenuClose}
+          />
+          <MobileNavLink
+            Icon={FiSettings}
+            path='/settings'
+            text='Settings'
+            onClick={handleMenuClose}
+          />
+          <MobileNavLink Icon={LuLogOut} path='/logout' text='Log out' onClick={handleMenuClose} />
         </div>
 
         {bookmarks
@@ -57,8 +74,9 @@ const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
           .map(category => (
             <div key={category} className='flex flex-col gap-2 border-b border-white/5 py-3'>
               <Link
-                href={`/compare/${category as string}`}
-                className='mb-2 flex items-center gap-1 text-xs font-semibold text-white/50'>
+                href={`/compare/${encodeURIComponent(category as string)}`}
+                className='mb-2 flex items-center gap-1 text-sm font-semibold text-white/50'
+                onClick={handleMenuClose}>
                 <FiFolder />
                 {category}
               </Link>
@@ -74,7 +92,8 @@ const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
                     <Link
                       key={project.id as string}
                       className='flex items-center gap-2 rounded-md p-2 text-sm transition-colors duration-150 hover:bg-white/5'
-                      href={`/details/${project.id as string}`}>
+                      href={`/details/${project.id as string}`}
+                      onClick={handleMenuClose}>
                       <Image
                         src={(organization?.avatarUrl || associatedPerson?.avatarUrl) as string}
                         alt={name ?? ''}

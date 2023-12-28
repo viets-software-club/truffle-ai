@@ -1,18 +1,13 @@
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts'
+import { useState } from 'react'
+import { Chart } from 'react-chartjs-2'
+import type { ChartData, ChartEvent, LegendItem } from 'chart.js'
+import { Chart as ChartJS, registerables } from 'chart.js'
+import 'chartjs-adapter-moment'
 import resolveConfig from 'tailwindcss/resolveConfig'
-import CustomTooltip from '@/components/shared/chart/CustomTooltip'
-import formatDate from '@/util/formatDate'
-import formatNumber from '@/util/formatNumber'
 import tailwindConfig from '../../../../tailwind.config'
+import chartOptions from './options'
+
+ChartJS.register(...registerables)
 
 // Make Tailwind classes accessible inside JS objects of the recharts library
 const fullConfig = resolveConfig(tailwindConfig)
@@ -33,6 +28,8 @@ const colors = colorValues
   .flatMap(value => [indigoColors?.[value]].filter(Boolean))
   .concat(singleColorValues)
 
+const gray = (fullConfig.theme?.colors?.gray as ColorObject)[800]
+
 export type DataPoint = {
   date: string
   count: number
@@ -44,82 +41,59 @@ export type ChartProps = {
     name: string
     data: DataPoint[]
   }[]
-  multipleLines?: boolean
-  selectedMetric: string
 }
 
 /**
  * Linechart with one or more datasets
  */
-const Chart = ({ datasets, multipleLines, selectedMetric }: ChartProps) => (
-  <ResponsiveContainer width='100%' height={300}>
-    <LineChart
-      height={310}
-      margin={{
-        top: 30,
-        right: 10,
-        left: 0,
-        bottom: 5
-      }}>
-      <CartesianGrid strokeDasharray='3 3' vertical={false} stroke='rgba(255,255,255,0.1)' />
+const ChartComponent = ({ datasets }: ChartProps) => {
+  const [activeDatasetIndex, setActiveDatasetIndex] = useState<number>()
 
-      <XAxis
-        dataKey='date'
-        type='number'
-        tick={{ fontSize: '12', fontWeight: 'light' }}
-        tickFormatter={formatDate}
-        stroke='rgba(255,255,255,0.5)'
-        allowDataOverflow
-        domain={['dataMin', 'dataMax']}
-      />
+  const chartData: ChartData<'line'> = {
+    datasets: datasets.map(({ name, data }, index) => {
+      const isActive = index === activeDatasetIndex || activeDatasetIndex === undefined
+      const baseColor = colors[index % colors.length]
+      const backgroundColor = `${isActive ? baseColor : gray}30`
+      const borderColor = isActive ? baseColor : gray
 
-      <YAxis
-        label={{ value: selectedMetric, dy: -125, dx: 25, fontSize: '12', fill: 'gray' }}
-        tick={{ fontSize: '12', fontWeight: 'light' }}
-        stroke='rgba(255,255,255,0.5)'
-        tickFormatter={formatNumber}
-        domain={[0, 'dataMax']}
-      />
+      return {
+        data: data?.map(({ date, count }) => ({ x: new Date(date).getTime(), y: count })),
+        backgroundColor,
+        borderColor,
+        label: name
+      }
+    })
+  }
 
-      {!multipleLines && (
-        <Tooltip
-          content={<CustomTooltip />}
-          cursor={{ stroke: 'rgba(255,255,255,0.75)', strokeWidth: 1 }}
-        />
-      )}
+  const handleLegendItemHover = (_e: ChartEvent, legendItem: LegendItem) => {
+    setActiveDatasetIndex(legendItem.datasetIndex)
+  }
 
-      <Legend wrapperStyle={{ fontSize: '12px' }} />
+  const handleLegendItemLeave = () => {
+    setActiveDatasetIndex(undefined)
+  }
 
-      {datasets
-        .sort((a, b) => {
-          if (!a.data || !b.data) return 0
-          const lastDataPointA = a.data[a.data.length - 1]?.count || 0
-          const lastDataPointB = b.data[b.data.length - 1]?.count || 0
-          return lastDataPointB - lastDataPointA
-        })
-        .map((dataset, index) => (
-          <Line
-            key={dataset.id}
-            data={
-              dataset.data
-                ? dataset.data.map(item => ({
-                    ...item,
-                    date: new Date(item.date).getTime()
-                  }))
-                : []
+  return (
+    <div className='mt-6 h-96 w-full'>
+      <Chart
+        type='line'
+        data={chartData}
+        options={{
+          ...chartOptions,
+          plugins: {
+            ...chartOptions.plugins,
+            legend: {
+              display: chartData.datasets.length > 1,
+              ...chartOptions.plugins?.legend,
+              onHover: handleLegendItemHover,
+              onLeave: handleLegendItemLeave
             }
-            dataKey='count'
-            name={dataset.name}
-            type='monotone'
-            stroke={colors[index % colors.length]}
-            dot={false}
-            activeDot={{ r: 4 }}
-            strokeWidth={2}
-            strokeLinecap='round'
-          />
-        ))}
-    </LineChart>
-  </ResponsiveContainer>
-)
+          }
+        }}
+        className='!w-full'
+      />
+    </div>
+  )
+}
 
-export default Chart
+export default ChartComponent

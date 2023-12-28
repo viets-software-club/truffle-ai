@@ -7,7 +7,7 @@ jobs:
     name: Variables
     uses: ./.github/workflows/reusable-variables.yml
     with:
-      REF_NAME: ${{ github.ref_name }}
+      REF_NAME: main
     secrets: inherit
   release_tag:
     name: Get release tag
@@ -16,7 +16,7 @@ jobs:
       RELEASE_TAG: ${{steps.tag.outputs.RELEASE_TAG}}
     steps:
       - id: tag
-        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT
   image:
     name: 'Image'
     permissions:

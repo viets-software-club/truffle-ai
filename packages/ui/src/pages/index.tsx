@@ -1,25 +1,21 @@
 import { useState, useEffect } from 'react'
 import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
-import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
-import withAuth from '@/components/shared/hoc/withAuth'
-import {
-  PageInfo,
-  Project,
-  ProjectFilter,
-  ProjectOrderBy,
-  useTrendingProjectsQuery
-} from '@/graphql/generated/gql'
+import { PageInfo, Project, ProjectFilter, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import { useLastViewedPageState, useTrendingProjectsState } from '@/stores/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
+import { NextPageWithLayout } from './_app'
 
 const PAGE_SIZE = 30
 
-const TrendingProjects = () => {
-  const [data, setData] = useState<Project[]>([])
-  const [filters, setFilters] = useState<ProjectFilter>(defaultFilters)
-  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
+const TrendingProjects: NextPageWithLayout = () => {
+  const { filters, setFilters, sorting, setSorting } = useTrendingProjectsState()
+  const { setLastViewedPage } = useLastViewedPageState()
+
+  const [data, setData] = useState<Project[]>()
+  const [loading, setLoading] = useState(true)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<PaginationParameters>({
     first: PAGE_SIZE,
@@ -39,7 +35,7 @@ const TrendingProjects = () => {
     setFilters(filter)
   }
   // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData, fetching, error }] = useTrendingProjectsQuery({
+  const [{ data: urqlData, error }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
       filter: {
@@ -56,6 +52,7 @@ const TrendingProjects = () => {
       setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
       const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
       setData(projectData)
+      setLoading(false)
       setPercentileStats({
         topTenPercent: getPercentile(projectData, 0.1),
         bottomTenPercent: getPercentile(projectData, 0.1, false),
@@ -65,24 +62,28 @@ const TrendingProjects = () => {
     }
   }, [urqlData])
 
+  useEffect(() => {
+    setLastViewedPage('trending')
+  }, [])
+
   return (
-    <Page>
-      <ProjectsTable
-        data={data}
-        filters={filters}
-        sorting={sorting}
-        fetching={fetching}
-        error={error}
-        setSorting={setSorting}
-        updateFilters={updateFilters}
-        totalCount={totalCount}
-        pageInfo={pageInfo as PageInfo}
-        setPagination={setPagination}
-        pageSize={PAGE_SIZE}
-        percentileStats={percentileStats}
-      />
-    </Page>
+    <ProjectsTable
+      data={data}
+      filters={filters}
+      sorting={sorting}
+      fetching={loading}
+      error={error}
+      setSorting={setSorting}
+      updateFilters={updateFilters}
+      totalCount={totalCount}
+      pageInfo={pageInfo as PageInfo}
+      setPagination={setPagination}
+      pageSize={PAGE_SIZE}
+      percentileStats={percentileStats}
+    />
   )
 }
 
-export default withAuth(TrendingProjects)
+TrendingProjects.getLayout = page => <Page>{page}</Page>
+
+export default TrendingProjects

@@ -10,6 +10,7 @@ import {
   useEditBookmarkCategoryMutation,
   useFilteredBookmarksQuery
 } from '@/graphql/generated/gql'
+import useSidebarSync from '../sidebar/useSidebarSync'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'
 
@@ -19,7 +20,6 @@ type BookmarkModalProps = {
   projectID: string
   category?: string
   isBookmarked: boolean
-  refetch: () => void
 }
 
 // @TODO allow adding multiple categories
@@ -28,13 +28,13 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   close,
   projectID,
   category: currentCategory,
-  isBookmarked,
-  refetch
+  isBookmarked
 }) => {
   const [newCategories, setNewCategories] = useState<string[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
 
   const user = useUser()
+  const { sync } = useSidebarSync()
 
   const [{ data: bookmarks }] = useFilteredBookmarksQuery({
     variables: { userId: user?.id as string }
@@ -48,51 +48,72 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const addOrEditBookmark = async () => {
     try {
       // Don't do anything if there is no category selected
-      if (newCategories.length === 0) return
+      if (newCategories.length === 0) {
+        setErrors({ category: 'Please select a category' })
+        return
+      }
 
       if (isBookmarked) {
-        const res = await editBookmarkCategoryMutation({ projectID, newCategory: newCategories[0] })
+        const res = await editBookmarkCategoryMutation(
+          { projectID, newCategory: newCategories[0] },
+          {
+            additionalTypenames: ['BookmarkConnection', 'ProjectConnection']
+          }
+        )
         const responseCode = parseInt(res?.data?.editBookmarkCategory?.code as string, 10)
 
         // If the mutation was successful, show success message
         if (responseCode >= 200 && responseCode < 300) {
-          refetch()
+          sync()
+          close()
         } else {
           // Otherwise, show error message
-          setError(res?.data?.editBookmarkCategory?.message || defaultErrorMessage)
+          setErrors({ default: res?.data?.editBookmarkCategory?.message || defaultErrorMessage })
         }
       } else {
-        const res = await addBookmarkMutation({ projectID, category: newCategories[0] })
+        const res = await addBookmarkMutation(
+          { projectID, category: newCategories[0] },
+          {
+            additionalTypenames: ['BookmarkConnection', 'ProjectConnection']
+          }
+        )
         const responseCode = parseInt(res?.data?.addBookmark?.code as string, 10)
 
         // If the mutation was successful, show success message
         if (responseCode >= 200 && responseCode < 300) {
-          refetch()
+          sync()
+          close()
         } else {
           // Otherwise, show error message
-          setError(res?.data?.addBookmark?.message || defaultErrorMessage)
+          setErrors({ default: res?.data?.addBookmark?.message || defaultErrorMessage })
         }
       }
     } catch (e) {
-      setError(defaultErrorMessage)
+      setErrors({ default: defaultErrorMessage })
     }
   }
 
   // Sends mutation that deletes a bookmark
   const deleteBookmark = async () => {
     try {
-      const res = await deleteBookmarkMutation({ projectID })
+      const res = await deleteBookmarkMutation(
+        { projectID },
+        {
+          additionalTypenames: ['BookmarkConnection', 'ProjectConnection']
+        }
+      )
       const responseCode = parseInt(res?.data?.deleteBookmark?.code as string, 10)
 
       // If the mutation was successful, show success message
       if (responseCode >= 200 && responseCode < 300) {
-        refetch()
+        sync()
+        close()
       } else {
         // Otherwise, show error message
-        setError(res?.data?.deleteBookmark?.message || defaultErrorMessage)
+        setErrors({ default: res?.data?.deleteBookmark?.message || defaultErrorMessage })
       }
     } catch (e) {
-      setError(defaultErrorMessage)
+      setErrors({ default: defaultErrorMessage })
     }
   }
 
@@ -100,23 +121,23 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
     // Prevent default form submission
     e.preventDefault()
 
-    // Reset success and error states
-    setError(null)
+    // Reset error state
+    setErrors({})
 
     // Add or save bookmark
     void addOrEditBookmark()
   }
 
   const handleDelete = () => {
-    // Reset success and error states
-    setError(null)
+    // Reset error state
+    setErrors({})
 
     // Delete bookmark
     void deleteBookmark()
   }
 
   useEffect(() => {
-    if (currentCategory) setNewCategories([currentCategory])
+    setNewCategories(currentCategory ? [currentCategory] : [])
   }, [currentCategory])
 
   // Get unique array of categories
@@ -136,13 +157,17 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
           <Select
             values={categories}
             selected={newCategories}
-            setSelected={setNewCategories}
+            setSelected={values => {
+              setNewCategories(values)
+              setErrors({})
+            }}
             placeholder='Search or select categories'
+            error={errors.category}
           />
         )}
 
         {/* Error message */}
-        {error && <p className='text-sm text-red-400'>{error}</p>}
+        {errors.default && <p className='text-sm text-red-400'>{errors.default}</p>}
 
         <div
           className={clsx(

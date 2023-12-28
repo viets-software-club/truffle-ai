@@ -1,6 +1,14 @@
-query FilteredBookmarks($userId: UUID!, $category: String, $projectId: UUID) {
+query FilteredBookmarks(
+  $userId: UUID!
+  $category: String
+  $projectId: UUID
+  $first: Int
+  $after: Cursor
+) {
   bookmarkCollection(
     filter: { userId: { eq: $userId }, category: { eq: $category }, projectId: { eq: $projectId } }
+    first: $first
+    after: $after
   ) {
     edges {
       node {
@@ -19,6 +27,10 @@ query FilteredBookmarks($userId: UUID!, $category: String, $projectId: UUID) {
           }
         }
       }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
     }
   }
 }

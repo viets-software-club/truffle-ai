@@ -55,16 +55,10 @@ export type AllowedUsersEdge = {
 }
 
 export type AllowedUsersFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<AllowedUsersFilter>>
   createdAt?: InputMaybe<DatetimeFilter>
   email?: InputMaybe<StringFilter>
   id?: InputMaybe<BigIntFilter>
   nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<AllowedUsersFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<AllowedUsersFilter>>
 }
 
 export type AllowedUsersInsertInput = {
@@ -156,8 +150,6 @@ export type AssociatedPersonEdge = {
 }
 
 export type AssociatedPersonFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<AssociatedPersonFilter>>
   avatarUrl?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   email?: InputMaybe<StringFilter>
@@ -166,10 +158,6 @@ export type AssociatedPersonFilter = {
   login?: InputMaybe<StringFilter>
   name?: InputMaybe<StringFilter>
   nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<AssociatedPersonFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<AssociatedPersonFilter>>
   repositoryCount?: InputMaybe<IntFilter>
   twitterUsername?: InputMaybe<StringFilter>
   websiteUrl?: InputMaybe<StringFilter>
@@ -287,16 +275,10 @@ export type BookmarkEdge = {
 }
 
 export type BookmarkFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<BookmarkFilter>>
   category?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   id?: InputMaybe<UuidFilter>
   nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<BookmarkFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<BookmarkFilter>>
   projectId?: InputMaybe<UuidFilter>
   userId?: InputMaybe<UuidFilter>
 }
@@ -421,16 +403,10 @@ export type FoundedByEdge = {
 }
 
 export type FoundedByFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<FoundedByFilter>>
   createdAt?: InputMaybe<DatetimeFilter>
   founderId?: InputMaybe<UuidFilter>
   id?: InputMaybe<BigIntFilter>
   nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<FoundedByFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<FoundedByFilter>>
   projectId?: InputMaybe<UuidFilter>
 }
 
@@ -505,7 +481,6 @@ export type Mutation = {
   deleteFromOrganizationCollection: OrganizationDeleteResponse
   /** Deletes zero or more records from the `Project` collection */
   deleteFromProjectCollection: ProjectDeleteResponse
-  deleteUser?: Maybe<Scalars['Boolean']>
   editBookmarkCategory: Response
   /** Adds one or more `AllowedUsers` records to the collection */
   insertIntoAllowedUsersCollection?: Maybe<AllowedUsersInsertResponse>
@@ -759,8 +734,6 @@ export type OrganizationEdge = {
 }
 
 export type OrganizationFilter = {
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<OrganizationFilter>>
   avatarUrl?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   crunchbase?: InputMaybe<StringFilter>
@@ -777,11 +750,7 @@ export type OrganizationFilter = {
   login?: InputMaybe<StringFilter>
   name?: InputMaybe<StringFilter>
   nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<OrganizationFilter>
   numberOfEmployees?: InputMaybe<IntFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<OrganizationFilter>>
   repositoryCount?: InputMaybe<IntFilter>
   specialties?: InputMaybe<StringFilter>
   twitterUsername?: InputMaybe<StringFilter>
@@ -888,7 +857,7 @@ export type Project = Node & {
   about?: Maybe<Scalars['String']>
   associatedPerson?: Maybe<AssociatedPerson>
   bookmarkCollection?: Maybe<BookmarkConnection>
-  categories?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  categories?: Maybe<Array<Maybe<Scalars['String']>>>
   contributorCount?: Maybe<Scalars['Int']>
   createdAt?: Maybe<Scalars['Datetime']>
   eli5?: Maybe<Scalars['String']>
@@ -898,7 +867,7 @@ export type Project = Node & {
   foundedByCollection?: Maybe<FoundedByConnection>
   githubUrl?: Maybe<Scalars['String']>
   hackernewsSentiment?: Maybe<Scalars['String']>
-  hackernewsStories?: Maybe<Array<Maybe<Scalars['JSON']>>>
+  hackernewsStories?: Maybe<Array<Maybe<Scalars['String']>>>
   id: Scalars['UUID']
   isBookmarked?: Maybe<Scalars['Boolean']>
   isTrendingDaily?: Maybe<Scalars['Boolean']>
@@ -961,8 +930,6 @@ export type ProjectEdge = {
 
 export type ProjectFilter = {
   about?: InputMaybe<StringFilter>
-  /** Returns true only if all its inner filters are true, otherwise returns false */
-  and?: InputMaybe<Array<ProjectFilter>>
   contributorCount?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DatetimeFilter>
   eli5?: InputMaybe<StringFilter>
@@ -979,10 +946,6 @@ export type ProjectFilter = {
   issuesPerContributor?: InputMaybe<FloatFilter>
   name?: InputMaybe<StringFilter>
   nodeId?: InputMaybe<IdFilter>
-  /** Negates a filter */
-  not?: InputMaybe<ProjectFilter>
-  /** Returns true if at least one of its inner filters is true, otherwise returns false */
-  or?: InputMaybe<Array<ProjectFilter>>
   owningOrganization?: InputMaybe<UuidFilter>
   owningPerson?: InputMaybe<UuidFilter>
   pullRequestCount?: InputMaybe<IntFilter>
@@ -992,7 +955,7 @@ export type ProjectFilter = {
 
 export type ProjectInsertInput = {
   about?: InputMaybe<Scalars['String']>
-  categories?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   contributorCount?: InputMaybe<Scalars['Int']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   eli5?: InputMaybe<Scalars['String']>
@@ -1001,7 +964,7 @@ export type ProjectInsertInput = {
   forksPerContributor?: InputMaybe<Scalars['Float']>
   githubUrl?: InputMaybe<Scalars['String']>
   hackernewsSentiment?: InputMaybe<Scalars['String']>
-  hackernewsStories?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  hackernewsStories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   id?: InputMaybe<Scalars['UUID']>
   isBookmarked?: InputMaybe<Scalars['Boolean']>
   isTrendingDaily?: InputMaybe<Scalars['Boolean']>
@@ -1055,7 +1018,7 @@ export type ProjectOrderBy = {
 
 export type ProjectUpdateInput = {
   about?: InputMaybe<Scalars['String']>
-  categories?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  categories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   contributorCount?: InputMaybe<Scalars['Int']>
   createdAt?: InputMaybe<Scalars['Datetime']>
   eli5?: InputMaybe<Scalars['String']>
@@ -1064,7 +1027,7 @@ export type ProjectUpdateInput = {
   forksPerContributor?: InputMaybe<Scalars['Float']>
   githubUrl?: InputMaybe<Scalars['String']>
   hackernewsSentiment?: InputMaybe<Scalars['String']>
-  hackernewsStories?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>
+  hackernewsStories?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   id?: InputMaybe<Scalars['UUID']>
   isBookmarked?: InputMaybe<Scalars['Boolean']>
   isTrendingDaily?: InputMaybe<Scalars['Boolean']>
@@ -1297,6 +1260,8 @@ export type FilteredBookmarksQueryVariables = Exact<{
   userId: Scalars['UUID']
   category?: InputMaybe<Scalars['String']>
   projectId?: InputMaybe<Scalars['UUID']>
+  first?: InputMaybe<Scalars['Int']>
+  after?: InputMaybe<Scalars['Cursor']>
 }>
 
 export type FilteredBookmarksQuery = {
@@ -1320,6 +1285,7 @@ export type FilteredBookmarksQuery = {
         }
       }
     }>
+    pageInfo: { __typename?: 'PageInfo'; hasNextPage: boolean; endCursor?: string | null }
   } | null
 }
 
@@ -1351,10 +1317,10 @@ export type ProjectDetailsQuery = {
         owningPerson?: any | null
         owningOrganization?: any | null
         hackernewsSentiment?: string | null
-        hackernewsStories?: Array<any | null> | null
+        hackernewsStories?: Array<string | null> | null
         relatedTwitterPosts?: Array<any | null> | null
         forkHistory?: Array<any | null> | null
-        categories?: Array<any | null> | null
+        categories?: Array<string | null> | null
         issuesPerContributor?: number | null
         forksPerContributor?: number | null
         associatedPerson?: {
@@ -1417,6 +1383,8 @@ export type TrendingProjectsQuery = {
         __typename?: 'Project'
         id: any
         name?: string | null
+        about?: string | null
+        eli5?: string | null
         starCount?: number | null
         issueCount?: number | null
         forkCount?: number | null
@@ -1558,13 +1526,21 @@ export function useBookmarkIdsQuery(
   })
 }
 export const FilteredBookmarksDocument = gql`
-  query FilteredBookmarks($userId: UUID!, $category: String, $projectId: UUID) {
+  query FilteredBookmarks(
+    $userId: UUID!
+    $category: String
+    $projectId: UUID
+    $first: Int
+    $after: Cursor
+  ) {
     bookmarkCollection(
       filter: {
         userId: { eq: $userId }
         category: { eq: $category }
         projectId: { eq: $projectId }
       }
+      first: $first
+      after: $after
     ) {
       edges {
         node {
@@ -1583,6 +1559,10 @@ export const FilteredBookmarksDocument = gql`
             }
           }
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
@@ -1699,6 +1679,8 @@ export const TrendingProjectsDocument = gql`
         node {
           id
           name
+          about
+          eli5
           starCount
           issueCount
           forkCount

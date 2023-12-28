@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
-import { FiCompass, FiBookmark, FiSettings, FiFolder } from 'react-icons/fi'
+import { FiCompass, FiBookmark, FiSettings } from 'react-icons/fi'
 import { LuLogOut } from 'react-icons/lu'
 import { withRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 import Sidebar from '@/components/domain/sidebar'
-import { Bookmark, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import Skeleton from '@/components/shared/Skeleton'
+import { Bookmark, PageInfo, useFilteredBookmarksQuery } from '@/graphql/generated/gql'
+import useSidebarCategories from '@/stores/useSidebarCategories'
+import Group from './Group'
 import Item from './Item'
 import MobileMenu from './MobileMenu'
 import Section from './Section'
+import useSidebarSync from './useSidebarSync'
 
 const renderFooter = () => (
   <>
@@ -16,26 +20,61 @@ const renderFooter = () => (
   </>
 )
 
-// @TODO loading state + error handling
+const PAGE_SIZE = 30
 
 const NavSidebar = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
-
-  const user = useUser()
-
-  // Fetch data from Supabase using generated Urql hook
-  const [{ data: urqlData }] = useFilteredBookmarksQuery({
-    variables: { userId: user?.id as string }
+  const [pageInfo, setPageInfo] = useState<PageInfo>({
+    hasNextPage: true,
+    hasPreviousPage: false
   })
 
-  // Only update table data when urql data changes
+  const user = useUser()
+  const { counter } = useSidebarSync()
+  const { categoriesLength, setCategoriesLength } = useSidebarCategories()
+
+  // Fetch data from Supabase using generated Urql hook
+  const [{ data: urqlData, fetching }, refetch] = useFilteredBookmarksQuery({
+    variables: { userId: user?.id as string, first: PAGE_SIZE, after: pageInfo?.endCursor }
+  })
+
+  // Only update state when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setBookmarks(urqlData?.bookmarkCollection?.edges?.map(edge => edge.node) as Bookmark[])
-    }
-  }, [urqlData])
+      const edges = urqlData?.bookmarkCollection?.edges
+      setBookmarks(
+        [...bookmarks, ...(edges?.map(edge => edge.node) as Bookmark[])].reduceRight(
+          (acc, bookmark) =>
+            acc.some(b => b.project?.id === bookmark.project?.id) ? acc : [...acc, bookmark],
+          [] as Bookmark[]
+        )
+      )
 
-  // @TODO highlight current page in sidebar
+      if (pageInfo.hasNextPage) {
+        setPageInfo(urqlData?.bookmarkCollection?.pageInfo as PageInfo)
+      }
+    }
+  }, [urqlData, pageInfo])
+
+  // Refetch when bookmarks are added or removed
+  useEffect(() => {
+    if (counter > 0) {
+      setPageInfo({ hasNextPage: true, hasPreviousPage: false, endCursor: null })
+      refetch({
+        requestPolicy: 'network-only'
+      })
+    }
+  }, [counter])
+
+  useEffect(() => {
+    const newCategoriesLength = Array.from(new Set(bookmarks?.map(b => b.category))).length
+
+    // Only update categoriesLength if it has changed
+    if (newCategoriesLength !== categoriesLength) setCategoriesLength(newCategoriesLength)
+  }, [bookmarks])
+
+  const uniqueCategories = Array.from(new Set(bookmarks.map(bookmark => bookmark.category)))
+
   return (
     <>
       <Sidebar title='TruffleAI' footer={renderFooter()}>
@@ -45,39 +84,29 @@ const NavSidebar = () => {
         </Section>
 
         <Section title='Categories'>
-          {bookmarks
-            // Get a list of unique categories to display as folders
-            .map(({ category }) => category)
-            .filter((value, index, array) => array.indexOf(value) === index)
-            .map(category => (
-              <div key={category}>
-                <Item
-                  key={category}
-                  Icon={FiFolder}
-                  text={category as string}
-                  path={`/compare/${category as string}`}
-                />
-                {/* Display all projects in a category under their corresponding folder */}
-                {bookmarks
-                  .filter(bookmark => bookmark.category === category)
-                  .map(({ project }) => {
-                    if (!project) return null
-                    const { name, organization, associatedPerson } = project
-
-                    return (
-                      <Item
-                        key={project.id as string}
-                        imageSrc={
-                          (organization?.avatarUrl || associatedPerson?.avatarUrl) as string
-                        }
-                        text={name as string}
-                        path={`/details/${project.id as string}`}
-                        secondaryItem
-                      />
-                    )
-                  })}
-              </div>
-            ))}
+          {fetching && !urqlData ? (
+            <div className='mt-2 flex flex-col gap-3'>
+              {Array.from(Array(categoriesLength).keys()).map(c => (
+                <Skeleton key={c} className='ml-5 h-6 !w-40' />
+              ))}
+            </div>
+          ) : // Display categories as folders
+          uniqueCategories.length > 0 ? (
+            uniqueCategories
+              .sort((a, b) => (a ?? '').localeCompare(b ?? ''))
+              .map(category => (
+                <div key={category}>
+                  <Group
+                    key={category}
+                    text={category as string}
+                    path={`/compare/${encodeURIComponent(category as string)}`}
+                    bookmarks={bookmarks.filter(bookmark => bookmark.category === category)}
+                  />
+                </div>
+              ))
+          ) : (
+            <p className='py-2.5 pl-5 text-xs text-white/90'>No bookmarks yet</p>
+          )}
         </Section>
       </Sidebar>
 

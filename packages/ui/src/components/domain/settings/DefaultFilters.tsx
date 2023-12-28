@@ -5,7 +5,7 @@ import FilterInput, { defaultFilters } from './FilterInput'
 
 // Helper function to get the default filter value from local storage
 const getStoredValue = (filterType: string) =>
-  Number(localStorage.getItem(`${filterType}DefaultFilter`))
+  Number(typeof window !== 'undefined' && localStorage.getItem(`${filterType}DefaultFilter`))
 
 const DefaultFilters = () => {
   // Save settings to local storage

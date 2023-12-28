@@ -28,6 +28,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect
       // If the mutation was successful, show success message
       if (responseCode >= 200 && responseCode < 300) {
         redirect(newCategory)
+        close()
       } else {
         // Otherwise, show error message
         setError(res?.data?.renameBookmarkCategory?.message || defaultErrorMessage)
@@ -48,8 +49,14 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect
     // Reset success and error states
     setError(null)
 
-    // Don't do anything if the category is the same or empty
-    if (newCategory === category || newCategory.length === 0) return
+    // Don't do anything if the category is the same
+    if (newCategory === category) close()
+
+    // Show error message if the category is empty
+    if (newCategory.length === 0) {
+      setError('Category cannot be empty.')
+      return
+    }
 
     // Add or save bookmark
     void renameBookmarkCategory()
@@ -63,7 +70,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect
         <Input placeholder='Category' value={newCategory} onChange={handleChange} />
 
         {/* Error message */}
-        {error && <p className='text-sm text-red-400'>{defaultErrorMessage}</p>}
+        {error && <p className='text-sm text-red-400'>{error ?? defaultErrorMessage}</p>}
 
         <div className='flex w-full items-center justify-end'>
           {/* Submit button */}

@@ -6,7 +6,7 @@ COPY ./packages/graphql-server/go.mod ./
 
 RUN go mod download
 
-COPY ./packages/graphql-server/**/*.go ./
+COPY ./packages/graphql-server/ ./
 
 RUN go build -o /graphql-server
 

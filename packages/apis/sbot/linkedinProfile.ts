@@ -43,7 +43,7 @@ async function scrape() {
 					Authorization: auth
 				}
 			})
-		} while (finalData == null || finalData.data.pending === true)
+		} while (finalData == null || finalData.data.pending)
 		return finalData.data
 	} catch (e) {
 		if (e instanceof Error) {

@@ -79,7 +79,6 @@ terraform.rc
 # Golang
 go.work.sum
 packages/graphql-server/graphql-server
-go.sum
 
 
 # Service worker? @TODO: check if this is needed

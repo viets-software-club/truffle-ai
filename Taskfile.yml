@@ -2,7 +2,6 @@ version: "3"
 
 silent: true
 
-
 includes:
   k8s: ./config/taskfiles/Taskfile.k8s.yml
   db: ./config/taskfiles/Taskfile.db.yml
@@ -59,7 +58,7 @@ tasks:
   lint:fix:
     desc: "Lint files with biome"
     cmds:
-      - npx biome lint . --apply  
+      - npx biome lint . --apply
   biome:fix:
     desc: "Run biome check with apply"
     cmds:
@@ -72,7 +71,7 @@ tasks:
     desc: "run test for all packages"
     cmds:
       - >
-        concurrently
+        ./node_modules/.bin/concurrently
         -n all,gql-gtw,gql-srv,ui
         -c 'green,yellow,magenta,cyan'
         'npx biome ci .' 'task gql-gtw:test' 'task gql-srv:test' 'task ui:test'
@@ -82,7 +81,7 @@ tasks:
       - >
         . ./scripts/env/source.sh
         &&
-        concurrently
+        ./node_modules/.bin/concurrently
         -n gql-gateway,gql-srv,ui
         -c 'yellow,magenta,cyan'
         'task gql-gtw:dev' 'sleep 1 && task gql-srv:dev' 'task ui:dev'
@@ -92,7 +91,7 @@ tasks:
       - >
         . ./scripts/env/source.sh
         &&
-        concurrently
+        ./node_modules/.bin/concurrently
         -n gql-gateway,gql-server,ui
         -c 'yellow,magenta,cyan'
         'task gql-gtw:build' 'task gql-srv:build' 'task ui:build'
@@ -102,7 +101,7 @@ tasks:
       - >
         . ./scripts/env/source.sh
         &&
-        concurrently
+        ./node_modules/.bin/concurrently
         -n gql-gateway,gql-server,ui
         -c 'yellow,magenta,cyan'
         'task gql-gtw:start' 'sleep 1 && task gql-srv:start' 'task ui:start'

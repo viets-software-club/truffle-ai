@@ -24,3 +24,4 @@ export ENVIRONMENT=commit;
 cp $arg1/.env.commit $arg1/packages/ui/.env.local;
 export $(cat $arg1/.env.commit | grep -v \"#\" | xargs);
 fi;
+export $(cat $arg1/.env.override | grep -v \"#\" | xargs);

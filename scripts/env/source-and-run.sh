@@ -23,5 +23,7 @@ EOF
 cp .env.commit ./packages/ui/.env.local;
 export $(cat .env.commit | grep -v \"#\" | xargs);
 fi
+export $(cat .env.override | grep -v \"#\" | xargs);
+
 cmd=$(envsubst <<< $@)
 $cmd

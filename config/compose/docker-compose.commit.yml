@@ -18,24 +18,11 @@ services:
       args:
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+        - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
         - SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
         - GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL}
     ports:
       - ${GRAPHQL_GATEWAY_PORT}:${GRAPHQL_GATEWAY_PORT}
-    env_file:
-      - ../../.env.commit
-  repo-job:
-    container_name: repo-job
-    build:
-      context: ../../
-      dockerfile: ./packages/repo-job/Dockerfile
-    env_file:
-      - ../../.env.commit
-  preview-job:
-    container_name: preview-job
-    build:
-      context: ../../
-      dockerfile: ./packages/preview-job/Dockerfile
     env_file:
       - ../../.env.commit
   ui:

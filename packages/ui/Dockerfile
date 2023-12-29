@@ -33,8 +33,8 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV HOSTNAME "0.0.0.0"
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN groupadd -g 1001 nodejs
+RUN useradd -g nextjs -u 1001
 COPY --from=prod-deps --chown=nextjs:nodejs /app/node_modules /app/node_modules
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./packages/ui/public
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./

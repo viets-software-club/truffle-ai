@@ -23,9 +23,9 @@ const writeEnvsFromDir = async (
 		const json: { [key: string]: string } = parse(
 			await Deno.readTextFile(file.path)
 		)
-		if (json?.NODE_ENV) {
-			continue
-		}
+		// if (json?.NODE_ENV) {
+		// 	continue
+		// }
 		if (json === null) {
 			console.info(`${file.path} is empty`)
 			continue

@@ -24,6 +24,6 @@ RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SU
 
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=build /app/packages/graphql-gateway/ /app/packages/graphql-gateway
+COPY --from=build /app/packages/graphql-gateway/dist/ /app/packages/graphql-gateway/dist
 EXPOSE 8000
 CMD [ "pnpm", "start", "--filter", "graphql-gateway" ]

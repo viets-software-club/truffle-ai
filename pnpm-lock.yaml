@@ -131,6 +131,9 @@ importers:
       '@whatwg-node/fetch':
         specifier: ^0.9.14
         version: 0.9.14
+      build:
+        specifier: ^0.1.4
+        version: 0.1.4
       cookie:
         specifier: ^0.5.0
         version: 0.5.0
@@ -7265,6 +7268,22 @@ packages:
       ieee754: 1.2.1
     dev: false
 
+  /build@0.1.4:
+    resolution: {integrity: sha512-KwbDJ/zrsU8KZRRMfoURG14cKIAStUlS8D5jBDvtrZbwO5FEkYqc3oB8HIhRiyD64A48w1lc+sOmQ+mmBw5U/Q==}
+    engines: {node: '>v0.4.12'}
+    dependencies:
+      cssmin: 0.3.2
+      jsmin: 1.0.1
+      jxLoader: 0.1.1
+      moo-server: 1.3.0
+      promised-io: 0.3.6
+      timespan: 2.3.0
+      uglify-js: 1.3.5
+      walker: 1.0.8
+      winston: 3.11.0
+      wrench: 1.3.9
+    dev: false
+
   /builtin-modules@3.3.0:
     resolution: {integrity: sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==}
     engines: {node: '>=6'}
@@ -7962,6 +7981,11 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+
+  /cssmin@0.3.2:
+    resolution: {integrity: sha512-bynxGIAJ8ybrnFobjsQotIjA8HFDDgPwbeUWNXXXfR+B4f9kkxdcUyagJoQCSUOfMV+ZZ6bMn8bvbozlCzUGwQ==}
+    hasBin: true
+    dev: false
 
   /csso@4.2.0:
     resolution: {integrity: sha512-wvlcdIbf6pwKEk7vHj8/Bkc0B4ylXZruLvOgs9doS5eOsOpuodOV2zJChSpkp+pRpYQLQMeF04nr3Z68Sta9jA==}
@@ -11444,6 +11468,11 @@ packages:
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
+  /js-yaml@0.3.7:
+    resolution: {integrity: sha512-/7PsVDNP2tVe2Z1cF9kTEkjamIwz4aooDpRKmN1+g/9eePCgcxsv4QDvEbxO0EH+gdDD7MLyDoR6BASo3hH51g==}
+    engines: {node: '> 0.4.11'}
+    dev: false
+
   /js-yaml@3.14.1:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
     hasBin: true
@@ -11546,6 +11575,12 @@ packages:
     resolution: {integrity: sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==}
     engines: {node: '>=4'}
     hasBin: true
+
+  /jsmin@1.0.1:
+    resolution: {integrity: sha512-OPuL5X/bFKgVdMvEIX3hnpx3jbVpFCrEM8pKPXjFkZUqg521r41ijdyTz7vACOhW6o1neVlcLyd+wkbK5fNHRg==}
+    engines: {node: '>=0.1.93'}
+    hasBin: true
+    dev: false
 
   /json-bigint-patch@0.0.8:
     resolution: {integrity: sha512-xa0LTQsyaq8awYyZyuUsporWisZFiyqzxGW8CKM3t7oouf0GFAKYJnqAm6e9NLNBQOCtOLvy614DEiRX/rPbnA==}
@@ -11688,6 +11723,16 @@ packages:
     dependencies:
       jwa: 1.4.1
       safe-buffer: 5.2.1
+    dev: false
+
+  /jxLoader@0.1.1:
+    resolution: {integrity: sha512-ClEvAj3K68y8uKhub3RgTmcRPo5DfIWvtxqrKQdDPyZ1UVHIIKvVvjrAsJFSVL5wjv0rt5iH9SMCZ0XRKNzeUA==}
+    engines: {node: '>v0.4.10'}
+    dependencies:
+      js-yaml: 0.3.7
+      moo-server: 1.3.0
+      promised-io: 0.3.6
+      walker: 1.0.8
     dev: false
 
   /keyv@4.5.4:
@@ -12556,6 +12601,11 @@ packages:
 
   /moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+    dev: false
+
+  /moo-server@1.3.0:
+    resolution: {integrity: sha512-9A8/eor2DXwpv1+a4pZAAydqLFVrWoKoO1fzdzqLUhYVXAO1Kgd1FR2gFZi7YdHzF0s4W8cDNwCfKJQrvLqxDw==}
+    engines: {node: '>v0.4.10'}
     dev: false
 
   /ms@2.0.0:
@@ -13682,6 +13732,10 @@ packages:
     resolution: {integrity: sha512-rZPNPKTOYVNEEKFaq1HqTgOwZD+4/YHS5ukLzQCypkj+OkYx7iv0mA91lJlpPPZ8vMau3IIGj5Qlwrx+8iiSmg==}
     dependencies:
       asap: 2.0.6
+    dev: false
+
+  /promised-io@0.3.6:
+    resolution: {integrity: sha512-bNwZusuNIW4m0SPR8jooSyndD35ggirHlxVl/UhIaZD/F0OBv9ebfc6tNmbpZts3QXHggkjIBH8lvtnzhtcz0A==}
     dev: false
 
   /prompts@2.4.2:
@@ -15451,6 +15505,11 @@ packages:
   /through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
+  /timespan@2.3.0:
+    resolution: {integrity: sha512-0Jq9+58T2wbOyLth0EU+AUb6JMGCLaTWIykJFa7hyAybjVH9gpVMTfUAwo5fWAvtFt2Tjh/Elg8JtgNpnMnM8g==}
+    engines: {node: '>= 0.2.0'}
+    dev: false
+
   /timsort@0.3.0:
     resolution: {integrity: sha512-qsdtZH+vMoCARQtyod4imc2nIJwg9Cc7lPRrw9CzF8ZKR0khdr8+2nX80PBhET3tcyTtJDxAffGh2rXH4tyU8A==}
     dev: true
@@ -15741,6 +15800,11 @@ packages:
 
   /ua-parser-js@1.0.37:
     resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
+    dev: false
+
+  /uglify-js@1.3.5:
+    resolution: {integrity: sha512-YPX1DjKtom8l9XslmPFQnqWzTBkvI4N0pbkzLuPZZ4QTyig0uQqvZz9NgUdfEV+qccJzi7fVcGWdESvRIjWptQ==}
+    hasBin: true
     dev: false
 
   /unbox-primitive@1.0.2:
@@ -16454,6 +16518,12 @@ packages:
 
   /wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  /wrench@1.3.9:
+    resolution: {integrity: sha512-srTJQmLTP5YtW+F5zDuqjMEZqLLr/eJOZfDI5ibfPfRMeDh3oBUefAscuH0q5wBKE339ptH/S/0D18ZkfOfmKQ==}
+    engines: {node: '>=0.1.97'}
+    deprecated: wrench.js is deprecated! You should check out fs-extra (https://github.com/jprichardson/node-fs-extra) for any operations you were using wrench for. Thanks for all the usage over the years.
+    dev: false
 
   /write-file-atomic@2.4.3:
     resolution: {integrity: sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==}

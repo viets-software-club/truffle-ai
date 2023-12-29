@@ -24,6 +24,8 @@ configMaps:
   nodejs-config-map:
     NODE_ENV: null
     TZ: null
+  golang-config-map:
+    GO_ENV: null
   graphql-gateway-config-map:
     GRAPHQL_GATEWAY_PORT: null
 secrets:

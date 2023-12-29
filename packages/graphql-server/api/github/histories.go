@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math/rand"
 	"regexp"
 	"strconv"
+	"time"
 
 	githubv3 "github.com/google/go-github/v57/github"
 )
@@ -238,4 +240,297 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 		appendIssuesToMap(issues, lastPage*30)
 	}
 	return &issueHistMap, nil
+}
+
+// func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner string, name string, includeFirstAndLastPage bool) ([]Hist, error) {
+// 	starHist := []Hist{}
+// 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
+// 	stepWidth := totalStars / amountPages
+// 	start := random.Intn(stepWidth) + 1
+// 	amountOfSteps := amountPages
+// 	for i := 0; i < amountOfSteps; i++ {
+// 		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
+// 			PerPage: 30,
+// 			Page:    start + i*stepWidth,
+// 		})
+// 		if err != nil {
+// 			return starHist, err
+// 		}
+// 		for j := 0; j < len(gazers); j++ {
+// 			starHist = append(starHist, Hist{
+// 				Date:   *gazers[j].StarredAt,
+// 				Amount: i*stepWidth + j,
+// 			})
+// 		}
+// 	}
+// 	return starHist, nil
+
+// }
+
+func appendAmountTo[T []any](s T) int {
+	x := 0
+	l, ok := s[0].(int)
+	if ok {
+		x = 0 + l
+	}
+	return x
+}
+
+func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string) (*StarHistMap, error) {
+	random := rand.New(rand.NewSource(time.Now().UnixNano()))
+	starHistMap := make(map[string]Hist)
+
+	appendGazersToMap := func(gazers []*githubv3.Stargazer, prevAmount int) {
+		for i := 0; i < len(gazers); i++ {
+			starHistMap[gazers[i].StarredAt.String()] = Hist{
+				Date:   *gazers[i].StarredAt,
+				Amount: prevAmount + i,
+			}
+		}
+	}
+	// get first page
+	firstGazers, response, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
+		PerPage: 30,
+		Page:    0,
+	})
+	appendGazersToMap(firstGazers, 0)
+
+	if err != nil {
+		return nil, err
+	}
+	// set last page number
+	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	if err != nil {
+		// all fit gazers fit on one page
+		log.Println(err)
+		return &starHistMap, nil
+	}
+
+	// iterate only through pages
+	if amountPages > lastPage {
+		for i := 1; i < amountPages; i++ {
+			page := i
+			gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
+				PerPage: 30,
+				Page:    page,
+			})
+			if err != nil {
+				return nil, err
+			}
+			appendGazersToMap(gazers, page*30)
+		}
+		return &starHistMap, nil
+	}
+	itemsPerIteration := lastPage / amountPages
+	restItems := lastPage % amountPages
+	iterationElementIndex := random.Intn(itemsPerIteration)
+	pagesWithoutRest := amountPages
+
+	i := 0
+	for ; i < pagesWithoutRest; i++ {
+		page := iterationElementIndex + i*itemsPerIteration
+		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
+			PerPage: 30,
+			Page:    page,
+		})
+		if err != nil {
+			return nil, err
+		}
+		appendGazersToMap(gazers, page*30)
+	}
+
+	hasRest := restItems != 0
+	if !hasRest {
+		return &starHistMap, nil
+	}
+	restPage := i*itemsPerIteration + random.Intn(restItems)
+	gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
+		PerPage: 30,
+		Page:    restPage,
+	})
+	if err != nil {
+		return nil, err
+	}
+	appendGazersToMap(gazers, restPage*30)
+
+	return &starHistMap, nil
+}
+
+func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name string) (*IssueHistMap, error) {
+	random := rand.New(rand.NewSource(time.Now().UnixNano()))
+	issueHistMap := make(map[string]Hist)
+
+	appendIssuesToMap := func(issues []*githubv3.Issue, prevAmount int) {
+		for i, issue := range issues {
+			issueHistMap[issue.CreatedAt.String()] = Hist{
+				Date:   *issue.CreatedAt,
+				Amount: prevAmount + i,
+			}
+		}
+	}
+	// get first page
+	firstGazers, response, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
+		ListOptions: githubv3.ListOptions{
+			PerPage: 30,
+			Page:    0,
+		},
+	})
+	appendIssuesToMap(firstGazers, 0)
+
+	if err != nil {
+		return nil, err
+	}
+	// set last page number
+	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	if err != nil {
+		// all fit gazers fit on one page
+		log.Println(err)
+		return &issueHistMap, nil
+	}
+
+	// iterate only through pages
+	if amountPages > lastPage {
+		for i := 1; i < amountPages; i++ {
+			page := i
+			gazers, _, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
+				ListOptions: githubv3.ListOptions{
+					PerPage: 30,
+					Page:    page,
+				},
+			})
+			if err != nil {
+				return nil, err
+			}
+			appendIssuesToMap(gazers, page*30)
+		}
+		return &issueHistMap, nil
+	}
+	itemsPerIteration := lastPage / amountPages
+	restItems := lastPage % amountPages
+	iterationElementIndex := random.Intn(itemsPerIteration)
+	pagesWithoutRest := amountPages
+
+	i := 0
+	for ; i < pagesWithoutRest; i++ {
+		page := iterationElementIndex + i*itemsPerIteration
+		gazers, _, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
+			ListOptions: githubv3.ListOptions{
+				PerPage: 30,
+				Page:    page,
+			},
+		})
+		if err != nil {
+			return nil, err
+		}
+		appendIssuesToMap(gazers, page*30)
+	}
+
+	hasRest := restItems != 0
+	if !hasRest {
+		return &issueHistMap, nil
+	}
+	restPage := i*itemsPerIteration + random.Intn(restItems)
+	gazers, _, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
+		ListOptions: githubv3.ListOptions{
+			PerPage: 30,
+			Page:    restPage,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	appendIssuesToMap(gazers, restPage*30)
+
+	return &issueHistMap, nil
+}
+
+func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string) (*IssueHistMap, error) {
+	random := rand.New(rand.NewSource(time.Now().UnixNano()))
+	forkHistMap := make(map[string]Hist)
+
+	appendReposToMap := func(repos []*githubv3.Repository, prevAmount int) {
+		for i, repo := range repos {
+			if *repo.Fork {
+				forkHistMap[repo.CreatedAt.String()] = Hist{
+					Date:   *repo.CreatedAt,
+					Amount: prevAmount + i,
+				}
+			}
+		}
+	}
+	// get first page
+	firstGazers, response, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+		ListOptions: githubv3.ListOptions{
+			PerPage: 30,
+			Page:    0,
+		},
+	})
+	appendReposToMap(firstGazers, 0)
+
+	if err != nil {
+		return nil, err
+	}
+	// set last page number
+	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	if err != nil {
+		// all fit gazers fit on one page
+		log.Println(err)
+		return &forkHistMap, nil
+	}
+
+	// iterate only through pages
+	if amountPages > lastPage {
+		for i := 1; i < amountPages; i++ {
+			page := i
+			gazers, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+				ListOptions: githubv3.ListOptions{
+					PerPage: 30,
+					Page:    page,
+				},
+			})
+			if err != nil {
+				return nil, err
+			}
+			appendReposToMap(gazers, page*30)
+		}
+		return &forkHistMap, nil
+	}
+	itemsPerIteration := lastPage / amountPages
+	restItems := lastPage % amountPages
+	iterationElementIndex := random.Intn(itemsPerIteration)
+	pagesWithoutRest := amountPages
+
+	i := 0
+	for ; i < pagesWithoutRest; i++ {
+		page := iterationElementIndex + i*itemsPerIteration
+		gazers, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+			ListOptions: githubv3.ListOptions{
+				PerPage: 30,
+				Page:    0,
+			},
+		})
+
+		if err != nil {
+			return nil, err
+		}
+		appendReposToMap(gazers, page*30)
+	}
+
+	hasRest := restItems != 0
+	if !hasRest {
+		return &forkHistMap, nil
+	}
+	restPage := i*itemsPerIteration + random.Intn(restItems)
+	gazers, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+		ListOptions: githubv3.ListOptions{
+			PerPage: 30,
+			Page:    0,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	appendReposToMap(gazers, restPage*30)
+
+	return &forkHistMap, nil
 }

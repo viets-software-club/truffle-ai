@@ -24,6 +24,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Use Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "stable"
+      - name: Use Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
@@ -42,13 +51,8 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install dependencies
         run: pnpm install
-      - name: Install Task
-        uses: arduino/setup-task@v1
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install npm packages
-        run: NODE_ENV=development pnpm i
+      - name: Install pnpm packages
+        run: pnpm i
       - name: Test
         run: task test
       - name: Build
@@ -61,4 +65,4 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           GRAPHQL_URL: ${{ vars.GRAPHQL_URL }}
-        run: NODE_ENV=production task build
+        run: NODE_ENV=production GO_ENV=production task build

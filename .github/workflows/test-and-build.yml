@@ -3,9 +3,9 @@
 name: Test & Build
 on:
   push:
-    branches: ['main', 'staging', 'commit']
+    branches: ["main", "staging", "commit"]
   pull_request:
-    branches: ['main', 'staging', 'commit']
+    branches: ["main", "staging", "commit"]
 env:
   SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
   GRAPHQL_GATEWAY_PORT: ${{ vars.GRAPHQL_GATEWAY_PORT }}
@@ -17,22 +17,38 @@ jobs:
     environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     strategy:
       matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [21.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install dependencies
+        run: pnpm install
       - name: Install Task
         uses: arduino/setup-task@v1
         with:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install npm packages
-        run: NODE_ENV=development npm ci
+        run: NODE_ENV=development pnpm i
       - name: Test
         run: task test
       - name: Build

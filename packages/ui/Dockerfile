@@ -5,13 +5,14 @@ FROM node:21-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+COPY ./packages/ui/package.json /app/packages/ui/package.json
 COPY ./package.json /app/package.json
 COPY ./pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY ./pnpm-workspace.yaml /app/pnpm-workspace.yaml
 WORKDIR /app
 
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --filter ui --prod --frozen-lockfile
 
 FROM base AS build
 ARG SUPABASE_URL
@@ -22,9 +23,9 @@ ENV NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
 ENV NEXT_PUBLIC_GRAPHQL_URL=${GRAPHQL_URL}
 ENV NEXT_TELEMETRY_DISABLED 1
-COPY ./packages/graphql-gateway/ /app/packages/graphql-gateway
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL} GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL} pnpm run build --filter graphql-gateway
+COPY ./packages/ui/ /app/packages/ui
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --filter ui --frozen-lockfile
+RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL} GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL} pnpm run --filter ui build
 
 FROM base
 ARG UI_PORT
@@ -39,7 +40,6 @@ COPY --from=prod-deps --chown=nextjs:nodejs /app/node_modules /app/node_modules
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./packages/ui/public
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./
 COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./packages/ui/.next/static
-
 USER nextjs
-EXPOSE 8000
-CMD [ "pnpm", "start", "--filter", "ui" ]
+
+CMD [ "pnpm", "--filter", "ui", "start" ]

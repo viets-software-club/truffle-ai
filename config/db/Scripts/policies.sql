@@ -15,9 +15,17 @@ create policy "authenticated can access proj_bookmark"
   on proj_bookmark for all to authenticated
   using (auth.uid() = proj_bookmark.auth_users_id);
 
+create policy "if proj_bookmark.is_public allow select access to proj_bookmark"
+  on proj_bookmark for select to authenticated
+  using (proj_bookmark.is_public = true);
+
 create policy "authenticated can access proj_cat"
   on proj_cat for all to authenticated
   using (auth.uid() = proj_cat.auth_users_id);
+
+create policy "if proj_cat.is_public allow select access to proj_cat"
+  on proj_cat for select to authenticated
+  using (proj_cat.is_public = true);
 
 create policy "authenticated can access proj_repo"
   on proj_repo for all to authenticated

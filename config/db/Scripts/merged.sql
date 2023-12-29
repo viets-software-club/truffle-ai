@@ -78,6 +78,8 @@ drop type if exists t_f_insert_sbot_lin_profiles_for_proj cascade;
 drop type if exists t_ivals_gthb_repo_topic;
 drop type if exists t_ivals_proj_classifier;
 
+drop policy if exists "if proj_cat.is_public allow select access to proj_cat" on proj_cat cascade;
+drop policy if exists "if proj_bookmark.is_public allow select access to proj_bookmark" on proj_bookmark cascade;
 drop policy if exists "authenticated can access proj_bookmark" on proj_bookmark cascade;
 drop policy if exists "authenticated can access proj_repo" on proj_repo cascade;
 drop policy if exists "authenticated can access proj_cat" on proj_cat cascade;
@@ -220,6 +222,8 @@ create table public.proj_cat(
   _created_at timestamp with time zone not null default now(),
   title text not null,
   auth_users_id uuid not null,
+  note text null,
+  is_public boolean default false,
   constraint proj_cat_pkey primary key (proj_cat_id),
   constraint proj_cat_user_id_fkey foreign key (auth_users_id) references auth.users(id) on delete cascade,
   constraint proj_cat_title_and_auth_users_id_uq unique (title, auth_users_id)
@@ -388,6 +392,7 @@ create table public.proj_bookmark(
   _created_at timestamp with time zone not null default now(),
   proj_repo_id bigint not null,
   auth_users_id uuid not null,
+  is_public boolean default false,
   constraint proj_bookmark_pkey primary key (proj_bookmark_id),
   constraint proj_bookmark_proj_repo_id foreign key (proj_repo_id) references proj_repo(proj_repo_id) on delete cascade,
   constraint proj_bookmark_user_id_fkey foreign key (auth_users_id) references auth.users(id) on delete cascade,
@@ -1395,9 +1400,17 @@ create policy "authenticated can access proj_bookmark"
   on proj_bookmark for all to authenticated
   using (auth.uid() = proj_bookmark.auth_users_id);
 
+create policy "if proj_bookmark.is_public allow select access to proj_bookmark"
+  on proj_bookmark for select to authenticated
+  using (proj_bookmark.is_public = true);
+
 create policy "authenticated can access proj_cat"
   on proj_cat for all to authenticated
   using (auth.uid() = proj_cat.auth_users_id);
+
+create policy "if proj_cat.is_public allow select access to proj_cat"
+  on proj_cat for select to authenticated
+  using (proj_cat.is_public = true);
 
 create policy "authenticated can access proj_repo"
   on proj_repo for all to authenticated
@@ -1438,3 +1451,7 @@ create policy "admin can only delete himself"
   on user_admin for delete to authenticated
   using (auth.uid() = user_admin.auth_users_id);
 grant select on table public.user_whitelist to supabase_auth_admin;
+
+insert into user_api_key (auth_users_id, user_api_key) values (
+  '6766a618-85c4-48f1-8536-d9a51692d953', '6766a618-85c4-48f1-8536-d9a51692d953'
+)

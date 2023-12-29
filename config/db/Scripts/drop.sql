@@ -78,6 +78,8 @@ drop type if exists t_f_insert_sbot_lin_profiles_for_proj cascade;
 drop type if exists t_ivals_gthb_repo_topic;
 drop type if exists t_ivals_proj_classifier;
 
+drop policy if exists "if proj_cat.is_public allow select access to proj_cat" on proj_cat cascade;
+drop policy if exists "if proj_bookmark.is_public allow select access to proj_bookmark" on proj_bookmark cascade;
 drop policy if exists "authenticated can access proj_bookmark" on proj_bookmark cascade;
 drop policy if exists "authenticated can access proj_repo" on proj_repo cascade;
 drop policy if exists "authenticated can access proj_cat" on proj_cat cascade;

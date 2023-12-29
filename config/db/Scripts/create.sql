@@ -130,6 +130,8 @@ create table public.proj_cat(
   _created_at timestamp with time zone not null default now(),
   title text not null,
   auth_users_id uuid not null,
+  note text null,
+  is_public boolean default false,
   constraint proj_cat_pkey primary key (proj_cat_id),
   constraint proj_cat_user_id_fkey foreign key (auth_users_id) references auth.users(id) on delete cascade,
   constraint proj_cat_title_and_auth_users_id_uq unique (title, auth_users_id)
@@ -298,6 +300,7 @@ create table public.proj_bookmark(
   _created_at timestamp with time zone not null default now(),
   proj_repo_id bigint not null,
   auth_users_id uuid not null,
+  is_public boolean default false,
   constraint proj_bookmark_pkey primary key (proj_bookmark_id),
   constraint proj_bookmark_proj_repo_id foreign key (proj_repo_id) references proj_repo(proj_repo_id) on delete cascade,
   constraint proj_bookmark_user_id_fkey foreign key (auth_users_id) references auth.users(id) on delete cascade,

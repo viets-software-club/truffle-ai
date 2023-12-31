@@ -670,6 +670,12 @@ create type t_f_insert_gthb_trending as (
   lang text,
   proj_repo t_f_insert_proj_repo
 );
+
+drop type if exists t_f_select_updatable_result cascade;
+create type t_f_select_updatable_result as (
+  gthb_repo_name bigint,
+  gthb_owner_login bigint
+);
 create or replace function f_insert_gthb_owner(githubOwner t_f_insert_gthb_owner)
   returns bigint
   as $$
@@ -1110,7 +1116,6 @@ begin
   end loop;
 end;
 $$ language plpgsql;
-
 create or replace function f_delete_gthb_trending_by_date_range(date_range d_gthb_trending_date_range)
   returns VOID
   as $$
@@ -1324,6 +1329,67 @@ begin
   return null;
 end;
 $$ language plpgsql security definer;
+create or replace function f_get_updatable_bookmarks_wo_gthb_trending()
+  returns table(gthb_repo_name bigint, gthb_owner_login bigint)
+  as $$
+begin
+  return query select gthb_repo.gthb_repo_name, gthb_owner.gthb_owner_login from gthb_repo inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id inner join proj_bookmark on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id where not exists (
+    select 1 from gthb_trending where gthb_trending.gthb_repo_id = gthb_repo.gthb_repo_id
+  );
+end;
+$$
+language plpgsql;
+
+
+create or replace function f_get_updatable_gthb_trendings(isDaily boolean, isWeekly boolean, isMonthly boolean)
+  returns table(gthb_repo_name bigint, gthb_owner_login bigint)
+  as $$
+begin
+  return query select gthb_trending.gthb_repo_name, gthb_owner.gthb_owner_login from gthb_repo inner join gthb.trending on gthb_trending.gthb_repo_id = gthb_repo.gthb_repo_id inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id where not exists (
+    select 1 from gthb_trending where gthb_trending.gthb_repo_id = gthb_repo.gthb_repo_id
+  ) and (
+      (isDaily = false and gthb_trending.date_range != 'daily') or
+      (isWeekly = false and gthb_trending.date_range != 'weekly') or
+      (isMonthly = false and gthb_trending.date_range != 'monthly')
+    );
+end;
+$$
+language plpgsql;
+
+
+create or replace function f_is_proj_repo_bookmarked(projRepoId bigint)
+  returns boolean
+  as $$
+begin
+  return exists(select 1 from proj_bookmark where proj_bookmark.proj_repo_id = projRepoId);
+end;
+$$
+language plpgsql;
+
+
+drop function if exists f_select_updatable(isDaily boolean, isWeekly boolean, isMonthly boolean);
+create or replace function f_select_updatable(isDaily boolean, isWeekly boolean, isMonthly boolean)
+  returns setof t_f_select_updatable_result
+  as $$
+begin
+  return query select gthb_repo.gthb_repo_id, gthb_repo.gthb_repo_name, gthb_repo.gthb_owner_id from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
+  inner join proj_bookmark on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
+  union
+  select gthb_repo.gthb_repo_id, gthb_repo.gthb_repo_name, gthb_repo.gthb_owner_id from gthb_repo
+  inner join gthb_trending on gthb_trending.gthb_repo_id = gthb_repo.gthb_repo_id
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  where not (
+      (isDaily = false and gthb_trending.date_range != 'daily') or
+      (isWeekly = false and gthb_trending.date_range != 'weekly') or
+      (isMonthly = false and gthb_trending.date_range != 'monthly')
+    );
+end;
+$$
+language plpgsql;
+
+
 create or replace trigger tr_on_delete_delete_unreferenced_algo_hn_query
   after delete on proj_repo_and_algo_hn_query
   for each STATEMENT
@@ -1451,7 +1517,3 @@ create policy "admin can only delete himself"
   on user_admin for delete to authenticated
   using (auth.uid() = user_admin.auth_users_id);
 grant select on table public.user_whitelist to supabase_auth_admin;
-
-insert into user_api_key (auth_users_id, user_api_key) values (
-  '6766a618-85c4-48f1-8536-d9a51692d953', '6766a618-85c4-48f1-8536-d9a51692d953'
-)

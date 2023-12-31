@@ -46,23 +46,23 @@ tasks:
   format:
     desc: "Format files with biome"
     cmds:
-      - /node_modules/.bin/biome format .
+      - ./node_modules/.bin/biome format .
   format:fix:
     desc: "Format files with biome"
     cmds:
-      - /node_modules/.bin/biome format . --write
+      - ./node_modules/.bin/biome format . --write
   lint:
     desc: "Lint files with biome"
     cmds:
-      - /node_modules/.bin/biome lint .
+      - ./node_modules/.bin/biome lint .
   lint:fix:
     desc: "Lint files with biome"
     cmds:
-      - /node_modules/.bin/biome lint . --apply
+      - ./node_modules/.bin/biome lint . --apply
   biome:fix:
     desc: "Run biome check with apply"
     cmds:
-      - /node_modules/.bin/biome check . --apply
+      - ./node_modules/.bin/biome check . --apply
   biome:ci:
     desc: "Run biome ci"
     cmds:

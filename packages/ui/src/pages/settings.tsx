@@ -4,7 +4,7 @@ import CommandMenu from '@/components/domain/cmdk'
 import AffinitySettings from '@/components/domain/settings/AffinitySettings'
 import DefaultFilters from '@/components/domain/settings/DefaultFilters'
 import DeleteAccount from '@/components/domain/settings/DeleteAccount'
-import EmailTemplate from '@/components/domain/settings/EmailTemplate'
+import EditEmailTemplate from '@/components/domain/settings/EditEmailTemplate'
 import Section from '@/components/domain/settings/Section'
 import Sidebar from '@/components/domain/settings/Sidebar'
 import SlackSettings from '@/components/domain/settings/SlackSettings'
@@ -47,7 +47,7 @@ const Settings = () => {
         <Separator />
 
         <Section title='General' subtitle='Email template' refs={refs}>
-          <EmailTemplate />
+          <EditEmailTemplate />
         </Section>
 
         <h2 className='mt-8 border-b border-white/5 pb-4 text-xl font-medium'>Account</h2>

@@ -1,17 +1,19 @@
 import { Fragment, ReactNode } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 type ModalProps = {
   isOpen: boolean
   onClose: () => void
   children: ReactNode
   unstyled?: boolean
+  className?: string
 }
 
-const Modal = ({ isOpen, onClose, children, unstyled }: ModalProps) => (
+const Modal = ({ isOpen, onClose, children, unstyled, className }: ModalProps) => (
   <Transition appear show={isOpen} as={Fragment}>
-    <Dialog as='div' onClose={onClose} className='fixed inset-0 z-30'>
+    <Dialog as='div' onClose={onClose} className={twMerge('fixed inset-0 z-30', className)}>
       <Transition.Child
         as={Fragment}
         enter='ease-out duration-150'

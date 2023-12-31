@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { AiOutlinePlus } from 'react-icons/ai'
 import { Column } from '@tanstack/react-table'
-import AddProject from '@/components/domain/projects/AddProject'
+import Button from '@/components/shared/Button'
 import { Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import useAddProjectModalState from '@/hooks/useAddProjectModalState'
 import EditColumns from './EditColumns'
 import TimeFrameSelector from './TimeFrameSelector'
 import FilterSelector from './filters/FilterSelector'
@@ -28,6 +30,8 @@ const TopBar = ({
   setSorting,
   updateFilters
 }: TopBarProps) => {
+  const { setIsOpen: setIsAddProjectOpen } = useAddProjectModalState()
+
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFilterOption>(
     TimeFilterOption.Today
   )
@@ -75,7 +79,15 @@ const TopBar = ({
 
       <div className='flex gap-3'>
         <EditColumns columns={columns} />
-        <AddProject />
+
+        <Button
+          onClick={() => {
+            setIsAddProjectOpen(true)
+          }}
+          variant='highlighted'>
+          <AiOutlinePlus />
+          Add Project
+        </Button>
       </div>
     </div>
   )

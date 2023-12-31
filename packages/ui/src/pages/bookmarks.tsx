@@ -11,7 +11,7 @@ import {
   useBookmarkIdsQuery,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
-import { useBookmarkedProjectsState, useLastViewedPageState } from '@/stores/useProjectTableState'
+import { useBookmarkedProjectsState, useLastViewedPageState } from '@/hooks/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from './_app'
 

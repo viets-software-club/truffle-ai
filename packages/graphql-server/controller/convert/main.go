@@ -30,7 +30,7 @@ func ConvertProjRepoClassifier(classifiers *[]string) (pgtype.FlatArray[types.T_
 	return pgClassifiers, nil
 }
 
-func convertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_insert_proj_repo, error) {
+func ConvertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_insert_proj_repo, error) {
 
 	// convert github repo
 	pgGithubRepo, err := convertGithub.ConvertGithubDataToTFInsertGthbRepo(&data.GithubData)
@@ -80,7 +80,7 @@ func ConvertToTFInsertProjBookmarkWCats(authUserId string, categories *[]string,
 		pgCategories = append(pgCategories, pgtype.Text{String: category, Valid: true})
 	}
 
-	projRepo, err := convertProjectDataToTFInsertProjRepo(data)
+	projRepo, err := ConvertProjectDataToTFInsertProjRepo(data)
 
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func ConvertToTFInsertProjBookmarkWCats(authUserId string, categories *[]string,
 
 func ConvertToTFInsertGthbTrending(dateRange string, data *data.ProjectData) (*types.T_f_insert_gthb_trending, error) {
 
-	projRepo, err := convertProjectDataToTFInsertProjRepo(data)
+	projRepo, err := ConvertProjectDataToTFInsertProjRepo(data)
 
 	if err != nil {
 		return nil, err

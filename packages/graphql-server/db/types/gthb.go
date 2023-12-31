@@ -108,6 +108,11 @@ type T_f_insert_gthb_trending struct {
 	Proj_repo  T_f_insert_proj_repo
 }
 
+type T_f_select_updatable_result struct {
+	Gthb_repo_name   pgtype.Text
+	Gthb_owner_login pgtype.Text
+}
+
 // types for arrays are prefixed with _
 var GthbTypes = []string{
 	"d_gthb_trending_date_range",
@@ -131,6 +136,8 @@ var GthbTypes = []string{
 	"t_f_insert_gthb_contr",
 	"_t_f_insert_gthb_contr",
 	"t_f_insert_gthb_repo",
+	"t_f_select_updatable_result",
+	"_t_f_select_updatable_result",
 }
 var GthbTypes2 = []string{
 	"t_f_insert_gthb_trending",

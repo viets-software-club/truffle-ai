@@ -14,7 +14,7 @@ import (
 )
 
 type Hist struct {
-	Date   githubv3.Timestamp
+	Date   time.Time
 	Amount int
 }
 type IHist interface{ Hist }
@@ -42,7 +42,7 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 	appendGazersToMap := func(gazers []*githubv3.Stargazer, prevAmount int) {
 		for i := 0; i < len(gazers); i++ {
 			starHistMap[gazers[i].StarredAt.String()] = Hist{
-				Date:   *gazers[i].StarredAt,
+				Date:   *&gazers[i].StarredAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -107,7 +107,7 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 		for i, repo := range repos {
 			if *repo.Fork {
 				forkHistMap[repo.CreatedAt.String()] = Hist{
-					Date:   *repo.CreatedAt,
+					Date:   *&repo.CreatedAt.Time,
 					Amount: prevAmount + i,
 				}
 			}
@@ -178,7 +178,7 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	appendIssuesToMap := func(issues []*githubv3.Issue, prevAmount int) {
 		for i, issue := range issues {
 			issueHistMap[issue.CreatedAt.String()] = Hist{
-				Date:   *issue.CreatedAt,
+				Date:   *&issue.CreatedAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -200,7 +200,7 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	if err != nil {
 		// all issues fit on one page
 		log.Println(err)
-		return &issueHistMap, err
+		return &issueHistMap, nil
 	}
 
 	var pageCount int
@@ -242,31 +242,6 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	return &issueHistMap, nil
 }
 
-// func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner string, name string, includeFirstAndLastPage bool) ([]Hist, error) {
-// 	starHist := []Hist{}
-// 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
-// 	stepWidth := totalStars / amountPages
-// 	start := random.Intn(stepWidth) + 1
-// 	amountOfSteps := amountPages
-// 	for i := 0; i < amountOfSteps; i++ {
-// 		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &github.ListOptions{
-// 			PerPage: 30,
-// 			Page:    start + i*stepWidth,
-// 		})
-// 		if err != nil {
-// 			return starHist, err
-// 		}
-// 		for j := 0; j < len(gazers); j++ {
-// 			starHist = append(starHist, Hist{
-// 				Date:   *gazers[j].StarredAt,
-// 				Amount: i*stepWidth + j,
-// 			})
-// 		}
-// 	}
-// 	return starHist, nil
-
-// }
-
 func appendAmountTo[T []any](s T) int {
 	x := 0
 	l, ok := s[0].(int)
@@ -283,7 +258,7 @@ func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string
 	appendGazersToMap := func(gazers []*githubv3.Stargazer, prevAmount int) {
 		for i := 0; i < len(gazers); i++ {
 			starHistMap[gazers[i].StarredAt.String()] = Hist{
-				Date:   *gazers[i].StarredAt,
+				Date:   *&gazers[i].StarredAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -363,7 +338,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 	appendIssuesToMap := func(issues []*githubv3.Issue, prevAmount int) {
 		for i, issue := range issues {
 			issueHistMap[issue.CreatedAt.String()] = Hist{
-				Date:   *issue.CreatedAt,
+				Date:   *&issue.CreatedAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -452,7 +427,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 		for i, repo := range repos {
 			if *repo.Fork {
 				forkHistMap[repo.CreatedAt.String()] = Hist{
-					Date:   *repo.CreatedAt,
+					Date:   *&repo.CreatedAt.Time,
 					Amount: prevAmount + i,
 				}
 			}

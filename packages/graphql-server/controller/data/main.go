@@ -2,7 +2,9 @@ package data
 
 import (
 	"errors"
+	"fmt"
 	"log"
+	"time"
 
 	githubv3 "github.com/google/go-github/v57/github"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/algolia/hackernews"
@@ -43,7 +45,7 @@ type AlgoliaData struct {
 type ContributorToUserMap = map[*githubv3.Contributor]*github.GetUser
 
 func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
-
+	currentTime := time.Now()
 	// Create channels
 	errChan := make(chan error)
 	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser)
@@ -77,12 +79,257 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 			errChan <- err
 			return
 		}
+		fmt.Println("closing stars")
+
 		starHistPtrChan <- starHist
 	}()
 
 	// Retrieve issue history
 	go func() {
-		issueHist, err := GithubApi.GetStarHist(30, repoOwner, repoName)
+		issueHist, err := GithubApi.GetIssueHist(30, repoOwner, repoName)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		fmt.Println("closing issues")
+
+		issueHistPtrChan <- issueHist
+	}()
+
+	// Retrieve fork history
+	go func() {
+		forkHist, err := GithubApi.GetForkHist(30, repoOwner, repoName)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		fmt.Println("closing forks")
+
+		forkHistPtrChan <- forkHist
+	}()
+
+	// Retrieve contributors
+	go func() {
+		type ContributorAndUser struct {
+			Contributor *githubv3.Contributor
+			User        *github.GetUser
+		}
+		contributors, err := GithubApi.GetContributors(repoOwner, repoName)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if contributors == nil {
+			errChan <- errors.New("no contributors found")
+			return
+		}
+		contributorToUserMap := make(map[*githubv3.Contributor]*github.GetUser)
+		userChan := make(chan *ContributorAndUser)
+		defer close(userChan)
+		for _, contributor := range *contributors {
+			go func(contributor *githubv3.Contributor) {
+				user, err := GithubApi.QueryUser(*contributor.Login)
+
+				if err != nil {
+					log.Println(err)
+					userChan <- nil
+				} else {
+					userChan <- &ContributorAndUser{
+						Contributor: contributor,
+						User:        user,
+					}
+				}
+			}(contributor)
+		}
+		for i := 0; i < len(*contributors); i++ {
+			userAndContributor := <-userChan
+			fmt.Print(userAndContributor)
+			if userAndContributor != nil {
+				contributorToUserMap[userAndContributor.Contributor] = userAndContributor.User
+			}
+		}
+		fmt.Println("closing contributors")
+
+		contributorToUserMapPtrChan <- &contributorToUserMap
+
+	}()
+
+	hackernewsQuery := repoName
+
+	// Retrieve stories
+	go func() {
+		stories, err := hackernews.GetStoriesForQuery(hackernewsQuery)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		fmt.Println("closing hn stories")
+
+		hackernewsStoriesResponseChan <- stories
+
+	}()
+	// Retrieve comments
+	go func() {
+		comments, err := hackernews.GetCommentsForQuery(hackernewsQuery)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		hackernewsCommentsResponseChan <- comments
+		hackernewsSentiment, err := PromptsApi.GenerateHackernewsSentiment(comments)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		fmt.Println("closing hackernews senti")
+
+		hackernewsSentimentChan <- hackernewsSentiment
+
+	}()
+
+	// Retrieve repository
+	repoPtr, err := GithubApi.QueryData(repoOwner, repoName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Retrieve Eli5 from readme
+	go func() {
+		readme, err := githubScraper.GetReadme(RawApi, repoOwner, repoName, string(repoPtr.Repository.DefaultBranchRef.Name))
+		if err != nil {
+			errChan <- err
+			return
+		}
+		repoEli5, err := PromptsApi.GenerateEli5FromReadme(readme)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		fmt.Println("closing repo eli5")
+
+		repoEli5Chan <- repoEli5
+
+	}()
+	if repoPtr.Repository.IsInOrganization {
+		go func() {
+			var linkedinCompanies []linkedin.LinkedinCompany
+			linkedinCompany, err := LinkedinApi.GetLinkedinCompany(string(repoPtr.Repository.Owner.Organization.Name))
+			fmt.Println("closing linkedin compnay")
+
+			if err != nil {
+				log.Println("couldn't get linkedin companies")
+				linkedinCompaniesChan <- nil
+			} else {
+				linkedinCompanies = append(linkedinCompanies, *linkedinCompany)
+				linkedinCompaniesChan <- &linkedinCompanies
+			}
+
+		}()
+	}
+	if !repoPtr.Repository.IsInOrganization {
+		go func() {
+
+			var linkedinProfiles []linkedin.LinkedinProfile
+
+			linkedinProfile, err := LinkedinApi.GetLinkedinProfile(string(repoPtr.Repository.Owner.Login))
+			fmt.Println("closing linkedin profi")
+
+			if err != nil {
+				log.Println("couldn't get linkedin profiles")
+				linkedinProfilesChan <- nil
+			} else {
+				linkedinProfiles = append(linkedinProfiles, *linkedinProfile)
+				linkedinProfilesChan <- &linkedinProfiles
+
+			}
+		}()
+	}
+
+	var data ProjectData
+	data.GithubData.RepoPtr = repoPtr
+
+	for i := 0; i < 9; i++ {
+		select {
+		case err := <-errChan:
+			fmt.Println("error", err)
+			return nil, err
+		case data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan:
+		case data.GithubData.StarHistMapPtr = <-starHistPtrChan:
+		case data.GithubData.IssueHistMapPtr = <-issueHistPtrChan:
+		case data.GithubData.ForkHistMapPtr = <-forkHistPtrChan:
+		case data.RepoEli5 = <-repoEli5Chan:
+		case data.ScrapingbotData.LinkedinCompaniesPtr = <-linkedinCompaniesChan:
+		case data.ScrapingbotData.LinkedinProfilesPtr = <-linkedinProfilesChan:
+		case data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan:
+		case data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan:
+		case data.HackernewsSentiment = <-hackernewsSentimentChan:
+		}
+	}
+
+	fmt.Println("closing")
+
+	if data.GithubData.StarHistMapPtr != nil && data.GithubData.RepoPtr != nil {
+		(*data.GithubData.StarHistMapPtr)[currentTime.String()] = github.Hist{
+			Amount: int(data.GithubData.RepoPtr.Repository.StargazerCount),
+			Date:   currentTime,
+		}
+	}
+	if data.GithubData.ForkHistMapPtr != nil && data.GithubData.RepoPtr != nil {
+		(*data.GithubData.ForkHistMapPtr)[currentTime.String()] = github.Hist{
+			Amount: int(data.GithubData.RepoPtr.Repository.ForkCount),
+			Date:   currentTime,
+		}
+	}
+	if data.GithubData.IssueHistMapPtr != nil && data.GithubData.RepoPtr != nil {
+		(*data.GithubData.IssueHistMapPtr)[currentTime.String()] = github.Hist{
+			Amount: int(data.GithubData.RepoPtr.Repository.Issues.TotalCount),
+			Date:   currentTime,
+		}
+	}
+
+	data.AlgoliaData.Query = hackernewsQuery
+
+	return &data, nil
+
+}
+
+func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, error) {
+	currentTime := time.Now()
+	// Create channels
+	errChan := make(chan error)
+	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser)
+	starHistPtrChan := make(chan *map[string]github.Hist)
+	issueHistPtrChan := make(chan *map[string]github.Hist)
+	forkHistPtrChan := make(chan *map[string]github.Hist)
+	repoEli5Chan := make(chan string)
+	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse)
+	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse)
+	hackernewsSentimentChan := make(chan string)
+
+	// close all channels
+	defer close(errChan)
+	defer close(contributorToUserMapPtrChan)
+	defer close(starHistPtrChan)
+	defer close(issueHistPtrChan)
+	defer close(forkHistPtrChan)
+	defer close(repoEli5Chan)
+	defer close(hackernewsStoriesResponseChan)
+	defer close(hackernewsCommentsResponseChan)
+	defer close(hackernewsSentimentChan)
+
+	// Retrieve star history
+	go func() {
+		starHist, err := GithubApi.GetStarHist(30, repoOwner, repoName)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		starHistPtrChan <- starHist
+	}()
+
+	// Retrieve issue history
+	go func() {
+		issueHist, err := GithubApi.GetIssueHist(30, repoOwner, repoName)
 		if err != nil {
 			errChan <- err
 			return
@@ -92,7 +339,7 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 
 	// Retrieve fork history
 	go func() {
-		forkHist, err := GithubApi.GetStarHist(30, repoOwner, repoName)
+		forkHist, err := GithubApi.GetForkHist(30, repoOwner, repoName)
 		if err != nil {
 			errChan <- err
 			return
@@ -169,7 +416,6 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	}()
 
 	// Retrieve repository
-
 	repoPtr, err := GithubApi.QueryData(repoOwner, repoName)
 	if err != nil {
 		return nil, err
@@ -189,55 +435,45 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 		}
 		repoEli5Chan <- repoEli5
 	}()
-	if repoPtr.Repository.IsInOrganization {
-		go func() {
-			var linkedinCompanies []linkedin.LinkedinCompany
-			linkedinCompany, err := LinkedinApi.GetLinkedinCompany(string(repoPtr.Repository.Owner.Organization.Name))
-			if err != nil {
-				log.Println("couldn't get linkedin companies")
-				linkedinCompaniesChan <- nil
-			} else {
-				linkedinCompanies = append(linkedinCompanies, *linkedinCompany)
-				linkedinCompaniesChan <- &linkedinCompanies
-			}
-
-		}()
-	}
-	if !repoPtr.Repository.IsInOrganization {
-		go func() {
-
-			var linkedinProfiles []linkedin.LinkedinProfile
-
-			linkedinProfile, err := LinkedinApi.GetLinkedinProfile(string(repoPtr.Repository.Owner.Login))
-			if err != nil {
-				log.Println("couldn't get linkedin profiles")
-				linkedinProfilesChan <- nil
-			} else {
-				linkedinProfiles = append(linkedinProfiles, *linkedinProfile)
-				linkedinProfilesChan <- &linkedinProfiles
-			}
-
-		}()
-	}
 
 	var data ProjectData
 	data.GithubData.RepoPtr = repoPtr
-	for i := 0; i < 9; i++ {
+
+	for i := 0; i < 8; i++ {
 		select {
 		case err := <-errChan:
+			fmt.Println(err)
 			return nil, err
 		case data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan:
 		case data.GithubData.StarHistMapPtr = <-starHistPtrChan:
 		case data.GithubData.IssueHistMapPtr = <-issueHistPtrChan:
 		case data.GithubData.ForkHistMapPtr = <-forkHistPtrChan:
 		case data.RepoEli5 = <-repoEli5Chan:
-		case data.ScrapingbotData.LinkedinCompaniesPtr = <-linkedinCompaniesChan:
-		case data.ScrapingbotData.LinkedinProfilesPtr = <-linkedinProfilesChan:
 		case data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan:
 		case data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan:
 		case data.HackernewsSentiment = <-hackernewsSentimentChan:
 		}
 	}
+
+	if data.GithubData.StarHistMapPtr != nil && data.GithubData.RepoPtr != nil {
+		(*data.GithubData.StarHistMapPtr)[currentTime.String()] = github.Hist{
+			Amount: int(data.GithubData.RepoPtr.Repository.StargazerCount),
+			Date:   currentTime,
+		}
+	}
+	if data.GithubData.ForkHistMapPtr != nil && data.GithubData.RepoPtr != nil {
+		(*data.GithubData.ForkHistMapPtr)[currentTime.String()] = github.Hist{
+			Amount: int(data.GithubData.RepoPtr.Repository.ForkCount),
+			Date:   currentTime,
+		}
+	}
+	if data.GithubData.IssueHistMapPtr != nil && data.GithubData.RepoPtr != nil {
+		(*data.GithubData.IssueHistMapPtr)[currentTime.String()] = github.Hist{
+			Amount: int(data.GithubData.RepoPtr.Repository.Issues.TotalCount),
+			Date:   currentTime,
+		}
+	}
+
 	data.AlgoliaData.Query = hackernewsQuery
 
 	return &data, nil

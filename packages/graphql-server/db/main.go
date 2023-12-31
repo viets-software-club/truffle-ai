@@ -42,6 +42,8 @@ func getConfig(hasLogging bool) (*pgxpool.Config, error) {
 			}
 			conn.TypeMap().RegisterType(dataType)
 		}
+		conn.Prepare(context.Background(), "f_insert_proj_bookmark_w_cats", "SELECT f_insert_proj_bookmark_w_cats($1)")
+		conn.Prepare(context.Background(), "f_insert_gthb_trendings", "SELECT f_insert_gthb_trendings($1)")
 		return nil
 	}
 	return config, err
@@ -56,6 +58,7 @@ func (d *Database) Open(hasLogging bool) error {
 	}
 
 	d.pool, err = pgxpool.NewWithConfig(d.ctx, config)
+
 	if err != nil {
 		return err
 	}
@@ -87,9 +90,19 @@ func (d *Database) Open(hasLogging bool) error {
 //
 // );
 
+func (d *Database) CallInsertProjRepo(projectRepo *types.T_f_insert_proj_repo) error {
+
+	_, err := d.pool.Exec(d.ctx, "select f_insert_proj_repo($1)", &projectRepo)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (d *Database) CallInsertProjBookmarkWCats(projectBookmarkWithCategories *types.T_f_insert_proj_bookmark_w_cats) error {
 
-	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_proj_bookmark_w_cats($1)", &projectBookmarkWithCategories)
+	_, err := d.pool.Exec(d.ctx, "f_insert_proj_bookmark_w_cats", &projectBookmarkWithCategories)
 	if err != nil {
 		return err
 	}
@@ -99,7 +112,7 @@ func (d *Database) CallInsertProjBookmarkWCats(projectBookmarkWithCategories *ty
 
 func (d *Database) CallInsertGthbTrendings(githubTrendings []types.T_f_insert_gthb_trending) error {
 
-	_, err := d.pool.Exec(d.ctx, "SELECT f_insert_gthb_trendings($1)", &githubTrendings)
+	_, err := d.pool.Exec(d.ctx, "f_insert_gthb_trendings", &githubTrendings)
 	if err != nil {
 		return err
 	}
@@ -119,6 +132,27 @@ func (d *Database) CallInsertGthbOwner(githubOwner types.T_f_insert_gthb_owner) 
 func (d *Database) CallDeleteGthbTrending(dateRange string) error {
 
 	_, err := d.pool.Exec(d.ctx, "SELECT f_delete_gthb_trending_by_date_range($1)", &dateRange)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (d *Database) CallDeleteGithubTrendingByDateRangeAndInsertNewGithubTrending(dateRange string, githubTrendings *pgtype.FlatArray[types.T_f_insert_gthb_trending]) error {
+	tx, err := d.pool.Begin(d.ctx)
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec(d.ctx, "SELECT f_delete_gthb_trending_by_date_range($1)", &dateRange)
+	if err != nil {
+		return err
+	}
+	_, err = tx.Exec(d.ctx, "f_insert_gthb_trendings", githubTrendings)
+	if err != nil {
+		return err
+	}
+	err = tx.Commit(d.ctx)
 	if err != nil {
 		return err
 	}
@@ -154,6 +188,24 @@ func (d *Database) CallInsertProjClassifier(classifierArray *pgtype.FlatArray[ty
 	}
 
 	return nil
+}
+
+func (d *Database) CallSelectUpdatables(isDaily bool, isWeekly bool, isMonthly bool) (*[]types.T_f_select_updatable_result, error) {
+	list := []types.T_f_select_updatable_result{}
+	rows, err := d.pool.Query(d.ctx, "select gthb_repo_name, gthb_owner_login from f_select_updatable($1, $2, $3)", isDaily, isWeekly, isMonthly)
+	defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var elem types.T_f_select_updatable_result
+		err = rows.Scan(&elem)
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, elem)
+	}
+	return &list, nil
 }
 
 // func (d *Database) UpsertGithubOwner(tx pgx.Tx, github_owner Insert_github_owner) (int, error) {

@@ -17,7 +17,7 @@ func ConvertForkHistMapPtrToTIvalsGthbForkHistFlatArrayPtr(hist *github.ForkHist
 	for _, entry := range *hist {
 		forks = append(forks, types.T_ivals_gthb_fork_hist{
 			Amount:              helper.IntToPgInt8(entry.Amount),
-			Gthb_fork_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date.Time),
+			Gthb_fork_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date),
 		})
 	}
 	return forks, nil
@@ -31,7 +31,7 @@ func ConvertStarHistMapPtrToTIvalsGthbStarHistFlatArrayPtr(hist *github.StarHist
 	for _, entry := range *hist {
 		stars = append(stars, types.T_ivals_gthb_star_hist{
 			Amount:              helper.IntToPgInt8(entry.Amount),
-			Gthb_star_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date.Time),
+			Gthb_star_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date),
 		})
 	}
 	return stars, nil
@@ -45,7 +45,7 @@ func ConvertIssueHistMapPtrToTIvalsGthbIssueHistFlatArrayPtr(hist *github.IssueH
 	for _, entry := range *hist {
 		issues = append(issues, types.T_ivals_gthb_issue_hist{
 			Amount:               helper.IntToPgInt8(entry.Amount),
-			Gthb_issue_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date.Time),
+			Gthb_issue_hist_date: helper.TimeToNoDefaultPgTimestampz(entry.Date),
 		})
 	}
 	return issues, nil

@@ -39,6 +39,10 @@ const files = [
 	'functions/f_select_data_science.sql',
 	'functions/f_tr_delete_unreferenced_gthb_repo_topic.sql',
 	'functions/f_tr_delete_unreferenced_proj_classifier.sql',
+	'functions/f_get_updatable_bookmarks.sql',
+	'functions/f_get_updatable_gthb_trendings.sql',
+	'functions/f_is_proj_repo_bookmarked.sql',
+	'functions/f_select_updatable.sql',
 	'triggers.sql',
 	'policies.sql',
 	'grants.sql'

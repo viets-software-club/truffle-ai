@@ -1,5 +1,4 @@
 import { FC, FormEvent, useEffect, useState } from 'react'
-import { useUser } from '@supabase/auth-helpers-react'
 import clsx from 'clsx'
 import Button from '@/components/shared/Button'
 import Modal from '@/components/shared/Modal'
@@ -7,10 +6,10 @@ import Select from '@/components/shared/Select'
 import {
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
-  useEditBookmarkCategoryMutation,
-  useFilteredBookmarksQuery
+  useEditBookmarkCategoryMutation
 } from '@/graphql/generated/gql'
-import useSidebarSync from '../sidebar/useSidebarSync'
+import useFetchBookmarks from '@/hooks/useFetchBookmarks'
+import useBookmarksSync from '../../../hooks/useBookmarksSync'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'
 
@@ -33,12 +32,9 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const [newCategories, setNewCategories] = useState<string[]>([])
   const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
 
-  const user = useUser()
-  const { sync } = useSidebarSync()
+  const { sync } = useBookmarksSync()
+  const { categories } = useFetchBookmarks()
 
-  const [{ data: bookmarks }] = useFilteredBookmarksQuery({
-    variables: { userId: user?.id as string }
-  })
   const [{ fetching: fetchingAdd }, addBookmarkMutation] = useAddBookmarkMutation()
   const [{ fetching: fetchingDelete }, deleteBookmarkMutation] = useDeleteBookmarkMutation()
   const [{ fetching: fetchingEdit }, editBookmarkCategoryMutation] =
@@ -139,12 +135,6 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   useEffect(() => {
     setNewCategories(currentCategory ? [currentCategory] : [])
   }, [currentCategory])
-
-  // Get unique array of categories
-  const categories = bookmarks?.bookmarkCollection?.edges
-    ?.map(({ node: { category } }) => category)
-    .filter((value, index, array) => array.indexOf(value) === index)
-    .filter(value => value !== undefined && value !== null) as string[]
 
   return (
     <Modal isOpen={open} onClose={close}>

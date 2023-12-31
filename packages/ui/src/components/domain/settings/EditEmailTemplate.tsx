@@ -1,24 +1,10 @@
 import { useEffect, useState } from 'react'
 import Button from '@/components/shared/Button'
 import Textarea from '@/components/shared/Textarea'
+import { initialTemplate } from '@/util/emailTemplate'
 import Banner from '../../shared/Banner'
 
-const initialTemplate = `Dear {founderName},
-
-I hope you're well. I saw you're the mastermind behind {projectName}, and I had to reach out.
-
-I'm a former ML researcher (in federated learning) + data scientist at Amazon turned VC at La Famiglia (early-stage investor of Deel, Personio, Applied Intuition, Groq, Abacus AI, Stripe, etc.).
-
-{What you are building is compelling, especially after I played with Langchain + Pinecone + GPT3 API a few weeks ago.}
-
-I would love to meet you and learn more about how we could work together. Is there a good time in the next few days?
-
-Take care & all the best,
-Viet
-
-PS: if you have time, please check out my blog post on Building a Defensible ML company here: https://vietle.substack.com/p/defensible-machine-learning`
-
-const UpdateEmailTemplate = () => {
+const EditEmailTemplate = () => {
   const [email, setEmail] = useState(
     (typeof window !== 'undefined' && localStorage.getItem('emailMessage')) || initialTemplate
   )
@@ -57,4 +43,4 @@ const UpdateEmailTemplate = () => {
   )
 }
 
-export default UpdateEmailTemplate
+export default EditEmailTemplate

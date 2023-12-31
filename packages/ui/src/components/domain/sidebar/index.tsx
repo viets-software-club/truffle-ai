@@ -1,14 +1,13 @@
-import { PropsWithChildren, ReactNode } from 'react'
+import { PropsWithChildren } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Logo from '@/assets/logo.svg'
 
 type SidebarProps = PropsWithChildren<{
   title: string
-  footer: ReactNode
 }>
 
-const Sidebar = ({ footer, title, ...props }: SidebarProps) => (
+const Sidebar = ({ title, ...props }: SidebarProps) => (
   <aside className='fixed z-30 hidden h-screen w-56 flex-col justify-between border-r border-white/5 lg:flex'>
     <div>
       {/* Top bar with title and profile modal button */}
@@ -22,8 +21,6 @@ const Sidebar = ({ footer, title, ...props }: SidebarProps) => (
 
       {props.children}
     </div>
-
-    <footer className='border-t border-solid border-white/5 p-2'>{footer}</footer>
   </aside>
 )
 

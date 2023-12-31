@@ -4,7 +4,7 @@ import { PercentileStats } from '@/components/domain/projects/columns'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
 import { PageInfo, Project, ProjectFilter, useTrendingProjectsQuery } from '@/graphql/generated/gql'
-import { useLastViewedPageState, useTrendingProjectsState } from '@/stores/useProjectTableState'
+import { useLastViewedPageState, useTrendingProjectsState } from '@/hooks/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from './_app'
 

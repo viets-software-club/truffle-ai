@@ -1,6 +1,7 @@
 import { AiFillMail } from 'react-icons/ai'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 import { LinkIcon } from '@primer/octicons-react'
+import emailTemplate from '@/util/emailTemplate'
 
 type FounderProps = {
   name: string
@@ -11,19 +12,9 @@ type FounderProps = {
   website?: string
 }
 
-const emailTemplate = (email: string, founderName: string, projectName: string) => {
-  const subject = `La Famiglia x ${projectName}`
-
-  let body = localStorage.getItem('emailMessage') || ''
-  body = body.replace('{projectName}', projectName)
-  body = body.replace('{founderName}', founderName)
-
-  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-}
-
 const FounderItem = ({ name, mail, projectName, github, twitter, website }: FounderProps) => (
   <div className='flex flex-row items-center gap-[15px] py-2.5 text-white/50'>
-    <span className='text-xs not-italic leading-3'>{name}</span>
+    {name && <span className='text-xs not-italic leading-3'>{name}</span>}
     {mail && (
       <a
         href={emailTemplate(mail, name, projectName)}

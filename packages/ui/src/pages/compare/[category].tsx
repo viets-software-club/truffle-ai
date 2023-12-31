@@ -19,7 +19,7 @@ import {
   useCategoryProjectsState,
   useComparePageRowPinningState,
   useLastViewedPageState
-} from '@/stores/useProjectTableState'
+} from '@/hooks/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from '../_app'
 

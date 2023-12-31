@@ -4,6 +4,7 @@ import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, PlusIcon } from '@primer/octicons-react'
 import { twMerge } from 'tailwind-merge'
 import { inputErrorClasses } from './Input'
+import Tag from './Tag'
 
 type SelectProps = {
   values: string[]
@@ -51,11 +52,7 @@ const Select = ({
           {selectedState.length > 0 && (
             <div className='mb-4 flex flex-wrap gap-2'>
               {selectedState.map(value => (
-                <span
-                  key={value}
-                  className='rounded-full border border-indigo-500/60 bg-indigo-500/60 px-3 py-1 text-xs text-white'>
-                  {value}
-                </span>
+                <Tag key={value}>{value}</Tag>
               ))}
             </div>
           )}

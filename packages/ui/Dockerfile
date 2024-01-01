@@ -11,9 +11,6 @@ COPY ./pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY ./pnpm-workspace.yaml /app/pnpm-workspace.yaml
 WORKDIR /app
 
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --filter ui --prod --frozen-lockfile
-
 FROM base AS build
 ARG SUPABASE_URL
 ARG SUPABASE_ANON_KEY
@@ -24,7 +21,7 @@ ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
 ENV NEXT_PUBLIC_GRAPHQL_URL=${GRAPHQL_URL}
 ENV NEXT_TELEMETRY_DISABLED 1
 COPY ./packages/ui/ /app/packages/ui
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --filter ui --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter ui install --frozen-lockfile
 RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL} GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL} pnpm run --filter ui build
 
 FROM base
@@ -36,10 +33,9 @@ ENV HOSTNAME "0.0.0.0"
 
 RUN groupadd -g 1001 nodejs
 RUN useradd -g nodejs -u 1001 -m nextjs
-COPY --from=prod-deps --chown=nextjs:nodejs /app/node_modules /app/node_modules
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/public ./packages/ui/public
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static ./packages/ui/.next/static
+COPY --from=build /app/packages/ui/public /app/packages/ui/public
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/standalone /app
+COPY --from=build --chown=nextjs:nodejs /app/packages/ui/.next/static /app/packages/ui/.next/static
 USER nextjs
 
-CMD [ "pnpm", "--filter", "ui", "start" ]
+CMD [ "node", "/app/packages/ui/server.js" ]

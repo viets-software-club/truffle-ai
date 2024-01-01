@@ -53,6 +53,11 @@ create or replace trigger tr_on_delete_proj_repo_delete_unreferenced_proj_repo_c
   for each STATEMENT
   execute function f_tr_delete_unreferenced_proj_classifier();
 
+create or replace trigger tr_on_delete_gthb_repo_delete_unreferenced_gthb_owner
+  after delete on gthb_repo
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_gthb_owner();
+
 create or replace trigger tr_signup_based_on_whitelist
   before insert on auth.users
   for each row execute function f_tr_signup_based_on_whitelist();

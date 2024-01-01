@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "serve": "next start",
+    "start": "next start",
     "test": "eslint ./src",
     "codegen": "export $(cat .env.local | grep -v \"#\" | xargs) && graphql-codegen --config codegen.config.ts",
     "react:update-react-imports": "npx react-codemod update-react-imports"

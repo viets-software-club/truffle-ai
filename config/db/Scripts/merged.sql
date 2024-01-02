@@ -339,15 +339,15 @@ create table public.sbot_lin_profile(
   _created_at timestamp with time zone not null default now(),
   sbot_lin_profile_url text not null,
   sbot_lin_profile_name text not null,
-  position text not null,
-  current_company_name text not null,
-  current_company_link text not null,
-  avatar text not null,
-  about text not null,
-  city text not null,
-  followers text not null,
-  sbot_lin_profile_following text not null,
-  education_details text not null,
+  position text null,
+  current_company_name text null,
+  current_company_link text null,
+  avatar text null,
+  about text null,
+  city text null,
+  followers text null,
+  sbot_lin_profile_following text null,
+  education_details text null,
   constraint sbot_lin_profile_pkey primary key (sbot_lin_profile_id),
   constraint sbot_lin_profile_sbot_lin_profile_url_uq unique (sbot_lin_profile_url)
 ) tablespace pg_default;
@@ -365,15 +365,15 @@ create table public.sbot_lin_company(
   _created_at timestamp with time zone not null default now(),
   sbot_lin_company_url text not null,
   sbot_lin_company_name text not null,
-  sphere text not null,
+  sphere text null,
   followers bigint not null,
   logo text not null,
   sbot_lin_company_image text not null,
   employees_amount_in_linkedin bigint not null,
-  about text not null,
-  website text not null,
+  about text null,
+  website text null,
   headquarters text not null,
-  sbot_lin_company_type text not null,
+  sbot_lin_company_type text null,
   constraint sbot_lin_company_pkey primary key (sbot_lin_company_id),
   constraint sbot_lin_company_sbot_lin_company_url_uq unique (sbot_lin_company_url),
   constraint sbot_lin_company_sbot_lin_company_name_uq unique (sbot_lin_company_name)
@@ -673,8 +673,8 @@ create type t_f_insert_gthb_trending as (
 
 drop type if exists t_f_select_updatable_result cascade;
 create type t_f_select_updatable_result as (
-  gthb_repo_name bigint,
-  gthb_owner_login bigint
+  gthb_repo_name text,
+  gthb_owner_login text
 );
 create or replace function f_insert_gthb_owner(githubOwner t_f_insert_gthb_owner)
   returns bigint
@@ -1386,12 +1386,12 @@ create or replace function f_select_updatable(isDaily boolean, isWeekly boolean,
   returns setof t_f_select_updatable_result
   as $$
 begin
-  return query select gthb_repo.gthb_repo_id, gthb_repo.gthb_repo_name, gthb_repo.gthb_owner_id from gthb_repo
+  return query select gthb_repo.gthb_repo_name, gthb_owner.gthb_owner_login from gthb_repo
   inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
   inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
   inner join proj_bookmark on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
   union
-  select gthb_repo.gthb_repo_id, gthb_repo.gthb_repo_name, gthb_repo.gthb_owner_id from gthb_repo
+  select gthb_repo.gthb_repo_name, gthb_owner.gthb_owner_login from gthb_repo
   inner join gthb_trending on gthb_trending.gthb_repo_id = gthb_repo.gthb_repo_id
   inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
   where not (
@@ -1467,9 +1467,6 @@ create or replace trigger tr_on_delete_gthb_repo_delete_unreferenced_gthb_owner
 create or replace trigger tr_signup_based_on_whitelist
   before insert on auth.users
   for each row execute function f_tr_signup_based_on_whitelist();
-
-
-
 
 do
 $$
@@ -1692,5 +1689,3 @@ create policy "authenticated can select gthb_repo_and_gthb_repo_topic"
   on gthb_repo_and_gthb_repo_topic for all to authenticated
   using (true);
 grant select on table public.user_whitelist to supabase_auth_admin;
-
-

@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/jackc/pgx/v5"
@@ -37,7 +36,6 @@ func getConfig(hasLogging bool) (*pgxpool.Config, error) {
 		for _, typeName := range types.DatabaseTypes {
 			dataType, err := conn.LoadType(ctx, typeName)
 			if err != nil {
-				fmt.Println("what", dataType, typeName)
 				return err
 			}
 			conn.TypeMap().RegisterType(dataType)
@@ -130,12 +128,10 @@ func (d *Database) CallInsertGthbOwner(githubOwner types.T_f_insert_gthb_owner) 
 }
 
 func (d *Database) CallDeleteGthbTrending(dateRange string) error {
-
 	_, err := d.pool.Exec(d.ctx, "SELECT f_delete_gthb_trending_by_date_range($1)", &dateRange)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -199,7 +195,7 @@ func (d *Database) CallSelectUpdatables(isDaily bool, isWeekly bool, isMonthly b
 	}
 	for rows.Next() {
 		var elem types.T_f_select_updatable_result
-		err = rows.Scan(&elem)
+		err = rows.Scan(&elem.Gthb_repo_name, &elem.Gthb_owner_login)
 		if err != nil {
 			return nil, err
 		}

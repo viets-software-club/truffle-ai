@@ -3,7 +3,6 @@ package github
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"math/rand"
 	"regexp"
@@ -25,7 +24,6 @@ func getLastPageForHist(linkHeader string) (int, error) {
 		return 0, err
 	}
 	match := regex.FindStringSubmatch(linkHeader)
-	fmt.Println(match)
 	if len(match) <= 1 {
 		return 0, errors.New("no match for rel last")
 	}
@@ -55,6 +53,7 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 	appendGazersToMap(firstGazers, 0)
 
 	if err != nil {
+
 		return nil, err
 	}
 	// set last page number
@@ -81,6 +80,7 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 			Page:    page,
 		})
 		if err != nil {
+
 			return nil, err
 		}
 		appendGazersToMap(gazers, page*30)
@@ -93,10 +93,12 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 			Page:    lastPage - 1,
 		})
 		if err != nil {
+
 			return nil, err
 		}
 		appendGazersToMap(lastGazers, lastPage*30)
 	}
+
 	return &starHistMap, nil
 }
 

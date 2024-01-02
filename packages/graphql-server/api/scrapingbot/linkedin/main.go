@@ -207,7 +207,6 @@ func scrape(s *scrapingbot.ScrapingBotScraperConfig, scraper string, params *map
 	}
 	err = json.Unmarshal(body, &firstResponse)
 	if err != nil {
-		fmt.Println("hmm")
 		return err
 	}
 
@@ -235,11 +234,9 @@ func scrape(s *scrapingbot.ScrapingBotScraperConfig, scraper string, params *map
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(body))
 
 		err = json.Unmarshal(body, &secondResponse)
 		if err != nil {
-			fmt.Println("weird")
 			err = json.Unmarshal(body, &inter)
 			if err != nil {
 				return err

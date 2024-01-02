@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	githubv3 "github.com/google/go-github/v57/github"
@@ -44,72 +45,75 @@ type AlgoliaData struct {
 
 type ContributorToUserMap = map[*githubv3.Contributor]*github.GetUser
 
+var MAX_PAGES = 10
+
 func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
+	fmt.Println("start1", repoOwner, repoName)
 	currentTime := time.Now()
 	// Create channels
-	errChan := make(chan error)
-	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser)
-	starHistPtrChan := make(chan *map[string]github.Hist)
-	issueHistPtrChan := make(chan *map[string]github.Hist)
-	forkHistPtrChan := make(chan *map[string]github.Hist)
-	repoEli5Chan := make(chan string)
-	linkedinCompaniesChan := make(chan *[]linkedin.LinkedinCompany)
-	linkedinProfilesChan := make(chan *[]linkedin.LinkedinProfile)
-	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse)
-	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse)
-	hackernewsSentimentChan := make(chan string)
+	errChan := make(chan error, 9)
+	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser, 1)
+	starHistPtrChan := make(chan *map[string]github.Hist, 1)
+	issueHistPtrChan := make(chan *map[string]github.Hist, 1)
+	forkHistPtrChan := make(chan *map[string]github.Hist, 1)
+	repoEli5Chan := make(chan string, 1)
+	linkedinCompaniesChan := make(chan *[]linkedin.LinkedinCompany, 1)
+	linkedinProfilesChan := make(chan *[]linkedin.LinkedinProfile, 1)
+	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse, 1)
+	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse, 1)
+	hackernewsSentimentChan := make(chan string, 1)
 
-	// close all channels
-	defer close(errChan)
-	defer close(contributorToUserMapPtrChan)
-	defer close(starHistPtrChan)
-	defer close(issueHistPtrChan)
-	defer close(forkHistPtrChan)
-	defer close(repoEli5Chan)
-	defer close(linkedinCompaniesChan)
-	defer close(linkedinProfilesChan)
-	defer close(hackernewsStoriesResponseChan)
-	defer close(hackernewsCommentsResponseChan)
-	defer close(hackernewsSentimentChan)
-
+	var wg sync.WaitGroup
+	wg.Add(9)
 	// Retrieve star history
 	go func() {
-		starHist, err := GithubApi.GetStarHist(30, repoOwner, repoName)
+		defer wg.Done()
+		defer close(starHistPtrChan)
+
+		starHist, err := GithubApi.GetStarHist(MAX_PAGES, repoOwner, repoName)
 		if err != nil {
 			errChan <- err
 			return
 		}
-		fmt.Println("closing stars")
 
 		starHistPtrChan <- starHist
+
 	}()
 
 	// Retrieve issue history
 	go func() {
-		issueHist, err := GithubApi.GetIssueHist(30, repoOwner, repoName)
+		defer wg.Done()
+		defer close(issueHistPtrChan)
+
+		issueHist, err := GithubApi.GetIssueHist(MAX_PAGES, repoOwner, repoName)
 		if err != nil {
 			errChan <- err
 			return
 		}
-		fmt.Println("closing issues")
 
 		issueHistPtrChan <- issueHist
+
 	}()
 
 	// Retrieve fork history
 	go func() {
-		forkHist, err := GithubApi.GetForkHist(30, repoOwner, repoName)
+		defer wg.Done()
+		defer close(forkHistPtrChan)
+
+		forkHist, err := GithubApi.GetForkHist(MAX_PAGES, repoOwner, repoName)
 		if err != nil {
 			errChan <- err
 			return
 		}
-		fmt.Println("closing forks")
 
 		forkHistPtrChan <- forkHist
 	}()
 
 	// Retrieve contributors
 	go func() {
+		defer wg.Done()
+		defer close(contributorToUserMapPtrChan)
+
 		type ContributorAndUser struct {
 			Contributor *githubv3.Contributor
 			User        *github.GetUser
@@ -143,12 +147,10 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 		}
 		for i := 0; i < len(*contributors); i++ {
 			userAndContributor := <-userChan
-			fmt.Print(userAndContributor)
 			if userAndContributor != nil {
 				contributorToUserMap[userAndContributor.Contributor] = userAndContributor.User
 			}
 		}
-		fmt.Println("closing contributors")
 
 		contributorToUserMapPtrChan <- &contributorToUserMap
 
@@ -158,30 +160,38 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 
 	// Retrieve stories
 	go func() {
+		defer wg.Done()
+		defer close(hackernewsStoriesResponseChan)
+
 		stories, err := hackernews.GetStoriesForQuery(hackernewsQuery)
 		if err != nil {
 			errChan <- err
 			return
 		}
-		fmt.Println("closing hn stories")
 
 		hackernewsStoriesResponseChan <- stories
 
 	}()
 	// Retrieve comments
 	go func() {
+		defer wg.Done()
+		defer wg.Done()
+		defer close(hackernewsCommentsResponseChan)
+
+		defer close(hackernewsSentimentChan)
+
 		comments, err := hackernews.GetCommentsForQuery(hackernewsQuery)
 		if err != nil {
 			errChan <- err
 			return
 		}
 		hackernewsCommentsResponseChan <- comments
+
 		hackernewsSentiment, err := PromptsApi.GenerateHackernewsSentiment(comments)
 		if err != nil {
 			errChan <- err
 			return
 		}
-		fmt.Println("closing hackernews senti")
 
 		hackernewsSentimentChan <- hackernewsSentiment
 
@@ -195,6 +205,9 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 
 	// Retrieve Eli5 from readme
 	go func() {
+		defer wg.Done()
+		defer close(repoEli5Chan)
+
 		readme, err := githubScraper.GetReadme(RawApi, repoOwner, repoName, string(repoPtr.Repository.DefaultBranchRef.Name))
 		if err != nil {
 			errChan <- err
@@ -205,19 +218,18 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 			errChan <- err
 			return
 		}
-		fmt.Println("closing repo eli5")
 
 		repoEli5Chan <- repoEli5
 
 	}()
 	if repoPtr.Repository.IsInOrganization {
 		go func() {
+			defer wg.Done()
+			defer close(linkedinCompaniesChan)
 			var linkedinCompanies []linkedin.LinkedinCompany
 			linkedinCompany, err := LinkedinApi.GetLinkedinCompany(string(repoPtr.Repository.Owner.Organization.Name))
-			fmt.Println("closing linkedin compnay")
 
 			if err != nil {
-				log.Println("couldn't get linkedin companies")
 				linkedinCompaniesChan <- nil
 			} else {
 				linkedinCompanies = append(linkedinCompanies, *linkedinCompany)
@@ -228,45 +240,44 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	}
 	if !repoPtr.Repository.IsInOrganization {
 		go func() {
-
+			defer wg.Done()
+			defer close(linkedinProfilesChan)
 			var linkedinProfiles []linkedin.LinkedinProfile
 
 			linkedinProfile, err := LinkedinApi.GetLinkedinProfile(string(repoPtr.Repository.Owner.Login))
-			fmt.Println("closing linkedin profi")
 
 			if err != nil {
-				log.Println("couldn't get linkedin profiles")
 				linkedinProfilesChan <- nil
 			} else {
 				linkedinProfiles = append(linkedinProfiles, *linkedinProfile)
 				linkedinProfilesChan <- &linkedinProfiles
 
 			}
+
 		}()
 	}
-
 	var data ProjectData
 	data.GithubData.RepoPtr = repoPtr
+	wg.Wait()
+	close(errChan)
 
-	for i := 0; i < 9; i++ {
-		select {
-		case err := <-errChan:
-			fmt.Println("error", err)
-			return nil, err
-		case data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan:
-		case data.GithubData.StarHistMapPtr = <-starHistPtrChan:
-		case data.GithubData.IssueHistMapPtr = <-issueHistPtrChan:
-		case data.GithubData.ForkHistMapPtr = <-forkHistPtrChan:
-		case data.RepoEli5 = <-repoEli5Chan:
-		case data.ScrapingbotData.LinkedinCompaniesPtr = <-linkedinCompaniesChan:
-		case data.ScrapingbotData.LinkedinProfilesPtr = <-linkedinProfilesChan:
-		case data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan:
-		case data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan:
-		case data.HackernewsSentiment = <-hackernewsSentimentChan:
-		}
+	if err := <-errChan; err != nil {
+		fmt.Println("error", err)
+		return nil, err
 	}
-
-	fmt.Println("closing")
+	data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan
+	data.GithubData.StarHistMapPtr = <-starHistPtrChan
+	data.GithubData.IssueHistMapPtr = <-issueHistPtrChan
+	data.GithubData.ForkHistMapPtr = <-forkHistPtrChan
+	data.RepoEli5 = <-repoEli5Chan
+	if repoPtr.Repository.IsInOrganization {
+		data.ScrapingbotData.LinkedinCompaniesPtr = <-linkedinCompaniesChan
+	} else {
+		data.ScrapingbotData.LinkedinProfilesPtr = <-linkedinProfilesChan
+	}
+	data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan
+	data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan
+	data.HackernewsSentiment = <-hackernewsSentimentChan
 
 	if data.GithubData.StarHistMapPtr != nil && data.GithubData.RepoPtr != nil {
 		(*data.GithubData.StarHistMapPtr)[currentTime.String()] = github.Hist{
@@ -288,86 +299,112 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	}
 
 	data.AlgoliaData.Query = hackernewsQuery
+	fmt.Println("done1", repoOwner, repoName)
 
 	return &data, nil
 
 }
 
 func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, error) {
+	fmt.Println("start", repoOwner, repoName)
+
 	currentTime := time.Now()
 	// Create channels
-	errChan := make(chan error)
-	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser)
-	starHistPtrChan := make(chan *map[string]github.Hist)
-	issueHistPtrChan := make(chan *map[string]github.Hist)
-	forkHistPtrChan := make(chan *map[string]github.Hist)
-	repoEli5Chan := make(chan string)
-	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse)
-	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse)
-	hackernewsSentimentChan := make(chan string)
+	errChan := make(chan error, 8)
+	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser, 1)
+	starHistPtrChan := make(chan *map[string]github.Hist, 1)
+	issueHistPtrChan := make(chan *map[string]github.Hist, 1)
+	forkHistPtrChan := make(chan *map[string]github.Hist, 1)
+	repoEli5Chan := make(chan string, 1)
+	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse, 1)
+	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse, 1)
+	hackernewsSentimentChan := make(chan string, 1)
 
-	// close all channels
-	defer close(errChan)
-	defer close(contributorToUserMapPtrChan)
-	defer close(starHistPtrChan)
-	defer close(issueHistPtrChan)
-	defer close(forkHistPtrChan)
-	defer close(repoEli5Chan)
-	defer close(hackernewsStoriesResponseChan)
-	defer close(hackernewsCommentsResponseChan)
-	defer close(hackernewsSentimentChan)
+	var wg sync.WaitGroup
+	wg.Add(8)
 
 	// Retrieve star history
 	go func() {
-		starHist, err := GithubApi.GetStarHist(30, repoOwner, repoName)
+
+		defer wg.Done()
+		defer close(starHistPtrChan)
+
+		starHist, err := GithubApi.GetStarHist(MAX_PAGES, repoOwner, repoName)
+
 		if err != nil {
+			log.Println(err)
 			errChan <- err
 			return
 		}
+
 		starHistPtrChan <- starHist
+
 	}()
 
 	// Retrieve issue history
 	go func() {
-		issueHist, err := GithubApi.GetIssueHist(30, repoOwner, repoName)
+
+		defer wg.Done()
+		defer close(issueHistPtrChan)
+
+		issueHist, err := GithubApi.GetIssueHist(MAX_PAGES, repoOwner, repoName)
+
 		if err != nil {
 			errChan <- err
 			return
 		}
+
 		issueHistPtrChan <- issueHist
+
 	}()
 
 	// Retrieve fork history
 	go func() {
-		forkHist, err := GithubApi.GetForkHist(30, repoOwner, repoName)
+
+		defer wg.Done()
+		defer close(forkHistPtrChan)
+
+		forkHist, err := GithubApi.GetForkHist(MAX_PAGES, repoOwner, repoName)
+
 		if err != nil {
 			errChan <- err
 			return
 		}
+
 		forkHistPtrChan <- forkHist
 	}()
 
 	// Retrieve contributors
 	go func() {
+
+		defer wg.Done()
+		defer close(contributorToUserMapPtrChan)
+
 		type ContributorAndUser struct {
 			Contributor *githubv3.Contributor
 			User        *github.GetUser
 		}
 		contributors, err := GithubApi.GetContributors(repoOwner, repoName)
+
 		if err != nil {
+
 			errChan <- err
 			return
 		}
 		if contributors == nil {
+
 			errChan <- errors.New("no contributors found")
 			return
 		}
+
 		contributorToUserMap := make(map[*githubv3.Contributor]*github.GetUser)
 		userChan := make(chan *ContributorAndUser)
 		defer close(userChan)
+
 		for _, contributor := range *contributors {
 			go func(contributor *githubv3.Contributor) {
 				user, err := GithubApi.QueryUser(*contributor.Login)
+
 				if err != nil {
 					log.Println(err)
 					userChan <- nil
@@ -387,21 +424,36 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		}
 
 		contributorToUserMapPtrChan <- &contributorToUserMap
+
 	}()
 
 	hackernewsQuery := repoName
 
 	// Retrieve stories
 	go func() {
+
+		defer wg.Done()
+		defer close(hackernewsStoriesResponseChan)
+
 		stories, err := hackernews.GetStoriesForQuery(hackernewsQuery)
 		if err != nil {
 			errChan <- err
 			return
 		}
+
 		hackernewsStoriesResponseChan <- stories
+
 	}()
+
 	// Retrieve comments
 	go func() {
+
+		defer wg.Done()
+		defer wg.Done()
+		defer close(hackernewsCommentsResponseChan)
+
+		defer close(hackernewsSentimentChan)
+
 		comments, err := hackernews.GetCommentsForQuery(hackernewsQuery)
 		if err != nil {
 			errChan <- err
@@ -411,8 +463,11 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		hackernewsSentiment, err := PromptsApi.GenerateHackernewsSentiment(comments)
 		if err != nil {
 			errChan <- err
+			return
 		}
+
 		hackernewsSentimentChan <- hackernewsSentiment
+
 	}()
 
 	// Retrieve repository
@@ -423,6 +478,9 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 
 	// Retrieve Eli5 from readme
 	go func() {
+		defer wg.Done()
+		defer close(repoEli5Chan)
+
 		readme, err := githubScraper.GetReadme(RawApi, repoOwner, repoName, string(repoPtr.Repository.DefaultBranchRef.Name))
 		if err != nil {
 			errChan <- err
@@ -439,20 +497,41 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 	var data ProjectData
 	data.GithubData.RepoPtr = repoPtr
 
-	for i := 0; i < 8; i++ {
-		select {
-		case err := <-errChan:
-			fmt.Println(err)
-			return nil, err
-		case data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan:
-		case data.GithubData.StarHistMapPtr = <-starHistPtrChan:
-		case data.GithubData.IssueHistMapPtr = <-issueHistPtrChan:
-		case data.GithubData.ForkHistMapPtr = <-forkHistPtrChan:
-		case data.RepoEli5 = <-repoEli5Chan:
-		case data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan:
-		case data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan:
-		case data.HackernewsSentiment = <-hackernewsSentimentChan:
-		}
+	wg.Wait()
+	close(errChan)
+
+	if err := <-errChan; err != nil {
+		log.Println("important", err)
+		return nil, err
+	}
+	fmt.Println("done1")
+
+	data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan
+	fmt.Println("done12")
+
+	data.GithubData.StarHistMapPtr = <-starHistPtrChan
+	fmt.Println("done123")
+
+	data.GithubData.IssueHistMapPtr = <-issueHistPtrChan
+	fmt.Println("done1234")
+
+	data.GithubData.ForkHistMapPtr = <-forkHistPtrChan
+	fmt.Println("done12345")
+
+	data.RepoEli5 = <-repoEli5Chan
+	fmt.Println("done123456")
+
+	data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan
+	fmt.Println("done1234567")
+
+	data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan
+	fmt.Println("done12345678")
+
+	data.HackernewsSentiment = <-hackernewsSentimentChan
+	fmt.Println("done123456789")
+
+	if data.GithubData.StarHistMapPtr != nil {
+		fmt.Println("said not nil")
 	}
 
 	if data.GithubData.StarHistMapPtr != nil && data.GithubData.RepoPtr != nil {
@@ -475,19 +554,20 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 	}
 
 	data.AlgoliaData.Query = hackernewsQuery
+	fmt.Println("done", repoOwner, repoName)
 
 	return &data, nil
 
 }
 
-func GetTrendingRepositoriesToProjectDataMap(time string) (*map[*githubScraper.TrendingRepository]*ProjectData, error) {
+func GetTrendingRepositoriesToProjectDataMap(dateRange string) (*map[*githubScraper.TrendingRepository]*ProjectData, error) {
 
 	type trendingRepoAndProjData struct {
 		TrendingRepository *githubScraper.TrendingRepository
 		ProjectData        *ProjectData
 	}
 
-	trendingRepositories, err := scraper.GetTrendingRepositories(RawApi, time)
+	trendingRepositories, err := scraper.GetTrendingRepositories(RawApi, dateRange)
 	if err != nil {
 		return nil, err
 	}
@@ -496,10 +576,15 @@ func GetTrendingRepositoriesToProjectDataMap(time string) (*map[*githubScraper.T
 
 	trendingRepositoriesToProjectDataMap := make(map[*githubScraper.TrendingRepository]*ProjectData)
 	trendingRepoAndProjDataChan := make(chan *trendingRepoAndProjData)
-	for _, trendingRepository := range trendingRepositories {
-		go func(trendingRepository githubScraper.TrendingRepository) {
-
+	for index, trendingRepository := range trendingRepositories {
+		go func(trendingRepository githubScraper.TrendingRepository, index int) {
+			time.Sleep(60 * time.Duration(index/7) * time.Second)
 			projectData, err := GetProjectData(trendingRepository.Owner, trendingRepository.Name)
+			// if projectData.ScrapingbotData.LinkedinProfilesPtr != nil {
+			// 	fmt.Printf("linkedin_profile %+v\n", projectData.ScrapingbotData.LinkedinProfilesPtr)
+			// } else if projectData.ScrapingbotData.LinkedinCompaniesPtr != nil {
+			// 	fmt.Printf("linkedin_company %+v\n", projectData.ScrapingbotData.LinkedinCompaniesPtr)
+			// }
 			if err != nil {
 				log.Fatal("Error when getting project data for trending repository", err)
 				trendingRepoAndProjDataChan <- nil
@@ -509,7 +594,7 @@ func GetTrendingRepositoriesToProjectDataMap(time string) (*map[*githubScraper.T
 				TrendingRepository: &trendingRepository,
 				ProjectData:        projectData,
 			}
-		}(trendingRepository)
+		}(trendingRepository, index)
 	}
 
 	for i := 0; i < len(trendingRepositories); i++ {

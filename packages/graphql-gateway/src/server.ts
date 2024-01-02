@@ -137,7 +137,7 @@ app.addHook('preHandler', async (req) => {
 })
 
 app.route({
-	url: '/graphql',
+	url: '/api/graphql',
 	method: ['GET', 'POST', 'OPTIONS'],
 	async handler(req, reply) {
 		// Second parameter adds Fastify's `req` and `reply` to the GraphQL Context

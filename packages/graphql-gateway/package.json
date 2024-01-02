@@ -10,8 +10,8 @@
     "dev:mesh": "mesh dev",
     "build:mesh": "mesh build",
     "build:fastify": "tsc",
-    "build": "mesh build && tsc && echo \"\n./dist folder generated using tsc\n\"",
-    "start": "node ./dist/src/server.js",
+    "build": "DEBUG=1 mesh build && tsc && echo \"\n./dist folder generated using tsc\n\"",
+    "start": "DEBUG=1 node ./dist/src/server.js",
     "test": "eslint ."
   },
   "dependencies": {

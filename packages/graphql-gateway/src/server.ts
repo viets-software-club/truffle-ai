@@ -1,6 +1,6 @@
+import util from 'util'
 import { MeshHTTPHandler } from '@graphql-mesh/http'
 import { createClient } from '@supabase/supabase-js'
-import util from "util"
 import Fastify, { FastifyRequest } from 'fastify'
 import * as jsonwebtoken from 'jsonwebtoken'
 import * as winston from 'winston'

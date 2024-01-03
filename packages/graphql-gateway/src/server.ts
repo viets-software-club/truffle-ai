@@ -5,6 +5,7 @@ import * as jsonwebtoken from 'jsonwebtoken'
 import * as winston from 'winston'
 import { createBuiltMeshHTTPHandler } from '../.mesh/index'
 const app = Fastify({
+	trustProxy: true,
 	logger: process.env.NODE_ENV !== 'production'
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -137,15 +138,18 @@ app.addHook('preHandler', async (req) => {
 })
 
 app.route({
-	url: '/api/graphql',
+	url: '/graphql',
 	method: ['GET', 'POST', 'OPTIONS'],
 	async handler(req, reply) {
+		console.log('request debug', JSON.stringify(req))
 		// Second parameter adds Fastify's `req` and `reply` to the GraphQL Context
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		const response = await meshHttp.handleNodeRequest(req, {
 			req,
 			reply
 		})
+
+		console.log('response debug', JSON.stringify(response))
 
 		// biome-ignore lint/complexity/noForEach: type is an interface with forEach method
 		response.headers.forEach((value: unknown, key: string) => {

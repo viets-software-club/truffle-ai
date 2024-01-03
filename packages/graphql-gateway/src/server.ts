@@ -138,7 +138,7 @@ app.addHook('preHandler', async (req) => {
 })
 
 app.route({
-	url: '/graphql',
+	url: '/api/graphql',
 	method: ['GET', 'POST', 'OPTIONS'],
 	async handler(req, reply) {
 		console.log('request debug', JSON.stringify(req))

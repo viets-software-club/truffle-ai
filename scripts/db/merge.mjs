@@ -43,6 +43,8 @@ const files = [
 	'functions/f_get_updatable_bookmarks.sql',
 	'functions/f_get_updatable_gthb_trendings.sql',
 	'functions/f_is_proj_repo_bookmarked.sql',
+	'functions/f_is_gthb_repo_bookmarked.sql',
+	'functions/f_delete_proj_bookmark_by_gthb_repo_name.sql',
 	'functions/f_select_updatable.sql',
 	'triggers.sql',
 	'policies.sql',

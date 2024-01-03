@@ -91,130 +91,131 @@ create policy "authenticated can select gthb_trending"
 
 drop policy if exists "authenticated can select gthb_repo" on gthb_repo;
 create policy "authenticated can select gthb_repo"
-  on gthb_repo for all to authenticated
+  on gthb_repo for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_star_hist" on gthb_star_hist;
 create policy "authenticated can select gthb_star_hist"
-  on gthb_star_hist for all to authenticated
+  on gthb_star_hist for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_fork_hist" on gthb_fork_hist;
 create policy "authenticated can select gthb_fork_hist"
-  on gthb_fork_hist for all to authenticated
+  on gthb_fork_hist for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_issue_hist" on gthb_issue_hist;
 create policy "authenticated can select gthb_issue_hist"
-  on gthb_issue_hist for all to authenticated
+  on gthb_issue_hist for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_repo_contr" on gthb_repo_contr;
 create policy "authenticated can select gthb_repo_contr"
-  on gthb_repo_contr for all to authenticated
+  on gthb_repo_contr for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select algo_hn_comment" on algo_hn_comment;
 create policy "authenticated can select algo_hn_comment"
-  on algo_hn_comment for all to authenticated
+  on algo_hn_comment for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select algo_hn_story" on algo_hn_story;
 create policy "authenticated can select algo_hn_story"
-  on algo_hn_story for all to authenticated
+  on algo_hn_story for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select algo_hn_query" on algo_hn_query;
 create policy "authenticated can select algo_hn_query"
-  on algo_hn_query for all to authenticated
+  on algo_hn_query for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select proj_repo" on proj_repo;
 create policy "authenticated can select proj_repo"
-  on proj_repo for all to authenticated
+  on proj_repo for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_owner" on gthb_owner;
 create policy "authenticated can select gthb_owner"
-  on gthb_owner for all to authenticated
+  on gthb_owner for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_user" on gthb_org;
 create policy "authenticated can select gthb_user"
-  on gthb_org for all to authenticated
+  on gthb_org for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_org" on gthb_org;
 create policy "authenticated can select gthb_org"
-  on gthb_org for all to authenticated
+  on gthb_org for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select sbot_lin_profile" on sbot_lin_profile;
 create policy "authenticated can select sbot_lin_profile"
-  on sbot_lin_profile for all to authenticated
+  on sbot_lin_profile for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select sbot_lin_company" on sbot_lin_company;
 create policy "authenticated can select sbot_lin_company"
-  on sbot_lin_company for all to authenticated
+  on sbot_lin_company for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select algo_hn_tag" on algo_hn_tag;
 create policy "authenticated can select algo_hn_tag"
-  on algo_hn_tag for all to authenticated
+  on algo_hn_tag for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_lang" on gthb_lang;
 create policy "authenticated can select gthb_lang"
-  on gthb_lang for all to authenticated
+  on gthb_lang for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_repo_topic" on gthb_repo_topic;
 create policy "authenticated can select gthb_repo_topic"
-  on gthb_repo_topic for all to authenticated
+  on gthb_repo_topic for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select proj_repo_and_algo_hn_query" on proj_repo_and_algo_hn_query;
 create policy "authenticated can select proj_repo_and_algo_hn_query"
-  on proj_repo_and_algo_hn_query for all to authenticated
+  on proj_repo_and_algo_hn_query for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select proj_repo_metadata" on proj_repo_metadata;
 create policy "authenticated can select proj_repo_metadata"
-  on proj_repo_metadata for all to authenticated
+  on proj_repo_metadata for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select proj_repo_and_sbot_lin_profile" on proj_repo_and_sbot_lin_profile;
 create policy "authenticated can select proj_repo_and_sbot_lin_profile"
-  on proj_repo_and_sbot_lin_profile for all to authenticated
+  on proj_repo_and_sbot_lin_profile for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select proj_repo_and_sbot_lin_company" on proj_repo_and_sbot_lin_company;
 create policy "authenticated can select proj_repo_and_sbot_lin_company"
-  on proj_repo_and_sbot_lin_company for all to authenticated
+  on proj_repo_and_sbot_lin_company for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select proj_repo_and_proj_classifier" on proj_repo_and_proj_classifier;
 create policy "authenticated can select proj_repo_and_proj_classifier"
-  on proj_repo_and_proj_classifier for all to authenticated
+  on proj_repo_and_proj_classifier for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select pinned_proj_bookmark" on pinned_proj_bookmark;
 create policy "authenticated can select pinned_proj_bookmark"
-  on pinned_proj_bookmark for all to authenticated
+  on pinned_proj_bookmark for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select algo_hn_story_and_algo_hn_tag" on algo_hn_story_and_algo_hn_tag;
 create policy "authenticated can select algo_hn_story_and_algo_hn_tag"
-  on algo_hn_story_and_algo_hn_tag for all to authenticated
+  on algo_hn_story_and_algo_hn_tag for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_repo_and_gthb_lang" on gthb_repo_and_gthb_lang;
 create policy "authenticated can select gthb_repo_and_gthb_lang"
-  on gthb_repo_and_gthb_lang for all to authenticated
+  on gthb_repo_and_gthb_lang for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_repo_and_gthb_repo_topic" on gthb_repo_and_gthb_repo_topic;
 create policy "authenticated can select gthb_repo_and_gthb_repo_topic"
-  on gthb_repo_and_gthb_repo_topic for all to authenticated
+  on gthb_repo_and_gthb_repo_topic for select to authenticated
   using (true);
+

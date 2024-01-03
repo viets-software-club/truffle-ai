@@ -1,5 +1,6 @@
 import { MeshHTTPHandler } from '@graphql-mesh/http'
 import { createClient } from '@supabase/supabase-js'
+import util from "util"
 import Fastify, { FastifyRequest } from 'fastify'
 import * as jsonwebtoken from 'jsonwebtoken'
 import * as winston from 'winston'
@@ -141,7 +142,7 @@ app.route({
 	url: '/api/graphql',
 	method: ['GET', 'POST', 'OPTIONS'],
 	async handler(req, reply) {
-		console.log('request debug', JSON.stringify(req))
+		console.log('request debug', util.inspect(req))
 		// Second parameter adds Fastify's `req` and `reply` to the GraphQL Context
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		const response = await meshHttp.handleNodeRequest(req, {
@@ -149,7 +150,7 @@ app.route({
 			reply
 		})
 
-		console.log('response debug', JSON.stringify(response))
+		console.log('response debug', util.inspect(response))
 
 		// biome-ignore lint/complexity/noForEach: type is an interface with forEach method
 		response.headers.forEach((value: unknown, key: string) => {

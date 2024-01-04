@@ -80,7 +80,7 @@ const Navbar = ({ loading }: NavbarProps) => {
   }, [projects, id])
 
   return (
-    <div className='flex h-[60px] w-full items-center gap-3 border-b border-white/5 bg-gray-900 px-4 lg:pl-7 lg:pr-3'>
+    <div className='z-10 flex h-[60px] w-full items-center gap-3 border-b border-white/5 bg-gray-900 px-4 lg:fixed lg:top-0 lg:pl-7 lg:pr-3'>
       <Link
         href={
           lastViewedPage === 'trending'

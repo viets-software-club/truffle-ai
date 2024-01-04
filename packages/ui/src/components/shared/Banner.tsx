@@ -24,7 +24,7 @@ const Banner = ({ message, variant }: BannerProps) => {
   return isVisible ? (
     <div
       className={clsx(
-        'fixed left-1/2 top-6 z-30 -translate-x-1/2 rounded-md border px-5 py-3 text-center text-sm font-medium text-white backdrop-blur-xl',
+        'fixed left-1/2 top-6 z-50 w-[90%] -translate-x-1/2 rounded-md border px-5 py-3 text-center text-sm font-medium text-white backdrop-blur-xl sm:w-auto',
         variantClasses[variant]
       )}>
       {message}

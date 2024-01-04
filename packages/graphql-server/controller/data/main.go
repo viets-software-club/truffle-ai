@@ -329,7 +329,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		defer wg.Done()
 		defer close(starHistPtrChan)
 
-		starHist, err := GithubApi.GetStarHist(MAX_PAGES, repoOwner, repoName)
+		starHist, err := GithubApi.GetStarHistRandom(MAX_PAGES, repoOwner, repoName)
 
 		if err != nil {
 			log.Println(err)
@@ -347,7 +347,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		defer wg.Done()
 		defer close(issueHistPtrChan)
 
-		issueHist, err := GithubApi.GetIssueHist(MAX_PAGES, repoOwner, repoName)
+		issueHist, err := GithubApi.GetIssueHistRandom(MAX_PAGES, repoOwner, repoName)
 
 		if err != nil {
 			errChan <- err
@@ -364,7 +364,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		defer wg.Done()
 		defer close(forkHistPtrChan)
 
-		forkHist, err := GithubApi.GetForkHist(MAX_PAGES, repoOwner, repoName)
+		forkHist, err := GithubApi.GetForkHistRandom(MAX_PAGES, repoOwner, repoName)
 
 		if err != nil {
 			errChan <- err

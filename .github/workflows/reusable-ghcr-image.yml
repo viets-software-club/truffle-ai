@@ -1,4 +1,4 @@
-name: 'DO image'
+name: "DO image"
 on:
   workflow_call:
     inputs:
@@ -28,7 +28,7 @@ permissions:
   packages: write
 jobs:
   ghcr-image:
-    name: 'GitHub Container Registry'
+    name: "GitHub Container Registry"
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     env:
@@ -49,6 +49,10 @@ jobs:
       - name: Build image
         run: |
           declare -a args=(
+            "--build-arg"
+            "NODE_ENV=production"
+            "--build-arg"
+            "GO_ENV=production"
             "--build-arg"
             "SUPABASE_ANON_KEY=${{secrets.SUPABASE_ANON_KEY}}"
             "--build-arg"

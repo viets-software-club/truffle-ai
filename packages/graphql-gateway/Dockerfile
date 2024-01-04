@@ -1,53 +1,33 @@
 # This is a multi-stage Dockerfile
 # run this file only from ../../
 
-# build stage 
-FROM node:21-alpine AS build
-## init build args and envs
+FROM node:21-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY ./packages/graphql-gateway/package.json /app/packages/graphql-gateway/package.json
+COPY ./packages/graphql-gateway/.npmrc /app/packages/graphql-gateway/.npmrc
+COPY ./package.json /app/package.json
+COPY ./pnpm-lock.yaml /app/pnpm-lock.yaml
+COPY ./pnpm-workspace.yaml /app/pnpm-workspace.yaml
+WORKDIR /app
+
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter graphql-gateway install --prod --frozen-lockfile
+
+FROM base AS build
 ARG SUPABASE_URL
 ARG SUPABASE_SERVICE_KEY
+ARG SUPABASE_ANON_KEY
 ARG SUPABASE_GRAPHQL_URL
 ARG GRAPHQL_SERVER_URL
-ENV NODE_ENV build
-ENV SUPABASE_URL=${SUPABASE_URL}
-ENV SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
-ENV SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
-ENV GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL}
+COPY ./packages/graphql-gateway /app/packages/graphql-gateway
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter graphql-gateway install --frozen-lockfile
+RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY} SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL} GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL} pnpm run --filter graphql-gateway build
 
-WORKDIR /app
-COPY package*.json ./
-COPY ./config ./config
-COPY ./packages/graphql-gateway ./packages/graphql-gateway/
-COPY ./packages/graphql-server/src/graphql/schema.ts ./packages/graphql-server/src/graphql/schema.ts
-## install packages
-RUN apk --no-cache --virtual build-dependencies add python3 make g++
-RUN npm ci -w graphql-gateway
-RUN apk del build-dependencies
-ENV DEBUG 1
-## build .mesh
-RUN npm run build -w graphql-gateway
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=prod-deps /app/packages/graphql-gateway/node_modules /app/packages/graphql-gateway/node_modules
+COPY --from=build /app/packages/graphql-gateway/dist /app/packages/graphql-gateway/dist
 
-#########################################################################
-
-# serve stage
-FROM node:21-alpine AS serve
-## init envs
-ENV NODE_ENV production
-## setup workspaces
-WORKDIR /app
-# COPY package*.json ./
-# COPY ./config ./config
-
-## Copy schema file from 'graphql-server' service
-COPY ./packages/graphql-server/src/graphql/schema.ts ./packages/graphql-server/src/graphql/schema.ts
-
-## Install production dependencies
-WORKDIR /app/packages/graphql-gateway
-COPY --from=build /app/package-lock.json ./
-COPY --from=build /app/packages/graphql-gateway/package.json ./
-COPY --from=build /app/packages/graphql-gateway/.mesh ./.mesh
-COPY --from=build /app/packages/graphql-gateway/src ./src
-
-RUN npm ci --omit=dev
-ENV DEBUG 1
-CMD ["npm", "run", "serve"]
+CMD [ "pnpm", "--filter", "graphql-gateway", "start" ]

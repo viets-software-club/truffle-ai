@@ -1,4 +1,4 @@
-var common = require('./common')
+const common = require('./common')
 module.exports = {
   root: true,
   ignorePatterns: common.ignorePatterns,

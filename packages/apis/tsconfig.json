@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "es2015",
+    "module": "commonjs",
+    "typeRoots": ["./node_modules/@types", "src/types"],
+    "outDir": "dist",
+    }
+}

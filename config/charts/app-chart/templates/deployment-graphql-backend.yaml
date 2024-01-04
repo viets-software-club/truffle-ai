@@ -49,7 +49,7 @@ spec:
             - containerPort: 3002
           envFrom:
             - configMapRef:
-                name: nodejs-config-map
+                name: golang-config-map
             - configMapRef:
                 name: graphql-server-config-map
             - secretRef:

@@ -1,0 +1,70 @@
+query GetRepositoryData($owner: String!, $repo: String!) {
+  repository(owner: $owner, name: $repo) {
+    createdAt
+    description
+    forkCount
+    homepageUrl
+    isInOrganization
+    collaborators {
+      edges {
+        node {
+          createdAt
+          avatarUrl
+          bio
+        }
+      }
+    }
+    issues {
+      totalCount
+    }
+    languages(first: 100) {
+      edges {
+        node {
+          color
+          name
+        }
+      }
+    }
+    name
+    owner {
+      avatarUrl
+      login
+      repositories {
+        totalCount
+      }
+      url
+      ...organization
+      ...user
+    }
+    pullRequests {
+      totalCount
+    }
+    url
+    stargazerCount
+  }
+}
+
+fragment organization on Organization {
+  createdAt
+  description
+  descriptionHTML
+  org_email: email
+  name
+  twitterUsername
+  websiteUrl
+}
+
+fragment user on User {
+  bio
+  bioHTML
+  company
+  companyHTML
+  createdAt
+  user_email: email
+  followers {
+    totalCount
+  }
+  name
+  twitterUsername
+  websiteUrl
+}

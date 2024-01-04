@@ -7,10 +7,10 @@ const SlackSettings = () => {
   const savedSlackWebhookURL =
     typeof window !== 'undefined' && localStorage.getItem('slackWebhookURL')
   const savedSlackMessage = typeof window !== 'undefined' && localStorage.getItem('slackMessage')
+
   const [webhookURL, setWebhookURL] = useState(savedSlackWebhookURL || '')
   const [message, setMessage] = useState(savedSlackMessage || '')
-  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
-  const [slackLoading, setSlackLoading] = useState(false)
+  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error'>()
 
   // Update local storage whenever webhookURL or message changes
   useEffect(() => {
@@ -19,10 +19,9 @@ const SlackSettings = () => {
   }, [webhookURL, message])
 
   const handleClick = () => {
-    setSlackLoading(true)
     setNotificationStatus('success')
-    setSlackLoading(false)
-    setTimeout(() => setNotificationStatus(''), 4000)
+    // Hide banner after 4 seconds
+    setTimeout(() => setNotificationStatus(undefined), 4000)
   }
 
   return (
@@ -43,17 +42,15 @@ const SlackSettings = () => {
 
       <div className='mt-2'>
         <Button variant='highlighted' size='large' onClick={handleClick}>
-          {slackLoading ? 'Loading...' : 'Update'}
+          Update
         </Button>
       </div>
 
-      {notificationStatus === 'success' && (
-        <Banner variant='success' message='Updated slack notification' />
-      )}
-
-      {notificationStatus === 'error' && (
-        <Banner variant='error' message='Error sending notification' />
-      )}
+      <Banner
+        show={!!notificationStatus}
+        variant={notificationStatus}
+        message='Updated Slack settings'
+      />
     </div>
   )
 }

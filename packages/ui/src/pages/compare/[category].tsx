@@ -150,7 +150,6 @@ const ComparePage: NextPageWithLayout = () => {
         setRowPinning({
           ...rowPinning,
           [category]: [
-            ...(rowPinning[category] ?? []),
             ...((typeof pinning === 'function'
               ? pinning({ top: rowPinning[category] }).top
               : pinning.top) ?? [])

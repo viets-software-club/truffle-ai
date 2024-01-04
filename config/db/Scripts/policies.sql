@@ -28,7 +28,7 @@ create policy "authenticated can access proj_cat"
 
 drop policy if exists "authenticated can select proj_cat_and_proj_bookmark" on proj_cat_and_proj_bookmark;
 create policy "authenticated can select proj_cat_and_proj_bookmark"
-  on proj_cat_and_proj_bookmark for select to authenticated
+  on proj_cat_and_proj_bookmark for all to authenticated
   using (auth.uid() in (
     select proj_bookmark.auth_users_id from proj_bookmark where proj_bookmark.proj_bookmark_id = proj_cat_and_proj_bookmark.proj_bookmark_id
   ) and auth.uid() in (
@@ -200,9 +200,9 @@ create policy "authenticated can select proj_repo_and_proj_classifier"
   using (true);
 
 drop policy if exists "authenticated can select pinned_proj_bookmark" on pinned_proj_bookmark;
-create policy "authenticated can select pinned_proj_bookmark"
-  on pinned_proj_bookmark for select to authenticated
-  using (true);
+-- create policy "authenticated can select pinned_proj_bookmark"
+--   on pinned_proj_bookmark for select to authenticated
+--   using (true);
 
 drop policy if exists "authenticated can select algo_hn_story_and_algo_hn_tag" on algo_hn_story_and_algo_hn_tag;
 create policy "authenticated can select algo_hn_story_and_algo_hn_tag"

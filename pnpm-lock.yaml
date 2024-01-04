@@ -90,7 +90,7 @@ importers:
         specifier: ^0.96.2
         version: 0.96.2(@graphql-mesh/types@0.96.2)(@graphql-mesh/utils@0.96.2)(graphql@16.8.1)(tslib@2.6.2)
       '@graphql-mesh/cli':
-        specifier: 0.82.35
+        specifier: ^0.82.35
         version: 0.82.35(@babel/core@7.23.6)(@types/node@18.16.3)(graphql-tag@2.12.6)(graphql@16.8.1)(react-native@0.73.1)
       '@graphql-mesh/cross-helpers':
         specifier: ^0.4.1

@@ -16,9 +16,8 @@ const EditEmailTemplate = () => {
 
   const showBannerFunc = () => {
     setShowBanner(true)
-    setTimeout(() => {
-      setShowBanner(false)
-    }, 4000)
+    // Hide banner after 4 seconds
+    setTimeout(() => setShowBanner(false), 4000)
   }
 
   return (
@@ -37,7 +36,7 @@ const EditEmailTemplate = () => {
         <Button variant='highlighted' size='large' onClick={showBannerFunc}>
           Update
         </Button>
-        {showBanner && <Banner variant='success' message='Email updated' />}
+        <Banner show={!!showBanner} variant='success' message='Updated email template' />
       </div>
     </>
   )

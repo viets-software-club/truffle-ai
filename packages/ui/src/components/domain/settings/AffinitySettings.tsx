@@ -19,6 +19,7 @@ const AffinitySettings = () => {
 
   const showBannerFunc = () => {
     setShowBanner(true)
+    // Hide banner after 4 seconds
     setTimeout(() => setShowBanner(false), 4000)
   }
 
@@ -54,7 +55,7 @@ const AffinitySettings = () => {
         </Button>
       </div>
 
-      {showBanner && <Banner variant='success' message='Values updated' />}
+      <Banner show={!!showBanner} variant='success' message='Updated Affinity settings' />
     </div>
   )
 }

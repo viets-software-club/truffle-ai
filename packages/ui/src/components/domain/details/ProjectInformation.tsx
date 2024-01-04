@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { FaSlack } from 'react-icons/fa'
 import { FiBookmark as Bookmark } from 'react-icons/fi'
 import Image from 'next/image'
 import BookmarkModal from '@/components/domain/details/BookmarkModal'
-import Banner from '@/components/shared/Banner'
 import Button from '@/components/shared/Button'
 import Skeleton from '@/components/shared/Skeleton'
 import Tag from '@/components/shared/Tag'
-import sendSlackNotification from '@/util/sendSlackNotification'
+import SendToSlack from '../compare/SendToSlack'
 
 type ProjectInformationProps = {
   id: string
@@ -38,25 +36,7 @@ const ProjectInformation = ({
   category,
   loading
 }: ProjectInformationProps) => {
-  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
-  const [slackLoading, setSlackLoading] = useState(false)
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false)
-
-  const handleNotificationWrapper = async (message: string) => {
-    setNotificationStatus(await sendSlackNotification(message))
-  }
-
-  const sendSlackMessage = () => {
-    setSlackLoading(true)
-
-    const savedMessage =
-      (typeof window !== 'undefined' && localStorage.getItem('slackMessage')) || ''
-    const message = `${savedMessage}: <${githubUrl}|${name}>`
-
-    void handleNotificationWrapper(message)
-
-    setSlackLoading(false)
-  }
 
   const toggleBookmarkModal = () => {
     setBookmarkModalOpen(!bookmarkModalOpen)
@@ -96,10 +76,7 @@ const ProjectInformation = ({
             </>
           ) : (
             <>
-              <Button onClick={sendSlackMessage} className='text-white'>
-                <FaSlack />
-                {slackLoading ? 'Loading...' : 'Send to Slack'}
-              </Button>
+              <SendToSlack content={`<${githubUrl}|${name}>`} />
 
               <Button onClick={toggleBookmarkModal} className='text-white/90'>
                 <Bookmark />
@@ -127,14 +104,6 @@ const ProjectInformation = ({
           </>
         )}
       </div>
-
-      {notificationStatus === 'success' && (
-        <Banner variant='success' message='Slack notification sent' />
-      )}
-
-      {notificationStatus === 'error' && (
-        <Banner variant='error' message='Error sending notification' />
-      )}
 
       <BookmarkModal
         open={bookmarkModalOpen}

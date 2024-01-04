@@ -3,7 +3,6 @@ serve:
   playground: true
   browser: false
   port: 3001
-  fork: 1
 sources:
   - name: Server
     handler:

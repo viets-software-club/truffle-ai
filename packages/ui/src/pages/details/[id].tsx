@@ -31,7 +31,7 @@ const DetailPage: NextPageWithLayout = () => {
       <Navbar loading={loading} />
 
       <div className='flex grow flex-col lg:flex-row'>
-        <div className='border-b border-white/5 md:border-none lg:w-[calc(100%-250px)]'>
+        <div className='border-b border-white/5 md:border-none lg:mt-[60px] lg:w-[calc(100%-250px)]'>
           <ProjectInformation
             id={project?.id as string}
             githubUrl={project?.githubUrl as string}

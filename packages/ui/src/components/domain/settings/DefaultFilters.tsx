@@ -25,6 +25,7 @@ const DefaultFilters = () => {
 
   const showBannerFunc = () => {
     setShowBanner(true)
+    // Hide banner after 4 seconds
     setTimeout(() => setShowBanner(false), 4000)
   }
 
@@ -50,7 +51,7 @@ const DefaultFilters = () => {
         Update
       </Button>
 
-      {showBanner && <Banner variant='success' message='Filters updated' />}
+      <Banner show={!!showBanner} variant='success' message='Updated default filters' />
     </>
   )
 }

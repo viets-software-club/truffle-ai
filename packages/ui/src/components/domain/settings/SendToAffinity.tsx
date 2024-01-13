@@ -3,16 +3,20 @@ import Button from '@/components/shared/Button'
 import sendToAffinity, { AffinityData } from '@/util/sendToAffinity'
 import Banner from '../../shared/Banner'
 
-const SendToAffinity = (props: AffinityData) => {
-  const [notificationStatus, setNotificationStatus] = useState<'success' | 'error' | ''>('')
-  const [affinityLoading, setAffinityLoading] = useState(false)
+const SendToAffinity = (data: AffinityData) => {
+  const [showBanner, setShowBanner] = useState(false)
+  const [status, setStatus] = useState<'success' | 'error'>()
+  const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
-    setNotificationStatus('')
-    setAffinityLoading(true)
-    const response = await sendToAffinity(props)
-    setNotificationStatus(response)
-    setAffinityLoading(false)
+    setLoading(true)
+    const res = await sendToAffinity(data)
+    setStatus(res)
+    setLoading(false)
+    setShowBanner(true)
+
+    // Hide banner after 4 seconds
+    setTimeout(() => setShowBanner(false), 4000)
   }
 
   const handleClickWrapper = () => {
@@ -21,18 +25,17 @@ const SendToAffinity = (props: AffinityData) => {
 
   return (
     <div className='flex flex-col items-start gap-[15px]'>
-      <Button onClick={handleClickWrapper}>
-        {affinityLoading ? 'Loading...' : 'Send to Affinity'}
-      </Button>
-      {notificationStatus === 'success' && (
-        <Banner variant='success' message='Slack notification sent' />
-      )}
-      {notificationStatus === 'error' && (
-        <Banner
-          variant='error'
-          message="Couldn't send project to Affinity. Did you add your API token in settings?"
-        />
-      )}
+      <Button onClick={handleClickWrapper}>{loading ? 'Loading...' : 'Send to Affinity'}</Button>
+
+      <Banner
+        show={showBanner}
+        variant={status}
+        message={
+          status === 'success'
+            ? 'Data sent to Affinity'
+            : "Couldn't send project to Affinity. Did you add your API token in settings?"
+        }
+      />
     </div>
   )
 }

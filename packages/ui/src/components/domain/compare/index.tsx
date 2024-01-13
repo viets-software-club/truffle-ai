@@ -65,7 +65,8 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
             </>
           ) : (
             <>
-              <SendToSlack message={slackMessage} />
+              <SendToSlack content={slackMessage} multiple />
+
               <Button className='text-white' onClick={toggleCategoryModal}>
                 <BiPencil />
                 Edit category

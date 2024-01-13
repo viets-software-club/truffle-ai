@@ -140,7 +140,7 @@ const CommandMenu = () => {
                 />
               </Group>
 
-              {!pathname.includes('/settings') && (
+              {!pathname?.includes('/settings') && (
                 <Group heading='Actions'>
                   <Item
                     Icon={PlusIcon}

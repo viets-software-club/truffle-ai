@@ -28,6 +28,7 @@ create type t_ivals_gthb_org as (
   website_url text
 );
 create type t_ivals_gthb_repo as (
+  contributor_count bigint,
   created_at timestamp with time zone,
   gthb_repo_description text,
   fork_count bigint,
@@ -82,6 +83,7 @@ create type t_ivals_gthb_repo_topic as (
 );
 
 create type t_f_insert_gthb_repo as (
+  contributor_count bigint,
   created_at timestamp with time zone,
   fork_count bigint,
   gthb_fork_hists t_ivals_gthb_fork_hist [],

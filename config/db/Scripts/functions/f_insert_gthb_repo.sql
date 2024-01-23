@@ -16,17 +16,18 @@ begin
   ownerId := f_insert_gthb_owner(githubRepo.gthb_owner);
 
   insert into gthb_repo(created_at, gthb_repo_description, fork_count, homepage_url, is_in_organization, issues_total_count,
-    gthb_repo_name, gthb_owner_id, pull_requests_total_count, gthb_repo_url, stargazer_count)
+    gthb_repo_name, gthb_owner_id, pull_requests_total_count, gthb_repo_url, stargazer_count, contributor_count, forks_per_contributor, issues_per_contributor, stargazers_per_contributor, pull_requests_per_contributor)
     values (githubRepo.created_at, githubRepo.gthb_repo_description, githubRepo.fork_count, githubRepo.homepage_url,
       githubRepo.is_in_organization, githubRepo.issues_total_count, githubRepo.gthb_repo_name, ownerId,
-      githubRepo.pull_requests_total_count, githubRepo.gthb_repo_url, githubRepo.stargazer_count)
+      githubRepo.pull_requests_total_count, githubRepo.gthb_repo_url, githubRepo.stargazer_count, githubRepo.contributor_count, githubRepo.fork_count / githubRepo.contributor_count, githubRepo.issues_total_count / githubRepo.contributor_count, githubRepo.stargazer_count / githubRepo.contributor_count, githubRepo.pull_requests_total_count / githubRepo.contributor_count)
   on conflict (gthb_repo_name)
     do update set
       created_at = excluded.created_at, gthb_repo_description = excluded.gthb_repo_description, fork_count = excluded.fork_count,
 	homepage_url = excluded.homepage_url, is_in_organization = excluded.is_in_organization, issues_total_count =
 	excluded.issues_total_count, gthb_repo_name = excluded.gthb_repo_name, gthb_owner_id = excluded.gthb_owner_id,
 	pull_requests_total_count = excluded.pull_requests_total_count, gthb_repo_url = excluded.gthb_repo_url, stargazer_count =
-	excluded.stargazer_count
+	excluded.stargazer_count, contributor_count = excluded.contributor_count,
+  forks_per_contributor = excluded.fork_count / excluded.contributor_count, issues_per_contributor = excluded.issues_total_count / excluded.contributor_count, stargazers_per_contributor = excluded.stargazer_count / excluded.contributor_count, pull_requests_per_contributor = excluded.pull_requests_total_count / excluded.contributor_count
     returning
       gthb_repo_id into repoId;
 
@@ -58,12 +59,15 @@ begin
       on conflict(gthb_repo_id, gthb_owner_id) do update set contributions = excluded.contributions;
     end loop;
 
-  with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
-  insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
-
-  with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
-  insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
-
+  if array_length(githubRepo.gthb_langs, 1) is null then
+    with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
+    insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
+  end if;
+  
+  if array_length(githubRepo.gthb_repo_topics, 1) is null then
+    with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
+    insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
+  end if;
   insert into gthb_star_hist(gthb_repo_id, gthb_star_hist_date, amount)
    select
     repoId,

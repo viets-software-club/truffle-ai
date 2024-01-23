@@ -8,6 +8,15 @@ import (
 	"github.com/viets-software-club/truffle-ai/graphql-server/controller/data"
 )
 
+// func (c *Controller) SuggestCategoriesForProjRepo(authUserId string, projRepoId int) error {
+
+// 	categories, err := c.db.SelectProjCatByAuthUsersId(authUserId)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	data.PromptsApi.SuggestCategories(controller.RepoData{})
+// }
+
 func (c *Controller) CreateBookmarkWithCategories(authUserId string, repoOwner string, repoName string, categories []string) error {
 
 	if len(categories) == 0 {

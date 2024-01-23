@@ -204,6 +204,45 @@ func (d *Database) CallSelectUpdatables(isDaily bool, isWeekly bool, isMonthly b
 	return &list, nil
 }
 
+func (d *Database) SelectProjCatByAuthUsersId(authUserId string) (*[]types.Proj_cat, error) {
+	list := []types.Proj_cat{}
+	rows, err := d.pool.Query(d.ctx, "select proj_cat_id, title from proj_cat where auth_users_id = $1", authUserId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var elem types.Proj_cat
+		err = rows.Scan(&elem.Proj_cat_id, &elem.Title)
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, elem)
+	}
+	return &list, nil
+}
+
+// func (d *Database) SelectGthbRepoReadmeAndAboutByProjRepoId(projRepoId string) (*[]struct {
+// 	About  pgtype.Text
+// 	Readme pgtype.Text
+// }, error) {
+// 	list := []types.Proj_cat{}
+// 	rows, err := d.pool.Query(d.ctx, "select proj_cat_id, title from proj_cat where auth_users_id = $1 inner join proj_repo on proj_repo_id = $1", authUserId)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer rows.Close()
+// 	for rows.Next() {
+// 		var elem types.Proj_cat
+// 		err = rows.Scan(&elem.Proj_cat_id, &elem.Title)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		list = append(list, elem)
+// 	}
+// 	return &list, nil
+// }
+
 // func (d *Database) UpsertGithubOwner(tx pgx.Tx, github_owner Insert_github_owner) (int, error) {
 
 // 	// Insert github_owner

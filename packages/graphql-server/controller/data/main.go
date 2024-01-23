@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	prompts "github.com/viets-software-club/truffle-ai/graphql-server/api/prompts"
+
 	githubv3 "github.com/google/go-github/v57/github"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/algolia/hackernews"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"
@@ -25,6 +27,7 @@ type ProjectData struct {
 }
 
 type GithubData struct {
+	ContributorCount        int
 	RepoPtr                 *github.GetRepository
 	ContributorToUserMapPtr *ContributorToUserMap
 	StarHistMapPtr          *github.StarHistMap
@@ -51,7 +54,7 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	fmt.Println("start1", repoOwner, repoName)
 	currentTime := time.Now()
 	// Create channels
-	errChan := make(chan error, 9)
+	errChan := make(chan error, 10)
 	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser, 1)
 	starHistPtrChan := make(chan *map[string]github.Hist, 1)
 	issueHistPtrChan := make(chan *map[string]github.Hist, 1)
@@ -62,9 +65,10 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse, 1)
 	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse, 1)
 	hackernewsSentimentChan := make(chan string, 1)
+	contributorCountChan := make(chan int, 1)
 
 	var wg sync.WaitGroup
-	wg.Add(9)
+	wg.Add(10)
 	// Retrieve star history
 	go func() {
 		defer wg.Done()
@@ -107,6 +111,17 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 		}
 
 		forkHistPtrChan <- forkHist
+	}()
+
+	go func() {
+		defer wg.Done()
+		defer close(contributorCountChan)
+		count, err := GithubApi.GetContributorCount(repoOwner, repoName)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		contributorCountChan <- count
 	}()
 
 	// Retrieve contributors
@@ -204,7 +219,7 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	}
 
 	// Retrieve Eli5 from readme
-	go func() {
+	go func(about string) {
 		defer wg.Done()
 		defer close(repoEli5Chan)
 
@@ -213,15 +228,16 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 			errChan <- err
 			return
 		}
-		repoEli5, err := PromptsApi.GenerateEli5FromReadme(readme)
+		repoEli5, err := PromptsApi.GenerateEli5FromReadme(prompts.RepoData{
+			Readme: readme,
+			About:  about,
+		})
 		if err != nil {
 			errChan <- err
 			return
 		}
-
 		repoEli5Chan <- repoEli5
-
-	}()
+	}(string(repoPtr.Repository.Description))
 	if repoPtr.Repository.IsInOrganization {
 		go func() {
 			defer wg.Done()
@@ -243,8 +259,11 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 			defer wg.Done()
 			defer close(linkedinProfilesChan)
 			var linkedinProfiles []linkedin.LinkedinProfile
-
-			linkedinProfile, err := LinkedinApi.GetLinkedinProfile(string(repoPtr.Repository.Owner.Login))
+			if len(repoPtr.Repository.Owner.User.Name) == 0 {
+				linkedinProfilesChan <- nil
+				return
+			}
+			linkedinProfile, err := LinkedinApi.GetLinkedinProfile(string(repoPtr.Repository.Owner.User.Name))
 
 			if err != nil {
 				linkedinProfilesChan <- nil
@@ -265,6 +284,7 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 		fmt.Println("error", err)
 		return nil, err
 	}
+	data.GithubData.ContributorCount = <-contributorCountChan
 	data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan
 	data.GithubData.StarHistMapPtr = <-starHistPtrChan
 	data.GithubData.IssueHistMapPtr = <-issueHistPtrChan
@@ -310,7 +330,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 
 	currentTime := time.Now()
 	// Create channels
-	errChan := make(chan error, 8)
+	errChan := make(chan error, 9)
 	contributorToUserMapPtrChan := make(chan *map[*githubv3.Contributor]*github.GetUser, 1)
 	starHistPtrChan := make(chan *map[string]github.Hist, 1)
 	issueHistPtrChan := make(chan *map[string]github.Hist, 1)
@@ -319,9 +339,10 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse, 1)
 	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse, 1)
 	hackernewsSentimentChan := make(chan string, 1)
+	contributorCountChan := make(chan int, 1)
 
 	var wg sync.WaitGroup
-	wg.Add(8)
+	wg.Add(9)
 
 	// Retrieve star history
 	go func() {
@@ -374,6 +395,17 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		forkHistPtrChan <- forkHist
 	}()
 
+	go func() {
+		defer wg.Done()
+		defer close(contributorCountChan)
+		count, err := GithubApi.GetContributorCount(repoOwner, repoName)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		contributorCountChan <- count
+	}()
+
 	// Retrieve contributors
 	go func() {
 
@@ -477,7 +509,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 	}
 
 	// Retrieve Eli5 from readme
-	go func() {
+	go func(about string) {
 		defer wg.Done()
 		defer close(repoEli5Chan)
 
@@ -486,13 +518,16 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 			errChan <- err
 			return
 		}
-		repoEli5, err := PromptsApi.GenerateEli5FromReadme(readme)
+		repoEli5, err := PromptsApi.GenerateEli5FromReadme(prompts.RepoData{
+			Readme: readme,
+			About:  about,
+		})
 		if err != nil {
 			errChan <- err
 			return
 		}
 		repoEli5Chan <- repoEli5
-	}()
+	}(string(repoPtr.Repository.Description))
 
 	var data ProjectData
 	data.GithubData.RepoPtr = repoPtr
@@ -505,6 +540,8 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 		return nil, err
 	}
 	fmt.Println("done1")
+	data.GithubData.ContributorCount = <-contributorCountChan
+	fmt.Println("done1-")
 
 	data.GithubData.ContributorToUserMapPtr = <-contributorToUserMapPtrChan
 	fmt.Println("done12")
@@ -571,8 +608,6 @@ func GetTrendingRepositoriesToProjectDataMap(dateRange string) (*map[*githubScra
 	if err != nil {
 		return nil, err
 	}
-
-	log.Println("trendingRepositories", trendingRepositories)
 
 	trendingRepositoriesToProjectDataMap := make(map[*githubScraper.TrendingRepository]*ProjectData)
 	trendingRepoAndProjDataChan := make(chan *trendingRepoAndProjData)

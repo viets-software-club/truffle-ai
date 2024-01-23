@@ -27,10 +27,16 @@ type T_f_insert_proj_bookmark_w_cats struct {
 	Proj_repo     *T_f_insert_proj_repo
 }
 
+type Proj_cat struct {
+	Proj_cat_id pgtype.Int8
+	Title       pgtype.Text
+}
+
 var ProjTypes = []string{
 	"t_ivals_proj_classifier",
 	"_t_ivals_proj_classifier",
 	"t_f_insert_proj_repo_metadata",
 	"t_f_insert_proj_repo",
 	"t_f_insert_proj_bookmark_w_cats",
+	"proj_cat",
 }

@@ -2,11 +2,8 @@ package github
 
 import (
 	"context"
-	"errors"
 	"log"
 	"math/rand"
-	"regexp"
-	"strconv"
 	"time"
 
 	githubv3 "github.com/google/go-github/v57/github"
@@ -18,18 +15,6 @@ type Hist struct {
 }
 type IHist interface{ Hist }
 
-func getLastPageForHist(linkHeader string) (int, error) {
-	regex, err := regexp.Compile(`page=(\d+)>; rel="last"`)
-	if err != nil {
-		return 0, err
-	}
-	match := regex.FindStringSubmatch(linkHeader)
-	if len(match) <= 1 {
-		return 0, errors.New("no match for rel last")
-	}
-	return strconv.Atoi(match[1])
-}
-
 type StarHistMap = map[string]Hist
 type ForkHistMap = map[string]Hist
 type IssueHistMap = map[string]Hist
@@ -40,7 +25,7 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 	appendGazersToMap := func(gazers []*githubv3.Stargazer, prevAmount int) {
 		for i := 0; i < len(gazers); i++ {
 			starHistMap[gazers[i].StarredAt.String()] = Hist{
-				Date:   *&gazers[i].StarredAt.Time,
+				Date:   gazers[i].StarredAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -57,7 +42,7 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 		return nil, err
 	}
 	// set last page number
-	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
 		// all fit gazers fit on one page
 		log.Println(err)
@@ -109,7 +94,7 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 		for i, repo := range repos {
 			if *repo.Fork {
 				forkHistMap[repo.CreatedAt.String()] = Hist{
-					Date:   *&repo.CreatedAt.Time,
+					Date:   repo.CreatedAt.Time,
 					Amount: prevAmount + i,
 				}
 			}
@@ -128,7 +113,7 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 		return nil, err
 	}
 	// set last page number
-	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
 		// all forks fit on one page
 		log.Println(err)
@@ -180,7 +165,7 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	appendIssuesToMap := func(issues []*githubv3.Issue, prevAmount int) {
 		for i, issue := range issues {
 			issueHistMap[issue.CreatedAt.String()] = Hist{
-				Date:   *&issue.CreatedAt.Time,
+				Date:   issue.CreatedAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -198,7 +183,7 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 		return nil, err
 	}
 	// set last page number
-	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
 		// all issues fit on one page
 		log.Println(err)
@@ -244,15 +229,6 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	return &issueHistMap, nil
 }
 
-func appendAmountTo[T []any](s T) int {
-	x := 0
-	l, ok := s[0].(int)
-	if ok {
-		x = 0 + l
-	}
-	return x
-}
-
 func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string) (*StarHistMap, error) {
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	starHistMap := make(map[string]Hist)
@@ -260,7 +236,7 @@ func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string
 	appendGazersToMap := func(gazers []*githubv3.Stargazer, prevAmount int) {
 		for i := 0; i < len(gazers); i++ {
 			starHistMap[gazers[i].StarredAt.String()] = Hist{
-				Date:   *&gazers[i].StarredAt.Time,
+				Date:   gazers[i].StarredAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -276,7 +252,7 @@ func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string
 		return nil, err
 	}
 	// set last page number
-	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
 		// all fit gazers fit on one page
 		log.Println(err)
@@ -340,7 +316,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 	appendIssuesToMap := func(issues []*githubv3.Issue, prevAmount int) {
 		for i, issue := range issues {
 			issueHistMap[issue.CreatedAt.String()] = Hist{
-				Date:   *&issue.CreatedAt.Time,
+				Date:   issue.CreatedAt.Time,
 				Amount: prevAmount + i,
 			}
 		}
@@ -358,7 +334,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 		return nil, err
 	}
 	// set last page number
-	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
 		// all fit gazers fit on one page
 		log.Println(err)
@@ -429,7 +405,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 		for i, repo := range repos {
 			if *repo.Fork {
 				forkHistMap[repo.CreatedAt.String()] = Hist{
-					Date:   *&repo.CreatedAt.Time,
+					Date:   repo.CreatedAt.Time,
 					Amount: prevAmount + i,
 				}
 			}
@@ -448,7 +424,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 		return nil, err
 	}
 	// set last page number
-	lastPage, err := getLastPageForHist(response.Header.Get("Link"))
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
 		// all fit gazers fit on one page
 		log.Println(err)

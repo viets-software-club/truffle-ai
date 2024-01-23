@@ -21,10 +21,14 @@ func New() *Prompts {
 	}
 }
 
-func (p *Prompts) GenerateEli5FromReadme(readme string) (string, error) {
+func (p *Prompts) GenerateEli5FromReadme(data RepoData) (string, error) {
 
-	if len(readme) > 300 {
-		readme = readme[:300]
+	if len(data.Readme) > 300 {
+		data.Readme = data.Readme[:300]
+	}
+
+	if len(data.About) > 70 {
+		data.About = data.About[:70]
 	}
 
 	resp, err := p.client.CreateChatCompletion(
@@ -39,7 +43,7 @@ func (p *Prompts) GenerateEli5FromReadme(readme string) (string, error) {
 				},
 				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: fmt.Sprintf("Below is a readme from a Github Repository, can you provide an short explain like I am 5 description of the repo:\n%s", readme),
+					Content: fmt.Sprintf("Below is a readme and an about description from a Github Repository, can you provide an short explain like I am 5 description of the repo:\n%s\n\n\n\nAbout:\n%s", data.Readme, data.About),
 				},
 			},
 		},
@@ -90,7 +94,48 @@ func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCom
 	return resp.Choices[0].Message.Content, nil
 }
 
-func (p *Prompts) GenerateCategories() (string, error) {
+// func (p *Prompts) GenerateCategories() (string, error) {
+// 	resp, err := p.client.CreateChatCompletion(
+// 		context.Background(),
+// 		openai.ChatCompletionRequest{
+// 			Model: openai.GPT3Dot5Turbo,
+// 			Messages: []openai.ChatCompletionMessage{
+// 				{
+// 					Role:    openai.ChatMessageRoleSystem,
+// 					Content: "You are helping an investor invest in a company",
+// 				},
+// 			},
+// 		},
+// 	)
+
+// 	if err != nil {
+// 		fmt.Printf("ChatCompletion error: %v\n", err)
+// 		return "", err
+// 	}
+
+//		return resp.Choices[0].Message.Content, nil
+//	}
+type RepoData struct {
+	Readme string
+	About  string
+}
+type Category struct {
+	Title string
+	Id    string
+}
+
+func (p *Prompts) SuggestCategories(data RepoData, categories []Category) ([]string, error) {
+
+	var plainCategoriesString string
+	for _, category := range categories {
+		plainCategoriesString += fmt.Sprintf("%s(%s), ", category.Title, category.Id)
+	}
+	if data.Readme != "" && len(data.Readme) > 300 {
+		data.Readme = data.Readme[:300]
+	}
+	if len(data.About) > 70 {
+		data.About = data.About[:70]
+	}
 	resp, err := p.client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -98,16 +143,21 @@ func (p *Prompts) GenerateCategories() (string, error) {
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleSystem,
-					Content: "You are helping an investor invest in a company",
+					Content: "You are finding similarities",
+				},
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: fmt.Sprintf("Here is a Github Repository readme '%s' and here a Github Repository about '%s', here is a list of categories with ids in parentheses '%s'. I want you to only return me fitting category ids that fit the data, comma separated and nothing more", data.Readme, data.About, plainCategoriesString),
 				},
 			},
 		},
 	)
-
 	if err != nil {
 		fmt.Printf("ChatCompletion error: %v\n", err)
-		return "", err
+		return nil, err
 	}
 
-	return resp.Choices[0].Message.Content, nil
+	splitted := strings.Split(resp.Choices[0].Message.Content, ",")
+	return splitted, nil
+
 }

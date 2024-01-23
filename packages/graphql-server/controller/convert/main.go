@@ -33,7 +33,7 @@ func ConvertProjRepoClassifier(classifiers *[]string) (pgtype.FlatArray[types.T_
 func ConvertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_insert_proj_repo, error) {
 
 	// convert github repo
-	pgGithubRepo, err := convertGithub.ConvertGithubDataToTFInsertGthbRepo(&data.GithubData)
+	pgGithubRepo, err := convertGithub.ConvertGithubDataToTFInsertGthbRepo(&data.GithubData, data.GithubData.ContributorCount)
 	if err != nil {
 		return nil, err
 	}

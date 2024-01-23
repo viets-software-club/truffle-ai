@@ -2,7 +2,11 @@ package github
 
 import (
 	"context"
+	"errors"
+	"log"
 	"os"
+	"regexp"
+	"strconv"
 
 	"github.com/google/go-github/v57/github"
 	"github.com/shurcooL/githubv4"
@@ -66,10 +70,39 @@ func (g *GithubApi) QueryUser(login string) (*GetUser, error) {
 	}
 	return &getUser, nil
 }
+func GetLastPageFromLinkHeader(linkHeader string) (int, error) {
+	regex, err := regexp.Compile(`page=(\d+)>; rel="last"`)
+	if err != nil {
+		return 0, err
+	}
+	match := regex.FindStringSubmatch(linkHeader)
+	if len(match) <= 1 {
+		return 0, errors.New("no match for rel last")
+	}
+	return strconv.Atoi(match[1])
+}
 
 func (g *GithubApi) GetContributors(owner string, name string) (*[]*github.Contributor, error) {
 	contrs, _, err := g.clientv3.Repositories.ListContributors(context.Background(), owner, name, nil)
 	return &contrs, err
+}
+
+func (g *GithubApi) GetContributorCount(owner string, name string) (int, error) {
+	_, response, err := g.clientv3.Repositories.ListContributors(context.Background(), owner, name, &github.ListContributorsOptions{
+		ListOptions: github.ListOptions{
+			PerPage: 1,
+		},
+	})
+	if err != nil {
+		return -1, err
+	}
+	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
+	if err != nil {
+		log.Println(err)
+		return 1, nil
+	}
+
+	return lastPage, nil
 }
 
 // func (g *GithubApi) GetStarsRandStar(totalStars int, amountPages int, owner string, name string, includeFirstAndLastPage bool) ([]Hist, error) {

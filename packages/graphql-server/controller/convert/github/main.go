@@ -16,7 +16,7 @@ import (
 
 var NO_TIME time.Time
 
-func ConvertGithubDataToTFInsertGthbRepo(data *data.GithubData) (*types.T_f_insert_gthb_repo, error) {
+func ConvertGithubDataToTFInsertGthbRepo(data *data.GithubData, contributorCount int) (*types.T_f_insert_gthb_repo, error) {
 	if data.RepoPtr == nil {
 		return nil, errors.New("repo can not be nil")
 	}
@@ -55,6 +55,7 @@ func ConvertGithubDataToTFInsertGthbRepo(data *data.GithubData) (*types.T_f_inse
 	}
 
 	pgRepo := types.T_f_insert_gthb_repo{
+		Contributor_count:         helper.IntToPgInt8(contributorCount),
 		Created_at:                helper.TimeToNoDefaultPgTimestampz(repo.CreatedAt.Time),
 		Fork_count:                Githubv4IntToPgInt8(repo.ForkCount),
 		Gthb_fork_hists:           pgForkHist,

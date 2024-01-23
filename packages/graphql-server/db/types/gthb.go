@@ -59,6 +59,7 @@ type T_f_insert_gthb_contr struct {
 
 // Github Repo
 type T_f_insert_gthb_repo struct {
+	Contributor_count         pgtype.Int8
 	Created_at                pgtype.Timestamptz
 	Fork_count                pgtype.Int8
 	Gthb_fork_hists           pgtype.FlatArray[T_ivals_gthb_fork_hist]

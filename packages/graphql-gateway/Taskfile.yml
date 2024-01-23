@@ -3,22 +3,10 @@ version: "3"
 tasks:
   dev:
     cmds:
-      - source {{.SOURCE}} && npm run dev
-  dev:mesh:
-    cmds:
-      - source {{.SOURCE}} && npm run dev:mesh
+      - source {{.SOURCE}} && cargo run
   build:
     cmds:
-      - source {{.SOURCE}} && npm run build
-  build:mesh:
-    cmds:
-      - source {{.SOURCE}} && npm run build:mesh
-  build:fastify:
-    cmds:
-      - source {{.SOURCE}} && npm run build:fastify
-  start:
-    cmds:
-      - source {{.SOURCE}} && npm run start
+      - source {{.SOURCE}} && cargo build
   test:
     cmds:
-      - source {{.SOURCE}} && npm run test
+      - source {{.SOURCE}} && cargo test && cargo check

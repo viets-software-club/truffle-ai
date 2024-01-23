@@ -6,7 +6,7 @@ declare global {
 			SUPABASE_SERVICE_KEY: string
 			SUPABASE_JWT_SECRET: string
 			NODE_ENV: 'development' | 'production'
-			GRAPHQL_GATEWAY_PORT: number
+			GRAPHQL_GATEWAY_PORT: string
 		}
 	}
 }

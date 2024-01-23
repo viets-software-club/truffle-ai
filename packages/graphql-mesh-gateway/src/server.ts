@@ -5,6 +5,7 @@ import Fastify, { FastifyRequest } from 'fastify'
 import * as jsonwebtoken from 'jsonwebtoken'
 import * as winston from 'winston'
 import { createBuiltMeshHTTPHandler } from '../.mesh/index'
+
 const app = Fastify({
 	trustProxy: true,
 	logger: process.env.NODE_ENV !== 'production'
@@ -48,7 +49,7 @@ const processAuthorizationHeader = async (req: FastifyRequest) => {
 		throw Error('No jwt')
 	}
 
-	// Get user from Supabase if JWT is valid
+	// get user from Supabase if JWT is valid
 	const {
 		data: { user },
 		error
@@ -127,14 +128,18 @@ const processUserApiKeyHeader = async (req: FastifyRequest) => {
 }
 
 app.addHook('preHandler', async (req) => {
-	// if Authorization header exists
-	if (req?.headers?.authorization) {
-		await processAuthorizationHeader(req)
-	}
+	try {
+		// if Authorization header exists
+		if (req?.headers?.authorization) {
+			await processAuthorizationHeader(req)
+		}
 
-	// if userApiKey header exists
-	if (req?.headers?.userapikey) {
-		await processUserApiKeyHeader(req)
+		// if userApiKey header exists
+		if (req?.headers?.userapikey) {
+			await processUserApiKeyHeader(req)
+		}
+	} catch (error) {
+		console.error("Error in preHandler", error)
 	}
 })
 
@@ -142,37 +147,45 @@ app.route({
 	url: '/api/graphql',
 	method: ['GET', 'POST', 'OPTIONS'],
 	async handler(req, reply) {
-		console.log('request debug', util.inspect(req))
-		// Second parameter adds Fastify's `req` and `reply` to the GraphQL Context
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-		const response = await meshHttp.handleNodeRequest(req, {
-			req,
-			reply
-		})
+		try {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+			const response = await meshHttp.handleNodeRequest(req, {
+				req,
+				reply
+			})
 
-		console.log('response debug', util.inspect(response))
+			// biome-ignore lint/complexity/noForEach: type is an interface with forEach method
+			response.headers.forEach((value: unknown, key: string) => {
+				void reply.header(key, value)
+			})
 
-		// biome-ignore lint/complexity/noForEach: type is an interface with forEach method
-		response.headers.forEach((value: unknown, key: string) => {
-			void reply.header(key, value)
-		})
+			void reply.status(response.status)
 
-		void reply.status(response.status)
+			if(response.body === null) {
+        reply.code(502).send({error: "No response body"})
+        return reply
+      }
 
-		const reader = response?.body?.getReader()
-
-		while (reader) {
-			const { done, value } = await reader.read()
-			if (done) break
-			void reply.send(value)
+      // eslint-disable-next-line
+      const reader = response.body.getReader()
+  
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        reply.send(value)
+      }
+  
+      return reply
+    } catch (error) {
+			console.error("Error occurred", error)
+      reply.code(502).send({error: "Error, check logs"})
+      return reply
 		}
-
-		return reply
 	}
 })
 
 void app.listen(
-	{ port: process.env.GRAPHQL_GATEWAY_PORT, host: '0.0.0.0' },
+	{ port: Number(process.env.GRAPHQL_GATEWAY_PORT), host: '0.0.0.0' },
 	(err, address) => {
 		if (err) {
 			app.log.error(err)

@@ -139,7 +139,7 @@ app.addHook('preHandler', async (req) => {
 			await processUserApiKeyHeader(req)
 		}
 	} catch (error) {
-		console.error("Error in preHandler", error)
+		console.error('Error in preHandler', error)
 	}
 })
 
@@ -161,25 +161,25 @@ app.route({
 
 			void reply.status(response.status)
 
-			if(response.body === null) {
-        reply.code(502).send({error: "No response body"})
-        return reply
-      }
+			if (response.body === null) {
+				reply.code(502).send({ error: 'No response body' })
+				return reply
+			}
 
-      // eslint-disable-next-line
-      const reader = response.body.getReader()
-  
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        reply.send(value)
-      }
-  
-      return reply
-    } catch (error) {
-			console.error("Error occurred", error)
-      reply.code(502).send({error: "Error, check logs"})
-      return reply
+			// eslint-disable-next-line
+			const reader = response.body.getReader()
+
+			while (true) {
+				const { done, value } = await reader.read()
+				if (done) break
+				reply.send(value)
+			}
+
+			return reply
+		} catch (error) {
+			console.error('Error occurred', error)
+			reply.code(502).send({ error: 'Error, check logs' })
+			return reply
 		}
 	}
 })

@@ -9,6 +9,7 @@ target
 
 # GraphQL Gateway
 .mesh
+http-cacache
 
 # GitHub Actions
 .deployment

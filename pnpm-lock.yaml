@@ -93,7 +93,7 @@ importers:
         specifier: ~0.13.1
         version: 0.13.1
 
-  packages/graphql-gateway:
+  packages/graphql-mesh-gateway:
     dependencies:
       '@graphql-mesh/cache-localforage':
         specifier: ^0.96.2
@@ -2417,7 +2417,7 @@ packages:
       tsconfig-paths: 4.2.0
       tslib: 2.6.2
       typescript: 5.3.3
-      uWebSockets.js: github.com/uNetworking/uWebSockets.js/560035d4ad6caeda563deee1d3d68143462a305b
+      uWebSockets.js: github.com/uNetworking/uWebSockets.js/f97da56fe535bb6d318c62ed31e0f44cef104f05
       yargs: 17.7.2
     optionalDependencies:
       node-libcurl: 3.0.1-0
@@ -12005,7 +12005,7 @@ packages:
     hasBin: true
     requiresBuild: true
     dependencies:
-      env-paths: 2.2.0
+      env-paths: 2.2.1
       exponential-backoff: 3.1.1
       glob: 10.3.10
       graceful-fs: 4.2.11
@@ -15780,8 +15780,8 @@ packages:
       yaml: 2.3.4
     dev: true
 
-  github.com/uNetworking/uWebSockets.js/560035d4ad6caeda563deee1d3d68143462a305b:
-    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/560035d4ad6caeda563deee1d3d68143462a305b}
+  github.com/uNetworking/uWebSockets.js/f97da56fe535bb6d318c62ed31e0f44cef104f05:
+    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/f97da56fe535bb6d318c62ed31e0f44cef104f05}
     name: uWebSockets.js
-    version: 20.38.0
+    version: 20.40.0
     dev: false

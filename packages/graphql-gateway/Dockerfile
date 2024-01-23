@@ -1,6 +1,6 @@
 FROM rust:1.67 as builder
 WORKDIR /usr/src/graphql-gateway
-COPY . .
+COPY ./packages/graphql-gateway/ .
 RUN cargo install --path .
 
 FROM debian:bullseye-slim

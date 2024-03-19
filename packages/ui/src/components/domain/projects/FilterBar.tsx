@@ -4,19 +4,19 @@ import FilterItemModal from '@/components/domain/projects/filters/FilterItemModa
 import SortModal from '@/components/domain/projects/filters/SortModal'
 import Button from '@/components/shared/Button'
 import Skeleton from '@/components/shared/Skeleton'
-import { PageInfo, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { GthbTrendingOrderBy, PageInfo, GthbTrendingFilter } from '@/graphql/generated/gql'
 import { FilterOption, TimeFilterOption, PaginationParameters } from './types'
 
 type FilterBarProps = {
   loading?: boolean
-  filters: ProjectFilter
+  filters: GthbTrendingFilter
   currentEntries: number
   totalEntries: number
-  sorting: ProjectOrderBy | null
+  sorting: GthbTrendingOrderBy | null
   pageInfo?: PageInfo
   pageSize: number
-  updateFilters: (filter: ProjectFilter) => void
-  setSorting: (sorting: ProjectOrderBy | null) => void
+  updateFilters: (filter: GthbTrendingFilter) => void
+  setSorting: (sorting: GthbTrendingOrderBy | null) => void
   setPagination: Dispatch<SetStateAction<PaginationParameters>>
 }
 

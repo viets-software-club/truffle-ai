@@ -26,7 +26,10 @@ const CommandMenu = () => {
 
   const { bookmarks, categories, fetching } = useFetchBookmarks()
   const { project } = useFetchProjectDetails()
-  const founder = project?.associatedPerson
+  const founder: {
+    email?: string
+    name?: string
+  } = {} // @TODO
 
   const { setIsOpen: setIsAddProjectOpen } = useAddProjectModalState()
 
@@ -140,7 +143,7 @@ const CommandMenu = () => {
                 />
               </Group>
 
-              {!pathname?.includes('/settings') && (
+              {pathname && !pathname.includes('/settings') && (
                 <Group heading='Actions'>
                   <Item
                     Icon={PlusIcon}
@@ -160,7 +163,7 @@ const CommandMenu = () => {
                           emailTemplate(
                             founder.email as string,
                             founder.name as string,
-                            project.name as string
+                            project.gthbRepo.gthbRepoName
                           )
                         )
                         close()
@@ -187,9 +190,9 @@ const CommandMenu = () => {
             <Group heading='Categories'>
               {categories.map(category => (
                 <Item
-                  key={category}
-                  text={category}
-                  onSelect={() => navigate(`/compare/${encodeURIComponent(category)}`)}
+                  key={category.projCatId as string}
+                  text={category.title}
+                  onSelect={() => navigate(`/compare/${category.projCatId}`)}
                 />
               ))}
             </Group>
@@ -199,9 +202,9 @@ const CommandMenu = () => {
             <Group heading='Projects'>
               {bookmarks.map(bookmark => (
                 <Item
-                  key={bookmark.id as string}
-                  text={bookmark.project?.name as string}
-                  onSelect={() => navigate(`/details/${bookmark.project?.id}`)}
+                  key={bookmark.projBookmarkId as string}
+                  text={bookmark.projRepo.gthbRepo.gthbRepoName}
+                  onSelect={() => navigate(`/details/${bookmark.projRepo.projRepoId}`)}
                 />
               ))}
             </Group>

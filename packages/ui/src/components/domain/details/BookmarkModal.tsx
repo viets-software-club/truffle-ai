@@ -4,6 +4,7 @@ import Button from '@/components/shared/Button'
 import Modal from '@/components/shared/Modal'
 import Select from '@/components/shared/Select'
 import {
+  ProjCat,
   useAddBookmarkMutation,
   useDeleteBookmarkMutation,
   useEditBookmarkCategoryMutation
@@ -17,8 +18,7 @@ type BookmarkModalProps = {
   open: boolean
   close: () => void
   projectID: string
-  category?: string
-  isBookmarked: boolean
+  categories?: ProjCat[]
 }
 
 // @TODO allow adding multiple categories
@@ -26,10 +26,9 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   open,
   close,
   projectID,
-  category: currentCategory,
-  isBookmarked
+  categories: currentCategories
 }) => {
-  const [newCategories, setNewCategories] = useState<string[]>([])
+  const [newCategories, setNewCategories] = useState<ProjCat[]>([])
   const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
 
   const { sync } = useBookmarksSync()
@@ -39,6 +38,8 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   const [{ fetching: fetchingDelete }, deleteBookmarkMutation] = useDeleteBookmarkMutation()
   const [{ fetching: fetchingEdit }, editBookmarkCategoryMutation] =
     useEditBookmarkCategoryMutation()
+
+  const isBookmarked = currentCategories && currentCategories.length > 0
 
   // Sends mutation that adds a project to a category or edits the category of a bookmark
   const addOrEditBookmark = async () => {
@@ -133,8 +134,8 @@ const BookmarkModal: FC<BookmarkModalProps> = ({
   }
 
   useEffect(() => {
-    setNewCategories(currentCategory ? [currentCategory] : [])
-  }, [currentCategory])
+    setNewCategories(currentCategories || [])
+  }, [currentCategories])
 
   return (
     <Modal isOpen={open} onClose={close}>

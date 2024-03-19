@@ -2,12 +2,12 @@ import { AiOutlineFilter, AiOutlineNumber } from 'react-icons/ai'
 import { IoTextOutline } from 'react-icons/io5'
 import { Menu } from '@headlessui/react'
 import Button from '@/components/shared/Button'
-import { ProjectFilter } from '@/graphql/generated/gql'
+import { GthbTrendingFilter } from '@/graphql/generated/gql'
 import MenuItemsTransition from '../../../shared/MenuItemsTransition'
 import { FilterType, filterOptions } from '../types'
 
 type FilterSelectorProps = {
-  filters: ProjectFilter
+  filters: GthbTrendingFilter
   addFilter: (key: string, type: FilterType) => void
 }
 

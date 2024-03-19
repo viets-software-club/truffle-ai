@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { Column } from '@tanstack/react-table'
 import Button from '@/components/shared/Button'
-import { Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { GthbTrendingFilter, GthbTrendingOrderBy, GthbRepo } from '@/graphql/generated/gql'
 import useAddProjectModalState from '@/hooks/useAddProjectModalState'
 import EditColumns from './EditColumns'
 import TimeFrameSelector from './TimeFrameSelector'
@@ -11,12 +11,12 @@ import SortingSelector from './filters/SortingSelector'
 import { FilterType, TimeFilterOption } from './types'
 
 type TopBarProps = {
-  columns: Column<Project, unknown>[]
-  filters: ProjectFilter
-  sorting: ProjectOrderBy | null
+  columns: Column<GthbRepo, unknown>[]
+  filters: GthbTrendingFilter
+  sorting: GthbTrendingOrderBy | null
   hideTimeFrame?: boolean
-  setSorting: (sort: ProjectOrderBy | null) => void
-  updateFilters: (filters: ProjectFilter) => void
+  setSorting: (sort: GthbTrendingOrderBy | null) => void
+  updateFilters: (filters: GthbTrendingFilter) => void
 }
 
 /**
@@ -43,7 +43,7 @@ const TopBar = ({
     updateFilters({ ...filters, [key]: defaultFilter })
   }
 
-  const updateSorting = (sort: ProjectOrderBy | null) => {
+  const updateSorting = (sort: GthbTrendingOrderBy | null) => {
     setSorting(sort)
   }
 
@@ -52,9 +52,10 @@ const TopBar = ({
 
     // Remove all other time filters
     const newFilters = { ...filters }
-    Object.values(TimeFilterOption)
-      .filter(t => t !== timeFrame)
-      .forEach(t => delete newFilters[t])
+    // @TODO
+    // Object.values(TimeFilterOption)
+    //   .filter(t => t !== timeFrame)
+    //   .forEach(t => delete newFilters[t])
 
     updateFilters({ ...newFilters, [timeFrame]: { eq: true } })
   }

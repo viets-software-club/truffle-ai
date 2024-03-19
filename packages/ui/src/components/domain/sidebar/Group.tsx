@@ -4,34 +4,35 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ArrowRightIcon } from '@primer/octicons-react'
 import clsx from 'clsx'
-import { Bookmark } from '@/graphql/generated/gql'
+import { ProjBookmark } from '@/graphql/generated/gql'
 import Item from './Item'
 
 type GroupProps = {
+  id: string
   text: string
   path: string
-  bookmarks: Bookmark[]
+  bookmarks: ProjBookmark[]
 }
 
-const Group = ({ text, path, bookmarks }: GroupProps) => {
-  // Get project id and category from URL
+const Group = ({ id, text, path, bookmarks }: GroupProps) => {
+  // Get project or category id from URL
   const {
-    query: { category: categoryFromUrl, id: projectIdFromUrl }
+    query: { category: categoryIdFromUrl, id: projectIdFromUrl }
   } = useRouter()
 
-  const category =
-    (typeof categoryFromUrl === 'string' ? categoryFromUrl : categoryFromUrl?.join('')) || ''
+  const categoryId =
+    (typeof categoryIdFromUrl === 'string' ? categoryIdFromUrl : categoryIdFromUrl?.join('')) || ''
   const projectId =
     (typeof projectIdFromUrl === 'string' ? projectIdFromUrl : projectIdFromUrl?.join('')) || ''
 
-  const [isExpanded, setIsExpanded] = useState(category === text)
+  const [isExpanded, setIsExpanded] = useState(categoryId === id)
 
   // Expand group if user is on the corresponding compare page or on a project detail page which the category contains
   useEffect(() => {
     setIsExpanded(
-      category === text || bookmarks.some(bookmark => bookmark.project.id === projectId)
+      categoryId === id || bookmarks.some(bookmark => bookmark.projRepoId === projectId)
     )
-  }, [category, projectId, bookmarks, text])
+  }, [categoryId, projectId, bookmarks, id])
 
   const Icon = isExpanded ? HiOutlineFolderOpen : HiOutlineFolder
 
@@ -68,17 +69,20 @@ const Group = ({ text, path, bookmarks }: GroupProps) => {
           maxHeight: isExpanded ? `${bookmarks.length * 36 + (bookmarks.length - 1) * 4}px` : '0px'
         }}>
         {bookmarks
-          .sort((a, b) => (a.project.name ?? '').localeCompare(b.project.name ?? ''))
-          .map(({ project }) => {
-            if (!project) return null
-            const { name, organization, associatedPerson } = project
+          .sort((a, b) =>
+            a.projRepo.gthbRepo.gthbRepoName.localeCompare(b.projRepo.gthbRepo.gthbRepoName)
+          )
+          .map(({ projRepo }) => {
+            if (!projRepo) return null
+            const { gthbRepoName, gthbOwner } = projRepo.gthbRepo
+            const projRepoId = projRepo.projRepoId as string
 
             return (
               <Item
-                key={project.id as string}
-                imageSrc={(organization?.avatarUrl || associatedPerson?.avatarUrl) as string}
-                text={name as string}
-                path={`/details/${project.id as string}`}
+                key={projRepoId}
+                imageSrc={gthbOwner.avatarUrl}
+                text={gthbRepoName}
+                path={`/details/${projRepoId}`}
                 secondaryItem
               />
             )

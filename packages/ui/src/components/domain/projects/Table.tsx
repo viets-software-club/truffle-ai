@@ -1,9 +1,9 @@
 import { useReactTable, flexRender } from '@tanstack/react-table'
-import { Project } from '@/graphql/generated/gql'
+import { GthbRepo } from '@/graphql/generated/gql'
 import TableRow from './TableRow'
 
 type TableProps = {
-  table: ReturnType<typeof useReactTable<Project>>
+  table: ReturnType<typeof useReactTable<GthbRepo>>
 }
 
 /**

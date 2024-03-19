@@ -1,29 +1,58 @@
 query FilteredBookmarks(
   $userId: UUID!
-  $category: String
-  $projectId: UUID
+  $categoryId: BigInt
+  $projectId: BigInt
   $first: Int
   $after: Cursor
 ) {
-  bookmarkCollection(
-    filter: { userId: { eq: $userId }, category: { eq: $category }, projectId: { eq: $projectId } }
+  projBookmarkCollection(
+    filter: {
+      authUsersId: { eq: $userId }
+      projBookmarkId: { eq: $categoryId }
+      projRepoId: { eq: $projectId }
+    }
     first: $first
     after: $after
   ) {
     edges {
       node {
-        id
-        category
-        project {
-          id
-          name
-          owningPerson
-          owningOrganization
-          associatedPerson {
-            avatarUrl
+        projCatAndProjBookmarkCollection {
+          edges {
+            node {
+              projCat {
+                projCatId
+                title
+              }
+              projCatId
+            }
           }
-          organization {
-            avatarUrl
+        }
+        projBookmarkId
+        projRepo {
+          projRepoId
+          note
+          gthbRepo {
+            gthbRepoId
+            gthbRepoName
+            gthbRepoUrl
+            gthbOwner {
+              gthbOwnerLogin
+            }
+            stargazerCount
+            gthbStarHistCollection {
+              edges {
+                node {
+                  amount
+                }
+              }
+            }
+            gthbForkHistCollection {
+              edges {
+                node {
+                  amount
+                }
+              }
+            }
           }
         }
       }

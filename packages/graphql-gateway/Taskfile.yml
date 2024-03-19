@@ -6,7 +6,7 @@ tasks:
       - source {{.SOURCE}} && npm run dev
   dev:mesh:
     cmds:
-      - source {{.SOURCE}} && npm run dev-mesh
+      - source {{.SOURCE}} && npm run dev:mesh
   build:
     cmds:
       - source {{.SOURCE}} && npm run build

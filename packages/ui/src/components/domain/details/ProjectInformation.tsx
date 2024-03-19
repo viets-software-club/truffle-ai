@@ -5,37 +5,21 @@ import BookmarkModal from '@/components/domain/details/BookmarkModal'
 import Button from '@/components/shared/Button'
 import Skeleton from '@/components/shared/Skeleton'
 import Tag from '@/components/shared/Tag'
+import { ProjCat, ProjRepo } from '@/graphql/generated/gql'
 import SendToSlack from '../compare/SendToSlack'
 
 type ProjectInformationProps = {
-  id: string
-  githubUrl: string
-  image: string
-  name: string
-  url: string
-  explanation: string
-  about: string
-  // categories: string[]
-  isBookmarked: boolean
-  category?: string
+  project?: ProjRepo
+  categories?: ProjCat[]
   loading?: boolean
 }
 
 /**
  * Top part of project detail page (logo, name, tags, bookmark button)
  */
-const ProjectInformation = ({
-  id,
-  githubUrl,
-  image,
-  url,
-  name,
-  explanation,
-  about,
-  isBookmarked,
-  category,
-  loading
-}: ProjectInformationProps) => {
+const ProjectInformation = ({ project, categories, loading }: ProjectInformationProps) => {
+  const name = `${project?.gthbRepo.gthbOwner.gthbOwnerLogin} / ${project?.gthbRepo.gthbRepoName}`
+
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false)
 
   const toggleBookmarkModal = () => {
@@ -50,14 +34,16 @@ const ProjectInformation = ({
             <Skeleton className='mr-4 h-8 !w-8' />
           ) : (
             <div className='relative mr-4 h-8 w-8 overflow-hidden rounded-md'>
-              <Image src={image} alt='logo' fill sizes='32px' />
+              {project?.gthbRepo.gthbOwner.avatarUrl && (
+                <Image src={project?.gthbRepo.gthbOwner.avatarUrl} alt='logo' fill sizes='32px' />
+              )}
             </div>
           )}
 
           {loading ? (
             <Skeleton className='h-8 !w-48' />
           ) : (
-            <a href={url} target='_blank' rel='noreferrer'>
+            <a href={project?.gthbRepo.gthbRepoUrl} target='_blank' rel='noreferrer'>
               <h1 className='mr-3 text-xl font-medium'>
                 {name.slice(0, 32)}
                 {name.length > 32 ? '...' : ''}
@@ -65,7 +51,9 @@ const ProjectInformation = ({
             </a>
           )}
 
-          {category && <Tag>{category}</Tag>}
+          {categories?.map(category => (
+            <Tag key={category.projCatId as string}>{category.title}</Tag>
+          ))}
         </div>
 
         <div className='flex flex-row items-center justify-end gap-2'>
@@ -76,11 +64,11 @@ const ProjectInformation = ({
             </>
           ) : (
             <>
-              <SendToSlack content={`<${githubUrl}|${name}>`} />
+              <SendToSlack content={`<${project?.gthbRepo.gthbRepoUrl}|${name}>`} />
 
               <Button onClick={toggleBookmarkModal} className='text-white/90'>
                 <Bookmark />
-                {isBookmarked ? 'Edit bookmark' : 'Bookmark'}
+                {categories ? 'Edit bookmark' : 'Bookmark'}
               </Button>
             </>
           )}
@@ -94,24 +82,27 @@ const ProjectInformation = ({
           <>
             <div className='flex shrink-0 flex-col gap-2 xl:w-[250px]'>
               <span className='text-xs font-semibold uppercase text-white/50'>About</span>
-              <p className='hyphens-auto text-sm font-light'>{about}</p>
+              <p className='hyphens-auto text-sm font-light'>
+                {project?.gthbRepo.gthbRepoDescription}
+              </p>
             </div>
 
             <div className='flex flex-col gap-2'>
               <span className='text-xs font-semibold uppercase text-white/50'>Explanation</span>
-              <p className='hyphens-auto text-sm font-light lg:max-w-[750px]'>{explanation}</p>
+              <p className='hyphens-auto text-sm font-light lg:max-w-[750px]'>
+                {project?.projRepo.repoEli5}
+              </p>
             </div>
           </>
         )}
       </div>
 
-      <BookmarkModal
+      {/* <BookmarkModal
         open={bookmarkModalOpen}
         close={() => setBookmarkModalOpen(false)}
-        projectID={id}
-        category={category}
-        isBookmarked={isBookmarked}
-      />
+        projectID={project?.projRepoId as string}
+        categories={categories}
+      /> */}
     </div>
   )
 }

@@ -3,7 +3,12 @@ import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
-import { PageInfo, Project, ProjectFilter, useTrendingProjectsQuery } from '@/graphql/generated/gql'
+import {
+  GthbTrending,
+  GthbTrendingFilter,
+  PageInfo,
+  useTrendingProjectsQuery
+} from '@/graphql/generated/gql'
 import { useLastViewedPageState, useTrendingProjectsState } from '@/hooks/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from './_app'
@@ -14,7 +19,7 @@ const TrendingProjects: NextPageWithLayout = () => {
   const { filters, setFilters, sorting, setSorting } = useTrendingProjectsState()
   const { setLastViewedPage } = useLastViewedPageState()
 
-  const [data, setData] = useState<Project[]>()
+  const [data, setData] = useState<GthbTrending[]>()
   const [loading, setLoading] = useState(true)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<PaginationParameters>({
@@ -31,7 +36,7 @@ const TrendingProjects: NextPageWithLayout = () => {
     bottomTwentyPercent: {}
   })
 
-  const updateFilters = (filter: ProjectFilter) => {
+  const updateFilters = (filter: GthbTrendingFilter) => {
     setFilters(filter)
   }
   // Fetch data from Supabase using generated Urql hook
@@ -48,16 +53,19 @@ const TrendingProjects: NextPageWithLayout = () => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
-      setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
-      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
+      setPageInfo(urqlData?.gthbTrendingCollection?.pageInfo as PageInfo)
+      setTotalCount(urqlData?.gthbTrendingCollection?.edges?.length ?? 0)
+      const projectData = urqlData?.gthbTrendingCollection?.edges?.map(
+        edge => edge.node
+      ) as GthbTrending[]
       setData(projectData)
       setLoading(false)
+      const repos = projectData.map(project => project.gthbRepo)
       setPercentileStats({
-        topTenPercent: getPercentile(projectData, 0.1),
-        bottomTenPercent: getPercentile(projectData, 0.1, false),
-        topTwentyPercent: getPercentile(projectData, 0.2),
-        bottomTwentyPercent: getPercentile(projectData, 0.2, false)
+        topTenPercent: getPercentile(repos, 0.1),
+        bottomTenPercent: getPercentile(repos, 0.1, false),
+        topTwentyPercent: getPercentile(repos, 0.2),
+        bottomTwentyPercent: getPercentile(repos, 0.2, false)
       })
     }
   }, [urqlData])
@@ -68,7 +76,7 @@ const TrendingProjects: NextPageWithLayout = () => {
 
   return (
     <ProjectsTable
-      data={data}
+      data={data?.map(project => project.gthbRepo)}
       filters={filters}
       sorting={sorting}
       fetching={loading}

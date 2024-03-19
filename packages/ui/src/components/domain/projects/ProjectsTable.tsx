@@ -8,14 +8,19 @@ import createColumns, { PercentileStats } from '@/components/domain/projects/col
 import { PaginationParameters } from '@/components/domain/projects/types'
 import Error from '@/components/shared/Error'
 import Skeleton from '@/components/shared/Skeleton'
-import { PageInfo, Project, ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import {
+  GthbRepo,
+  GthbTrendingFilter,
+  GthbTrendingOrderBy,
+  PageInfo
+} from '@/graphql/generated/gql'
 import { useProjectTableVisibilityState } from '@/hooks/useProjectTableState'
 import ProjectListItem from './ProjectListItem'
 
 type ProjectsTableProps = {
-  data?: Project[]
-  filters: ProjectFilter
-  sorting: ProjectOrderBy | null
+  data?: GthbRepo[]
+  filters: GthbTrendingFilter
+  sorting: GthbTrendingOrderBy | null
   fetching: boolean
   error: CombinedError | undefined
   hideTimeFrame?: boolean
@@ -23,8 +28,8 @@ type ProjectsTableProps = {
   pageInfo: PageInfo
   pageSize: number
   percentileStats: PercentileStats
-  setSorting: (sort: ProjectOrderBy | null) => void
-  updateFilters: (filters: ProjectFilter) => void
+  setSorting: (sort: GthbTrendingOrderBy | null) => void
+  updateFilters: (filters: GthbTrendingFilter) => void
   setPagination: Dispatch<SetStateAction<PaginationParameters>>
   beforeTable?: ReactNode
   loadingSkeletons?: number
@@ -127,7 +132,7 @@ const ProjectsTable: FC<ProjectsTableProps> = ({
             <div className='flex flex-col gap-1 md:hidden'>
               {data?.map(project => (
                 <ProjectListItem
-                  key={project.id as string}
+                  key={project.gthbRepoId as string}
                   project={project}
                   percentileStats={percentileStats}
                 />

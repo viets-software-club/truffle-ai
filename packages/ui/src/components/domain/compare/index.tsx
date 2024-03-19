@@ -5,13 +5,13 @@ import Button from '@/components/shared/Button'
 import Skeleton from '@/components/shared/Skeleton'
 import { DataPoint } from '@/components/shared/chart/Chart'
 import ChartWrapper from '@/components/shared/chart/ChartWrapper'
-import { Project } from '@/graphql/generated/gql'
+import { GthbRepo, ProjCat } from '@/graphql/generated/gql'
 import CategoryModal from './CategoryModal'
 import SendToSlack from './SendToSlack'
 
 type CompareContentProps = {
-  data?: Project[]
-  category: string
+  data?: GthbRepo[]
+  category?: ProjCat
   loading?: boolean
 }
 
@@ -22,8 +22,8 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
   const [selectedMetric, setSelectedMetric] = useState('Stars')
 
   // Redirects to new category page after renaming
-  const redirect = (newCategory: string) => {
-    void router.replace(`/compare/${encodeURIComponent(newCategory)}`)
+  const redirect = (newCategoryId: string) => {
+    void router.replace(`/compare/${encodeURIComponent(newCategoryId)}`)
   }
 
   const toggleCategoryModal = () => {
@@ -32,12 +32,7 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
 
   const slackMessage =
     data
-      ?.map(
-        project =>
-          `- <${project.githubUrl as string}|${project.name as string}>, ${
-            project.starCount as number
-          } stars`
-      )
+      ?.map(repo => `- <${repo.gthbRepoUrl}|${repo.gthbRepoName}>, ${repo.stargazerCount} stars`)
       .join('\n') ?? ''
 
   return (
@@ -52,7 +47,7 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
           ) : (
             <>
               <p className='text-xs font-medium uppercase text-white/50'>Compare</p>
-              <h1 className='text-2xl font-medium'>{category}</h1>
+              <h1 className='text-2xl font-medium'>{category?.title}</h1>
             </>
           )}
         </div>
@@ -79,13 +74,18 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
       <ChartWrapper
         loading={loading}
         datasets={
-          data?.map(project => ({
-            id: project.id as string,
-            name: project.name as string,
-            data:
-              selectedMetric === 'stars'
-                ? (project.starHistory as DataPoint[])
-                : (project.forkHistory as DataPoint[])
+          data?.map(repo => ({
+            id: repo.gthbRepoId as string,
+            name: repo.gthbRepoName,
+            data: (selectedMetric === 'stars'
+              ? repo?.gthbStarHistCollection.edges.map(edge => ({
+                  date: edge.node.gthbStarHistDate as string,
+                  count: edge.node.amount as number
+                }))
+              : repo?.gthbForkHistCollection.edges.map(edge => ({
+                  date: edge.node.gthbForkHistDate as string,
+                  count: edge.node.amount as number
+                }))) as DataPoint[]
           })) ?? []
         }
         multipleLines
@@ -99,12 +99,14 @@ const CompareContent = ({ data, category, loading }: CompareContentProps) => {
         <p className='px-6 py-3.5 font-medium'>All projects in this category</p>
       )}
 
-      <CategoryModal
-        open={categoryModalOpen}
-        close={() => setCategoryModalOpen(false)}
-        category={category}
-        redirect={redirect}
-      />
+      {category && (
+        <CategoryModal
+          open={categoryModalOpen}
+          close={() => setCategoryModalOpen(false)}
+          category={category}
+          redirect={redirect}
+        />
+      )}
     </>
   )
 }

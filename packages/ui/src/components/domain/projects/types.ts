@@ -1,5 +1,6 @@
-import { OrderByDirection, PageInfo } from '@/graphql/generated/gql'
+import { GthbTrendingOrderBy, OrderByDirection, PageInfo } from '@/graphql/generated/gql'
 
+// @TODO update
 export type FilterOption = {
   key:
     | 'name'
@@ -26,7 +27,7 @@ export const filterOptions: FilterOption[] = [
 ]
 
 export enum TimeFilterOption {
-  'Today' = 'isTrendingDaily',
+  'Today' = 'week',
   'This Week' = 'isTrendingWeekly',
   'This Month' = 'isTrendingMonthly'
 }
@@ -47,8 +48,10 @@ export enum StringFilterOperator {
   'starts with' = 'startsWith'
 }
 
-export const defaultSort = {
-  name: OrderByDirection.AscNullsLast
+// @TODO change back to name
+export const defaultSort: GthbTrendingOrderBy = {
+  // name: OrderByDirection.AscNullsLast
+  createdAt: OrderByDirection.DescNullsLast
 }
 
 export type PaginationParameters = {

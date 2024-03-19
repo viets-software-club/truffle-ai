@@ -1,25 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useUser } from '@supabase/auth-helpers-react'
 import { RowPinningState } from '@tanstack/react-table'
 import CompareContent from '@/components/domain/compare'
 import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
-import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
+import { defaultSort } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
 import {
-  Project,
-  ProjectFilter,
-  PageInfo,
-  useBookmarkIdsQuery,
-  useTrendingProjectsQuery,
-  ProjectOrderBy
+  GthbRepo,
+  GthbTrendingFilter,
+  GthbTrendingOrderBy,
+  PageInfo
 } from '@/graphql/generated/gql'
-import {
-  useCategoryProjectsState,
-  useComparePageRowPinningState,
-  useLastViewedPageState
-} from '@/hooks/useProjectTableState'
+import useFetchBookmarks from '@/hooks/useFetchBookmarks'
+import { useComparePageRowPinningState } from '@/hooks/useProjectTableState'
 import getPercentile from '@/util/getPercentile'
 import { NextPageWithLayout } from '../_app'
 
@@ -29,7 +23,6 @@ const PAGE_SIZE = 30
  * Compare projects page
  */
 const ComparePage: NextPageWithLayout = () => {
-  // Get project id from URL
   const {
     query: { category: categoryFromUrl }
   } = useRouter()
@@ -37,25 +30,16 @@ const ComparePage: NextPageWithLayout = () => {
   const category =
     (typeof categoryFromUrl === 'string' ? categoryFromUrl : categoryFromUrl?.join('')) || ''
 
-  const user = useUser()
-
-  const { setFilters: setCategoryFilters, setSorting: setCategorySorting } =
-    useCategoryProjectsState()
-  const { lastViewedPage, setLastViewedPage } = useLastViewedPageState()
+  // const { setFilters: setCategoryFilters, setSorting: setCategorySorting } =
+  //   useCategoryProjectsState()
+  // const { lastViewedPage, setLastViewedPage } = useLastViewedPageState()
 
   const { rowPinning, setRowPinning } = useComparePageRowPinningState()
 
-  const [data, setData] = useState<Project[]>()
+  const [data, setData] = useState<GthbRepo[]>()
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState<ProjectFilter>({})
-  const [sorting, setSorting] = useState<ProjectOrderBy | null>(defaultSort)
-  const [pageInfo, setPageInfo] = useState<PageInfo>()
-  const [pagination, setPagination] = useState<PaginationParameters>({
-    first: PAGE_SIZE,
-    last: null,
-    after: null,
-    before: null
-  })
+  const [filters, setFilters] = useState<GthbTrendingFilter>({})
+  const [sorting, setSorting] = useState<GthbTrendingOrderBy | null>(defaultSort)
 
   const [percentileStats, setPercentileStats] = useState<PercentileStats>({
     topTenPercent: {},
@@ -64,41 +48,17 @@ const ComparePage: NextPageWithLayout = () => {
     bottomTwentyPercent: {}
   })
 
-  const updateFilters = (filter: ProjectFilter) => {
+  const updateFilters = (filter: GthbTrendingFilter) => {
     setFilters(filter)
   }
 
-  // Fetches all bookmarked project ids of a user in the given category
-  const [{ data: bookmarkData, fetching: bookmarksFetching, error: errorBookmarks }] =
-    useBookmarkIdsQuery({
-      variables: { userId: user?.id as string, category }
-    })
-
-  // Get array with all bookmarked project ids
-  const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
-    edge => edge.node.project?.id as string
-  ) as string[]
-
-  const [{ data: urqlData, error: errorProjects }] = useTrendingProjectsQuery({
-    variables: {
-      orderBy: sorting || defaultSort,
-      filter: {
-        ...filters,
-        id: {
-          in: bookmarkIds
-        }
-      },
-      ...pagination
-    }
-  })
-
-  const error = errorBookmarks || errorProjects
+  const { bookmarks, fetching } = useFetchBookmarks(category)
 
   // Only update table data when urql data changes
   useEffect(() => {
-    if (urqlData) {
-      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
-      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
+    if (bookmarks && !fetching) {
+      const projectData = bookmarks.map(b => b.projRepo.gthbRepo)
+
       setData(projectData)
       setLoading(false)
       setPercentileStats({
@@ -108,21 +68,21 @@ const ComparePage: NextPageWithLayout = () => {
         bottomTwentyPercent: getPercentile(projectData, 0.2, false)
       })
     }
-  }, [urqlData])
+  }, [bookmarks, fetching])
 
-  useEffect(() => {
-    if (lastViewedPage !== category && bookmarkIds && !bookmarksFetching) {
-      setLastViewedPage(category)
-      setCategoryFilters({ ...filters, id: { in: bookmarkIds } })
-    }
-  }, [bookmarkIds])
+  // useEffect(() => {
+  //   if (lastViewedPage !== category && bookmarkIds && !bookmarksFetching) {
+  //     setLastViewedPage(category)
+  //     setCategoryFilters({ ...filters, id: { in: bookmarkIds } })
+  //   }
+  // }, [bookmarkIds])
 
-  useEffect(() => {
-    if (lastViewedPage === category && !bookmarksFetching) {
-      setCategoryFilters({ ...filters, id: bookmarkIds ? { in: bookmarkIds } : undefined })
-      setCategorySorting(sorting)
-    }
-  }, [filters, sorting])
+  // useEffect(() => {
+  //   if (lastViewedPage === category && !bookmarksFetching) {
+  //     setCategoryFilters({ ...filters, id: bookmarkIds ? { in: bookmarkIds } : undefined })
+  //     setCategorySorting(sorting)
+  //   }
+  // }, [filters, sorting])
 
   return (
     <ProjectsTable
@@ -130,15 +90,25 @@ const ComparePage: NextPageWithLayout = () => {
       filters={filters}
       sorting={sorting}
       fetching={loading}
-      error={error}
+      // @TODO fix error handling
+      error={undefined}
       setSorting={setSorting}
       updateFilters={updateFilters}
       totalCount={data?.length ?? 0} // @TODO: Fix totalCount
-      pageInfo={pageInfo as PageInfo}
-      setPagination={setPagination}
+      // @TODO do we need this?
+      pageInfo={{} as PageInfo}
+      setPagination={() => {}}
       pageSize={PAGE_SIZE}
       percentileStats={percentileStats}
-      beforeTable={<CompareContent data={data} category={category} loading={loading} />}
+      beforeTable={
+        <CompareContent
+          data={data}
+          category={
+            bookmarks[0].projCatAndProjBookmarkCollection.edges.map(edge => edge.node.projCat)[0]
+          }
+          loading={loading}
+        />
+      }
       hideTimeFrame
       showPinned
       rowPinning={{

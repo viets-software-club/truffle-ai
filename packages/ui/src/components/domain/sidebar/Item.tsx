@@ -26,8 +26,8 @@ const Item = ({ Icon, imageSrc, text, path, secondaryItem, highlighted }: ItemPr
           {Icon ? (
             <Icon className='h-[14px] w-[14px] text-white/50' />
           ) : (
-            <div className='relative ml-2 h-4 w-4 overflow-hidden rounded-md'>
-              <Image src={imageSrc as string} alt='logo' fill sizes='24px' />
+            <div className='relative ml-2 h-4 w-4 overflow-hidden rounded-md bg-white/20'>
+              {imageSrc && <Image src={imageSrc} alt='logo' fill sizes='24px' />}
             </div>
           )}
 

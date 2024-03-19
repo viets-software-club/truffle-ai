@@ -30,16 +30,19 @@ const NavSidebar = () => {
           ) : // Display categories as folders
           categories.length > 0 ? (
             categories
-              .sort((a, b) => (a ?? '').localeCompare(b ?? ''))
+              .sort((a, b) => a.title.localeCompare(b.title))
               .map(category => (
-                <div key={category}>
-                  <Group
-                    key={category}
-                    text={category}
-                    path={`/compare/${encodeURIComponent(category)}`}
-                    bookmarks={bookmarks.filter(bookmark => bookmark.category === category)}
-                  />
-                </div>
+                <Group
+                  key={category.projCatId as string}
+                  id={category.projCatId as string}
+                  text={category.title}
+                  path={`/compare/${encodeURIComponent(category.projCatId as string)}`}
+                  bookmarks={bookmarks.filter(bookmark =>
+                    bookmark.projCatAndProjBookmarkCollection.edges
+                      .map(edge => edge.node.projCatId as string)
+                      .includes(category.projCatId as string)
+                  )}
+                />
               ))
           ) : (
             <p className='py-2.5 pl-5 text-xs text-white/90'>No bookmarks yet</p>
@@ -52,7 +55,7 @@ const NavSidebar = () => {
         </div>
       </Sidebar>
 
-      <MobileMenu title='TruffleAI' bookmarks={bookmarks} />
+      <MobileMenu title='TruffleAI' bookmarks={bookmarks} categories={categories} />
     </>
   )
 }

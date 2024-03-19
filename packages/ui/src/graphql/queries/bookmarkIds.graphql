@@ -1,13 +1,33 @@
-query BookmarkIds($userId: UUID!, $category: String, $projectId: UUID) {
-  bookmarkCollection(
-    filter: { userId: { eq: $userId }, category: { eq: $category }, projectId: { eq: $projectId } }
+query BookmarkIds($userId: UUID!, $category: BigInt, $projectId: BigInt) {
+  projBookmarkCollection(
+    filter: {
+      authUsersId: { eq: $userId }
+      projBookmarkId: { eq: $category }
+      projRepoId: { eq: $projectId }
+    }
   ) {
     edges {
       node {
-        id
-        category
-        project {
-          id
+        projCatAndProjBookmarkCollection {
+          edges {
+            node {
+              projCat {
+                projCatId
+                title
+              }
+            }
+          }
+        }
+        projBookmarkId
+        projRepo {
+          projRepoId
+          note
+          gthbRepo {
+            gthbRepoName
+            gthbOwner {
+              gthbOwnerLogin
+            }
+          }
         }
       }
     }

@@ -4,11 +4,11 @@ import { TbColumns2 } from 'react-icons/tb'
 import { Menu } from '@headlessui/react'
 import { Column } from '@tanstack/react-table'
 import Button from '@/components/shared/Button'
-import { Project } from '@/graphql/generated/gql'
+import { GthbRepo } from '@/graphql/generated/gql'
 import MenuItemsTransition from '../../shared/MenuItemsTransition'
 
 type EditColumnsProps = {
-  columns: Column<Project, unknown>[]
+  columns: Column<GthbRepo, unknown>[]
 }
 
 const EditColumns = ({ columns }: EditColumnsProps) => {

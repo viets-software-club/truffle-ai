@@ -1,12 +1,12 @@
 query TrendingProjects(
-  $orderBy: ProjectOrderBy!
-  $filter: ProjectFilter!
+  $orderBy: GthbTrendingOrderBy!
+  $filter: GthbTrendingFilter!
   $first: Int
   $last: Int
   $after: Cursor
   $before: Cursor
 ) {
-  projectCollection(
+  gthbTrendingCollection(
     filter: $filter
     orderBy: [$orderBy]
     first: $first
@@ -16,38 +16,39 @@ query TrendingProjects(
   ) {
     edges {
       node {
-        id
-        name
-        about
-        eli5
-        starCount
-        issueCount
-        forkCount
-        pullRequestCount
-        contributorCount
-        githubUrl
-        websiteUrl
-        starHistory
-        forkHistory
-        owningPerson
-        owningOrganization
-        associatedPerson {
-          id
-          name
-          login
-          email
-          avatarUrl
+        gthbRepoId
+        gthbRepo {
+          gthbRepoId
+          gthbRepoName
+          gthbRepoDescription
+          stargazerCount
+          issuesTotalCount
+          forkCount
+          pullRequestsTotalCount
+          gthbRepoUrl
+          homepageUrl
+          gthbStarHistCollection {
+            edges {
+              node {
+                amount
+              }
+            }
+          }
+          gthbForkHistCollection {
+            edges {
+              node {
+                amount
+              }
+            }
+          }
+          gthbOwner {
+            avatarUrl
+            gthbOwnerType
+            gthbOwnerLogin
+          }
         }
-        organization {
-          id
-          login
-          avatarUrl
-        }
-        isTrendingDaily
-        isTrendingWeekly
-        isTrendingMonthly
-        issuesPerContributor
-        forksPerContributor
+        dateRange
+        lang
       }
     }
     pageInfo {

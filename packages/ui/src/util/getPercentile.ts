@@ -1,4 +1,4 @@
-import { Project } from '@/graphql/generated/gql'
+import { GthbRepo } from '@/graphql/generated/gql'
 
 const NUMERIC_FIELDS = [
   'contributorCount',
@@ -13,7 +13,7 @@ const NUMERIC_FIELDS = [
 type NumericField = (typeof NUMERIC_FIELDS)[number]
 type NumericFieldStats = Record<NumericField, number | null>
 
-const getPercentile = (projects: Project[], percentile: number, sortDescending = true) => {
+const getPercentile = (projects: GthbRepo[], percentile: number, sortDescending = true) => {
   const result: NumericFieldStats = {
     contributorCount: null,
     forkCount: null,

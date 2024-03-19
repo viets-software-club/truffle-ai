@@ -3,7 +3,7 @@ import { TbRefresh, TbTrash } from 'react-icons/tb'
 import { Popover } from '@headlessui/react'
 import clsx from 'clsx'
 import Button from '@/components/shared/Button'
-import { IntFilter, ProjectFilter, StringFilter } from '@/graphql/generated/gql'
+import { GthbTrendingFilter, IntFilter, StringFilter } from '@/graphql/generated/gql'
 import MenuItemsTransition from '../../../shared/MenuItemsTransition'
 import { FilterOption, IntFilterOperator, StringFilterOperator, filterOptions } from '../types'
 import FilterItemModalTrigger from './FilterItemModalTrigger'
@@ -14,8 +14,8 @@ const isIntFilter = (filter: StringFilter | IntFilter) => (filter as IntFilter).
 
 type FilterItemModalProps = {
   currentKey: FilterOption['key']
-  filters: ProjectFilter
-  updateFilters: (filter: ProjectFilter) => void
+  filters: GthbTrendingFilter
+  updateFilters: (filter: GthbTrendingFilter) => void
 }
 
 const FilterItemModal = ({ filters, currentKey, updateFilters }: FilterItemModalProps) => {

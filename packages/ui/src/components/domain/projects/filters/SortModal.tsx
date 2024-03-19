@@ -10,7 +10,7 @@ import { Popover } from '@headlessui/react'
 import { ChevronDownIcon } from '@primer/octicons-react'
 import clsx from 'clsx'
 import Button from '@/components/shared/Button'
-import { OrderByDirection, ProjectOrderBy } from '@/graphql/generated/gql'
+import { GthbTrendingOrderBy, OrderByDirection } from '@/graphql/generated/gql'
 import MenuItemsTransition from '../../../shared/MenuItemsTransition'
 import { filterOptions } from '../types'
 
@@ -18,12 +18,12 @@ const ASC = OrderByDirection.AscNullsLast
 const DESC = OrderByDirection.DescNullsLast
 
 type SortModalProps = {
-  sorting: ProjectOrderBy
-  setSorting: (sort: ProjectOrderBy | null) => void
+  sorting: GthbTrendingOrderBy
+  setSorting: (sort: GthbTrendingOrderBy | null) => void
 }
 
 const SortModal = ({ sorting, setSorting }: SortModalProps) => {
-  const currentKey = Object.keys(sorting)[0] as keyof ProjectOrderBy
+  const currentKey = Object.keys(sorting)[0] as keyof GthbTrendingOrderBy
   const column = filterOptions.find(option => option.key === currentKey)?.column
   const currentDirection = sorting[currentKey]
 

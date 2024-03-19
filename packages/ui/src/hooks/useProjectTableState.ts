@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import defaultFilters from '@/components/domain/projects/filters/defaultFilters'
 import { defaultSort } from '@/components/domain/projects/types'
-import { ProjectFilter, ProjectOrderBy } from '@/graphql/generated/gql'
+import { GthbTrendingFilter, GthbTrendingOrderBy } from '@/graphql/generated/gql'
 
 interface ProjectTableVisibilityState {
   columnVisibility: VisibilityState
@@ -34,19 +34,19 @@ export const useProjectTableVisibilityState = create<ProjectTableVisibilityState
 )
 
 interface ProjectTableState {
-  filters: ProjectFilter
-  setFilters: (filters: ProjectFilter) => void
-  sorting: ProjectOrderBy | null
-  setSorting: (sort: ProjectOrderBy | null) => void
+  filters: GthbTrendingFilter
+  setFilters: (filters: GthbTrendingFilter) => void
+  sorting: GthbTrendingOrderBy | null
+  setSorting: (sort: GthbTrendingOrderBy | null) => void
 }
 
 export const useTrendingProjectsState = create<ProjectTableState>()(
   persist(
     set => ({
       filters: defaultFilters,
-      setFilters: (filters: ProjectFilter) => set({ filters }),
+      setFilters: (filters: GthbTrendingFilter) => set({ filters }),
       sorting: defaultSort,
-      setSorting: (sorting: ProjectOrderBy | null) => {
+      setSorting: (sorting: GthbTrendingOrderBy | null) => {
         set({ sorting })
       }
     }),
@@ -61,11 +61,11 @@ export const useBookmarkedProjectsState = create<ProjectTableState>()(
   persist(
     set => ({
       filters: {},
-      setFilters: (filters: ProjectFilter) => {
+      setFilters: (filters: GthbTrendingFilter) => {
         set({ filters })
       },
       sorting: defaultSort,
-      setSorting: (sorting: ProjectOrderBy | null) => {
+      setSorting: (sorting: GthbTrendingOrderBy | null) => {
         set({ sorting })
       }
     }),
@@ -80,11 +80,11 @@ export const useCategoryProjectsState = create<ProjectTableState>()(
   persist(
     set => ({
       filters: {},
-      setFilters: (filters: ProjectFilter) => {
+      setFilters: (filters: GthbTrendingFilter) => {
         set({ filters })
       },
       sorting: defaultSort,
-      setSorting: (sorting: ProjectOrderBy | null) => {
+      setSorting: (sorting: GthbTrendingOrderBy | null) => {
         set({ sorting })
       }
     }),

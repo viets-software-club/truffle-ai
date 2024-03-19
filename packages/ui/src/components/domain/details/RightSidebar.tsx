@@ -4,14 +4,14 @@ import LanguagesItem from '@/components/domain/details/LanguagesItem'
 import Box from '@/components/domain/sidebar/Box'
 import SmallSidebar from '@/components/domain/sidebar/SmallSidebar'
 import Skeleton from '@/components/shared/Skeleton'
-import { Project } from '@/graphql/generated/gql'
+import { ProjRepo } from '@/graphql/generated/gql'
 import { AffinityData } from '@/util/sendToAffinity'
 import SendToAffinity from '../settings/SendToAffinity'
 import GithubStats from './GithubStats'
 import Notes from './Notes'
 
 type RightSidebarProps = {
-  project?: Project
+  project?: ProjRepo
   loading?: boolean
 }
 

@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { Row, flexRender } from '@tanstack/react-table'
 import clsx from 'clsx'
-import { Project } from '@/graphql/generated/gql'
+import { GthbRepo } from '@/graphql/generated/gql'
 
 type TableRowProps = {
-  row: Row<Project>
+  row: Row<GthbRepo>
 }
 
 const TableRow = ({ row: { id, original, getVisibleCells } }: TableRowProps) => (
@@ -21,12 +21,12 @@ const TableRow = ({ row: { id, original, getVisibleCells } }: TableRowProps) => 
             'rounded-r-lg': isLastChild
           })}>
           <Link
-            href={`/details/${original.id as string}`}
+            href={`/details/${original.gthbRepoId}`}
             className={clsx('block p-2 pl-0', id === 'Pin' && 'pr-1')}
             data-tooltip-id={cell.column.id === 'Name' ? 'tooltip' : undefined}
             data-tooltip-content={
               cell.column.id === 'Name'
-                ? original.eli5 ?? original.about ?? 'No description'
+                ? original.gthbRepoDescription ?? 'No description'
                 : undefined
             }
             data-tooltip-place='top'

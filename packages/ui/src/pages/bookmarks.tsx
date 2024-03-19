@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useUser } from '@supabase/auth-helpers-react'
 import ProjectsTable from '@/components/domain/projects/ProjectsTable'
 import { PercentileStats } from '@/components/domain/projects/columns'
 import { defaultSort, PaginationParameters } from '@/components/domain/projects/types'
 import Page from '@/components/shared/Page'
 import {
+  GthbRepo,
+  GthbTrendingFilter,
   PageInfo,
-  Project,
-  ProjectFilter,
-  useBookmarkIdsQuery,
   useTrendingProjectsQuery
 } from '@/graphql/generated/gql'
 import { useBookmarkedProjectsState, useLastViewedPageState } from '@/hooks/useProjectTableState'
@@ -17,7 +15,7 @@ import { NextPageWithLayout } from './_app'
 
 const PAGE_SIZE = 30
 
-// @TODO add category column to table
+// @TODO create new query for bookmarked projects
 
 /**
  * Project table with all bookmarks of a user
@@ -26,7 +24,7 @@ const Bookmarks: NextPageWithLayout = () => {
   const { filters, setFilters, sorting, setSorting } = useBookmarkedProjectsState()
   const { setLastViewedPage } = useLastViewedPageState()
 
-  const [data, setData] = useState<Project[]>()
+  const [data, setData] = useState<GthbRepo[]>()
   const [loading, setLoading] = useState(true)
   const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [pagination, setPagination] = useState<PaginationParameters>({
@@ -36,7 +34,7 @@ const Bookmarks: NextPageWithLayout = () => {
     before: null
   })
   const [totalCount, setTotalCount] = useState(0)
-  const user = useUser()
+  // const user = useUser()
 
   const [percentileStats, setPercentileStats] = useState<PercentileStats>({
     topTenPercent: {},
@@ -45,27 +43,28 @@ const Bookmarks: NextPageWithLayout = () => {
     bottomTwentyPercent: {}
   })
 
-  const updateFilters = (filter: ProjectFilter) => {
+  const updateFilters = (filter: GthbTrendingFilter) => {
     setFilters(filter)
   }
 
-  const [{ data: bookmarkData, error: errorBookmarks }] = useBookmarkIdsQuery({
-    variables: { userId: user?.id as string }
-  })
+  // const [{ data: bookmarkData, error: errorBookmarks }] = useBookmarkIdsQuery({
+  //   variables: { userId: user?.id as string }
+  // })
 
   // Get array with all bookmarked project ids
-  const bookmarkIds = bookmarkData?.bookmarkCollection?.edges?.map(
-    edge => edge.node.project?.id as string
-  ) as string[]
+  // const bookmarkIds = bookmarkData?.projBookmarkCollection?.edges?.map(
+  //   edge => edge.node.projBookmarkId as string
+  // ) as string[]
 
   const [{ data: urqlData, error: errorProjects }] = useTrendingProjectsQuery({
     variables: {
       orderBy: sorting || defaultSort,
       filter: {
-        ...filters,
-        id: {
-          in: bookmarkIds
-        }
+        ...filters
+        // @TODO add filter for bookmarked projects
+        // id: {
+        //   in: bookmarkIds
+        // }
       },
       ...pagination
     }
@@ -74,9 +73,10 @@ const Bookmarks: NextPageWithLayout = () => {
   // Only update table data when urql data changes
   useEffect(() => {
     if (urqlData) {
-      setPageInfo(urqlData?.projectCollection?.pageInfo as PageInfo)
-      setTotalCount(urqlData?.projectCollection?.edges?.length ?? 0)
-      const projectData = urqlData?.projectCollection?.edges?.map(edge => edge.node) as Project[]
+      setPageInfo(urqlData?.gthbTrendingCollection?.pageInfo as PageInfo)
+      setTotalCount(urqlData?.gthbTrendingCollection?.edges?.length ?? 0)
+      const projectData =
+        urqlData?.gthbTrendingCollection?.edges?.map(edge => edge.node.gthbRepo as GthbRepo) ?? []
       setData(projectData)
       setLoading(false)
       setPercentileStats({
@@ -98,7 +98,8 @@ const Bookmarks: NextPageWithLayout = () => {
       filters={filters}
       sorting={sorting}
       fetching={loading}
-      error={errorProjects || errorBookmarks}
+      // error={errorProjects || errorBookmarks}
+      error={errorProjects}
       hideTimeFrame
       setSorting={setSorting}
       updateFilters={updateFilters}

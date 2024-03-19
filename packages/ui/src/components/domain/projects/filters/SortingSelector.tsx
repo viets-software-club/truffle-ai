@@ -3,13 +3,13 @@ import { IoTextOutline } from 'react-icons/io5'
 import { TbArrowsSort } from 'react-icons/tb'
 import { Menu } from '@headlessui/react'
 import Button from '@/components/shared/Button'
-import { OrderByDirection, ProjectOrderBy } from '@/graphql/generated/gql'
+import { OrderByDirection, GthbTrendingOrderBy } from '@/graphql/generated/gql'
 import MenuItemsTransition from '../../../shared/MenuItemsTransition'
 import { filterOptions } from '../types'
 
 type SortingSelectorProps = {
-  sorting: ProjectOrderBy | null
-  updateSorting: (sort: ProjectOrderBy | null) => void
+  sorting: GthbTrendingOrderBy | null
+  updateSorting: (sort: GthbTrendingOrderBy | null) => void
 }
 
 const SortingSelector = ({ sorting, updateSorting }: SortingSelectorProps) => (

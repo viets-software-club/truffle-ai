@@ -2,19 +2,19 @@ import { ChangeEvent, FC, FormEvent, useState } from 'react'
 import Button from '@/components/shared/Button'
 import Input from '@/components/shared/Input'
 import Modal from '@/components/shared/Modal'
-import { useRenameBookmarkCategoryMutation } from '@/graphql/generated/gql'
+import { ProjCat, useRenameBookmarkCategoryMutation } from '@/graphql/generated/gql'
 
 const defaultErrorMessage = 'Something went wrong. Please try again later.'
 
 type CategoryModalProps = {
   open: boolean
-  category: string
+  category: ProjCat
   close: () => void
   redirect: (newCategory: string) => void
 }
 
 const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect }) => {
-  const [newCategory, setNewCategory] = useState<string>(category)
+  const [newCategory, setNewCategory] = useState<string>(category.title)
   const [error, setError] = useState<string | null>(null)
 
   const [{ fetching }, renameBookmarkCategoryMutation] = useRenameBookmarkCategoryMutation()
@@ -22,7 +22,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect
   // Sends mutation that renames the bookmark category
   const renameBookmarkCategory = async () => {
     try {
-      const res = await renameBookmarkCategoryMutation({ oldCategory: category, newCategory })
+      const res = await renameBookmarkCategoryMutation({ oldCategory: category.title, newCategory })
       const responseCode = parseInt(res?.data?.renameBookmarkCategory?.code as string, 10)
 
       // If the mutation was successful, show success message
@@ -50,7 +50,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ open, close, category, redirect
     setError(null)
 
     // Don't do anything if the category is the same
-    if (newCategory === category) close()
+    if (newCategory === category.title) close()
 
     // Show error message if the category is empty
     if (newCategory.length === 0) {

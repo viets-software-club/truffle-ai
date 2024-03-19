@@ -5,16 +5,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import Logo from '@/assets/logo.svg'
-import { Bookmark } from '@/graphql/generated/gql'
+import { ProjBookmark, ProjCat } from '@/graphql/generated/gql'
 import MenuIcon from './MenuIcon'
 import MobileNavLink from './MobileNavLink'
 
 type MobileMenuProps = {
   title: string
-  bookmarks: Bookmark[]
+  bookmarks: ProjBookmark[]
+  categories: ProjCat[]
 }
 
-const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
+const MobileMenu = ({ title, bookmarks, categories }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleMenuClose = () => setIsOpen(false)
@@ -67,46 +68,56 @@ const MobileMenu = ({ title, bookmarks }: MobileMenuProps) => {
           <MobileNavLink Icon={LuLogOut} path='/logout' text='Log out' onClick={handleMenuClose} />
         </div>
 
-        {bookmarks
-          // Get a list of unique categories to display as folders
-          .map(({ category }) => category)
-          .filter((value, index, array) => array.indexOf(value) === index)
-          .map(category => (
-            <div key={category} className='flex flex-col gap-2 border-b border-white/5 py-3'>
-              <Link
-                href={`/compare/${encodeURIComponent(category as string)}`}
-                className='mb-2 flex items-center gap-1 text-sm font-semibold text-white/50'
-                onClick={handleMenuClose}>
-                <FiFolder />
-                {category}
-              </Link>
+        {categories.map(category => (
+          <div
+            key={category.projCatId as string}
+            className='flex flex-col gap-2 border-b border-white/5 py-3'>
+            <Link
+              href={`/compare/${category.projCatId as string}`}
+              className='mb-2 flex items-center gap-1 text-sm font-semibold text-white/50'
+              onClick={handleMenuClose}>
+              <FiFolder />
+              {category.title}
+            </Link>
 
-              {/* Display all projects in a category under their corresponding folder */}
-              {bookmarks
-                .filter(bookmark => bookmark.category === category)
-                .map(({ project }) => {
-                  if (!project) return null
-                  const { name, organization, associatedPerson } = project
+            {/* Display all projects in a category under their corresponding folder */}
+            {bookmarks
+              .filter(bookmark =>
+                bookmark.projCatAndProjBookmarkCollection.edges
+                  .map(edge => edge.node.projCatId as string)
+                  .includes(category.projCatId as string)
+              )
+              .sort((a, b) =>
+                a.projRepo.gthbRepo.gthbRepoName.localeCompare(b.projRepo.gthbRepo.gthbRepoName)
+              )
+              .map(({ projRepo }) => {
+                if (!projRepo) return null
+                const { gthbRepoName, gthbOwner } = projRepo.gthbRepo
+                const projRepoId = projRepo.projRepoId as string
 
-                  return (
-                    <Link
-                      key={project.id as string}
-                      className='flex items-center gap-2 rounded-md p-2 text-sm transition-colors duration-150 hover:bg-white/5'
-                      href={`/details/${project.id as string}`}
-                      onClick={handleMenuClose}>
+                return (
+                  <Link
+                    key={projRepoId}
+                    className='flex items-center gap-2 rounded-md p-2 text-sm transition-colors duration-150 hover:bg-white/5'
+                    href={`/details/${projRepoId}`}
+                    onClick={handleMenuClose}>
+                    {gthbOwner.avatarUrl ? (
                       <Image
-                        src={(organization?.avatarUrl || associatedPerson?.avatarUrl) as string}
-                        alt={name ?? ''}
+                        src={gthbOwner.avatarUrl}
+                        alt={gthbRepoName}
                         width={24}
                         height={24}
                         className='rounded-md'
                       />
-                      {name}
-                    </Link>
-                  )
-                })}
-            </div>
-          ))}
+                    ) : (
+                      <div className='h-6 w-6 rounded-md bg-white/20' />
+                    )}
+                    {gthbRepoName}
+                  </Link>
+                )
+              })}
+          </div>
+        ))}
       </aside>
     </>
   )

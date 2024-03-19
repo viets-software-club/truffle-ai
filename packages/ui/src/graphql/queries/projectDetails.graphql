@@ -1,50 +1,60 @@
-query ProjectDetails($id: UUID) {
-  projectCollection(filter: { id: { eq: $id } }) {
+query ProjectDetails($id: BigInt) {
+  projRepoCollection(filter: { projRepoId: { eq: $id } }) {
     edges {
       node {
-        id
-        name
-        about
-        eli5
-        starCount
-        issueCount
-        forkCount
-        pullRequestCount
-        contributorCount
-        languages
-        githubUrl
-        websiteUrl
-        starHistory
-        owningPerson
-        owningOrganization
-        hackernewsSentiment
-        hackernewsStories
-        relatedTwitterPosts
-        forkHistory
-        categories
-        associatedPerson {
-          id
-          name
-          login
-          avatarUrl
-          email
-          githubUrl
-          twitterUsername
-          repositoryCount
-          websiteUrl
+        projRepoId
+        projRepoAndAlgoHnQueryCollection {
+          edges {
+            node {
+              algoHnQuery {
+                query
+              }
+            }
+          }
         }
-        organization {
-          id
-          login
-          avatarUrl
-          email
-          githubUrl
-          twitterUsername
-          repositoryCount
-          websiteUrl
+        projRepo {
+          algoHnEli5
+          repoEli5
         }
-        issuesPerContributor
-        forksPerContributor
+        gthbRepo {
+          gthbRepoId
+          gthbRepoName
+          gthbRepoDescription
+          stargazerCount
+          issuesTotalCount
+          forkCount
+          pullRequestsTotalCount
+          gthbRepoUrl
+          homepageUrl
+          gthbStarHistCollection {
+            edges {
+              node {
+                amount
+              }
+            }
+          }
+          gthbForkHistCollection {
+            edges {
+              node {
+                amount
+              }
+            }
+          }
+          gthbOwner {
+            gthbOwnerType
+            gthbOwnerLogin
+          }
+          gthbRepoAndGthbLangCollection {
+            edges {
+              node {
+                gthbLang {
+                  color
+                  gthbLangName
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

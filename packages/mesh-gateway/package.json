@@ -1,0 +1,53 @@
+{
+  "name": "graphql-gateway",
+  "version": "0.0.1",
+  "description": "A gateway to graphql apis",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently 'tsc --watch --preserveWatchOutput' 'nodemon ./dist/src/server.js'",
+    "dev:mesh": "mesh dev",
+    "dev:m": "node ./dist/.mesh/index.js",
+    "build:mesh": "mesh build",
+    "build:fastify": "tsc",
+    "build": "mesh build && tsc && echo \"\n./dist folder generated using tsc\n\"",
+    "start": "node ./dist/src/server.js",
+    "start:mesh": "mesh start",
+    "test": "eslint ."
+  },
+  "dependencies": {
+    "@graphql-mesh/cache-localforage": "^0.96.2",
+    "@graphql-mesh/cli": "0.88.4",
+    "@graphql-mesh/cross-helpers": "^0.4.1",
+    "@graphql-mesh/graphql": "^0.96.2",
+    "@graphql-mesh/http": "^0.97.3",
+    "@graphql-mesh/merger-bare": "^0.96.2",
+    "@graphql-mesh/merger-stitching": "^0.96.2",
+    "@graphql-mesh/runtime": "^0.97.3",
+    "@graphql-mesh/store": "^0.96.2",
+    "@graphql-mesh/utils": "0.96.2",
+    "@supabase/supabase-js": "^2.39.1",
+    "@types/express": "^4.17.21",
+    "@whatwg-node/fetch": "^0.9.14",
+    "cookie": "^0.5.0",
+    "express": "^4.18.2",
+    "fastify": "^4.25.1",
+    "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@truffle/eslint-config-base": "workspace:*",
+    "@types/cookie": "^0.5.1",
+    "@types/jsonwebtoken": "^9.0.5",
+    "concurrently": "^8.0.1",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-sonarjs": "^1.2.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-sonarjs": "^0.19.0",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
+  }
+}

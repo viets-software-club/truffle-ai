@@ -1,9 +1,0 @@
-{
-  "extends": "@truffle/ts-config-base/index.json",
-  "compilerOptions": {
-    "module": "commonjs",
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "outDir": "./dist"
-  },
-  "exclude": ["dist", ".husky"]
-}

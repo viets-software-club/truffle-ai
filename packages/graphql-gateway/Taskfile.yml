@@ -1,0 +1,12 @@
+version: "3"
+
+tasks:
+  dev:
+    cmds:
+      - source {{.SOURCE}} && cargo run
+  build:
+    cmds:
+      - source {{.SOURCE}} && cargo build
+  test:
+    cmds:
+      - source {{.SOURCE}} && cargo test && cargo check

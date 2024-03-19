@@ -1,0 +1,15 @@
+version: "3"
+
+tasks:
+  dev:
+    cmds:
+      - source ../../scripts/env/source.sh ../.. && npm run dev
+  build:
+    cmds:
+      - source ../../scripts/env/source.sh ../.. && npm run build
+  start:
+    cmds:
+      - source ../../scripts/env/source.sh ../.. && npm run start
+  test:
+    cmds:
+      - source ../../scripts/env/source.sh ../.. && npm run test

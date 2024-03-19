@@ -1,6 +1,0 @@
-{
-  "tasks": {
-    "generate:env": "deno run --allow-read --allow-write config/variables/generate-env.ts",
-    "generate:values": "deno run --allow-read --allow-write config/variables/generate-values.ts"
-  }
-}

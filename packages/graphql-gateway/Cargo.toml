@@ -1,0 +1,17 @@
+[package]
+name = "graphql-gateway"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+header_proxy_gateway = { git = "https://github.com/pczern/header_proxy_gateway.git" }
+hyper = { version = "1", features = ["full"] }
+hyper-tls = "0.5"
+tokio = { version = "1.8.1", features = ["full"] }
+serde_json = "1.0"
+jsonwebtoken = "7.2.0"
+serde = { version = "1.0", features = ["derive"] }
+async-trait = "0.1.77"
+postgrest = "1.0"
+reqwest = "0.11.23"
+reqwest-middleware = "0.2.4"

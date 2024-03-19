@@ -93,7 +93,7 @@ importers:
         specifier: ~0.13.1
         version: 0.13.1
 
-  packages/graphql-mesh-gateway:
+  packages/mesh-gateway:
     dependencies:
       '@graphql-mesh/cache-localforage':
         specifier: ^0.96.2
@@ -2417,7 +2417,7 @@ packages:
       tsconfig-paths: 4.2.0
       tslib: 2.6.2
       typescript: 5.3.3
-      uWebSockets.js: github.com/uNetworking/uWebSockets.js/f97da56fe535bb6d318c62ed31e0f44cef104f05
+      uWebSockets.js: github.com/uNetworking/uWebSockets.js/1977b5039938ad863d42fc4958d48c17e5a1fa06
       yargs: 17.7.2
     optionalDependencies:
       node-libcurl: 3.0.1-0
@@ -12453,9 +12453,6 @@ packages:
     resolution: {integrity: sha512-Ocx33N4ZVnotJTALhMZ0AqPIE9UN5uP6jjA+lYJ4FlEYuYYZsvOQXZQgeMa62pFj6jrOHWh7ho8uJhRdTNwVyg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.10.3(@parcel/core@2.10.3)(typescript@5.3.3)
       '@parcel/core': 2.10.3
@@ -15780,8 +15777,8 @@ packages:
       yaml: 2.3.4
     dev: true
 
-  github.com/uNetworking/uWebSockets.js/f97da56fe535bb6d318c62ed31e0f44cef104f05:
-    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/f97da56fe535bb6d318c62ed31e0f44cef104f05}
+  github.com/uNetworking/uWebSockets.js/1977b5039938ad863d42fc4958d48c17e5a1fa06:
+    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/1977b5039938ad863d42fc4958d48c17e5a1fa06}
     name: uWebSockets.js
-    version: 20.40.0
+    version: 20.43.0
     dev: false

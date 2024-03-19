@@ -155,6 +155,11 @@ create table public.gthb_repo(
   pull_requests_total_count bigint not null,
   gthb_repo_url text not null,
   stargazer_count bigint not null,
+  contributor_count bigint not null,
+  forks_per_contributor bigint not null,
+  issues_per_contributor bigint not null,
+  stargazers_per_contributor bigint not null,
+  pull_requests_per_contributor bigint not null,
   constraint gthb_repo_pkey primary key (gthb_repo_id),
   constraint gthb_repo_gthb_owner_id_fkey foreign key (gthb_owner_id) references gthb_owner(gthb_owner_id) on delete cascade,
   constraint gthb_repo_fields_name_and_gthb_owner_id_uq unique (gthb_repo_name, gthb_owner_id),
@@ -372,7 +377,7 @@ create table public.sbot_lin_company(
   employees_amount_in_linkedin bigint not null,
   about text null,
   website text null,
-  headquarters text not null,
+  headquarters text null,
   sbot_lin_company_type text null,
   constraint sbot_lin_company_pkey primary key (sbot_lin_company_id),
   constraint sbot_lin_company_sbot_lin_company_url_uq unique (sbot_lin_company_url),
@@ -485,6 +490,7 @@ create type t_ivals_gthb_org as (
   website_url text
 );
 create type t_ivals_gthb_repo as (
+  contributor_count bigint,
   created_at timestamp with time zone,
   gthb_repo_description text,
   fork_count bigint,
@@ -539,6 +545,7 @@ create type t_ivals_gthb_repo_topic as (
 );
 
 create type t_f_insert_gthb_repo as (
+  contributor_count bigint,
   created_at timestamp with time zone,
   fork_count bigint,
   gthb_fork_hists t_ivals_gthb_fork_hist [],
@@ -901,17 +908,18 @@ begin
   ownerId := f_insert_gthb_owner(githubRepo.gthb_owner);
 
   insert into gthb_repo(created_at, gthb_repo_description, fork_count, homepage_url, is_in_organization, issues_total_count,
-    gthb_repo_name, gthb_owner_id, pull_requests_total_count, gthb_repo_url, stargazer_count)
+    gthb_repo_name, gthb_owner_id, pull_requests_total_count, gthb_repo_url, stargazer_count, contributor_count, forks_per_contributor, issues_per_contributor, stargazers_per_contributor, pull_requests_per_contributor)
     values (githubRepo.created_at, githubRepo.gthb_repo_description, githubRepo.fork_count, githubRepo.homepage_url,
       githubRepo.is_in_organization, githubRepo.issues_total_count, githubRepo.gthb_repo_name, ownerId,
-      githubRepo.pull_requests_total_count, githubRepo.gthb_repo_url, githubRepo.stargazer_count)
+      githubRepo.pull_requests_total_count, githubRepo.gthb_repo_url, githubRepo.stargazer_count, githubRepo.contributor_count, githubRepo.fork_count / githubRepo.contributor_count, githubRepo.issues_total_count / githubRepo.contributor_count, githubRepo.stargazer_count / githubRepo.contributor_count, githubRepo.pull_requests_total_count / githubRepo.contributor_count)
   on conflict (gthb_repo_name)
     do update set
       created_at = excluded.created_at, gthb_repo_description = excluded.gthb_repo_description, fork_count = excluded.fork_count,
 	homepage_url = excluded.homepage_url, is_in_organization = excluded.is_in_organization, issues_total_count =
 	excluded.issues_total_count, gthb_repo_name = excluded.gthb_repo_name, gthb_owner_id = excluded.gthb_owner_id,
 	pull_requests_total_count = excluded.pull_requests_total_count, gthb_repo_url = excluded.gthb_repo_url, stargazer_count =
-	excluded.stargazer_count
+	excluded.stargazer_count, contributor_count = excluded.contributor_count,
+  forks_per_contributor = excluded.fork_count / excluded.contributor_count, issues_per_contributor = excluded.issues_total_count / excluded.contributor_count, stargazers_per_contributor = excluded.stargazer_count / excluded.contributor_count, pull_requests_per_contributor = excluded.pull_requests_total_count / excluded.contributor_count
     returning
       gthb_repo_id into repoId;
 
@@ -943,12 +951,15 @@ begin
       on conflict(gthb_repo_id, gthb_owner_id) do update set contributions = excluded.contributions;
     end loop;
 
-  with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
-  insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
-
-  with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
-  insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
-
+  if array_length(githubRepo.gthb_langs, 1) is null then
+    with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
+    insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
+  end if;
+  
+  if array_length(githubRepo.gthb_repo_topics, 1) is null then
+    with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
+    insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
+  end if;
   insert into gthb_star_hist(gthb_repo_id, gthb_star_hist_date, amount)
    select
     repoId,
@@ -1736,3 +1747,6 @@ create policy "authenticated can select gthb_repo_and_gthb_repo_topic"
 
 
 grant select on table public.user_whitelist to supabase_auth_admin;
+insert into user_api_key (auth_users_id, user_api_key) values (
+  '6766a618-85c4-48f1-8536-d9a51692d953', '6766a618-85c4-48f1-8536-d9a51692d953'
+);

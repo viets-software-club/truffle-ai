@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "@grafbase/sdk": "~0.13.1"
+  },
+  "keywords": [],
+  "name": "grafbase-gateway",
+  "scripts": {
+    "dev": "grafbase dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.1",
+    "grafbase": "^0.52.2"
+  }
+}

@@ -3,9 +3,17 @@ version: "3"
 silent: true
 
 includes:
-  k8s: ./config/taskfiles/Taskfile.k8s.yml
+  k8s:
+    taskfile: ./config/taskfiles/Taskfile.k8s.yml
+    vars:
+      SOURCE: ./scripts/env/source.sh ./
   db: ./config/taskfiles/Taskfile.db.yml
   prettier: ./config/taskfiles/Taskfile.prettier.yml
+  grafbase-gateway:
+    taskfile: ./config/taskfiles/Taskfile.npm.yml
+    dir: ./packages/grafbase-gateway
+    aliases:
+      - "gtw2"
   graphql-gateway:
     taskfile: ./packages/graphql-gateway/Taskfile.yml
     dir: ./packages/graphql-gateway
@@ -14,7 +22,11 @@ includes:
       - "gtw"
       - "g"
     vars:
-      OUT: graphql-gateway
+      SOURCE: ../../scripts/env/source.sh ../..
+  mesh-gateway:
+    taskfile: ./packages/mesh-gateway/Taskfile.yml
+    dir: ./packages/mesh-gateway
+    vars:
       SOURCE: ../../scripts/env/source.sh ../..
   ui:
     taskfile: ./config/taskfiles/Taskfile.npm.yml

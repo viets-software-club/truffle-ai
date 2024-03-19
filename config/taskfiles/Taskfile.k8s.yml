@@ -55,7 +55,7 @@ tasks:
       - "remote-env"
     desc: "Publish with subdomain (environment prefix) on any cluster and sometimes with sha hash too"
     cmds:
-      - ./scripts/helm/app/publish-remote-env.mjs
+      - source {{.SOURCE}} && ./scripts/helm/app/publish-remote-env.mjs
   any:uninstall-ns:commit:
     desc: "Uninstall commit namespaces on any cluster"
     cmds:

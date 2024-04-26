@@ -1,8 +1,3 @@
-const TableView = () => {
+const TableView = () => {}
 
-
-
-}
-
-
-export default TableView;
+export default TableView

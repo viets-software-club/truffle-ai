@@ -7,35 +7,36 @@ import Loading from '@/components/pure/LoadingSpinner'
  * HOC for pages that require authentication
  */
 export default function withAuth(WrappedComponent: FC<PropsWithChildren>) {
-  return (props: PropsWithChildren) => {
-    const { isLoading, error } = useSessionContext()
-    const router = useRouter()
-    const user = useUser()
+	return (props: PropsWithChildren) => {
+		const { isLoading, error } = useSessionContext()
+		const router = useRouter()
+		const user = useUser()
 
-    const [showLoading, setShowLoading] = useState(false)
+		const [showLoading, setShowLoading] = useState(false)
 
-    const emailError = router.query.error
-    const errorDescription = router.query.error_description
+		const emailError = router.query.error
+		const errorDescription = router.query.error_description
 
-    useEffect(() => {
-      // Only show loading screen if loading takes longer than 500ms
-      const loadingTimeout = setTimeout(() => {
-        setShowLoading(true)
-      }, 500)
+		useEffect(() => {
+			// Only show loading screen if loading takes longer than 500ms
+			const loadingTimeout = setTimeout(() => {
+				setShowLoading(true)
+			}, 500)
 
-      return () => clearTimeout(loadingTimeout)
-    }, [])
+			return () => clearTimeout(loadingTimeout)
+		}, [])
 
-    useEffect(() => {
-      if (emailError && errorDescription) {
-        void router.replace('/login?error=invalid_email')
-      } else if (error || (!isLoading && !user)) {
-        void router.replace('/login')
-      }
-    }, [emailError, error, errorDescription, isLoading, user])
+		useEffect(() => {
+			if (emailError && errorDescription) {
+				void router.replace('/login?error=invalid_email')
+			} else if (error || (!isLoading && !user)) {
+				void router.replace('/login')
+			}
+		}, [emailError, error, errorDescription, isLoading, user])
 
-    if (isLoading || !user) return <Loading fullscreen showSpinner={showLoading} />
+		if (isLoading || !user)
+			return <Loading fullscreen showSpinner={showLoading} />
 
-    return React.createElement(WrappedComponent, props)
-  }
+		return React.createElement(WrappedComponent, props)
+	}
 }

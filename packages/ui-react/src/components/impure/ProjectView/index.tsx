@@ -3,22 +3,18 @@ import FirstRow from './FirstRow'
 import SecondRow from './SecondRow'
 import TableView from './TableView'
 const ProjectView = () => {
-
-
-
-
-  return (
-    <div className='flex w-full flex-col'>
-        <FirstRow />
-        <SecondRow />
-        <TableView />
-    </div>
-  )
+	return (
+		<div className="flex w-full flex-col">
+			<FirstRow />
+			<SecondRow />
+			<TableView />
+		</div>
+	)
 }
 
 export default ProjectView
 
-  // Initialize TanStack table
+// Initialize TanStack table
 //   const table = useReactTable({
 //     data: data ?? [],
 //     columns,

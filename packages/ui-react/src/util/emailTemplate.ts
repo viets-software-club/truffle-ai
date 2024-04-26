@@ -13,15 +13,21 @@ Viet
 
 PS: if you have time, please check out my blog post on Building a Defensible ML company here: https://vietle.substack.com/p/defensible-machine-learning`
 
-const emailTemplate = (email: string, founderName: string, projectName: string) => {
-  const subject = `La Famiglia x ${projectName}`
+const emailTemplate = (
+	email: string,
+	founderName: string,
+	projectName: string
+) => {
+	const subject = `La Famiglia x ${projectName}`
 
-  const template = localStorage.getItem('emailMessage') || initialTemplate
-  const body = template
-    .replaceAll('{projectName}', projectName)
-    .replaceAll('{founderName}', founderName)
+	const template = localStorage.getItem('emailMessage') || initialTemplate
+	const body = template
+		.replaceAll('{projectName}', projectName)
+		.replaceAll('{founderName}', founderName)
 
-  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+	return `mailto:${email}?subject=${encodeURIComponent(
+		subject
+	)}&body=${encodeURIComponent(body)}`
 }
 
 export default emailTemplate

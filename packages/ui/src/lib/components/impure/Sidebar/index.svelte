@@ -1,0 +1,255 @@
+<script lang="ts">
+	import BookmarkGroup from './BookmarkGroup.svelte';
+
+	import SettingsIcon from 'lucide-svelte/icons/settings';
+	import LogoutIcon from 'lucide-svelte/icons/log-out';
+	import PaletteIcon from 'lucide-svelte/icons/palette';
+	import * as Sheet from '$lib/components/pure/ui/sheet';
+
+	import Logo from '$lib/components/pure/Logo.svelte';
+	import TrendingUp from 'lucide-svelte/icons/trending-up';
+	import Bookmark from 'lucide-svelte/icons/bookmark';
+	import * as Select from '$lib/components/pure/ui/select';
+	import { browser } from '$app/environment';
+	// import type { AfterLoadEvent } from './$houdini';
+	import type { ApolloQueryResult, ObservableQuery } from '@apollo/client/core';
+	import client from '$lib/graphql/supabase/client';
+	import {
+		SidebarDocument,
+		type SidebarQuery as SidebarQueryType
+	} from '$lib/graphql/supabase/generated-codegen';
+	import { never } from 'zod';
+	let isThemeSelectionOpen = $state(false);
+	// let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
+	// let themeLabel = $derived(browser && theme.charAt(0).toUpperCase() + theme.slice(1));
+
+	// client.query(e).then((data) => {
+	// 	console.log(data);
+	// });
+
+	const getTheme = () =>
+		browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light';
+	const getThemeLabel = () => browser && getTheme().charAt(0).toUpperCase() + getTheme().slice(1);
+
+	let { ...attrs } = $props();
+	let queryResult: ApolloQueryResult<SidebarQueryType> | undefined = $state();
+
+	$effect(() => {
+		client
+			.query({
+				query: SidebarDocument
+			})
+			.then((res) => {
+				queryResult = res;
+				queryResult.data?.projCatCollection?.edges;
+			});
+	});
+	// let data4: ApolloQueryResult<SidebarQuery> | undefined = $state();
+	// let sidebarQuerySubscriber = Sidebar({});
+
+	// sidebarQuerySubscriber.subscribe((subscribedData) => {
+	// 	// { title: string; items: { avatarUrl: string; title: string }[] };
+	// 	data4 = subscribedData;
+	// });
+
+	// $effect(() => {
+	// 	data = {
+	// 		title: 'First',
+	// 		items: [
+	// 			{
+	// 				title: 'vercel/vercel',
+	// 				avatarUrl: 'https://avatars.githubusercontent.com/u/14985020?s=48&v=4'
+	// 			},
+	// 			{
+	// 				title: 'atherosai/ui',
+	// 				avatarUrl: 'https://avatars.githubusercontent.com/u/34418705?s=48&v=4'
+	// 			},
+	// 			{
+	// 				title: 'elastic/otel-profiling-agent',
+	// 				avatarUrl: 'https://avatars.githubusercontent.com/u/6764390?s=48&v=4'
+	// 			}
+	// 		]
+	// 	};
+	// });
+
+	const handleThemeButton = () => {
+		isThemeSelectionOpen = true;
+	};
+	const handleThemeSelection = (/** @type {any} */ event: any) => {
+		localStorage.theme = event.value;
+		console.log(localStorage.theme);
+		if (event.value === 'dark') {
+			document.documentElement.classList.remove('cosmos');
+			document.documentElement.classList.add('dark');
+		} else if (event.value === 'cosmos') {
+			document.documentElement.classList.add('dark', 'cosmos');
+		} else {
+			document.documentElement.classList.remove('dark', 'cosmos');
+		}
+		isThemeSelectionOpen = false;
+		// theme = event.value;
+		// themeLabel = event.label;
+	};
+</script>
+
+<aside class="overflow-auto overflow-x-hidden h-full relative" {...attrs}>
+	<section class="px-6 h-[3.8125rem] border-b flex items-center">
+		<Logo showText={true} />
+	</section>
+	<section class="py-2">
+		<h2
+			class="overflow-hidden whitespace-nowrap w-full truncate text-sm dark:text-foreground/50 dark:text-normal dark:uppercase dark:text-xs px-6 py-2.5 font-medium items-center text-opacity-50"
+		>
+			Navigation
+		</h2>
+		<div class="w-full">
+			<a
+				class="px-4 mx-2 flex hover:bg-muted rounded-sm gap-[0.4rem] items-center py-2 text-[0.8rem] text-opacity-10"
+				href="/"
+				><TrendingUp class="w-3.5 h-3.5 dark:text-foreground/50 truncate flex-shrink-0" />
+				<span class="truncate">Trending</span></a
+			>
+			<a
+				class="px-4 mx-2 flex hover:bg-muted rounded-sm gap-[0.4rem] items-center py-2 text-[0.8rem] text-opacity-10"
+				href="/bookmarks"
+				><Bookmark class="w-3.5 h-3.5 dark:text-foreground/50 truncate flex-shrink-0 -mt-[2px]" />
+				<span class="truncate">Bookmarked</span></a
+			>
+		</div>
+	</section>
+	<section class="py-2 border-t">
+		<!-- <ScrollArea> -->
+		<h2
+			class="truncate text-sm dark:text-foreground/50 dark:text-normal dark:uppercase dark:text-xs px-6 py-2.5 font-medium items-center"
+		>
+			Categories
+		</h2>
+		<!-- <BookmarkGroup sortGroup="x" {data} />
+		<BookmarkGroup sortGroup="x" data={data2} />
+		<BookmarkGroup sortGroup="x" data={data3} /> -->
+		<BookmarkGroup
+			title="First"
+			actionHref="/compare/web-tech"
+			actionText="Compare"
+			sortGroup="x"
+			items={[
+				{
+					title: 'vercel/vercel',
+					icon: 'https://avatars.githubusercontent.com/u/14985020?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				},
+				{
+					title: 'atherosai/ui',
+					icon: 'https://avatars.githubusercontent.com/u/34418705?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				},
+				{
+					title: 'elastic/otel-profiling-agent',
+					icon: 'https://avatars.githubusercontent.com/u/6764390?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				}
+			]}
+		/>
+		<BookmarkGroup
+			title="Hundred"
+			actionHref="/compare/web-tech"
+			actionText="Compare"
+			sortGroup="x"
+			items={[
+				{
+					title: 'pytorch/torchtune',
+					icon: 'https://avatars.githubusercontent.com/u/21003710?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				},
+				{
+					title: 'meta-llama/PurpleLlama',
+					icon: 'https://avatars.githubusercontent.com/u/153379578?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				},
+				{
+					title: 'typst/typst',
+					icon: 'https://avatars.githubusercontent.com/u/67595261?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				}
+			]}
+		/>
+		<BookmarkGroup
+			title="Thousand"
+			actionHref="/compare/web-tech"
+			actionText="Compare"
+			sortGroup="x"
+			items={[
+				{
+					title: 'ollama/ollama',
+					icon: 'https://avatars.githubusercontent.com/u/151674099?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				},
+				{
+					title: 'google/material-design-icons',
+					icon: 'https://avatars.githubusercontent.com/u/1342004?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				},
+				{
+					title: 'square/okhttp',
+					icon: 'https://avatars.githubusercontent.com/u/82592?s=48&v=4',
+					href: '/repo/vercel/vercel'
+				}
+			]}
+		/>
+		{#if queryResult && !queryResult.loading && queryResult.data?.projCatCollection?.edges}
+			{#each queryResult.data?.projCatCollection?.edges as edge}
+				<BookmarkGroup
+					title={edge?.node?.title}
+					actionHref="{`/compare/${edge?.node?.title}`},"
+					actionText="Compare"
+					sortGroup={edge?.node?.title}
+					items={edge?.node?.projCatAndProjBookmarkCollection?.edges.map(({ node }) => ({
+						title: node?.projBookmark?.projRepo?.gthbRepo?.gthbRepoName,
+						icon: node?.projBookmark?.projRepo?.gthbRepo?.gthbOwner?.gthbOwnerLogin,
+						href: `/repo/${node?.projBookmark?.projRepo?.gthbRepo?.gthbOwner?.gthbOwnerLogin}/${node?.projBookmark?.projRepo?.gthbRepo?.gthbRepoName}`
+					}))}
+				/>
+			{/each}
+		{/if}
+		<!-- {#each fetchedData as item}{/each} -->
+		<!-- </ScrollArea> -->
+	</section>
+	<section
+		class="absolute flex bottom-0 left-0 right-0 h-10 text-foreground/50 text-xs justify-evenly mb-3 pt-3 border-t items-center z-50 bg-background"
+	>
+		<button
+			on:click|preventDefault={handleThemeButton}
+			class="p-2 block hover:bg-muted align-middle hover:rounded-md"
+			><PaletteIcon class="w-5 h-5 md:w-4 md:h-4" /></button
+		>
+		<a href="/settings" class="p-2 block hover:bg-muted hover:rounded-md"
+			><SettingsIcon class="w-5 h-5 md:w-4 md:h-4 block" /></a
+		>
+		<a href="/signout" class="p-2 block hover:bg-muted hover:rounded-md"
+			><LogoutIcon class="w-5 h-5 md:w-4 md:h-4 block" /></a
+		>
+	</section>
+</aside>
+<Sheet.Root bind:open={isThemeSelectionOpen}>
+	<Sheet.Content>
+		<Sheet.Header>
+			<Sheet.Title>UI Theme</Sheet.Title>
+			<Sheet.Description>Select your favourite theme.</Sheet.Description>
+		</Sheet.Header>
+		<div class="py-4">
+			<Select.Root
+				selected={{ label: getThemeLabel(), value: getTheme() }}
+				onSelectedChange={handleThemeSelection}
+			>
+				<Select.Trigger class="w-[180px]">
+					<Select.Value />
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Item value="light">Light</Select.Item>
+					<Select.Item value="dark">Dark</Select.Item>
+					<Select.Item value="cosmos">Cosmos</Select.Item>
+				</Select.Content>
+			</Select.Root>
+		</div>
+	</Sheet.Content>
+</Sheet.Root>

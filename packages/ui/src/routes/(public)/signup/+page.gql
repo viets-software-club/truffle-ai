@@ -1,0 +1,11 @@
+query Sidebar {
+	sidebar {
+		id
+
+		title
+		description
+		image {
+			url
+		}
+	}
+}

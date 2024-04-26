@@ -1,0 +1,26 @@
+version: '3'
+vars:
+  SOURCE: ../../scripts/env/source.sh ../..
+tasks:
+  dev:
+    cmds:
+      - source {{.SOURCE}} && ./node_modules/.bin/vite dev --host --port 3000
+  build:
+    cmds:
+      - source {{.SOURCE}} && ./node_modules/.bin/vite build
+  preview:
+    cmds:
+      - source {{.SOURCE}} && ./node_modules/.bin/vite preview
+  start:
+    cmds:
+      - source {{.SOURCE}} && ./node_modules/.bin/vite start
+  codegen-supabase:
+    cmds:
+      - source {{.SOURCE}} && ./node_modules/.bin/graphql-codegen --config codegen.supabase.ts
+  codegen-server:
+    cmds:
+      - cp ../graphql-server/graph/schema.graphqls ./graphql-schema.server.graphql
+  codegen:
+    cmds:
+      - task: codegen-supabase
+      - task: codegen-server

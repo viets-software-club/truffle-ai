@@ -1,0 +1,26 @@
+query Sidebar {
+	projCatCollection {
+		edges {
+			node {
+				title
+				projCatAndProjBookmarkCollection {
+					edges {
+						node {
+							projBookmark {
+								projRepo {
+									gthbRepo {
+										gthbRepoName
+										gthbOwner {
+											avatarUrl
+											gthbOwnerLogin
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

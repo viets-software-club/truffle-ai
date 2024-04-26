@@ -1,0 +1,9 @@
+mutation UpdateNotesForGthbRepo($id: BigInt, $text: String) {
+  updateProjRepoCollection(filter: {gthbRepoId: {eq: $id}}, set:{
+     note: $text
+  }) {
+    affectedCount
+  }
+}
+     
+ 

@@ -1,0 +1,11 @@
+query DetailViewStarHist($filter: GthbStarHistFilter) {
+  gthbStarHistCollection(filter: $filter) {
+    edges {
+      node {
+        gthbStarHistDate
+        amount
+      }
+    }
+  }
+}
+     

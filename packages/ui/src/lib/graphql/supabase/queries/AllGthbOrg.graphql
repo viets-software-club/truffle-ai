@@ -1,0 +1,17 @@
+query AllGthbOrg {
+  gthbOrgCollection {
+    edges {
+      node {
+        gthbOrgId
+        internalCreatedAt
+        createdAt
+        gthbOrgDescription
+        descriptionHtml
+        email
+        gthbOrgName
+        twitterUsername
+        websiteUrl
+      }
+    }
+  }
+}

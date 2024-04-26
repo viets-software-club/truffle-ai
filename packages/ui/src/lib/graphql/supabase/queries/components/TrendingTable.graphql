@@ -1,0 +1,208 @@
+query TrendingTable(
+	$filter: GthbRepoFilter
+	$orderBy: [GthbRepoOrderBy!]
+	$first: Int
+	$last: Int
+) {
+	# stargazers
+	queryStargazerMax: fListTrendingGthbRepo(first: 1, orderBy: { stargazerCount: DescNullsLast }) {
+		edges {
+			node {
+				stargazerCount
+			}
+		}
+	}
+	queryStargazerMin: fListTrendingGthbRepo(first: 1, orderBy: { stargazerCount: AscNullsLast }) {
+		edges {
+			node {
+				stargazerCount
+			}
+		}
+	}
+	# forkCount
+	queryForkMax: fListTrendingGthbRepo(first: 1, orderBy: { forkCount: DescNullsLast }) {
+		edges {
+			node {
+				forkCount
+			}
+		}
+	}
+	queryForkMin: fListTrendingGthbRepo(first: 1, orderBy: { forkCount: AscNullsLast }) {
+		edges {
+			node {
+				forkCount
+			}
+		}
+	}
+	# issue
+	queryIssueMax: fListTrendingGthbRepo(first: 1, orderBy: { issuesTotalCount: DescNullsLast }) {
+		edges {
+			node {
+				issuesTotalCount
+			}
+		}
+	}
+	queryIssueMin: fListTrendingGthbRepo(first: 1, orderBy: { issuesTotalCount: AscNullsLast }) {
+		edges {
+			node {
+				issuesTotalCount
+			}
+		}
+	}
+	# contributors
+	queryContributorMax: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { contributorCount: DescNullsLast }
+	) {
+		edges {
+			node {
+				contributorCount
+			}
+		}
+	}
+	queryContributorMin: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { contributorCount: AscNullsLast }
+	) {
+		edges {
+			node {
+				contributorCount
+			}
+		}
+	}
+	# pull requests
+	queryPullRequestsMax: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { pullRequestsTotalCount: DescNullsLast }
+	) {
+		edges {
+			node {
+				pullRequestsTotalCount
+			}
+		}
+	}
+	queryPullRequestsMin: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { pullRequestsTotalCount: AscNullsLast }
+	) {
+		edges {
+			node {
+				pullRequestsTotalCount
+			}
+		}
+	}
+	# issues per contributor
+	queryIssuesPerContributorMax: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { issuesPerContributor: DescNullsLast }
+	) {
+		edges {
+			node {
+				issuesPerContributor
+			}
+		}
+	}
+	queryIssuesPerContributorMin: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { issuesPerContributor: AscNullsLast }
+	) {
+		edges {
+			node {
+				issuesPerContributor
+			}
+		}
+	}
+	# forks per contributor
+	queryForksPerContributorMax: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { forksPerContributor: DescNullsLast }
+	) {
+		edges {
+			node {
+				forksPerContributor
+			}
+		}
+	}
+	queryForksPerContributorMin: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { forksPerContributor: AscNullsLast }
+	) {
+		edges {
+			node {
+				forksPerContributor
+			}
+		}
+	}
+	# stargazers per contributor
+	queryStargazersPerContributorMax: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { stargazersPerContributor: DescNullsLast }
+	) {
+		edges {
+			node {
+				stargazersPerContributor
+			}
+		}
+	}
+	queryStargazersPerContributorMin: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { stargazersPerContributor: AscNullsLast }
+	) {
+		edges {
+			node {
+				stargazersPerContributor
+			}
+		}
+	}
+	# pull requests per contributor
+	queryPullRequestsPerContributorMax: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { pullRequestsPerContributor: DescNullsLast }
+	) {
+		edges {
+			node {
+				pullRequestsPerContributor
+			}
+		}
+	}
+	queryPullRequestsPerContributorMin: fListTrendingGthbRepo(
+		first: 1
+		orderBy: { pullRequestsPerContributor: AscNullsLast }
+	) {
+		edges {
+			node {
+				pullRequestsPerContributor
+			}
+		}
+	}
+	queryTrending: fListTrendingGthbRepo(
+		filter: $filter
+		orderBy: $orderBy
+		first: $first
+		last: $last
+	) {
+		edges {
+			node {
+				gthbRepoName
+				gthbOwner {
+					gthbOwnerLogin
+					avatarUrl
+				}
+				stargazerCount
+				stargazersPerContributor
+				forkCount
+				issuesTotalCount
+				issuesPerContributor
+				forksPerContributor
+				gthbRepoDescription
+				contributorCount
+				pullRequestsTotalCount
+				pullRequestsPerContributor
+			}
+		}
+		pageInfo {
+			hasNextPage
+			hasPreviousPage
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"/(public)/(legal)": [],
+	"/(authenticated)": [],
+	"/": [],
+	"/(authenticated)/bookmarks": [],
+	"/(authenticated)/compare/[bookmark]": [],
+	"/(public)/(legal)/legal-notice": [],
+	"/(public)/(legal)/privacy-policy": [],
+	"/(authenticated)/repo/[owner_login]/[repo_name]": [],
+	"/(authenticated)/settings": [],
+	"/(public)/signin": [],
+	"/(public)/signout": [
+		"src/routes/(public)/signout/+page.ts"
+	],
+	"/(public)/signup": [],
+	"/(public)/(legal)/terms-of-service": []
+}

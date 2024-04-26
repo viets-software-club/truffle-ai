@@ -1,0 +1,73 @@
+import { h as head, c as slot, b as pop, d as push_element, e as pop_element, f as attr, p as push } from "../../chunks/index3.js";
+import { P as PUBLIC_UI_HOSTNAME } from "../../chunks/public.js";
+import "../../chunks/client.js";
+import "../../chunks/index4.js";
+function _layout($$payload, $$props) {
+  push();
+  head($$payload, ($$payload2) => {
+    $$payload2.out += `<meta property="og:title" content="Truffle AI">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta property="og:description" content="Find early stage tech startups.">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta property="og:type" content="website">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta property="og:image" content="/icons/icon-512x512.png">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta property="og:url"${attr("content", PUBLIC_UI_HOSTNAME, false)}>`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="twitter:card" content="website">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="twitter:title" content="Truffle AI">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="twitter:description" content="Find early stage tech startups.">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="twitter:site" content="@lafamigliaVC">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="twitter:creator" content="@vietdle">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="twitter:image" content="/icons/icon-192x192.png">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="application-name" content="Truffle AI">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="apple-mobile-web-app-capable" content="yes">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="apple-mobile-web-app-status-bar-style" content="default">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="apple-mobile-web-app-title" content="Truffle AI">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="format-detection" content="telephone=no">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="mobile-web-app-capable" content="yes">`;
+    push_element("meta", $$payload2);
+    pop_element();
+    $$payload2.out += ` <meta name="theme-color" content="#575BC7">`;
+    push_element("meta", $$payload2);
+    pop_element();
+  });
+  $$payload.out += `<!--[-->`;
+  slot($$payload, $$props.children, {}, null);
+  $$payload.out += `<!--]-->`;
+  pop();
+}
+_layout.render = function() {
+  throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
+};
+export {
+  _layout as default
+};

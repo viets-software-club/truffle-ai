@@ -16,9 +16,11 @@ type T_f_insert_proj_repo struct {
 	Gthb_repo             *T_f_insert_gthb_repo
 	Note                  pgtype.Text
 	Proj_repo_classifiers pgtype.FlatArray[T_ivals_proj_classifier]
-	Proj_repo_metadata    *T_f_insert_proj_repo_metadata
-	Sbot_lin_companies    pgtype.FlatArray[T_ivals_sbot_lin_company]
-	Sbot_lin_profiles     pgtype.FlatArray[T_ivals_sbot_lin_profile]
+	// Proj_repo_metadata    *T_f_insert_proj_repo_metadata
+	Sbot_lin_companies pgtype.FlatArray[T_ivals_sbot_lin_company]
+	Sbot_lin_profiles  pgtype.FlatArray[T_ivals_sbot_lin_profile]
+	Algo_hn_eli5       pgtype.Text
+	Repo_eli5          pgtype.Text
 }
 
 type T_f_insert_proj_bookmark_w_cats struct {

@@ -27,10 +27,12 @@ ARG UI_PORT
 ENV PORT=${UI_PORT}
 ENV NODE_ENV production
 ENV HOSTNAME "0.0.0.0"
-
+ENV HOST "0.0.0.0"
+ENV PORT=3000
 COPY --from=build /app/packages/ui/build /app/packages/ui/build/
 COPY --from=build /app/packages/ui/node_modules /app/packages/ui/node_modules/
+COPY --from=build /app/node_modules /app/node_modules/
 
 EXPOSE 3000
 ENV NODE_ENV=production
-CMD [ "node", "packages/ui/build/index.js" ]
+CMD [ "node", "/app/packages/ui/build/index.js" ]

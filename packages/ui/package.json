@@ -1,5 +1,5 @@
 {
-    "name": "ui-svelte",
+    "name": "ui",
     "version": "0.0.1",
     "scripts": {
         "sync": "svelte-kit sync",

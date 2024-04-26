@@ -31,6 +31,7 @@ services:
       context: ../../
       dockerfile: ./packages/ui/Dockerfile
       args:
+        - UI_HOSTNAME=${UI_HOSTNAME}
         - SUPABASE_URL=${SUPABASE_URL}
         - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
         - GRAPHQL_URL=${GRAPHQL_GATEWAY_URL}

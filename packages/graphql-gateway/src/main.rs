@@ -50,6 +50,13 @@ impl header_proxy_gateway::Auth for CustomAuth {
         client: &reqwest_middleware::ClientWithMiddleware,
         builder: reqwest_middleware::RequestBuilder,
     ) -> (bool, reqwest_middleware::RequestBuilder) {
+        if headers.contains_key("x-codegen") {
+            // let builder = builder.header(
+            //     "apikey",
+            //     headers.get("apikey").unwrap().to_str().unwrap(),
+            // );
+            return (true, builder);
+        }
         if headers.contains_key("authorization") {
             if headers.get("authentication").is_none()
                 || headers.get("authorization").unwrap().to_str().is_err()

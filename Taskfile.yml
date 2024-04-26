@@ -36,7 +36,7 @@ includes:
     vars:
       SOURCE: ../../scripts/env/source.sh ../..
   graphql-server:
-    taskfile: ./config/taskfiles/Taskfile.go.yml
+    taskfile: ./packages/graphql-server/Taskfile.yml
     dir: ./packages/graphql-server
     aliases:
       - 'gql-srv'

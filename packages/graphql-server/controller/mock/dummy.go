@@ -190,7 +190,7 @@ func GetDummyObject(authUserId string) (types.T_f_insert_proj_bookmark_w_cats, e
 			},
 			Gthb_repo: &dummyGthbRepo,
 			Note:      dummyText,
-		 
+
 			Sbot_lin_companies: pgtype.FlatArray[types.T_ivals_sbot_lin_company]{dummySbotLinCompany},
 			Sbot_lin_profiles:  nil,
 		},

@@ -21,8 +21,8 @@ ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
 ENV NEXT_PUBLIC_GRAPHQL_URL=${GRAPHQL_URL}
 ENV NEXT_TELEMETRY_DISABLED 1
 COPY ./packages/ui/ /app/packages/ui
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter ui --filter !ui-react install --frozen-lockfile
-RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL} GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL} pnpm run --filter --filter !ui-react ui build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter ui install --frozen-lockfile
+RUN SUPABASE_URL=${SUPABASE_URL} SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY} SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL} GRAPHQL_SERVER_URL=${GRAPHQL_SERVER_URL} pnpm run --filter ui build
 
 FROM base
 ARG UI_PORT

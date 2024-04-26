@@ -1,0 +1,12 @@
+query AllUserWhitelist {
+  userWhitelistCollection {
+    edges {
+      node {
+  			userWhitelistId
+        internalCreatedAt
+        kind
+        userWhitelistValue
+      }
+    }
+  }
+}

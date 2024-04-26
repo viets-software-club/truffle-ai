@@ -1,0 +1,13 @@
+query AllGthbStarHist {
+  gthbStarHistCollection {
+    edges {
+      node {
+  		gthbStarHistId
+        internalCreatedAt
+        gthbRepoId
+        gthbStarHistDate
+        amount
+      }
+    }
+  }
+}

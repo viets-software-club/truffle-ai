@@ -1,0 +1,60 @@
+query TrendingProjects(
+  $orderBy: ProjectOrderBy!
+  $filter: ProjectFilter!
+  $first: Int
+  $last: Int
+  $after: Cursor
+  $before: Cursor
+) {
+  projectCollection(
+    filter: $filter
+    orderBy: [$orderBy]
+    first: $first
+    last: $last
+    after: $after
+    before: $before
+  ) {
+    edges {
+      node {
+        id
+        name
+        about
+        eli5
+        starCount
+        issueCount
+        forkCount
+        pullRequestCount
+        contributorCount
+        githubUrl
+        websiteUrl
+        starHistory
+        forkHistory
+        owningPerson
+        owningOrganization
+        associatedPerson {
+          id
+          name
+          login
+          email
+          avatarUrl
+        }
+        organization {
+          id
+          login
+          avatarUrl
+        }
+        isTrendingDaily
+        isTrendingWeekly
+        isTrendingMonthly
+        issuesPerContributor
+        forksPerContributor
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+  }
+}

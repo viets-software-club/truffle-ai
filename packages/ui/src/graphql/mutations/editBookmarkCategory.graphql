@@ -1,6 +1,0 @@
-mutation EditBookmarkCategory($projectID: String!, $newCategory: String!) {
-  editBookmarkCategory(projectID: $projectID, newCategory: $newCategory) {
-    code
-    message
-  }
-}

@@ -1,6 +1,0 @@
-mutation DeleteBookmark($projectID: String!) {
-  deleteBookmark(projectID: $projectID) {
-    code
-    message
-  }
-}

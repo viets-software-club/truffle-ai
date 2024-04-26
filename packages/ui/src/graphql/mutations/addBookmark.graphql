@@ -1,6 +1,0 @@
-mutation AddBookmark($projectID: String!, $category: String!) {
-  addBookmark(projectID: $projectID, category: $category) {
-    code
-    message
-  }
-}

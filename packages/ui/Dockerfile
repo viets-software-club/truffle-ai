@@ -28,7 +28,7 @@ ENV PORT=${UI_PORT}
 ENV NODE_ENV production
 ENV HOSTNAME "0.0.0.0"
 
-COPY --from=build /app/packages/ui/build build/.svelte-kit/
+COPY --from=build /app/packages/ui/build build/
 COPY --from=build /app/packages/ui/node_modules node_modules/
 EXPOSE 3000
 ENV NODE_ENV=production

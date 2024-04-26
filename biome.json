@@ -9,7 +9,9 @@
 			"outputs",
 			"^.*",
 			"ui",
-			"pnpm-lock.yaml"
+			"pnpm-lock.yaml",
+			"ui-react",
+			"build-values"
 		],
 		"include": [
 			"packages/**/*.{js,jsx,ts,tsx,mjs}",
@@ -25,7 +27,9 @@
 			"outputs",
 			"^.*",
 			"ui",
-			"pnpm-lock.yaml"
+			"pnpm-lock.yaml",
+			"ui-react",
+			"build-values"
 		],
 		"include": [
 			"packages/**/*.{js,jsx,ts,tsx,mjs}",
@@ -48,7 +52,9 @@
 			"outputs",
 			"^.*",
 			"ui",
-			"pnpm-lock.yaml"
+			"pnpm-lock.yaml",
+			"ui-react",
+			"build-values"
 		],
 		"include": [
 			"packages/**/*.{js,jsx,ts,tsx,mjs}",

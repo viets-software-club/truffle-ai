@@ -10,3 +10,6 @@ tasks:
   test:
     cmds:
       - source {{.SOURCE}} && cargo test && cargo check
+  start:
+    cmds:
+      - source {{.SOURCE}} && cargo run target/debug/graphql-gateway

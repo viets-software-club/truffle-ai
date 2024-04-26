@@ -1,2 +1,7 @@
 UI_PORT: '3000'
-NEXT_PUBLIC_GRAPHQL_URL: https://0.0.0.0/api/graphql
+PUBLIC_GATEWAY_GRAPHQL_URL: https://0.0.0.0:3001/api/graphql
+PUBLIC_SUPABASE_URL: https://cpapirdmtzjahhavfbab.supabase.co
+PUBLIC_SUPABASE_GRAPHQL_URL: https://cpapirdmtzjahhavfbab.supabase.co/graphql/v1
+PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwYXBpcmRtdHpqYWhoYXZmYmFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk1OTAyNDQsImV4cCI6MjAxNTE2NjI0NH0.SeuaYbWUX2cs5_txugVz2uVAygcWThNKbVfEkB0Jms4
+PUBLIC_UI_PORT: '3000'
+PUBLIC_UI_HOSTNAME: 'truffle.tools'

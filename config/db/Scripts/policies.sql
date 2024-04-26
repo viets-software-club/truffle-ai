@@ -179,10 +179,10 @@ create policy "authenticated can select proj_repo_and_algo_hn_query"
   on proj_repo_and_algo_hn_query for select to authenticated
   using (true);
 
-drop policy if exists "authenticated can select proj_repo_metadata" on proj_repo_metadata;
-create policy "authenticated can select proj_repo_metadata"
-  on proj_repo_metadata for select to authenticated
-  using (true);
+-- drop policy if exists "authenticated can select proj_repo_metadata" on proj_repo_metadata;
+-- create policy "authenticated can select proj_repo_metadata"
+--   on proj_repo_metadata for select to authenticated
+--   using (true);
 
 drop policy if exists "authenticated can select proj_repo_and_sbot_lin_profile" on proj_repo_and_sbot_lin_profile;
 create policy "authenticated can select proj_repo_and_sbot_lin_profile"

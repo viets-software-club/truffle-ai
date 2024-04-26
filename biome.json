@@ -1,71 +1,65 @@
 {
-	"organizeImports": {
-		"enabled": true,
-		"ignore": [
-			"dist/**",
-			".mesh/**",
-			"config/**",
-			"_*/**",
-			"outputs",
-			"^.*",
-			"ui",
-			"pnpm-lock.yaml",
-			"ui-react",
-			"build-values"
-		],
-		"include": [
-			"packages/**/*.{js,jsx,ts,tsx,mjs}",
-			"scripts/**/*.{js,jsx,ts,tsx,mjs}"
-		]
-	},
-	"linter": {
-		"ignore": [
-			"dist/**",
-			".mesh/**",
-			"config/**",
-			"_*/**",
-			"outputs",
-			"^.*",
-			"ui",
-			"pnpm-lock.yaml",
-			"ui-react",
-			"build-values"
-		],
-		"include": [
-			"packages/**/*.{js,jsx,ts,tsx,mjs}",
-			"scripts/**/*.{js,jsx,ts,tsx,mjs}"
-		]
-	},
-	"formatter": {
-		"enabled": true,
-		"formatWithErrors": false,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineWidth": 80,
-		"lineEnding": "lf",
-		"ignore": [
-			"dist/**",
-			"**/.mesh/**",
-			"config/**",
-			"_*/**",
-			"^.*/**",
-			"outputs",
-			"^.*",
-			"ui",
-			"pnpm-lock.yaml",
-			"ui-react",
-			"build-values"
-		],
-		"include": [
-			"packages/**/*.{js,jsx,ts,tsx,mjs}",
-			"scripts/**/*.{js,jsx,ts,tsx,mjs}"
-		]
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "single",
-			"semicolons": "asNeeded",
-			"trailingComma": "none"
-		}
-	}
+  "organizeImports": {
+    "enabled": true,
+    "ignore": [
+      "dist/**",
+      ".mesh/**",
+      "config/**",
+      "_*/**",
+      "outputs",
+      "^.*",
+      "ui",
+      "pnpm-lock.yaml",
+      "ui-react",
+      "build-values",
+      "old"
+    ],
+    "include": ["packages/**/*.{js,jsx,ts,tsx,mjs}", "scripts/**/*.{js,jsx,ts,tsx,mjs}"]
+  },
+  "linter": {
+    "ignore": [
+      "dist/**",
+      ".mesh/**",
+      "config/**",
+      "_*/**",
+      "outputs",
+      "^.*",
+      "ui",
+      "pnpm-lock.yaml",
+      "ui-react",
+      "build-values",
+      "old"
+    ],
+    "include": ["packages/**/*.{js,jsx,ts,tsx,mjs}", "scripts/**/*.{js,jsx,ts,tsx,mjs}"]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "lf",
+    "ignore": [
+      "dist/**",
+      "**/.mesh/**",
+      "config/**",
+      "_*/**",
+      "^.*/**",
+      "outputs",
+      "^.*",
+      "ui",
+      "pnpm-lock.yaml",
+      "ui-react",
+      "build-values",
+      "old"
+    ],
+    "include": ["packages/**/*.{js,jsx,ts,tsx,mjs}", "scripts/**/*.{js,jsx,ts,tsx,mjs}"]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingComma": "none"
+    }
+  }
 }

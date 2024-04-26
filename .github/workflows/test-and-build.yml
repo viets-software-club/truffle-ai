@@ -3,9 +3,9 @@
 name: Test & Build
 on:
   push:
-    branches: ["main", "staging", "commit"]
+    branches: ['main', 'staging', 'commit']
   pull_request:
-    branches: ["main", "staging", "commit"]
+    branches: ['main', 'staging', 'commit']
 env:
   SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
   GRAPHQL_GATEWAY_PORT: ${{ vars.GRAPHQL_GATEWAY_PORT }}
@@ -27,7 +27,7 @@ jobs:
       - name: Use Go
         uses: actions/setup-go@v4
         with:
-          go-version: "stable"
+          go-version: 'stable'
       - name: Use Task
         uses: arduino/setup-task@v1
         with:
@@ -66,7 +66,7 @@ jobs:
           GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
           SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           GRAPHQL_URL: ${{ vars.GRAPHQL_URL }}
         run: NODE_ENV=production GO_ENV=production task build

@@ -1,0 +1,12 @@
+query DetailViewForkHist($filter: GthbForkHistFilter) {
+  gthbForkHistCollection(filter: $filter) {
+    edges {
+      node {
+        gthbForkHistDate
+        amount
+      }
+    }
+  }
+}
+     
+ 

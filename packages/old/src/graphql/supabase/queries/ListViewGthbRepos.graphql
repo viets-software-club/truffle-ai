@@ -1,0 +1,23 @@
+query ListViewGthbRepos($filter: GthbRepoFilter) {
+  gthbRepoCollection (filter: $filter) {
+    edges {
+      node {
+         gthbRepoName
+          gthbRepoDescription
+          stargazerCount
+          issuesTotalCount
+          forksPerContributor
+          forkCount
+          contributorCount
+          issuesTotalCount
+          issuesPerContributor
+          pullRequestsTotalCount
+          gthbOwner {
+            avatarUrl
+            gthbOwnerLogin
+          }
+      }
+      cursor
+    }
+  }
+}

@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 silent: true
 
@@ -9,18 +9,25 @@ includes:
       SOURCE: ./scripts/env/source.sh ./
   db: ./config/taskfiles/Taskfile.db.yml
   prettier: ./config/taskfiles/Taskfile.prettier.yml
+  ui:
+    taskfile: ./packages/ui/Taskfile.yml
+    dir: ./packages/ui
+    aliases:
+      - 'u'
+    vars:
+      SOURCE: ../../scripts/env/source.sh ../..
   grafbase-gateway:
     taskfile: ./config/taskfiles/Taskfile.npm.yml
     dir: ./packages/grafbase-gateway
     aliases:
-      - "gtw2"
+      - 'gtw2'
   graphql-gateway:
     taskfile: ./packages/graphql-gateway/Taskfile.yml
     dir: ./packages/graphql-gateway
     aliases:
-      - "gql-gtw"
-      - "gtw"
-      - "g"
+      - 'gql-gtw'
+      - 'gtw'
+      - 'g'
     vars:
       SOURCE: ../../scripts/env/source.sh ../..
   mesh-gateway:
@@ -28,16 +35,13 @@ includes:
     dir: ./packages/mesh-gateway
     vars:
       SOURCE: ../../scripts/env/source.sh ../..
-  ui:
-    taskfile: ./config/taskfiles/Taskfile.npm.yml
-    dir: ./packages/ui
   graphql-server:
-    taskfile: ./config/taskfiles/Taskfile.go.yml
+    taskfile: ./packages/graphql-server/Taskfile.yml
     dir: ./packages/graphql-server
     aliases:
-      - "gql-srv"
-      - "srv"
-      - "s"
+      - 'gql-srv'
+      - 'srv'
+      - 's'
     vars:
       OUT: graphql-server
   values:
@@ -46,41 +50,41 @@ includes:
 
 tasks:
   init:
-    desc: "Get source files to add to .zshrc/.bashrc"
+    desc: 'Get source files to add to .zshrc/.bashrc'
     cmds:
       - echo
       - node ./scripts/init/generate.mjs
   search:
-    desc: "Search for task"
+    desc: 'Search for task'
     cmds:
       - echo
       - node ./scripts/task/list.mjs {{.CLI_ARGS}}
   format:
-    desc: "Format files with biome"
+    desc: 'Format files with biome'
     cmds:
       - ./node_modules/.bin/biome format .
   format:fix:
-    desc: "Format files with biome"
+    desc: 'Format files with biome'
     cmds:
       - ./node_modules/.bin/biome format . --write
   lint:
-    desc: "Lint files with biome"
+    desc: 'Lint files with biome'
     cmds:
       - ./node_modules/.bin/biome lint .
   lint:fix:
-    desc: "Lint files with biome"
+    desc: 'Lint files with biome'
     cmds:
       - ./node_modules/.bin/biome lint . --apply
   biome:fix:
-    desc: "Run biome check with apply"
+    desc: 'Run biome check with apply'
     cmds:
       - ./node_modules/.bin/biome check . --apply
   biome:ci:
-    desc: "Run biome ci"
+    desc: 'Run biome ci'
     cmds:
       - ./node_modules/.bin/biome ci .
   test:
-    desc: "run test for all packages"
+    desc: 'run test for all packages'
     cmds:
       - >
         ./node_modules/.bin/concurrently
@@ -88,7 +92,7 @@ tasks:
         -c 'green,yellow,magenta,cyan'
         'npx biome ci .' 'task gql-gtw:test' 'task gql-srv:test' 'task ui:test'
   dev:
-    desc: "run dev for all packages possible"
+    desc: 'run dev for all packages possible'
     cmds:
       - >
         . ./scripts/env/source.sh
@@ -98,7 +102,7 @@ tasks:
         -c 'yellow,magenta,cyan'
         'task gql-gtw:dev' 'sleep 1 && task gql-srv:dev' 'task ui:dev'
   build:
-    desc: "run build for all packages"
+    desc: 'run build for all packages'
     cmds:
       - >
         . ./scripts/env/source.sh
@@ -108,7 +112,7 @@ tasks:
         -c 'yellow,magenta,cyan'
         'task gql-gtw:build' 'task gql-srv:build' 'task ui:build'
   start:
-    desc: "run start for all packages possible"
+    desc: 'run start for all packages possible'
     cmds:
       - >
         . ./scripts/env/source.sh

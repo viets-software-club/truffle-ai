@@ -1,0 +1,13 @@
+query AllGthbIssueHist {
+  gthbIssueHistCollection {
+    edges {
+      node {
+        gthbIssueHistId
+        internalCreatedAt
+        gthbRepoId
+        gthbIssueHistDate
+        amount
+      }
+    }
+  }
+}

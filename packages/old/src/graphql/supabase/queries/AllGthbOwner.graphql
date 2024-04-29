@@ -1,0 +1,15 @@
+query AllGthbOwner {
+  gthbOwnerCollection {
+    edges {
+      node {
+        gthbOwnerId
+        internalCreatedAt
+        gthbOwnerType
+        avatarUrl
+        gthbOwnerLogin
+        gthbOwnerUrl
+        repositoriesTotalCount
+      }
+    }
+  }
+}

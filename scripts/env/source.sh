@@ -7,21 +7,21 @@ then
 $arg1/node_modules/.bin/zx << 'EOF'
 echo(`sourcing ${chalk.cyan.bold('.env.production')}`);
 EOF
-cp $arg1/.env.production $arg1/packages/ui/.env.local;
+# cp $arg1/.env.production $arg1/packages/ui/.env.local;
 export $(cat $arg1/.env.production | grep -v \"#\" | xargs);
 elif [ "$ENVIRONMENT" = "staging" ] 
 then
 $arg1/node_modules/.bin/zx << 'EOF'
 echo(`sourcing ${chalk.cyan.bold('.env.staging')}`);
 EOF
-cp $arg1/.env.staging $arg1/packages/ui/.env.local;
+# cp $arg1/.env.staging $arg1/packages/ui/.env.local;
 export $(cat $arg1/.env.staging | grep -v \"#\" | xargs);
 else
 $arg1/node_modules/.bin/zx << 'EOF'
 echo(`sourcing ${chalk.cyan.bold('.env.commit')}`);
 EOF
 export ENVIRONMENT=commit;
-cp $arg1/.env.commit $arg1/packages/ui/.env.local;
+# cp $arg1/.env.commit $arg1/packages/ui/.env.local;
 export $(cat $arg1/.env.commit | grep -v \"#\" | xargs);
 fi;
 export $(cat $arg1/.env.override | grep -v \"#\" | xargs);

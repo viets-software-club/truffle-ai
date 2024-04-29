@@ -1,5 +1,5 @@
 // Generates env files for deployment
-import { path, Base64, parse, walk } from './deps.ts'
+import { path, Base64, parse, walk, existsSync } from './deps.ts'
 const namespaces = ['production', 'staging', 'commit']
 
 const writeEnvsFromDir = async (
@@ -62,17 +62,16 @@ const writeEnvsFromDir = async (
 }
 const mainModuleDir = path.dirname(path.fromFileUrl(Deno.mainModule))
 const outDir = path.resolve(path.join(mainModuleDir, '../..'))
-
-Deno.writeTextFile(
-	path.join(outDir, '.env.common'),
-	`REPO_NAME=
+if (!existsSync(path.join(outDir, '.env.common')))
+	Deno.writeTextFile(
+		path.join(outDir, '.env.common'),
+		`REPO_NAME=
 ORG_NAME=
-RELEASE_REPO_NAME=
 PRODUCTION_CLUSTER=
 STAGING_CLUSTER=
 COMMIT_CLUSTER=
 `
-)
+	)
 
 for (const namespace of namespaces) {
 	await Deno.writeTextFile(path.join(outDir, `.env.${namespace}`), '')

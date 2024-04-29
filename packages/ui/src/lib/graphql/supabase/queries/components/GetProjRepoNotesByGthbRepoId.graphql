@@ -1,0 +1,9 @@
+query GetProjRepoNotesByGthbRepoId($gthbRepoId: BigInt) {
+	projRepoCollection(filter: { gthbRepoId: { eq: $gthbRepoId } }) {
+		edges {
+			node {
+				note
+			}
+		}
+	}
+}

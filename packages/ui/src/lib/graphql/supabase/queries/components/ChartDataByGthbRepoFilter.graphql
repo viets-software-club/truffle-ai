@@ -1,0 +1,13 @@
+query ChartDataByGthbRepoFilter($gthbRepoFilter: GthbRepoFilter) {
+	gthbRepoCollection(filter: $gthbRepoFilter) {
+		edges {
+			node {
+				gthbRepoName
+				gthbOwner {
+					gthbOwnerLogin
+				}
+				gthbRepoId
+			}
+		}
+	}
+}

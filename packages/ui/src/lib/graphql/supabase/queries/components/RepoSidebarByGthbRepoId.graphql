@@ -1,0 +1,112 @@
+query RepoSidebarByGthbRepoId($gthbRepoId: BigInt, $ownerId: BigInt) {
+	gthbRepoCollection(filter: { gthbRepoId: { eq: $gthbRepoId } }) {
+		edges {
+			node {
+				forkCount
+				homepageUrl
+				isInOrganization
+				issuesTotalCount
+				issuesPerContributor
+				pullRequestsTotalCount
+				gthbRepoName
+				gthbRepoDescription
+				gthbRepoUrl
+				stargazerCount
+				contributorCount
+				stargazersPerContributor
+				forksPerContributor
+				forkCount
+				createdAt
+				pullRequestsPerContributor
+				gthbRepo {
+					projRepoAndSbotLinProfileCollection {
+						edges {
+							node {
+								sbotLinProfile {
+									sbotLinProfileUrl
+									sbotLinProfileName
+								}
+							}
+						}
+					}
+					projRepoAndSbotLinCompanyCollection {
+						edges {
+							node {
+								sbotLinCompanyId
+								sbotLinCompany {
+									sbotLinCompanyName
+									sbotLinCompanyUrl
+								}
+							}
+						}
+					}
+				}
+				gthbRepoAndGthbRepoTopicCollection {
+					edges {
+						node {
+							gthbRepoTopic {
+								gthbRepoTopicName
+							}
+						}
+					}
+				}
+				gthbRepoAndGthbLangCollection {
+					edges {
+						node {
+							gthbLang {
+								gthbLangName
+								color
+							}
+						}
+					}
+				}
+				gthbRepoContrCollection {
+					edges {
+						node {
+							gthbOwner {
+								avatarUrl
+								gthbOwnerLogin
+								gthbOwnerUrl
+								gthbOwnerType
+							}
+						}
+					}
+				}
+				gthbOwner {
+					avatarUrl
+					gthbOwnerLogin
+					gthbOwnerUrl
+					gthbOwnerType
+				}
+			}
+		}
+	}
+	gthbOrgCollection(filter: { gthbOrgId: { eq: $ownerId } }) {
+		edges {
+			node {
+				gthbOrgId
+				gthbOrgDescription
+				descriptionHtml
+				email
+				gthbOrgName
+				twitterUsername
+				websiteUrl
+			}
+		}
+	}
+	gthbUserCollection(filter: { gthbUserId: { eq: $ownerId } }) {
+		edges {
+			node {
+				gthbUserId
+				bio
+				company
+				createdAt
+				email
+				followersTotalCount
+				gthbUserName
+				twitterUsername
+				websiteUrl
+			}
+		}
+	}
+}

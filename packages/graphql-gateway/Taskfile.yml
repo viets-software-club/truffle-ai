@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 tasks:
   dev:
@@ -9,4 +9,7 @@ tasks:
       - source {{.SOURCE}} && cargo build
   test:
     cmds:
-      - source {{.SOURCE}} && cargo test && cargo check
+      - cargo test && cargo check
+  start:
+    cmds:
+      - source {{.SOURCE}} && cargo run target/debug/graphql-gateway

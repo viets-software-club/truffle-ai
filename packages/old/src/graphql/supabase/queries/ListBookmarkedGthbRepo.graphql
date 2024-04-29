@@ -1,0 +1,26 @@
+query ListBookmarkedGthbRepo($filter: GthbRepoFilter) {
+  fListBookmarkedGthbRepo(filter: $filter) {
+    edges {
+      node {
+        gthbRepoName
+        gthbRepoDescription
+        stargazerCount
+        issuesTotalCount
+        forksPerContributor
+        forkCount
+        contributorCount
+        issuesTotalCount
+        issuesPerContributor
+        pullRequestsTotalCount
+        gthbOwner {
+          avatarUrl
+          gthbOwnerLogin
+        }
+        gthbRepo {
+        
+            projRepoId
+        }
+      }
+    }
+  }
+}

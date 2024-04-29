@@ -28,6 +28,8 @@ on:
         value: ${{ jobs.variables.outputs.ENVIRONMENT }}
       DATETIME:
         value: ${{ jobs.variables.outputs.DATETIME }}
+      UI_HOSTNAME:
+        value: ${{ jobs.variables.outputs.UI_HOSTNAME }}
 jobs:
   variables:
     name: 'Variables'
@@ -40,6 +42,7 @@ jobs:
       SUPABASE_URL: ${{ vars.SUPABASE_URL }}
       GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
       SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
+      UI_HOSTNAME: ${{ vars.UI_HOSTNAME }}
       GRAPHQL_GATEWAY_URL: ${{ vars.GRAPHQL_GATEWAY_URL }}
       GIT_COMMIT_TAG: ${{ steps.git_commit_tag.outputs.git_commit_tag }}
       GIT_COMMIT_TAG_N7: ${{ steps.git_commit_tag_n7.outputs.git_commit_tag_n7 }}

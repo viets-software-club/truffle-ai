@@ -1,0 +1,12 @@
+query AllGthbRepoContributor {
+  gthbRepoContrCollection {
+    edges {
+      node {
+        gthbRepoId
+        gthbOwnerId
+        contributions
+        internalCreatedAt
+      }
+    }
+  }
+}

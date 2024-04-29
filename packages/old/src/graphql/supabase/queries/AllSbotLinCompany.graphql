@@ -1,0 +1,21 @@
+query AllSbotLinCompany {
+  sbotLinCompanyCollection {
+    edges {
+      node {
+  			sbotLinCompanyId
+        internalCreatedAt
+        sbotLinCompanyUrl
+        sbotLinCompanyName
+        sphere
+        followers
+        logo
+        sbotLinCompanyImage
+        employeesAmountInLinkedin
+        about
+        website
+        headquarters
+        sbotLinCompanyType
+      }
+    }
+  }
+}

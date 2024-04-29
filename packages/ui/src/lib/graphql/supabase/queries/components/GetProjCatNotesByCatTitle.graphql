@@ -1,0 +1,9 @@
+query GetProjCatNotesByCatTitle($categoryTitle: String) {
+	projCatCollection(filter: { title: { eq: $categoryTitle } }) {
+		edges {
+			node {
+				note
+			}
+		}
+	}
+}

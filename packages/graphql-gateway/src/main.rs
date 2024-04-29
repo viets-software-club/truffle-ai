@@ -50,8 +50,15 @@ impl header_proxy_gateway::Auth for CustomAuth {
         client: &reqwest_middleware::ClientWithMiddleware,
         builder: reqwest_middleware::RequestBuilder,
     ) -> (bool, reqwest_middleware::RequestBuilder) {
+        if headers.contains_key("x-codegen") {
+            // let builder = builder.header(
+            //     "apikey",
+            //     headers.get("apikey").unwrap().to_str().unwrap(),
+            // );
+            return (true, builder);
+        }
         if headers.contains_key("authorization") {
-            if headers.get("authentication").is_none()
+            if headers.get("authorization").is_none()
                 || headers.get("authorization").unwrap().to_str().is_err()
                 || headers
                     .get("authorization")
@@ -84,8 +91,10 @@ impl header_proxy_gateway::Auth for CustomAuth {
                 "/auth/v1/user"
             );
 
+            let authorization =   headers.get("authorization").unwrap().to_str().unwrap();
             let req_result = client
                 .request(reqwest::Method::GET, uri)
+                .header("Content-Type", "application/json")
                 .header(
                     "apiKey",
                     env::var("SUPABASE_ANON_KEY")
@@ -94,7 +103,7 @@ impl header_proxy_gateway::Auth for CustomAuth {
                 )
                 .header(
                     "Authorization",
-                    headers.get("authorization").unwrap().to_str().unwrap(),
+                    authorization,
                 )
                 .build();
 
@@ -105,24 +114,26 @@ impl header_proxy_gateway::Auth for CustomAuth {
 
             let user_result = client.execute(req).await;
             if user_result.is_err() {
-                return (false, builder);
+              return (false, builder);
             }
 
             let user_res = user_result.unwrap();
 
             let user_body_result = user_res.bytes().await;
             if user_body_result.is_err() {
-                return (false, builder);
+              return (false, builder);
             }
-            let user_body_json_parse_result =
+
+            let user_body_json_parse_result: Result<User, serde_json::Error> =
                 serde_json::from_slice::<User>(&user_body_result.unwrap());
             if user_body_json_parse_result.is_err() {
-                return (false, builder);
+              return (false, builder);
             }
+      
             let builder = builder.header(
                 "authusersid",
                 user_body_json_parse_result.unwrap().id.clone(),
-            );
+            ).header("Content-Type", "application/json");
             return (true, builder);
         }
 
@@ -157,7 +168,6 @@ impl header_proxy_gateway::Auth for CustomAuth {
             if auth_users_id_json_parse.len() == 0 {
                 return (false, builder);
             }
-
             let uri = format!(
                 "{}{}{}",
                 env::var("SUPABASE_URL").unwrap_or_default().to_string(),
@@ -167,6 +177,7 @@ impl header_proxy_gateway::Auth for CustomAuth {
 
             let req_result = client
                 .request(reqwest::Method::GET, uri)
+                .header("Content-Type", "application/json")
                 .header(
                     "apiKey",
                     env::var("SUPABASE_SERVICE_KEY")
@@ -224,7 +235,7 @@ impl header_proxy_gateway::Auth for CustomAuth {
                 ),
             )
             .unwrap();
-            let builder = builder.header("authorization", format!("Bearer {}", token));
+            let builder = builder.header("authorization", format!("Bearer {}", token)).header("Content-Type", "application/json");
             return (true, builder);
         }
 

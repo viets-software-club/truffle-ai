@@ -1,0 +1,3 @@
+mutation DeleteProjBookmarkOnProjCatByTitleAndId($catTitle: String, $id: BigInt) {
+	fDeleteProjBookmarkOnProjCatByTitleAndGthbRepoId(cattitle: $catTitle, id: $id)
+}

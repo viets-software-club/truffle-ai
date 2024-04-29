@@ -1,0 +1,11 @@
+query AllAlgoHnTag {
+  algoHnTagCollection {
+    edges {
+      node {
+        algoHnTagId
+        internalCreatedAt
+      	title
+      }
+    }
+  }
+}

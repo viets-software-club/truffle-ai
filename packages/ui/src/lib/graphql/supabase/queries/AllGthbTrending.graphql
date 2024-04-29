@@ -1,0 +1,13 @@
+query AllGthbTrending {
+  gthbTrendingCollection {
+    edges {
+      node {
+  		gthbTrendingId
+        gthbRepoId
+        internalCreatedAt
+        dateRange
+        lang
+      }
+    }
+  }
+}

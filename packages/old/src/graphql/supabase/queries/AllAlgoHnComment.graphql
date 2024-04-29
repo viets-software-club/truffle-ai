@@ -1,0 +1,18 @@
+query AllAlgoHnComment{
+	algoHnCommentCollection {
+    edges {
+      node {
+        algoHnCommentId
+        internalCreatedAt
+        algoHnCommentObjectId
+        algoHnQueryId
+        commentText
+        storyId
+        storyTitle
+        storyUrl
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}

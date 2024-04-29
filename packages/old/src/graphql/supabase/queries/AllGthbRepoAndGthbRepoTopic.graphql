@@ -1,0 +1,11 @@
+query AllGthbRepoAndGthbRepoTopic {
+  gthbRepoAndGthbRepoTopicCollection {
+    edges {
+      node {
+        gthbRepoId
+        gthbRepoTopicId
+        internalCreatedAt
+      }
+    }
+  }
+}

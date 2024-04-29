@@ -1,0 +1,11 @@
+query AllProjRepoAndSbotLinProfile {
+  projRepoAndSbotLinProfileCollection {
+    edges {
+      node {
+  		projRepoId
+        sbotLinProfileId
+        internalCreatedAt
+      }
+    }
+  }
+}

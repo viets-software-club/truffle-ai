@@ -1,0 +1,9 @@
+query ListCategoriesTitle {
+	projCatCollection {
+		edges {
+			node {
+				title
+			}
+		}
+	}
+}

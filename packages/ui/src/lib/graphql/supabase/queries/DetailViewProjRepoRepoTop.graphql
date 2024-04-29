@@ -1,0 +1,20 @@
+query DetailViewProjRepoTop(
+	$id: BigInt
+) # $gthbStarHistFilter: GthbStarHistFilter, $gthbIssueHistFilter: GthbIssueHistFilter, $gthbForkHistFilter: GthbForkHistFilter
+{
+	projRepoCollection(filter: { gthbRepoId: { eq: $id } }) {
+		edges {
+			node {
+				gthbRepo {
+					gthbRepoDescription
+					gthbOwner {
+						avatarUrl
+						gthbOwnerLogin
+					}
+				}
+				repoEli5
+				algoHnEli5
+			}
+		}
+	}
+}

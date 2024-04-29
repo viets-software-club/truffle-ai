@@ -1,0 +1,8 @@
+mutation UpdateNotesForProjRepo($id: BigInt, $text: String) {
+  updateProjRepoCollection(filter: {projRepoId: {eq: $id}}, set:{
+     note: $text
+  }) {
+    affectedCount
+  }
+}
+     

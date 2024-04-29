@@ -99,7 +99,7 @@ func (d *Database) CallInsertProjRepo(projectRepo *types.T_f_insert_proj_repo) e
 }
 
 func (d *Database) CallInsertProjBookmarkWCats(projectBookmarkWithCategories *types.T_f_insert_proj_bookmark_w_cats) error {
-
+	println(projectBookmarkWithCategories)
 	_, err := d.pool.Exec(d.ctx, "f_insert_proj_bookmark_w_cats", &projectBookmarkWithCategories)
 	if err != nil {
 		return err

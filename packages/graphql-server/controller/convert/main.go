@@ -64,13 +64,15 @@ func ConvertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_in
 		},
 		Gthb_repo: pgGithubRepo,
 		Note:      pgtype.Text{Valid: false},
-		Proj_repo_metadata: &types.T_f_insert_proj_repo_metadata{
-			Algo_hn_eli5: helper.StringToNoEmptyPgText(data.HackernewsSentiment),
-			Repo_eli5:    helper.StringToNoEmptyPgText(data.RepoEli5),
-		},
+		// Proj_repo_metadata: &types.T_f_insert_proj_repo_metadata{
+		// 	Algo_hn_eli5: helper.StringToNoEmptyPgText(data.HackernewsSentiment),
+		// 	Repo_eli5:    helper.StringToNoEmptyPgText(data.RepoEli5),
+		// },
 		Proj_repo_classifiers: classifiers,
 		Sbot_lin_companies:    pgLinkedinCompanies,
 		Sbot_lin_profiles:     pgLinkedinProfiles,
+		Algo_hn_eli5:          helper.StringToNoEmptyPgText(data.HackernewsSentiment),
+		Repo_eli5:             helper.StringToNoEmptyPgText(data.RepoEli5),
 	}, nil
 }
 

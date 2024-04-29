@@ -1,0 +1,25 @@
+query ChartDataIssuesByGthbRepoFilter(
+	$gthbRepoFilter: GthbRepoFilter
+	$issueFilter: GthbIssueHistFilter
+	$issueOrderBy: [GthbIssueHistOrderBy!]
+) {
+	gthbRepoCollection(filter: $gthbRepoFilter) {
+		edges {
+			node {
+				gthbRepoName
+				gthbOwner {
+					gthbOwnerLogin
+				}
+				gthbRepoId
+				gthbIssueHistCollection(filter: $issueFilter, orderBy: $issueOrderBy) {
+					edges {
+						node {
+							gthbIssueHistDate
+							amount
+						}
+					}
+				}
+			}
+		}
+	}
+}

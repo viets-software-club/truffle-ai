@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"strings"
 	"time"
 
 	githubv3 "github.com/google/go-github/v57/github"
@@ -124,6 +125,11 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 	appendReposToMap(repos, 1)
 
 	if err != nil {
+		// forks not always support "oldest"
+		if strings.Contains(err.Error(), "GET") && strings.Contains(err.Error(), "500") {
+			log.Println("Caught 500 error from GitHub API:", err)
+			return &forkHistMap, nil
+		}
 		return nil, err
 	}
 	// set last page number
@@ -177,6 +183,86 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 	}
 	return &forkHistMap, nil
 }
+
+// func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*ForkHistMap, error) {
+// 	forkHistMap := make(map[string]Hist)
+
+// 	appendReposToMap := func(repos []*githubv3.Repository, page int) {
+// 		prevAmount := (page - 1) * 30
+// 		for i, repo := range repos {
+// 			if *repo.Fork {
+// 				forkHistMap[repo.CreatedAt.String()] = Hist{
+// 					Date:   repo.CreatedAt.Time,
+// 					Amount: prevAmount + i,
+// 				}
+// 			}
+// 		}
+// 	}
+// 	// get first page
+// 	repos, response, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+// 		ListOptions: githubv3.ListOptions{
+// 			PerPage: 30,
+// 			Page:    1,
+// 		},
+// 		Sort: "newest",
+// 	})
+//   if err != nil {
+// 		return nil, err
+// 	}
+// 	// set last page number
+// 	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
+// 	if err != nil {
+// 		// all forks fit on one page
+// 		log.Println(err)
+// 		return &forkHistMap, nil
+// 	}
+// 	if lastPage == 1 {
+//     appendReposToMap(repos, 1)
+// 		return &forkHistMap, nil
+// 	} else {
+//     appendReposToMap(repos, lastPage - 1)
+//   }
+
+// 	var pageCount int
+// 	if amountPages > lastPage {
+// 		pageCount = lastPage
+// 	} else {
+// 		pageCount = amountPages
+// 	}
+// 	stepWidth := float64(lastPage) / float64(pageCount)
+
+// 	// get all in between pages
+// 	for i := 1; i < pageCount; i++ {
+// 		page := int(float64(i) * stepWidth)
+// 		repos, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+// 			ListOptions: githubv3.ListOptions{
+// 				PerPage: 30,
+// 				Page:    lastPage - page,
+// 			},
+// 			Sort: "oldest",
+// 		})
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		appendReposToMap(repos, page)
+// 	}
+
+// 	// get last page
+// 	if lastPage > 2 {
+// 		repos, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
+// 			ListOptions: githubv3.ListOptions{
+// 				PerPage: 30,
+// 				Page:    lastPage - 1,
+// 			},
+// 			Sort: "oldest",
+// 		})
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		appendReposToMap(repos, lastPage-1)
+// 	}
+// 	return &forkHistMap, nil
+// }
 
 func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*IssueHistMap, error) {
 	issueHistMap := make(map[string]Hist)
@@ -476,6 +562,11 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 	appendReposToMap(firstGazers, 1)
 
 	if err != nil {
+		// forks not always support "oldest"
+		if strings.Contains(err.Error(), "GET") && strings.Contains(err.Error(), "500") {
+			log.Println("Caught 500 error from GitHub API:", err)
+			return &forkHistMap, nil
+		}
 		return nil, err
 	}
 	// set last page number

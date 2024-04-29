@@ -1,0 +1,5 @@
+mutation UpdateProjCatNotesByCatTitle($categoryTitle: String, $text: String) {
+	updateProjCatCollection(filter: { title: { eq: $categoryTitle } }, set: { note: $text }) {
+		affectedCount
+	}
+}

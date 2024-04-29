@@ -1,56 +1,78 @@
 query TrendingTable(
+	$dateRange: String
 	$filter: GthbRepoFilter
 	$orderBy: [GthbRepoOrderBy!]
 	$first: Int
 	$last: Int
 ) {
-	# stargazers
-	queryStargazerMax: fListTrendingGthbRepo(first: 1, orderBy: { stargazerCount: DescNullsLast }) {
+	queryStargazerMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
+		first: 1
+		orderBy: { stargazerCount: DescNullsLast }
+	) {
 		edges {
 			node {
 				stargazerCount
 			}
 		}
 	}
-	queryStargazerMin: fListTrendingGthbRepo(first: 1, orderBy: { stargazerCount: AscNullsLast }) {
+	queryStargazerMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
+		first: 1
+		orderBy: { stargazerCount: AscNullsLast }
+	) {
 		edges {
 			node {
 				stargazerCount
 			}
 		}
 	}
-	# forkCount
-	queryForkMax: fListTrendingGthbRepo(first: 1, orderBy: { forkCount: DescNullsLast }) {
+	queryForkMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
+		first: 1
+		orderBy: { forkCount: DescNullsLast }
+	) {
 		edges {
 			node {
 				forkCount
 			}
 		}
 	}
-	queryForkMin: fListTrendingGthbRepo(first: 1, orderBy: { forkCount: AscNullsLast }) {
+	queryForkMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
+		first: 1
+		orderBy: { forkCount: AscNullsLast }
+	) {
 		edges {
 			node {
 				forkCount
 			}
 		}
 	}
-	# issue
-	queryIssueMax: fListTrendingGthbRepo(first: 1, orderBy: { issuesTotalCount: DescNullsLast }) {
+	queryIssueMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
+		first: 1
+		orderBy: { issuesTotalCount: DescNullsLast }
+	) {
 		edges {
 			node {
 				issuesTotalCount
 			}
 		}
 	}
-	queryIssueMin: fListTrendingGthbRepo(first: 1, orderBy: { issuesTotalCount: AscNullsLast }) {
+	queryIssueMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
+		first: 1
+		orderBy: { issuesTotalCount: AscNullsLast }
+	) {
 		edges {
 			node {
 				issuesTotalCount
 			}
 		}
 	}
-	# contributors
 	queryContributorMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { contributorCount: DescNullsLast }
 	) {
@@ -61,6 +83,7 @@ query TrendingTable(
 		}
 	}
 	queryContributorMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { contributorCount: AscNullsLast }
 	) {
@@ -70,8 +93,8 @@ query TrendingTable(
 			}
 		}
 	}
-	# pull requests
 	queryPullRequestsMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { pullRequestsTotalCount: DescNullsLast }
 	) {
@@ -82,6 +105,7 @@ query TrendingTable(
 		}
 	}
 	queryPullRequestsMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { pullRequestsTotalCount: AscNullsLast }
 	) {
@@ -91,8 +115,8 @@ query TrendingTable(
 			}
 		}
 	}
-	# issues per contributor
 	queryIssuesPerContributorMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { issuesPerContributor: DescNullsLast }
 	) {
@@ -103,6 +127,7 @@ query TrendingTable(
 		}
 	}
 	queryIssuesPerContributorMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { issuesPerContributor: AscNullsLast }
 	) {
@@ -112,8 +137,8 @@ query TrendingTable(
 			}
 		}
 	}
-	# forks per contributor
 	queryForksPerContributorMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { forksPerContributor: DescNullsLast }
 	) {
@@ -124,6 +149,7 @@ query TrendingTable(
 		}
 	}
 	queryForksPerContributorMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { forksPerContributor: AscNullsLast }
 	) {
@@ -133,8 +159,8 @@ query TrendingTable(
 			}
 		}
 	}
-	# stargazers per contributor
 	queryStargazersPerContributorMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { stargazersPerContributor: DescNullsLast }
 	) {
@@ -145,6 +171,7 @@ query TrendingTable(
 		}
 	}
 	queryStargazersPerContributorMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { stargazersPerContributor: AscNullsLast }
 	) {
@@ -154,8 +181,8 @@ query TrendingTable(
 			}
 		}
 	}
-	# pull requests per contributor
 	queryPullRequestsPerContributorMax: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { pullRequestsPerContributor: DescNullsLast }
 	) {
@@ -166,6 +193,7 @@ query TrendingTable(
 		}
 	}
 	queryPullRequestsPerContributorMin: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		first: 1
 		orderBy: { pullRequestsPerContributor: AscNullsLast }
 	) {
@@ -176,6 +204,7 @@ query TrendingTable(
 		}
 	}
 	queryTrending: fListTrendingGthbRepo(
+		gthbDateRangeArg: $dateRange
 		filter: $filter
 		orderBy: $orderBy
 		first: $first

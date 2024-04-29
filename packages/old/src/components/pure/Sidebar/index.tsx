@@ -29,7 +29,7 @@ const Sidebar = () => {
 						) : (
 							<p className="py-2.5 pl-5 text-xs text-white/90">
 								No bookmarks yet
-							</p>
+            </p>
 						)}
 					</SidebarSection>
 					<div className="border-t border-solid border-white/5 p-2">

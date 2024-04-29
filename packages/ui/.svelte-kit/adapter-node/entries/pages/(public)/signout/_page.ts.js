@@ -1,6 +1,6 @@
 import { s as supabaseClient } from "../../../../chunks/index4.js";
 import { r as redirect } from "../../../../chunks/index.js";
-async function load() {
+async function load({ fetch, params }) {
   const response = await supabaseClient.auth.signOut();
   if (response?.error) {
     console.error(response.error);

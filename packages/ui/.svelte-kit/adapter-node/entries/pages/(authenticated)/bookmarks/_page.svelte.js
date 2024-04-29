@@ -1,334 +1,342 @@
-import { p as push, b as pop } from "../../../../chunks/index3.js";
+import { p as push, k as copy_payload, l as assign_payload, b as pop } from "../../../../chunks/index3.js";
 import { v as validate_component } from "../../../../chunks/validate.js";
-import { U as User, a as Users_round, F as FilterHeader } from "../../../../chunks/index8.js";
-import { F as Folder_git_2, S as Star, C as Circle_dot, G as Git_fork, a as Git_pull_request_arrow } from "../../../../chunks/dropdown-menu-checkbox-item.js";
-import { D as DataTable } from "../../../../chunks/index9.js";
+import { F as Folder_git_2, U as Users_round, G as Git_pull_request_arrow, a as User_round, b as FilterHeader, D as DataTable } from "../../../../chunks/index8.js";
+import { S as Star, C as Circle_dot, G as Git_fork, B as BookmarkTableDocument, O as OrderByDirection } from "../../../../chunks/dropdown-menu-checkbox-item.js";
+import { c as client } from "../../../../chunks/index6.js";
+import "clsx";
+import { v4 } from "uuid";
 function BookmarksContent($$payload, $$props) {
   push();
-  const columns = [
-    {
-      title: "Owner Login",
-      icon1: User,
-      type: "text",
-      sortDisabled: false,
-      sortAsc: false
-    },
-    {
-      title: "Repo Name",
-      icon1: Folder_git_2,
-      type: "text",
-      sortDisabled: true,
-      sortAsc: false
-    },
-    {
-      title: "Stars",
-      icon1: Star,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false,
-      filters: [
-        { operator: ">", value: 1e3 },
-        { operator: "<", value: 500 },
-        { operator: "!=", value: 1e3 }
-      ]
-    },
-    {
-      title: "Issues",
-      icon1: Circle_dot,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false
-    },
-    {
-      title: "Forks",
-      icon1: Git_fork,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false,
-      filters: [{ operator: "!=", value: 2e3 }],
-      disabled: true
-    },
-    {
-      title: "Contributors",
-      icon1: Users_round,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false
-    },
-    {
-      title: "Pull Requests",
-      icon1: Git_pull_request_arrow,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false
-    },
-    {
-      title: "Issues/Contr.",
-      icon1: Circle_dot,
-      icon2: Users_round,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false
-    },
-    {
-      title: "Forks/Contr.",
-      icon1: Git_fork,
-      icon2: Users_round,
-      type: "number",
-      sortDisabled: true,
-      sortAsc: false
-    }
-  ].sort((a, b) => a.title.localeCompare(b.title));
   let data = {
-    maxStars: 100,
-    maxIssues: 100,
-    maxForks: 100,
-    maxContributors: 100,
-    maxForksPerContributor: 100,
-    maxIssuesPerContributor: 100,
-    maxOpenPullRequests: 100,
-    rows: [
-      {
-        id: "1",
-        avatarUrl: "https://avatars.githubusercontent.com/u/1?v=4",
-        githubOwnerLogin: "mojombo",
-        githubRepositoryName: "grit",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 2,
-        avatarUrl: "https://avatars.githubusercontent.com/u/69631?s=48&v=4",
-        githubOwnerLogin: "ant-design",
-        githubRepositoryName: "ant-design",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 3,
-        avatarUrl: "https://avatars.githubusercontent.com/u/69634?s=48&v=4",
-        githubOwnerLogin: "mojombo",
-        githubRepositoryName: "grit",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 4,
-        avatarUrl: "https://avatars.githubusercontent.com/u/65651?s=48&v=4",
-        githubOwnerLogin: "storybookjs",
-        githubRepositoryName: "storybook",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 5,
-        avatarUrl: "https://avatars.githubusercontent.com/u/61631?s=48&v=4",
-        githubOwnerLogin: "mojombo",
-        githubRepositoryName: "grit",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 6,
-        avatarUrl: "https://avatars.githubusercontent.com/u/62631?s=48&v=4",
-        githubOwnerLogin: "oven-sh",
-        githubRepositoryName: "bun",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 7,
-        avatarUrl: "https://avatars.githubusercontent.com/u/64631?s=48&v=4",
-        githubOwnerLogin: "enaqx",
-        githubRepositoryName: "awesome-react",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 8,
-        avatarUrl: "https://avatars.githubusercontent.com/u/69531?s=48&v=4",
-        githubOwnerLogin: "leonardomso",
-        githubRepositoryName: "33-js-concepts",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 9,
-        avatarUrl: "https://avatars.githubusercontent.com/u/6961?s=48&v=4",
-        githubOwnerLogin: "apache",
-        githubRepositoryName: "superset",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 10,
-        avatarUrl: "https://avatars.githubusercontent.com/u/6441?s=48&v=4",
-        githubOwnerLogin: "frain-dev",
-        githubRepositoryName: "convoy",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 11,
-        avatarUrl: "https://avatars.githubusercontent.com/u/6441?s=48&v=4",
-        githubOwnerLogin: "apache",
-        githubRepositoryName: "airavata",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 12,
-        avatarUrl: "https://avatars.githubusercontent.com/u/64412?s=48&v=4",
-        githubOwnerLogin: "nebo15",
-        githubRepositoryName: "multiverse",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 13,
-        avatarUrl: "https://avatars.githubusercontent.com/u/6432?s=48&v=4",
-        githubOwnerLogin: "wp-sms",
-        githubRepositoryName: "wp-sms",
-        stars: 18400,
-        issues: 0,
-        forks: 0,
-        contributors: 0,
-        forksPerContributor: 0,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 14,
-        avatarUrl: "https://avatars.githubusercontent.com/u/6221?s=48&v=4",
-        githubOwnerLogin: "flant",
-        githubRepositoryName: "netgwm",
-        stars: 18400,
-        issues: 0,
-        forks: 5,
-        contributors: 543,
-        forksPerContributor: 0,
-        issuesPerContributor: 45,
-        openPullRequests: 0
-      },
-      {
-        id: 15,
-        avatarUrl: "https://avatars.githubusercontent.com/u/4441?s=48&v=4",
-        githubOwnerLogin: "twbs",
-        githubRepositoryName: "bootstrap",
-        stars: 18400,
-        issues: 0,
-        forks: 5345,
-        contributors: 0,
-        forksPerContributor: 5345,
-        issuesPerContributor: 0,
-        openPullRequests: 0
-      },
-      {
-        id: 16,
-        avatarUrl: "https://avatars.githubusercontent.com/u/5441?s=48&v=4",
-        githubOwnerLogin: "electron",
-        githubRepositoryName: "electron",
-        stars: 18400,
-        issues: 543,
-        forks: 543,
-        contributors: 543,
-        forksPerContributor: 6546,
-        issuesPerContributor: 4335535,
-        openPullRequests: 54
-      },
-      {
-        id: 17,
-        avatarUrl: "https://avatars.githubusercontent.com/u/5221?s=48&v=4",
-        githubOwnerLogin: "rails",
-        githubRepositoryName: "rail",
-        stars: 18400,
-        issues: 43,
-        forks: 432,
-        contributors: 34,
-        forksPerContributor: 34,
-        issuesPerContributor: 45,
-        openPullRequests: 432434
-      },
-      {
-        id: 17,
-        avatarUrl: "https://avatars.githubusercontent.com/u/3421?s=48&v=4",
-        githubOwnerLogin: "parcel-bundler",
-        githubRepositoryName: "parcel",
-        stars: 18400,
-        issues: 435,
-        forks: 34,
-        contributors: 5435,
-        forksPerContributor: 5435,
-        issuesPerContributor: 5435,
-        openPullRequests: 5345
-      }
-    ]
+    hiddenColumnIdArr: [],
+    avatarSort: "none",
+    nameSort: "none",
+    starSort: "none",
+    issueSort: "none",
+    forkSort: "none",
+    contributorSort: "none",
+    forksPerContributorSort: "none",
+    issuesPerContributorSort: "none",
+    openPullRequestsSort: "none"
   };
-  $$payload.out += `<!--[-->`;
-  validate_component(FilterHeader)($$payload, { columns });
-  $$payload.out += `<!--]--> <!--[-->`;
-  validate_component(DataTable)($$payload, { data });
-  $$payload.out += `<!--]-->`;
+  function query() {
+    client.query({
+      query: BookmarkTableDocument,
+      variables: {
+        filter: {
+          and: filterData.filterableItems.filter((item) => item.filters && item.filters.length > 0).flatMap((item) => {
+            return item.filters.map((filter) => {
+              return {
+                [item.id]: { [filter.operator]: filter.value }
+              };
+            });
+          })
+        },
+        orderBy: filterData.sortableItems.filter((item) => !item.disabled).map((item) => {
+          return {
+            [item.id]: item.isAsc ? OrderByDirection.AscNullsLast : OrderByDirection.DescNullsLast
+          };
+        })
+      }
+    }).then((res) => {
+      data = {
+        ...data,
+        time: void 0,
+        hiddenColumnIdArr: filterData.columns.filter((col) => !col.checked).map((col) => col.id),
+        maxStars: res.data.queryStargazerMax?.edges[0]?.node.stargazerCount,
+        minStars: res.data.queryStargazerMin?.edges[0]?.node.stargazerCount,
+        maxForks: res.data.queryForkMax?.edges[0]?.node.forkCount,
+        minForks: res.data.queryForkMin?.edges[0]?.node.forkCount,
+        maxContributors: res.data.queryContributorMax?.edges[0]?.node.contributorCount,
+        minContributors: res.data.queryContributorMin?.edges[0]?.node.contributorCount,
+        maxForksPerContributor: res.data.queryForksPerContributorMax?.edges[0]?.node.forksPerContributor,
+        minForksPerContributor: res.data.queryForksPerContributorMin?.edges[0]?.node.forksPerContributor,
+        maxIssuesPerContributor: res.data.queryIssuesPerContributorMax?.edges[0]?.node.issuesPerContributor,
+        minIssuesPerContributor: res.data.queryIssuesPerContributorMin?.edges[0]?.node.issuesPerContributor,
+        maxOpenPullRequests: res.data.queryPullRequestsMax?.edges[0]?.node.pullRequestsTotalCount,
+        minOpenPullRequests: res.data.queryPullRequestsMin?.edges[0]?.node.pullRequestsTotalCount,
+        maxStarsPerContributor: res.data.queryStargazersPerContributorMax?.edges[0]?.node.stargazersPerContributor,
+        minStarsPerContributor: res.data.queryStargazersPerContributorMin?.edges[0]?.node.stargazersPerContributor,
+        rows: res.data.queryTrending?.edges.map(({ node }) => ({
+          id: `${node.gthbOwner.gthbOwnerLogin}-${node.gthbRepoName}`,
+          avatarUrl: node.gthbOwner.avatarUrl,
+          githubOwnerLogin: node.gthbOwner.gthbOwnerLogin,
+          githubRepositoryName: node.gthbRepoName,
+          stars: parseInt(node.stargazerCount),
+          issues: parseInt(node.issuesTotalCount),
+          forks: parseInt(node.forkCount),
+          starsPerContributor: parseInt(node.stargazersPerContributor),
+          pullRequestsPerContributor: parseInt(node.pullRequestsPerContributor),
+          contributors: parseInt(node.contributorCount),
+          forksPerContributor: parseInt(node.forksPerContributor),
+          issuesPerContributor: parseInt(node.issuesPerContributor),
+          pullRequests: parseInt(node.pullRequestsTotalCount),
+          eli5: node.gthbRepoDescription
+        }))
+      };
+    });
+  }
+  let filterData = {
+    onSortUpdate: (oldIndex, newIndex) => {
+      const copy = filterData.sortableItems[newIndex];
+      filterData.sortableItems[newIndex] = filterData.sortableItems[oldIndex];
+      filterData.sortableItems[oldIndex] = copy;
+      query();
+    },
+    onFilterAdd: (id) => {
+      const index = filterData.filterableItems.findIndex((item) => item.id === id);
+      filterData.filterableItems[index].filters.push({ id: v4(), operator: "gt", value: 0 });
+      query();
+    },
+    onFilterChange: (id, newFilter) => {
+      const index = filterData.filterableItems.findIndex((item) => item.id === id);
+      const filterIndex = filterData.filterableItems[index].filters.findIndex((f) => f.id === newFilter.id);
+      filterData.filterableItems[index].filters[filterIndex] = newFilter;
+      query();
+    },
+    onFilterRemove: (id, filter) => {
+      const index = filterData.filterableItems.findIndex((item) => item.id === id);
+      filterData.filterableItems[index].filters = filterData.filterableItems[index].filters.filter((item) => item.id !== filter.id);
+      query();
+    },
+    onColumnCheckChange: (id) => {
+      const index = filterData.columns.findIndex((item) => item.id === id);
+      filterData.columns[index].checked = !filterData.columns[index].checked;
+      data = {
+        ...data,
+        hiddenColumnIdArr: filterData.columns.filter((col) => !col.checked).map((col) => col.id)
+      };
+    },
+    sortableItems: [
+      {
+        id: "gthbRepoName",
+        title: "Repo Name",
+        icon1: Folder_git_2
+      },
+      {
+        id: "stargazerCount",
+        title: "Stars",
+        icon1: Star
+      },
+      {
+        id: "issuesTotalCount",
+        title: "Issues",
+        icon1: Circle_dot
+      },
+      {
+        id: "forkCount",
+        title: "Forks",
+        icon1: Git_fork
+      },
+      {
+        id: "contributorCount",
+        title: "Contributors",
+        icon1: Users_round
+      },
+      {
+        id: "pullRequestTotalCount",
+        title: "Pull Requests",
+        icon1: Git_pull_request_arrow
+      },
+      {
+        id: "issuesPerContributor",
+        title: "Issues/Contr.",
+        icon1: Circle_dot,
+        icon2: Users_round
+      },
+      {
+        id: "stargazersPerContributor",
+        title: "Stars/Contr.",
+        icon1: Star,
+        icon2: Users_round
+      },
+      {
+        id: "forksPerContributor",
+        title: "Forks/Contr.",
+        icon1: Git_fork,
+        icon2: Users_round
+      },
+      {
+        id: "pullRequestsPerContributor",
+        title: "PRs/Contr.",
+        icon1: Git_pull_request_arrow,
+        icon2: Users_round
+      }
+    ].sort((a, b) => a.title.localeCompare(b.title)).map((item, index) => {
+      return {
+        ...item,
+        disabled: true,
+        isAsc: false,
+        onClick: (id) => {
+          const index2 = filterData.sortableItems.findIndex((item2) => item2.id === id);
+          filterData.sortableItems[index2].disabled = !filterData.sortableItems[index2].disabled;
+        },
+        onSortOrderChange: (id) => () => {
+          const index2 = filterData.sortableItems.findIndex((item2) => item2.id === id);
+          filterData.sortableItems[index2].isAsc = !filterData.sortableItems[index2].isAsc;
+          query();
+        }
+      };
+    }),
+    filterableItems: [
+      {
+        id: "stargazerCount",
+        title: "Stars",
+        icon1: Star,
+        filters: []
+      },
+      {
+        id: "issuesTotalCount",
+        title: "Issues",
+        icon1: Circle_dot,
+        filters: []
+      },
+      {
+        id: "forkCount",
+        title: "Forks",
+        icon1: Git_fork,
+        filters: []
+      },
+      {
+        id: "contributorCount",
+        title: "Contributors",
+        icon1: Users_round,
+        filters: []
+      },
+      {
+        id: "pullRequestsTotalCount",
+        title: "Pull Requests",
+        icon1: Git_pull_request_arrow,
+        filters: []
+      },
+      {
+        id: "issuesPerContributor",
+        title: "Issues/Contr.",
+        icon1: Circle_dot,
+        icon2: Users_round,
+        filters: []
+      },
+      {
+        id: "starsPerContributor",
+        title: "Stars/Contr.",
+        icon1: Star,
+        icon2: Users_round,
+        filters: []
+      },
+      {
+        id: "forksPerContributor",
+        title: "Forks/Contr.",
+        icon1: Git_fork,
+        icon2: Users_round,
+        filters: []
+      }
+    ].sort((a, b) => a.title.localeCompare(b.title)),
+    columns: [
+      {
+        id: "avatar",
+        title: "Avatar",
+        checked: true,
+        icon1: User_round
+      },
+      {
+        id: "name",
+        title: "Name",
+        checked: true,
+        icon1: Folder_git_2
+      },
+      {
+        id: "stars",
+        title: "Stars",
+        checked: true,
+        icon1: Star
+      },
+      {
+        id: "issues",
+        title: "Issues",
+        checked: true,
+        icon1: Circle_dot
+      },
+      {
+        id: "forks",
+        title: "Forks",
+        checked: true,
+        icon1: Git_fork
+      },
+      {
+        id: "contributors",
+        title: "Contributors",
+        checked: true,
+        icon1: Users_round
+      },
+      {
+        id: "pullRequests",
+        title: "Pull Requests",
+        checked: true,
+        icon1: Git_pull_request_arrow
+      },
+      {
+        id: "issuesPerContributor",
+        title: "Issues/Contr.",
+        checked: true,
+        icon1: Circle_dot,
+        icon2: Users_round
+      },
+      {
+        id: "forksPerContributor",
+        title: "Forks/Contr.",
+        checked: true,
+        icon1: Git_fork,
+        icon2: Users_round
+      },
+      {
+        id: "starsPerContributor",
+        title: "Stars/Contr.",
+        checked: true,
+        icon1: Star,
+        icon2: Users_round
+      },
+      {
+        id: "pullRequestsPerContributor",
+        title: "PRs/Contr.",
+        checked: true,
+        icon1: Git_pull_request_arrow,
+        icon2: Users_round
+      }
+    ].sort((a, b) => a.title.localeCompare(b.title))
+  };
+  let $$settled = true;
+  let $$inner_payload;
+  function $$render_inner($$payload2) {
+    $$payload2.out += `<!--[-->`;
+    validate_component(FilterHeader)($$payload2, {
+      get data() {
+        return filterData;
+      },
+      set data($$value) {
+        filterData = $$value;
+        $$settled = false;
+      }
+    });
+    $$payload2.out += `<!--]--> <!--[-->`;
+    if (data.rows) {
+      $$payload2.out += `<!--[-->`;
+      {
+        $$payload2.out += `<!--[-->`;
+        validate_component(DataTable)($$payload2, { data });
+        $$payload2.out += `<!--]-->`;
+      }
+      $$payload2.out += `<!--]-->`;
+      $$payload2.out += "<!--]-->";
+    } else {
+      $$payload2.out += "<!--]!-->";
+    }
+  }
+  do {
+    $$settled = true;
+    $$inner_payload = copy_payload($$payload);
+    $$render_inner($$inner_payload);
+  } while (!$$settled);
+  assign_payload($$payload, $$inner_payload);
   pop();
 }
 BookmarksContent.render = function() {

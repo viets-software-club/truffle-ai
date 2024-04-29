@@ -1,0 +1,3 @@
+mutation CreateBookmark($repo: RepositoryInput!, $categories: [String!]!) {
+	createBookmark(repo: $repo, categories: $categories)
+}

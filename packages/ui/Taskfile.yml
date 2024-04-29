@@ -17,10 +17,13 @@ tasks:
   codegen-supabase:
     cmds:
       - source {{.SOURCE}} && ./node_modules/.bin/graphql-codegen --config codegen.supabase.ts
-  codegen-server:
+  schema-server:
     cmds:
       - cp ../graphql-server/graph/schema.graphqls ./graphql-schema.server.graphql
+  codegen-gateway:
+    cmds:
+      - source {{.SOURCE}} && ./node_modules/.bin/graphql-codegen --config codegen.gateway.ts
   codegen:
     cmds:
       - task: codegen-supabase
-      - task: codegen-server
+      - task: codegen-gateway

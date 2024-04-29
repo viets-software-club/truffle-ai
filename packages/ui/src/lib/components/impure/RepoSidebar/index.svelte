@@ -1,115 +1,307 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import UsersIcon from 'lucide-svelte/icons/users';
+	import UsersRoundIcon from 'lucide-svelte/icons/users-round';
 	import GitPullRequestArrow from 'lucide-svelte/icons/git-pull-request-arrow';
 	import CircleDotIcon from 'lucide-svelte/icons/circle-dot';
 	import GitForkIcon from 'lucide-svelte/icons/git-fork';
 	import StarIcon from 'lucide-svelte/icons/star';
+	import LinkedinIcon from 'lucide-svelte/icons/linkedin';
+	import MailIcon from 'lucide-svelte/icons/mail';
+	import CalendarIcon from 'lucide-svelte/icons/calendar';
+	import { DateTime } from 'luxon';
 	import FolderGit2Icon from 'lucide-svelte/icons/folder-git-2';
 	import LinkIcon from 'lucide-svelte/icons/link';
 	import TwitterIcon from 'lucide-svelte/icons/twitter';
+	import { RepoSidebarByGthbRepoIdDocument } from '$lib/graphql/supabase/generated-codegen';
+	import client from '$lib/graphql/supabase/client';
+	import SplitIcon from '$lib/components/pure/SplitIcon.svelte';
+	import { toast } from 'svelte-sonner';
+	import * as Tooltip from '$lib/components/pure/ui/tooltip/index.js';
 
-	type Data = {
-		twitterUrl: string;
-		websiteUrl: string;
-		stars: number;
-		contributors: number;
-		issues: number;
-		forks: number;
-		openPullRequests: number;
-		forksPerContributor: number;
-		issuesPerContributor: number;
-		languages: {
-			name: string;
-			color: string;
-		}[];
-	};
 	type Props = {
-		data: Data;
+		githubRepoId?: number;
+		githubOwnerId?: number;
 		class?: string;
 	};
-	let { data, ...attrs }: Props = $props();
+	let { githubRepoId, githubOwnerId, ...attrs }: Props = $props();
+	let metricSection: any[] | undefined = $state();
+	let languages: any[] | undefined = $state();
+	let contributors: any[] | undefined = $state();
+	let owner: any = $state();
+	let repo: any = $state();
+
+	$effect.pre(() => {
+		if (githubOwnerId && githubRepoId)
+			client
+				.query({
+					query: RepoSidebarByGthbRepoIdDocument,
+					variables: {
+						gthbRepoId: githubRepoId,
+						ownerId: githubOwnerId
+					}
+				})
+				.then((res) => {
+					if (res?.data?.gthbRepoCollection?.edges[0]?.node) {
+						const node = res?.data?.gthbRepoCollection?.edges[0]?.node;
+
+						metricSection = [
+							{
+								icon1: StarIcon,
+								value: node.stargazerCount,
+								tooltipLabel: 'Stars'
+							},
+							{
+								icon1: CircleDotIcon,
+								value: node.issuesTotalCount,
+								tooltipLabel: 'Issues'
+							},
+							{
+								icon1: GitForkIcon,
+								value: node.forkCount,
+								tooltipLabel: 'Forks'
+							},
+							{
+								icon1: GitPullRequestArrow,
+								value: node.pullRequestsTotalCount,
+								tooltipLabel: 'Pull Requests'
+							},
+							{ icon1: UsersRoundIcon, value: node.contributorCount, tooltipLabel: 'Contributors' },
+							{
+								icon1: StarIcon,
+								icon2: UsersRoundIcon,
+								value: node.stargazersPerContributor,
+								tooltipLabel: 'Stars/Contrib.'
+							},
+							{
+								icon1: CircleDotIcon,
+								icon2: UsersRoundIcon,
+								value: node.issuesPerContributor,
+								tooltipLabel: 'Issues/Contrib.'
+							},
+							{
+								icon1: GitForkIcon,
+								icon2: UsersRoundIcon,
+								value: node.forksPerContributor,
+								tooltipLabel: 'Forks/Contrib.'
+							},
+							{
+								icon1: GitPullRequestArrow,
+								icon2: UsersRoundIcon,
+								value: node.pullRequestsPerContributor,
+								tooltipLabel: 'PRs/Contrib.'
+							}
+						];
+						const linkedinCompanyUrl =
+							res?.data?.gthbRepoCollection.edges[0]?.node?.gthbRepo
+								?.projRepoAndSbotLinCompanyCollection?.edges[0]?.node.sbotLinCompany
+								?.sbotLinCompanyUrl || '';
+						const linkedinProfileUrl =
+							res?.data?.gthbRepoCollection.edges[0]?.node?.gthbRepo
+								?.projRepoAndSbotLinProfileCollection?.edges[0]?.node?.sbotLinProfile
+								?.sbotLinProfileUrl || '';
+						let ownerTemp = {
+							avatarUrl: node.gthbOwner.avatarUrl,
+							login: node.gthbOwner.gthbOwnerLogin,
+							url: node.gthbOwner.gthbOwnerUrl,
+							linkedinUrl: linkedinCompanyUrl || linkedinProfileUrl || undefined
+						};
+
+						if (node.gthbOwner.gthbOwnerType === 'User') {
+							owner = {
+								...ownerTemp,
+								name: res?.data?.gthbUserCollection?.edges[0]?.node?.gthbUserName || '',
+								websiteUrl: res?.data?.gthbUserCollection?.edges[0]?.node?.websiteUrl || '',
+								bio: res?.data?.gthbUserCollection?.edges[0]?.node?.bio || '',
+								company: res?.data?.gthbUserCollection?.edges[0]?.node?.company || '',
+								createdAt: res?.data?.gthbUserCollection?.edges[0]?.node?.createdAt || '',
+								email: res?.data?.gthbUserCollection?.edges[0]?.node?.email || '',
+								followersTotalCount:
+									res?.data?.gthbUserCollection?.edges[0]?.node?.followersTotalCount || '',
+								twitterUsername:
+									res?.data?.gthbUserCollection?.edges[0]?.node?.twitterUsername || ''
+							};
+						} else {
+							owner = {
+								...ownerTemp,
+								name: res?.data?.gthbOrgCollection?.edges[0]?.node?.gthbOrgName || '',
+								websiteUrl: res?.data?.gthbOrgCollection?.edges[0]?.node?.websiteUrl || '',
+								description: res?.data?.gthbOrgCollection?.edges[0]?.node?.gthbOrgDescription || '',
+								email: res?.data?.gthbOrgCollection?.edges[0]?.node?.email || '',
+								twitterUsername:
+									res?.data?.gthbOrgCollection?.edges[0]?.node?.twitterUsername || '',
+								gthbOrgId: res?.data?.gthbOrgCollection?.edges[0]?.node?.gthbOrgId || '',
+								descriptionHtml: res?.data?.gthbOrgCollection?.edges[0]?.node?.descriptionHtml || ''
+							};
+						}
+
+						repo = {
+							url: node.gthbRepoUrl,
+							createdAt: DateTime.fromISO(node.createdAt).toFormat('dd.LL.yyyy'),
+							ownerLogin: node.gthbOwner.gthbOwnerLogin,
+							repoName: node.gthbRepoName
+						};
+
+						languages = node.gthbRepoAndGthbLangCollection.edges.map(({ node }) => ({
+							name: node.gthbLang.gthbLangName,
+							color: node.gthbLang.color
+						}));
+						contributors = node.gthbRepoContrCollection.edges
+							.filter(({ node }) => node.gthbOwner.gthbOwnerLogin !== owner.login)
+							.map(({ node }) => {
+								return {
+									avatarUrl: node.gthbOwner.avatarUrl,
+									login: node.gthbOwner.gthbOwnerLogin,
+									url: node.gthbOwner.gthbOwnerUrl
+								};
+							});
+					}
+				})
+				.catch((e) => {
+					console.error(e);
+					toast.error('Error', {
+						description: 'An error occurred while loading the right sidebar. Please try again..',
+						action: {
+							label: 'ok',
+							onClick: () => {}
+						}
+					});
+				});
+	});
 </script>
 
 <aside
 	{...attrs}
 	class={cn(
-		'w-full md:w-1/4 lg:w-1/6  overflow-x-hidden overflow-y-hidden  border-l border-t truncate whitespace-nowrap',
+		'w-full md:w-1/4 lg:w-1/6  overflow-x-hidden overflow-y-hidden md:overflow-y-hidden border-l border-t truncate whitespace-nowrap',
 		attrs?.class ? attrs.class : ''
 	)}
 >
 	<section class=" py-4 px-6 border-b">
 		<h2 class="text-foreground/50 text-sm leading-loose">GitHub Stats</h2>
-		<ul class="grid grid-cols-3 md:block">
-			<li class="flex items py-2 gap-2 items-center">
-				<StarIcon class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.stars}</span>
-			</li>
-			<li class="flex items py-2 gap-2 items-center">
-				<UsersIcon class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.contributors}</span>
-			</li>
-			<li class="flex items py-2 gap-2 items-center">
-				<GitPullRequestArrow class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.openPullRequests}</span>
-			</li>
-			<li class="flex items py-2 gap-2 items-center">
-				<CircleDotIcon class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.issues}</span>
-			</li>
-			<li class="flex items py-2 gap-2 items-center">
-				<GitForkIcon class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.forks}</span>
-			</li>
-			<li class="flex items py-2 gap-2 items-center">
-				<FolderGit2Icon class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.forksPerContributor}</span>
-			</li>
-			<li class="flex items py-2 gap-2 items-center">
-				<FolderGit2Icon class="w-3.5 h-3.5 text-foreground/50" />
-				<span class="text-sm text-foreground/80">{data.issuesPerContributor}</span>
-			</li>
-		</ul>
+		{#if metricSection}
+			<ul class="grid grid-cols-3 md:block">
+				{#each metricSection as { icon1: Icon1, icon2, value, tooltipLabel }}
+					<li>
+						<Tooltip.Root>
+							<Tooltip.Trigger class="cursor-pointer flex items py-2 gap-2 items-center">
+								{#if icon2}
+									<SplitIcon
+										icon1={Icon1}
+										{icon2}
+										class="w-4 h-4 text-foreground/80"
+										iconProps={{ class: 'w-2 h-2' }}
+									/>
+								{:else}
+									<Icon1 class="w-3.5 h-3.5 text-foreground/50" />
+								{/if}
+								<span class="text-sm text-foreground/80">{value}</span>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								<p>{tooltipLabel}</p>
+							</Tooltip.Content>
+						</Tooltip.Root>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</section>
+	<section class="py-4 px-6 border-b">
+		<h2 class="text-foreground/50 text-sm leading-loose">Repo</h2>
+		{#if repo}
+			<div class="flex items gap-2 items-center py-2">
+				<CalendarIcon class="w-3.5 h-3.5 text-foreground/50" />
+				<span class="text-sm text-foreground/80">{repo.createdAt}</span>
+			</div>
+			<a href={repo.url} target="_blank" class="flex items gap-2 items-center py-2 cursor-pointer">
+				<LinkIcon class="w-3.5 h-3.5 text-foreground/50 flex-shrink-0" />
+				<span class="text-sm text-foreground/80 hover:underline text-ellipsis overflow-hidden"
+					>{repo.ownerLogin}/{repo.repoName}</span
+				>
+			</a>
+		{/if}
+	</section>
+	<section class="py-4 px-6 border-b">
+		<h2 class="text-foreground/50 text-sm leading-loose">Owner</h2>
+		{#if owner}
+			<div class="block mb-2">
+				<a
+					href={owner.url}
+					target="_blank"
+					class="flex items gap-2 items-center py-2 cursor-pointer"
+				>
+					<img class="w-4 h-4" src={owner.avatarUrl} alt="" />
+					<span class="text-sm text-foreground/80 text-ellipsis overflow-hidden"
+						>{owner.name || owner.login}</span
+					>
+				</a>
+			</div>
+			<div class="flex gap-4 pl-[0.075rem]">
+				{#if owner.email}
+					<a target="_blank" href={`mailto:${owner.email}`}>
+						<MailIcon class="w-3.5 h-3.5 text-foreground/50" />
+					</a>
+				{/if}
+				{#if owner.websiteUrl}
+					<a target="_blank" href={owner.websiteUrl}>
+						<LinkIcon class="w-3.5 h-3.5 text-foreground/50" />
+					</a>
+				{/if}
+				{#if owner.twitterUsername}
+					<a target="_blank" href={`https://twitter.com/${owner.twitterUsername}`}>
+						<TwitterIcon class="w-3.5 h-3.5 text-foreground/50" />
+					</a>
+				{/if}
+				{#if owner.linkedinUrl}
+					<a target="_blank" href={owner.linkedinUrl}>
+						<LinkedinIcon class="w-3.5 h-3.5 text-foreground/50" />
+					</a>
+				{/if}
+			</div>
+		{/if}
+	</section>
+	{#if contributors && contributors.length > 0}
+		<section class="py-4 px-6 border-b">
+			<h2 class="text-foreground/50 text-sm leading-loose">Contributors</h2>
+
+			<ul>
+				{#each contributors as contributor}
+					<li>
+						<a
+							href={`https://github.com/${contributor.login}`}
+							target="_blank"
+							class="flex items gap-2 items-center py-2 cursor-pointer"
+						>
+							<img class="w-4 h-4" src={contributor.avatarUrl} alt="" />
+							<span class="text-sm text-foreground/80 text-ellipsis overflow-hidden"
+								>{contributor.name || contributor.login}</span
+							>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</section>
+	{/if}
 	<section class="py-4 px-6 border-b">
 		<h2 class="text-foreground/50 text-sm leading-loose">Languages</h2>
-		<ul>
-			{#each data.languages as language}
-				<li class="">
-					<a href="https://github.com/topics/{language.name}" class="flex gap-2 items-center py-2">
-						<div
-							class="w-3 h-3 rounded-full border-[1.5px]"
-							style="background-color: {language.color}"
-						></div>
-						<span class="text-sm text-foreground/50">{language.name}</span>
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</section>
-	<section class="py-4 px-6 border-b">
-		<h2 class="text-foreground/50 text-sm leading-loose">Contact</h2>
-		<ul>
-			<li>
-				<a
-					href={data.websiteUrl}
-					target="_blank"
-					class="flex items gap-2 items-center py-2 cursor-pointer"
-				>
-					<LinkIcon class="w-3.5 h-3.5 text-foreground/50" />
-					<span class="text-sm text-foreground/80">Website</span>
-				</a>
-			</li>
-			<li>
-				<a
-					href={data.websiteUrl}
-					target="_blank"
-					class="flex items gap-2 items-center py-2 cursor-pointer"
-				>
-					<TwitterIcon class="w-3.5 h-3.5 text-foreground/50" />
-					<span class="text-sm text-foreground/80">Twitter</span>
-				</a>
-			</li>
-		</ul>
+		{#if languages}
+			<ul>
+				{#each languages as language}
+					<li class="">
+						<a
+							href="https://github.com/topics/{language.name}"
+							class="flex gap-2 items-center py-2"
+						>
+							<div
+								class="w-3 h-3 rounded-full border-[1.5px]"
+								style="background-color: {language.color}"
+							></div>
+							<span class="text-sm text-foreground/50 text-ellipsis overflow-hidden"
+								>{language.name}</span
+							>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</section>
 </aside>

@@ -1,0 +1,9 @@
+query HackernewsEli5ByGthbName($repoName: String, $ownerLogin: String) {
+	fGetProjRepoByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
+		edges {
+			node {
+				algoHnEli5
+			}
+		}
+	}
+}

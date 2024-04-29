@@ -8,6 +8,7 @@
 	import { supabaseClient } from '$lib/supabase/index';
 	import { goto } from '$app/navigation';
 	import type { AuthSession } from '@supabase/supabase-js';
+	import { Toaster } from 'svelte-sonner';
 
 	if (browser) {
 		if (
@@ -96,4 +97,5 @@
 	<meta name="theme-color" content="#575BC7" />
 </svelte:head>
 
+<Toaster />
 <slot />

@@ -1,0 +1,25 @@
+query ChartDataForksByGthbRepoFilter(
+	$gthbRepoFilter: GthbRepoFilter
+	$forkFilter: GthbForkHistFilter
+	$forkOrderBy: [GthbForkHistOrderBy!]
+) {
+	gthbRepoCollection(filter: $gthbRepoFilter) {
+		edges {
+			node {
+				gthbRepoName
+				gthbOwner {
+					gthbOwnerLogin
+				}
+				gthbRepoId
+				gthbForkHistCollection(filter: $forkFilter, orderBy: $forkOrderBy) {
+					edges {
+						node {
+							gthbForkHistDate
+							amount
+						}
+					}
+				}
+			}
+		}
+	}
+}

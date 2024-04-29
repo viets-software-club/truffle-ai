@@ -1,6 +1,6 @@
-import { q as rest_props, p as push, v as value_or_fallback, l as spread_props, t as bind_props, b as pop, m as sanitize_props } from "./index3.js";
+import { o as rest_props, p as push, v as value_or_fallback, m as spread_props, q as bind_props, b as pop, n as sanitize_props } from "./index3.js";
 import "dequal";
-import { K as Separator$1, c as cn } from "./index5.js";
+import { I as Separator$1, c as cn } from "./index5.js";
 import { v as validate_component } from "./validate.js";
 function Separator($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);

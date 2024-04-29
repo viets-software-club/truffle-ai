@@ -1,0 +1,3 @@
+mutation DeleteProjBookmarkByGthbName($ownerLogin: String, $repoName: String) {
+	fDeleteProjBookmarkByGthbName(ownerlogin: $ownerLogin, reponame: $repoName)
+}

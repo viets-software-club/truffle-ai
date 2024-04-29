@@ -410,6 +410,10 @@ function style_object_to_string(style_object) {
     (key) => `${key}: ${escape(style_object[key], true)};`
   ).join(" ");
 }
+function add_styles(style_object) {
+  const styles = style_object_to_string(style_object);
+  return styles ? ` style="${styles}"` : "";
+}
 function merge_styles(style_attribute, style_directive) {
   const style_object = {};
   for (const individual_style of style_attribute.split(";")) {
@@ -505,10 +509,12 @@ function ensure_array_like(array_like_or_iterator) {
 }
 export {
   element as A,
-  current_component as B,
-  noop as C,
-  subscribe_to_store as D,
-  run_all as E,
+  add_styles as B,
+  merge_styles as C,
+  noop as D,
+  current_component as E,
+  subscribe_to_store as F,
+  run_all as G,
   HYDRATION_START as H,
   PassiveDelegatedEvents as P,
   UNINITIALIZED as U,
@@ -522,20 +528,20 @@ export {
   head as h,
   store_get as i,
   stringify as j,
-  getContext as k,
-  spread_props as l,
-  sanitize_props as m,
-  copy_payload as n,
-  assign_payload as o,
+  copy_payload as k,
+  assign_payload as l,
+  spread_props as m,
+  sanitize_props as n,
+  rest_props as o,
   push as p,
-  rest_props as q,
+  bind_props as q,
   render as r,
   setContext as s,
-  bind_props as t,
+  ensure_array_like as t,
   unsubscribe_stores as u,
   value_or_fallback as v,
-  ensure_array_like as w,
-  spread_attributes as x,
-  mutate_store as y,
-  store_set as z
+  spread_attributes as w,
+  store_set as x,
+  getContext as y,
+  mutate_store as z
 };

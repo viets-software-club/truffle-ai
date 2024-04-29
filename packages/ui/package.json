@@ -24,7 +24,7 @@
         "@graphql-codegen/typed-document-node": "^5.0.6",
         "@graphql-codegen/typescript": "4.0.6",
         "@graphql-codegen/typescript-document-nodes": "4.0.6",
-        "@graphql-codegen/typescript-operations": "^3.0.4",
+        "@graphql-codegen/typescript-operations": "^4.2.0",
         "@playwright/test": "^1.28.1",
         "@sonderbase/svelte-sortablejs": "^2.0.2",
         "@sveltejs/adapter-auto": "^3.0.0",

@@ -5,7 +5,7 @@
 	import LogoutIcon from 'lucide-svelte/icons/log-out';
 	import PaletteIcon from 'lucide-svelte/icons/palette';
 	import * as Sheet from '$lib/components/pure/ui/sheet';
-
+	import { supabaseClient } from '$lib/supabase';
 	import Logo from '$lib/components/pure/Logo.svelte';
 	import TrendingUp from 'lucide-svelte/icons/trending-up';
 	import Bookmark from 'lucide-svelte/icons/bookmark';
@@ -19,12 +19,31 @@
 		type SidebarQuery as SidebarQueryType
 	} from '$lib/graphql/supabase/generated-codegen';
 	import { never } from 'zod';
+	import { onMount } from 'svelte';
 	let isThemeSelectionOpen = $state(false);
 	// let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
 	// let themeLabel = $derived(browser && theme.charAt(0).toUpperCase() + theme.slice(1));
 
 	// client.query(e).then((data) => {
-	// 	console.log(data);
+
+	// });
+
+	// $effect(() => {
+
+	// 	const channel = supabaseClient
+	// 		.channel('table-db-changes')
+	// 		.on(
+	// 			'postgres_changes',
+	// 			{
+	// 				event: '*',
+	// 				schema: 'public',
+	// 				table: 'proj_cat_and_proj_bookmark'
+	// 			},
+	// 			update
+	// 		)
+	// 		.subscribe();
+
+	// 	return () => channel.unsubscribe();
 	// });
 
 	const getTheme = () =>
@@ -41,8 +60,33 @@
 			})
 			.then((res) => {
 				queryResult = res;
-				queryResult.data?.projCatCollection?.edges;
 			});
+
+		const channel = supabaseClient
+			.channel('table-db-changes')
+			.on(
+				'postgres_changes',
+				{
+					event: '*',
+					schema: 'public',
+					table: 'proj_cat_and_proj_bookmark'
+				},
+				() => {
+					client
+						.query({
+							query: SidebarDocument
+						})
+						.then((res) => {
+							queryResult = res;
+						})
+						.catch((err) => {
+							console.error(err);
+						});
+				}
+			)
+			.subscribe();
+
+		return () => channel.unsubscribe();
 	});
 	// let data4: ApolloQueryResult<SidebarQuery> | undefined = $state();
 	// let sidebarQuerySubscriber = Sidebar({});
@@ -77,7 +121,6 @@
 	};
 	const handleThemeSelection = (/** @type {any} */ event: any) => {
 		localStorage.theme = event.value;
-		console.log(localStorage.theme);
 		if (event.value === 'dark') {
 			document.documentElement.classList.remove('cosmos');
 			document.documentElement.classList.add('dark');
@@ -127,7 +170,7 @@
 		<!-- <BookmarkGroup sortGroup="x" {data} />
 		<BookmarkGroup sortGroup="x" data={data2} />
 		<BookmarkGroup sortGroup="x" data={data3} /> -->
-		<BookmarkGroup
+		<!-- <BookmarkGroup
 			title="First"
 			actionHref="/compare/web-tech"
 			actionText="Compare"
@@ -195,22 +238,25 @@
 					href: '/repo/vercel/vercel'
 				}
 			]}
-		/>
-		{#if queryResult && !queryResult.loading && queryResult.data?.projCatCollection?.edges}
-			{#each queryResult.data?.projCatCollection?.edges as edge}
-				<BookmarkGroup
-					title={edge?.node?.title}
-					actionHref="{`/compare/${edge?.node?.title}`},"
-					actionText="Compare"
-					sortGroup={edge?.node?.title}
-					items={edge?.node?.projCatAndProjBookmarkCollection?.edges.map(({ node }) => ({
-						title: node?.projBookmark?.projRepo?.gthbRepo?.gthbRepoName,
-						icon: node?.projBookmark?.projRepo?.gthbRepo?.gthbOwner?.gthbOwnerLogin,
-						href: `/repo/${node?.projBookmark?.projRepo?.gthbRepo?.gthbOwner?.gthbOwnerLogin}/${node?.projBookmark?.projRepo?.gthbRepo?.gthbRepoName}`
-					}))}
-				/>
-			{/each}
-		{/if}
+		/> -->
+		{#key queryResult}
+			{#if queryResult && !queryResult.loading && queryResult.data?.projCatCollection?.edges}
+				{#each queryResult.data?.projCatCollection?.edges as edge}
+					<BookmarkGroup
+						title={edge?.node?.title}
+						actionHref={`/compare/${edge?.node?.title}`}
+						actionText="Compare"
+						sortGroup={edge?.node?.title}
+						items={edge?.node?.projCatAndProjBookmarkCollection?.edges.map(({ node }) => ({
+							title: node?.projBookmark?.projRepo?.gthbRepo?.gthbRepoName,
+							icon: node?.projBookmark?.projRepo?.gthbRepo?.gthbOwner?.avatarUrl,
+							href: `/repo/${node?.projBookmark?.projRepo?.gthbRepo?.gthbOwner?.gthbOwnerLogin}/${node?.projBookmark?.projRepo?.gthbRepo?.gthbRepoName}`
+						}))}
+					/>
+				{/each}
+			{/if}
+		{/key}
+
 		<!-- {#each fetchedData as item}{/each} -->
 		<!-- </ScrollArea> -->
 	</section>
@@ -225,7 +271,10 @@
 		<a href="/settings" class="p-2 block hover:bg-muted hover:rounded-md"
 			><SettingsIcon class="w-5 h-5 md:w-4 md:h-4 block" /></a
 		>
-		<a href="/signout" class="p-2 block hover:bg-muted hover:rounded-md"
+		<a
+			href="/signout"
+			data-sveltekit-preload-data="false"
+			class="p-2 block hover:bg-muted hover:rounded-md"
 			><LogoutIcon class="w-5 h-5 md:w-4 md:h-4 block" /></a
 		>
 	</section>

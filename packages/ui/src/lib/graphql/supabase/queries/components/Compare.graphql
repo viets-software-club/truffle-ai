@@ -1,0 +1,26 @@
+query Compare($title: String) {
+	projCatCollection(filter: { title: { eq: $title } }) {
+		edges {
+			node {
+				title
+				projCatAndProjBookmarkCollection {
+					edges {
+						node {
+							projBookmark {
+								projRepo {
+									gthbRepoId
+									gthbRepo {
+										gthbRepoName
+										gthbOwner {
+											gthbOwnerLogin
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

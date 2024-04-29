@@ -1,13 +1,13 @@
 import { b as pop, p as push } from "../../../chunks/index3.js";
 import "dequal";
 import "../../../chunks/index5.js";
-import "../../../chunks/index6.js";
+import "../../../chunks/SortableList.js";
 import "clsx";
 import "../../../chunks/client.js";
 import { tv } from "tailwind-variants";
-import "../../../chunks/select-trigger.js";
-import "../../../chunks/client2.js";
 import "../../../chunks/index4.js";
+import "../../../chunks/index6.js";
+import "../../../chunks/index7.js";
 tv({
   base: "fixed z-50 gap-4 bg-background p-6 shadow-lg",
   variants: {

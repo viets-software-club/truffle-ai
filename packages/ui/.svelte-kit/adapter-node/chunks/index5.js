@@ -1,20 +1,12 @@
-import { B as current_component, C as noop$1, q as rest_props, p as push, v as value_or_fallback, d as push_element, A as element, c as slot, x as spread_attributes, e as pop_element, t as bind_props, b as pop, m as sanitize_props, i as store_get, u as unsubscribe_stores, k as getContext, s as setContext, g as escape } from "./index3.js";
+import { D as noop$1, o as rest_props, p as push, v as value_or_fallback, d as push_element, A as element, c as slot, w as spread_attributes, e as pop_element, q as bind_props, b as pop, n as sanitize_props, i as store_get, u as unsubscribe_stores, y as getContext, s as setContext, g as escape } from "./index3.js";
 import { b as validate_void_dynamic_element, c as validate_dynamic_element_tag } from "./validate.js";
 import { dequal } from "dequal";
 import { d as derived, g as get_store_value, w as writable, r as readable, a as readonly } from "./index2.js";
+import { o as onDestroy, t as tick } from "./index-server.js";
 import { nanoid } from "nanoid/non-secure";
 import { flip, offset, shift, arrow, size, autoUpdate, computePosition } from "@floating-ui/dom";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-function onDestroy(fn) {
-  var context = (
-    /** @type {import('#server').Component} */
-    current_component
-  );
-  (context.d ??= []).push(fn);
-}
-async function tick() {
-}
 function back(array, index, increment, loop = true) {
   const previousIndex = index - increment;
   if (previousIndex <= 0) {
@@ -8843,17 +8835,15 @@ const flyAndScale = (node, params = { y: -8, x: 0, start: 0.95, duration: 150 })
   };
 };
 export {
-  Menu_radio_group as A,
-  Menu_checkbox_item as B,
-  Menu_checkbox_indicator as C,
+  Menu_checkbox_indicator as A,
+  Select_label as B,
+  Select_item as C,
   Dialog_title as D,
-  Select_label as E,
-  Select_item as F,
-  Select_item_indicator as G,
-  Select_content as H,
-  Select_trigger as I,
-  Button as J,
-  Separator as K,
+  Select_item_indicator as E,
+  Select_content as F,
+  Select_trigger as G,
+  Button as H,
+  Separator as I,
   Menu as M,
   Popover_content as P,
   Select as S,
@@ -8862,26 +8852,26 @@ export {
   Tabs_trigger as b,
   cn as c,
   Tabs as d,
-  Dialog_portal as e,
-  Dialog_overlay as f,
+  Tooltip as e,
+  Tooltip_trigger as f,
   flyAndScale as g,
-  Dialog_content as h,
-  Dialog_close as i,
-  Dialog_description as j,
-  Dialog as k,
-  Dialog_trigger as l,
-  Popover as m,
-  Popover_trigger as n,
-  onDestroy as o,
-  Tooltip_content as p,
-  Tooltip as q,
-  Tooltip_trigger as r,
-  Select_group as s,
-  tick as t,
-  Select_input as u,
-  Select_value as v,
-  Menu_item as w,
-  Menu_content as x,
-  Menu_radio_item as y,
-  Menu_radio_indicator as z
+  Tooltip_content as h,
+  Dialog_portal as i,
+  Dialog_overlay as j,
+  Dialog_content as k,
+  Dialog_close as l,
+  Dialog_description as m,
+  Dialog as n,
+  Dialog_trigger as o,
+  Popover as p,
+  Popover_trigger as q,
+  Select_group as r,
+  Select_input as s,
+  Select_value as t,
+  Menu_item as u,
+  Menu_content as v,
+  Menu_radio_item as w,
+  Menu_radio_indicator as x,
+  Menu_radio_group as y,
+  Menu_checkbox_item as z
 };

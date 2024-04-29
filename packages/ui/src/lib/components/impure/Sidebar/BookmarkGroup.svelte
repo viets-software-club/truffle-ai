@@ -25,18 +25,6 @@
 	let { title, actionHref, actionText, sortGroup, items }: Props = $props();
 	let isOpen = $state(true);
 
-	const colors = [
-		'#AF7595',
-		'#8C2155',
-		'#F06C9B',
-		'#16425B',
-		'#37123C',
-		'#AA4586',
-		'#023047',
-		'#0a9396'
-	];
-	const color = colors[Math.floor(Math.random() * colors.length)];
-
 	const handleAction = () => {
 		goto(actionHref);
 	};
@@ -76,7 +64,7 @@
 			<div
 				tabindex={0}
 				role="button"
-				on:click={handleActionClick}
+				on:click|stopPropagation={handleActionClick}
 				on:keydown={handleActioneKeydown}
 				class=" group group/link relative invisible flex items-center gap-1 leading-none rounded-md px-1 opacity-0 transition-all duration-100 hover:bg-muted-overlay group-hover:visible group-hover:opacity-100"
 			>
@@ -92,6 +80,7 @@
 		</div>
 	</Collapsible.Trigger>
 	<Collapsible.Content>
+    {#key items}
 		<SortableList class="" group={sortGroup}>
 			{#each items as item}
 				<div
@@ -106,5 +95,6 @@
 				</div>
 			{/each}
 		</SortableList>
+    {/key}
 	</Collapsible.Content>
 </Collapsible.Root>

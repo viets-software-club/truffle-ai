@@ -1,7 +1,8 @@
 import { h as head, c as slot, b as pop, d as push_element, e as pop_element, f as attr, p as push } from "../../chunks/index3.js";
-import { P as PUBLIC_UI_HOSTNAME } from "../../chunks/public.js";
+import { P as PUBLIC_UI_HOSTNAME } from "../../chunks/index4.js";
 import "../../chunks/client.js";
-import "../../chunks/index4.js";
+import { T as Toaster } from "../../chunks/Toaster.js";
+import { v as validate_component } from "../../chunks/validate.js";
 function _layout($$payload, $$props) {
   push();
   head($$payload, ($$payload2) => {
@@ -61,6 +62,8 @@ function _layout($$payload, $$props) {
     pop_element();
   });
   $$payload.out += `<!--[-->`;
+  validate_component(Toaster)($$payload, {});
+  $$payload.out += `<!--]--> <!--[-->`;
   slot($$payload, $$props.children, {}, null);
   $$payload.out += `<!--]-->`;
   pop();

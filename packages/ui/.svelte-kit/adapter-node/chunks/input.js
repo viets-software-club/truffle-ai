@@ -1,4 +1,4 @@
-import { q as rest_props, p as push, v as value_or_fallback, x as spread_attributes, d as push_element, e as pop_element, t as bind_props, b as pop, m as sanitize_props } from "./index3.js";
+import { o as rest_props, p as push, v as value_or_fallback, w as spread_attributes, d as push_element, e as pop_element, q as bind_props, b as pop, n as sanitize_props } from "./index3.js";
 import { c as cn } from "./index5.js";
 function Input($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);

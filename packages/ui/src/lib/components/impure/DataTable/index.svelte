@@ -60,8 +60,7 @@
 	export let data: Data;
 
 	let { hiddenColumnIdArr } = data;
-
-	const table = createTable(readable(data.rows), {
+	let table = createTable(readable(data.rows), {
 		page: addPagination({ initialPageSize: 20 }),
 		hide: addHiddenColumns({
 			initialHiddenColumnIds: hiddenColumnIdArr
@@ -112,6 +111,16 @@
 				createRender(TextIcon, { icon1: GitForkIcon, value: value, max: data.maxForks }).slot(value)
 		}),
 		table.column({
+			accessor: 'pullRequests',
+			header: 'PRs',
+			cell: ({ value }) =>
+				createRender(TextIcon, {
+					icon1: GitPullRequestArrow,
+					value: value,
+					max: data.maxPullRequests
+				}).slot(value)
+		}),
+		table.column({
 			accessor: 'contributors',
 			header: 'Contrib.',
 			cell: ({ value }) =>
@@ -131,17 +140,6 @@
 				}).slot(value)
 		}),
 		table.column({
-			accessor: 'forksPerContributor',
-			header: 'Forks/Contrib.',
-			cell: ({ value }) =>
-				createRender(TextIcon, {
-					icon1: GitForkIcon,
-					icon2: UsersIcon,
-					value: value,
-					max: data.maxForksPerContributor
-				}).slot(value)
-		}),
-		table.column({
 			accessor: 'issuesPerContributor',
 			header: 'Issues/Contrib.',
 			cell: ({ value }) =>
@@ -153,13 +151,14 @@
 				}).slot(value)
 		}),
 		table.column({
-			accessor: 'pullRequests',
-			header: 'PRs',
+			accessor: 'forksPerContributor',
+			header: 'Forks/Contrib.',
 			cell: ({ value }) =>
 				createRender(TextIcon, {
-					icon1: GitPullRequestArrow,
+					icon1: GitForkIcon,
+					icon2: UsersIcon,
 					value: value,
-					max: data.maxPullRequests
+					max: data.maxForksPerContributor
 				}).slot(value)
 		}),
 		table.column({
@@ -178,7 +177,6 @@
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, flatColumns } =
 		table.createViewModel(columns);
 	const { hiddenColumnIds } = pluginStates.hide;
-	console.log(hiddenColumnIdArr);
 
 	// let hideForId = Object.fromEntries(hiddenColumnIdArr.map((id) => [id, false]));
 	// $: $hiddenColumnIds = Object.entries(hideForId)
@@ -233,65 +231,67 @@
 	};
 </script>
 
-<div class="h-full w-full">
-	<div class="rounded-md w-full overflow-x-auto">
-		<Table.Root {...$tableAttrs}>
-			<Table.Header>
-				{#each $headerRows as headerRow}
-					<Subscribe rowAttrs={headerRow.attrs()} rowProps={headerRow.props()} let:rowProps>
-						<Table.Row>
-							{#each headerRow.cells as cell (cell.id)}
-								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-									<Table.Head {...attrs} class="px-[1.125rem]">
-										<div class="flex gap-1.5 items-center">
+{#key data}
+	<div class="h-full w-full">
+		<div class="rounded-md w-full overflow-x-auto">
+			<Table.Root {...$tableAttrs}>
+				<Table.Header>
+					{#each $headerRows as headerRow}
+						<Subscribe rowAttrs={headerRow.attrs()} rowProps={headerRow.props()} let:rowProps>
+							<Table.Row>
+								{#each headerRow.cells as cell (cell.id)}
+									<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
+										<Table.Head {...attrs} class="px-[1.125rem]">
+											<div class="flex gap-1.5 items-center">
+												<Render of={cell.render()} />
+												{#if numberSortableColumns.includes(cell.id)}
+													<SortIcon sort={getSortValue(cell.id)} type="number" />
+												{/if}
+												{#if stringSortableColumns.includes(cell.id)}
+													<SortIcon sort={getSortValue(cell.id)} type="string" />
+												{/if}
+											</div></Table.Head
+										>
+									</Subscribe>
+								{/each}
+							</Table.Row>
+						</Subscribe>
+					{/each}
+				</Table.Header>
+				<Table.Body {...$tableBodyAttrs}>
+					{#each $pageRows as row (row.id)}
+						<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
+							<Table.Row
+								{...rowAttrs}
+								class="px-[1.125rem] cursor-pointer"
+								on:click={handleTableRowClick(row)}
+							>
+								{#each row.cells as cell (cell.id)}
+									<Subscribe attrs={cell.attrs()} let:attrs>
+										<Table.Cell {...attrs}>
 											<Render of={cell.render()} />
-											{#if numberSortableColumns.includes(cell.id)}
-												<SortIcon sort={getSortValue(cell.id)} type="number" />
-											{/if}
-											{#if stringSortableColumns.includes(cell.id)}
-												<SortIcon sort={getSortValue(cell.id)} type="string" />
-											{/if}
-										</div></Table.Head
-									>
-								</Subscribe>
-							{/each}
-						</Table.Row>
-					</Subscribe>
-				{/each}
-			</Table.Header>
-			<Table.Body {...$tableBodyAttrs}>
-				{#each $pageRows as row (row.id)}
-					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-						<Table.Row
-							{...rowAttrs}
-							class="px-[1.125rem] cursor-pointer"
-							on:click={handleTableRowClick(row)}
-						>
-							{#each row.cells as cell (cell.id)}
-								<Subscribe attrs={cell.attrs()} let:attrs>
-									<Table.Cell {...attrs}>
-										<Render of={cell.render()} />
-									</Table.Cell>
-								</Subscribe>
-							{/each}
-						</Table.Row>
-					</Subscribe>
-				{/each}
-			</Table.Body>
-		</Table.Root>
+										</Table.Cell>
+									</Subscribe>
+								{/each}
+							</Table.Row>
+						</Subscribe>
+					{/each}
+				</Table.Body>
+			</Table.Root>
+		</div>
+		<div class="flex items-center space-x-4 py-4 ml-4 pb-20 md:pb-4">
+			<Button
+				variant="outline"
+				size="sm"
+				on:click={() => ($pageIndex = $pageIndex - 1)}
+				disabled={!$hasPreviousPage}>Previous</Button
+			>
+			<Button
+				variant="outline"
+				size="sm"
+				disabled={!$hasNextPage}
+				on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
+			>
+		</div>
 	</div>
-	<div class="flex items-center space-x-4 py-4 ml-4 pb-20 md:pb-4">
-		<Button
-			variant="outline"
-			size="sm"
-			on:click={() => ($pageIndex = $pageIndex - 1)}
-			disabled={!$hasPreviousPage}>Previous</Button
-		>
-		<Button
-			variant="outline"
-			size="sm"
-			disabled={!$hasNextPage}
-			on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
-		>
-	</div>
-</div>
+{/key}

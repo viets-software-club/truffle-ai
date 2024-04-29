@@ -1,8 +1,8 @@
-import { p as push, l as spread_props, c as slot, b as pop, m as sanitize_props, q as rest_props, v as value_or_fallback, t as bind_props, d as push_element, e as pop_element, n as copy_payload, o as assign_payload } from "./index3.js";
-import { I as Icon, C as Check } from "./select-trigger.js";
+import { p as push, m as spread_props, c as slot, b as pop, n as sanitize_props, o as rest_props, v as value_or_fallback, q as bind_props, d as push_element, e as pop_element, k as copy_payload, l as assign_payload } from "./index3.js";
+import { I as Icon, C as Check } from "./index6.js";
 import { v as validate_component, a as add_snippet_symbol } from "./validate.js";
 import "dequal";
-import { S as Select, s as Select_group, u as Select_input, v as Select_value, w as Menu_item, c as cn, g as flyAndScale, x as Menu_content, y as Menu_radio_item, z as Menu_radio_indicator, A as Menu_radio_group, B as Menu_checkbox_item, C as Menu_checkbox_indicator } from "./index5.js";
+import { S as Select, r as Select_group, s as Select_input, t as Select_value, u as Menu_item, c as cn, g as flyAndScale, v as Menu_content, w as Menu_radio_item, x as Menu_radio_indicator, y as Menu_radio_group, z as Menu_checkbox_item, A as Menu_checkbox_indicator } from "./index5.js";
 import "clsx";
 function Calendar($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);
@@ -101,48 +101,6 @@ function Circle($$payload, $$props) {
 Circle.render = function() {
   throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
 };
-function Folder_git_2($$payload, $$props) {
-  const $$sanitized_props = sanitize_props($$props);
-  push();
-  const iconNode = [
-    [
-      "path",
-      {
-        "d": "M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5"
-      }
-    ],
-    [
-      "circle",
-      { "cx": "13", "cy": "12", "r": "2" }
-    ],
-    [
-      "path",
-      { "d": "M18 19c-2.8 0-5-2.2-5-5v8" }
-    ],
-    [
-      "circle",
-      { "cx": "20", "cy": "19", "r": "2" }
-    ]
-  ];
-  $$payload.out += `<!--[-->`;
-  validate_component(Icon)($$payload, spread_props([
-    { name: "folder-git-2" },
-    $$sanitized_props,
-    {
-      iconNode,
-      children: add_snippet_symbol(($$payload2, $$slotProps) => {
-        $$payload2.out += `<!--[-->`;
-        slot($$payload2, $$props.children, {}, null);
-        $$payload2.out += `<!--]-->`;
-      })
-    }
-  ]));
-  $$payload.out += `<!--]-->`;
-  pop();
-}
-Folder_git_2.render = function() {
-  throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
-};
 function Git_fork($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);
   push();
@@ -186,41 +144,6 @@ function Git_fork($$payload, $$props) {
 Git_fork.render = function() {
   throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
 };
-function Git_pull_request_arrow($$payload, $$props) {
-  const $$sanitized_props = sanitize_props($$props);
-  push();
-  const iconNode = [
-    [
-      "circle",
-      { "cx": "5", "cy": "6", "r": "3" }
-    ],
-    ["path", { "d": "M5 9v12" }],
-    [
-      "circle",
-      { "cx": "19", "cy": "18", "r": "3" }
-    ],
-    ["path", { "d": "m15 9-3-3 3-3" }],
-    ["path", { "d": "M12 6h5a2 2 0 0 1 2 2v7" }]
-  ];
-  $$payload.out += `<!--[-->`;
-  validate_component(Icon)($$payload, spread_props([
-    { name: "git-pull-request-arrow" },
-    $$sanitized_props,
-    {
-      iconNode,
-      children: add_snippet_symbol(($$payload2, $$slotProps) => {
-        $$payload2.out += `<!--[-->`;
-        slot($$payload2, $$props.children, {}, null);
-        $$payload2.out += `<!--]-->`;
-      })
-    }
-  ]));
-  $$payload.out += `<!--]-->`;
-  pop();
-}
-Git_pull_request_arrow.render = function() {
-  throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
-};
 function Star($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);
   push();
@@ -251,52 +174,2646 @@ function Star($$payload, $$props) {
 Star.render = function() {
   throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
 };
-function Users($$payload, $$props) {
-  const $$sanitized_props = sanitize_props($$props);
-  push();
-  const iconNode = [
-    [
-      "path",
-      {
-        "d": "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
-      }
-    ],
-    [
-      "circle",
-      { "cx": "9", "cy": "7", "r": "4" }
-    ],
-    [
-      "path",
-      { "d": "M22 21v-2a4 4 0 0 0-3-3.87" }
-    ],
-    [
-      "path",
-      { "d": "M16 3.13a4 4 0 0 1 0 7.75" }
-    ]
-  ];
-  $$payload.out += `<!--[-->`;
-  validate_component(Icon)($$payload, spread_props([
-    { name: "users" },
-    $$sanitized_props,
-    {
-      iconNode,
-      children: add_snippet_symbol(($$payload2, $$slotProps) => {
-        $$payload2.out += `<!--[-->`;
-        slot($$payload2, $$props.children, {}, null);
-        $$payload2.out += `<!--]-->`;
-      })
-    }
-  ]));
-  $$payload.out += `<!--]-->`;
-  pop();
-}
-Users.render = function() {
-  throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
-};
 const Root = Select;
 const Group = Select_group;
 const Input = Select_input;
 const Value = Select_value;
+var OrderByDirection = /* @__PURE__ */ ((OrderByDirection2) => {
+  OrderByDirection2["AscNullsFirst"] = "AscNullsFirst";
+  OrderByDirection2["AscNullsLast"] = "AscNullsLast";
+  OrderByDirection2["DescNullsFirst"] = "DescNullsFirst";
+  OrderByDirection2["DescNullsLast"] = "DescNullsLast";
+  return OrderByDirection2;
+})(OrderByDirection || {});
+const BookmarkTableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "BookmarkTable" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "filter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "orderBy" } },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoOrderBy" } }
+            }
+          }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "first" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "last" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } }
+        }
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazerMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazerCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "stargazerCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazerMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazerCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "stargazerCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForkMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forkCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forkCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForkMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forkCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forkCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssueMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesTotalCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesTotalCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssueMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesTotalCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesTotalCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryContributorMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contributorCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "contributorCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryContributorMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contributorCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "contributorCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsTotalCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsTotalCount" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsTotalCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsTotalCount" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssuesPerContributorMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssuesPerContributorMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForksPerContributorMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forksPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forksPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForksPerContributorMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forksPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forksPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazersPerContributorMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazersPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stargazersPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazersPerContributorMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazersPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stargazersPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsPerContributorMax" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsPerContributorMin" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryTrending" },
+            name: { kind: "Name", value: "fListBookmarkedGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: { kind: "Variable", name: { kind: "Name", value: "filter" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: { kind: "Variable", name: { kind: "Name", value: "orderBy" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "Variable", name: { kind: "Name", value: "first" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "last" },
+                value: { kind: "Variable", name: { kind: "Name", value: "last" } }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoName" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbOwner" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gthbOwnerLogin" }
+                                  },
+                                  { kind: "Field", name: { kind: "Name", value: "avatarUrl" } }
+                                ]
+                              }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "stargazerCount" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stargazersPerContributor" }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "forkCount" } },
+                            { kind: "Field", name: { kind: "Name", value: "issuesTotalCount" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "issuesPerContributor" }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "forksPerContributor" } },
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoDescription" } },
+                            { kind: "Field", name: { kind: "Name", value: "contributorCount" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsTotalCount" }
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "pageInfo" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hasNextPage" } },
+                      { kind: "Field", name: { kind: "Name", value: "hasPreviousPage" } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+const ChartDataStarsByGthbRepoFilterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ChartDataStarsByGthbRepoFilter" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "gthbRepoFilter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "starFilter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbStarHistFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "starOrderBy" } },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "GthbStarHistOrderBy" } }
+            }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "gthbRepoCollection" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: { kind: "Variable", name: { kind: "Name", value: "gthbRepoFilter" } }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoName" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbOwner" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  { kind: "Field", name: { kind: "Name", value: "gthbOwnerLogin" } }
+                                ]
+                              }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoId" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbStarHistCollection" },
+                              arguments: [
+                                {
+                                  kind: "Argument",
+                                  name: { kind: "Name", value: "filter" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "starFilter" }
+                                  }
+                                },
+                                {
+                                  kind: "Argument",
+                                  name: { kind: "Name", value: "orderBy" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "starOrderBy" }
+                                  }
+                                }
+                              ],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "edges" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "node" },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: { kind: "Name", value: "gthbStarHistDate" }
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: { kind: "Name", value: "amount" }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+const ChartDataForksByGthbRepoFilterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ChartDataForksByGthbRepoFilter" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "gthbRepoFilter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "forkFilter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbForkHistFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "forkOrderBy" } },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "GthbForkHistOrderBy" } }
+            }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "gthbRepoCollection" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: { kind: "Variable", name: { kind: "Name", value: "gthbRepoFilter" } }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoName" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbOwner" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  { kind: "Field", name: { kind: "Name", value: "gthbOwnerLogin" } }
+                                ]
+                              }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoId" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbForkHistCollection" },
+                              arguments: [
+                                {
+                                  kind: "Argument",
+                                  name: { kind: "Name", value: "filter" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "forkFilter" }
+                                  }
+                                },
+                                {
+                                  kind: "Argument",
+                                  name: { kind: "Name", value: "orderBy" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "forkOrderBy" }
+                                  }
+                                }
+                              ],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "edges" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "node" },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: { kind: "Name", value: "gthbForkHistDate" }
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: { kind: "Name", value: "amount" }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+const ChartDataIssuesByGthbRepoFilterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ChartDataIssuesByGthbRepoFilter" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "gthbRepoFilter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "issueFilter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbIssueHistFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "issueOrderBy" } },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "GthbIssueHistOrderBy" } }
+            }
+          }
+        }
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "gthbRepoCollection" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: { kind: "Variable", name: { kind: "Name", value: "gthbRepoFilter" } }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoName" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbOwner" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  { kind: "Field", name: { kind: "Name", value: "gthbOwnerLogin" } }
+                                ]
+                              }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoId" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbIssueHistCollection" },
+                              arguments: [
+                                {
+                                  kind: "Argument",
+                                  name: { kind: "Name", value: "filter" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "issueFilter" }
+                                  }
+                                },
+                                {
+                                  kind: "Argument",
+                                  name: { kind: "Name", value: "orderBy" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "issueOrderBy" }
+                                  }
+                                }
+                              ],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "edges" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "node" },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: { kind: "Name", value: "gthbIssueHistDate" }
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: { kind: "Name", value: "amount" }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
+const TrendingTableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "TrendingTable" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "dateRange" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "filter" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoFilter" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "orderBy" } },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "GthbRepoOrderBy" } }
+            }
+          }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "first" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } }
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "last" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } }
+        }
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazerMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazerCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "stargazerCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazerMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazerCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "stargazerCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForkMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forkCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forkCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForkMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forkCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forkCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssueMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesTotalCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesTotalCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssueMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesTotalCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesTotalCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryContributorMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contributorCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "contributorCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryContributorMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contributorCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "contributorCount" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsTotalCount" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsTotalCount" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsTotalCount" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsTotalCount" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssuesPerContributorMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryIssuesPerContributorMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "issuesPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "issuesPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForksPerContributorMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forksPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forksPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryForksPerContributorMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "forksPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "forksPerContributor" } }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazersPerContributorMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazersPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stargazersPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryStargazersPerContributorMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "stargazersPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stargazersPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsPerContributorMax" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsPerContributor" },
+                      value: { kind: "EnumValue", value: "DescNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryPullRequestsPerContributorMin" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "IntValue", value: "1" }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "pullRequestsPerContributor" },
+                      value: { kind: "EnumValue", value: "AscNullsLast" }
+                    }
+                  ]
+                }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "queryTrending" },
+            name: { kind: "Name", value: "fListTrendingGthbRepo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "gthbDateRangeArg" },
+                value: { kind: "Variable", name: { kind: "Name", value: "dateRange" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: { kind: "Variable", name: { kind: "Name", value: "filter" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "orderBy" },
+                value: { kind: "Variable", name: { kind: "Name", value: "orderBy" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "first" },
+                value: { kind: "Variable", name: { kind: "Name", value: "first" } }
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "last" },
+                value: { kind: "Variable", name: { kind: "Name", value: "last" } }
+              }
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoName" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gthbOwner" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gthbOwnerLogin" }
+                                  },
+                                  { kind: "Field", name: { kind: "Name", value: "avatarUrl" } }
+                                ]
+                              }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "stargazerCount" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "stargazersPerContributor" }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "forkCount" } },
+                            { kind: "Field", name: { kind: "Name", value: "issuesTotalCount" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "issuesPerContributor" }
+                            },
+                            { kind: "Field", name: { kind: "Name", value: "forksPerContributor" } },
+                            { kind: "Field", name: { kind: "Name", value: "gthbRepoDescription" } },
+                            { kind: "Field", name: { kind: "Name", value: "contributorCount" } },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsTotalCount" }
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "pullRequestsPerContributor" }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "pageInfo" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hasNextPage" } },
+                      { kind: "Field", name: { kind: "Name", value: "hasPreviousPage" } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+};
 function Dropdown_menu_item($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);
   const $$restProps = rest_props($$sanitized_props, ["class", "inset", "$$props"]);
@@ -504,20 +3021,23 @@ Dropdown_menu_checkbox_item.render = function() {
   throw new Error("Component.render(...) is no longer valid in Svelte 5. See https://svelte-5-preview.vercel.app/docs/breaking-changes#components-are-no-longer-classes for more information");
 };
 export {
+  BookmarkTableDocument as B,
   Circle_dot as C,
   Dropdown_menu_content as D,
-  Folder_git_2 as F,
   Git_fork as G,
   Input as I,
+  OrderByDirection as O,
   Root as R,
   Star as S,
-  Users as U,
+  TrendingTableDocument as T,
   Value as V,
-  Git_pull_request_arrow as a,
-  Calendar as b,
-  Dropdown_menu_radio_group as c,
-  Dropdown_menu_radio_item as d,
-  Dropdown_menu_item as e,
-  Dropdown_menu_checkbox_item as f,
-  Group as g
+  Calendar as a,
+  Dropdown_menu_radio_group as b,
+  Dropdown_menu_radio_item as c,
+  Dropdown_menu_item as d,
+  Dropdown_menu_checkbox_item as e,
+  Group as f,
+  ChartDataStarsByGthbRepoFilterDocument as g,
+  ChartDataForksByGthbRepoFilterDocument as h,
+  ChartDataIssuesByGthbRepoFilterDocument as i
 };

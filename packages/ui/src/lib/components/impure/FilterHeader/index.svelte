@@ -21,8 +21,8 @@
 	type Filter = { id: ID; operator: string; value: number };
 	type Props = {
 		data: {
-			time: string;
-			onTimeChange: (value: string) => void;
+			time?: string;
+			onTimeChange?: (value: string) => void;
 			onSortUpdate: (oldIndex: number, newIndex: number) => void;
 			onFilterAdd: (id: ID) => void;
 			onFilterChange: (id: ID, filter: Filter) => void;
@@ -70,7 +70,6 @@
 	const sortItems = columns;
 
 	const handleSortableListUpdate = (event: any) => {
-		// console.log('sortable list update', event);
 		onSortUpdate(event.oldIndex, event.newIndex);
 	};
 	const getHandleSortItemClickFunc = (id: ID) => () => {
@@ -106,7 +105,6 @@
 		}
 	};
 	const getFilterInputChangeFunc = (id: ID, filter: Filter) => (event: any) => {
-		console.log('x1', event);
 		onFilterChange(id, { ...filter, value: event.target.value });
 	};
 	const getHandleColumnCheckedChangeFunc = (id: ID) => () => {
@@ -117,21 +115,22 @@
 
 <div class=" flex py-2 px-4 h-[3.8125rem] w-full border-b">
 	<div class="ml-auto md:ml-0 flex gap-4 items-center">
-		<DropdownMenu.Root closeOnItemClick={false}>
-			<DropdownMenu.Trigger asChild let:builder class="w-40">
-				<Button variant="outline" builders={[builder]} size="sm">
-					<CalendarIcon class="h-4 w-4 md:mr-2" />
-					<span class="hidden md:inline">{time}</span>
-				</Button>
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
-				<DropdownMenu.RadioGroup bind:value={time} onValueChange={handleTimeChange}>
-					<DropdownMenu.RadioItem value="Day" class="text-sm">Day</DropdownMenu.RadioItem>
-					<DropdownMenu.RadioItem value="Week" class="text-sm">Week</DropdownMenu.RadioItem>
-					<DropdownMenu.RadioItem value="Month" class="text-sm">Month</DropdownMenu.RadioItem>
-				</DropdownMenu.RadioGroup>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
+		{#if time}<DropdownMenu.Root closeOnItemClick={false}>
+				<DropdownMenu.Trigger asChild let:builder class="w-40">
+					<Button variant="outline" builders={[builder]} size="sm">
+						<CalendarIcon class="h-4 w-4 md:mr-2" />
+						<span class="hidden md:inline">{time}</span>
+					</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content>
+					<DropdownMenu.RadioGroup bind:value={time} onValueChange={handleTimeChange}>
+						<DropdownMenu.RadioItem value="Day" class="text-sm">Day</DropdownMenu.RadioItem>
+						<DropdownMenu.RadioItem value="Week" class="text-sm">Week</DropdownMenu.RadioItem>
+						<DropdownMenu.RadioItem value="Month" class="text-sm">Month</DropdownMenu.RadioItem>
+					</DropdownMenu.RadioGroup>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		{/if}
 		<DropdownMenu.Root closeOnItemClick={false}>
 			<DropdownMenu.Trigger asChild let:builder class="w-40">
 				<Button variant="outline" builders={[builder]} size="sm">
@@ -293,7 +292,7 @@
 							<Select.Root
 								onSelectedChange={getFilterOnSelectedChangeFunc(filterableItem.id, filter)}
 							>
-								<Select.Trigger class="w-[9rem] mb-4">
+								<Select.Trigger class="w-[9rem] mb-4 shadow-none focus:shadow-none focus:ring-0">
 									{#key filter.operator}
 										{#if filter.operator === 'gt'}
 											greater ({'>'})
@@ -317,6 +316,7 @@
 								placeholder="0"
 								type="number"
 								class="w-[9rem]"
+								value={filter.value}
 								on:change={getFilterInputChangeFunc(filterableItem.id, filter)}
 							/>
 						</DropdownMenu.Content>

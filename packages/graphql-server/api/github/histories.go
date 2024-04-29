@@ -84,16 +84,16 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 	}
 
 	// get last page
-	if lastPage != 1 {
+	if lastPage > 2 {
 		lastGazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
 			PerPage: 30,
-			Page:    lastPage,
+			Page:    lastPage - 1,
 		})
 		if err != nil {
 
 			return nil, err
 		}
-		appendGazersToMap(lastGazers, lastPage)
+		appendGazersToMap(lastGazers, lastPage-1)
 	}
 
 	return &starHistMap, nil
@@ -162,18 +162,18 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 	}
 
 	// get last page
-	if lastPage != 1 {
+	if lastPage > 2 {
 		repos, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
 			ListOptions: githubv3.ListOptions{
 				PerPage: 30,
-				Page:    lastPage,
+				Page:    lastPage - 1,
 			},
 			Sort: "oldest",
 		})
 		if err != nil {
 			return nil, err
 		}
-		appendReposToMap(repos, lastPage)
+		appendReposToMap(repos, lastPage-1)
 	}
 	return &forkHistMap, nil
 }
@@ -239,18 +239,18 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	}
 
 	// get last page
-	if lastPage != 1 {
+	if lastPage > 2 {
 		issues, _, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
 			ListOptions: githubv3.ListOptions{
 				PerPage: 30,
-				Page:    lastPage,
+				Page:    lastPage - 1,
 			},
 			Direction: "asc",
 		})
 		if err != nil {
 			return nil, err
 		}
-		appendIssuesToMap(issues, lastPage)
+		appendIssuesToMap(issues, lastPage-1)
 	}
 	return &issueHistMap, nil
 }
@@ -293,7 +293,7 @@ func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string
 
 	// iterate only through pages
 	if amountPages > lastPage {
-		for i := 1; i < amountPages; i++ {
+		for i := 1; i < lastPage; i++ {
 			page := i
 			gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
 				PerPage: 30,
@@ -314,7 +314,7 @@ func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string
 	for i := 1; i <= amountPages; i++ {
 		var page int
 		if amountPages == i {
-			page = i * stepWidth
+			page = (i * stepWidth) - 1
 		} else {
 			page = iterationElementIndex + i*stepWidth
 		}
@@ -387,7 +387,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 	}
 	// iterate only through pages
 	if amountPages > lastPage {
-		for i := 1; i < amountPages; i++ {
+		for i := 1; i < lastPage; i++ {
 			page := i
 			gazers, _, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
 				ListOptions: githubv3.ListOptions{
@@ -411,7 +411,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 	for i := 1; i <= amountPages; i++ {
 		var page int
 		if amountPages == i {
-			page = i * stepWidth
+			page = (i * stepWidth) - 1
 		} else {
 			page = iterationElementIndex + i*stepWidth
 		}
@@ -490,7 +490,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 	}
 	// iterate only through pages
 	if amountPages > lastPage {
-		for i := 1; i < amountPages; i++ {
+		for i := 1; i < lastPage; i++ {
 			page := i
 			gazers, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
 				ListOptions: githubv3.ListOptions{
@@ -514,7 +514,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 	for i := 1; i <= amountPages; i++ {
 		var page int
 		if amountPages == i {
-			page = i * stepWidth
+			page = (i * stepWidth) - 1
 		} else {
 			page = iterationElementIndex + i*stepWidth
 		}

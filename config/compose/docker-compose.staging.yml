@@ -9,7 +9,7 @@ services:
     ports:
       - ${GRAPHQL_SERVER_PORT}:${GRAPHQL_SERVER_PORT}
     env_file:
-      - ../../.env.commit
+      - ../../.env.staging
   graphql-gateway:
     container_name: graphql-gateway
     build:
@@ -24,7 +24,7 @@ services:
     ports:
       - ${GRAPHQL_GATEWAY_PORT}:${GRAPHQL_GATEWAY_PORT}
     env_file:
-      - ../../.env.commit
+      - ../../.env.staging
   ui:
     container_name: ui
     build:
@@ -40,4 +40,4 @@ services:
     ports:
       - ${UI_PORT}:${UI_PORT}
     env_file:
-      - ../../.env.commit
+      - ../../.env.staging

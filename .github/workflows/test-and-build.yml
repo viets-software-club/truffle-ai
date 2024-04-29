@@ -61,7 +61,10 @@ jobs:
         run: task test
       - name: Build
         env:
+          PUBLIC_GATEWAY_GRAPHQL_URL: ${{ vars.GATEWAY_GRAPHQL_URL}}
+          PUBLIC_SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
           UI_HOSTNAME: ${{ vars.UI_HOSTNAME }}
+          PUBLIC_UI_HOSTNAME: ${{ vars.UI_HOSTNAME }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}

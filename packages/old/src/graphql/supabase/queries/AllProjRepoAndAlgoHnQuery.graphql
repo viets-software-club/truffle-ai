@@ -1,0 +1,11 @@
+query AllProjRepoAndAlgoHnQuery {
+  projRepoAndAlgoHnQueryCollection {
+    edges {
+      node {
+  			projRepoId
+        algoHnQueryId
+        internalCreatedAt
+      }
+    }
+  }
+}

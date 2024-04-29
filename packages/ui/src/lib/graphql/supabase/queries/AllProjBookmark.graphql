@@ -1,0 +1,13 @@
+query AllProjBookmark {
+  projBookmarkCollection {
+    edges {
+      node {
+  		projBookmarkId
+        internalCreatedAt
+        projRepoId
+        authUsersId
+        isPublic
+      }
+    }
+  }
+}

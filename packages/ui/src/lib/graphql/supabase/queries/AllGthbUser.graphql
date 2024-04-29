@@ -1,0 +1,20 @@
+query AllGthbUser {
+  gthbUserCollection {
+    edges {
+      node {
+  		gthbUserId
+        internalCreatedAt
+        bio
+        bioHtml
+        company
+        companyHtml
+        createdAt
+        email
+        followersTotalCount
+        gthbUserName
+        twitterUsername
+        websiteUrl
+      }
+    }
+  }
+}

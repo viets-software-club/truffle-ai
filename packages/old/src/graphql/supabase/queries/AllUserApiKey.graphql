@@ -1,0 +1,12 @@
+query AllUserApiKey {
+  userApiKeyCollection {
+    edges {
+      node {
+  			userApiKeyId
+        internalCreatedAt
+        userApiKey
+        authUsersId
+      }
+    }
+  }
+}

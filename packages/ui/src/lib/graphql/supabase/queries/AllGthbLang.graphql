@@ -1,0 +1,12 @@
+query AllGthbLang {
+  gthbLangCollection {
+    edges {
+      node {
+        gthbLangId
+        internalCreatedAt
+        color
+        gthbLangName
+      }
+    }
+  }
+}

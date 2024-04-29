@@ -1,8 +1,0 @@
-{
-  "extends": "@truffle/ts-config-base/index.json",
-  "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "outDir": "./dist"
-  }
-}

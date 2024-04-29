@@ -1,0 +1,11 @@
+query AllGthbRepoAndGthbLang {
+  gthbRepoAndGthbLangCollection {
+    edges {
+      node {
+        gthbRepoId
+        gthbLangId
+        internalCreatedAt
+      }
+    }
+  }
+}

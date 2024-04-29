@@ -1,0 +1,22 @@
+query AddRepoList {
+	trendings: fListTrendingGthbRepo {
+		edges {
+			node {
+				gthbOwner {
+					gthbOwnerLogin
+				}
+				gthbRepoName
+			}
+		}
+	}
+	bookmarks: fListBookmarkedGthbRepo {
+		edges {
+			node {
+				gthbOwner {
+					gthbOwnerLogin
+				}
+				gthbRepoName
+			}
+		}
+	}
+}

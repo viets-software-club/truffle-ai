@@ -1,0 +1,33 @@
+query Detail($repoName: String, $ownerLogin: String) {
+	fGetGthbOwnerByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
+		edges {
+			node {
+				avatarUrl
+				gthbOwnerId
+			}
+		}
+	}
+	fGetGthbRepoByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
+		edges {
+			node {
+				gthbRepoId
+				gthbRepoDescription
+			}
+		}
+	}
+	fGetProjRepoByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
+		edges {
+			node {
+				projRepoId
+				repoEli5
+			}
+		}
+	}
+	fGetProjBookmarkByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
+		edges {
+			node {
+				projBookmarkId
+			}
+		}
+	}
+}

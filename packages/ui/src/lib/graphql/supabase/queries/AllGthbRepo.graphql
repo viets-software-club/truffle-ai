@@ -1,0 +1,26 @@
+query AllGthbRepo {
+  gthbRepoCollection {
+    edges {
+      node {
+        gthbRepoId
+        internalCreatedAt
+        createdAt
+        gthbRepoDescription
+        forkCount
+        homepageUrl
+        isInOrganization
+        issuesTotalCount
+        gthbRepoName
+        gthbOwnerId
+        pullRequestsTotalCount
+        gthbRepoUrl
+        stargazerCount
+        contributorCount
+        forksPerContributor
+        issuesPerContributor
+        stargazersPerContributor
+        pullRequestsPerContributor
+      }
+    }
+  }
+}

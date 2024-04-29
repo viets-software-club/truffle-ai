@@ -1,0 +1,13 @@
+query AllProjRepoMetadata {
+  projRepoMetadataCollection {
+    edges {
+      node {
+  			projRepoId
+        projRepoMetadataId
+        algoHnEli5
+        repoEli5
+        internalCreatedAt
+      }
+    }
+  }
+}

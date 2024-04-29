@@ -1,2 +1,0 @@
-UI_PORT: '3000'
-NEXT_PUBLIC_GRAPHQL_URL: https://0.0.0.0/api/graphql

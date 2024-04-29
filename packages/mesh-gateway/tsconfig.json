@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "es2021",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types", "src/types"],
+    "outDir": "dist",
+    "allowJs": true
+  },
+  "include": ["src/**/*.ts", "schema.js"],
+  "exclude": [".mesh"]
+}

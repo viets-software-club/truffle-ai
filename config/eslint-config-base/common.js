@@ -20,7 +20,8 @@ module.exports = {
     '.dockerignore',
     '.husky',
     '.eslintrc.js',
-    'config/scripts/**'
+    'scripts/**',
+    '**/packages/graphql-gateway/src/server.ts'
   ],
   rules: {
     'import/no-unresolved': 'error',

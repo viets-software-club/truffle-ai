@@ -9,6 +9,7 @@ target
 
 # GraphQL Gateway
 .mesh
+http-cacache
 
 # GitHub Actions
 .deployment
@@ -39,13 +40,16 @@ test/**
 .eslintcache
 
 # Secrets and Envs
+/_*
+*.secret
 .env*
 secret.*
 secrets.*
-!secret.tf
 secrets
 _secrets
-!config/charts/app-chart/templates/secrets.yaml
+!_configMaps
+!_secrets/example.secret.*
+
 
 # Terraform
 **/.terraform/*
@@ -63,5 +67,21 @@ terraform.rc
 
 # Service worker
 **/public/fallback-*.js
+**/public/workbox-*.js
+**/public/sw.js
+
+# DBeaver
+.dbeaver
+.project
+
+# Parcel
+.parcel-cache
+
+# Golang
+go.work.sum
+packages/graphql-server/graphql-server
+
+
+# Service worker? @TODO: check if this is needed
 **/public/workbox-*.js*
 **/public/sw*.js*

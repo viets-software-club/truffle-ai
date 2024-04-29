@@ -1,0 +1,11 @@
+query AllAlgoHnCommentAndAlgoHnTag {
+  algoHnCommentAndAlgoHnTagCollection {
+    edges {
+      node {
+        algoHnTagId
+        algoHnCommentId
+        internalCreatedAt
+      }
+    }
+  }
+}

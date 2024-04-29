@@ -1,0 +1,10 @@
+query AllUserAdmin {
+  userAdminCollection {
+    edges {
+      node {
+  			authUsersId
+        internalCreatedAt
+      }
+    }
+  }
+}

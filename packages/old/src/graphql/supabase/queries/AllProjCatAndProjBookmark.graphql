@@ -1,0 +1,12 @@
+query AllProjCatAndProjBookmark {
+  projCatAndProjBookmarkCollection {
+    edges {
+      node {
+  			projCatId
+        projBookmarkId
+        isPinned
+        internalCreatedAt
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+  dev:
+    cmds:
+      - source {{.SOURCE}} && cargo run
+  build:
+    cmds:
+      - source {{.SOURCE}} && cargo build
+  test:
+    cmds:
+      - cargo test && cargo check
+  start:
+    cmds:
+      - source {{.SOURCE}} && cargo run target/debug/graphql-gateway

@@ -1,0 +1,12 @@
+query AddRepoListBookmarks {
+	fListBookmarkedGthbRepo {
+		edges {
+			node {
+				gthbOwner {
+					gthbOwnerLogin
+				}
+				gthbRepoName
+			}
+		}
+	}
+}

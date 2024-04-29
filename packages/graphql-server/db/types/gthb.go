@@ -99,8 +99,8 @@ type T_ivals_gthb_fork_hist struct {
 
 // Github Language
 type T_ivals_gthb_lang struct {
-	Color          pgtype.Text
 	Gthb_lang_name pgtype.Text
+	Color          pgtype.Text
 }
 
 type T_f_insert_gthb_trending struct {

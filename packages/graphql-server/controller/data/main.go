@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"golang.org/x/time/rate"
+
 	prompts "github.com/viets-software-club/truffle-ai/graphql-server/api/prompts"
 
 	githubv3 "github.com/google/go-github/v57/github"
@@ -50,7 +52,11 @@ type ContributorToUserMap = map[*githubv3.Contributor]*github.GetUser
 
 var MAX_PAGES = 10
 
+var limiter *rate.Limiter = rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
+
 func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
+	// limiter := rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
+
 	fmt.Println("start1", repoOwner, repoName)
 	currentTime := time.Now()
 	// Create channels

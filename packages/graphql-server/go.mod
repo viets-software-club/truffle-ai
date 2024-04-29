@@ -36,8 +36,10 @@ require (
 require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
+	github.com/go-chi/chi v1.5.5
 	github.com/google/go-github/v57 v57.0.0
 	github.com/google/uuid v1.4.0
+	github.com/rs/cors v1.11.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sashabaranov/go-openai v1.17.9
 	github.com/shurcooL/githubv4 v0.0.0-20231126234147-1cffa1f02456
@@ -46,6 +48,7 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/time v0.5.0
 	golang.org/x/tools v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

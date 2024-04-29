@@ -2,6 +2,7 @@ package github
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"
@@ -14,11 +15,12 @@ func ConvertGetRepositoryLanguagesPtrToTIvalsGthbLangFlatArrayPtr(langs *github.
 		return nil, errors.New("langs can not be nil")
 	}
 	for _, entry := range langs.Edges {
-		newLangs = append(newLangs, types.T_ivals_gthb_lang{
-			Gthb_lang_name: Githubv4StringToNoEmptyPgText(entry.Node.Name),
-			Color:          Githubv4StringToNoEmptyPgText(entry.Node.Color),
-		})
-
+		if strings.TrimSpace(string(entry.Node.Color)) != "" && strings.TrimSpace(string(entry.Node.Name)) != "" {
+			newLangs = append(newLangs, types.T_ivals_gthb_lang{
+				Gthb_lang_name: Githubv4StringToNoEmptyPgText(entry.Node.Name),
+				Color:          Githubv4StringToNoEmptyPgText(entry.Node.Color),
+			})
+		}
 	}
 	return newLangs, nil
 }

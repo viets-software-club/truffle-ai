@@ -17,7 +17,7 @@ query GetRepositoryData($owner: String!, $repo: String!) {
     issues {
       totalCount
     }
-    languages(first: 100) {
+    languages(first: 20) {
       edges {
         node {
           color

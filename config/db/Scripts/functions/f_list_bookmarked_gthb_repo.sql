@@ -1,4 +1,4 @@
-drop function if exists f_list_bookmarked_gthb_repo();
+drop function if exists f_list_bookmarked_gthb_repo(text);
 create or replace function f_list_bookmarked_gthb_repo()
   returns setof "gthb_repo"
   as $$

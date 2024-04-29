@@ -61,3 +61,13 @@ create or replace trigger tr_on_delete_gthb_repo_delete_unreferenced_gthb_owner
 create or replace trigger tr_signup_based_on_whitelist
   before insert on auth.users
   for each row execute function f_tr_signup_based_on_whitelist();
+
+create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_cat
+  after delete on proj_bookmark
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_proj_cat();
+
+create or replace trigger tr_on_delete_proj_cat_and_proj_bookmark_delete_unreferenced_proj_cat
+  after delete on proj_cat_and_proj_bookmark
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_proj_cat();

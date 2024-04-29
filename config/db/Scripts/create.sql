@@ -1,3 +1,6 @@
+comment on schema public is e'@graphql({"max_rows": 300, "inflect_names": true})';
+
+
 create domain d_gthb_owner_type as text check (value in ('User', 'Organization'));
 create domain d_gthb_trending_date_range as text check (value in ('daily', 'weekly', 'monthly'));
 create table public.gthb_owner(

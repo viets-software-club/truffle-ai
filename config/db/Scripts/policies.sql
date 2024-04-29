@@ -46,6 +46,14 @@ create policy "authenticated can access proj_repo"
   using (auth.uid() in (
     select proj_bookmark.auth_users_id from proj_bookmark where proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
   ));
+drop policy if exists "authenticated can access proj_repo via gthb_trending" on proj_repo;
+create policy "authenticated can access proj_repo via gthb_trending"
+  on proj_repo for all to authenticated
+  using (
+    proj_repo.gthb_repo_id in (
+      select gthb_trending.gthb_repo_id from gthb_trending
+    )
+  );
 
 drop policy if exists "authenticated can access gthb_repo" on gthb_repo;
 create policy "authenticated can access gthb_repo"
@@ -87,7 +95,7 @@ create policy "admin can only delete himself"
 
 drop policy if exists "authenticated can select gthb_trending" on gthb_trending;
 create policy "authenticated can select gthb_trending"
-  on gthb_trending for select to authenticated using(true);
+  on gthb_trending for select to authenticated using (true);
 
 drop policy if exists "authenticated can select gthb_repo" on gthb_repo;
 create policy "authenticated can select gthb_repo"
@@ -139,9 +147,9 @@ create policy "authenticated can select gthb_owner"
   on gthb_owner for select to authenticated
   using (true);
 
-drop policy if exists "authenticated can select gthb_user" on gthb_org;
+drop policy if exists "authenticated can select gthb_user" on gthb_user;
 create policy "authenticated can select gthb_user"
-  on gthb_org for select to authenticated
+  on gthb_user for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_org" on gthb_org;

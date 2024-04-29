@@ -1,4 +1,4 @@
-create or replace function f_insert_proj_bookmark_w_cats(bookmarkWithCats t_f_insert_proj_bookmark_w_cats) returns VOID as $$
+create or replace function f_insert_proj_bookmark_w_cats(bookmarkWithCats t_f_insert_proj_bookmark_w_cats) returns boolean as $$
 declare
 projRepoId bigint;
 bookmarkId bigint;
@@ -24,5 +24,6 @@ insert into proj_cat_and_proj_bookmark(proj_cat_id, proj_bookmark_id)
 select cats.proj_cat_id,
   bookmarkId
 from cats on conflict do nothing;
+return true;
 end;
 $$ language plpgsql;

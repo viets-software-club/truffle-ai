@@ -10,3 +10,9 @@ create type t_f_select_updatable_result as (
   gthb_repo_name text,
   gthb_owner_login text
 );
+
+drop type if exists t_f_gthb_repo_identifier cascade;
+create type t_f_gthb_repo_identifier as (
+  gthb_owner_login text,
+  gthb_repo_name text
+);

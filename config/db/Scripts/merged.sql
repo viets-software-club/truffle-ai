@@ -90,6 +90,9 @@ drop policy if exists "admin can select admins" on user_admin cascade;
 drop policy if exists "admin can only update himself" on user_admin cascade;
 drop policy if exists "admin can only delete himself" on user_admin cascade;
 
+comment on schema public is e'@graphql({"max_rows": 300, "inflect_names": true})';
+
+
 create domain d_gthb_owner_type as text check (value in ('User', 'Organization'));
 create domain d_gthb_trending_date_range as text check (value in ('daily', 'weekly', 'monthly'));
 create table public.gthb_owner(
@@ -687,6 +690,12 @@ create type t_f_select_updatable_result as (
   gthb_repo_name text,
   gthb_owner_login text
 );
+
+drop type if exists t_f_gthb_repo_identifier cascade;
+create type t_f_gthb_repo_identifier as (
+  gthb_owner_login text,
+  gthb_repo_name text
+);
 create or replace function f_insert_gthb_owner(githubOwner t_f_insert_gthb_owner)
   returns bigint
   as $$
@@ -954,12 +963,12 @@ begin
       on conflict(gthb_repo_id, gthb_owner_id) do update set contributions = excluded.contributions;
     end loop;
 
-  if array_length(githubRepo.gthb_langs, 1) is null then
+  if array_length(githubRepo.gthb_langs, 1) is not null then
     with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
     insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
   end if;
   
-  if array_length(githubRepo.gthb_repo_topics, 1) is null then
+  if array_length(githubRepo.gthb_repo_topics, 1) is not null then
     with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
     insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
   end if;
@@ -1061,7 +1070,7 @@ begin
   return projRepoId;
 end;
 $$ language plpgsql;
-create or replace function f_insert_proj_bookmark_w_cats(bookmarkWithCats t_f_insert_proj_bookmark_w_cats) returns VOID as $$
+create or replace function f_insert_proj_bookmark_w_cats(bookmarkWithCats t_f_insert_proj_bookmark_w_cats) returns boolean as $$
 declare
 projRepoId bigint;
 bookmarkId bigint;
@@ -1087,6 +1096,7 @@ insert into proj_cat_and_proj_bookmark(proj_cat_id, proj_bookmark_id)
 select cats.proj_cat_id,
   bookmarkId
 from cats on conflict do nothing;
+return true;
 end;
 $$ language plpgsql;
 create or replace function f_insert_gthb_trending(githubTrending t_f_insert_gthb_trending)
@@ -1102,7 +1112,7 @@ begin
   -- not updateing note here
   insert into proj_repo (gthb_repo_id, note) values (githubRepoId, projectRepoArg.note) on conflict(gthb_repo_id) do update set gthb_repo_id = excluded.gthb_repo_id returning proj_repo_id into projRepoId;
 
-  perform f_insert_proj_repo_metadata_for_proj(projRepoId, projectRepoArg.proj_repo_metadata);
+  -- perform f_insert_proj_repo_metadata_for_proj(projRepoId, projectRepoArg.proj_repo_metadata);
   if projectRepoArg.algo_hn_queries is not null then
     perform f_insert_algo_hn_queries_w_stories_and_comments_for_proj(projRepoId, projectRepoArg.algo_hn_queries);
   end if;
@@ -1413,29 +1423,26 @@ begin
 end;
 $$
 language plpgsql immutable;
-drop function if exists f_delete_proj_bookmark_by_gthb_repo_name(text);
-create or replace function f_delete_proj_bookmark_by_gthb_repo_name(githubRepoName text)
-  returns boolean
-  as $$
-declare
-  projRepoId bigint;
-begin
-  delete from proj_bookmark
-  where proj_repo_id in (
-    select proj_repo.proj_repo_id from proj_repo
-    inner join gthb_repo on gthb_repo.gthb_repo_id = proj_repo.gthb_repo_id
-    where gthb_repo.gthb_repo_name = githubRepoName and proj_repo.proj_repo_id = proj_bookmark.proj_repo_id
-  )
-  returning proj_repo_id
-  into projRepoId;
 
-  if projRepoId is null then
-    raise exception 'No bookmark found for githubRepoName %', githubRepoName;
-  end if;
-  return projRepoId > 0;
-end;
-$$
-language plpgsql;
+
+-- drop function if exists f_is_gthb_repo_bookmarked(ownerLogin text, repoName text);
+-- create or replace function f_is_gthb_repo_bookmarked(ownerLogin text, repoName text)
+--   returns boolean
+--   as $$
+-- declare
+--   isBookmarked boolean;
+-- begin
+--   select exists (
+--     select 1 from gthb_repo
+--     inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
+--     inner join proj_bookmark on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
+--     inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+--     where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName
+--   ) into isBookmarked;
+--   return isBookmarked;
+-- end;
+-- $$
+-- language plpgsql immutable;
 drop function if exists f_select_updatable(isDaily boolean, isWeekly boolean, isMonthly boolean);
 create or replace function f_select_updatable(isDaily boolean, isWeekly boolean, isMonthly boolean)
   returns setof t_f_select_updatable_result
@@ -1463,7 +1470,7 @@ $$
 language plpgsql;
 
 
-drop function if exists f_list_bookmarked_gthb_repo();
+drop function if exists f_list_bookmarked_gthb_repo(text);
 create or replace function f_list_bookmarked_gthb_repo()
   returns setof "gthb_repo"
   as $$
@@ -1477,18 +1484,262 @@ end;
 $$
 language plpgsql stable;
 
-drop function if exists f_list_trending_gthb_repo();
-create or replace function f_list_trending_gthb_repo()
+drop function if exists f_list_trending_gthb_repo(text);
+create or replace function f_list_trending_gthb_repo(gthb_date_range_arg text)
   returns setof "gthb_repo"
   as $$
 begin
   return query select gthb_repo.* from gthb_repo
-  inner join gthb_trending on gthb_repo.gthb_repo_id = gthb_trending.gthb_repo_id;
+  inner join gthb_trending on gthb_repo.gthb_repo_id = gthb_trending.gthb_repo_id
+  where gthb_trending.date_range = gthb_date_range_arg;
 end;
 $$
 language plpgsql stable;
 
 
+drop function if exists f_delete_proj_bookmark_on_proj_cat_by_title_and_gthb_name(catTitle text, ownerLogin text, repoName text);
+create or replace function f_delete_proj_bookmark_on_proj_cat_by_title_and_gthb_name(catTitle text, ownerLogin text, repoName text)
+  returns boolean
+  as $$
+declare
+  resultId bigint;
+begin
+  delete from proj_cat_and_proj_bookmark
+  where proj_cat_id in (
+    select proj_cat.proj_cat_id from proj_cat
+    inner join proj_cat_and_proj_bookmark on proj_cat_and_proj_bookmark.proj_cat_id = proj_cat.proj_cat_id
+    inner join proj_bookmark on proj_bookmark.proj_bookmark_id = proj_cat_and_proj_bookmark.proj_bookmark_id
+    inner join proj_repo on proj_repo.proj_repo_id = proj_bookmark.proj_repo_id
+    inner join gthb_repo on gthb_repo.gthb_repo_id = proj_repo.gthb_repo_id
+    inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_owner.gthb_owner_id
+    where proj_cat.title = catTitle and gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName 
+  )
+  returning proj_cat_id
+  into resultId;
+
+  if resultId is null then
+    raise exception 'No bookmark on category deleted';
+  end if;
+  return true;
+end;
+$$
+language plpgsql;
+drop function if exists f_delete_proj_bookmark_on_proj_cat_by_title_and_gthb_repo_id(catTitle text, id bigint);
+create or replace function f_delete_proj_bookmark_on_proj_cat_by_title_and_gthb_repo_id(catTitle text, id bigint)
+  returns boolean
+  as $$
+declare
+  resultId bigint;
+begin
+  delete from proj_cat_and_proj_bookmark
+  where proj_cat_id in (
+    select proj_cat.proj_cat_id from proj_cat
+    inner join proj_cat_and_proj_bookmark on proj_cat_and_proj_bookmark.proj_cat_id = proj_cat.proj_cat_id
+    inner join proj_bookmark on proj_bookmark.proj_bookmark_id = proj_cat_and_proj_bookmark.proj_bookmark_id
+    inner join proj_repo on proj_repo.proj_repo_id = proj_bookmark.proj_repo_id
+    inner join gthb_repo on gthb_repo.gthb_repo_id = proj_repo.gthb_repo_id
+    inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_owner.gthb_owner_id
+    where proj_cat.title = catTitle and gthb_repo.gthb_repo_id = id 
+  )
+  returning proj_cat_id
+  into resultId;
+
+  if resultId is null then
+    raise exception 'No bookmark on category deleted';
+  end if;
+  return true;
+end;
+$$
+language plpgsql;
+drop function if exists f_delete_proj_bookmark_by_gthb_name(ownerLogin text, repoName text);
+create or replace function f_delete_proj_bookmark_by_gthb_name(ownerLogin text, repoName text)
+  returns boolean
+  as $$
+declare
+  projRepoId bigint;
+begin
+  delete from proj_bookmark
+  where proj_repo_id in (
+    select proj_repo.proj_repo_id from proj_repo
+    inner join proj_bookmark on proj_bookmark.proj_repo_id = proj_bookmark.proj_repo_id
+    inner join gthb_repo on gthb_repo.gthb_repo_id = proj_repo.gthb_repo_id
+    inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_owner.gthb_owner_id
+    where gthb_repo.gthb_repo_name = repoName and gthb_owner.gthb_owner_login = ownerLogin
+  )
+  returning proj_repo_id
+  into projRepoId;
+
+  if projRepoId is null then
+    raise exception 'No bookmark deleted';
+  end if;
+  return true;
+end;
+$$
+language plpgsql;
+drop type if exists t_result_f_get_gthb_repo_by_name cascade;
+
+create type t_result_f_get_gthb_repo_by_name as (
+  gthb_repo_id bigint,
+  created_at timestamp with time zone,
+  gthb_repo_description text,
+  fork_count bigint,
+  homepage_url text,
+  is_in_organization boolean,
+  issues_total_count bigint,
+  gthb_repo_name text,
+  gthb_owner_id bigint,
+  pull_requests_total_count bigint,
+  gthb_repo_url text,
+  stargazer_count bigint,
+  contributor_count bigint,
+  forks_per_contributor bigint,
+  issues_per_contributor bigint,
+  stargazers_per_contributor bigint,
+  pull_requests_per_contributor bigint,
+  gthb_owner_type d_gthb_owner_type,
+  avatar_url text,
+  gthb_owner_login text,
+  gthb_owner_url text,
+  proj_repo_id bigint
+);
+
+
+drop function if exists f_get_extensive_gthb_repo_by_name(text, text);
+create or replace function f_get_extensive_gthb_repo_by_name(ownerLogin text, repoName text)
+  returns setof "t_result_f_get_gthb_repo_by_name"
+  as $$
+begin
+  return query select gthb_repo.gthb_repo_id, gthb_repo.created_at, gthb_repo.gthb_repo_description, gthb_repo.fork_count, gthb_repo.homepage_url, gthb_repo.is_in_organization, gthb_repo.issues_total_count, gthb_repo.gthb_repo_name, gthb_repo.gthb_owner_id, gthb_repo.pull_requests_total_count, gthb_repo.gthb_repo_url, gthb_repo.stargazer_count, gthb_repo.contributor_count, gthb_repo.forks_per_contributor, gthb_repo.issues_per_contributor, gthb_repo.stargazers_per_contributor, gthb_repo.pull_requests_per_contributor, gthb_owner.gthb_owner_type, gthb_owner.avatar_url, gthb_owner.gthb_owner_login, gthb_owner.gthb_owner_url, proj_repo.proj_repo_id from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+drop function if exists f_get_gthb_owner_by_gthb_name(text, text);
+create or replace function f_get_gthb_owner_by_gthb_name(ownerLogin text, repoName text)
+  returns setof "gthb_owner"
+  as $$
+begin
+  return query select gthb_owner.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+drop function if exists f_get_gthb_repo_by_gthb_name(text, text);
+create or replace function f_get_gthb_repo_by_gthb_name(ownerLogin text, repoName text)
+  returns setof "gthb_repo"
+  as $$
+begin
+  return query select gthb_repo.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+drop type if exists t_f_get_gthb_repos_by_names_arg cascade;
+create type t_f_get_gthb_repos_by_names_arg as (
+  identifiers t_f_gthb_repo_identifier[]
+);
+
+drop function if exists f_get_gthb_repos_by_names(t_f_get_gthb_repos_by_names_arg);
+create or replace function f_get_gthb_repos_by_names(repoIdentifiersArg t_f_get_gthb_repos_by_names_arg)
+  returns setof "gthb_repo"
+  as $$
+begin
+  return query select gthb_repo.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
+  inner join unnest(repoIdentifiersArg) repoIdentifier on gthb_owner.gthb_owner_login = repoIdentifier.gthb_owner_login and gthb_repo.gthb_repo_name = repoIdentifier.gthb_repo_name;
+end;
+$$
+language plpgsql stable;
+drop function if exists f_get_proj_bookmark_by_gthb_name(text, text);
+create or replace function f_get_proj_bookmark_by_gthb_name(ownerLogin text, repoName text)
+  returns setof "proj_bookmark"
+  as $$
+begin
+  return query select proj_bookmark.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
+  inner join proj_bookmark on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+
+drop function if exists f_get_proj_repo_by_gthb_name(text, text);
+create or replace function f_get_proj_repo_by_gthb_name(ownerLogin text, repoName text)
+  returns setof "proj_repo"
+  as $$
+begin
+  return query select proj_repo.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join proj_repo on proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+
+create or replace function f_tr_delete_unreferenced_proj_cat() returns trigger as $$
+begin
+  delete from proj_cat
+  where not exists (
+    select 1 from proj_cat_and_proj_bookmark
+    where proj_cat_and_proj_bookmark.proj_cat_id = proj_cat.proj_cat_id
+  );
+  return null;
+end;
+$$ language plpgsql security definer;
+drop function if exists f_get_gthb_org_by_gthb_repo_id(gthb_repo_id_arg bigint);
+create or replace function f_get_gthb_org_by_gthb_repo_id(gthb_repo_id_arg bigint)
+  returns setof "gthb_org"
+  as $$
+begin
+  return query select gthb_org.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join gthb_org on gthb_org.gthb_org_id = gthb_owner.gthb_owner_id
+  where gthb_repo.gthb_repo_id = gthb_repo_id_arg;
+end;
+$$
+language plpgsql immutable;
+drop function if exists f_get_gthb_org_by_gthb_name(text, text);
+create or replace function f_get_gthb_org_by_gthb_name(ownerLogin text, repoName text)
+  returns setof "gthb_org"
+  as $$
+begin
+  return query select gthb_org.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join gthb_org on gthb_org.gthb_org_id = gthb_owner.gthb_owner_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+drop function if exists f_get_gthb_user_by_gthb_name(text, text);
+create or replace function f_get_gthb_user_by_gthb_name(ownerLogin text, repoName text)
+  returns setof "gthb_user"
+  as $$
+begin
+  return query select gthb_org.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join gthb_user on gthb_user.gthb_user_id = gthb_owner.gthb_owner_id
+  where gthb_owner.gthb_owner_login = ownerLogin and gthb_repo.gthb_repo_name = repoName;
+end;
+$$
+language plpgsql stable;
+drop function if exists f_get_gthb_user_by_gthb_repo_id(gthb_repo_id_arg bigint);
+create or replace function f_get_gthb_user_by_gthb_repo_id(gthb_repo_id_arg bigint)
+  returns setof "gthb_user"
+  as $$
+begin
+  return query select gthb_user.* from gthb_repo
+  inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
+  inner join gthb_user on gthb_user.gthb_user_id = gthb_owner.gthb_owner_id
+  where gthb_repo.gthb_repo_id = gthb_repo_id_arg;
+end;
+$$
+language plpgsql stable;
 create or replace trigger tr_on_delete_delete_unreferenced_algo_hn_query
   after delete on proj_repo_and_algo_hn_query
   for each STATEMENT
@@ -1553,6 +1804,15 @@ create or replace trigger tr_signup_based_on_whitelist
   before insert on auth.users
   for each row execute function f_tr_signup_based_on_whitelist();
 
+create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_cat
+  after delete on proj_bookmark
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_proj_cat();
+
+create or replace trigger tr_on_delete_proj_cat_and_proj_bookmark_delete_unreferenced_proj_cat
+  after delete on proj_cat_and_proj_bookmark
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_proj_cat();
 do
 $$
 declare
@@ -1601,6 +1861,14 @@ create policy "authenticated can access proj_repo"
   using (auth.uid() in (
     select proj_bookmark.auth_users_id from proj_bookmark where proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
   ));
+drop policy if exists "authenticated can access proj_repo via gthb_trending" on proj_repo;
+create policy "authenticated can access proj_repo via gthb_trending"
+  on proj_repo for all to authenticated
+  using (
+    proj_repo.gthb_repo_id in (
+      select gthb_trending.gthb_repo_id from gthb_trending
+    )
+  );
 
 drop policy if exists "authenticated can access gthb_repo" on gthb_repo;
 create policy "authenticated can access gthb_repo"
@@ -1642,7 +1910,7 @@ create policy "admin can only delete himself"
 
 drop policy if exists "authenticated can select gthb_trending" on gthb_trending;
 create policy "authenticated can select gthb_trending"
-  on gthb_trending for select to authenticated using(true);
+  on gthb_trending for select to authenticated using (true);
 
 drop policy if exists "authenticated can select gthb_repo" on gthb_repo;
 create policy "authenticated can select gthb_repo"
@@ -1694,9 +1962,9 @@ create policy "authenticated can select gthb_owner"
   on gthb_owner for select to authenticated
   using (true);
 
-drop policy if exists "authenticated can select gthb_user" on gthb_org;
+drop policy if exists "authenticated can select gthb_user" on gthb_user;
 create policy "authenticated can select gthb_user"
-  on gthb_org for select to authenticated
+  on gthb_user for select to authenticated
   using (true);
 
 drop policy if exists "authenticated can select gthb_org" on gthb_org;

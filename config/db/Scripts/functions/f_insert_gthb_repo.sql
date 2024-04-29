@@ -59,12 +59,12 @@ begin
       on conflict(gthb_repo_id, gthb_owner_id) do update set contributions = excluded.contributions;
     end loop;
 
-  if array_length(githubRepo.gthb_langs, 1) is null then
+  if array_length(githubRepo.gthb_langs, 1) is not null then
     with langs as (insert into gthb_lang (gthb_lang_name, color) select * from unnest(githubRepo.gthb_langs) on conflict (gthb_lang_name) do update set color = excluded.color returning *)
     insert into gthb_repo_and_gthb_lang(gthb_repo_id, gthb_lang_id) select repoId, langs.gthb_lang_id from langs on conflict(gthb_repo_id, gthb_lang_id) do nothing;
   end if;
   
-  if array_length(githubRepo.gthb_repo_topics, 1) is null then
+  if array_length(githubRepo.gthb_repo_topics, 1) is not null then
     with topics as (insert into gthb_repo_topic (gthb_repo_topic_name, stargazer_count) select * from unnest(githubRepo.gthb_repo_topics) on conflict (gthb_repo_topic_name) do update set stargazer_count = excluded.stargazer_count returning *)
     insert into gthb_repo_and_gthb_repo_topic(gthb_repo_id, gthb_repo_topic_id) select repoId, topics.gthb_repo_topic_id from topics on conflict(gthb_repo_id, gthb_repo_topic_id) do nothing;
   end if;

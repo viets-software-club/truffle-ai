@@ -1,2 +1,2 @@
-UI_PORT: '3000'
+UI_PORT: 3000
 UI_HOSTNAME: 'truffle.tools'

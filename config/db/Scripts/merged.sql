@@ -1470,6 +1470,7 @@ $$
 language plpgsql;
 
 
+drop function if exists f_list_bookmarked_gthb_repo();
 drop function if exists f_list_bookmarked_gthb_repo(text);
 create or replace function f_list_bookmarked_gthb_repo()
   returns setof "gthb_repo"
@@ -1484,6 +1485,7 @@ end;
 $$
 language plpgsql stable;
 
+drop function if exists f_list_trending_gthb_repo();
 drop function if exists f_list_trending_gthb_repo(text);
 create or replace function f_list_trending_gthb_repo(gthb_date_range_arg text)
   returns setof "gthb_repo"
@@ -1530,21 +1532,23 @@ create or replace function f_delete_proj_bookmark_on_proj_cat_by_title_and_gthb_
   as $$
 declare
   resultId bigint;
+  rowCount int;
 begin
   delete from proj_cat_and_proj_bookmark
-  where proj_cat_id in (
-    select proj_cat.proj_cat_id from proj_cat
-    inner join proj_cat_and_proj_bookmark on proj_cat_and_proj_bookmark.proj_cat_id = proj_cat.proj_cat_id
+  where proj_bookmark_id in (
+    select proj_cat_and_proj_bookmark.proj_bookmark_id from proj_cat_and_proj_bookmark
+    inner join proj_cat on proj_cat.proj_cat_id = proj_cat_and_proj_bookmark.proj_cat_id
     inner join proj_bookmark on proj_bookmark.proj_bookmark_id = proj_cat_and_proj_bookmark.proj_bookmark_id
     inner join proj_repo on proj_repo.proj_repo_id = proj_bookmark.proj_repo_id
     inner join gthb_repo on gthb_repo.gthb_repo_id = proj_repo.gthb_repo_id
     inner join gthb_owner on gthb_owner.gthb_owner_id = gthb_owner.gthb_owner_id
-    where proj_cat.title = catTitle and gthb_repo.gthb_repo_id = id 
-  )
-  returning proj_cat_id
-  into resultId;
+    where proj_cat.title = catTitle and gthb_repo.gthb_repo_id = id and auth.uid() = proj_cat.auth_users_id
+  );
+ 
 
-  if resultId is null then
+  GET DIAGNOSTICS rowCount = ROW_COUNT;
+
+  if rowCount = 0 then
     raise exception 'No bookmark on category deleted';
   end if;
   return true;

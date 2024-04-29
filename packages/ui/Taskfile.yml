@@ -4,7 +4,7 @@ vars:
 tasks:
   dev:
     cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/vite dev --host --port 3000
+      - $source {{.SOURCE}} && ./node_modules/.bin/vite dev --host --port 3000
   build:
     cmds:
       - source {{.SOURCE}} && ./node_modules/.bin/vite build

@@ -58,6 +58,7 @@
 	const RANGE_THREE_MONTHS = 'three_months';
 	const RANGE_SIX_MONTHS = 'six_months';
 	const RANGE_ONE_YEAR = 'one_year';
+	const RANGE_THREE_YEAR = 'three_year';
 	const RANGE_ALL_YEAR = 'all_time';
 	const calcPrevDateByRange = () => {
 		let now = DateTime.now();
@@ -70,6 +71,8 @@
 			start = now.minus({ month: 6 });
 		} else if (selectedRange.value === RANGE_ONE_YEAR) {
 			start = now.minus({ year: 1 });
+		} else if (selectedRange.value === RANGE_THREE_YEAR) {
+			start = now.minus({ year: 3 });
 		}
 
 		return start;
@@ -122,7 +125,6 @@
 					}))
 				}));
 			}
-
 			return { datasets };
 		}
 		return {
@@ -193,12 +195,16 @@
 			label: '1 Year'
 		},
 		{
+			value: RANGE_THREE_YEAR,
+			label: '3 Year'
+		},
+		{
 			value: RANGE_ALL_YEAR,
 			label: 'All time'
 		}
 	];
 	let selectedType: Selected<any> = $state(types[2]);
-	let selectedRange: Selected<any> = $state(ranges[3]);
+	let selectedRange: Selected<any> = $state(ranges[5]);
 	let TypeIcon = $state(types[0].icon);
 
 	// const colors = githubRepoIds.map(() => getRandomColor());
@@ -233,7 +239,7 @@
 	let colors: any;
 
 	const update = () => {
-		if (githubRepoIds) {
+		if (githubRepoIds && githubRepoIds.length > 0) {
 			if (!colors) {
 				colors = githubRepoIds.map(() => getRandomColor());
 			}
@@ -251,12 +257,6 @@
 									? undefined
 									: {
 											gthbStarHistDate: { gte: calcPrevDateByRange().toString() }
-										},
-							starOrderBy:
-								selectedRange.value === RANGE_ALL_YEAR
-									? undefined
-									: {
-											gthbStarHistDate: OrderByDirection.DescNullsLast
 										}
 						}
 					})
@@ -295,13 +295,13 @@
 									? undefined
 									: {
 											gthbForkHistDate: { gte: calcPrevDateByRange().toString() }
-										},
-							forkOrderBy:
-								selectedRange.value === RANGE_ALL_YEAR
-									? undefined
-									: {
-											gthbForkHistDate: OrderByDirection.DescNullsLast
 										}
+							// forkOrderBy:
+							// 	selectedRange.value === RANGE_ALL_YEAR
+							// 		? undefined
+							// 		: {
+							// 				gthbForkHistDate: OrderByDirection.DescNullsLast
+							// 			}
 						}
 					})
 					.then((res) => {
@@ -338,13 +338,13 @@
 									? undefined
 									: {
 											gthbIssueHistDate: { gte: calcPrevDateByRange().toString() }
-										},
-							issueOrderBy:
-								selectedRange.value === RANGE_ALL_YEAR
-									? undefined
-									: {
-											gthbIssueHistDate: OrderByDirection.DescNullsLast
 										}
+							// issueOrderBy:
+							// 	selectedRange.value === RANGE_ALL_YEAR
+							// 		? undefined
+							// 		: {
+							// 				gthbIssueHistDate: OrderByDirection.DescNullsLast
+							// 			}
 						}
 					})
 					.then((res) => {
@@ -374,7 +374,7 @@
 	$effect(() => {
 		update();
 	});
-	let chartData: any = $state(getChartData());
+	let chartData: any = $state();
 	const handleTypeChange = (val: any) => {
 		selectedType = val;
 		TypeIcon = types.filter((type) => type.value === val.value)[0].icon;

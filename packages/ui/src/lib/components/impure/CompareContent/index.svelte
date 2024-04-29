@@ -11,6 +11,7 @@
 	import { goto } from '$app/navigation';
 	import { Badge } from '$lib/components/pure/ui/badge';
 	import { toast } from 'svelte-sonner';
+	import { updateSidebar } from '$lib/store/sidebar';
 	type Props = {
 		title: string;
 	};
@@ -344,6 +345,7 @@
 	$effect(() => {
 		client
 			.query({
+				fetchPolicy: 'network-only',
 				query: CompareDocument,
 				variables: {
 					title: title
@@ -354,7 +356,7 @@
 					bookmarks =
 						res.data.projCatCollection?.edges[0].node.projCatAndProjBookmarkCollection?.edges.map(
 							(catToProjBookmark) => ({
-								githubRepoId: catToProjBookmark.node.projBookmark.projRepo.gthbRepoId,
+								githubRepoId: parseInt(catToProjBookmark.node.projBookmark.projRepo.gthbRepoId),
 								githubOwnerLogin:
 									catToProjBookmark.node.projBookmark.projRepo.gthbRepo.gthbOwner.gthbOwnerLogin,
 								githubRepoName: catToProjBookmark.node.projBookmark.projRepo.gthbRepo.gthbRepoName
@@ -391,9 +393,11 @@
 					}
 				})
 				.then(() => {
-					bookmarks = bookmarks.filter((bookmark) => {
-						return bookmark.githubRepoId !== bookmark.githubRepoId;
+					bookmarks = bookmarks.filter((b) => {
+						return bookmark.githubRepoId !== b.githubRepoId;
 					});
+					updateSidebar.set(`${bookmark.githubRepoId}-delete`);
+
 					if (bookmarks.length == 0) {
 						goto('/');
 					} else {

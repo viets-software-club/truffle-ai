@@ -20,6 +20,7 @@
 	} from '$lib/graphql/supabase/generated-codegen';
 	import { never } from 'zod';
 	import { onMount } from 'svelte';
+	import { updateSidebar } from '$lib/store/sidebar';
 	let isThemeSelectionOpen = $state(false);
 	// let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
 	// let themeLabel = $derived(browser && theme.charAt(0).toUpperCase() + theme.slice(1));
@@ -61,33 +62,49 @@
 			.then((res) => {
 				queryResult = res;
 			});
+		updateSidebar.subscribe((value) => {
+			console.log('hmm');
+			client
+				.query({
+					fetchPolicy: 'network-only',
+					query: SidebarDocument
+				})
+				.then((res) => {
+					console.log('hmm2');
+					queryResult = res;
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		});
 
-		const channel = supabaseClient
-			.channel('table-db-changes')
-			.on(
-				'postgres_changes',
-				{
-					event: '*',
-					schema: 'public',
-					table: 'proj_cat_and_proj_bookmark'
-				},
-				() => {
-					client
-						.query({
-							query: SidebarDocument
-						})
-						.then((res) => {
-							queryResult = res;
-						})
-						.catch((err) => {
-							console.error(err);
-						});
-				}
-			)
-			.subscribe();
+		// const channel = supabaseClient
+		// 	.channel('table-db-changes')
+		// 	.on(
+		// 		'postgres_changes',
+		// 		{
+		// 			event: '*',
+		// 			schema: 'public',
+		// 			table: 'proj_cat_and_proj_bookmark'
+		// 		},
+		// 		() => {
+		// 			client
+		// 				.query({
+		// 					query: SidebarDocument
+		// 				})
+		// 				.then((res) => {
+		// 					queryResult = res;
+		// 				})
+		// 				.catch((err) => {
+		// 					console.error(err);
+		// 				});
+		// 		}
+		// 	)
+		// 	.subscribe();
 
-		return () => channel.unsubscribe();
+		// return () => channel.unsubscribe();
 	});
+
 	// let data4: ApolloQueryResult<SidebarQuery> | undefined = $state();
 	// let sidebarQuerySubscriber = Sidebar({});
 
@@ -135,7 +152,7 @@
 	};
 </script>
 
-<aside class="overflow-auto overflow-x-hidden h-full relative" {...attrs}>
+<aside class="flex flex-col overflow-auto overflow-x-hidden h-full relative" {...attrs}>
 	<section class="px-6 h-[3.8125rem] border-b flex items-center">
 		<Logo showText={true} />
 	</section>
@@ -160,7 +177,7 @@
 			>
 		</div>
 	</section>
-	<section class="py-2 border-t">
+	<section class="py-2 border-t overflow-y-auto flex-1">
 		<!-- <ScrollArea> -->
 		<h2
 			class="truncate text-sm dark:text-foreground/50 dark:text-normal dark:uppercase dark:text-xs px-6 py-2.5 font-medium items-center"
@@ -261,7 +278,7 @@
 		<!-- </ScrollArea> -->
 	</section>
 	<section
-		class="absolute flex bottom-0 left-0 right-0 h-10 text-foreground/50 text-xs justify-evenly mb-3 pt-3 border-t items-center z-50 bg-background"
+		class="relative flex bottom-0 left-0 right-0 h-10 text-foreground/50 text-xs justify-evenly mb-2 pt-2 border-t items-center z-50 bg-background"
 	>
 		<button
 			on:click|preventDefault={handleThemeButton}

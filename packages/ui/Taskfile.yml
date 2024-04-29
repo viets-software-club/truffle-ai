@@ -27,3 +27,6 @@ tasks:
     cmds:
       - task: codegen-supabase
       - task: codegen-gateway
+  test:
+    cmds:
+      - echo 'success'

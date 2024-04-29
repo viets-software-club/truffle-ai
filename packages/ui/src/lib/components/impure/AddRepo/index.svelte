@@ -89,7 +89,7 @@
 			selectedCategories = [...selectedCategories, { title: commandInputValue }];
 	};
 	const handleSaveClick = () => {
-		if (!isValidGithubUrl(githubRepoUrl)) return;
+		if (!repoIdentifier && !isValidGithubUrl(githubRepoUrl)) return;
 		isSubmitting = true;
 
 		const repoIdentification: any = repoIdentifier ? repoIdentifier : parseRepoUrl(githubRepoUrl);
@@ -243,7 +243,7 @@
 			<Dialog.Footer>
 				<Button
 					type="submit"
-					disabled={!isValidGithubUrl(githubRepoUrl) ||
+					disabled={(!repoIdentifier && !isValidGithubUrl(githubRepoUrl)) ||
 						isSubmitting ||
 						!(selectedCategories.length > 0)}
 					on:click={handleSaveClick}>Save changes</Button

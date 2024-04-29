@@ -11,7 +11,7 @@ import (
 )
 
 func (c *Controller) RecreateTrending(dateRange string) error {
-
+	println("RecreateTrending")
 	err := DeleteTrending(dateRange)
 	if err != nil {
 		return err
@@ -24,6 +24,7 @@ func (c *Controller) RecreateTrending(dateRange string) error {
 	if err != nil {
 		return err
 	}
+	println("trending 1")
 
 	if trendingReposToProjectDataMap == nil {
 		return errors.New("trendingReposToProjectDataMap is nil")
@@ -35,6 +36,8 @@ func (c *Controller) RecreateTrending(dateRange string) error {
 			return errors.New("projectData is nil")
 		}
 		gthbTrending, err := convert.ConvertToTFInsertGthbTrending(dateRange, projectData)
+		println("trending 2")
+
 		if err != nil {
 			return err
 		}
@@ -43,11 +46,14 @@ func (c *Controller) RecreateTrending(dateRange string) error {
 		}
 		gthbTrendings = append(gthbTrendings, *gthbTrending)
 	}
+	println("trending 3")
 
 	c.db.CallDeleteGithubTrendingByDateRangeAndInsertNewGithubTrending(dateRange, &gthbTrendings)
 	if err != nil {
 		return err
 	}
+	println("trending 4")
+
 	return nil
 }
 

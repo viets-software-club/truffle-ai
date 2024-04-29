@@ -71,11 +71,14 @@ func (g *GithubApi) QueryUser(login string) (*GetUser, error) {
 	return &getUser, nil
 }
 func GetLastPageFromLinkHeader(linkHeader string) (int, error) {
-	regex, err := regexp.Compile(`page=(\d+)>; rel="last"`)
+	println(linkHeader)
+	regex, _ := regexp.Compile(`per_page=\d+`)
+	removedPerPageString := regex.ReplaceAllString(linkHeader, "")
+	regex, err := regexp.Compile(`<.*page=(\d+).*>; rel="last"`)
 	if err != nil {
 		return 0, err
 	}
-	match := regex.FindStringSubmatch(linkHeader)
+	match := regex.FindStringSubmatch(removedPerPageString)
 	if len(match) <= 1 {
 		return 0, errors.New("no match for rel last")
 	}

@@ -61,11 +61,17 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 	} else {
 		pageCount = amountPages
 	}
+	fmt.Print("amountPage: ", amountPages, "\n")
+	fmt.Print("pageCount: ", pageCount, "\n")
+	fmt.Print("lastPage: ", lastPage, "\n")
+
 	stepWidth := float64(lastPage) / float64(pageCount)
+	fmt.Print("stepWidth: ", stepWidth, "\n")
 
 	// get all in between pages
-	for i := 1; i < pageCount-1; i++ {
+	for i := 1; i < pageCount; i++ {
 		page := int(float64(i) * stepWidth)
+		fmt.Print("page: ", page, "\n")
 		gazers, _, err := g.clientv3.Activity.ListStargazers(context.Background(), owner, name, &githubv3.ListOptions{
 			PerPage: 30,
 			Page:    page,
@@ -140,7 +146,7 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 	stepWidth := float64(lastPage) / float64(pageCount)
 
 	// get all in between pages
-	for i := 1; i < pageCount-1; i++ {
+	for i := 1; i < pageCount; i++ {
 		page := int(float64(i) * stepWidth)
 		repos, _, err := g.clientv3.Repositories.ListForks(context.Background(), owner, name, &githubv3.RepositoryListForksOptions{
 			ListOptions: githubv3.ListOptions{
@@ -217,7 +223,7 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 	stepWidth := float64(lastPage) / float64(pageCount)
 
 	// get all in between pages
-	for i := 1; i < pageCount-1; i++ {
+	for i := 1; i < pageCount; i++ {
 		page := int(float64(i) * stepWidth)
 		issues, _, err := g.clientv3.Issues.ListByRepo(context.Background(), owner, name, &githubv3.IssueListByRepoOptions{
 			ListOptions: githubv3.ListOptions{

@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"github.com/jackc/pgx/v5"
@@ -21,6 +22,12 @@ func New() *Database {
 }
 
 func (d *Database) Close() {
+	if _, err := d.pool.Exec(context.Background(), "DEALLOCATE f_insert_proj_bookmark_w_cats"); err != nil {
+		log.Printf("Failed to deallocate statement: %v", err)
+	}
+	if _, err := d.pool.Exec(context.Background(), "DEALLOCATE f_insert_gthb_trendings"); err != nil {
+		log.Printf("Failed to deallocate statement: %v", err)
+	}
 	d.pool.Close()
 }
 
@@ -40,8 +47,15 @@ func getConfig(hasLogging bool) (*pgxpool.Config, error) {
 			}
 			conn.TypeMap().RegisterType(dataType)
 		}
-		conn.Prepare(context.Background(), "f_insert_proj_bookmark_w_cats", "SELECT f_insert_proj_bookmark_w_cats($1)")
-		conn.Prepare(context.Background(), "f_insert_gthb_trendings", "SELECT f_insert_gthb_trendings($1)")
+		// TODO
+		_, err := conn.Prepare(context.Background(), "f_insert_proj_bookmark_w_cats", "SELECT f_insert_proj_bookmark_w_cats($1)")
+		if err != nil {
+			log.Printf("Failed to prepare statement: %v", err)
+		}
+		_, err = conn.Prepare(context.Background(), "f_insert_gthb_trendings", "SELECT f_insert_gthb_trendings($1)")
+		if err != nil {
+			log.Printf("Failed to prepare statement: %v", err)
+		}
 		return nil
 	}
 	return config, err

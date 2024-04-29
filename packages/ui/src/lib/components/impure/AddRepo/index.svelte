@@ -248,7 +248,7 @@
 					</Command.Root>
 				</Popover.Content>
 			</Popover.Root>
-			<div class="flex gap-2">
+			<div class="flex gap-2 flex-wrap">
 				{#each selectedCategories as selected}
 					<Badge>{selected.title}</Badge>
 				{/each}

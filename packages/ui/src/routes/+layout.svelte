@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_UI_HOSTNAME } from '$env/static/public';
+	// import { PUBLIC_UI_HOSTNAME } from '$env/static/public';
 	import { browser } from '$app/environment';
 
 	import '../index.css';
@@ -77,7 +77,7 @@
 	<meta property="og:description" content="Find early stage tech startups." />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content="/icons/icon-512x512.png" />
-	<meta property="og:url" content={PUBLIC_UI_HOSTNAME} />
+	<!-- <meta property="og:url" content={PUBLIC_UI_HOSTNAME} /> -->
 
 	<!-- Twitter -->
 	<meta name="twitter:card" content="website" />

@@ -137,9 +137,7 @@
 			</div>
 			{#if data}
 				<div class="w-full md:w-1/2">
-					{#key repoName}
-						<Notes githubRepoId={data.githubRepoId} />
-					{/key}
+					<Notes githubRepoId={data.githubRepoId} />
 				</div>
 			{/if}
 		</section>

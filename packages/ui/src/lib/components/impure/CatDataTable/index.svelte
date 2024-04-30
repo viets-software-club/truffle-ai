@@ -273,7 +273,7 @@
 						const index = filterData.sortableItems.findIndex((item) => item.id === id);
 						filterData.sortableItems[index].disabled = !filterData.sortableItems[index].disabled;
 					},
-					onSortOrderChange: (id: string | number) => () => {
+					onSortOrderChange: (id: string | number) => {
 						const index = filterData.sortableItems.findIndex((item) => item.id === id);
 						filterData.sortableItems[index].isAsc = !filterData.sortableItems[index].isAsc;
 						query();

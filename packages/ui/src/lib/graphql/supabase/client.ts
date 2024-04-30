@@ -24,7 +24,6 @@ const authLink = setContext(async (_, { headers }) => {
 		}
 	};
 });
-console.log(PUBLIC_SUPABASE_GRAPHQL_URL);
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
 	uri: PUBLIC_SUPABASE_GRAPHQL_URL,

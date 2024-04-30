@@ -35,7 +35,6 @@ const authLink = setContext(async (_, { headers }) => {
 		}
 	};
 });
-console.log(PUBLIC_GATEWAY_GRAPHQL_URL);
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
 	uri: PUBLIC_GATEWAY_GRAPHQL_URL,

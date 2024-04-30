@@ -205,7 +205,7 @@
 	];
 	let selectedType: Selected<any> = $state(types[2]);
 	let selectedRange: Selected<any> = $state(ranges[5]);
-	let TypeIcon = $state(types[0].icon);
+	let TypeIcon = $state(types[2].icon);
 
 	// const colors = githubRepoIds.map(() => getRandomColor());
 
@@ -421,7 +421,7 @@
 				{#each types as { value, label, icon: Icon }}
 					<Select.Item {value} {label}>
 						<div class="flex gap-2 items-center">
-							<Icon class="h-4 w-4 -mt-0.5" />
+							<Icon class="h-4 w-4 -mt-0.5 hidden sm:block" />
 							{label}
 						</div></Select.Item
 					>
@@ -433,7 +433,7 @@
 	<Select.Root portal={null} bind:selected={selectedRange} onSelectedChange={handleRangeChange}>
 		<Select.Trigger class="w-[180px]">
 			<div class="flex gap-2 items-center">
-				<CalendarIcon class="h-4 w-4 -mt-0.5" />
+				<CalendarIcon class="h-4 w-4 -mt-0.5 hidden sm:block" />
 				<Select.Value>{ranges[0].label}</Select.Value>
 			</div>
 		</Select.Trigger>

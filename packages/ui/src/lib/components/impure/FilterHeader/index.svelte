@@ -20,6 +20,7 @@
 	type ID = string | number;
 	type Filter = { id: ID; operator: string; value: number };
 	type Props = {
+		disableAddRepo?: boolean;
 		data: {
 			time?: string;
 			onTimeChange?: (value: string) => void;
@@ -54,7 +55,7 @@
 			}[];
 		};
 	};
-	let { data = $bindable() }: Props = $props();
+	let { disableAddRepo, data = $bindable() }: Props = $props();
 	let {
 		time,
 		columns,
@@ -245,11 +246,13 @@
 				{/each}
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
-		<AddRepo
-			><Button variant="accent" size="sm">
-				<PlusIcon class="h-4 w-4 md:mr-2" /><span class="hidden md:inline">Repository</span>
-			</Button></AddRepo
-		>
+		{#if !disableAddRepo}
+			<AddRepo
+				><Button variant="accent" size="sm">
+					<PlusIcon class="h-4 w-4 md:mr-2" /><span class="hidden md:inline">Repository</span>
+				</Button></AddRepo
+			>
+		{/if}
 	</div>
 </div>
 {#if filterableItems.filter((filterableItem) => filterableItem?.filters?.length > 0).length > 0}

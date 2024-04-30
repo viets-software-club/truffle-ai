@@ -53,6 +53,7 @@ export type AlgoHnCommentAlgoHnCommentAndAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnCommentAndAlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnCommentAndAlgoHnTagOrderBy>>;
 };
 
@@ -249,6 +250,7 @@ export type AlgoHnQueryAlgoHnCommentCollectionArgs = {
 	filter?: InputMaybe<AlgoHnCommentFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnCommentOrderBy>>;
 };
 
@@ -258,6 +260,7 @@ export type AlgoHnQueryAlgoHnStoryCollectionArgs = {
 	filter?: InputMaybe<AlgoHnStoryFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnStoryOrderBy>>;
 };
 
@@ -267,6 +270,7 @@ export type AlgoHnQueryProjRepoAndAlgoHnQueryCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndAlgoHnQueryFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndAlgoHnQueryOrderBy>>;
 };
 
@@ -359,6 +363,7 @@ export type AlgoHnStoryAlgoHnStoryAndAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnStoryAndAlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnStoryAndAlgoHnTagOrderBy>>;
 };
 
@@ -550,6 +555,7 @@ export type AlgoHnTagAlgoHnCommentAndAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnCommentAndAlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnCommentAndAlgoHnTagOrderBy>>;
 };
 
@@ -559,6 +565,7 @@ export type AlgoHnTagAlgoHnStoryAndAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnStoryAndAlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnStoryAndAlgoHnTagOrderBy>>;
 };
 
@@ -885,6 +892,7 @@ export type GthbLangGthbRepoAndGthbLangCollectionArgs = {
 	filter?: InputMaybe<GthbRepoAndGthbLangFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoAndGthbLangOrderBy>>;
 };
 
@@ -1086,6 +1094,7 @@ export type GthbOwnerGthbRepoCollectionArgs = {
 	filter?: InputMaybe<GthbRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
 };
 
@@ -1095,6 +1104,7 @@ export type GthbOwnerGthbRepoContrCollectionArgs = {
 	filter?: InputMaybe<GthbRepoContrFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoContrOrderBy>>;
 };
 
@@ -1218,6 +1228,7 @@ export type GthbRepoGthbForkHistCollectionArgs = {
 	filter?: InputMaybe<GthbForkHistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbForkHistOrderBy>>;
 };
 
@@ -1227,6 +1238,7 @@ export type GthbRepoGthbIssueHistCollectionArgs = {
 	filter?: InputMaybe<GthbIssueHistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbIssueHistOrderBy>>;
 };
 
@@ -1236,6 +1248,7 @@ export type GthbRepoGthbRepoAndGthbLangCollectionArgs = {
 	filter?: InputMaybe<GthbRepoAndGthbLangFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoAndGthbLangOrderBy>>;
 };
 
@@ -1245,6 +1258,7 @@ export type GthbRepoGthbRepoAndGthbRepoTopicCollectionArgs = {
 	filter?: InputMaybe<GthbRepoAndGthbRepoTopicFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoAndGthbRepoTopicOrderBy>>;
 };
 
@@ -1254,6 +1268,7 @@ export type GthbRepoGthbRepoContrCollectionArgs = {
 	filter?: InputMaybe<GthbRepoContrFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoContrOrderBy>>;
 };
 
@@ -1263,6 +1278,7 @@ export type GthbRepoGthbStarHistCollectionArgs = {
 	filter?: InputMaybe<GthbStarHistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbStarHistOrderBy>>;
 };
 
@@ -1272,6 +1288,7 @@ export type GthbRepoGthbTrendingCollectionArgs = {
 	filter?: InputMaybe<GthbTrendingFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbTrendingOrderBy>>;
 };
 
@@ -1628,6 +1645,7 @@ export type GthbRepoTopicGthbRepoAndGthbRepoTopicCollectionArgs = {
 	filter?: InputMaybe<GthbRepoAndGthbRepoTopicFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoAndGthbRepoTopicOrderBy>>;
 };
 
@@ -2025,170 +2043,6 @@ export type IdFilter = {
 	eq?: InputMaybe<Scalars['ID']['input']>;
 };
 
-export type Instance1 = Node & {
-	__typename?: 'Instance1';
-	created_at: Scalars['Datetime']['output'];
-	id: Scalars['BigInt']['output'];
-	instance2Collection?: Maybe<Instance2Connection>;
-	name?: Maybe<Scalars['String']['output']>;
-	/** Globally Unique Record Identifier */
-	nodeId: Scalars['ID']['output'];
-};
-
-export type Instance1Instance2CollectionArgs = {
-	after?: InputMaybe<Scalars['Cursor']['input']>;
-	before?: InputMaybe<Scalars['Cursor']['input']>;
-	filter?: InputMaybe<Instance2Filter>;
-	first?: InputMaybe<Scalars['Int']['input']>;
-	last?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<Array<Instance2OrderBy>>;
-};
-
-export type Instance1Connection = {
-	__typename?: 'Instance1Connection';
-	edges: Array<Instance1Edge>;
-	pageInfo: PageInfo;
-};
-
-export type Instance1DeleteResponse = {
-	__typename?: 'Instance1DeleteResponse';
-	/** Count of the records impacted by the mutation */
-	affectedCount: Scalars['Int']['output'];
-	/** Array of records impacted by the mutation */
-	records: Array<Instance1>;
-};
-
-export type Instance1Edge = {
-	__typename?: 'Instance1Edge';
-	cursor: Scalars['String']['output'];
-	node: Instance1;
-};
-
-export type Instance1Filter = {
-	/** Returns true only if all its inner filters are true, otherwise returns false */
-	and?: InputMaybe<Array<Instance1Filter>>;
-	created_at?: InputMaybe<DatetimeFilter>;
-	id?: InputMaybe<BigIntFilter>;
-	name?: InputMaybe<StringFilter>;
-	nodeId?: InputMaybe<IdFilter>;
-	/** Negates a filter */
-	not?: InputMaybe<Instance1Filter>;
-	/** Returns true if at least one of its inner filters is true, otherwise returns false */
-	or?: InputMaybe<Array<Instance1Filter>>;
-};
-
-export type Instance1InsertInput = {
-	created_at?: InputMaybe<Scalars['Datetime']['input']>;
-	name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Instance1InsertResponse = {
-	__typename?: 'Instance1InsertResponse';
-	/** Count of the records impacted by the mutation */
-	affectedCount: Scalars['Int']['output'];
-	/** Array of records impacted by the mutation */
-	records: Array<Instance1>;
-};
-
-export type Instance1OrderBy = {
-	created_at?: InputMaybe<OrderByDirection>;
-	id?: InputMaybe<OrderByDirection>;
-	name?: InputMaybe<OrderByDirection>;
-};
-
-export type Instance1UpdateInput = {
-	created_at?: InputMaybe<Scalars['Datetime']['input']>;
-	name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Instance1UpdateResponse = {
-	__typename?: 'Instance1UpdateResponse';
-	/** Count of the records impacted by the mutation */
-	affectedCount: Scalars['Int']['output'];
-	/** Array of records impacted by the mutation */
-	records: Array<Instance1>;
-};
-
-export type Instance2 = Node & {
-	__typename?: 'Instance2';
-	created_at: Scalars['Datetime']['output'];
-	for?: Maybe<Scalars['BigInt']['output']>;
-	id: Scalars['BigInt']['output'];
-	instance1?: Maybe<Instance1>;
-	/** Globally Unique Record Identifier */
-	nodeId: Scalars['ID']['output'];
-	share?: Maybe<Scalars['String']['output']>;
-};
-
-export type Instance2Connection = {
-	__typename?: 'Instance2Connection';
-	edges: Array<Instance2Edge>;
-	pageInfo: PageInfo;
-};
-
-export type Instance2DeleteResponse = {
-	__typename?: 'Instance2DeleteResponse';
-	/** Count of the records impacted by the mutation */
-	affectedCount: Scalars['Int']['output'];
-	/** Array of records impacted by the mutation */
-	records: Array<Instance2>;
-};
-
-export type Instance2Edge = {
-	__typename?: 'Instance2Edge';
-	cursor: Scalars['String']['output'];
-	node: Instance2;
-};
-
-export type Instance2Filter = {
-	/** Returns true only if all its inner filters are true, otherwise returns false */
-	and?: InputMaybe<Array<Instance2Filter>>;
-	created_at?: InputMaybe<DatetimeFilter>;
-	for?: InputMaybe<BigIntFilter>;
-	id?: InputMaybe<BigIntFilter>;
-	nodeId?: InputMaybe<IdFilter>;
-	/** Negates a filter */
-	not?: InputMaybe<Instance2Filter>;
-	/** Returns true if at least one of its inner filters is true, otherwise returns false */
-	or?: InputMaybe<Array<Instance2Filter>>;
-	share?: InputMaybe<StringFilter>;
-};
-
-export type Instance2InsertInput = {
-	created_at?: InputMaybe<Scalars['Datetime']['input']>;
-	for?: InputMaybe<Scalars['BigInt']['input']>;
-	share?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Instance2InsertResponse = {
-	__typename?: 'Instance2InsertResponse';
-	/** Count of the records impacted by the mutation */
-	affectedCount: Scalars['Int']['output'];
-	/** Array of records impacted by the mutation */
-	records: Array<Instance2>;
-};
-
-export type Instance2OrderBy = {
-	created_at?: InputMaybe<OrderByDirection>;
-	for?: InputMaybe<OrderByDirection>;
-	id?: InputMaybe<OrderByDirection>;
-	share?: InputMaybe<OrderByDirection>;
-};
-
-export type Instance2UpdateInput = {
-	created_at?: InputMaybe<Scalars['Datetime']['input']>;
-	for?: InputMaybe<Scalars['BigInt']['input']>;
-	share?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Instance2UpdateResponse = {
-	__typename?: 'Instance2UpdateResponse';
-	/** Count of the records impacted by the mutation */
-	affectedCount: Scalars['Int']['output'];
-	/** Array of records impacted by the mutation */
-	records: Array<Instance2>;
-};
-
 /** Boolean expression comparing fields on type "Int" */
 export type IntFilter = {
 	eq?: InputMaybe<Scalars['Int']['input']>;
@@ -2242,10 +2096,6 @@ export type Mutation = {
 	deleteFromGthbTrendingCollection: GthbTrendingDeleteResponse;
 	/** Deletes zero or more records from the `GthbUser` collection */
 	deleteFromGthbUserCollection: GthbUserDeleteResponse;
-	/** Deletes zero or more records from the `Instance1` collection */
-	deleteFromInstance1Collection: Instance1DeleteResponse;
-	/** Deletes zero or more records from the `Instance2` collection */
-	deleteFromInstance2Collection: Instance2DeleteResponse;
 	/** Deletes zero or more records from the `ProjBookmark` collection */
 	deleteFromProjBookmarkCollection: ProjBookmarkDeleteResponse;
 	/** Deletes zero or more records from the `ProjCatAndProjBookmark` collection */
@@ -2277,7 +2127,6 @@ export type Mutation = {
 	fDeleteGthbTrendingByDateRange?: Maybe<Scalars['Opaque']['output']>;
 	fDeleteProjBookmark?: Maybe<Scalars['Int']['output']>;
 	fDeleteProjBookmarkByGthbName?: Maybe<Scalars['Boolean']['output']>;
-	fDeleteProjBookmarkByGthbRepoName?: Maybe<Scalars['Boolean']['output']>;
 	fDeleteProjBookmarkByProjRepoId?: Maybe<Scalars['Int']['output']>;
 	fDeleteProjBookmarkOnProjCatByTitleAndGthbName?: Maybe<Scalars['Boolean']['output']>;
 	fDeleteProjBookmarkOnProjCatByTitleAndGthbRepoId?: Maybe<Scalars['Boolean']['output']>;
@@ -2321,10 +2170,6 @@ export type Mutation = {
 	insertIntoGthbTrendingCollection?: Maybe<GthbTrendingInsertResponse>;
 	/** Adds one or more `GthbUser` records to the collection */
 	insertIntoGthbUserCollection?: Maybe<GthbUserInsertResponse>;
-	/** Adds one or more `Instance1` records to the collection */
-	insertIntoInstance1Collection?: Maybe<Instance1InsertResponse>;
-	/** Adds one or more `Instance2` records to the collection */
-	insertIntoInstance2Collection?: Maybe<Instance2InsertResponse>;
 	/** Adds one or more `ProjBookmark` records to the collection */
 	insertIntoProjBookmarkCollection?: Maybe<ProjBookmarkInsertResponse>;
 	/** Adds one or more `ProjCatAndProjBookmark` records to the collection */
@@ -2353,7 +2198,6 @@ export type Mutation = {
 	insertIntoUserApiKeyCollection?: Maybe<UserApiKeyInsertResponse>;
 	/** Adds one or more `UserWhitelist` records to the collection */
 	insertIntoUserWhitelistCollection?: Maybe<UserWhitelistInsertResponse>;
-	test?: Maybe<Scalars['UUID']['output']>;
 	/** Updates zero or more records in the `AlgoHnCommentAndAlgoHnTag` collection */
 	updateAlgoHnCommentAndAlgoHnTagCollection: AlgoHnCommentAndAlgoHnTagUpdateResponse;
 	/** Updates zero or more records in the `AlgoHnComment` collection */
@@ -2392,10 +2236,6 @@ export type Mutation = {
 	updateGthbTrendingCollection: GthbTrendingUpdateResponse;
 	/** Updates zero or more records in the `GthbUser` collection */
 	updateGthbUserCollection: GthbUserUpdateResponse;
-	/** Updates zero or more records in the `Instance1` collection */
-	updateInstance1Collection: Instance1UpdateResponse;
-	/** Updates zero or more records in the `Instance2` collection */
-	updateInstance2Collection: Instance2UpdateResponse;
 	/** Updates zero or more records in the `ProjBookmark` collection */
 	updateProjBookmarkCollection: ProjBookmarkUpdateResponse;
 	/** Updates zero or more records in the `ProjCatAndProjBookmark` collection */
@@ -2541,18 +2381,6 @@ export type MutationDeleteFromGthbUserCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
-export type MutationDeleteFromInstance1CollectionArgs = {
-	atMost?: Scalars['Int']['input'];
-	filter?: InputMaybe<Instance1Filter>;
-};
-
-/** The root type for creating and mutating data */
-export type MutationDeleteFromInstance2CollectionArgs = {
-	atMost?: Scalars['Int']['input'];
-	filter?: InputMaybe<Instance2Filter>;
-};
-
-/** The root type for creating and mutating data */
 export type MutationDeleteFromProjBookmarkCollectionArgs = {
 	atMost?: Scalars['Int']['input'];
 	filter?: InputMaybe<ProjBookmarkFilter>;
@@ -2638,46 +2466,41 @@ export type MutationDeleteFromUserWhitelistCollectionArgs = {
 
 /** The root type for creating and mutating data */
 export type MutationFDeleteGthbTrendingByDateRangeArgs = {
-	daterange?: InputMaybe<Scalars['Opaque']['input']>;
+	daterange: Scalars['Opaque']['input'];
 };
 
 /** The root type for creating and mutating data */
 export type MutationFDeleteProjBookmarkArgs = {
-	projbookmarkid?: InputMaybe<Scalars['BigInt']['input']>;
+	projbookmarkid: Scalars['BigInt']['input'];
 };
 
 /** The root type for creating and mutating data */
 export type MutationFDeleteProjBookmarkByGthbNameArgs = {
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** The root type for creating and mutating data */
-export type MutationFDeleteProjBookmarkByGthbRepoNameArgs = {
-	githubreponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for creating and mutating data */
 export type MutationFDeleteProjBookmarkByProjRepoIdArgs = {
-	projrepoid?: InputMaybe<Scalars['BigInt']['input']>;
+	projrepoid: Scalars['BigInt']['input'];
 };
 
 /** The root type for creating and mutating data */
 export type MutationFDeleteProjBookmarkOnProjCatByTitleAndGthbNameArgs = {
-	cattitle?: InputMaybe<Scalars['String']['input']>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	cattitle: Scalars['String']['input'];
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for creating and mutating data */
 export type MutationFDeleteProjBookmarkOnProjCatByTitleAndGthbRepoIdArgs = {
-	cattitle?: InputMaybe<Scalars['String']['input']>;
-	id?: InputMaybe<Scalars['BigInt']['input']>;
+	cattitle: Scalars['String']['input'];
+	id: Scalars['BigInt']['input'];
 };
 
 /** The root type for creating and mutating data */
 export type MutationFIsProjRepoBookmarkedArgs = {
-	projrepoid?: InputMaybe<Scalars['BigInt']['input']>;
+	projrepoid: Scalars['BigInt']['input'];
 };
 
 /** The root type for creating and mutating data */
@@ -2773,16 +2596,6 @@ export type MutationInsertIntoGthbTrendingCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntoGthbUserCollectionArgs = {
 	objects: Array<GthbUserInsertInput>;
-};
-
-/** The root type for creating and mutating data */
-export type MutationInsertIntoInstance1CollectionArgs = {
-	objects: Array<Instance1InsertInput>;
-};
-
-/** The root type for creating and mutating data */
-export type MutationInsertIntoInstance2CollectionArgs = {
-	objects: Array<Instance2InsertInput>;
 };
 
 /** The root type for creating and mutating data */
@@ -2989,20 +2802,6 @@ export type MutationUpdateGthbUserCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
-export type MutationUpdateInstance1CollectionArgs = {
-	atMost?: Scalars['Int']['input'];
-	filter?: InputMaybe<Instance1Filter>;
-	set: Instance1UpdateInput;
-};
-
-/** The root type for creating and mutating data */
-export type MutationUpdateInstance2CollectionArgs = {
-	atMost?: Scalars['Int']['input'];
-	filter?: InputMaybe<Instance2Filter>;
-	set: Instance2UpdateInput;
-};
-
-/** The root type for creating and mutating data */
 export type MutationUpdateProjBookmarkCollectionArgs = {
 	atMost?: Scalars['Int']['input'];
 	filter?: InputMaybe<ProjBookmarkFilter>;
@@ -3150,6 +2949,7 @@ export type ProjBookmarkProjCatAndProjBookmarkCollectionArgs = {
 	filter?: InputMaybe<ProjCatAndProjBookmarkFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjCatAndProjBookmarkOrderBy>>;
 };
 
@@ -3245,6 +3045,7 @@ export type ProjCatProjCatAndProjBookmarkCollectionArgs = {
 	filter?: InputMaybe<ProjCatAndProjBookmarkFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjCatAndProjBookmarkOrderBy>>;
 };
 
@@ -3424,6 +3225,7 @@ export type ProjClassifierProjRepoAndProjClassifierCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndProjClassifierFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndProjClassifierOrderBy>>;
 };
 
@@ -3516,6 +3318,7 @@ export type ProjRepoProjBookmarkCollectionArgs = {
 	filter?: InputMaybe<ProjBookmarkFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjBookmarkOrderBy>>;
 };
 
@@ -3525,6 +3328,7 @@ export type ProjRepoProjRepoAndAlgoHnQueryCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndAlgoHnQueryFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndAlgoHnQueryOrderBy>>;
 };
 
@@ -3534,6 +3338,7 @@ export type ProjRepoProjRepoAndProjClassifierCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndProjClassifierFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndProjClassifierOrderBy>>;
 };
 
@@ -3543,6 +3348,7 @@ export type ProjRepoProjRepoAndSbotLinCompanyCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndSbotLinCompanyFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndSbotLinCompanyOrderBy>>;
 };
 
@@ -3552,6 +3358,7 @@ export type ProjRepoProjRepoAndSbotLinProfileCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndSbotLinProfileFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndSbotLinProfileOrderBy>>;
 };
 
@@ -3967,9 +3774,10 @@ export type Query = {
 	fGetGthbUserByGthbRepoId?: Maybe<GthbUserConnection>;
 	fGetProjBookmarkByGthbName?: Maybe<ProjBookmarkConnection>;
 	fGetProjRepoByGthbName?: Maybe<ProjRepoConnection>;
+	fIsGthbRepoBookmarked?: Maybe<Scalars['Boolean']['output']>;
 	fListBookmarkedGthbRepo?: Maybe<GthbRepoConnection>;
+	fListGthbReposByCatTitle?: Maybe<GthbRepoConnection>;
 	fListTrendingGthbRepo?: Maybe<GthbRepoConnection>;
-	fListTrendingGthbRepo2?: Maybe<GthbRepoConnection>;
 	/** A pagable collection of type `GthbForkHist` */
 	gthbForkHistCollection?: Maybe<GthbForkHistConnection>;
 	/** A pagable collection of type `GthbIssueHist` */
@@ -3996,10 +3804,6 @@ export type Query = {
 	gthbTrendingCollection?: Maybe<GthbTrendingConnection>;
 	/** A pagable collection of type `GthbUser` */
 	gthbUserCollection?: Maybe<GthbUserConnection>;
-	/** A pagable collection of type `Instance1` */
-	instance1Collection?: Maybe<Instance1Connection>;
-	/** A pagable collection of type `Instance2` */
-	instance2Collection?: Maybe<Instance2Connection>;
 	/** Retrieve a record by its `ID` */
 	node?: Maybe<Node>;
 	/** A pagable collection of type `ProjBookmark` */
@@ -4039,6 +3843,7 @@ export type QueryAlgoHnCommentAndAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnCommentAndAlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnCommentAndAlgoHnTagOrderBy>>;
 };
 
@@ -4049,6 +3854,7 @@ export type QueryAlgoHnCommentCollectionArgs = {
 	filter?: InputMaybe<AlgoHnCommentFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnCommentOrderBy>>;
 };
 
@@ -4059,6 +3865,7 @@ export type QueryAlgoHnQueryCollectionArgs = {
 	filter?: InputMaybe<AlgoHnQueryFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnQueryOrderBy>>;
 };
 
@@ -4069,6 +3876,7 @@ export type QueryAlgoHnStoryAndAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnStoryAndAlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnStoryAndAlgoHnTagOrderBy>>;
 };
 
@@ -4079,6 +3887,7 @@ export type QueryAlgoHnStoryCollectionArgs = {
 	filter?: InputMaybe<AlgoHnStoryFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnStoryOrderBy>>;
 };
 
@@ -4089,6 +3898,7 @@ export type QueryAlgoHnTagCollectionArgs = {
 	filter?: InputMaybe<AlgoHnTagFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<AlgoHnTagOrderBy>>;
 };
 
@@ -4099,9 +3909,10 @@ export type QueryFGetGthbOrgByGthbNameArgs = {
 	filter?: InputMaybe<GthbOrgFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbOrgOrderBy>>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for querying data */
@@ -4110,8 +3921,9 @@ export type QueryFGetGthbOrgByGthbRepoIdArgs = {
 	before?: InputMaybe<Scalars['Cursor']['input']>;
 	filter?: InputMaybe<GthbOrgFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
-	gthbRepoIdArg?: InputMaybe<Scalars['BigInt']['input']>;
+	gthbRepoIdArg: Scalars['BigInt']['input'];
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbOrgOrderBy>>;
 };
 
@@ -4122,9 +3934,10 @@ export type QueryFGetGthbOwnerByGthbNameArgs = {
 	filter?: InputMaybe<GthbOwnerFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbOwnerOrderBy>>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for querying data */
@@ -4134,9 +3947,10 @@ export type QueryFGetGthbRepoByGthbNameArgs = {
 	filter?: InputMaybe<GthbRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for querying data */
@@ -4146,9 +3960,10 @@ export type QueryFGetGthbUserByGthbNameArgs = {
 	filter?: InputMaybe<GthbUserFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbUserOrderBy>>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for querying data */
@@ -4157,8 +3972,9 @@ export type QueryFGetGthbUserByGthbRepoIdArgs = {
 	before?: InputMaybe<Scalars['Cursor']['input']>;
 	filter?: InputMaybe<GthbUserFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
-	gthbRepoIdArg?: InputMaybe<Scalars['BigInt']['input']>;
+	gthbRepoIdArg: Scalars['BigInt']['input'];
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbUserOrderBy>>;
 };
 
@@ -4169,9 +3985,10 @@ export type QueryFGetProjBookmarkByGthbNameArgs = {
 	filter?: InputMaybe<ProjBookmarkFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjBookmarkOrderBy>>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
 };
 
 /** The root type for querying data */
@@ -4181,9 +3998,15 @@ export type QueryFGetProjRepoByGthbNameArgs = {
 	filter?: InputMaybe<ProjRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoOrderBy>>;
-	ownerlogin?: InputMaybe<Scalars['String']['input']>;
-	reponame?: InputMaybe<Scalars['String']['input']>;
+	ownerlogin: Scalars['String']['input'];
+	reponame: Scalars['String']['input'];
+};
+
+/** The root type for querying data */
+export type QueryFIsGthbRepoBookmarkedArgs = {
+	githubreponame: Scalars['String']['input'];
 };
 
 /** The root type for querying data */
@@ -4193,6 +4016,19 @@ export type QueryFListBookmarkedGthbRepoArgs = {
 	filter?: InputMaybe<GthbRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
+	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
+};
+
+/** The root type for querying data */
+export type QueryFListGthbReposByCatTitleArgs = {
+	after?: InputMaybe<Scalars['Cursor']['input']>;
+	before?: InputMaybe<Scalars['Cursor']['input']>;
+	catTitleArg: Scalars['String']['input'];
+	filter?: InputMaybe<GthbRepoFilter>;
+	first?: InputMaybe<Scalars['Int']['input']>;
+	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
 };
 
@@ -4202,20 +4038,10 @@ export type QueryFListTrendingGthbRepoArgs = {
 	before?: InputMaybe<Scalars['Cursor']['input']>;
 	filter?: InputMaybe<GthbRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
-	gthbDateRangeArg?: InputMaybe<Scalars['String']['input']>;
+	gthbDateRangeArg: Scalars['String']['input'];
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
-};
-
-/** The root type for querying data */
-export type QueryFListTrendingGthbRepo2Args = {
-	after?: InputMaybe<Scalars['Cursor']['input']>;
-	before?: InputMaybe<Scalars['Cursor']['input']>;
-	filter?: InputMaybe<GthbRepoFilter>;
-	first?: InputMaybe<Scalars['Int']['input']>;
-	last?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
-	wertx?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** The root type for querying data */
@@ -4225,6 +4051,7 @@ export type QueryGthbForkHistCollectionArgs = {
 	filter?: InputMaybe<GthbForkHistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbForkHistOrderBy>>;
 };
 
@@ -4235,6 +4062,7 @@ export type QueryGthbIssueHistCollectionArgs = {
 	filter?: InputMaybe<GthbIssueHistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbIssueHistOrderBy>>;
 };
 
@@ -4245,6 +4073,7 @@ export type QueryGthbLangCollectionArgs = {
 	filter?: InputMaybe<GthbLangFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbLangOrderBy>>;
 };
 
@@ -4255,6 +4084,7 @@ export type QueryGthbOrgCollectionArgs = {
 	filter?: InputMaybe<GthbOrgFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbOrgOrderBy>>;
 };
 
@@ -4265,6 +4095,7 @@ export type QueryGthbOwnerCollectionArgs = {
 	filter?: InputMaybe<GthbOwnerFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbOwnerOrderBy>>;
 };
 
@@ -4275,6 +4106,7 @@ export type QueryGthbRepoAndGthbLangCollectionArgs = {
 	filter?: InputMaybe<GthbRepoAndGthbLangFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoAndGthbLangOrderBy>>;
 };
 
@@ -4285,6 +4117,7 @@ export type QueryGthbRepoAndGthbRepoTopicCollectionArgs = {
 	filter?: InputMaybe<GthbRepoAndGthbRepoTopicFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoAndGthbRepoTopicOrderBy>>;
 };
 
@@ -4295,6 +4128,7 @@ export type QueryGthbRepoCollectionArgs = {
 	filter?: InputMaybe<GthbRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoOrderBy>>;
 };
 
@@ -4305,6 +4139,7 @@ export type QueryGthbRepoContrCollectionArgs = {
 	filter?: InputMaybe<GthbRepoContrFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoContrOrderBy>>;
 };
 
@@ -4315,6 +4150,7 @@ export type QueryGthbRepoTopicCollectionArgs = {
 	filter?: InputMaybe<GthbRepoTopicFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbRepoTopicOrderBy>>;
 };
 
@@ -4325,6 +4161,7 @@ export type QueryGthbStarHistCollectionArgs = {
 	filter?: InputMaybe<GthbStarHistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbStarHistOrderBy>>;
 };
 
@@ -4335,6 +4172,7 @@ export type QueryGthbTrendingCollectionArgs = {
 	filter?: InputMaybe<GthbTrendingFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbTrendingOrderBy>>;
 };
 
@@ -4345,27 +4183,8 @@ export type QueryGthbUserCollectionArgs = {
 	filter?: InputMaybe<GthbUserFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<GthbUserOrderBy>>;
-};
-
-/** The root type for querying data */
-export type QueryInstance1CollectionArgs = {
-	after?: InputMaybe<Scalars['Cursor']['input']>;
-	before?: InputMaybe<Scalars['Cursor']['input']>;
-	filter?: InputMaybe<Instance1Filter>;
-	first?: InputMaybe<Scalars['Int']['input']>;
-	last?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<Array<Instance1OrderBy>>;
-};
-
-/** The root type for querying data */
-export type QueryInstance2CollectionArgs = {
-	after?: InputMaybe<Scalars['Cursor']['input']>;
-	before?: InputMaybe<Scalars['Cursor']['input']>;
-	filter?: InputMaybe<Instance2Filter>;
-	first?: InputMaybe<Scalars['Int']['input']>;
-	last?: InputMaybe<Scalars['Int']['input']>;
-	orderBy?: InputMaybe<Array<Instance2OrderBy>>;
 };
 
 /** The root type for querying data */
@@ -4380,6 +4199,7 @@ export type QueryProjBookmarkCollectionArgs = {
 	filter?: InputMaybe<ProjBookmarkFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjBookmarkOrderBy>>;
 };
 
@@ -4390,6 +4210,7 @@ export type QueryProjCatAndProjBookmarkCollectionArgs = {
 	filter?: InputMaybe<ProjCatAndProjBookmarkFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjCatAndProjBookmarkOrderBy>>;
 };
 
@@ -4400,6 +4221,7 @@ export type QueryProjCatCollectionArgs = {
 	filter?: InputMaybe<ProjCatFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjCatOrderBy>>;
 };
 
@@ -4410,6 +4232,7 @@ export type QueryProjClassifierCollectionArgs = {
 	filter?: InputMaybe<ProjClassifierFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjClassifierOrderBy>>;
 };
 
@@ -4420,6 +4243,7 @@ export type QueryProjRepoAndAlgoHnQueryCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndAlgoHnQueryFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndAlgoHnQueryOrderBy>>;
 };
 
@@ -4430,6 +4254,7 @@ export type QueryProjRepoAndProjClassifierCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndProjClassifierFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndProjClassifierOrderBy>>;
 };
 
@@ -4440,6 +4265,7 @@ export type QueryProjRepoAndSbotLinCompanyCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndSbotLinCompanyFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndSbotLinCompanyOrderBy>>;
 };
 
@@ -4450,6 +4276,7 @@ export type QueryProjRepoAndSbotLinProfileCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndSbotLinProfileFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndSbotLinProfileOrderBy>>;
 };
 
@@ -4460,6 +4287,7 @@ export type QueryProjRepoCollectionArgs = {
 	filter?: InputMaybe<ProjRepoFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoOrderBy>>;
 };
 
@@ -4470,6 +4298,7 @@ export type QuerySbotLinCompanyCollectionArgs = {
 	filter?: InputMaybe<SbotLinCompanyFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<SbotLinCompanyOrderBy>>;
 };
 
@@ -4480,6 +4309,7 @@ export type QuerySbotLinProfileCollectionArgs = {
 	filter?: InputMaybe<SbotLinProfileFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<SbotLinProfileOrderBy>>;
 };
 
@@ -4490,6 +4320,7 @@ export type QueryUserAdminCollectionArgs = {
 	filter?: InputMaybe<UserAdminFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<UserAdminOrderBy>>;
 };
 
@@ -4500,6 +4331,7 @@ export type QueryUserApiKeyCollectionArgs = {
 	filter?: InputMaybe<UserApiKeyFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<UserApiKeyOrderBy>>;
 };
 
@@ -4510,6 +4342,7 @@ export type QueryUserWhitelistCollectionArgs = {
 	filter?: InputMaybe<UserWhitelistFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<UserWhitelistOrderBy>>;
 };
 
@@ -4539,6 +4372,7 @@ export type SbotLinCompanyProjRepoAndSbotLinCompanyCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndSbotLinCompanyFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndSbotLinCompanyOrderBy>>;
 };
 
@@ -4673,6 +4507,7 @@ export type SbotLinProfileProjRepoAndSbotLinProfileCollectionArgs = {
 	filter?: InputMaybe<ProjRepoAndSbotLinProfileFilter>;
 	first?: InputMaybe<Scalars['Int']['input']>;
 	last?: InputMaybe<Scalars['Int']['input']>;
+	offset?: InputMaybe<Scalars['Int']['input']>;
 	orderBy?: InputMaybe<Array<ProjRepoAndSbotLinProfileOrderBy>>;
 };
 
@@ -5048,8 +4883,8 @@ export type UserWhitelistUpdateResponse = {
 };
 
 export type DeleteProjBookmarkByGthbNameMutationVariables = Exact<{
-	ownerLogin?: InputMaybe<Scalars['String']['input']>;
-	repoName?: InputMaybe<Scalars['String']['input']>;
+	ownerLogin: Scalars['String']['input'];
+	repoName: Scalars['String']['input'];
 }>;
 
 export type DeleteProjBookmarkByGthbNameMutation = {
@@ -5058,8 +4893,8 @@ export type DeleteProjBookmarkByGthbNameMutation = {
 };
 
 export type DeleteProjBookmarkOnProjCatByTitleAndIdMutationVariables = Exact<{
-	catTitle?: InputMaybe<Scalars['String']['input']>;
-	id?: InputMaybe<Scalars['BigInt']['input']>;
+	catTitle: Scalars['String']['input'];
+	id: Scalars['BigInt']['input'];
 }>;
 
 export type DeleteProjBookmarkOnProjCatByTitleAndIdMutation = {
@@ -5947,34 +5782,6 @@ export type ListBookmarkedGthbRepoQuery = {
 	} | null;
 };
 
-export type ListTrendingGthbRepoQueryVariables = Exact<{
-	filter?: InputMaybe<GthbRepoFilter>;
-}>;
-
-export type ListTrendingGthbRepoQuery = {
-	__typename?: 'Query';
-	fListTrendingGthbRepo?: {
-		__typename?: 'GthbRepoConnection';
-		edges: Array<{
-			__typename?: 'GthbRepoEdge';
-			node: {
-				__typename?: 'GthbRepo';
-				gthbRepoName: string;
-				gthbRepoDescription?: string | null;
-				stargazerCount: any;
-				issuesTotalCount: any;
-				forksPerContributor: any;
-				forkCount: any;
-				contributorCount: any;
-				issuesPerContributor: any;
-				pullRequestsTotalCount: any;
-				gthbOwner: { __typename?: 'GthbOwner'; avatarUrl: string; gthbOwnerLogin: string };
-				gthbRepo: { __typename?: 'ProjRepo'; projRepoId: any };
-			};
-		}>;
-	} | null;
-};
-
 export type ListViewGthbReposQueryVariables = Exact<{
 	filter?: InputMaybe<GthbRepoFilter>;
 }>;
@@ -6044,56 +5851,11 @@ export type SidebarProjCategoriesToProjBookmarksQuery = {
 	} | null;
 };
 
-export type AddRepoListQueryVariables = Exact<{ [key: string]: never }>;
-
-export type AddRepoListQuery = {
-	__typename?: 'Query';
-	trendings?: {
-		__typename?: 'GthbRepoConnection';
-		edges: Array<{
-			__typename?: 'GthbRepoEdge';
-			node: {
-				__typename?: 'GthbRepo';
-				gthbRepoName: string;
-				gthbOwner: { __typename?: 'GthbOwner'; gthbOwnerLogin: string };
-			};
-		}>;
-	} | null;
-	bookmarks?: {
-		__typename?: 'GthbRepoConnection';
-		edges: Array<{
-			__typename?: 'GthbRepoEdge';
-			node: {
-				__typename?: 'GthbRepo';
-				gthbRepoName: string;
-				gthbOwner: { __typename?: 'GthbOwner'; gthbOwnerLogin: string };
-			};
-		}>;
-	} | null;
-};
-
 export type AddRepoListBookmarksQueryVariables = Exact<{ [key: string]: never }>;
 
 export type AddRepoListBookmarksQuery = {
 	__typename?: 'Query';
 	fListBookmarkedGthbRepo?: {
-		__typename?: 'GthbRepoConnection';
-		edges: Array<{
-			__typename?: 'GthbRepoEdge';
-			node: {
-				__typename?: 'GthbRepo';
-				gthbRepoName: string;
-				gthbOwner: { __typename?: 'GthbOwner'; gthbOwnerLogin: string };
-			};
-		}>;
-	} | null;
-};
-
-export type AddRepoListTrendingQueryVariables = Exact<{ [key: string]: never }>;
-
-export type AddRepoListTrendingQuery = {
-	__typename?: 'Query';
-	fListTrendingGthbRepo?: {
 		__typename?: 'GthbRepoConnection';
 		edges: Array<{
 			__typename?: 'GthbRepoEdge';
@@ -6114,6 +5876,166 @@ export type BookmarkTableQueryVariables = Exact<{
 }>;
 
 export type BookmarkTableQuery = {
+	__typename?: 'Query';
+	queryStargazerMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; stargazerCount: any };
+		}>;
+	} | null;
+	queryStargazerMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; stargazerCount: any };
+		}>;
+	} | null;
+	queryForkMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; forkCount: any };
+		}>;
+	} | null;
+	queryForkMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; forkCount: any };
+		}>;
+	} | null;
+	queryIssueMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; issuesTotalCount: any };
+		}>;
+	} | null;
+	queryIssueMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; issuesTotalCount: any };
+		}>;
+	} | null;
+	queryContributorMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; contributorCount: any };
+		}>;
+	} | null;
+	queryContributorMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; contributorCount: any };
+		}>;
+	} | null;
+	queryPullRequestsMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; pullRequestsTotalCount: any };
+		}>;
+	} | null;
+	queryPullRequestsMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; pullRequestsTotalCount: any };
+		}>;
+	} | null;
+	queryIssuesPerContributorMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; issuesPerContributor: any };
+		}>;
+	} | null;
+	queryIssuesPerContributorMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; issuesPerContributor: any };
+		}>;
+	} | null;
+	queryForksPerContributorMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; forksPerContributor: any };
+		}>;
+	} | null;
+	queryForksPerContributorMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; forksPerContributor: any };
+		}>;
+	} | null;
+	queryStargazersPerContributorMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; stargazersPerContributor: any };
+		}>;
+	} | null;
+	queryStargazersPerContributorMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; stargazersPerContributor: any };
+		}>;
+	} | null;
+	queryPullRequestsPerContributorMax?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; pullRequestsPerContributor: any };
+		}>;
+	} | null;
+	queryPullRequestsPerContributorMin?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: { __typename?: 'GthbRepo'; pullRequestsPerContributor: any };
+		}>;
+	} | null;
+	queryTrending?: {
+		__typename?: 'GthbRepoConnection';
+		edges: Array<{
+			__typename?: 'GthbRepoEdge';
+			node: {
+				__typename?: 'GthbRepo';
+				gthbRepoName: string;
+				stargazerCount: any;
+				stargazersPerContributor: any;
+				forkCount: any;
+				issuesTotalCount: any;
+				issuesPerContributor: any;
+				forksPerContributor: any;
+				gthbRepoDescription?: string | null;
+				contributorCount: any;
+				pullRequestsTotalCount: any;
+				pullRequestsPerContributor: any;
+				gthbOwner: { __typename?: 'GthbOwner'; gthbOwnerLogin: string; avatarUrl: string };
+			};
+		}>;
+		pageInfo: { __typename?: 'PageInfo'; hasNextPage: boolean; hasPreviousPage: boolean };
+	} | null;
+};
+
+export type CatTableQueryVariables = Exact<{
+	title: Scalars['String']['input'];
+	filter?: InputMaybe<GthbRepoFilter>;
+	orderBy?: InputMaybe<Array<GthbRepoOrderBy> | GthbRepoOrderBy>;
+	first?: InputMaybe<Scalars['Int']['input']>;
+	last?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+export type CatTableQuery = {
 	__typename?: 'Query';
 	queryStargazerMax?: {
 		__typename?: 'GthbRepoConnection';
@@ -6412,8 +6334,8 @@ export type CompareQuery = {
 };
 
 export type DetailQueryVariables = Exact<{
-	repoName?: InputMaybe<Scalars['String']['input']>;
-	ownerLogin?: InputMaybe<Scalars['String']['input']>;
+	repoName: Scalars['String']['input'];
+	ownerLogin: Scalars['String']['input'];
 }>;
 
 export type DetailQuery = {
@@ -6479,8 +6401,8 @@ export type GetProjRepoNotesByGthbRepoIdQuery = {
 };
 
 export type HackernewsEli5ByGthbNameQueryVariables = Exact<{
-	repoName?: InputMaybe<Scalars['String']['input']>;
-	ownerLogin?: InputMaybe<Scalars['String']['input']>;
+	repoName: Scalars['String']['input'];
+	ownerLogin: Scalars['String']['input'];
 }>;
 
 export type HackernewsEli5ByGthbNameQuery = {
@@ -6687,7 +6609,7 @@ export type SidebarQuery = {
 };
 
 export type TrendingTableQueryVariables = Exact<{
-	dateRange?: InputMaybe<Scalars['String']['input']>;
+	dateRange: Scalars['String']['input'];
 	filter?: InputMaybe<GthbRepoFilter>;
 	orderBy?: InputMaybe<Array<GthbRepoOrderBy> | GthbRepoOrderBy>;
 	first?: InputMaybe<Scalars['Int']['input']>;
@@ -6857,12 +6779,18 @@ export const DeleteProjBookmarkByGthbNameDocument = {
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'ownerLogin' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				},
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'repoName' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				}
 			],
 			selectionSet: {
@@ -6903,12 +6831,18 @@ export const DeleteProjBookmarkOnProjCatByTitleAndIdDocument = {
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'catTitle' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				},
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'BigInt' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'BigInt' } }
+					}
 				}
 			],
 			selectionSet: {
@@ -9537,99 +9471,6 @@ export const ListBookmarkedGthbRepoDocument = {
 		}
 	]
 } as unknown as DocumentNode<ListBookmarkedGthbRepoQuery, ListBookmarkedGthbRepoQueryVariables>;
-export const ListTrendingGthbRepoDocument = {
-	kind: 'Document',
-	definitions: [
-		{
-			kind: 'OperationDefinition',
-			operation: 'query',
-			name: { kind: 'Name', value: 'ListTrendingGthbRepo' },
-			variableDefinitions: [
-				{
-					kind: 'VariableDefinition',
-					variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'GthbRepoFilter' } }
-				}
-			],
-			selectionSet: {
-				kind: 'SelectionSet',
-				selections: [
-					{
-						kind: 'Field',
-						name: { kind: 'Name', value: 'fListTrendingGthbRepo' },
-						arguments: [
-							{
-								kind: 'Argument',
-								name: { kind: 'Name', value: 'filter' },
-								value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } }
-							}
-						],
-						selectionSet: {
-							kind: 'SelectionSet',
-							selections: [
-								{
-									kind: 'Field',
-									name: { kind: 'Name', value: 'edges' },
-									selectionSet: {
-										kind: 'SelectionSet',
-										selections: [
-											{
-												kind: 'Field',
-												name: { kind: 'Name', value: 'node' },
-												selectionSet: {
-													kind: 'SelectionSet',
-													selections: [
-														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoName' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoDescription' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'stargazerCount' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'issuesTotalCount' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'forksPerContributor' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'forkCount' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'contributorCount' } },
-														{ kind: 'Field', name: { kind: 'Name', value: 'issuesTotalCount' } },
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'issuesPerContributor' }
-														},
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'pullRequestsTotalCount' }
-														},
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'gthbOwner' },
-															selectionSet: {
-																kind: 'SelectionSet',
-																selections: [
-																	{ kind: 'Field', name: { kind: 'Name', value: 'avatarUrl' } },
-																	{ kind: 'Field', name: { kind: 'Name', value: 'gthbOwnerLogin' } }
-																]
-															}
-														},
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'gthbRepo' },
-															selectionSet: {
-																kind: 'SelectionSet',
-																selections: [
-																	{ kind: 'Field', name: { kind: 'Name', value: 'projRepoId' } }
-																]
-															}
-														}
-													]
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				]
-			}
-		}
-	]
-} as unknown as DocumentNode<ListTrendingGthbRepoQuery, ListTrendingGthbRepoQueryVariables>;
 export const ListViewGthbReposDocument = {
 	kind: 'Document',
 	definitions: [
@@ -9867,99 +9708,6 @@ export const SidebarProjCategoriesToProjBookmarksDocument = {
 	SidebarProjCategoriesToProjBookmarksQuery,
 	SidebarProjCategoriesToProjBookmarksQueryVariables
 >;
-export const AddRepoListDocument = {
-	kind: 'Document',
-	definitions: [
-		{
-			kind: 'OperationDefinition',
-			operation: 'query',
-			name: { kind: 'Name', value: 'AddRepoList' },
-			selectionSet: {
-				kind: 'SelectionSet',
-				selections: [
-					{
-						kind: 'Field',
-						alias: { kind: 'Name', value: 'trendings' },
-						name: { kind: 'Name', value: 'fListTrendingGthbRepo' },
-						selectionSet: {
-							kind: 'SelectionSet',
-							selections: [
-								{
-									kind: 'Field',
-									name: { kind: 'Name', value: 'edges' },
-									selectionSet: {
-										kind: 'SelectionSet',
-										selections: [
-											{
-												kind: 'Field',
-												name: { kind: 'Name', value: 'node' },
-												selectionSet: {
-													kind: 'SelectionSet',
-													selections: [
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'gthbOwner' },
-															selectionSet: {
-																kind: 'SelectionSet',
-																selections: [
-																	{ kind: 'Field', name: { kind: 'Name', value: 'gthbOwnerLogin' } }
-																]
-															}
-														},
-														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoName' } }
-													]
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					},
-					{
-						kind: 'Field',
-						alias: { kind: 'Name', value: 'bookmarks' },
-						name: { kind: 'Name', value: 'fListBookmarkedGthbRepo' },
-						selectionSet: {
-							kind: 'SelectionSet',
-							selections: [
-								{
-									kind: 'Field',
-									name: { kind: 'Name', value: 'edges' },
-									selectionSet: {
-										kind: 'SelectionSet',
-										selections: [
-											{
-												kind: 'Field',
-												name: { kind: 'Name', value: 'node' },
-												selectionSet: {
-													kind: 'SelectionSet',
-													selections: [
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'gthbOwner' },
-															selectionSet: {
-																kind: 'SelectionSet',
-																selections: [
-																	{ kind: 'Field', name: { kind: 'Name', value: 'gthbOwnerLogin' } }
-																]
-															}
-														},
-														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoName' } }
-													]
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				]
-			}
-		}
-	]
-} as unknown as DocumentNode<AddRepoListQuery, AddRepoListQueryVariables>;
 export const AddRepoListBookmarksDocument = {
 	kind: 'Document',
 	definitions: [
@@ -10013,59 +9761,6 @@ export const AddRepoListBookmarksDocument = {
 		}
 	]
 } as unknown as DocumentNode<AddRepoListBookmarksQuery, AddRepoListBookmarksQueryVariables>;
-export const AddRepoListTrendingDocument = {
-	kind: 'Document',
-	definitions: [
-		{
-			kind: 'OperationDefinition',
-			operation: 'query',
-			name: { kind: 'Name', value: 'AddRepoListTrending' },
-			selectionSet: {
-				kind: 'SelectionSet',
-				selections: [
-					{
-						kind: 'Field',
-						name: { kind: 'Name', value: 'fListTrendingGthbRepo' },
-						selectionSet: {
-							kind: 'SelectionSet',
-							selections: [
-								{
-									kind: 'Field',
-									name: { kind: 'Name', value: 'edges' },
-									selectionSet: {
-										kind: 'SelectionSet',
-										selections: [
-											{
-												kind: 'Field',
-												name: { kind: 'Name', value: 'node' },
-												selectionSet: {
-													kind: 'SelectionSet',
-													selections: [
-														{
-															kind: 'Field',
-															name: { kind: 'Name', value: 'gthbOwner' },
-															selectionSet: {
-																kind: 'SelectionSet',
-																selections: [
-																	{ kind: 'Field', name: { kind: 'Name', value: 'gthbOwnerLogin' } }
-																]
-															}
-														},
-														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoName' } }
-													]
-												}
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				]
-			}
-		}
-	]
-} as unknown as DocumentNode<AddRepoListTrendingQuery, AddRepoListTrendingQueryVariables>;
 export const BookmarkTableDocument = {
 	kind: 'Document',
 	definitions: [
@@ -11125,6 +10820,1168 @@ export const BookmarkTableDocument = {
 		}
 	]
 } as unknown as DocumentNode<BookmarkTableQuery, BookmarkTableQueryVariables>;
+export const CatTableDocument = {
+	kind: 'Document',
+	definitions: [
+		{
+			kind: 'OperationDefinition',
+			operation: 'query',
+			name: { kind: 'Name', value: 'CatTable' },
+			variableDefinitions: [
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'GthbRepoFilter' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'orderBy' } },
+					type: {
+						kind: 'ListType',
+						type: {
+							kind: 'NonNullType',
+							type: { kind: 'NamedType', name: { kind: 'Name', value: 'GthbRepoOrderBy' } }
+						}
+					}
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'first' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				},
+				{
+					kind: 'VariableDefinition',
+					variable: { kind: 'Variable', name: { kind: 'Name', value: 'last' } },
+					type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+				}
+			],
+			selectionSet: {
+				kind: 'SelectionSet',
+				selections: [
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryStargazerMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'stargazerCount' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'stargazerCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryStargazerMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'stargazerCount' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'stargazerCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryForkMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'forkCount' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'forkCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryForkMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'forkCount' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'forkCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryIssueMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'issuesTotalCount' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'issuesTotalCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryIssueMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'issuesTotalCount' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'issuesTotalCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryContributorMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'contributorCount' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'contributorCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryContributorMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'contributorCount' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'contributorCount' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryPullRequestsMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'pullRequestsTotalCount' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'pullRequestsTotalCount' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryPullRequestsMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'pullRequestsTotalCount' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'pullRequestsTotalCount' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryIssuesPerContributorMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'issuesPerContributor' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'issuesPerContributor' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryIssuesPerContributorMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'issuesPerContributor' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'issuesPerContributor' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryForksPerContributorMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'forksPerContributor' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'forksPerContributor' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryForksPerContributorMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'forksPerContributor' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'forksPerContributor' } }
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryStargazersPerContributorMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'stargazersPerContributor' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'stargazersPerContributor' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryStargazersPerContributorMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'stargazersPerContributor' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'stargazersPerContributor' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryPullRequestsPerContributorMax' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'pullRequestsPerContributor' },
+											value: { kind: 'EnumValue', value: 'DescNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'pullRequestsPerContributor' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryPullRequestsPerContributorMin' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'IntValue', value: '1' }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: {
+									kind: 'ObjectValue',
+									fields: [
+										{
+											kind: 'ObjectField',
+											name: { kind: 'Name', value: 'pullRequestsPerContributor' },
+											value: { kind: 'EnumValue', value: 'AscNullsLast' }
+										}
+									]
+								}
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'pullRequestsPerContributor' }
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						kind: 'Field',
+						alias: { kind: 'Name', value: 'queryTrending' },
+						name: { kind: 'Name', value: 'fListGthbReposByCatTitle' },
+						arguments: [
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'catTitleArg' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'filter' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'orderBy' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'orderBy' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'first' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'first' } }
+							},
+							{
+								kind: 'Argument',
+								name: { kind: 'Name', value: 'last' },
+								value: { kind: 'Variable', name: { kind: 'Name', value: 'last' } }
+							}
+						],
+						selectionSet: {
+							kind: 'SelectionSet',
+							selections: [
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'edges' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{
+												kind: 'Field',
+												name: { kind: 'Name', value: 'node' },
+												selectionSet: {
+													kind: 'SelectionSet',
+													selections: [
+														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoName' } },
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'gthbOwner' },
+															selectionSet: {
+																kind: 'SelectionSet',
+																selections: [
+																	{
+																		kind: 'Field',
+																		name: { kind: 'Name', value: 'gthbOwnerLogin' }
+																	},
+																	{ kind: 'Field', name: { kind: 'Name', value: 'avatarUrl' } }
+																]
+															}
+														},
+														{ kind: 'Field', name: { kind: 'Name', value: 'stargazerCount' } },
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'stargazersPerContributor' }
+														},
+														{ kind: 'Field', name: { kind: 'Name', value: 'forkCount' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'issuesTotalCount' } },
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'issuesPerContributor' }
+														},
+														{ kind: 'Field', name: { kind: 'Name', value: 'forksPerContributor' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'gthbRepoDescription' } },
+														{ kind: 'Field', name: { kind: 'Name', value: 'contributorCount' } },
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'pullRequestsTotalCount' }
+														},
+														{
+															kind: 'Field',
+															name: { kind: 'Name', value: 'pullRequestsPerContributor' }
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								{
+									kind: 'Field',
+									name: { kind: 'Name', value: 'pageInfo' },
+									selectionSet: {
+										kind: 'SelectionSet',
+										selections: [
+											{ kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+											{ kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } }
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+} as unknown as DocumentNode<CatTableQuery, CatTableQueryVariables>;
 export const ChartDataByGthbRepoFilterDocument = {
 	kind: 'Document',
 	definitions: [
@@ -11792,12 +12649,18 @@ export const DetailDocument = {
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'repoName' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				},
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'ownerLogin' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				}
 			],
 			selectionSet: {
@@ -12137,12 +13000,18 @@ export const HackernewsEli5ByGthbNameDocument = {
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'repoName' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				},
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'ownerLogin' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				}
 			],
 			selectionSet: {
@@ -12891,7 +13760,10 @@ export const TrendingTableDocument = {
 				{
 					kind: 'VariableDefinition',
 					variable: { kind: 'Variable', name: { kind: 'Name', value: 'dateRange' } },
-					type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					type: {
+						kind: 'NonNullType',
+						type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+					}
 				},
 				{
 					kind: 'VariableDefinition',

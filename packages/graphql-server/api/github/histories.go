@@ -122,7 +122,6 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 		},
 		Sort: "oldest",
 	})
-	appendReposToMap(repos, 1)
 
 	if err != nil {
 		// forks not always support "oldest"
@@ -132,6 +131,7 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 		}
 		return nil, err
 	}
+	appendReposToMap(repos, 1)
 	// set last page number
 	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
@@ -526,6 +526,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 			PerPage: 30,
 			Page:    restPage,
 		},
+		Direction: "asc",
 	})
 	if err != nil {
 		return nil, err
@@ -559,8 +560,6 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 		},
 		Sort: "oldest",
 	})
-	appendReposToMap(firstGazers, 1)
-
 	if err != nil {
 		// forks not always support "oldest"
 		if strings.Contains(err.Error(), "GET") && strings.Contains(err.Error(), "500") {
@@ -569,6 +568,8 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 		}
 		return nil, err
 	}
+	appendReposToMap(firstGazers, 1)
+
 	// set last page number
 	lastPage, err := GetLastPageFromLinkHeader(response.Header.Get("Link"))
 	if err != nil {
@@ -635,6 +636,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 			PerPage: 30,
 			Page:    restPage,
 		},
+		Sort: "oldest",
 	})
 	if err != nil {
 		return nil, err

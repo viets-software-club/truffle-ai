@@ -27,6 +27,7 @@
 			.then((res) => {
 				if (res?.data?.projRepoCollection?.edges[0]?.node?.note)
 					value = res?.data?.projRepoCollection?.edges[0]?.node?.note;
+				else value = '';
 			})
 			.catch((e) => {
 				toast.error('Error', {

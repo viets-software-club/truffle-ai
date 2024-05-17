@@ -43,7 +43,7 @@
 
 <div class="z-20 flex items-center text-xl sm:text-base font-medium flex-grow-0 w-full">
 	<a href="/" class="flex items-center cursor-pointer align-middle">
-		<img src={logo} alt="Truffle AI" class="mr-2 h-8 w-8 sm:h-6 sm:w-6" loading="eager" />
+		<img src={logo} alt="Truffle AI" class="mr-2 h-6 w-6 sm:h-6 sm:w-6" loading="eager" />
 		{#if showText}<div
 				class="leading-none mb-[0.175rem] sm:mb-0 sm:leading-snug truncate w-full whitespace-nowrap overflow-hidden"
 			>

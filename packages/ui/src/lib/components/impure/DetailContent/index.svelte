@@ -6,14 +6,23 @@
 	import {
 		DetailDocument,
 		DeleteProjBookmarkByGthbNameDocument,
-		type DetailQuery as DetailQueryType
+		DetailUpAndDownDocument,
+		type DetailQuery as DetailQueryType,
+		type DetailUpAndDownQuery,
+
+
 	} from '$lib/graphql/supabase/generated-codegen';
 	import client from '$lib/graphql/supabase/client';
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/pure/ui/button/button.svelte';
 	import AddRepo from '$lib/components/impure/AddRepo/index.svelte';
-	import { toast, Toaster } from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
 	import { updateSidebar } from '$lib/store/sidebar';
+	import SidebarIcon from '$lib/components/impure/SidebarIcon/index.svelte';
+    import { page } from '$app/stores';
+	import ChevronUpIcon from 'lucide-svelte/icons/chevron-up';
+	import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
+	import XIcon from 'lucide-svelte/icons/x';
 
 	type Props = {
 		repoName: string;
@@ -29,15 +38,19 @@
 		isBookmarked: boolean;
 		projRepoId: number;
 		avatarUrl: string;
+		projBookmarkId: number | undefined
 	} | null;
 
 	let data: Data = $state(null);
-
+	let navigation: any = $state({beforeDisabled: true, afterDisabled: true})
+	let prevPage = $state(null);
+	let upDownData: any = null;
 	$effect(() => {
 		client
 			.query({
 				query: DetailDocument,
 				variables: {
+
 					ownerLogin: ownerLogin,
 					repoName: repoName
 				}
@@ -51,6 +64,7 @@
 						githubRepoId:
 							parseInt(res?.data?.fGetGthbRepoByGthbName?.edges[0]?.node?.gthbRepoId) || -1,
 						isBookmarked: res?.data?.fGetProjBookmarkByGthbName?.edges[0]?.node ? true : false,
+						projBookmarkId: res?.data?.fGetProjBookmarkByGthbName?.edges[0]?.node?.projBookmarkId || undefined,
 						projRepoId: res?.data?.fGetProjRepoByGthbName?.edges[0]?.node?.projRepoId || -1,
 						avatarUrl: res?.data?.fGetGthbOwnerByGthbName?.edges[0]?.node?.avatarUrl || '',
 						gthbOwnerId:
@@ -75,6 +89,78 @@
 					}
 				});
 			});
+		if($page?.url?.searchParams?.has('data')) {
+			console.log('one1')
+			try {
+			const data = JSON.parse($page.url.searchParams?.get('data') as any)
+			
+			prevPage = data.page;
+			console.log('how', data)
+			console.log('variables',  {
+						title: '',
+						dateRange: '',
+						...data.variables,
+						cursor: data.cursor,
+						isTrending: data.page === 'trending',
+						isCategory: data.page === 'category',
+						isBookmarks: data.page === 'bookmarks',
+					})
+			client
+				.query<DetailUpAndDownQuery>({
+					query: DetailUpAndDownDocument,
+					variables: {
+						title: '',
+						dateRange: '',
+						...data.variables,
+						cursor: data.cursor,
+						isTrending: data.page === 'trending',
+						isCategory: data.page === 'category',
+						isBookmarks: data.page === 'bookmarks',
+					}
+				})
+				.then((res) => {
+					let before;
+					let after;
+					if(data.page === "trending") {
+						before = res?.data?.beforeTrendingRepo;
+						after  = res?.data?.afterTrendingRepo;
+					} else if(data.page === "category") {
+						before = res?.data?.beforeCategoryRepo;
+						after  = res?.data?.afterCategoryRepo;
+					} else if(data.page === "bookmarks") {
+						before = res?.data?.beforeBookmarkRepo;
+						after  = res?.data?.afterBookmarkRepo;
+					}
+					upDownData = data;
+				
+					navigation = {
+						beforeCursor: before?.edges[0]?.cursor,
+						before: before?.edges[0]?.node?.gthbOwner?.gthbOwnerLogin + '/' + before?.edges[0]?.node?.gthbRepoName,
+						beforeDisabled: before?.edges && before?.edges?.length === 0,
+						afterCursor: after?.edges[0]?.cursor,
+						after: after?.edges[0]?.node?.gthbOwner?.gthbOwnerLogin + '/' + after?.edges[0]?.node?.gthbRepoName,
+						afterDisabled: after?.edges && after?.edges?.length === 0
+					}
+					console.log('navigation', navigation);
+				}).catch((e: any) => {
+					toast.error('Error', {
+						description: 'An error occurred while loading the up and down buttons of page. Please try again later.',
+						action: {
+							label: 'ok',
+							onClick: () => {}
+						}
+					});
+				});
+		} catch(e) {
+			toast.error('Error', {
+				description: 'An error occurred while loading the up and down buttons of page. Please try again later.',
+				action: {
+					label: 'ok',
+					onClick: () => {}
+				}
+			});
+		}
+		}
 	});
 	const handleRemoveBookmark = () => {
 		if (data)
@@ -100,9 +186,49 @@
 					});
 				});
 	};
+
+	const isFromSameOrigin = () => $page?.url?.searchParams?.has('data')
+	const handleXClick = () => {
+		if(prevPage === "category")
+			goto('/categories')
+		else if(prevPage === "bookmarks")
+			goto('/bookmarks')
+		else
+			goto('/')
+	};
+	const handleUpClick = () => {
+		const param = {
+			...upDownData,
+			cursor: navigation.beforeCursor
+		}
+		goto(`/repo/${navigation.before}?data=${encodeURIComponent(JSON.stringify(param))}`)
+	}
+	const handleDownClick = () => {
+		const param = {
+			...upDownData,
+			cursor: navigation.afterCursor
+		}
+		goto(`/repo/${navigation.after}?data=${encodeURIComponent(JSON.stringify(param))}`)
+	}
 </script>
 
-<section class="h-[3.75rem]"></section>
+<section class="h-[3.75rem] py-2 px-4 flex items-center">
+	<div class="flex gap-4 items-center md:hidden">
+		<SidebarIcon />
+	</div>
+	<div class="flex gap-4 items-center ml-auto md:ml-0">
+		
+		<Button variant="ghost" size="icon2" on:click={handleXClick}>
+			<XIcon class="h-4 w-4" />
+		</Button>
+		<Button variant="outline" size="icon2" disabled={navigation.beforeDisabled} on:click={handleUpClick}>
+			<ChevronUpIcon class="h-3.5 w-3.5" />
+		</Button>
+		<Button variant="outline" size="icon2" disabled={navigation.afterDisabled} on:click={handleDownClick}>
+			<ChevronDownIcon class="h-3.5 w-3.5" />
+		</Button>
+	</div>
+</section>
 <!-- md:h-[calc(100%-3.75rem)] -->
 <div class="md:flex">
 	<div class="flex-1">
@@ -137,14 +263,14 @@
 			</div>
 			{#if data}
 				<div class="w-full md:w-1/2">
-					<Notes githubRepoId={data.githubRepoId} />
+					<Notes githubRepoId={data.githubRepoId} projBookmarkId={data.projBookmarkId} />
 				</div>
 			{/if}
 		</section>
-		<section class="border-t md:flex md:gap-4 p-4">
+		<section class="border-t flex gap-4 p-4">
 			{#if data && data.isBookmarked}<Button on:click={handleRemoveBookmark}>Remove bookmark</Button
 				>{/if}
-			{#if data && !data.isBookmarked}<AddRepo
+			{#if data}<AddRepo
 					repoIdentifier={{
 						ownerLogin,
 						repoName

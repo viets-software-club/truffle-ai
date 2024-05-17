@@ -228,6 +228,7 @@ query TrendingTable(
 				pullRequestsTotalCount
 				pullRequestsPerContributor
 			}
+			cursor
 		}
 		pageInfo {
 			hasNextPage

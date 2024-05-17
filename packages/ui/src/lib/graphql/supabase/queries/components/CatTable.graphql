@@ -228,6 +228,7 @@ query CatTable(
 				pullRequestsTotalCount
 				pullRequestsPerContributor
 			}
+			cursor
 		}
 		pageInfo {
 			hasNextPage

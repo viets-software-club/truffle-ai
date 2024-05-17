@@ -20,7 +20,10 @@
 	type ID = string | number;
 	type Filter = { id: ID; operator: string; value: number };
 	type Props = {
-		disableAddRepo?: boolean;
+		options?: {
+			disableAddRepo?: boolean;
+			addRepoProps: any;
+		}
 		data: {
 			time?: string;
 			onTimeChange?: (value: string) => void;
@@ -55,7 +58,7 @@
 			}[];
 		};
 	};
-	let { disableAddRepo, data = $bindable() }: Props = $props();
+	let { options, data = $bindable() }: Props = $props();
 	let {
 		time,
 		columns,
@@ -115,6 +118,9 @@
 </script>
 
 <div class=" flex py-2 px-4 h-[3.8125rem] w-full border-b">
+	<div class="flex gap-4 items-center">
+		<slot name="left" />
+	</div>
 	<div class="ml-auto md:ml-0 flex gap-4 items-center">
 		{#if time}<DropdownMenu.Root closeOnItemClick={false}>
 				<DropdownMenu.Trigger asChild let:builder class="w-40">
@@ -246,8 +252,8 @@
 				{/each}
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
-		{#if !disableAddRepo}
-			<AddRepo
+		{#if !options?.disableAddRepo}
+			<AddRepo {...options?.addRepoProps}
 				><Button variant="accent" size="sm">
 					<PlusIcon class="h-4 w-4 md:mr-2" /><span class="hidden md:inline">Repository</span>
 				</Button></AddRepo

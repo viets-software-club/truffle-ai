@@ -1,7 +1,7 @@
 <script lang="ts">
 	import UserApiKeySection from '$lib/components/impure/SettingsContent/UserApiKeySection.svelte';
 	import DeleteUserSection from '$lib/components/impure/SettingsContent/DeleteUserSection.svelte';
-
+	import SidebarIcon from '$lib/components/impure/SidebarIcon/index.svelte';
 	import Separator from '$lib/components/pure/ui/separator/separator.svelte';
 	import WhitelistUserSection from './WhitelistUserSection.svelte';
 </script>
@@ -12,7 +12,12 @@
 		<Section.Content></SettingsSection.Content>
 	</SettingsSection.Root>
 </div> -->
-<div class=" flex py-2 px-4 h-[3.8125rem] w-full border-b"></div>
+<div class=" flex py-2 px-4 h-[3.75rem] w-full border-b items-center">
+		<div class="flex gap-4 items-center md:hidden">
+			<SidebarIcon />
+		</div>
+	
+</div>
 <div class="mx-auto pt-16 px-8 sm:mx-0 sm:p-16 pb-12 max-w-3xl">
 	<div class="mb-10">
 		<h1 class="text-2xl font-bold">Settings</h1>

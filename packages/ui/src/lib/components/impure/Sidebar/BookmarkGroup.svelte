@@ -14,6 +14,7 @@
 	import { Blocks } from 'lucide-svelte';
 	import * as Avatar from '$lib/components/pure/ui/avatar/avatar.svelte';
 	import { goto } from '$app/navigation';
+	import { updateMobileSidebarOpenState } from '$lib/store/sidebar';
 
 	type Props = {
 		title: string;
@@ -26,6 +27,7 @@
 	let isOpen = $state(true);
 
 	const handleAction = () => {
+		updateMobileSidebarOpenState.set(false);
 		goto(actionHref);
 	};
 	const handleActionClick = () => {
@@ -38,10 +40,15 @@
 	};
 
 	const getHandleItemClickFunc = (bookmark: { href: string }) => () => {
+		updateMobileSidebarOpenState.set(false);
+
 		goto(bookmark.href);
 	};
 	const getHandleItemKeydownFunc = (bookmark: { href: string }) => (event: any) => {
+		
 		if (event.key === 'Enter') {
+			updateMobileSidebarOpenState.set(false);
+
 			goto(bookmark.href);
 		}
 	};
@@ -81,7 +88,7 @@
 	</Collapsible.Trigger>
 	<Collapsible.Content>
     {#key items}
-		<SortableList class="" group={sortGroup}>
+		<!-- <SortableList class="" group={sortGroup}> -->
 			{#each items as item}
 				<div
 					tabindex={0}
@@ -94,7 +101,7 @@
 					<span class="pl-2 truncate text-[0.8rem]">{item.title}</span>
 				</div>
 			{/each}
-		</SortableList>
+		<!-- </SortableList> -->
     {/key}
 	</Collapsible.Content>
 </Collapsible.Root>

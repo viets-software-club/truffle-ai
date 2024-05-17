@@ -1,0 +1,111 @@
+query DetailUpAndDown(
+  $dateRange: String!
+	$filter: GthbRepoFilter
+	$orderBy: [GthbRepoOrderBy!]
+	$cursor: Cursor
+  $isTrending: Boolean!
+  $isCategory: Boolean!
+  $isBookmarks: Boolean!
+	$title: String!
+) {
+  beforeTrendingRepo: fListTrendingGthbRepo(
+    gthbDateRangeArg: $dateRange
+		filter: $filter
+		orderBy: $orderBy
+		before: $cursor
+    last: 1
+  ) @include(if: $isTrending) {
+    edges {
+      node {
+        gthbRepoName
+        gthbOwner {
+          gthbOwnerLogin
+        }
+      }
+      cursor
+    }
+  }
+  afterTrendingRepo: fListTrendingGthbRepo(
+    gthbDateRangeArg: $dateRange
+		filter: $filter
+		orderBy: $orderBy
+		after: $cursor
+    first: 1
+  ) @include(if: $isTrending) {
+    edges {
+      node {
+        gthbRepoName
+        gthbOwner {
+          gthbOwnerLogin
+        }
+      }
+      cursor
+    }
+  }
+  beforeBookmarkRepo: fListBookmarkedGthbRepo(
+		filter: $filter
+		orderBy: $orderBy
+		before: $cursor
+    last: 1
+  ) @include(if: $isBookmarks) {
+    edges {
+      node {
+        gthbRepoName
+        gthbOwner {
+          gthbOwnerLogin
+        }
+      }
+      cursor
+    }
+  }
+  afterBookmarkRepo: fListBookmarkedGthbRepo(
+		filter: $filter
+		orderBy: $orderBy
+		after: $cursor
+    first: 1
+  ) @include(if: $isBookmarks) {
+    edges {
+      node {
+        gthbRepoName
+        gthbOwner {
+          gthbOwnerLogin
+        }
+      }
+      cursor
+    }
+  }
+  beforeCategoryRepo: fListGthbReposByCatTitle(
+    catTitleArg: $title
+		filter: $filter
+		orderBy: $orderBy
+		before: $cursor
+    last: 1
+  ) @include(if: $isCategory) {
+    edges {
+      node {
+        gthbRepoName
+        gthbOwner {
+          gthbOwnerLogin
+        }
+      }
+      cursor
+    }
+  }
+  afterCategoryRepo: fListGthbReposByCatTitle(
+    catTitleArg: $title
+		filter: $filter
+		orderBy: $orderBy
+		after: $cursor
+    first: 1
+  ) @include(if: $isCategory) {
+    edges {
+      node {
+        gthbRepoName
+        gthbOwner {
+          gthbOwnerLogin
+        }
+      }
+      cursor
+    }
+  }
+}

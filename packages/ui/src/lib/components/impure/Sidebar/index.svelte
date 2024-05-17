@@ -11,16 +11,16 @@
 	import Bookmark from 'lucide-svelte/icons/bookmark';
 	import * as Select from '$lib/components/pure/ui/select';
 	import { browser } from '$app/environment';
-	// import type { AfterLoadEvent } from './$houdini';
 	import type { ApolloQueryResult, ObservableQuery } from '@apollo/client/core';
 	import client from '$lib/graphql/supabase/client';
 	import {
 		SidebarDocument,
 		type SidebarQuery as SidebarQueryType
 	} from '$lib/graphql/supabase/generated-codegen';
-	import { never } from 'zod';
-	import { onMount } from 'svelte';
-	import { updateSidebar } from '$lib/store/sidebar';
+	import { updateSidebar, updateMobileSidebarOpenState } from '$lib/store/sidebar';
+	import { XIcon } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	
 	let isThemeSelectionOpen = $state(false);
 	// let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
 	// let themeLabel = $derived(browser && theme.charAt(0).toUpperCase() + theme.slice(1));
@@ -150,11 +150,36 @@
 		// theme = event.value;
 		// themeLabel = event.label;
 	};
+	const closeSidebar = () => {
+		updateMobileSidebarOpenState.set(false);
+	};
+	const handleTrendingClick = (e: any) => {
+		e.preventDefault();
+		goto('/');
+		closeSidebar();
+		
+	}
+	const handleBookmarkClick = (e: any) => {
+		e.preventDefault();
+		goto('/bookmarks');
+		closeSidebar();
+	}
+	const handleSettingsClick = (e: any) => {
+		e.preventDefault();
+		goto('/settings');
+		closeSidebar();
+	}
 </script>
 
 <aside class="flex flex-col overflow-auto overflow-x-hidden h-full relative" {...attrs}>
 	<section class="px-6 h-[3.8125rem] border-b flex items-center">
 		<Logo showText={true} />
+		{#if $updateMobileSidebarOpenState}
+			<XIcon
+				class="w-5 h-5 ml-auto cursor-pointer"
+				onclick={closeSidebar}
+				/>
+		{/if}
 	</section>
 	<section class="py-2">
 		<h2
@@ -165,12 +190,15 @@
 		<div class="w-full">
 			<a
 				class="px-4 mx-2 flex hover:bg-muted rounded-sm gap-[0.4rem] items-center py-2 text-[0.8rem] text-opacity-10"
+				on:click={handleTrendingClick}
+
 				href="/"
 				><TrendingUp class="w-3.5 h-3.5 dark:text-foreground/50 truncate flex-shrink-0" />
 				<span class="truncate">Trending</span></a
 			>
 			<a
 				class="px-4 mx-2 flex hover:bg-muted rounded-sm gap-[0.4rem] items-center py-2 text-[0.8rem] text-opacity-10"
+				on:click={handleBookmarkClick}
 				href="/bookmarks"
 				><Bookmark class="w-3.5 h-3.5 dark:text-foreground/50 truncate flex-shrink-0 -mt-[2px]" />
 				<span class="truncate">Bookmarked</span></a
@@ -278,17 +306,17 @@
 		<!-- </ScrollArea> -->
 	</section>
 	<section
-		class="relative flex bottom-0 left-0 right-0 h-10 text-foreground/50 text-xs justify-evenly mb-2 pt-2 border-t items-center z-50 bg-background"
+		class="relative flex bottom-0 left-0 right-0 h-10 text-foreground/50 text-xs justify-evenly mb-2 py-2 items-center z-50 bg-background md:border-t md:pb-0"
 	>
 		<button
 			on:click|preventDefault={handleThemeButton}
 			class="p-2 block hover:bg-muted align-middle hover:rounded-md"
 			><PaletteIcon class="w-5 h-5 md:w-4 md:h-4" /></button
 		>
-		<a href="/settings" class="p-2 block hover:bg-muted hover:rounded-md"
+		<a href="/settings" on:click={handleSettingsClick} class="p-2 block hover:bg-muted hover:rounded-md"
 			><SettingsIcon class="w-5 h-5 md:w-4 md:h-4 block" /></a
 		>
-		<a
+		<a 
 			href="/signout"
 			data-sveltekit-preload-data="false"
 			class="p-2 block hover:bg-muted hover:rounded-md"

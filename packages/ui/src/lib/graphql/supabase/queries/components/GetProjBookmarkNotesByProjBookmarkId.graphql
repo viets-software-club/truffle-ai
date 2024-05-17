@@ -1,0 +1,9 @@
+query GetProjBookmarkNotesByProjBookmarkId($projBookmarkId: BigInt) {
+	projBookmarkCollection(filter: { projBookmarkId: { eq: $projBookmarkId } }) {
+		edges {
+			node {
+				note
+			}
+		}
+	}
+}

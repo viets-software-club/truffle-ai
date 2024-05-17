@@ -1,4 +1,4 @@
-query Detail($repoName: String, $ownerLogin: String) {
+query Detail($repoName: String!, $ownerLogin: String!) {
 	fGetGthbOwnerByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
 		edges {
 			node {

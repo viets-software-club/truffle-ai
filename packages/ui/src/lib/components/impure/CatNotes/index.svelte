@@ -26,6 +26,7 @@
 			.then((res) => {
 				if (res?.data?.projCatCollection?.edges[0]?.node?.note)
 					value = res?.data?.projCatCollection?.edges[0]?.node?.note;
+				else value = '';
 			})
 			.catch(() => {
 				toast.error('Error', {
@@ -62,11 +63,12 @@
 		<Card.Description>Your hand-written notes</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<Textarea
-			bind:value
-			rows={9}
-			class="h-54 truncate w-full outline-none pt-2.5"
-			on:input={debounce(saveNotes)}
-		></Textarea></Card.Content
+		{#key title}
+			<Textarea
+				bind:value
+				rows={9}
+				class="h-54 truncate w-full outline-none pt-2.5"
+				on:input={debounce(saveNotes)}
+			></Textarea>{/key}</Card.Content
 	>
 </Card.Root>

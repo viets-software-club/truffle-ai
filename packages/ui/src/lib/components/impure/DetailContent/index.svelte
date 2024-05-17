@@ -13,6 +13,7 @@
 	import Button from '$lib/components/pure/ui/button/button.svelte';
 	import AddRepo from '$lib/components/impure/AddRepo/index.svelte';
 	import { toast, Toaster } from 'svelte-sonner';
+	import { updateSidebar } from '$lib/store/sidebar';
 
 	type Props = {
 		repoName: string;
@@ -86,6 +87,7 @@
 					}
 				})
 				.then(() => {
+					updateSidebar.set(`${repoName}-remove`);
 					toast.success('Bookmark removed');
 				})
 				.catch((e) => {

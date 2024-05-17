@@ -61,6 +61,7 @@ const files = [
 	'functions/f_get_gthb_org_by_gthb_name.sql',
 	'functions/f_get_gthb_user_by_gthb_name.sql',
 	'functions/f_get_gthb_user_by_gthb_repo_id.sql',
+	'functions/f_list_gthb_repos_by_cat_title.sql',
 	'triggers.sql',
 	'policies.sql',
 	'grants.sql'

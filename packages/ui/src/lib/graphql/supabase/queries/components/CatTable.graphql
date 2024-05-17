@@ -1,12 +1,12 @@
-query TrendingTable(
-	$dateRange: String!
+query CatTable(
+	$title: String!
 	$filter: GthbRepoFilter
 	$orderBy: [GthbRepoOrderBy!]
 	$first: Int
 	$last: Int
 ) {
-	queryStargazerMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryStargazerMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { stargazerCount: DescNullsLast }
 	) {
@@ -16,8 +16,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryStargazerMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryStargazerMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { stargazerCount: AscNullsLast }
 	) {
@@ -27,8 +27,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryForkMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryForkMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { forkCount: DescNullsLast }
 	) {
@@ -38,8 +38,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryForkMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryForkMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { forkCount: AscNullsLast }
 	) {
@@ -49,8 +49,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryIssueMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryIssueMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { issuesTotalCount: DescNullsLast }
 	) {
@@ -60,8 +60,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryIssueMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryIssueMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { issuesTotalCount: AscNullsLast }
 	) {
@@ -71,8 +71,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryContributorMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryContributorMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { contributorCount: DescNullsLast }
 	) {
@@ -82,8 +82,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryContributorMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryContributorMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { contributorCount: AscNullsLast }
 	) {
@@ -93,8 +93,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryPullRequestsMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryPullRequestsMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { pullRequestsTotalCount: DescNullsLast }
 	) {
@@ -104,8 +104,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryPullRequestsMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryPullRequestsMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { pullRequestsTotalCount: AscNullsLast }
 	) {
@@ -115,8 +115,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryIssuesPerContributorMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryIssuesPerContributorMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { issuesPerContributor: DescNullsLast }
 	) {
@@ -126,8 +126,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryIssuesPerContributorMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryIssuesPerContributorMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { issuesPerContributor: AscNullsLast }
 	) {
@@ -137,8 +137,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryForksPerContributorMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryForksPerContributorMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { forksPerContributor: DescNullsLast }
 	) {
@@ -148,8 +148,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryForksPerContributorMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryForksPerContributorMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { forksPerContributor: AscNullsLast }
 	) {
@@ -159,8 +159,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryStargazersPerContributorMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryStargazersPerContributorMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { stargazersPerContributor: DescNullsLast }
 	) {
@@ -170,8 +170,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryStargazersPerContributorMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryStargazersPerContributorMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { stargazersPerContributor: AscNullsLast }
 	) {
@@ -181,8 +181,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryPullRequestsPerContributorMax: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryPullRequestsPerContributorMax: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { pullRequestsPerContributor: DescNullsLast }
 	) {
@@ -192,8 +192,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryPullRequestsPerContributorMin: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryPullRequestsPerContributorMin: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		first: 1
 		orderBy: { pullRequestsPerContributor: AscNullsLast }
 	) {
@@ -203,8 +203,8 @@ query TrendingTable(
 			}
 		}
 	}
-	queryTrending: fListTrendingGthbRepo(
-		gthbDateRangeArg: $dateRange
+	queryTrending: fListGthbReposByCatTitle(
+		catTitleArg: $title
 		filter: $filter
 		orderBy: $orderBy
 		first: $first

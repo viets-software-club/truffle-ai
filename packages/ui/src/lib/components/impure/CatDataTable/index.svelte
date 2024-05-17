@@ -11,6 +11,7 @@
 	import DataTable from '$lib/components/impure/DataTable/index.svelte';
 	import {
 		BookmarkTableDocument,
+		CatTableDocument,
 		OrderByDirection,
 		TrendingTableDocument,
 		type TrendingTableQuery as TrendingTableQueryType
@@ -32,11 +33,17 @@
 		openPullRequestsSort: 'none'
 	});
 
+	type Props = {
+		title: string;
+	};
+	let { title }: Props = $props();
+
 	function query() {
 		client
 			.query({
-				query: BookmarkTableDocument,
+				query: CatTableDocument,
 				variables: {
+					title,
 					filter: {
 						and: filterData.filterableItems
 							.filter((item) => item.filters && item.filters.length > 0)
@@ -402,10 +409,9 @@
 	});
 </script>
 
-<FilterHeader bind:data={filterData} />
-<!-- <DataTable bind:data={data2} /> -->
+<FilterHeader bind:data={filterData} disableAddRepo={true} />
 
-{#if data.rows}
+{#if data.rows && data.rows.length > 0}
 	{#key data}
 		<DataTable {data} />
 	{/key}

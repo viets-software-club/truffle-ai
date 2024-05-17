@@ -1,3 +1,4 @@
+drop function if exists f_list_trending_gthb_repo();
 drop function if exists f_list_trending_gthb_repo(text);
 create or replace function f_list_trending_gthb_repo(gthb_date_range_arg text)
   returns setof "gthb_repo"

@@ -7,7 +7,7 @@
 	import type { AuthSession } from '@supabase/supabase-js';
 
 	let hasLoadedSession = $state(false);
-
+  
 	$effect.pre(() => {
 		supabaseClient.auth.getSession().then(({ data }) => {
 			if (data.session) {

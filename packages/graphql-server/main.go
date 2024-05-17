@@ -35,7 +35,6 @@ func main() {
 	}
 	router := chi.NewRouter()
 
-	// controller.ControllerInstance.RecreateTrending("daily")
 	controller.RunCronjobs()
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		Controller: controller.ControllerInstance,
@@ -59,6 +58,7 @@ func main() {
 			WriteBufferSize: 1024,
 		},
 	})
+	// controller.ControllerInstance.RecreateTrending("monthly")
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)

@@ -18,6 +18,7 @@
 	$effect(() => {
 		client
 			.query({
+				fetchPolicy: 'network-only',
 				query: GetProjRepoNotesByGthbRepoIdDocument,
 				variables: {
 					gthbRepoId: githubRepoId
@@ -26,6 +27,7 @@
 			.then((res) => {
 				if (res?.data?.projRepoCollection?.edges[0]?.node?.note)
 					value = res?.data?.projRepoCollection?.edges[0]?.node?.note;
+				else value = '';
 			})
 			.catch((e) => {
 				toast.error('Error', {
@@ -46,6 +48,7 @@
 		};
 	};
 	const saveNotes = () => {
+		console.log('noting');
 		client.mutate({
 			mutation: UpdateProjRepoNotesByGthbRepoIdDocument,
 			variables: {
@@ -62,11 +65,12 @@
 		<Card.Description>Your hand-written notes</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<Textarea
-			bind:value
-			rows={9}
-			class="h-54 truncate w-full outline-none pt-2.5"
-			on:input={debounce(saveNotes)}
-		></Textarea></Card.Content
+		{#key githubRepoId}
+			<Textarea
+				bind:value
+				rows={9}
+				class="h-54 truncate w-full outline-none pt-2.5"
+				on:input={debounce(saveNotes)}
+			></Textarea>{/key}</Card.Content
 	>
 </Card.Root>

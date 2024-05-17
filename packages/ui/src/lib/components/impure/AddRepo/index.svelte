@@ -24,6 +24,7 @@
 	import { Label } from '$lib/components/pure/ui/label/index';
 	import type { ApolloQueryResult, FetchResult } from '@apollo/client/core';
 	import { toast, Toaster } from 'svelte-sonner';
+	import { updateSidebar } from '$lib/store/sidebar';
 
 	function isValidGithubUrl(url: any) {
 		const regex = /^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
@@ -110,9 +111,15 @@
 				})
 				.then((res: FetchResult<CreateBookmarkMutationType>) => {
 					selectedCategories = [];
+					currentCategories = currentCategories.map((category: any) => ({
+						...category,
+						isSelected: false
+					}));
+
 					isSubmitting = false;
 					open = false;
 					dialogOpen = false;
+					updateSidebar.set(`${repoIdentification?.repoName}-add`);
 					toast.success(
 						selectedCategories.length > 1
 							? 'Success! Added Bookmarks!'
@@ -124,6 +131,11 @@
 				})
 				.catch((e) => {
 					selectedCategories = [];
+					currentCategories = currentCategories.map((category: any) => ({
+						...category,
+						isSelected: false
+					}));
+
 					isSubmitting = false;
 					open = false;
 					dialogOpen = false;
@@ -147,6 +159,7 @@
 	onOpenChange={() => {
 		isSubmitting = false;
 		selectedCategories = [];
+    currentCategories = currentCategories.map((category: any) => ({...category, isSelected: false}));
 		commandInputValue = '';
 		githubRepoUrl = '';
 	}}
@@ -164,7 +177,7 @@
 				{#if !repoIdentifier}
 					<Input
 						id="name"
-						placeholder="github.com/owner/repo"
+						placeholder="https://github.com/owner/repo"
 						class="col-span-3"
 						bind:value={githubRepoUrl}
 					/>
@@ -235,7 +248,7 @@
 					</Command.Root>
 				</Popover.Content>
 			</Popover.Root>
-			<div class="flex gap-2">
+			<div class="flex gap-2 flex-wrap">
 				{#each selectedCategories as selected}
 					<Badge>{selected.title}</Badge>
 				{/each}

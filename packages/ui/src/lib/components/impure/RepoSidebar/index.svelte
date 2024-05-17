@@ -276,7 +276,7 @@
 							<span class="text-sm text-foreground/80 text-ellipsis overflow-hidden"
 								>{contributor.name || contributor.login}</span
 							>
-							<span class="ml-auto text-sm text-foreground/50 text-ellipsis overflow-hidden">{contributor.contributions}</span>
+							<span class="ml-auto text-sm text-foreground/50">{contributor.contributions}</span>
 						</a>
 					</li>
 				{/each}

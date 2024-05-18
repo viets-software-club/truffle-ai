@@ -43,7 +43,7 @@
 		<Card.Title class="flex gap-2 items-center"
 			><Icon src={FaBrandsSquareHackerNews} size="1rem" />Hackernews Comments</Card.Title
 		>
-		<Card.Description>Auto generated AI sentiment</Card.Description>
+		<Card.Description>Auto generated AI sentiment <a class="text-foreground/50 hover:underline hover:underline-offset-2 text-[0.8rem]" target="_blank" href={`http://hn.algolia.com/api/v1/search?query=${repoName}&tags=comment`}>(link)</a></Card.Description>
 	</Card.Header>
 	<Card.Content>
 		<p

@@ -18,7 +18,7 @@ const shortSha = sha.substring(0, 7)
 const namespace = hasTag ? `${env}-${shortSha}` : env
 const hosts = hasTag
 	? [`${sha}.${env}.truffle.tools`, `${shortSha}.${env}.truffle.tools`]
-	: [`${env}.truffle.tools`]
+	: (env === 'production' ? ['truffle.tools'] : [`${env}.truffle.tools`])
 const chartName = hasTag ? `chart-${env}-${shortSha}` : `chart-${env}`
 const args = [
 	'--install',

@@ -52,15 +52,15 @@
 		</div> -->
 			<div class="relative z-20 flex items-center text-xl sm:text-lg font-medium flex-grow-0">
 				<div class="flex items-center cursor-pointer align-middle">
-					<LogoImg alt="Truffle AI"
+					<!-- <LogoImg alt="Truffle AI"
 					class="mr-2 h-8 w-8 sm:h-6 sm:w-6"
-					loading="eager" />
-					<!-- <img
+					loading="eager" /> -->
+					<img
 						src={LogoLight}
 						alt="Truffle AI"
 						class="mr-2 h-8 w-8 sm:h-6 sm:w-6"
 						loading="eager"
-					/> -->
+					/>
 					<div class="leading-none">
 						<span class="leading-none mb-[0.175rem] sm:mb-0 sm:leading-normal block"
 							>Truffle AI</span

@@ -10,7 +10,8 @@
 	import type { AuthSession } from '@supabase/supabase-js';
 	import { Toaster } from 'svelte-sonner';
 	import { page } from '$app/stores';
-
+	import gatewayGraphqlClient from '$lib/graphql/gateway/client.js';
+import supabaseGraphqlClient from '$lib/graphql/supabase/client.js';
 	if (browser) {
 		if (
 			localStorage.theme === 'dark' ||
@@ -44,11 +45,18 @@
 	let session: AuthSession | null = $state(null);
 
 	$effect.pre(() => {
-		supabaseClient.auth.onAuthStateChange((_event, _session) => {
+		supabaseClient.auth.onAuthStateChange(async (_event, _session) => {
 			session = _session;
+			if (_event === 'SIGNED_OUT') {
+				await Promise.all([
+					gatewayGraphqlClient.clearStore(),
+					supabaseGraphqlClient.clearStore()
+				])
+			}
 			if (!session && $page.url.pathname !== '/signup') {
-            	goto('/signin');
+            	 goto('/signin');
         	}
+			
 		});
 	});
 	// export let data;

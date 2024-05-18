@@ -55,7 +55,6 @@
 	let currentCategories: { title: string; isSelected: boolean }[] = $state([]);
 	let selectedCategories: { title: string }[] = $state(preSelectedCategories.map((category) => ({ title: category })));
 	let isSubmitting = $state(false);
-	console.log('current', preSelectedCategories)
 
 
 	$effect(() => {

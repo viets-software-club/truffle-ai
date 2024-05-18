@@ -63,14 +63,12 @@
 				queryResult = res;
 			});
 		updateSidebar.subscribe((value) => {
-			console.log('hmm');
 			client
 				.query({
 					fetchPolicy: 'network-only',
 					query: SidebarDocument
 				})
 				.then((res) => {
-					console.log('hmm2');
 					queryResult = res;
 				})
 				.catch((err) => {

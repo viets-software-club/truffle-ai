@@ -9,4 +9,4 @@ begin
   where gthb_repo.gthb_repo_id = gthb_repo_id_arg;
 end;
 $$
-language plpgsql immutable;
+language plpgsql stable;

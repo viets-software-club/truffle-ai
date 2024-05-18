@@ -76,7 +76,7 @@
 			<AlertDialog.Header>
 				<AlertDialog.Title>Sign Up Failed</AlertDialog.Title>
 				<AlertDialog.Description>
-					There was an error when signing up. Make sure that you are approved by an admin and try again.
+					There was an error when signing up. Make sure that you are approved by an admin and try again. Please check if you have already signed up before.
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>

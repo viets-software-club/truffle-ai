@@ -18,15 +18,15 @@ const shortSha = sha.substring(0, 7)
 const namespace = hasTag ? `${env}-${shortSha}` : env
 
 const getHosts = () => {
-	if(env === 'production' && hasTag) {
+	if (env === 'production' && hasTag) {
 		return [`${sha}.truffle.tools`, `${shortSha}.truffle.tools`]
 	}
-	if(env === 'production' && ! hasTag) {
+	if (env === 'production' && !hasTag) {
 		return ['truffle.tools']
 	}
 	return hasTag
-	? [`${sha}.${env}.truffle.tools`, `${shortSha}.${env}.truffle.tools`]
-	: [`${env}.truffle.tools`]
+		? [`${sha}.${env}.truffle.tools`, `${shortSha}.${env}.truffle.tools`]
+		: [`${env}.truffle.tools`]
 }
 
 const hosts = getHosts()

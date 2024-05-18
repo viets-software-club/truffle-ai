@@ -1,0 +1,5 @@
+mutation DeleteAdmin($adminUuid: UUID) {
+  deleteFromUserAdminCollection(filter:{authUsersId: {eq: $adminUuid}}) {
+    affectedCount
+  }
+}

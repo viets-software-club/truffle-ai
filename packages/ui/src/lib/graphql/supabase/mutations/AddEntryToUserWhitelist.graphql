@@ -1,0 +1,5 @@
+mutation AddEntryToUserWhitelist($value: String, $kind: String) {
+  insertIntoUserWhitelistCollection(objects:{kind:$kind, userWhitelistValue:$value}) {
+    affectedCount
+  }
+}

@@ -1,0 +1,5 @@
+mutation DeleteEntryFromUserWhitelistById($id: BigInt) {
+  deleteFromUserWhitelistCollection(filter: {userWhitelistId: {eq: $id}}) {
+    affectedCount
+  }
+}

@@ -5,8 +5,9 @@ silent: true
 includes:
   k8s:
     taskfile: ./config/taskfiles/Taskfile.k8s.yml
+    dir: ./
     vars:
-      SOURCE: ./scripts/env/source.sh ./
+      SOURCE: scripts/env/source.sh ./
   db: ./config/taskfiles/Taskfile.db.yml
   prettier: ./config/taskfiles/Taskfile.prettier.yml
   ui:

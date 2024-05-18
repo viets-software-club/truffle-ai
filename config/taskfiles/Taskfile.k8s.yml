@@ -1,4 +1,6 @@
 version: "3"
+vars:
+  SOURCE: ../../scripts/env/source.sh ../..
 tasks:
   ### Production
   production:select:
@@ -48,12 +50,12 @@ tasks:
     desc: "Publish production cluster on any cluster"
     cmds:
       - source {{.SOURCE}} && ./scripts/helm/app/publish-production.mjs
-  any:publish-subdomain:
+  any:publish-domain:
     aliases:
       - "helm-publish-remote-env"
       - "publish-remote"
       - "remote-env"
-    desc: "Publish with subdomain (environment prefix) on any cluster and sometimes with sha hash too"
+    desc: "Publish with (sub)domain (environment prefix) on any cluster and sometimes with sha hash too"
     cmds:
       - source {{.SOURCE}} && ./scripts/helm/app/publish-remote-env.mjs
   any:uninstall-ns:commit:

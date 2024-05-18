@@ -76,3 +76,7 @@ create or replace trigger tr_on_delete_proj_cat_and_proj_bookmark_delete_unrefer
   after delete on proj_cat_and_proj_bookmark
   for each STATEMENT
   execute function f_tr_delete_unreferenced_proj_cat();
+
+create or replace trigger tr_on_auth_users_created
+  after insert on auth.users
+  for each row execute procedure public.f_tr_insert_auto_generated_user_api_key();

@@ -14,7 +14,7 @@ begin
   return isBookmarked;
 end;
 $$
-language plpgsql immutable;
+language plpgsql stable;
 
 
 -- drop function if exists f_is_gthb_repo_bookmarked(ownerLogin text, repoName text);

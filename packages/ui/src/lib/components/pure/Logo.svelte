@@ -22,7 +22,6 @@
 					break;
 				default:
 			}
-			console.log('theme', getTheme())
 		}
 	});
 	if (browser) {
@@ -43,7 +42,6 @@
 			attrObserver.disconnect();
 		});
 	}
-	console.log('logo', logo);
 </script>
 
 <div class="z-20 flex items-center text-xl sm:text-base font-medium flex-grow-0 w-full">

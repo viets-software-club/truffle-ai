@@ -20,9 +20,7 @@
 		});
 	});
 	let isMobileSidebarOpen = $state($updateMobileSidebarOpenState)
-	console.log('isMobilesi', isMobileSidebarOpen)
 updateMobileSidebarOpenState.subscribe((value) => {
-	console.log('huh', value)
     isMobileSidebarOpen = value;
 });
 

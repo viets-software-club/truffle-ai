@@ -37,7 +37,6 @@
 		title: string;
 	};
 	let { title }: Props = $props();
-	console.log('title', title)
 	const createGraphQLVariables = () =>  ({
 					title,
 					filter: {

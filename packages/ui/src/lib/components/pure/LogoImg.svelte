@@ -22,7 +22,6 @@
 					break;
 				default:
 			}
-			console.log('theme', getTheme())
 		}
 	});
 	if (browser) {

@@ -80,7 +80,6 @@
 		};
 	};
 	const savePublicNotes = () => {
-		console.log('noting');
 		client.mutate({
 			mutation: UpdateProjRepoNotesByGthbRepoIdDocument,
 			variables: {

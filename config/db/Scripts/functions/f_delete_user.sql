@@ -11,7 +11,10 @@ begin
   delete from auth.identities where user_id = auth_uid();
   delete from auth.flow_state where auth.flow_state.user_id = auth_uid();
   delete from auth.audit_log_entries;
+  delete from proj_cat_and_proj_bookmark where proj_bookmark_id in (select proj_bookmark_id from proj_bookmark where auth_users_id = auth_uid());
+  delete from proj_cat where auth_users_id = auth_uid();
   delete from proj_bookmark where auth_users_id = auth_uid();
+
   return true;
 end;
 $$;

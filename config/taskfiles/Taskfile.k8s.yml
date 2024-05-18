@@ -47,7 +47,7 @@ tasks:
       - "helm-publish-production"
     desc: "Publish production cluster on any cluster"
     cmds:
-      - ./scripts/helm/publish.mjs
+      - source {{.SOURCE}} && ./scripts/helm/app/publish-production.mjs
   any:publish-subdomain:
     aliases:
       - "helm-publish-remote-env"

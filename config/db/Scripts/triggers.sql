@@ -67,6 +67,11 @@ create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_ca
   for each STATEMENT
   execute function f_tr_delete_unreferenced_proj_cat();
 
+create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_cat_and_proj_bookmark
+  after delete on proj_bookmark
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_proj_cat_and_proj_bookmark();
+
 create or replace trigger tr_on_delete_proj_cat_and_proj_bookmark_delete_unreferenced_proj_cat
   after delete on proj_cat_and_proj_bookmark
   for each STATEMENT

@@ -60,9 +60,10 @@ query RepoSidebarByGthbRepoId($gthbRepoId: BigInt, $ownerId: BigInt) {
 						}
 					}
 				}
-				gthbRepoContrCollection {
+				gthbRepoContrCollection(orderBy: {contributions: DescNullsLast}) {
 					edges {
 						node {
+							contributions
 							gthbOwner {
 								avatarUrl
 								gthbOwnerLogin

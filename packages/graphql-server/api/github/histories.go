@@ -29,7 +29,7 @@ func (g *GithubApi) GetStarHist(amountPages int, owner string, name string) (*St
 		for i := 0; i < len(gazers); i++ {
 			starHistMap[gazers[i].StarredAt.String()] = Hist{
 				Date:   gazers[i].StarredAt.Time,
-				Amount: prevAmount + i,
+				Amount: prevAmount + i + 1,
 			}
 		}
 	}
@@ -109,7 +109,7 @@ func (g *GithubApi) GetForkHist(amountPages int, owner string, name string) (*Fo
 			if *repo.Fork {
 				forkHistMap[repo.CreatedAt.String()] = Hist{
 					Date:   repo.CreatedAt.Time,
-					Amount: prevAmount + i,
+					Amount: prevAmount + i + 1,
 				}
 			}
 		}
@@ -273,7 +273,7 @@ func (g *GithubApi) GetIssueHist(amountPages int, owner string, name string) (*I
 		for i, issue := range issues {
 			issueHistMap[issue.CreatedAt.String()] = Hist{
 				Date:   issue.CreatedAt.Time,
-				Amount: prevAmount + i,
+				Amount: prevAmount + i + 1,
 			}
 		}
 	}
@@ -351,7 +351,7 @@ func (g *GithubApi) GetStarHistRandom(amountPages int, owner string, name string
 		for i := 0; i < len(gazers); i++ {
 			starHistMap[gazers[i].StarredAt.String()] = Hist{
 				Date:   gazers[i].StarredAt.Time,
-				Amount: prevAmount + i,
+				Amount: prevAmount + i + 1,
 			}
 		}
 	}
@@ -443,7 +443,7 @@ func (g *GithubApi) GetIssueHistRandom(amountPages int, owner string, name strin
 		for i, issue := range issues {
 			issueHistMap[issue.CreatedAt.String()] = Hist{
 				Date:   issue.CreatedAt.Time,
-				Amount: prevAmount + i,
+				Amount: prevAmount + i + 1,
 			}
 		}
 	}
@@ -547,7 +547,7 @@ func (g *GithubApi) GetForkHistRandom(amountPages int, owner string, name string
 			if *repo.Fork {
 				forkHistMap[repo.CreatedAt.String()] = Hist{
 					Date:   repo.CreatedAt.Time,
-					Amount: prevAmount + i,
+					Amount: prevAmount + i + 1,
 				}
 			}
 		}

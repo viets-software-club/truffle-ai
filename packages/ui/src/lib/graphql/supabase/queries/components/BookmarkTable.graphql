@@ -190,6 +190,7 @@ query BookmarkTable(
 				pullRequestsTotalCount
 				pullRequestsPerContributor
 			}
+			cursor
 		}
 		pageInfo {
 			hasNextPage

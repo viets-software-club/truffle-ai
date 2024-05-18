@@ -1,0 +1,5 @@
+mutation UpdateProjBookmarkNotesByProjBookmarkId($projBookmarkId: BigInt, $text: String) {
+	updateProjBookmarkCollection(filter: {projBookmarkId: { eq: $projBookmarkId } }, set: { note: $text }) {
+		affectedCount
+	}
+}

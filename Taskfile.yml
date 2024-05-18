@@ -16,11 +16,6 @@ includes:
       - 'u'
     vars:
       SOURCE: ../../scripts/env/source.sh ../..
-  grafbase-gateway:
-    taskfile: ./config/taskfiles/Taskfile.npm.yml
-    dir: ./packages/grafbase-gateway
-    aliases:
-      - 'gtw2'
   graphql-gateway:
     taskfile: ./packages/graphql-gateway/Taskfile.yml
     dir: ./packages/graphql-gateway
@@ -28,11 +23,6 @@ includes:
       - 'gql-gtw'
       - 'gtw'
       - 'g'
-    vars:
-      SOURCE: ../../scripts/env/source.sh ../..
-  mesh-gateway:
-    taskfile: ./packages/mesh-gateway/Taskfile.yml
-    dir: ./packages/mesh-gateway
     vars:
       SOURCE: ../../scripts/env/source.sh ../..
   graphql-server:

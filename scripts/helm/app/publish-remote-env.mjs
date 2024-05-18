@@ -16,9 +16,20 @@ const promptDryRun = await question('Dry Run?\n')
 const isDryRun = promptDryRun === 'y' || promptDryRun === ''
 const shortSha = sha.substring(0, 7)
 const namespace = hasTag ? `${env}-${shortSha}` : env
-const hosts = hasTag
+
+const getHosts = () => {
+	if(env === 'production' && hasTag) {
+		return [`${sha}.truffle.tools`, `${shortSha}.truffle.tools`]
+	}
+	if(env === 'production' && ! hasTag) {
+		return ['truffle.tools']
+	}
+	return hasTag
 	? [`${sha}.${env}.truffle.tools`, `${shortSha}.${env}.truffle.tools`]
-	: (env === 'production' ? ['truffle.tools'] : [`${env}.truffle.tools`])
+	: [`${env}.truffle.tools`]
+}
+
+const hosts = getHosts()
 const chartName = hasTag ? `chart-${env}-${shortSha}` : `chart-${env}`
 const args = [
 	'--install',

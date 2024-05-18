@@ -5,6 +5,7 @@
 	import { supabaseClient } from '$lib/supabase/index';
 	import { goto } from '$app/navigation';
 	import type { AuthSession } from '@supabase/supabase-js';
+	import LogoImg from '$lib/components/pure/LogoImg.svelte';
 
 	let hasLoadedSession = $state(false);
   
@@ -51,12 +52,15 @@
 		</div> -->
 			<div class="relative z-20 flex items-center text-xl sm:text-lg font-medium flex-grow-0">
 				<div class="flex items-center cursor-pointer align-middle">
-					<img
+					<LogoImg alt="Truffle AI"
+					class="mr-2 h-8 w-8 sm:h-6 sm:w-6"
+					loading="eager" />
+					<!-- <img
 						src={LogoLight}
 						alt="Truffle AI"
 						class="mr-2 h-8 w-8 sm:h-6 sm:w-6"
 						loading="eager"
-					/>
+					/> -->
 					<div class="leading-none">
 						<span class="leading-none mb-[0.175rem] sm:mb-0 sm:leading-normal block"
 							>Truffle AI</span
@@ -85,7 +89,8 @@
 			>
 				<div class="flex flex-col space-y-2 text-center">
 					<div>
-						<img src={LogoDark} alt="Truffle AI" class="inline h-6 w-6 mr-2" />
+						<LogoImg alt="Truffle AI" class="inline h-6 w-6 mr-2" />
+						<!-- <img src={LogoDark} alt="Truffle AI" class="inline h-6 w-6 mr-2" /> -->
 						<h1 class="text-2xl font-semibold tracking-tight inline align-middle">
 							Welcome to Truffle
 						</h1>

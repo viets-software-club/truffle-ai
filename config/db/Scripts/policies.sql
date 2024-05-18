@@ -65,33 +65,32 @@ create policy "authenticated can access gthb_repo"
 drop policy if exists "admin can access user_whitelist" on user_whitelist;
 create policy "admin can access user_whitelist"
   on user_whitelist for all to authenticated
-  using (auth.uid() in (
+  using ((select auth.uid()) in (
+    select auth_users_id from user_admin
+  ))
+  with check ((select auth.uid()) in (
     select auth_users_id from user_admin
   ));
 
 drop policy if exists "admin can insert admins" on user_admin;
 create policy "admin can insert admins"
   on user_admin for insert to authenticated
-  with check (auth.uid() in (
-    select auth_users_id from user_admin
-  ));
+  with check (f_is_admin());
 
 drop policy if exists "admin can select admins" on user_admin;
 create policy "admin can select admins"
   on user_admin for select to authenticated
-  using (auth.uid() in (
-    select auth_users_id from user_admin
-  ));
+   using (f_is_admin());
 
 drop policy if exists "admin can only update himself" on user_admin;
 create policy "admin can only update himself"
   on user_admin for update to authenticated
   using (auth.uid() = user_admin.auth_users_id);
 
-drop policy if exists "admin can only delete himself" on user_admin;
-create policy "admin can only delete himself"
+drop policy if exists "admin can delete admins" on user_admin;
+create policy "admin can delete admins"
   on user_admin for delete to authenticated
-  using (auth.uid() = user_admin.auth_users_id);
+  using (f_is_admin());
 
 drop policy if exists "authenticated can select gthb_trending" on gthb_trending;
 create policy "authenticated can select gthb_trending"
@@ -232,3 +231,53 @@ create policy "authenticated can select gthb_repo_and_gthb_repo_topic"
   on gthb_repo_and_gthb_repo_topic for select to authenticated
   using (true);
 
+
+drop view if exists public.members_view;
+create or replace view public.members_view
+    with (security_invoker=on)
+    as
+select
+    id as auth_users_id,
+    email,
+    created_at
+from
+    auth.users;
+comment on view public.members_view is e'@graphql({"primary_key_columns": ["auth_users_id"]})';
+grant select on public.members_view to authenticated;
+
+drop view if exists public.admins_view;
+create or replace view public.admins_view
+    with (security_invoker=on)
+    as
+select
+auth_users_id, email, created_at from user_admin
+inner join auth.users on user_admin.auth_users_id = auth.users.id;
+comment on view public.admins_view is e'@graphql({"primary_key_columns": ["auth_users_id"]})';
+grant select on public.admins_view to authenticated;
+grant select on auth.users to authenticated;
+
+alter table auth.users enable row level security;
+drop policy if exists "admins can select auth.users" on auth.users;
+create policy "admins can select auth.users" on auth.users
+  for select
+  using (((select auth.uid()) = id) or (auth.uid() in (
+    select auth_users_id from user_admin
+  )));
+
+-- drop view if exists is_admin_view;
+-- CREATE OR REPLACE VIEW is_admin_view AS
+-- SELECT auth.uid() as id, f_is_admin() as is_admin;
+-- grant select on public.is_admin_view to authenticated;
+-- COMMENT ON VIEW is_admin_view IS E'@graphql({"primary_key_columns": ["id"]})';
+
+drop policy if exists "authenticated can select their own user_api_key" on user_api_key;
+create policy "authenticated can select their own user_api_key" on user_api_key
+  for select to authenticated
+  using (auth.uid() = user_api_key.auth_users_id);
+drop policy if exists "authenticated can update their own user_api_key" on user_api_key;
+create policy "authenticated can update their own user_api_key" on user_api_key
+  for update to authenticated
+  using (auth.uid() = user_api_key.auth_users_id);
+GRANT INSERT ON user_api_key TO supabase_auth_admin;
+GRANT EXECUTE ON FUNCTION uuid_generate_v4() TO supabase_auth_admin;
+GRANT USAGE ON SCHEMA extensions TO supabase_auth_admin;

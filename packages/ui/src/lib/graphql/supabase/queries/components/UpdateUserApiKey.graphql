@@ -1,0 +1,5 @@
+mutation UpdateUserApiKey($userApiKey: UUID) {
+  updateUserApiKeyCollection(set:{userApiKey: $userApiKey}) {
+   	affectedCount
+  }
+}

@@ -3,7 +3,48 @@
 	import DeleteUserSection from '$lib/components/impure/SettingsContent/DeleteUserSection.svelte';
 	import SidebarIcon from '$lib/components/impure/SidebarIcon/index.svelte';
 	import Separator from '$lib/components/pure/ui/separator/separator.svelte';
-	import WhitelistUserSection from './WhitelistUserSection.svelte';
+	import UserWhitelistSection from './UserWhitelistSection/index.svelte';
+	import AdminUserSection from './AdminUserSection/index.svelte';
+	import client from '$lib/graphql/supabase/client';
+	import { IsUserAdminDocument } from '$lib/graphql/supabase/generated-codegen';
+	import { toast } from 'svelte-sonner';
+	import { adminList, adminStore } from './adminList.svelte';
+
+	let isAdmin = $state(false);
+
+	const showErrorLoadingAdmins = () => {
+		toast.error('Error', {
+			description:
+				'An error occurred while loading the admins. Please try again later.',
+			action: {
+				label: 'ok',
+				onClick: () => {},
+			},
+		});
+	};
+
+	const loadIsAdmin = () => {
+		client.query({
+			fetchPolicy: 'network-only',
+			query: IsUserAdminDocument,
+		}).then((res) => {
+			if (res.data?.fIsUserAdmin) {
+				isAdmin = true;
+			}
+		}).catch(() => {
+			showErrorLoadingAdmins();
+		})
+	}
+
+	$effect(() => {
+		loadIsAdmin()
+		adminStore.subscribe((value) => {
+			if (value.includes('remove')) {
+				loadIsAdmin()
+			}
+		})
+	})
+	
 </script>
 
 <!-- <div class="space-y-8">
@@ -23,8 +64,12 @@
 		<h1 class="text-2xl font-bold">Settings</h1>
 		<p class="text-muted-foreground">Manage your account and application settings</p>
 	</div>
-	<WhitelistUserSection />
-	<div class="border-t w-full my-10" />
+	{#if isAdmin}
+		<AdminUserSection />
+		<div class="border-t w-full my-10" />
+		<UserWhitelistSection />
+		<div class="border-t w-full my-10" />
+	{/if}
 	<UserApiKeySection />
 	<div class="border-t w-full my-10" />
 	<DeleteUserSection />

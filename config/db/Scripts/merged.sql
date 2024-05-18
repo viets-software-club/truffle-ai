@@ -697,6 +697,14 @@ create type t_f_gthb_repo_identifier as (
   gthb_owner_login text,
   gthb_repo_name text
 );
+create or replace function f_is_admin() returns boolean as $$
+declare
+  _is_admin boolean;
+begin
+  select exists(select 1 from user_admin where auth_users_id = auth.uid()) into _is_admin;
+  return _is_admin;
+end
+$$ language plpgsql security definer;
 create or replace function f_insert_gthb_owner(githubOwner t_f_insert_gthb_owner)
   returns bigint
   as $$
@@ -1111,7 +1119,8 @@ begin
   githubRepoId := f_insert_gthb_repo(projectRepoArg.gthb_repo);
 
   -- not updateing note here
-  insert into proj_repo (gthb_repo_id, note) values (githubRepoId, projectRepoArg.note) on conflict(gthb_repo_id) do update set gthb_repo_id = excluded.gthb_repo_id returning proj_repo_id into projRepoId;
+  -- insert into proj_repo (gthb_repo_id, note) values (githubRepoId, projectRepoArg.note) on conflict(gthb_repo_id) do update set gthb_repo_id = excluded.gthb_repo_id returning proj_repo_id into projRepoId;
+  insert into proj_repo (gthb_repo_id, note, algo_hn_eli5, repo_eli5) values (githubRepoId, projectRepoArg.note, projectRepoArg.algo_hn_eli5, projectRepoArg.repo_eli5) on conflict(gthb_repo_id) do update set gthb_repo_id = excluded.gthb_repo_id, algo_hn_eli5 = excluded.algo_hn_eli5, repo_eli5 = excluded.repo_eli5 returning proj_repo_id into projRepoId;
 
   -- perform f_insert_proj_repo_metadata_for_proj(projRepoId, projectRepoArg.proj_repo_metadata);
   if projectRepoArg.algo_hn_queries is not null then
@@ -1183,25 +1192,31 @@ language plpgsql;
 create or replace function f_delete_user()
 returns boolean
 language plpgsql
+security definer
 as $$
 begin
-  delete from auth.mfa_amr_claims where session_id in (select id from auth.sessions where user_id = auth_uid());
-	delete from auth.users where id = auth_uid();
-  delete from auth.sessions where user_id = auth_uid();
-  delete from auth.refresh_tokens where user_id = auth_uid()::varchar;
-  delete from auth.mfa_factors where user_id = auth_uid();
-  delete from auth.identities where user_id = auth_uid();
-  delete from auth.flow_state where auth.flow_state.user_id = auth_uid();
-  delete from auth.audit_log_entries;
-  delete from proj_bookmark where auth_users_id = auth_uid();
+  delete from auth.mfa_amr_claims where session_id in (select id from auth.sessions where user_id = auth.uid());
+	delete from auth.users where id = auth.uid();
+  delete from auth.sessions where user_id = auth.uid();
+  delete from auth.refresh_tokens where user_id = auth.uid()::varchar;
+  delete from auth.mfa_factors where user_id = auth.uid();
+  delete from auth.identities where user_id = auth.uid();
+  delete from auth.flow_state where auth.flow_state.user_id = auth.uid();
+  delete from auth.audit_log_entries where 1 = 1;
+  delete from public.proj_cat_and_proj_bookmark where proj_bookmark_id in (select proj_bookmark_id from public.proj_bookmark where auth_users_id = auth.uid());
+  delete from public.proj_cat where auth_users_id = auth.uid();
+  delete from public.proj_bookmark where auth_users_id = auth.uid();
+  delete from public.user_api_key where auth_users_id = auth.uid();
+  delete from public.user_admin where auth_users_id = auth.uid();
+
   return true;
 end;
 $$;
 create or replace function f_tr_delete_unreferenced_algo_hn_query() returns trigger as $$
 begin
-  delete from algo_hn_query
+  delete from public.algo_hn_query
   where not exists (
-    select 1 from proj_repo_and_algo_hn_query
+    select 1 from public.proj_repo_and_algo_hn_query
     where algo_hn_query.algo_hn_query_id = proj_repo_and_algo_hn_query.algo_hn_query_id
   );
   return null;
@@ -1209,14 +1224,14 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_algo_hn_tag() returns trigger as $$
 begin
-  delete from algo_hn_tag
+  delete from public.algo_hn_tag
   where not exists (
-    select 1 from algo_hn_story_and_algo_hn_tag
+    select 1 from public.algo_hn_story_and_algo_hn_tag
     where algo_hn_tag.algo_hn_tag_id = algo_hn_story_and_algo_hn_tag.algo_hn_tag_id
   )
   and 
    not exists (
-    select 1 from algo_hn_comment_and_algo_hn_tag
+    select 1 from public.algo_hn_comment_and_algo_hn_tag
     where algo_hn_tag.algo_hn_tag_id = algo_hn_comment_and_algo_hn_tag.algo_hn_tag_id
   );
   return null;
@@ -1224,9 +1239,9 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_gthb_lang() returns trigger as $$
 begin
-  delete from gthb_lang
+  delete from public.gthb_lang
   where not exists (
-    select 1 from gthb_repo_and_gthb_lang
+    select 1 from public.gthb_repo_and_gthb_lang
     where gthb_lang.gthb_lang_id = gthb_repo_and_gthb_lang.gthb_lang_id
   );
   return null;
@@ -1234,14 +1249,14 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_gthb_repo_from_gthb_trending() returns trigger as $$
 begin
-  delete from gthb_repo
+  delete from public.gthb_repo
   where not exists (
-    select 1 from gthb_trending
+    select 1 from public.gthb_trending
     where gthb_trending.gthb_repo_id = old.gthb_repo_id
   )
   and
    not exists (
-    select 1 from proj_bookmark inner join proj_repo on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
+    select 1 from public.proj_bookmark inner join public.proj_repo on proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
     where proj_repo.gthb_repo_id = old.gthb_repo_id
   );
   return null;
@@ -1249,9 +1264,9 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_gthb_repo() returns trigger as $$
 begin
-  delete from gthb_repo
+  delete from public.gthb_repo
   where not exists (
-    select 1 from proj_repo
+    select 1 from public.proj_repo
     where proj_repo.gthb_repo_id = gthb_repo.gthb_repo_id
   );
   return null;
@@ -1259,14 +1274,14 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_proj_repo() returns trigger as $$
 begin
-  delete from proj_repo
+  delete from public.proj_repo
   where not exists (
-    select 1 from gthb_trending
+    select 1 from public.gthb_trending
     where gthb_trending.gthb_repo_id = proj_repo.gthb_repo_id
   )
   and
    not exists (
-    select 1 from proj_bookmark
+    select 1 from public.proj_bookmark
     where proj_bookmark.proj_repo_id = proj_repo.proj_repo_id
   );
   return null;
@@ -1274,9 +1289,9 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_sbot_lin_company() returns trigger as $$
 begin
-  delete from sbot_lin_company
+  delete from public.sbot_lin_company
   where not exists (
-    select 1 from proj_repo_and_sbot_lin_company
+    select 1 from public.proj_repo_and_sbot_lin_company
     where sbot_lin_company.sbot_lin_company_id = proj_repo_and_sbot_lin_company.sbot_lin_company_id
   );
   return null;
@@ -1285,9 +1300,9 @@ $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_sbot_lin_profile() returns trigger 
 as $$
 begin
-  delete from sbot_lin_profile
+  delete from public.sbot_lin_profile
   where not exists (
-    select 1 from proj_repo_and_sbot_lin_profile
+    select 1 from public.proj_repo_and_sbot_lin_profile
     where sbot_lin_profile.sbot_lin_profile_id = proj_repo_and_sbot_lin_profile.sbot_lin_profile_id
   );
   return null;
@@ -1309,6 +1324,19 @@ begin
   end if;
 end;
 $$;
+create or replace function f_tr_delete_unreferenced_proj_cat_and_proj_bookmark() returns trigger as $$
+begin
+  delete from public.proj_cat_and_proj_bookmark
+  where not exists (
+    select 1 from public.proj_cat
+    where proj_cat_and_proj_bookmark.proj_cat_id = proj_cat.proj_cat_id
+  ) or not exists (
+    select 1 from public.proj_bookmark
+    where proj_cat_and_proj_bookmark.proj_bookmark_id = proj_bookmark.proj_bookmark_id
+  );
+  return null;
+end;
+$$ language plpgsql security definer;
 create or replace function f_select_data_science()
   returns table(fork_count bigint, issues_total_count bigint, pull_requests_total_count bigint, stargazer_count bigint)
   as $$
@@ -1337,9 +1365,9 @@ language plpgsql;
 
 create or replace function f_tr_delete_unreferenced_gthb_repo_topic() returns trigger as $$
 begin
-  delete from gthb_repo_topic
+  delete from public.gthb_repo_topic
   where not exists (
-    select 1 from gthb_repo_and_gthb_repo_topic
+    select 1 from public.gthb_repo_and_gthb_repo_topic
     where gthb_repo_and_gthb_repo_topic.gthb_repo_topic_id = gthb_repo_topic.gthb_repo_topic_id
   );
   return null;
@@ -1347,9 +1375,9 @@ end;
 $$ language plpgsql security definer;
 create or replace function f_tr_delete_unreferenced_proj_classifier() returns trigger as $$
 begin
-  delete from proj_classifier
+  delete from public.proj_classifier
   where not exists (
-    select 1 from proj_repo_and_proj_classifier
+    select 1 from public.proj_repo_and_proj_classifier
     where proj_repo_and_proj_classifier.proj_classifier_id = proj_classifier.proj_classifier_id
   );
   return null;
@@ -1358,12 +1386,12 @@ $$ language plpgsql security definer;
 drop function if exists f_tr_delete_unreferenced_gthb_owner() cascade;
 create or replace function f_tr_delete_unreferenced_gthb_owner() returns trigger as $$
 begin
-  delete from gthb_owner
+  delete from public.gthb_owner
   where not exists (
-    select 1 from gthb_repo
+    select 1 from public.gthb_repo
     where gthb_owner.gthb_owner_id = gthb_repo.gthb_owner_id
   ) and not exists (
-    select 1 from gthb_repo_contr
+    select 1 from public.gthb_repo_contr
     where gthb_owner.gthb_owner_id = gthb_repo_contr.gthb_owner_id
   );
   return null;
@@ -1423,7 +1451,7 @@ begin
   return isBookmarked;
 end;
 $$
-language plpgsql immutable;
+language plpgsql stable;
 
 
 -- drop function if exists f_is_gthb_repo_bookmarked(ownerLogin text, repoName text);
@@ -1689,9 +1717,9 @@ language plpgsql stable;
 
 create or replace function f_tr_delete_unreferenced_proj_cat() returns trigger as $$
 begin
-  delete from proj_cat
+  delete from public.proj_cat
   where not exists (
-    select 1 from proj_cat_and_proj_bookmark
+    select 1 from public.proj_cat_and_proj_bookmark
     where proj_cat_and_proj_bookmark.proj_cat_id = proj_cat.proj_cat_id
   );
   return null;
@@ -1708,7 +1736,7 @@ begin
   where gthb_repo.gthb_repo_id = gthb_repo_id_arg;
 end;
 $$
-language plpgsql immutable;
+language plpgsql stable;
 drop function if exists f_get_gthb_org_by_gthb_name(text, text);
 create or replace function f_get_gthb_org_by_gthb_name(ownerLogin text, repoName text)
   returns setof "gthb_org"
@@ -1760,6 +1788,48 @@ end;
 $$
 language plpgsql stable;
 
+create or replace function f_insert_user_admin_by_email(email_arg text)
+returns boolean as $$
+declare
+  _auth_users_id uuid;
+  _exists boolean;
+begin 
+  select auth_users_id into _auth_users_id from public.members_view where public.members_view.email = email_arg;
+
+  if _auth_users_id is null then
+    return false;
+  end if;
+
+  select exists(select 1 from user_admin where auth_users_id = _auth_users_id) into _exists;
+  
+  if _exists then
+    --  user already admin
+    return false;
+  else
+    insert into user_admin(auth_users_id) values (_auth_users_id);
+    return true;
+  end if;
+end;
+$$ language plpgsql volatile;
+create or replace function f_tr_insert_auto_generated_user_api_key()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.user_api_key (user_api_key, auth_users_id)
+  values ((SELECT extensions.uuid_generate_v4()), new.id);
+  return new;
+end;
+$$;
+create or replace function f_is_user_admin() returns boolean as $$
+declare
+  _is_admin boolean;
+begin
+  select exists(select 1 from user_admin where auth_users_id = auth.uid()) into _is_admin;
+  return _is_admin;
+end
+$$ language plpgsql stable;
 create or replace trigger tr_on_delete_delete_unreferenced_algo_hn_query
   after delete on proj_repo_and_algo_hn_query
   for each STATEMENT
@@ -1829,10 +1899,19 @@ create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_ca
   for each STATEMENT
   execute function f_tr_delete_unreferenced_proj_cat();
 
+create or replace trigger tr_on_delete_proj_bookmark_delete_unreferenced_proj_cat_and_proj_bookmark
+  after delete on proj_bookmark
+  for each STATEMENT
+  execute function f_tr_delete_unreferenced_proj_cat_and_proj_bookmark();
+
 create or replace trigger tr_on_delete_proj_cat_and_proj_bookmark_delete_unreferenced_proj_cat
   after delete on proj_cat_and_proj_bookmark
   for each STATEMENT
   execute function f_tr_delete_unreferenced_proj_cat();
+
+create or replace trigger tr_on_auth_users_created
+  after insert on auth.users
+  for each row execute procedure public.f_tr_insert_auto_generated_user_api_key();
 do
 $$
 declare
@@ -1900,33 +1979,32 @@ create policy "authenticated can access gthb_repo"
 drop policy if exists "admin can access user_whitelist" on user_whitelist;
 create policy "admin can access user_whitelist"
   on user_whitelist for all to authenticated
-  using (auth.uid() in (
+  using ((select auth.uid()) in (
+    select auth_users_id from user_admin
+  ))
+  with check ((select auth.uid()) in (
     select auth_users_id from user_admin
   ));
 
 drop policy if exists "admin can insert admins" on user_admin;
 create policy "admin can insert admins"
   on user_admin for insert to authenticated
-  with check (auth.uid() in (
-    select auth_users_id from user_admin
-  ));
+  with check (f_is_admin());
 
 drop policy if exists "admin can select admins" on user_admin;
 create policy "admin can select admins"
   on user_admin for select to authenticated
-  using (auth.uid() in (
-    select auth_users_id from user_admin
-  ));
+   using (f_is_admin());
 
 drop policy if exists "admin can only update himself" on user_admin;
 create policy "admin can only update himself"
   on user_admin for update to authenticated
   using (auth.uid() = user_admin.auth_users_id);
 
-drop policy if exists "admin can only delete himself" on user_admin;
-create policy "admin can only delete himself"
+drop policy if exists "admin can delete admins" on user_admin;
+create policy "admin can delete admins"
   on user_admin for delete to authenticated
-  using (auth.uid() = user_admin.auth_users_id);
+  using (f_is_admin());
 
 drop policy if exists "authenticated can select gthb_trending" on gthb_trending;
 create policy "authenticated can select gthb_trending"
@@ -2052,6 +2130,11 @@ create policy "authenticated can select algo_hn_story_and_algo_hn_tag"
   on algo_hn_story_and_algo_hn_tag for select to authenticated
   using (true);
 
+drop policy if exists "authenticated can select algo_hn_comment_and_algo_hn_tag" on algo_hn_comment_and_algo_hn_tag;
+create policy "authenticated can select algo_hn_comment_and_algo_hn_tag"
+  on algo_hn_comment_and_algo_hn_tag for select to authenticated
+  using (true);
+
 drop policy if exists "authenticated can select gthb_repo_and_gthb_lang" on gthb_repo_and_gthb_lang;
 create policy "authenticated can select gthb_repo_and_gthb_lang"
   on gthb_repo_and_gthb_lang for select to authenticated
@@ -2063,5 +2146,54 @@ create policy "authenticated can select gthb_repo_and_gthb_repo_topic"
   using (true);
 
 
+drop view if exists public.members_view;
+create or replace view public.members_view
+    with (security_invoker=on)
+    as
+select
+    id as auth_users_id,
+    email,
+    created_at
+from
+    auth.users;
+comment on view public.members_view is e'@graphql({"primary_key_columns": ["auth_users_id"]})';
+grant select on public.members_view to authenticated;
+
+drop view if exists public.admins_view;
+create or replace view public.admins_view
+    with (security_invoker=on)
+    as
+select
+auth_users_id, email, created_at from user_admin
+inner join auth.users on user_admin.auth_users_id = auth.users.id;
+comment on view public.admins_view is e'@graphql({"primary_key_columns": ["auth_users_id"]})';
+grant select on public.admins_view to authenticated;
+grant select on auth.users to authenticated;
+
+alter table auth.users enable row level security;
+drop policy if exists "admins can select auth.users" on auth.users;
+create policy "admins can select auth.users" on auth.users
+  for select
+  using (((select auth.uid()) = id) or (auth.uid() in (
+    select auth_users_id from user_admin
+  )));
+
+-- drop view if exists is_admin_view;
+-- CREATE OR REPLACE VIEW is_admin_view AS
+-- SELECT auth.uid() as id, f_is_admin() as is_admin;
+-- grant select on public.is_admin_view to authenticated;
+-- COMMENT ON VIEW is_admin_view IS E'@graphql({"primary_key_columns": ["id"]})';
+
+drop policy if exists "authenticated can select their own user_api_key" on user_api_key;
+create policy "authenticated can select their own user_api_key" on user_api_key
+  for select to authenticated
+  using (auth.uid() = user_api_key.auth_users_id);
+drop policy if exists "authenticated can update their own user_api_key" on user_api_key;
+create policy "authenticated can update their own user_api_key" on user_api_key
+  for update to authenticated
+  using (auth.uid() = user_api_key.auth_users_id);
+GRANT INSERT ON user_api_key TO supabase_auth_admin;
+GRANT EXECUTE ON FUNCTION uuid_generate_v4() TO supabase_auth_admin;
+GRANT USAGE ON SCHEMA extensions TO supabase_auth_admin;
 grant select on table public.user_whitelist to supabase_auth_admin;
 

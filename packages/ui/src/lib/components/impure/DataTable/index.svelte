@@ -271,7 +271,7 @@
 								class="px-[1.125rem] cursor-pointer"
 								on:click={handleTableRowClick(row, rowAttrs)}
 							>
-							{row.cursor}
+							
 								{#each row.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs>
 										<Table.Cell {...attrs}>

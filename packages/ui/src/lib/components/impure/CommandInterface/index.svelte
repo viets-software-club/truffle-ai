@@ -72,11 +72,7 @@
 		open = false;
 		isAddRepo = true;
 	}
-// 	$effect(() => {
-// 		// const pathname = $page.url.pathname.
-// 		// console.log('Current pathname:', pathname);
-// 		console.log($page.url.pathname);
-//   });
+
 const handleDialogClose = () => {
 	isAddRepo = false;
 }

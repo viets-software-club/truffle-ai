@@ -10,6 +10,7 @@ const files = [
 	'types/types_03_algo_hn.sql',
 	'types/types_04_proj.sql',
 	'types/types_05_gthb.sql',
+	'functions/f_is_admin.sql',
 	'functions/f_insert_gthb_owner.sql',
 	'functions/f_insert_algo_hn_comments.sql',
 	'functions/f_insert_algo_hn_stories.sql',
@@ -63,6 +64,9 @@ const files = [
 	'functions/f_get_gthb_user_by_gthb_name.sql',
 	'functions/f_get_gthb_user_by_gthb_repo_id.sql',
 	'functions/f_list_gthb_repos_by_cat_title.sql',
+	'functions/f_insert_user_admin_by_email.sql',
+	'functions/f_tr_insert_auto_generated_user_api_key.sql',
+	'functions/f_is_user_admin.sql',
 	'triggers.sql',
 	'policies.sql',
 	'grants.sql'

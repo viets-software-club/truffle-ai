@@ -1,0 +1,3 @@
+mutation InsertUserAdminByEmail($emailArg: String!) {
+  fInsertUserAdminByEmail(emailArg: $emailArg)
+}

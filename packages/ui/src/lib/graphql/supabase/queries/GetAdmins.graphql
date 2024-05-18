@@ -1,0 +1,11 @@
+query GetAdmins {
+  adminsViewCollection {
+    edges {
+      node {
+        authUsersId
+        email
+        createdAt
+      }
+    }
+  }
+}

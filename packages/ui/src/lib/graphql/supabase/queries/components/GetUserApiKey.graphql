@@ -1,0 +1,9 @@
+query GetUserApiKey {
+  userApiKeyCollection(first: 1) {
+    edges {
+      node {
+        userApiKey
+      }
+    }
+  }
+}

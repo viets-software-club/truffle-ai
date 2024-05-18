@@ -46,6 +46,10 @@
 	let prevPage = $state(null);
 	let upDownData: any = null;
 	$effect(() => {
+		console.log('This is detail page')
+		const cacheContents = client.cache.extract();
+
+				console.log('cache2', cacheContents);
 		client
 			.query({
 				query: DetailDocument,
@@ -56,6 +60,8 @@
 				}
 			})
 			.then((res) => {
+				console.log('This is detail page2', res)
+
 				if (res?.data?.fGetProjRepoByGthbName?.edges[0]?.node) {
 					data = {
 						eli5: res?.data?.fGetProjRepoByGthbName?.edges[0]?.node?.repoEli5 || '',
@@ -90,21 +96,11 @@
 				});
 			});
 		if($page?.url?.searchParams?.has('data')) {
-			console.log('one1')
 			try {
 			const data = JSON.parse($page.url.searchParams?.get('data') as any)
 			
 			prevPage = data.page;
-			console.log('how', data)
-			console.log('variables',  {
-						title: '',
-						dateRange: '',
-						...data.variables,
-						cursor: data.cursor,
-						isTrending: data.page === 'trending',
-						isCategory: data.page === 'category',
-						isBookmarks: data.page === 'bookmarks',
-					})
+		
 			client
 				.query<DetailUpAndDownQuery>({
 					query: DetailUpAndDownDocument,
@@ -117,7 +113,7 @@
 						isCategory: data.page === 'category',
 						isBookmarks: data.page === 'bookmarks',
 					}
-				})
+				} as any)
 				.then((res) => {
 					let before;
 					let after;
@@ -141,7 +137,6 @@
 						after: after?.edges[0]?.node?.gthbOwner?.gthbOwnerLogin + '/' + after?.edges[0]?.node?.gthbRepoName,
 						afterDisabled: after?.edges && after?.edges?.length === 0
 					}
-					console.log('navigation', navigation);
 				}).catch((e: any) => {
 					toast.error('Error', {
 						description: 'An error occurred while loading the up and down buttons of page. Please try again later.',
@@ -262,9 +257,11 @@
 				<HnSentiment {ownerLogin} {repoName} />
 			</div>
 			{#if data}
+				{#key data.projBookmarkId}
 				<div class="w-full md:w-1/2">
 					<Notes githubRepoId={data.githubRepoId} projBookmarkId={data.projBookmarkId} />
 				</div>
+				{/key}
 			{/if}
 		</section>
 		<section class="border-t flex gap-4 p-4">

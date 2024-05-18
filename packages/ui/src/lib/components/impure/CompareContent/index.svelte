@@ -3,6 +3,10 @@
 	import CatNotes from '$lib/components/impure/CatNotes/index.svelte';
 	import GitCompareIcon from 'lucide-svelte/icons/git-compare';
 	import XIcon from 'lucide-svelte/icons/x';
+	import AddRepo from '$lib/components/impure/AddRepo/index.svelte';
+	import { Button } from '$lib/components/pure/ui/button';
+	import SidebarIcon from '$lib/components/impure/SidebarIcon/index.svelte';
+	import PlusIcon from 'lucide-svelte/icons/plus';
 	import {
 		CompareDocument,
 		DeleteProjBookmarkOnProjCatByTitleAndIdDocument
@@ -39,7 +43,7 @@
 				if (res.data.projCatCollection?.edges[0].node.projCatAndProjBookmarkCollection?.edges) {
 					bookmarks =
 						res.data.projCatCollection?.edges[0].node.projCatAndProjBookmarkCollection?.edges.map(
-							(catToProjBookmark) => ({
+							(catToProjBookmark: any) => ({
 								githubRepoId: parseInt(catToProjBookmark.node.projBookmark.projRepo.gthbRepoId),
 								githubOwnerLogin:
 									catToProjBookmark.node.projBookmark.projRepo.gthbRepo.gthbOwner.gthbOwnerLogin,
@@ -104,7 +108,19 @@
 	};
 </script>
 
-<section class="h-[3.75rem]"></section>
+<section class="h-[3.75rem] py-2 px-4 flex items-center">
+	<div class="flex gap-4 items-center md:hidden">
+		<SidebarIcon />
+	</div>
+	<div class="flex gap-4 items-center ml-auto">
+		
+		<AddRepo preSelectedCategories={[title]}
+				><Button variant="accent" size="sm">
+					<PlusIcon class="h-4 w-4 md:mr-2" /><span class="hidden md:inline">Repository</span>
+				</Button></AddRepo
+			>
+	</div>
+</section>
 
 <div class="md:flex min-h-full pb-4">
 	<div class="w-full">

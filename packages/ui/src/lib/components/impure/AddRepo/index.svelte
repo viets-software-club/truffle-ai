@@ -21,9 +21,8 @@
 	} from '$lib/graphql/supabase/generated-codegen';
 	import * as Dialog from '$lib/components/pure/ui/dialog/index';
 	import { Input } from '$lib/components/pure/ui/input/index';
-	import { Label } from '$lib/components/pure/ui/label/index';
 	import type { ApolloQueryResult, FetchResult } from '@apollo/client/core';
-	import { toast, Toaster } from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
 	import { updateSidebar } from '$lib/store/sidebar';
 
 	function isValidGithubUrl(url: any) {
@@ -42,16 +41,22 @@
 	}
 
 	type Props = {
+		onDialogOpenChange?: () => void
+		startOpen?: boolean;
 		repoIdentifier?: {
 			ownerLogin: string;
 			repoName: string;
 		};
+		preSelectedCategories?: string[];
 	};
-	let { repoIdentifier }: Props = $props();
+	let { repoIdentifier, preSelectedCategories = [], startOpen = false, onDialogOpenChange }: Props = $props();
+
 
 	let currentCategories: { title: string; isSelected: boolean }[] = $state([]);
-	let selectedCategories: { title: string }[] = $state([]);
+	let selectedCategories: { title: string }[] = $state(preSelectedCategories.map((category) => ({ title: category })));
 	let isSubmitting = $state(false);
+	console.log('current', preSelectedCategories)
+
 
 	$effect(() => {
 		client
@@ -60,15 +65,21 @@
 			})
 			.then((res: ApolloQueryResult<ListCategoriesTitleQueryType>) => {
 				if (res.data.projCatCollection?.edges)
-					currentCategories = res.data.projCatCollection?.edges.map((edge) => {
+					currentCategories = currentCategories.concat(res.data.projCatCollection?.edges.map((edge) => {
+						if(preSelectedCategories.includes(edge.node.title)) {
+							return {
+								title: edge.node.title,
+								isSelected: true
+							};
+						}
 						return {
 							title: edge.node.title,
 							isSelected: false
 						};
-					});
+					}));
 			});
 	});
-	let dialogOpen = $state(false);
+	let dialogOpen = $state(startOpen);
 	let open = $state(false);
 	let selectedValue: string = $state('Add category...');
 	let commandInputValue: string = $state('');
@@ -156,10 +167,25 @@
 
 <Dialog.Root
 	bind:open={dialogOpen}
+	
 	onOpenChange={() => {
+		onDialogOpenChange && onDialogOpenChange();
 		isSubmitting = false;
-		selectedCategories = [];
-    currentCategories = currentCategories.map((category: any) => ({...category, isSelected: false}));
+		selectedCategories = preSelectedCategories.map((category) => ({ title: category }));
+    	currentCategories = currentCategories.map((category: any) => {
+			if(preSelectedCategories.includes(category.title)) {
+				return {
+					title: category.title,
+					isSelected: true
+				};
+			}
+			else {
+				return {
+					title: category.title,
+					isSelected: false
+				};
+			}
+		});
 		commandInputValue = '';
 		githubRepoUrl = '';
 	}}
@@ -210,7 +236,7 @@
 												(category) => category.title === currentValue
 											);
 											currentCategories[index].isSelected = !currentCategories[index].isSelected;
-											if (currentCategories[index].isSelected) {
+											if (currentCategories[index].isSelected && !selectedCategories.find(selectedCat => selectedCat.title === currentCategories[index].title)) {
 												selectedCategories = [
 													...selectedCategories,
 													{ title: currentCategories[index].title }

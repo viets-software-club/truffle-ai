@@ -37,12 +37,8 @@
 		title: string;
 	};
 	let { title }: Props = $props();
-
-	function query() {
-		client
-			.query({
-				query: CatTableDocument,
-				variables: {
+	console.log('title', title)
+	const createGraphQLVariables = () =>  ({
 					title,
 					filter: {
 						and: filterData.filterableItems
@@ -74,7 +70,13 @@
 									: OrderByDirection.DescNullsLast
 							};
 						})
-				}
+				})
+
+	function query() {
+		client
+			.query({
+				query: CatTableDocument,
+				variables: createGraphQLVariables()
 			})
 			.then((res: ApolloQueryResult<TrendingTableQueryType>) => {
 				data = {
@@ -101,7 +103,11 @@
 						res.data.queryStargazersPerContributorMax?.edges[0]?.node.stargazersPerContributor,
 					minStarsPerContributor:
 						res.data.queryStargazersPerContributorMin?.edges[0]?.node.stargazersPerContributor,
-					rows: res.data.queryTrending?.edges.map(({ node }) => ({
+					rowClickDataParam: {
+						page: 'category',
+						variables: createGraphQLVariables()
+					},
+					rows: res.data.queryTrending?.edges.map(({ node, cursor }) => ({
 						id: `${node.gthbOwner.gthbOwnerLogin}-${node.gthbRepoName}`,
 						avatarUrl: node.gthbOwner.avatarUrl,
 						githubOwnerLogin: node.gthbOwner.gthbOwnerLogin,
@@ -115,7 +121,8 @@
 						forksPerContributor: parseInt(node.forksPerContributor),
 						issuesPerContributor: parseInt(node.issuesPerContributor),
 						pullRequests: parseInt(node.pullRequestsTotalCount),
-						eli5: node.gthbRepoDescription
+						eli5: node.gthbRepoDescription,
+						cursor: cursor
 					}))
 				};
 			});
@@ -229,25 +236,25 @@
 				icon1: GitForkIcon
 			},
 			{
+				id: 'pullRequestsTotalCount',
+				title: 'Pull Requests',
+				icon1: GitPullRequestArrow
+			},
+			{
 				id: 'contributorCount',
 				title: 'Contributors',
 				icon1: UsersRoundIcon
 			},
 			{
-				id: 'pullRequestTotalCount',
-				title: 'Pull Requests',
-				icon1: GitPullRequestArrow
+				id: 'stargazersPerContributor',
+				title: 'Stars/Contr.',
+				icon1: StarIcon,
+				icon2: UsersRoundIcon
 			},
 			{
 				id: 'issuesPerContributor',
 				title: 'Issues/Contr.',
 				icon1: CircleDotIcon,
-				icon2: UsersRoundIcon
-			},
-			{
-				id: 'stargazersPerContributor',
-				title: 'Stars/Contr.',
-				icon1: StarIcon,
 				icon2: UsersRoundIcon
 			},
 			{
@@ -263,7 +270,6 @@
 				icon2: UsersRoundIcon
 			}
 		]
-			.sort((a, b) => a.title.localeCompare(b.title))
 			.map((item, index) => {
 				return {
 					...item,
@@ -312,16 +318,16 @@
 				filters: []
 			},
 			{
-				id: 'issuesPerContributor',
-				title: 'Issues/Contr.',
-				icon1: CircleDotIcon,
+				id: 'stargazersPerContributor',
+				title: 'Stars/Contr.',
+				icon1: StarIcon,
 				icon2: UsersRoundIcon,
 				filters: []
 			},
 			{
-				id: 'starsPerContributor',
-				title: 'Stars/Contr.',
-				icon1: StarIcon,
+				id: 'issuesPerContributor',
+				title: 'Issues/Contr.',
+				icon1: CircleDotIcon,
 				icon2: UsersRoundIcon,
 				filters: []
 			},
@@ -331,8 +337,15 @@
 				icon1: GitForkIcon,
 				icon2: UsersRoundIcon,
 				filters: []
+			},
+			{
+				id: 'pullRequestsPerContributor',
+				title: 'PRs/Contr.',
+				icon1: GitPullRequestArrow,
+				icon2: UsersRoundIcon,
+				filters: []
 			}
-		].sort((a, b) => a.title.localeCompare(b.title)),
+		],
 
 		columns: [
 			{
@@ -366,29 +379,22 @@
 				icon1: GitForkIcon
 			},
 			{
-				id: 'contributors',
-				title: 'Contributors',
-				checked: true,
-				icon1: UsersRoundIcon
-			},
-			{
 				id: 'pullRequests',
 				title: 'Pull Requests',
 				checked: true,
 				icon1: GitPullRequestArrow
 			},
 			{
+				id: 'contributors',
+				title: 'Contributors',
+				checked: true,
+				icon1: UsersRoundIcon
+			},
+			{
 				id: 'issuesPerContributor',
 				title: 'Issues/Contr.',
 				checked: true,
 				icon1: CircleDotIcon,
-				icon2: UsersRoundIcon
-			},
-			{
-				id: 'forksPerContributor',
-				title: 'Forks/Contr.',
-				checked: true,
-				icon1: GitForkIcon,
 				icon2: UsersRoundIcon
 			},
 			{
@@ -399,17 +405,28 @@
 				icon2: UsersRoundIcon
 			},
 			{
+				id: 'forksPerContributor',
+				title: 'Forks/Contr.',
+				checked: true,
+				icon1: GitForkIcon,
+				icon2: UsersRoundIcon
+			},
+			{
 				id: 'pullRequestsPerContributor',
 				title: 'PRs/Contr.',
 				checked: true,
 				icon1: GitPullRequestArrow,
 				icon2: UsersRoundIcon
 			}
-		].sort((a, b) => a.title.localeCompare(b.title))
+		]
 	});
 </script>
 
-<FilterHeader bind:data={filterData} disableAddRepo={true} />
+<FilterHeader bind:data={filterData} options={{
+	addRepoProps: {
+		preSelectedCategories: [title]
+	}
+}} />
 
 {#if data.rows && data.rows.length > 0}
 	{#key data}

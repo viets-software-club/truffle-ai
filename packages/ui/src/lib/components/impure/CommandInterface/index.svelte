@@ -3,24 +3,48 @@
 	import * as Command from '$lib/components/pure/ui/command/index.js';
 	import TrendingUpIcon from 'lucide-svelte/icons/trending-up';
 	import BookmarkIcon from 'lucide-svelte/icons/bookmark';
+	import SettingsIcon from 'lucide-svelte/icons/settings';
+	import PlusIcon from 'lucide-svelte/icons/plus';
+
 	import { goto } from '$app/navigation';
-	let open = false;
+	import { page } from '$app/stores';
+	import AddRepo from '$lib/components/impure/AddRepo/index.svelte';
+
+	let open = $state(false);
+	let commandList: any;
 
 	onMount(() => {
+		// commandList.focus();
 		function handleKeydown(e: KeyboardEvent) {
-			if (e.key === 'j' && (e.metaKey || e.ctrlKey)) {
+			if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
+				e.stopPropagation();
 				open = !open;
+				return;
 			}
-			if (open && e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+			if (open && e.key === 'g' && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
-				handleTrendingClick();
-				open = !open;
+				e.stopPropagation();
+				handleTrendingSelect();
+				return;
 			}
-			if (open && e.key === 'l' && (e.metaKey || e.ctrlKey)) {
+			if (open && e.key === 'b' && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
-				handleBookmarkClick();
-				open = !open;
+				e.stopPropagation();
+				handleBookmarkSelect();
+				return;
+			}
+			if (open && e.key === 's' && (e.metaKey || e.ctrlKey)) {
+				e.preventDefault();
+				e.stopPropagation();
+				handleSettingsSelect();
+				return;
+			}
+			if (open && e.key === 'a' && (e.metaKey || e.ctrlKey)) {
+				e.preventDefault();
+				e.stopPropagation();
+				handleAddRepoSelect();
+				return;
 			}
 		}
 
@@ -29,30 +53,66 @@
 			document.removeEventListener('keydown', handleKeydown);
 		};
 	});
-	const handleTrendingClick = () => {
+	const handleTrendingSelect = () => {
 		goto('/');
+		open = false;
 	};
-	const handleBookmarkClick = () => {
+	
+	const handleBookmarkSelect = () => {
 		goto('/bookmarks');
+		open = false;
 	};
+	const handleSettingsSelect = () => {
+		goto('/settings');
+		open = false;
+	};
+
+	let isAddRepo = $state(false)
+	const handleAddRepoSelect = () => {
+		open = false;
+		isAddRepo = true;
+	}
+// 	$effect(() => {
+// 		// const pathname = $page.url.pathname.
+// 		// console.log('Current pathname:', pathname);
+// 		console.log($page.url.pathname);
+//   });
+const handleDialogClose = () => {
+	isAddRepo = false;
+}
 </script>
 
 <Command.Dialog bind:open>
 	<Command.Input placeholder="Type a command or search..." />
-	<Command.List>
+	<Command.List bind:this={commandList}>
 		<Command.Empty>No results found.</Command.Empty>
 		<Command.Group heading="Suggestions">
-			<Command.Item on:click={handleTrendingClick}>
+			<Command.Item onSelect={handleBookmarkSelect}>
 				<TrendingUpIcon class="mr-2 h-3 w-3" />
 				<span>Trending</span>
-				<Command.Shortcut>⌘K</Command.Shortcut>
+				<Command.Shortcut>⌘G</Command.Shortcut>
 			</Command.Item>
-			<Command.Item on:click={handleBookmarkClick}>
+			<Command.Item  onSelect={handleBookmarkSelect} >
 				<BookmarkIcon class="mr-2 h-3 w-3" />
 				<span>Bookmarks</span>
-				<Command.Shortcut>⌘L</Command.Shortcut>
+				<Command.Shortcut>⌘B</Command.Shortcut>
+			</Command.Item>
+			<Command.Item  onSelect={handleSettingsSelect} >
+				<SettingsIcon class="mr-2 h-3 w-3" />
+				<span>Settings</span>
+				<Command.Shortcut>⌘S</Command.Shortcut>
+			</Command.Item>
+			<Command.Item  onSelect={handleAddRepoSelect} >
+				<PlusIcon class="mr-2 h-3 w-3" />
+				<span>Add Repository</span>
+				<Command.Shortcut>⌘A</Command.Shortcut>
 			</Command.Item>
 		</Command.Group>
 		<Command.Separator />
 	</Command.List>
 </Command.Dialog>
+{#if isAddRepo}
+	<div class="overflow-hidden position-absolute z-10">
+		<AddRepo startOpen={true} onDialogOpenChange={handleDialogClose} />
+	</div>
+{/if}

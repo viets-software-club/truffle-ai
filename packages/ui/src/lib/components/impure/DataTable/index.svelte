@@ -39,6 +39,7 @@
 		pullRequestSort: string;
 		starsPerContributorSort: string;
 		hiddenColumnIdArr: string[];
+		rowClickDataParam: any;
 	};
 
 	type RowData = {
@@ -56,11 +57,13 @@
 		pullRequests: number;
 		pullRequestsPerContributor: number;
 		eli5: string;
+		cursor: string;
 	};
 	export let data: Data;
 
 	let { hiddenColumnIdArr } = data;
-	let table = createTable(readable(data.rows), {
+	const dataStore = readable(data.rows);
+	let table = createTable(dataStore, {
 		page: addPagination({ initialPageSize: 20 }),
 		hide: addHiddenColumns({
 			initialHiddenColumnIds: hiddenColumnIdArr
@@ -186,9 +189,10 @@
 
 	const { hasNextPage, hasPreviousPage, pageIndex } = pluginStates.page;
 
-	const handleTableRowClick = (row: any) => () => {
+	const handleTableRowClick =  (row:any, rowAttrs: any) => () => {
 		const [owner, repo] = row.cellForId.name.value.split('/');
-		goto(`/repo/${owner}/${repo}`);
+		const paramData = JSON.stringify({...data.rowClickDataParam, cursor: row.original?.cursor})
+		goto(`/repo/${owner}/${repo}?data=${encodeURIComponent(paramData)}`);
 	};
 
 	const numberSortableColumns = [
@@ -234,14 +238,15 @@
 {#key data}
 	<div class="h-full w-full">
 		<div class="rounded-md w-full overflow-x-auto">
-			<Table.Root {...$tableAttrs}>
+			<Table.Root {...$tableAttrs}
+			>
 				<Table.Header>
 					{#each $headerRows as headerRow}
 						<Subscribe rowAttrs={headerRow.attrs()} rowProps={headerRow.props()} let:rowProps>
 							<Table.Row>
 								{#each headerRow.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-										<Table.Head {...attrs} class="px-[1.125rem]">
+										<Table.Head {...attrs} class="px-[1rem] md:px-[1.125rem]">
 											<div class="flex gap-1.5 items-center">
 												<Render of={cell.render()} />
 												{#if numberSortableColumns.includes(cell.id)}
@@ -264,12 +269,19 @@
 							<Table.Row
 								{...rowAttrs}
 								class="px-[1.125rem] cursor-pointer"
-								on:click={handleTableRowClick(row)}
+								on:click={handleTableRowClick(row, rowAttrs)}
 							>
+							{row.cursor}
 								{#each row.cells as cell (cell.id)}
 									<Subscribe attrs={cell.attrs()} let:attrs>
 										<Table.Cell {...attrs}>
+											{#if cell.id === 'avatar'}
+												<div class="flex items-center">
+													<Render of={cell.render()} />
+												</div>
+											{:else}
 											<Render of={cell.render()} />
+											{/if}
 										</Table.Cell>
 									</Subscribe>
 								{/each}

@@ -6,7 +6,7 @@
 	import { supabaseClient } from '$lib/supabase/index';
 	import { goto } from '$app/navigation';
 	import CommandInterface from '$lib/components/impure/CommandInterface/index.svelte';
-	let mobile = $state(false);
+	import {updateMobileSidebarOpenState} from '$lib/store/sidebar';
 
 	let hasLoadedSession = $state(false);
 
@@ -19,20 +19,22 @@
 			}
 		});
 	});
+	let isMobileSidebarOpen = $state($updateMobileSidebarOpenState)
+	console.log('isMobilesi', isMobileSidebarOpen)
+updateMobileSidebarOpenState.subscribe((value) => {
+	console.log('huh', value)
+    isMobileSidebarOpen = value;
+});
+
+
 </script>
 
 {#if hasLoadedSession}
-	<div class="relative">
-		<div class="ml-4 h-[3.75rem] flex items-center absolute top-0 left-0 md:hidden">
-			<MenuIcon
-				onclick={() => {
-					mobile = !mobile;
-				}}
-			/>
-		</div>
-	</div>
+		
+	
 	<Resizable.PaneGroup direction="horizontal">
-		<Resizable.Pane defaultSize={mobile ? 100 : 17} class={mobile ? 'block' : 'hidden md:block'}
+		{#key isMobileSidebarOpen}
+		<Resizable.Pane defaultSize={isMobileSidebarOpen ? 100 : 17} class={isMobileSidebarOpen ? 'block' : 'hidden md:block'}
 			><Sidebar /></Resizable.Pane
 		>
 		<Resizable.Handle withHandle />
@@ -41,6 +43,7 @@
 				<slot />
 			</main></Resizable.Pane
 		>
+		{/key}
 	</Resizable.PaneGroup>
 	<MobileNavigation class="md:hidden" />
 	<CommandInterface />

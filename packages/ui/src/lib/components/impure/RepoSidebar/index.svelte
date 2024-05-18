@@ -141,14 +141,15 @@
 							repoName: node.gthbRepoName
 						};
 
-						languages = node.gthbRepoAndGthbLangCollection.edges.map(({ node }) => ({
+						languages = node.gthbRepoAndGthbLangCollection.edges.map(({ node }: any) => ({
 							name: node.gthbLang.gthbLangName,
 							color: node.gthbLang.color
 						}));
 						contributors = node.gthbRepoContrCollection.edges
-							.filter(({ node }) => node.gthbOwner.gthbOwnerLogin !== owner.login)
-							.map(({ node }) => {
+							.filter(({ node }: any) => node.gthbOwner.gthbOwnerLogin !== owner.login)
+							.map(({ node }: any) => {
 								return {
+									contributions: node.contributions,
 									avatarUrl: node.gthbOwner.avatarUrl,
 									login: node.gthbOwner.gthbOwnerLogin,
 									url: node.gthbOwner.gthbOwnerUrl
@@ -271,10 +272,11 @@
 							target="_blank"
 							class="flex items gap-2 items-center py-2 cursor-pointer"
 						>
-							<img class="w-4 h-4" src={contributor.avatarUrl} alt="" />
+							<img class="w-4 h-4 rounded-full" src={contributor.avatarUrl} alt="" />
 							<span class="text-sm text-foreground/80 text-ellipsis overflow-hidden"
 								>{contributor.name || contributor.login}</span
 							>
+							<span class="ml-auto text-sm text-foreground/50">{contributor.contributions}</span>
 						</a>
 					</li>
 				{/each}

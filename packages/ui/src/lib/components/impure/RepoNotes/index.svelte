@@ -4,16 +4,26 @@
 	import NotebookPen from 'lucide-svelte/icons/notebook-pen';
 	import {
 		UpdateProjRepoNotesByGthbRepoIdDocument,
-		GetProjRepoNotesByGthbRepoIdDocument
+		GetProjRepoNotesByGthbRepoIdDocument,
+
+		GetProjBookmarkNotesByProjBookmarkIdDocument,
+
+		UpdateProjBookmarkNotesByProjBookmarkIdDocument
+
+
 	} from '$lib/graphql/supabase/generated-codegen';
 	import client from '$lib/graphql/supabase/client';
 	import { toast } from 'svelte-sonner';
+	import * as Tabs from "$lib/components/pure/ui/tabs"
+
 	type Props = {
 		githubRepoId: string | number;
+		projBookmarkId?: string | number;
 	};
-	let { githubRepoId, ...attrs }: Props = $props();
+	let { githubRepoId, projBookmarkId, ...attrs }: Props = $props();
 
-	let value = $state('');
+	let privateText = $state('');
+	let publicText = $state('');
 
 	$effect(() => {
 		client
@@ -26,18 +36,40 @@
 			})
 			.then((res) => {
 				if (res?.data?.projRepoCollection?.edges[0]?.node?.note)
-					value = res?.data?.projRepoCollection?.edges[0]?.node?.note;
-				else value = '';
+					publicText = res?.data?.projRepoCollection?.edges[0]?.node?.note;
+				else publicText = '';
 			})
 			.catch((e) => {
 				toast.error('Error', {
-					description: 'An error occurred while loading the notes.',
+					description: 'An error occurred while loading the public notes.',
 					action: {
 						label: 'ok',
 						onClick: () => {}
 					}
 				});
 			});
+		if(projBookmarkId) {
+			client.query({
+				fetchPolicy: 'network-only',
+				query: GetProjBookmarkNotesByProjBookmarkIdDocument,
+				variables: {
+					projBookmarkId
+				}
+			}).then((res) => {
+				if (res?.data?.projBookmarkCollection?.edges[0]?.node?.note)
+					privateText = res?.data?.projBookmarkCollection?.edges[0]?.node?.note;
+				else privateText = '';
+			})
+			.catch((e) => {
+				toast.error('Error', {
+					description: 'An error occurred while loading the private notes.',
+					action: {
+						label: 'ok',
+						onClick: () => {}
+					}
+				});
+			});
+		}
 	});
 	const debounce = (callback: Function, wait = 300) => {
 		let timeout: ReturnType<typeof setTimeout>;
@@ -47,17 +79,33 @@
 			timeout = setTimeout(() => callback(...args), wait);
 		};
 	};
-	const saveNotes = () => {
+	const savePublicNotes = () => {
 		console.log('noting');
 		client.mutate({
 			mutation: UpdateProjRepoNotesByGthbRepoIdDocument,
 			variables: {
 				gthbRepoId: githubRepoId,
-				text: value
+				text: publicText
 			}
 		});
 	};
+	const savePrivateNotes = () => {
+		client.mutate({
+			mutation: UpdateProjBookmarkNotesByProjBookmarkIdDocument,
+			variables: {
+				projBookmarkId,
+				text: privateText
+			}
+		});
+	};
+
+	let currentTab = $state('public');
 </script>
+
+
+
+
+
 
 <Card.Root {...attrs}>
 	<Card.Header>
@@ -65,12 +113,37 @@
 		<Card.Description>Your hand-written notes</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		{#key githubRepoId}
-			<Textarea
-				bind:value
-				rows={9}
-				class="h-54 truncate w-full outline-none pt-2.5"
-				on:input={debounce(saveNotes)}
-			></Textarea>{/key}</Card.Content
+
+<Tabs.Root bind:value={currentTab} class="w-full">
+	{#if currentTab === 'public'}
+	<Tabs.Content value="public">
+		
+		<Textarea
+			bind:value={publicText}
+			rows={9}
+			class="h-54 truncate w-full outline-none pt-2.5"
+			on:input={debounce(savePublicNotes)}
+		></Textarea>
+	</Tabs.Content>
+	{/if}
+	{#if currentTab === 'private'}
+	<Tabs.Content value="private">
+	
+		<Textarea
+			bind:value={privateText}
+			rows={9}
+			class="h-54 truncate w-full outline-none pt-2.5"
+			on:input={debounce(savePrivateNotes)}
+		></Textarea>
+		
+	</Tabs.Content>
+	{/if}
+	<Tabs.List class="grid w-full grid-cols-2">
+		<Tabs.Trigger value="public">Public</Tabs.Trigger>
+		{#if projBookmarkId}<Tabs.Trigger value="private">Private</Tabs.Trigger>{/if}
+	  </Tabs.List>
+  </Tabs.Root>
+		
+		</Card.Content
 	>
 </Card.Root>

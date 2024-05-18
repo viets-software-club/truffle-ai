@@ -43,31 +43,33 @@ func (p *Prompts) GenerateEli5FromReadme(data RepoData) (string, error) {
 
 	t := fmt.Sprintf("Below is a readme and an about description from a Github Repository, can you provide an short explain like I am 5 description of the repo:\n%s\n\n\n\nAbout:\n%s", data.Readme, data.About)
 	println("first", len(t))
-	// resp, err := p.client.CreateChatCompletion(
-	// 	context.Background(),
-	// 	openai.ChatCompletionRequest{
-	// 		Model:     openai.GPT3Dot5Turbo,
-	// 		MaxTokens: 250,
-	// 		Messages: []openai.ChatCompletionMessage{
-	// 			{
-	// 				Role:    openai.ChatMessageRoleSystem,
-	// 				Content: "You are helping an investor invest in a company",
-	// 			},
-	// 			{
-	// 				Role:    openai.ChatMessageRoleUser,
-	// 				Content: fmt.Sprintf("Below is a readme and an about description from a Github Repository, can you provide an short explain like I am 5 description of the repo:\n%s\n\n\n\nAbout:\n%s", data.Readme, data.About),
-	// 			},
-	// 		},
-	// 	},
-	// )
+	resp, err := p.client.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model:     openai.GPT3Dot5Turbo,
+			MaxTokens: 250,
+			Messages: []openai.ChatCompletionMessage{
+				{
+					Role:    openai.ChatMessageRoleSystem,
+					Content: "You are helping an investor invest in a company",
+				},
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: fmt.Sprintf("Below is a readme and an about description from a Github Repository, can you provide an short explain like I am 5 description of the repo:\n%s\n\n\n\nAbout:\n%s", data.Readme, data.About),
+				},
+			},
+		},
+	)
 
-	// if err != nil {
-	// 	fmt.Printf("ChatCompletion error: %v\n", err)
-	// 	return "", err
-	// }
+	fmt.Printf("Generated response2: %+v\n", resp)
 
-	// return resp.Choices[0].Message.Content, nil
-	return "test", nil
+	if err != nil {
+		fmt.Printf("ChatCompletion error: %v\n", err)
+		return "", err
+	}
+
+	return resp.Choices[0].Message.Content, nil
+	// return "test", nil
 }
 
 func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCommentsResponse) (string, error) {
@@ -78,38 +80,45 @@ func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCom
 	for _, comment := range comments.Hits {
 		commentsSlice = append(commentsSlice, comment.CommentText)
 	}
-	commentsString := strings.Join(commentsSlice, ",")
+	commentsString := strings.Join(commentsSlice, ";/;")
 	if len(commentsString) > 700 {
 		commentsString = commentsString[:700]
 	}
-	t := fmt.Sprintf("Below is a Golang struct containing Hackernews Comments from Hackernews's Algolia API to a specific search term, the name of a Github Repository, can you provide the overall sentiment, the overall perception of the comments in a short statement, also make sure that the comments might have outliers that should not be considered as they don't talk about the project/Github Repository:\n%v", &commentsString)
-	println("second", len(t))
 
-	// resp, err := p.client.CreateChatCompletion(
-	// 	context.Background(),
-	// 	openai.ChatCompletionRequest{
-	// 		Model:     openai.GPT3Dot5Turbo,
-	// 		MaxTokens: 250,
-	// 		Messages: []openai.ChatCompletionMessage{
-	// 			{
-	// 				Role:    openai.ChatMessageRoleSystem,
-	// 				Content: "You are helping an investor invest in a company",
-	// 			},
-	// 			{
-	// 				Role:    openai.ChatMessageRoleUser,
-	// 				Content: fmt.Sprintf("Below is a Golang struct containing Hackernews Comments from Hackernews's Algolia API to a specific search term, the name of a Github Repository, can you provide the overall sentiment, the overall perception of the comments in a short statement, also make sure that the comments might have outliers that should not be considered as they don't talk about the project/Github Repository:\n%v", &commentsString),
-	// 			},
-	// 		},
-	// 	},
-	// )
+	if len(commentsString) < 5 {
+		return "No comments found", nil
+	}
+	t := fmt.Sprintf("Here is a list of Hackernews Comments separated by ;/; from Hackernews's Algolia API. The used query parameter is a Github Repository Name. Can you provide the overall sentiment about the repository, technology and what you learned, e.g. the overall perception of the comments in a short statement. Sometimes some comments might not be serious or make sense avoid them in your statement.\n%v", commentsString)
+	println("second", len(t), commentsString)
 
-	// if err != nil {
-	// 	fmt.Printf("ChatCompletion error: %v\n", err)
-	// 	return "", err
-	// }
+	resp, err := p.client.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model:     openai.GPT3Dot5Turbo,
+			MaxTokens: 250,
+			Messages: []openai.ChatCompletionMessage{
+				{
+					Role:    openai.ChatMessageRoleSystem,
+					Content: "You are helping an investor invest in a company",
+				},
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: t,
+					// Content: fmt.Sprintf("Below is a Golang struct containing Hackernews Comments from Hackernews's Algolia API to a specific search term, the name of a Github Repository, can you provide the overall sentiment, the overall perception of the comments in a short statement, also make sure that the comments might have outliers that should not be considered as they don't talk about the project/Github Repository:\n%v", &commentsString),
+				},
+			},
+		},
+	)
 
-	return "hn", nil
-	// return resp.Choices[0].Message.Content, nil
+	if err != nil {
+		fmt.Printf("ChatCompletion error: %v\n", err)
+		return "", err
+	}
+
+	fmt.Printf("Generated response1: %+v\n", resp)
+
+	// return "hn", nil
+	return resp.Choices[0].Message.Content, nil
 }
 
 // func (p *Prompts) GenerateCategories() (string, error) {

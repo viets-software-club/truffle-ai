@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import type { AuthSession } from '@supabase/supabase-js';
 	import { Toaster } from 'svelte-sonner';
+	import { page } from '$app/stores';
 
 	if (browser) {
 		if (
@@ -45,9 +46,9 @@
 	$effect.pre(() => {
 		supabaseClient.auth.onAuthStateChange((_event, _session) => {
 			session = _session;
-			if (!session) {
-				goto('/signin');
-			}
+			if (!session && $page.url.pathname !== '/signup') {
+            	goto('/signin');
+        	}
 		});
 	});
 	// export let data;

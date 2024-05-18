@@ -217,6 +217,11 @@ create policy "authenticated can select algo_hn_story_and_algo_hn_tag"
   on algo_hn_story_and_algo_hn_tag for select to authenticated
   using (true);
 
+drop policy if exists "authenticated can select algo_hn_comment_and_algo_hn_tag" on algo_hn_comment_and_algo_hn_tag;
+create policy "authenticated can select algo_hn_comment_and_algo_hn_tag"
+  on algo_hn_comment_and_algo_hn_tag for select to authenticated
+  using (true);
+
 drop policy if exists "authenticated can select gthb_repo_and_gthb_lang" on gthb_repo_and_gthb_lang;
 create policy "authenticated can select gthb_repo_and_gthb_lang"
   on gthb_repo_and_gthb_lang for select to authenticated

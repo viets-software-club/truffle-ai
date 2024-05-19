@@ -68,7 +68,7 @@
         "paneforge": "^0.0.4",
         "svelte-chartjs": "^3.1.5",
         "svelte-sonner": "^0.3.24",
-        "sveltekit-superforms": "^2.13.1",
+        "sveltekit-superforms": "2.12.4",
         "tailwind-merge": "^1.14.0",
         "tailwind-variants": "^0.2.1",
         "uuid": "^9.0.1",

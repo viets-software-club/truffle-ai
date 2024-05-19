@@ -48,7 +48,7 @@
 	<a href="/" class="flex items-center cursor-pointer align-middle">
 		<img src={logo} alt="Truffle AI" class="mr-2 h-6 w-6 sm:h-6 sm:w-6" loading="eager" />
 		{#if showText}<div
-				class="leading-none mb-[0.175rem] sm:mb-0 sm:leading-snug truncate w-full whitespace-nowrap overflow-hidden"
+				class="leading-none flex items-center sm:block text-base sm:text-base sm:mb-[0.175rem] sm:mb-0 sm:leading-snug truncate w-full whitespace-nowrap overflow-hidden"
 			>
 				Truffle AI
 				<!-- <span class="block text-[0.6rem] sm:text-[0.5rem] leading-none pl-[0.06rem]"

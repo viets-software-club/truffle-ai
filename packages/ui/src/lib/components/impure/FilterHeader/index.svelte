@@ -117,7 +117,7 @@
 	};
 </script>
 
-<div class=" flex py-2 px-4 h-[3.8125rem] w-full border-b">
+<div class=" flex py-2 px-4 pl-0 md:pl-4 h-[3.8125rem] w-full border-b">
 	<div class="flex gap-4 items-center">
 		<slot name="left" />
 	</div>

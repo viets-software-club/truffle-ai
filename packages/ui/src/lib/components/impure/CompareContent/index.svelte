@@ -22,6 +22,7 @@
 		title: string;
 	};
 	let { title }: Props = $props();
+	let titleDerived = $derived(title);
 
 	type BookmarkType = {
 		githubRepoId: number;
@@ -33,10 +34,9 @@
 	$effect(() => {
 		client
 			.query({
-				fetchPolicy: 'network-only',
 				query: CompareDocument,
 				variables: {
-					title: title
+					title: titleDerived
 				}
 			})
 			.then((res) => {
@@ -108,7 +108,7 @@
 	};
 </script>
 
-<section class="h-[3.75rem] py-2 px-4 flex items-center">
+<section class="h-[3.75rem] py-2 px-4 pl-0 md:pl-4 flex items-center">
 	<div class="flex gap-4 items-center md:hidden">
 		<SidebarIcon />
 	</div>

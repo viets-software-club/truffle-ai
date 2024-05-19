@@ -5,10 +5,9 @@ import {updateMobileSidebarOpenState} from '$lib/store/sidebar';
 
 </script>
 
-<MenuIcon
-    class={cn($updateMobileSidebarOpenState ? 'hidden' : '', `md:hidden`)}
-    onclick={() => {
-        updateMobileSidebarOpenState.set(!$updateMobileSidebarOpenState);
-        
-    }}
-/>
+<div  class={cn('p-5', $updateMobileSidebarOpenState ? 'hidden' : '', `md:hidden`)}  onclick={() => {
+    updateMobileSidebarOpenState.set(!$updateMobileSidebarOpenState);
+}}>
+    <MenuIcon
+    />
+</div>

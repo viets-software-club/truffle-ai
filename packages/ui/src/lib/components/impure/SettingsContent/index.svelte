@@ -53,7 +53,7 @@
 		<Section.Content></SettingsSection.Content>
 	</SettingsSection.Root>
 </div> -->
-<div class=" flex py-2 px-4 h-[3.75rem] w-full border-b items-center">
+<div class=" flex py-2 px-4 pl-0 md:pl-4 h-[3.75rem] w-full border-b items-center">
 		<div class="flex gap-4 items-center md:hidden">
 			<SidebarIcon />
 		</div>

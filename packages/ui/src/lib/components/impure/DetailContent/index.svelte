@@ -58,11 +58,10 @@
 	})
 
 	$effect(() => {
-		client.queryDeduplication = true;
 		// console.log('that is ', ownerLogin, repoName)
 		client
 			.query({
-				fetchPolicy: 'network-only',
+				// fetchPolicy: 'network-only',
 				query: DetailDocument,
 				variables: {
 					ownerLogin: ownerLogin,
@@ -219,7 +218,7 @@
 </script>
 
 
-<section class="h-[3.75rem] py-2 px-4 flex items-center">
+<section class="h-[3.75rem] py-2 px-4 pl-0 md:pl-4 flex items-center">
 	<div class="flex gap-4 items-center md:hidden">
 		<SidebarIcon />
 	</div>
@@ -239,17 +238,21 @@
 <!-- md:h-[calc(100%-3.75rem)] -->
 <div class="md:flex">
 	<div class="flex-1">
-		<section class="border-t px-8 py-6">
+		<section class="border-t px-5 md:px-8 py-6">
 			<div class="flex items-center gap-4 mb-5">
 				{#if data}
-					<img class="w-8 h-8" src={data.avatarUrl} alt="avatar" />
+					<img class="w-8 h-8" src={data.avatarUrl} alt="avatar" loading="eager" />
+				{:else}
+					<div class="w-8 h-8"></div>
 				{/if}
 				<h1 class="text-2xl font-bold">{ownerLogin}/{repoName}</h1>
 			</div>
 			<div class="md:flex gap-10">
 				<div class="mb-4 md:mb-0 md:max-w-xs">
+					
 					<h2 class="text-foreground/50 text-sm leading-loose">About</h2>
 					<p class="text-sm">{data?.description}</p>
+					
 				</div>
 				<div>
 					<h2 class="text-foreground/50 text-sm leading-loose">Explain Like I am 5</h2>

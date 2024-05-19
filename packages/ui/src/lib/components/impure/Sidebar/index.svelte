@@ -170,7 +170,7 @@
 </script>
 
 <aside class="flex flex-col overflow-auto overflow-x-hidden h-full relative" {...attrs}>
-	<section class="pl-6 pr-1 h-[3.8125rem] border-b flex items-center">
+	<section class="pl-6 pr-0 h-[3.8125rem] border-b flex items-center">
 		<div onclick={closeSidebar} >
 		<Logo showText={true} />
 	</div>

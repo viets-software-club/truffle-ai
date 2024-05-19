@@ -14,7 +14,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    environment: ${{ ((github.event_name == 'pull_request' && github.head_ref || github.ref_name) == 'main' && 'production') || ((github.event_name == 'pull_request' && github.head_ref || github.ref_name) == 'staging' && 'staging') || 'commit' }}
+    # environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
     strategy:
       matrix:
         node-version: [21.x]

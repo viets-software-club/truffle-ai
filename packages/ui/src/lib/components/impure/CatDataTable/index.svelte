@@ -103,7 +103,7 @@
 					minStarsPerContributor:
 						res.data.queryStargazersPerContributorMin?.edges[0]?.node.stargazersPerContributor,
 					rowClickDataParam: {
-						page: 'category',
+						page: `compare/${title}`,
 						variables: createGraphQLVariables()
 					},
 					rows: res.data.queryTrending?.edges.map(({ node, cursor }) => ({

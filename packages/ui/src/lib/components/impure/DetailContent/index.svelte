@@ -46,7 +46,7 @@
 
 	let data: Data = $state(null);
 	let navigation: any = $state({beforeDisabled: true, afterDisabled: true})
-	let prevPage = $state(null);
+	let prevPage: string | null = $state(null);
 	let upDownData: any = null;
 	onDestroy(() => {
 		// console.log('destroy')
@@ -122,7 +122,7 @@
 						...data.variables,
 						cursor: data.cursor,
 						isTrending: data.page === 'trending',
-						isCategory: data.page === 'category',
+						isCategory: data.page.startsWith('compare'),
 						isBookmarks: data.page === 'bookmarks',
 					}
 				} as any)
@@ -132,7 +132,7 @@
 					if(data.page === "trending") {
 						before = res?.data?.beforeTrendingRepo;
 						after  = res?.data?.afterTrendingRepo;
-					} else if(data.page === "category") {
+					} else if(data.page.startsWith('compare')) {
 						before = res?.data?.beforeCategoryRepo;
 						after  = res?.data?.afterCategoryRepo;
 					} else if(data.page === "bookmarks") {
@@ -195,8 +195,8 @@
 	};
 
 	const handleXClick = () => {
-		if(prevPage === "category")
-			goto('/categories')
+		if(prevPage && prevPage?.startsWith("compare"))
+			goto(`${prevPage}`)
 		else if(prevPage === "bookmarks")
 			goto('/bookmarks')
 		else

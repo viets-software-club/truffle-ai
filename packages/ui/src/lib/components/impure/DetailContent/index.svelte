@@ -196,7 +196,7 @@
 
 	const handleXClick = () => {
 		if(prevPage && prevPage?.startsWith("compare"))
-			goto(`${prevPage}`)
+			goto(`/${prevPage}`)
 		else if(prevPage === "bookmarks")
 			goto('/bookmarks')
 		else

@@ -27,7 +27,8 @@ const authLink = setContext(async (_, { headers }) => {
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
 	uri: PUBLIC_SUPABASE_GRAPHQL_URL,
-	link: authLink.concat(httpLink)
+	link: authLink.concat(httpLink),
+	queryDeduplication: true
 });
 
 export default client;

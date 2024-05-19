@@ -28,7 +28,7 @@ jobs:
         PACKAGE_NAME: [ui, graphql-gateway, graphql-server]
         include:
           - PACKAGE_NAME: ui
-            BUILD_ARGS: --build-arg SUPABASE_URL="${{needs.variables.outputs.SUPABASE_URL}}" --build-arg GRAPHQL_URL="${{needs.variables.outputs.GRAPHQL_URL}}"
+            BUILD_ARGS: --build-arg SUPABASE_URL="${{needs.variables.outputs.SUPABASE_URL}}" --build-arg SUPABASE_GRAPHQL_URL="${{needs.variables.outputs.SUPABASE_GRAPHQL_URL}}" --build-arg GATEWAY_GRAPHQL_URL="${{needs.variables.outputs.GATEWAY_GRAPHQL_URL}}" --build-arg UI_HOSTNAME="${{needs.variables.outputs.UI_HOSTNAME}}" --build-arg UI_PORT="${{needs.variables.outputs.UI_PORT}}"
           - PACKAGE_NAME: graphql-gateway
             BUILD_ARGS: --build-arg GRAPHQL_SERVER_URL="${{ needs.variables.outputs.GRAPHQL_SERVER_URL }}" --build-arg SUPABASE_URL="${{ needs.variables.outputs.SUPABASE_URL }}" --build-arg SUPABASE_GRAPHQL_URL="${{needs.variables.outputs.SUPABASE_GRAPHQL_URL}}"
     uses: ./.github/workflows/reusable-ghcr-image.yml

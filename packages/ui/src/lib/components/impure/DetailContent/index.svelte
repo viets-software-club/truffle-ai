@@ -29,8 +29,10 @@
 		repoName: string;
 		ownerLogin: string;
 	};
-	let { repoName, ownerLogin }: Props = $props();
+	// let { repoName, ownerLogin }: Props = $props();
 	
+	let ownerLogin = $derived($page.params.owner_login)
+	let repoName = $derived($page.params.repo_name)
 	type Data = {
 		eli5: string;
 		description: string;
@@ -56,16 +58,16 @@
 	})
 
 	$effect(() => {
+		client.queryDeduplication = true;
 		// console.log('that is ', ownerLogin, repoName)
 		client
 			.query({
 				fetchPolicy: 'network-only',
 				query: DetailDocument,
 				variables: {
-					ownerLogin,
-					repoName
+					ownerLogin: ownerLogin,
+					repoName: repoName
 				},
-				
 			})
 			.then((res) => {
 

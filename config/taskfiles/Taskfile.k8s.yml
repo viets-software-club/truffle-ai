@@ -1,6 +1,6 @@
 version: "3"
 vars:
-  SOURCE: ../../scripts/env/source.sh ../..
+  SOURCE: ./scripts/env/source.sh ./
 tasks:
   ### Production
   production:select:

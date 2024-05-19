@@ -4,6 +4,7 @@ silent: true
 
 includes:
   k8s:
+    dir: /Users/supine/Documents/code/truffle-ai
     taskfile: ./config/taskfiles/Taskfile.k8s.yml
   db: ./config/taskfiles/Taskfile.db.yml
   prettier: ./config/taskfiles/Taskfile.prettier.yml

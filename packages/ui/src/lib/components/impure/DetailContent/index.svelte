@@ -23,13 +23,14 @@
 	import ChevronUpIcon from 'lucide-svelte/icons/chevron-up';
 	import ChevronDownIcon from 'lucide-svelte/icons/chevron-down';
 	import XIcon from 'lucide-svelte/icons/x';
+	import { onDestroy, onMount } from 'svelte';
 
 	type Props = {
 		repoName: string;
 		ownerLogin: string;
 	};
 	let { repoName, ownerLogin }: Props = $props();
-
+	
 	type Data = {
 		eli5: string;
 		description: string;
@@ -45,24 +46,32 @@
 	let navigation: any = $state({beforeDisabled: true, afterDisabled: true})
 	let prevPage = $state(null);
 	let upDownData: any = null;
-	$effect(() => {
-		console.log('This is detail page')
-		const cacheContents = client.cache.extract();
+	onDestroy(() => {
+		// console.log('destroy')
+		data = null;
+		navigation = null;
+		prevPage = null;
+		upDownData = null;
+	
+	})
 
-				console.log('cache2', cacheContents);
+	$effect(() => {
+		// console.log('that is ', ownerLogin, repoName)
 		client
 			.query({
+				fetchPolicy: 'network-only',
 				query: DetailDocument,
 				variables: {
-
-					ownerLogin: ownerLogin,
-					repoName: repoName
-				}
+					ownerLogin,
+					repoName
+				},
+				
 			})
 			.then((res) => {
-				console.log('This is detail page2', res)
 
 				if (res?.data?.fGetProjRepoByGthbName?.edges[0]?.node) {
+					// console.log('going on ', res?.data?.fGetProjRepoByGthbName?.edges[0]?.node)
+					// console.log(res?.data?.fGetProjRepoByGthbName?.edges[0]?.node)
 					data = {
 						eli5: res?.data?.fGetProjRepoByGthbName?.edges[0]?.node?.repoEli5 || '',
 						description:
@@ -76,6 +85,7 @@
 						gthbOwnerId:
 							parseInt(res?.data?.fGetGthbOwnerByGthbName?.edges[0]?.node?.gthbOwnerId) || -1
 					};
+					// console.log('description', data.description);
 				} else {
 					toast.error('Error', {
 						description: "This page doesn't exist. Redirecting....",
@@ -182,7 +192,6 @@
 				});
 	};
 
-	const isFromSameOrigin = () => $page?.url?.searchParams?.has('data')
 	const handleXClick = () => {
 		if(prevPage === "category")
 			goto('/categories')
@@ -206,6 +215,7 @@
 		goto(`/repo/${navigation.after}?data=${encodeURIComponent(JSON.stringify(param))}`)
 	}
 </script>
+
 
 <section class="h-[3.75rem] py-2 px-4 flex items-center">
 	<div class="flex gap-4 items-center md:hidden">

@@ -66,7 +66,7 @@
 
 	const emailSchema = z.string().email().min(6).max(50);
 	const domainSchema = z.string().refine(value => {
-		const domainRegex = /^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\.)+[A-Za-z]{2, 6}$/;
+		const domainRegex = /([a-z0-9A-Z]\.)*[a-z0-9-]+\.([a-z0-9]{2,24})+(\.co\.([a-z0-9]{2,24})|\.([a-z0-9]{2,24}))*/g;
 		return domainRegex.test(value);
 	}, {
 		message: "Invalid domain",

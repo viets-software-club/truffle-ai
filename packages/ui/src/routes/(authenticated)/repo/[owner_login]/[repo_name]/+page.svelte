@@ -1,8 +1,12 @@
 <script>
 	import DetailContent from '$lib/components/impure/DetailContent/index.svelte';
 	import { page } from '$app/stores';
-
-	export const prerender = false;
+	const params = $derived({
+        repoName: $page.params.repo_name,
+        ownerLogin: $page.params.owner_login
+    });
 </script>
 
-<DetailContent repoName={$page.params.repo_name} ownerLogin={$page.params.owner_login} />
+{#key `${params.repoName}-${params.ownerLogin}`}
+<DetailContent repoName={params.repoName} ownerLogin={params.ownerLogin} />
+{/key}

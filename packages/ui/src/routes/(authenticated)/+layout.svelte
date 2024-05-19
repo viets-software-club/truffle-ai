@@ -19,10 +19,10 @@
 			}
 		});
 	});
-	let isMobileSidebarOpen = $state($updateMobileSidebarOpenState)
-updateMobileSidebarOpenState.subscribe((value) => {
-    isMobileSidebarOpen = value;
-});
+	let isMobileSidebarOpen = $derived($updateMobileSidebarOpenState)
+// updateMobileSidebarOpenState.subscribe((value) => {
+//     isMobileSidebarOpen = value;
+// });
 
 
 </script>

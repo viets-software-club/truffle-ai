@@ -65,7 +65,6 @@
 		updateSidebar.subscribe((value) => {
 			client
 				.query({
-					fetchPolicy: 'network-only',
 					query: SidebarDocument
 				})
 				.then((res) => {
@@ -131,7 +130,8 @@
 	// 	};
 	// });
 
-	const handleThemeButton = () => {
+	const handleThemeButton = (e: any) => {
+		e.preventDefault();
 		isThemeSelectionOpen = true;
 	};
 	const handleThemeSelection = (/** @type {any} */ event: any) => {
@@ -170,13 +170,16 @@
 </script>
 
 <aside class="flex flex-col overflow-auto overflow-x-hidden h-full relative" {...attrs}>
-	<section class="px-6 h-[3.8125rem] border-b flex items-center">
+	<section class="pl-6 pr-1 h-[3.8125rem] border-b flex items-center">
+		<div onclick={closeSidebar} >
 		<Logo showText={true} />
+	</div>
 		{#if $updateMobileSidebarOpenState}
+			<div class="p-5 ml-auto" onclick={closeSidebar}>
 			<XIcon
 				class="w-5 h-5 ml-auto cursor-pointer"
-				onclick={closeSidebar}
 				/>
+			</div>
 		{/if}
 	</section>
 	<section class="py-2">
@@ -188,7 +191,7 @@
 		<div class="w-full">
 			<a
 				class="px-4 mx-2 flex hover:bg-muted rounded-sm gap-[0.4rem] items-center py-2 text-[0.8rem] text-opacity-10"
-				on:click={handleTrendingClick}
+				onclick={handleTrendingClick}
 
 				href="/"
 				><TrendingUp class="w-3.5 h-3.5 dark:text-foreground/50 truncate flex-shrink-0" />
@@ -196,7 +199,7 @@
 			>
 			<a
 				class="px-4 mx-2 flex hover:bg-muted rounded-sm gap-[0.4rem] items-center py-2 text-[0.8rem] text-opacity-10"
-				on:click={handleBookmarkClick}
+				onclick={handleBookmarkClick}
 				href="/bookmarks"
 				><Bookmark class="w-3.5 h-3.5 dark:text-foreground/50 truncate flex-shrink-0 -mt-[2px]" />
 				<span class="truncate">Bookmarked</span></a
@@ -307,11 +310,11 @@
 		class="relative flex bottom-0 left-0 right-0 h-10 text-foreground/50 text-xs justify-evenly mb-2 py-2 items-center z-50 bg-background md:border-t md:pb-0"
 	>
 		<button
-			on:click|preventDefault={handleThemeButton}
+			onclick={handleThemeButton}
 			class="p-2 block hover:bg-muted align-middle hover:rounded-md"
 			><PaletteIcon class="w-5 h-5 md:w-4 md:h-4" /></button
 		>
-		<a href="/settings" on:click={handleSettingsClick} class="p-2 block hover:bg-muted hover:rounded-md"
+		<a href="/settings" onclick={handleSettingsClick} class="p-2 block hover:bg-muted hover:rounded-md"
 			><SettingsIcon class="w-5 h-5 md:w-4 md:h-4 block" /></a
 		>
 		<a 

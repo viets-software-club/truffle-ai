@@ -49,7 +49,7 @@ jobs:
       - name: Go to package path ./packages/<package>
         run: cd ./packages/${{inputs.PACKAGE_NAME}}
       - name: Build image
-        run:
+        run: |
           declare -a args=(
             "--build-arg"
             "BUILDKIT_INLINE_CACHE=1"

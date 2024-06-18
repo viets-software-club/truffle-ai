@@ -23,8 +23,8 @@ import LogoutIcon from "lucide-svelte/icons/log-out";
 import PaletteIcon from "lucide-svelte/icons/palette";
 import SettingsIcon from "lucide-svelte/icons/settings";
 import TrendingUp from "lucide-svelte/icons/trending-up";
-import { toast } from "svelte-sonner";
 import { onMount } from "svelte";
+import { toast } from "svelte-sonner";
 
 let isThemeSelectionOpen = $state(false);
 // let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');

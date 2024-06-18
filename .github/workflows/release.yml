@@ -61,7 +61,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Helm Package App
-        run: helm package config/charts/app-chart --version ${{needs.release_tag.outputs.RELEASE_TAG}} --app-version ${{needs.release_tag.outputs.RELEASE_TAG}}
+        run: helm package k8s/charts/app-chart --version ${{needs.release_tag.outputs.RELEASE_TAG}} --app-version ${{needs.release_tag.outputs.RELEASE_TAG}}
       - name: Login Helm
         run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
       - name: Push Helm
@@ -69,7 +69,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: image
+    needs: helm
     steps:
       - name: Get release tag
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV

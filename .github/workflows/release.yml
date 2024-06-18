@@ -18,25 +18,24 @@ jobs:
       - id: tag
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/v}" >> $GITHUB_OUTPUT
   image:
-    environment: ${{needs.variables.outputs.ENV}}
     name: 'Image'
+    uses: ./.github/workflows/reusable-ghcr-image.yml
+    needs: [variables, release_tag]
     permissions:
       contents: read
       packages: write
-    needs: [variables, release_tag]
     strategy:
       matrix:
-        PACKAGE_NAME: [ui, auth-server, graphql-server]
+        PACKAGE_NAME: [ui, gateway, graphql-server]
         include:
           - PACKAGE_NAME: ui
-            BUILD_ARGS: |
-              --build-arg PUBLIC_SUPABASE_URL="${{vars.PUBLIC_SUPABASE_URL}}"
-              --build-arg PUBLIC_SUPABASE_GRAPHQL_URL="${{vars.PUBLIC_SUPABASE_GRAPHQL_URL}}"
-              --build-arg PUBLIC_GATEWAY_URL="${{vars.PUBLIC_GATEWAY_URL}}"
-              --build-arg PUBLIC_UI_HOSTNAME="${{vars.PUBLIC_UI_HOSTNAME}}"
-              --build-arg PUBLIC_UI_PORT="${{vars.PUBLIC_UI_PORT}}"
-              --build-arg PUBLIC_SUPABASE_ANON_KEY="${{secrets.PUBLIC_SUPABASE_ANON_KEY}}"
-    uses: ./.github/workflows/reusable-ghcr-image.yml
+            BUILD_ARGS: >-
+              --build-arg PUBLIC_SUPABASE_URL="${{needs.variables.outputs.PUBLIC_SUPABASE_URL}}"
+              --build-arg PUBLIC_SUPABASE_GRAPHQL_URL="${{needs.variables.outputs.PUBLIC_SUPABASE_GRAPHQL_URL}}"
+              --build-arg PUBLIC_GATEWAY_URL="${{needs.variables.outputs.PUBLIC_GATEWAY_URL}}"
+              --build-arg PUBLIC_UI_HOSTNAME="${{needs.variables.outputs.PUBLIC_UI_HOSTNAME}}"
+              --build-arg PUBLIC_UI_PORT="${{needs.variables.outputs.PUBLIC_UI_PORT}}"
+              --build-arg PUBLIC_SUPABASE_ANON_KEY="${{needs.variables.outputs.PUBLIC_SUPABASE_ANON_KEY}}"
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
       ENV: ${{needs.variables.outputs.ENV}}

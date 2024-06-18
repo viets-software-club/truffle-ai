@@ -1,21 +1,22 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 name: Test & Build
 on:
   push:
     branches: ['main', 'staging', 'commit']
   pull_request:
     branches: ['main', 'staging', 'commit']
-env:
-  SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
-  GRAPHQL_GATEWAY_PORT: ${{ vars.GRAPHQL_GATEWAY_PORT }}
-  GRAPHQL_SERVER_PORT: ${{ vars.GRAPHQL_SERVER_PORT }}
-  GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: ${{ ((github.event_name == 'pull_request' && github.head_ref || github.ref_name) == 'main' && 'production') || ((github.event_name == 'pull_request' && github.head_ref || github.ref_name) == 'staging' && 'staging') || 'commit' }}
-    # environment: ${{ startsWith(github.ref, 'refs/pull') && 'commit' || github.ref_name }}
+    env:
+      NODE_ENV: production
+      GO_ENV: production
+      PUBLIC_SUPABASE_URL: ${{vars.PUBLIC_SUPABASE_URL}}
+      PUBLIC_SUPABASE_GRAPHQL_URL: ${{vars.PUBLIC_SUPABASE_GRAPHQL_URL}}
+      PUBLIC_API_URL: ${{vars.PUBLIC_API_URL}}
+      PUBLIC_UI_HOSTNAME: ${{vars.PUBLIC_UI_HOSTNAME}}
+      PUBLIC_UI_PORT: ${{vars.PUBLIC_UI_PORT}}
+      PUBLIC_SUPABASE_ANON_KEY: ${{secrets.PUBLIC_SUPABASE_ANON_KEY}}
     strategy:
       matrix:
         node-version: [21.x]
@@ -34,45 +35,13 @@ jobs:
         with:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Use Rust
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          source $HOME/.cargo/env
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+      # - name: Use Rust
+      #   run: |
+      #     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      #     source $HOME/.cargo/env
       - name: Install dependencies
-        run: pnpm install
-      - name: Install pnpm packages
-        run: pnpm i
+        run: task install
       - name: Test
         run: task test
       - name: Build
-        env:
-          PUBLIC_GATEWAY_GRAPHQL_URL: ${{ vars.GATEWAY_GRAPHQL_URL }}
-          GATEWAY_GRAPHQL_URL: ${{ vars.GATEWAY_GRAPHQL_URL }}
-          PUBLIC_SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
-          UI_HOSTNAME: ${{ vars.UI_HOSTNAME }}
-          PUBLIC_UI_HOSTNAME: ${{ vars.UI_HOSTNAME }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          GRAPHQL_SERVER_URL: ${{ vars.GRAPHQL_SERVER_URL }}
-          SUPABASE_GRAPHQL_URL: ${{ vars.SUPABASE_GRAPHQL_URL }}
-          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          PUBLIC_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
-          GRAPHQL_URL: ${{ vars.GRAPHQL_URL }}
-        run: NODE_ENV=production GO_ENV=production task build
+        run: task build

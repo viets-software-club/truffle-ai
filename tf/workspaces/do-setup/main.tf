@@ -5,9 +5,9 @@
 #   domain    = var.domain
 # }
 
-# Ingress Controller (i.e. Load Balancer is set up by app-chart)
+# Ingress Controller (i.e. Load Balancer is set up by ./k8s module)
 
-setup DNS with LB IP
+#setup DNS with LB IP
 module "dns" {
   source           = "../../modules/dns"
   prod_load_balancer_ip = data.digitalocean_loadbalancer.this.ip

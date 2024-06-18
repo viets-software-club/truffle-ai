@@ -1,7 +1,7 @@
 resource "digitalocean_domain" "domain" {
   name = var.domain
 }
-resource "digitalocean_record" "commit" {
+resource "digitalocean_record" "commit-wildcard" {
   domain = digitalocean_domain.domain.name
   type   = "A"
   name   = "*.commit"
@@ -31,7 +31,7 @@ resource "digitalocean_record" "production-wildcard" {
   name   = "*.production"
   value  = var.dev_load_balancer_ip
 }
-resource "digitalocean_record" "production" {
+resource "digitalocean_record" "public" {
   domain = digitalocean_domain.domain.name
   type   = "A"
   name   = "@"

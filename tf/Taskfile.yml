@@ -1,12 +1,30 @@
 version: '3'
 
 tasks:
-  deploy:
+  init:
     cmds:
-      - export TF_VAR_loadbalancer_prod="truffle-ai-nginx-ingress-controller"
-R_ENV=$ENV
-      - export TF_VAR_loadbalancer_dev="truffle-ai-nginx-ingress-controller"
-      - terraform init
+      - cd workspaces/do-cluster && terraform init 
+      - cd workspaces/do-setup && terraform init
+  deploy:cluster-prod:
+    cmds:
+      - terraform workspace select do-cluster-prod
+      - terraform plan
+  deploy:cluster-dev:
+    cmds:
+      - terraform workspace select do-cluster-dev
+      - terraform plan
+  deploy:setup-prod-cluster-only:
+    cmds:
+      - export TF_VAR_loadbalancer_prod="truffle-ai-nginx-ingress-controller-prod"
+      - export TF_VAR_loadbalancer_dev="truffle-ai-nginx-ingress-controller-prod"
+      - terraform plan -var 'DIGITALOCEAN_ACCESS_TOKEN=$DIGITALOCEAN_ACCESS_TOKEN'
+      - echo "Do you want to apply these changes? [yes/no]"
+      - read answer
+      - if [ "$answer" = "yes" ]; then terraform apply; fi
+  deploy:setup-prod-and-dev-cluster:
+    cmds:
+      - export TF_VAR_loadbalancer_prod="truffle-ai-nginx-ingress-controller-prod"
+      - export TF_VAR_loadbalancer_dev="truffle-ai-nginx-ingress-controller-dev"
       - terraform plan -var 'DIGITALOCEAN_ACCESS_TOKEN=$DIGITALOCEAN_ACCESS_TOKEN'
       - echo "Do you want to apply these changes? [yes/no]"
       - read answer

@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "truffle-ai"
-      tags    = ["do-setup", "do-setup-dev", "do-setup-prod"]
+      name    = "do-setup"
     }
   }
 }

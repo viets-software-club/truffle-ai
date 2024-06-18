@@ -1,8 +1,0 @@
-UI_PORT: 3000
-UI_HOSTNAME: 'truffle.tools'
-PUBLIC_UI_PORT: 3000
-PUBLIC_UI_HOSTNAME: 'truffle.tools'
-PUBLIC_SUPABASE_REFERENCE_ID: yipnhkmklmbuxjwzpipg
-PUBLIC_SUPABASE_URL: https://yipnhkmklmbuxjwzpipg.supabase.co
-PUBLIC_SUPABASE_GRAPHQL_URL: https://yipnhkmklmbuxjwzpipg.supabase.co/graphql/v1
-PUBLIC_GATEWAY_GRAPHQL_URL: https://0.0.0.0:3001/api/graphql

@@ -14,7 +14,7 @@ jobs:
       PUBLIC_GATEWAY_URL: ${{vars.PUBLIC_GATEWAY_URL}}
       PUBLIC_UI_HOSTNAME: ${{vars.PUBLIC_UI_HOSTNAME}}
       PUBLIC_UI_PORT: ${{vars.PUBLIC_UI_PORT}}
-      PUBLIC_SUPABASE_ANON_KEY: ${{vars.PUBLIC_SUPABASE_ANON_KEY}}
+      PUBLIC_SUPABASE_ANON_KEY: ${{secrets.PUBLIC_SUPABASE_ANON_KEY}}
     strategy:
       matrix:
         node-version: [22.x]

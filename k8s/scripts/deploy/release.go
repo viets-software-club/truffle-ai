@@ -6,7 +6,9 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -22,7 +24,10 @@ func main() {
 	fmt.Print("Dry Run?\n")
 	promptDryRun, _ := reader.ReadString('\n')
 	isDryRun := strings.TrimSpace(promptDryRun) == "y"
-
+	hostsJson, err := json.Marshal([]string{"truffle.tools"})
+	if err != nil {
+		log.Fatalf("Error converting hosts to JSON: %v", err)
+	}
 	args := []string{
 		"--install",
 		"--atomic",
@@ -32,11 +37,9 @@ func main() {
 		"--set",
 		fmt.Sprintf("image.repositoryUrl=\"ghcr.io/%s/%s/stable\"", os.Getenv("ORG_NAME"), os.Getenv("REPO_NAME")),
 		"--set-json",
-		fmt.Sprintf("hosts=%s", []string{"truffle.tools"}),
+		fmt.Sprintf("hosts=%s", hostsJson),
 		"--values",
-		"values.production.yml",
-		"--values",
-		"values.production.yml",
+		"./values/values.production.yml",
 		"--cleanup-on-fail",
 		"--version",
 		strings.TrimSpace(promptVersion),
@@ -45,12 +48,14 @@ func main() {
 		args = append(args, "--dry-run")
 	}
 	args = append(args, "chart-public")
-	args = append(args, "./config/charts/app-chart")
+	args = append(args, "./charts/app-chart")
 
 	upgradeCommand := exec.Command("helm", append([]string{"upgrade"}, args...)...)
-
+	fmt.Println("Command:", upgradeCommand.String())
+    upgradeCommand.Stdout = os.Stdout
+    upgradeCommand.Stderr = os.Stderr
 	fmt.Println("working...")
-	err := upgradeCommand.Run()
+	err = upgradeCommand.Run()
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

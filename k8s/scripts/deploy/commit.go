@@ -75,11 +75,12 @@ func main() {
 
 	upgradeCommand := exec.Command("helm", append([]string{"upgrade"}, args...)...)
 	fmt.Println("Command:", upgradeCommand.String())
-
-    // Capture standard output and standard error
     upgradeCommand.Stdout = os.Stdout
     upgradeCommand.Stderr = os.Stderr
+	fmt.Println("working...")
+
 	err = upgradeCommand.Run()
+	
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

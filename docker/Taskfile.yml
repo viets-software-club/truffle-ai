@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  compose:commit-up:
+    desc: "Up commit"
+    cmds:
+      - docker-compose -f ./compose/docker-compose.commit.yml up
+  compose:staging-up:
+    desc: "Up staging"
+    cmds:
+      - docker-compose -f ./compose/docker-compose.staging.yml up
+  compose:commit-build:
+    desc: "Build commit"
+    cmds:
+      - docker-compose -f ./compose/docker-compose.commit.yml build
+  compose:staging-build:
+    desc: "Build staging"
+    cmds:
+      - docker-compose -f ./compose/docker-compose.staging.yml build

@@ -1,112 +1,76 @@
 version: '3'
 
-silent: true
+env:
+  ENV: 'commit'
+dotenv: ['./envs/.env', './envs/.env.local', './envs/.env.{{.ENV}}']
 
 includes:
-  k8s:
-    dir: /Users/supine/Documents/code/truffle-ai
-    taskfile: ./config/taskfiles/Taskfile.k8s.yml
-  db: ./config/taskfiles/Taskfile.db.yml
-  prettier: ./config/taskfiles/Taskfile.prettier.yml
-  ui:
-    taskfile: ./packages/ui/Taskfile.yml
-    dir: ./packages/ui
+  k8s: ./k8s/Taskfile.yml
+  db: 
+    taskfile: ./db/Taskfile.yml
+    dir: ./db
+  values: 
+    taskfile: ./values/Taskfile.yml
+    dir: ./values
+  tf: ./tf/Taskfile.yml
+  gateway:
+    taskfile: ./packages/gateway/Taskfile.yml
+    dir: ./packages/gateway
     aliases:
-      - 'u'
-    vars:
-      SOURCE: ../../scripts/env/source.sh ../..
-  graphql-gateway:
-    taskfile: ./packages/graphql-gateway/Taskfile.yml
-    dir: ./packages/graphql-gateway
-    aliases:
-      - 'gql-gtw'
       - 'gtw'
       - 'g'
     vars:
-      SOURCE: ../../scripts/env/source.sh ../..
+      OUT: gateway # output binary
   graphql-server:
     taskfile: ./packages/graphql-server/Taskfile.yml
     dir: ./packages/graphql-server
     aliases:
       - 'gql-srv'
       - 'srv'
+      - 'server'
       - 's'
     vars:
-      OUT: graphql-server
-  values:
-    taskfile: ./packages/build-values/Taskfile.yml
-    dir: ./packages/build-values
-
+      OUT: graphql-server # output binary
+  ui:
+    taskfile: ./packages/ui/Taskfile.yml
+    dir: ./packages/ui
+    aliases:
+      - 'u'
 tasks:
-  init:
-    desc: 'Get source files to add to .zshrc/.bashrc'
-    cmds:
-      - echo
-      - node ./scripts/init/generate.mjs
-  search:
-    desc: 'Search for task'
-    cmds:
-      - echo
-      - node ./scripts/task/list.mjs {{.CLI_ARGS}}
-  format:
-    desc: 'Format files with biome'
-    cmds:
-      - ./node_modules/.bin/biome format .
-  format:fix:
-    desc: 'Format files with biome'
-    cmds:
-      - ./node_modules/.bin/biome format . --write
-  lint:
-    desc: 'Lint files with biome'
-    cmds:
-      - ./node_modules/.bin/biome lint .
-  lint:fix:
-    desc: 'Lint files with biome'
-    cmds:
-      - ./node_modules/.bin/biome lint . --apply
-  biome:fix:
-    desc: 'Run biome check with apply'
-    cmds:
-      - ./node_modules/.bin/biome check . --apply
-  biome:ci:
-    desc: 'Run biome ci'
-    cmds:
-      - ./node_modules/.bin/biome ci .
   test:
     desc: 'run test for all packages'
     cmds:
       - >
         ./node_modules/.bin/concurrently
-        -n all,gql-gtw,gql-srv,ui
+        -n auth,server,ui
         -c 'green,yellow,magenta,cyan'
-        'npx biome ci .' 'task gql-gtw:test' 'task gql-srv:test' 'task ui:test'
+        'task g:test' 'task s:test' 'task ui:test'
   dev:
     desc: 'run dev for all packages possible'
     cmds:
       - >
-        . ./scripts/env/source.sh
-        &&
         ./node_modules/.bin/concurrently
-        -n gql-gateway,gql-srv,ui
+        -n gateway,server,ui
         -c 'yellow,magenta,cyan'
-        'task gql-gtw:dev' 'sleep 1 && task gql-srv:dev' 'task ui:dev'
+        'task g:dev' 'task s:dev' 'task ui:dev'
   build:
     desc: 'run build for all packages'
     cmds:
       - >
-        . ./scripts/env/source.sh
-        &&
         ./node_modules/.bin/concurrently
-        -n gql-gateway,gql-server,ui
+        -n gateway,server,ui
         -c 'yellow,magenta,cyan'
-        'task gql-gtw:build' 'task gql-srv:build' 'task ui:build'
+        'task g:build' 'task s:build' 'task ui:build'
   start:
     desc: 'run start for all packages possible'
     cmds:
       - >
-        . ./scripts/env/source.sh
-        &&
         ./node_modules/.bin/concurrently
-        -n gql-gateway,gql-server,ui
+        -n gateway,server,ui
         -c 'yellow,magenta,cyan'
-        'task gql-gtw:start' 'sleep 1 && task gql-srv:start' 'task ui:start'
+        'task g:start' 'task s:start' 'task ui:start'
+  install:
+    desc: Install
+    cmds:
+      - npm install
+      - cd packages/ui && npm install

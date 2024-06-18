@@ -15,9 +15,8 @@ tasks:
         if [ ! -f ../envs/.env ]; then
           echo "REPO_NAME=
         ORG_NAME=
-        PRODUCTION_CLUSTER=
-        STAGING_CLUSTER=
-        COMMIT_CLUSTER=" > ../envs/.env
+        PROD_CLUSTER=
+        DEV_CLUSTER=" > ../envs/.env
         fi
       - for: ['commit', 'staging', 'production']
         cmd: go run env.go --input input/values.{{ .ITEM }}.yml --output ../envs/.env.{{ .ITEM }}

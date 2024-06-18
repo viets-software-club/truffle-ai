@@ -23,9 +23,6 @@ jobs:
     environment: production
     name: 'Image'
     uses: ./.github/workflows/reusable-ghcr-image.yml
-    permissions:
-      contents: read
-      packages: write
     needs: variables
     strategy:
       matrix:

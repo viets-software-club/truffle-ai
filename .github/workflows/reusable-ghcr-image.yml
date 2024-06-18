@@ -46,8 +46,10 @@ jobs:
           registry: ${{ env.CONTAINER_REGISTRY_DOMAIN }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Go to package path ./packages/<package>
+        run: cd ./packages/${{inputs.PACKAGE_NAME}}
       - name: Build image
-        run: |
+        run:
           declare -a args=(
             "--build-arg"
             "BUILDKIT_INLINE_CACHE=1"
@@ -68,7 +70,7 @@ jobs:
             "--label"
             "org.opencontainers.image.licenses=${{env.IMAGE_LICENSE}}"
             "-f"
-            "./packages/${{inputs.PACKAGE_NAME}}/Dockerfile"
+            "./Dockerfile"
           );
           tag_str="${{inputs.IMAGE_TAGS}}"
           for tag in ${tag_str}; do args+=("-t"); args+=("${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$tag"); done;

@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  annotations:
+    "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
+  labels:
+    app: backend-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: backend-deployment
+  template:
+    metadata:
+      annotations:
+        "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
+      labels:
+        app: backend-deployment
+    spec:
+      automountServiceAccountToken: true
+      containers:
+        - name: gateway
+          image: "{{ .Values.image.repositoryUrl }}/gateway:{{ default .Chart.AppVersion .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.configMaps.gateway-config-map.GATEWAY_Port }}
+          envFrom:
+            - configMapRef:
+                name: golang-config-map
+            - configMapRef:
+                name: gateway-config-map
+            - secretRef:
+                name: gateway-secret
+            - configMapRef:
+                name: supabase-config-map
+            - secretRef:
+                name: supabase-secret
+        - name: graphql-server
+          image: "{{ .Values.image.repositoryUrl }}/graphql-server:{{ default .Chart.AppVersion .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.configMaps.graphql-server-config-map.GRAPHQL_SERVER_PORT }}
+          envFrom:
+            - configMapRef:
+                name: golang-config-map
+            - configMapRef:
+                name: graphql-server-config-map
+            - secretRef:
+                name: graphql-server-secret
+            - configMapRef:
+                name: openai-config-map
+            - secretRef:
+                name: openai-secret
+            - configMapRef:
+                name: scraping-bot-config-map
+            - secretRef:
+                name: scraping-bot-secret
+            - configMapRef:
+                name: supabase-config-map
+            - secretRef:
+                name: supabase-secret
+            - configMapRef:
+                name: github-config-map
+            - secretRef:
+                name: github-secret      
+            - secretRef:
+                name: discord-secret
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      hostIPC: false
+      restartPolicy: Always

@@ -1,0 +1,37 @@
+version: "3"
+
+tasks:
+  deploy:commit:
+    desc: "Publish to commit environment"
+    cmds:
+      - go run ./scripts/deployment/deploy-commit.go
+  deploy:release:
+    desc: "Publish to release to production"
+    cmds:
+      - go run ./scripts/deployment/deploy-release.go
+  deploy:uninstall-all:
+    desc: "Uninstall all deployments"
+    cmds:
+      - go run ./scripts/deployment/uninstall-all.go
+  helm:list:
+    desc: "List all Helm releases"
+    cmds:
+      - helm ls --all-namespaces
+  traefik:repo:
+    desc: "Add traefik repo"
+    cmds:
+      - helm repo add traefik https://traefik.github.io/charts
+      - helm repo update
+  traefik:upgrade:
+    desc: "Install/Upgrade Traefik controller"
+    cmds:
+      - go run ./scripts/traefik/upgrade.go
+  nginx:upgrade:
+    desc: "Install/Upgrade Nginx controller"
+    cmds:
+      - go run ./scripts/nginx/upgrade.go
+  nginx:ip:
+    desc: "Get Nginx IP"
+    cmds:
+      - echo "Nginx LoadBalancer IP is"
+      - kubectl get svc --namespace default ing-controller-release-nginx-ingress-controller-$ENV -o jsonpath='{.status.loadBalancer.ingress[0].ip}

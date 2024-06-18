@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: forward-to-auth-server-middleware
+spec:
+  forwardAuth:
+    address: {{ .Values.authServerAddress }}
+    authRequestHeaders:
+      - "Accept"
+      - "userapikey"
+      - "authorization"
+      - "apikey"
+      - "X-Server"
+    authResponseHeaders:
+      - authusersid
+      - authorization
+    addAuthCookiesToResponse:
+      - Session-Cookie
+      - State-Cookie
+    trustForwardHeader: true

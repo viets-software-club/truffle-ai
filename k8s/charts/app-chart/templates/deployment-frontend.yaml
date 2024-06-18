@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  annotations:
+    "kubernetes.io/change-cause": "{{.Values.changeCause}}"
+  labels:
+    app: frontend-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: frontend-deployment
+  template:
+    metadata:
+      annotations:
+        "kubernetes.io/change-cause": "{{ .Values.changeCause }}"
+      labels:
+        app: frontend-deployment
+    spec:
+      automountServiceAccountToken: true
+      containers:
+        - name: ui
+          image: "{{ .Values.image.repositoryUrl }}/ui:{{ default .Chart.AppVersion .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.configMaps.public-config-map.PUBLIC_UI_Port }}
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      hostIPC: false
+      restartPolicy: Always

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend-deployment
+  ports:
+    - name: gateway-port
+      protocol: TCP
+      port: {{ .Values.configMaps.gateway-config-map.GATEWAY_Port }}
+      targetPort: {{ .Values.configMaps.gateway-config-map.GATEWAY_Port }}
+    - name: graphql-server-port
+      protocol: TCP
+      port: {{ .Values.configMaps.graphql-server-config-map.GRAPHQL_SERVER_PORT }}
+      targetPort: {{ .Values.configMaps.graphql-server-config-map.GRAPHQL_SERVER_PORT }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend-deployment
+  ports:
+    - protocol: TCP
+      port: {{ .Values.configMaps.public-config-map.PUBLIC_UI_Port }}
+      targetPort: {{ .Values.configMaps.public-config-map.PUBLIC_UI_Port }}

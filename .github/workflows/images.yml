@@ -28,7 +28,7 @@ jobs:
         PACKAGE_NAME: [ui, gateway, graphql-server]
         include:
           - PACKAGE_NAME: ui
-            BUILD_ARGS: >
+            BUILD_ARGS: >-
               --build-arg PUBLIC_SUPABASE_URL="${{needs.variables.outputs.PUBLIC_SUPABASE_URL}}"
               --build-arg PUBLIC_SUPABASE_GRAPHQL_URL="${{needs.variables.outputs.PUBLIC_SUPABASE_GRAPHQL_URL}}"
               --build-arg PUBLIC_GATEWAY_URL="${{needs.variables.outputs.PUBLIC_GATEWAY_URL}}"

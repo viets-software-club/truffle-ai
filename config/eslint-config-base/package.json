@@ -1,6 +1,0 @@
-{
-  "name": "@truffle/eslint-config-base",
-  "private": true,
-  "version": "0.0.1",
-  "main": "index.js"
-}

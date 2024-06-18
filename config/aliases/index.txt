@@ -1,3 +1,0 @@
-alias nr='pnpm run'
-alias k='kubectl'
-alias t='task'

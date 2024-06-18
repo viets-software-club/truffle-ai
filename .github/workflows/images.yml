@@ -26,7 +26,7 @@ jobs:
     needs: variables
     strategy:
       matrix:
-        PACKAGE_NAME: [ui, auth-server, graphql-server]
+        PACKAGE_NAME: [ui, gateway, graphql-server]
         include:
           - PACKAGE_NAME: ui
             BUILD_ARGS: |

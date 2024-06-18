@@ -1,7 +1,7 @@
 <script lang="ts">
-	import LogoDark from '$lib/assets/images/logo-dark.svg';
-	import Separator from '$lib/components/pure/ui/separator/separator.svelte';
-	import { page } from '$app/stores';
+import { page } from "$app/stores";
+import LogoDark from "$lib/assets/images/logo-dark.svg";
+import Separator from "$lib/components/pure/ui/separator/separator.svelte";
 </script>
 
 <svelte:head>

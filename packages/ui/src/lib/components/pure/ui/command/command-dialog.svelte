@@ -1,16 +1,14 @@
 <script lang="ts">
-	import type { Dialog as DialogPrimitive } from 'bits-ui';
-	import type { Command as CommandPrimitive } from 'cmdk-sv';
-	import Command from './command.svelte';
-	import * as Dialog from '$lib/components/pure/ui/dialog/index.js';
-	import { onMount } from 'svelte';
+import * as Dialog from "$lib/components/pure/ui/dialog/index.js";
+import { Dialog as DialogPrimitive } from "bits-ui";
+import { Command as CommandPrimitive } from "cmdk-sv";
+import { onMount } from "svelte";
+import Command from "./command.svelte";
 
-	type $$Props = DialogPrimitive.Props & CommandPrimitive.CommandProps;
+type $$Props = DialogPrimitive.Props & CommandPrimitive.CommandProps;
 
-	export let open: $$Props['open'] = false;
-	export let value: $$Props['value'] = undefined;
-
-	
+export let open: $$Props["open"] = false;
+export let value: $$Props["value"] = undefined;
 </script>
 
 <Dialog.Root bind:open {...$$restProps}>

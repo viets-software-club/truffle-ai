@@ -1,10 +1,10 @@
 <script lang="ts">
-	type Props = {
-		src: string;
-		description: string;
-	};
-	let { src, description }: Props = $props();
-	import * as Tooltip from '$lib/components/pure/ui/tooltip';
+type Props = {
+	src: string;
+	description: string;
+};
+const { src, description }: Props = $props();
+import * as Tooltip from "$lib/components/pure/ui/tooltip";
 </script>
 
 <Tooltip.Root>

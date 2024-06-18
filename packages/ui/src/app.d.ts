@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import { SupabaseClient, Session } from '@supabase/supabase-js';
+import type { Session, SupabaseClient } from "@supabase/supabase-js";
 
 declare global {
 	namespace App {
@@ -20,8 +20,9 @@ declare global {
 	}
 }
 
-declare module '$env/static/public' {
+declare module "$env/static/public" {
 	export const PUBLIC_SUPABASE_ANON_KEY: string;
 	export const PUBLIC_SUPABASE_URL: string;
 	export const PUBLIC_UI_HOSTNAME: string;
+	export const PUBLIC_GATEWAY_URL: string;
 }

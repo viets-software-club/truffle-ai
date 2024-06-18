@@ -1,118 +1,132 @@
 <script lang="ts">
-	import Button from '$lib/components/pure/ui/button/button.svelte';
-	import Input from '$lib/components/pure/ui/input/input.svelte';
-	import * as Select from '$lib/components/pure/ui/select/index';
-	import client from '$lib/graphql/supabase/client';
-	import { AddEntryToUserWhitelistDocument, GetUserWhiteListDocument } from '$lib/graphql/supabase/generated-codegen';
-	import { toast } from 'svelte-sonner';
-	import Table from './Table.svelte';
-	import { userWhiteListStore } from './userWhitelistStore';
-	import {z} from 'zod';
-	type Data = {
-      kind: string;
-      id: string | number;
-      value: string;
-    }[] | null;
+import Button from "$lib/components/pure/ui/button/button.svelte";
+import Input from "$lib/components/pure/ui/input/input.svelte";
+import * as Select from "$lib/components/pure/ui/select/index";
+import client from "$lib/graphql/supabase/client";
+import {
+	AddEntryToUserWhitelistDocument,
+	GetUserWhiteListDocument,
+} from "$lib/graphql/supabase/generated-codegen";
+import { toast } from "svelte-sonner";
+import { z } from "zod";
+import Table from "./Table.svelte";
+import { userWhiteListStore } from "./userWhitelistStore";
+type Data =
+	| {
+			kind: string;
+			id: string | number;
+			value: string;
+	  }[]
+	| null;
 
-
-	const showErrorLoading = () => {
-		toast.error('Error', {
-			description:
-				'An error occurred while loading the user whitelist. Please try again later.',
-			action: {
-				label: 'ok',
-				onClick: () => {},
-			},
-		});
-	};
-
-	const showErrorAdding = () => {
-		toast.error('Error', {
-			description:
-				'An error occurred while adding an entry to the user whitelist. Please try again later.',
-			action: {
-				label: 'ok',
-				onClick: () => {},
-			},
-		});
-	};
-
-	let data: Data = $state(null);
-	const loadUserWhitelist = () => {
-		client.query({
-			fetchPolicy: 'network-only',
-			query: GetUserWhiteListDocument
-		}).then((res) => {
-			if(res.data?.userWhitelistCollection?.edges) {
-				data = res.data.userWhitelistCollection?.edges.map((data) => ({
-					id: data.node.userWhitelistId || '',
-					kind: data.node.kind,
-					value: data.node.userWhitelistValue || ''
-				}))
-			} 
-		}).catch(() => {
-			showErrorLoading();
-		})
-
-	}
-
-	userWhiteListStore.subscribe((value) => {
-		loadUserWhitelist();
-	})
-
-	$effect(() => {
-		loadUserWhitelist();
-	})
-
-	const emailSchema = z.string().email().min(6).max(50);
-	const domainSchema = z.string().refine(value => {
-		const domainRegex = /([a-z0-9A-Z]\.)*[a-z0-9-]+\.([a-z0-9]{2,24})+(\.co\.([a-z0-9]{2,24})|\.([a-z0-9]{2,24}))*/g;
-		return domainRegex.test(value);
-	}, {
-		message: "Invalid domain",
+const showErrorLoading = () => {
+	toast.error("Error", {
+		description:
+			"An error occurred while loading the user whitelist. Please try again later.",
+		action: {
+			label: "ok",
+			onClick: () => {},
+		},
 	});
-	let selected = $state({label: 'E-Mail', value: 'email'});
-	let inputValue = $state('');
-	const isDisabled = () => {
-		try {
-			if(selected.value === 'email') {
-				emailSchema.parse(inputValue);
-			} else {
-				domainSchema.parse(inputValue);
-			}
-		
-			return false;
-		} catch (err) {
-			return true;
-		}
-	}
+};
 
-	const handleAdd = () => {
-		if(isDisabled()) {
-			return;
+const showErrorAdding = () => {
+	toast.error("Error", {
+		description:
+			"An error occurred while adding an entry to the user whitelist. Please try again later.",
+		action: {
+			label: "ok",
+			onClick: () => {},
+		},
+	});
+};
+
+let data: Data = $state(null);
+const loadUserWhitelist = () => {
+	client
+		.query({
+			fetchPolicy: "network-only",
+			query: GetUserWhiteListDocument,
+		})
+		.then((res) => {
+			if (res.data?.userWhitelistCollection?.edges) {
+				data = res.data.userWhitelistCollection?.edges.map((data) => ({
+					id: data.node.userWhitelistId || "",
+					kind: data.node.kind,
+					value: data.node.userWhitelistValue || "",
+				}));
+			}
+		})
+		.catch(() => {
+			showErrorLoading();
+		});
+};
+
+userWhiteListStore.subscribe((value) => {
+	loadUserWhitelist();
+});
+
+loadUserWhitelist();
+
+const emailSchema = z.string().email().min(6).max(50);
+const domainSchema = z.string().refine(
+	(value) => {
+		const domainRegex =
+			/([a-z0-9A-Z]\.)*[a-z0-9-]+\.([a-z0-9]{2,24})+(\.co\.([a-z0-9]{2,24})|\.([a-z0-9]{2,24}))*/g;
+		return domainRegex.test(value);
+	},
+	{
+		message: "Invalid domain",
+	},
+);
+let selected = $state({ label: "E-Mail", value: "email" });
+let inputValue = $state("");
+const isDisabled = () => {
+	try {
+		if (selected.value === "email") {
+			emailSchema.parse(inputValue);
+		} else {
+			domainSchema.parse(inputValue);
 		}
-		client.mutate({
+
+		return false;
+	} catch (err) {
+		return true;
+	}
+};
+
+const handleAdd = () => {
+	if (isDisabled()) {
+		return;
+	}
+	client
+		.mutate({
 			mutation: AddEntryToUserWhitelistDocument,
 			variables: {
 				kind: selected.value,
-				value: inputValue
-			}
-		}).then((res) => {
-			if(res.data?.insertIntoUserWhitelistCollection && res.data?.insertIntoUserWhitelistCollection?.affectedCount > 0) {
-				toast.success('Success', {
-					description: 'Added User successfully to Whitelist!'
-				})
+				value: inputValue,
+			},
+		})
+		.then((res) => {
+			if (
+				res.data?.insertIntoUserWhitelistCollection &&
+				res.data?.insertIntoUserWhitelistCollection?.affectedCount > 0
+			) {
+				toast.success("Success", {
+					description: "Added User successfully to Whitelist!",
+				});
 				loadUserWhitelist();
 			} else {
 				showErrorAdding();
 			}
-		}).catch(() => {
-			showErrorAdding();
 		})
-	}
-	const handleSelectedChange = (e: any) => {
-		selected = e;
-	}
+		.catch(() => {
+			showErrorAdding();
+		});
+};
+const handleSelectedChange = (e: any) => {
+	selected = e;
+};
 </script>
 
 <section class="font-geist">
@@ -124,9 +138,9 @@
 	</div>
 	<div class="flex flex-col md:flex-row gap-2 max-w-lg">
 		<Input placeholder="Email or Domain" bind:value={inputValue} />
-		<Select.Root portal={null} bind:selected={selected} onSelectedChange={handleSelectedChange}>
+		<Select.Root portal={null} bind:selected onSelectedChange={handleSelectedChange}>
 			<Select.Trigger class="w-[180px]">
-				<Select.Value >{selected.value}</Select.Value>
+				<Select.Value>{selected.value}</Select.Value>
 			</Select.Trigger>
 			<Select.Content>
 				<Select.Group>
@@ -140,8 +154,8 @@
 	<div>
 		{#if data}
 			{#key data}
-        		<Table data={data} />
+				<Table {data} />
 			{/key}
 		{/if}
-    </div>
+	</div>
 </section>

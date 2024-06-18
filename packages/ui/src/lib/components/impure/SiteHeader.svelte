@@ -1,14 +1,14 @@
 <!-- <script lang="ts">
-	import {
-		CommandMenu,
-		Icons,
-		MainNav,
-		MobileNav,
-		ModeToggle,
-	} from "$lib/components/docs/index.js";
-	import { buttonVariants } from "$lib/registry/new-york/ui/button/index.js";
-	import { siteConfig } from "$lib/config/site.js";
-	import { cn } from "$lib/utils/index";
+import {
+	CommandMenu,
+	Icons,
+	MainNav,
+	MobileNav,
+	ModeToggle,
+} from "$lib/components/docs/index.js";
+import { siteConfig } from "$lib/config/site.js";
+import { buttonVariants } from "$lib/registry/new-york/ui/button/index.js";
+import { cn } from "$lib/utils/index";
 </script>
 
 <header

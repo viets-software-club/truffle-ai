@@ -1,81 +1,96 @@
-<script>
-	import Input from '$lib/components/pure/ui/input/input.svelte';
-	import { v4 as uuidv4 } from 'uuid';
-	import { RotateCcw as RotateCCWIcon, Copy as CopyIcon } from 'lucide-svelte';
-	import client from '$lib/graphql/supabase/client';
-	import { toast } from 'svelte-sonner';
-	import { GetUserApiKeyDocument, UpdateUserApiKeyDocument } from '$lib/graphql/supabase/generated-codegen';
-	import * as Tooltip from "$lib/components/pure/ui/tooltip/index";
+<script lang="ts">
+import Input from "$lib/components/pure/ui/input/input.svelte";
+import * as Tooltip from "$lib/components/pure/ui/tooltip/index";
+import client from "$lib/graphql/supabase/client";
+import {
+	GetUserApiKeyDocument,
+	UpdateUserApiKeyDocument,
+} from "$lib/graphql/supabase/generated-codegen";
+import { Copy as CopyIcon, RotateCcw as RotateCCWIcon } from "lucide-svelte";
+import { toast } from "svelte-sonner";
+import { v4 as uuidv4 } from "uuid";
 
-	const showErrorLoadingUserApiKey = () => {
-		toast.error('Error', {
-			description:
-				'An error occurred while loading the user api key. Please try again later.',
-			action: {
-				label: 'ok',
-				onClick: () => {},
-			},
-		});
-	};
-	let userApiKey = $state('');
-	const loadUserApiKey = () => {
-		client.query(
-			{
-				fetchPolicy: 'network-only',
-				query: GetUserApiKeyDocument,
-			}
-		).then((res) => {
-			if (res.data?.userApiKeyCollection?.edges && res.data?.userApiKeyCollection.edges.length > 0) {
+const showErrorLoadingUserApiKey = () => {
+	toast.error("Error", {
+		description:
+			"An error occurred while loading the user api key. Please try again later.",
+		action: {
+			label: "ok",
+			onClick: () => {},
+		},
+	});
+};
+let userApiKey = $state("");
+const loadUserApiKey = () => {
+	client
+		.query({
+			fetchPolicy: "network-only",
+			query: GetUserApiKeyDocument,
+		})
+		.then((res) => {
+			if (
+				res.data?.userApiKeyCollection?.edges &&
+				res.data?.userApiKeyCollection.edges.length > 0
+			) {
 				userApiKey = res.data.userApiKeyCollection.edges[0].node.userApiKey;
 			} else {
 				showErrorLoadingUserApiKey();
 			}
-		}).catch(() => {
+		})
+		.catch(() => {
 			showErrorLoadingUserApiKey();
-		}
-		)
-	}
+		});
+};
 
-	$effect(() => {
-		loadUserApiKey();
-	})
+loadUserApiKey();
 
-	const handleUpdateUserApiKey = () => {
-		client.mutate({
+const handleUpdateUserApiKey = () => {
+	client
+		.mutate({
 			mutation: UpdateUserApiKeyDocument,
 			variables: {
-				userApiKey: uuidv4()
-			}
-		}).then((res) => {
-			if (res.data?.updateUserApiKeyCollection && res.data?.updateUserApiKeyCollection?.affectedCount > 0) {
+				userApiKey: uuidv4(),
+			},
+		})
+		.then((res) => {
+			if (
+				res.data?.updateUserApiKeyCollection &&
+				res.data?.updateUserApiKeyCollection?.affectedCount > 0
+			) {
 				loadUserApiKey();
-				toast.success('Successfully Updated User API Key!', {
-					description: '',
-					duration: 1000
+				toast.success("Successfully Updated User API Key!", {
+					description: "",
+					duration: 1000,
 				});
 			} else {
-				toast.error('Error', {
-					description: 'An error occurred while updating the user api key. Please try again later.',
+				toast.error("Error", {
+					description:
+						"An error occurred while updating the user api key. Please try again later.",
 					action: {
-						label: 'ok',
-						onClick: () => {}
-					}
+						label: "ok",
+						onClick: () => {},
+					},
 				});
-			
-			}}).catch(() => {
-				toast.error('Error', {
-					description: 'An error occurred while updating the user api key. Please try again later.',
-					action: {
-						label: 'ok',
-						onClick: () => {}
-					}
-				});
+			}
+		})
+		.catch(() => {
+			toast.error("Error", {
+				description:
+					"An error occurred while updating the user api key. Please try again later.",
+				action: {
+					label: "ok",
+					onClick: () => {},
+				},
 			});
-	}
+		});
+};
 
-	const handleCopyUserApiKey = () => {
-		navigator.clipboard.writeText(userApiKey)
-	}
+const handleCopyUserApiKey = () => {
+	navigator.clipboard.writeText(userApiKey);
+};
+const handleLinkClick = (e: any) => {
+	e.preventDefault();
+};
 </script>
 
 <section>
@@ -84,7 +99,7 @@
 		<p class="text-sm text-muted-foreground">
 			Here you can reset your UserApiKey that allows you to access the Truffle API at
 			<a
-				on:click|preventDefault
+				onclick={handleLinkClick}
 				href="https://truffle.tools/api/graphql"
 				class=" hover:text-muted-foreground hover:underline cursor-pointer"
 				>https://truffle.tools/api/graphql</a

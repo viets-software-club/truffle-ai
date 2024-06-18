@@ -10,14 +10,6 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
-		// @TODO: waiting for gql.tada multi schema support
-		"plugins": [
-			{
-				"name": "@0no-co/graphqlsp",
-				"schema": "./graphql-schema.supabase.json",
-				"tadaOutputLocation": "./src/graphql-supabase-env.d.ts"
-			}
-		],
 		"rootDirs": [".", "./.svelte-kit/types"]
 	}
 }

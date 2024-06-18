@@ -1,16 +1,16 @@
 <script lang="ts">
-	import type { HTMLTextareaAttributes } from 'svelte/elements';
-	import { cn } from '$lib/utils/index';
+import { cn } from "$lib/utils/index";
+import type { HTMLTextareaAttributes } from "svelte/elements";
 
-	type $$Props = HTMLTextareaAttributes;
+type $$Props = HTMLTextareaAttributes;
 
-	let className: $$Props['class'] = undefined;
-	export let value: $$Props['value'] = undefined;
-	export { className as class };
+let className: $$Props["class"] = undefined;
+export let value: $$Props["value"] = undefined;
+export { className as class };
 
-	// Workaround for https://github.com/sveltejs/svelte/issues/9305
-	// Fixed in Svelte 5, but not backported to 4.x.
-	export let readonly: $$Props['readonly'] = undefined;
+// Workaround for https://github.com/sveltejs/svelte/issues/9305
+// Fixed in Svelte 5, but not backported to 4.x.
+export let readonly: $$Props["readonly"] = undefined;
 </script>
 
 <textarea

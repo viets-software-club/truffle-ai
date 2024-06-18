@@ -1,0 +1,22 @@
+query HnSentiment($repoName: String!, $ownerLogin: String!) {
+    fGetProjRepoByGthbName(reponame: $repoName, ownerlogin: $ownerLogin) {
+        edges {
+            node {
+                algoHnEli5
+            }
+        }
+    }
+    algoHnQueryCollection(filter: {query: {eq: $repoName}}) {
+        edges {
+            node {
+            algoHnCommentCollection {
+                edges {
+                node {
+                    algoHnCommentObjectId
+                }
+                }
+            }
+            }
+        }
+    }
+}

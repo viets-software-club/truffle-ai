@@ -1,83 +1,84 @@
 <script lang="ts">
-	import { PUBLIC_UI_HOSTNAME } from '$env/static/public';
-	import { browser } from '$app/environment';
+import { browser } from "$app/environment";
+import { PUBLIC_UI_HOSTNAME } from "$env/static/public";
 
-	import '../index.css';
-	import { invalidate } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { supabaseClient } from '$lib/supabase/index';
-	import { goto } from '$app/navigation';
-	import type { AuthSession } from '@supabase/supabase-js';
-	import { Toaster } from 'svelte-sonner';
-	import { page } from '$app/stores';
-	import gatewayGraphqlClient from '$lib/graphql/gateway/client.js';
-import supabaseGraphqlClient from '$lib/graphql/supabase/client.js';
-	if (browser) {
-		if (
-			localStorage.theme === 'dark' ||
-			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-		) {
-			document.documentElement.classList.remove('cosmos');
-			document.documentElement.classList.add('dark');
-		} else if (localStorage.theme === 'cosmos') {
-			document.documentElement.classList.add('dark', 'cosmos');
-		} else {
-			document.documentElement.classList.remove('dark', 'cosmos');
-		}
+import "../index.css";
+import { invalidate } from "$app/navigation";
+import { goto } from "$app/navigation";
+import { page } from "$app/stores";
+import gatewayGraphqlClient from "$lib/graphql/gateway/client.js";
+import supabaseGraphqlClient from "$lib/graphql/supabase/client.js";
+import { supabaseClient } from "$lib/supabase/index";
+import type { AuthSession } from "@supabase/supabase-js";
+import { onMount } from "svelte";
+import { Toaster } from "svelte-sonner";
+if (browser) {
+	if (
+		localStorage.theme === "dark" ||
+		(!("theme" in localStorage) &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches)
+	) {
+		document.documentElement.classList.remove("cosmos");
+		document.documentElement.classList.add("dark");
+	} else if (localStorage.theme === "cosmos") {
+		document.documentElement.classList.add("dark", "cosmos");
+	} else {
+		document.documentElement.classList.remove("dark", "cosmos");
 	}
+}
 
-	// let isAuthenticated = $state(false);
-	// $effect(() => {
-	// 	(async () => {
-	// 		const { data, error } = await supabaseClient.auth.getSession();
-	// 		if (
-	// 			error ||
-	// 			data?.session?.access_token?.length === 0 ||
-	// 			!data?.session?.access_token?.length
-	// 		) {
-	// 			goto('/signin');
-	// 		} else {
-	// 			isAuthenticated = true;
-	// 		}
-	// 	})();
-	// });
+// let isAuthenticated = $state(false);
+// $effect(() => {
+// 	(async () => {
+// 		const { data, error } = await supabaseClient.auth.getSession();
+// 		if (
+// 			error ||
+// 			data?.session?.access_token?.length === 0 ||
+// 			!data?.session?.access_token?.length
+// 		) {
+// 			goto('/signin');
+// 		} else {
+// 			isAuthenticated = true;
+// 		}
+// 	})();
+// });
 
-	let session: AuthSession | null = $state(null);
+let session: AuthSession | null = $state(null);
 
-	$effect.pre(() => {
-		supabaseClient.auth.onAuthStateChange(async (_event, _session) => {
-			session = _session;
-			if (_event === 'SIGNED_OUT') {
-				await Promise.all([
-					gatewayGraphqlClient.clearStore(),
-					supabaseGraphqlClient.clearStore()
-				])
-			}
-			if (!session && $page.url.pathname !== '/signup') {
-            	 goto('/signin');
-        	}
-			
-		});
+$effect.pre(() => {
+	supabaseClient.auth.onAuthStateChange(async (_event, _session) => {
+		session = _session;
+		if (_event === "SIGNED_OUT") {
+			await Promise.all([
+				gatewayGraphqlClient.clearStore(),
+				supabaseGraphqlClient.clearStore(),
+			]);
+		}
+		if (!session && $page.url.pathname !== "/signup") {
+			goto("/signin");
+		}
 	});
-	// export let data;
+});
+// export let data;
 
-	// let { supabase, session } = data;
-	// $: ({ supabase, session } = data);
+// let { supabase, session } = data;
+// $: ({ supabase, session } = data);
 
-	// onMount(() => {
-	// 	const { data } = supabase.auth.onAuthStateChange((event, _session) => {
-	// 		if (_session?.expires_at !== session?.expires_at) {
-	// 			invalidate('supabase:auth');
-	// 		}
-	// 	});
+// onMount(() => {
+// 	const { data } = supabase.auth.onAuthStateChange((event, _session) => {
+// 		if (_session?.expires_at !== session?.expires_at) {
+// 			invalidate('supabase:auth');
+// 		}
+// 	});
 
-	// 	return () => data.subscription.unsubscribe();
-	// });
-	// if (!navigator?.serviceWorker?.controller && navigator?.serviceWorker?.register) {
-	// 	navigator.serviceWorker.unregister('/sw.js').then(function (reg) {
-	// 		console.log('Service worker has been registered for scope: ' + reg.scope);
-	// 	});
-	// }
+// 	return () => data.subscription.unsubscribe();
+// });
+// if (!navigator?.serviceWorker?.controller && navigator?.serviceWorker?.register) {
+// 	navigator.serviceWorker.unregister('/sw.js').then(function (reg) {
+// 		console.log('Service worker has been registered for scope: ' + reg.scope);
+// 	});
+// }
+const { children } = $props();
 </script>
 
 <svelte:head>
@@ -107,4 +108,4 @@ import supabaseGraphqlClient from '$lib/graphql/supabase/client.js';
 </svelte:head>
 
 <Toaster />
-<slot />
+{@render children()}

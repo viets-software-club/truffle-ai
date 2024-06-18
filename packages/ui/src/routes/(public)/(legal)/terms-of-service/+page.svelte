@@ -1,5 +1,5 @@
 <script>
-	import Separator from '$lib/components/pure/ui/separator/separator.svelte';
+import Separator from "$lib/components/pure/ui/separator/separator.svelte";
 </script>
 
 <header class="mb-4 text-sm">

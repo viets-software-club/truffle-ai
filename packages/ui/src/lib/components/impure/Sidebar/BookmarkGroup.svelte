@@ -1,59 +1,57 @@
 <script lang="ts">
-	import * as Collapsible from '$lib/components/pure/ui/collapsible/index';
-	import {
-		AiFillFolder,
-		AiOutlineArrowRight,
-		AiOutlineFolder,
-		AiOutlineFolderOpen
-	} from 'svelte-icons-pack/ai';
-	import FolderClosed from 'lucide-svelte/icons/folder-closed';
-	import FolderOpen from 'lucide-svelte/icons/folder-open';
+import * as Collapsible from "$lib/components/pure/ui/collapsible/index";
+import FolderClosed from "lucide-svelte/icons/folder-closed";
+import FolderOpen from "lucide-svelte/icons/folder-open";
+import {
+	AiFillFolder,
+	AiOutlineArrowRight,
+	AiOutlineFolder,
+	AiOutlineFolderOpen,
+} from "svelte-icons-pack/ai";
 
-	import { Icon } from 'svelte-icons-pack';
-	import { SortableList } from '@sonderbase/svelte-sortablejs';
-	import { Blocks } from 'lucide-svelte';
-	import * as Avatar from '$lib/components/pure/ui/avatar/avatar.svelte';
-	import { goto } from '$app/navigation';
-	import { updateMobileSidebarOpenState } from '$lib/store/sidebar';
-	import { page } from '$app/stores';
+import { goto } from "$app/navigation";
+import { page } from "$app/stores";
+import * as Avatar from "$lib/components/pure/ui/avatar/avatar.svelte";
+import { updateMobileSidebarOpenState } from "$lib/store/sidebar";
+import { SortableList } from "@sonderbase/svelte-sortablejs";
+import { Blocks } from "lucide-svelte";
+import { Icon } from "svelte-icons-pack";
 
-	type Props = {
-		title: string;
-		actionHref: string;
-		actionText: string;
-		sortGroup: string;
-		items: { icon: string; title: string; href: string }[];
-	};
-	let { title, actionHref, actionText, sortGroup, items }: Props = $props();
-	let isOpen = $state(true);
+type Props = {
+	title: string;
+	actionHref: string;
+	actionText: string;
+	sortGroup: string;
+	items: { icon: string; title: string; href: string }[];
+};
+const { title, actionHref, actionText, sortGroup, items }: Props = $props();
+let isOpen = $state(true);
 
-	const handleAction = () => {
-		updateMobileSidebarOpenState.set(false);
-		goto(actionHref);
-	};
-	const handleActionClick = () => {
+const handleAction = () => {
+	updateMobileSidebarOpenState.set(false);
+	goto(actionHref);
+};
+const handleActionClick = (e: any) => {
+	e.stopPropagation();
+	handleAction();
+};
+const handleActionKeydown = (event: any) => {
+	if (event.key === "Enter") {
 		handleAction();
-	};
-	const handleActioneKeydown = (event: any) => {
-		if (event.key === 'Enter') {
-			handleAction();
-		}
-	};
+	}
+};
 
-	const getHandleItemClickFunc = (bookmark: { href: string }) => async () => {
-		if($page.url.pathname !== bookmark.href){
-			await goto(bookmark.href);
-		}
-		updateMobileSidebarOpenState.set(false);
-
-	};
-	const getHandleItemKeydownFunc = (bookmark: { href: string }) => async (event: any) => {
-		
-		if (event.key === 'Enter') {
-
+const getHandleItemClickFunc = (bookmark: { href: string }) => async () => {
+	if ($page.url.pathname !== bookmark.href) {
+		await goto(bookmark.href);
+	}
+	updateMobileSidebarOpenState.set(false);
+};
+const getHandleItemKeydownFunc =
+	(bookmark: { href: string }) => async (event: any) => {
+		if (event.key === "Enter") {
 			await goto(bookmark.href);
 			updateMobileSidebarOpenState.set(false);
-
 		}
 	};
 </script>
@@ -75,8 +73,8 @@
 			<div
 				tabindex={0}
 				role="button"
-				on:click|stopPropagation={handleActionClick}
-				on:keydown={handleActioneKeydown}
+				onclick={handleActionClick}
+				onkeydown={handleActionKeydown}
 				class=" group group/link relative invisible flex items-center gap-1 leading-none rounded-md px-2 md:px-1 opacity-0 transition-all duration-100 hover:bg-muted-overlay dark:hover:bg-background group-hover:visible group-hover:opacity-100"
 			>
 				<span
@@ -97,8 +95,8 @@
 				<div
 					tabindex={0}
 					role="button"
-					on:click={getHandleItemClickFunc(item)}
-					on:keydown={getHandleItemKeydownFunc(item)}
+					onclick={getHandleItemClickFunc(item)}
+					onkeydown={getHandleItemKeydownFunc(item)}
 					class="flex items-center p-2 py-3 sm:py-2 pl-6 hover:bg-muted rounded-md text-foreground/70 truncate cursor-pointer"
 				>
 					<img src={item.icon} class="rounded-full w-4 border" alt="avatar" />

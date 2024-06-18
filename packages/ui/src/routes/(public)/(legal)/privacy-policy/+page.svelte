@@ -1,5 +1,5 @@
 <script>
-	import Separator from '$lib/components/pure/ui/separator/separator.svelte';
+import Separator from "$lib/components/pure/ui/separator/separator.svelte";
 </script>
 
 <header class="mb-4 text-sm">
@@ -276,7 +276,7 @@
 		<li>
 			Github REST API and Github GraphQL API for relevant information about repositories,
 			contributors, stars, forks, issue etc.
-			<a href="https://docs.github.com/en/site-policy">https://docs.github.com/en/site-policy</a>
+			<a href="https://docs.github.com/en/site-policy">https://docs.github.com/en/site-policy</a>, 
 			<a href="https://github.com/customer-terms">https://github.com/customer-terms</a>
 		</li>
 		<li>
@@ -284,6 +284,14 @@
 			<a href="https://www.scraping-bot.io/terms-and-conditions-of-use/"
 				>https://www.scraping-bot.io/terms-and-conditions-of-use/</a
 			>
+		</li>
+		<li>
+			Discord API for Discord invites, statistics etc.
+			<a href="https://discord.com/developers/docs/policies-and-agreements/developer-terms-of-service">
+				https://discord.com/developers/docs/policies-and-agreements/developer-terms-of-service
+			</a>, <a href="https://discord.com/terms">
+				https://discord.com/terms
+			</a>
 		</li>
 		<li>
 			Supabase as a Backend as a Service.

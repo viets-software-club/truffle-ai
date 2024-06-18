@@ -1,184 +1,248 @@
 <script lang="ts">
-	import BookmarkGroup from './BookmarkGroup.svelte';
+import BookmarkGroup from "./BookmarkGroup.svelte";
 
-	import SettingsIcon from 'lucide-svelte/icons/settings';
-	import LogoutIcon from 'lucide-svelte/icons/log-out';
-	import PaletteIcon from 'lucide-svelte/icons/palette';
-	import * as Sheet from '$lib/components/pure/ui/sheet';
-	import { supabaseClient } from '$lib/supabase';
-	import Logo from '$lib/components/pure/Logo.svelte';
-	import TrendingUp from 'lucide-svelte/icons/trending-up';
-	import Bookmark from 'lucide-svelte/icons/bookmark';
-	import * as Select from '$lib/components/pure/ui/select';
-	import { browser } from '$app/environment';
-	import type { ApolloQueryResult, ObservableQuery } from '@apollo/client/core';
-	import client from '$lib/graphql/supabase/client';
-	import {
-		SidebarDocument,
-		type SidebarQuery as SidebarQueryType
-	} from '$lib/graphql/supabase/generated-codegen';
-	import { updateSidebar, updateMobileSidebarOpenState } from '$lib/store/sidebar';
-	import { XIcon } from 'lucide-svelte';
-	import { goto } from '$app/navigation';
-	
-	let isThemeSelectionOpen = $state(false);
-	// let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
-	// let themeLabel = $derived(browser && theme.charAt(0).toUpperCase() + theme.slice(1));
+import { browser } from "$app/environment";
+import { goto } from "$app/navigation";
+import Logo from "$lib/components/pure/Logo.svelte";
+import * as Select from "$lib/components/pure/ui/select";
+import * as Sheet from "$lib/components/pure/ui/sheet";
+import client from "$lib/graphql/supabase/client";
+import {
+	SidebarDocument,
+	type SidebarQuery as SidebarQueryType,
+} from "$lib/graphql/supabase/generated-codegen";
+import {
+	updateMobileSidebarOpenState,
+	updateSidebar,
+} from "$lib/store/sidebar";
+import { supabaseClient } from "$lib/supabase";
+import type { ApolloQueryResult, ObservableQuery } from "@apollo/client/core";
+import { XIcon } from "lucide-svelte";
+import Bookmark from "lucide-svelte/icons/bookmark";
+import LogoutIcon from "lucide-svelte/icons/log-out";
+import PaletteIcon from "lucide-svelte/icons/palette";
+import SettingsIcon from "lucide-svelte/icons/settings";
+import TrendingUp from "lucide-svelte/icons/trending-up";
+import { toast } from "svelte-sonner";
 
-	// client.query(e).then((data) => {
+let isThemeSelectionOpen = $state(false);
+// let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
+// let themeLabel = $derived(browser && theme.charAt(0).toUpperCase() + theme.slice(1));
 
-	// });
+// client.query(e).then((data) => {
 
-	// $effect(() => {
+// });
 
-	// 	const channel = supabaseClient
-	// 		.channel('table-db-changes')
-	// 		.on(
-	// 			'postgres_changes',
-	// 			{
-	// 				event: '*',
-	// 				schema: 'public',
-	// 				table: 'proj_cat_and_proj_bookmark'
-	// 			},
-	// 			update
-	// 		)
-	// 		.subscribe();
+// $effect(() => {
 
-	// 	return () => channel.unsubscribe();
-	// });
+// 	const channel = supabaseClient
+// 		.channel('table-db-changes')
+// 		.on(
+// 			'postgres_changes',
+// 			{
+// 				event: '*',
+// 				schema: 'public',
+// 				table: 'proj_cat_and_proj_bookmark'
+// 			},
+// 			update
+// 		)
+// 		.subscribe();
 
-	const getTheme = () =>
-		browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light';
-	const getThemeLabel = () => browser && getTheme().charAt(0).toUpperCase() + getTheme().slice(1);
+// 	return () => channel.unsubscribe();
+// });
 
-	let { ...attrs } = $props();
-	let queryResult: ApolloQueryResult<SidebarQueryType> | undefined = $state();
+const getTheme = () =>
+	browser && localStorage?.theme?.length > 0 ? localStorage.theme : "light";
+const getThemeLabel = () =>
+	browser && getTheme().charAt(0).toUpperCase() + getTheme().slice(1);
 
-	$effect(() => {
-		client
-			.query({
-				query: SidebarDocument
-			})
-			.then((res) => {
-				queryResult = res;
+const { ...attrs } = $props();
+let queryResult: ApolloQueryResult<SidebarQueryType> | undefined = $state();
+
+const loadData = () => {
+	isReloading = true;
+	client
+		.query({
+			fetchPolicy: "network-only",
+			query: SidebarDocument,
+		})
+		.then((res) => {
+			isReloading = false;
+			queryResult = res;
+		})
+		.catch((err) => {
+			console.error(err);
+			toast.error("Error", {
+				description:
+					"An error occurred while loading the sidebar. Please try again later.",
+				action: {
+					label: "ok",
+					onClick: () => {},
+				},
 			});
-		updateSidebar.subscribe((value) => {
-			client
-				.query({
-					query: SidebarDocument
-				})
-				.then((res) => {
-					queryResult = res;
-				})
-				.catch((err) => {
-					console.error(err);
-				});
+		})
+		.finally(() => {
+			isReloading = false;
 		});
+};
+let isReloading = false;
+supabaseClient.auth.getUser().then((user) => {
+	if (user.data.user?.id)
+		supabaseClient
+			.channel("table_db_changes")
+			.on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "public",
+					table: "proj_bookmark",
+					filter: `auth_users_id=eq.${user.data.user.id}`,
+				},
+				(payload) => {
+					// console.log("update bookmark", isReloading);
+					loadData();
+				},
+			)
 
-		// const channel = supabaseClient
-		// 	.channel('table-db-changes')
-		// 	.on(
-		// 		'postgres_changes',
-		// 		{
-		// 			event: '*',
-		// 			schema: 'public',
-		// 			table: 'proj_cat_and_proj_bookmark'
-		// 		},
-		// 		() => {
-		// 			client
-		// 				.query({
-		// 					query: SidebarDocument
-		// 				})
-		// 				.then((res) => {
-		// 					queryResult = res;
-		// 				})
-		// 				.catch((err) => {
-		// 					console.error(err);
-		// 				});
-		// 		}
-		// 	)
-		// 	.subscribe();
+			.on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "public",
+					table: "proj_cat",
+					filter: `auth_users_id=eq.${user.data.user.id}`,
+				},
+				(payload) => {
+					// console.log("update cat", isReloading);
+					loadData();
+				},
+			)
+			.subscribe();
+});
 
-		// return () => channel.unsubscribe();
-	});
+loadData();
+// $effect(() => {
+// 	client
+// 		.query({
+// 			query: SidebarDocument,
+// 		})
+// 		.then((res) => {
+// 			queryResult = res;
+// 		});
+// 	updateSidebar.subscribe((value) => {
+// 		client
+// 			.query({
+// 				query: SidebarDocument,
+// 			})
+// 			.then((res) => {
+// 				queryResult = res;
+// 			})
+// 			.catch((err) => {
+// 				console.error(err);
+// 			});
+// 	});
 
-	// let data4: ApolloQueryResult<SidebarQuery> | undefined = $state();
-	// let sidebarQuerySubscriber = Sidebar({});
+// 	// const channel = supabaseClient
+// 	// 	.channel('table-db-changes')
+// 	// 	.on(
+// 	// 		'postgres_changes',
+// 	// 		{
+// 	// 			event: '*',
+// 	// 			schema: 'public',
+// 	// 			table: 'proj_cat_and_proj_bookmark'
+// 	// 		},
+// 	// 		() => {
+// 	// 			client
+// 	// 				.query({
+// 	// 					query: SidebarDocument
+// 	// 				})
+// 	// 				.then((res) => {
+// 	// 					queryResult = res;
+// 	// 				})
+// 	// 				.catch((err) => {
+// 	// 					console.error(err);
+// 	// 				});
+// 	// 		}
+// 	// 	)
+// 	// 	.subscribe();
 
-	// sidebarQuerySubscriber.subscribe((subscribedData) => {
-	// 	// { title: string; items: { avatarUrl: string; title: string }[] };
-	// 	data4 = subscribedData;
-	// });
+// 	// return () => channel.unsubscribe();
+// });
 
-	// $effect(() => {
-	// 	data = {
-	// 		title: 'First',
-	// 		items: [
-	// 			{
-	// 				title: 'vercel/vercel',
-	// 				avatarUrl: 'https://avatars.githubusercontent.com/u/14985020?s=48&v=4'
-	// 			},
-	// 			{
-	// 				title: 'atherosai/ui',
-	// 				avatarUrl: 'https://avatars.githubusercontent.com/u/34418705?s=48&v=4'
-	// 			},
-	// 			{
-	// 				title: 'elastic/otel-profiling-agent',
-	// 				avatarUrl: 'https://avatars.githubusercontent.com/u/6764390?s=48&v=4'
-	// 			}
-	// 		]
-	// 	};
-	// });
+// let data4: ApolloQueryResult<SidebarQuery> | undefined = $state();
+// let sidebarQuerySubscriber = Sidebar({});
 
-	const handleThemeButton = (e: any) => {
-		e.preventDefault();
-		isThemeSelectionOpen = true;
-	};
-	const handleThemeSelection = (/** @type {any} */ event: any) => {
-		localStorage.theme = event.value;
-		if (event.value === 'dark') {
-			document.documentElement.classList.remove('cosmos');
-			document.documentElement.classList.add('dark');
-		} else if (event.value === 'cosmos') {
-			document.documentElement.classList.add('dark', 'cosmos');
-		} else {
-			document.documentElement.classList.remove('dark', 'cosmos');
-		}
-		isThemeSelectionOpen = false;
-		// theme = event.value;
-		// themeLabel = event.label;
-	};
-	const closeSidebar = () => {
-		updateMobileSidebarOpenState.set(false);
-	};
-	const handleTrendingClick = (e: any) => {
-		e.preventDefault();
-		goto('/');
-		closeSidebar();
-		
+// sidebarQuerySubscriber.subscribe((subscribedData) => {
+// 	// { title: string; items: { avatarUrl: string; title: string }[] };
+// 	data4 = subscribedData;
+// });
+
+// $effect(() => {
+// 	data = {
+// 		title: 'First',
+// 		items: [
+// 			{
+// 				title: 'vercel/vercel',
+// 				avatarUrl: 'https://avatars.githubusercontent.com/u/14985020?s=48&v=4'
+// 			},
+// 			{
+// 				title: 'atherosai/ui',
+// 				avatarUrl: 'https://avatars.githubusercontent.com/u/34418705?s=48&v=4'
+// 			},
+// 			{
+// 				title: 'elastic/otel-profiling-agent',
+// 				avatarUrl: 'https://avatars.githubusercontent.com/u/6764390?s=48&v=4'
+// 			}
+// 		]
+// 	};
+// });
+
+const handleThemeButton = (e: any) => {
+	e.preventDefault();
+	isThemeSelectionOpen = true;
+};
+const handleThemeSelection = (/** @type {any} */ event: any) => {
+	localStorage.theme = event.value;
+	if (event.value === "dark") {
+		document.documentElement.classList.remove("cosmos");
+		document.documentElement.classList.add("dark");
+	} else if (event.value === "cosmos") {
+		document.documentElement.classList.add("dark", "cosmos");
+	} else {
+		document.documentElement.classList.remove("dark", "cosmos");
 	}
-	const handleBookmarkClick = (e: any) => {
-		e.preventDefault();
-		goto('/bookmarks');
-		closeSidebar();
-	}
-	const handleSettingsClick = (e: any) => {
-		e.preventDefault();
-		goto('/settings');
-		closeSidebar();
-	}
+	isThemeSelectionOpen = false;
+	// theme = event.value;
+	// themeLabel = event.label;
+};
+const closeSidebar = () => {
+	updateMobileSidebarOpenState.set(false);
+};
+const handleTrendingClick = (e: any) => {
+	e.preventDefault();
+	goto("/");
+	closeSidebar();
+};
+const handleBookmarkClick = (e: any) => {
+	e.preventDefault();
+	goto("/bookmarks");
+	closeSidebar();
+};
+const handleSettingsClick = (e: any) => {
+	e.preventDefault();
+	goto("/settings");
+	closeSidebar();
+};
 </script>
 
 <aside class="flex flex-col overflow-auto overflow-x-hidden h-full relative" {...attrs}>
 	<section class="pl-6 pr-0 h-[3.8125rem] border-b flex items-center">
-		<div onclick={closeSidebar} >
+		<div onclick={closeSidebar} onkeydown={null} role="button" tabindex={null}>
 		<Logo showText={true} />
 	</div>
 		{#if $updateMobileSidebarOpenState}
-			<div class="p-5 ml-auto" onclick={closeSidebar}>
-			<XIcon
-				class="w-5 h-5 ml-auto cursor-pointer"
-				/>
+			<div class="p-5 ml-auto" onclick={closeSidebar} role="button" tabindex={null} onkeydown={null}>
+				<XIcon class="w-5 h-5 ml-auto cursor-pointer" />
 			</div>
 		{/if}
 	</section>

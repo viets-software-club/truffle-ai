@@ -1,172 +1,210 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check';
-	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
-	import { tick } from 'svelte';
-	import * as Command from '$lib/components/pure/ui/command/index.js';
-	import * as Popover from '$lib/components/pure/ui/popover/index.js';
-	import { Button } from '$lib/components/pure/ui/button/index.js';
-	import { cn } from '$lib/utils/index';
-	import Plus from 'lucide-svelte/icons/plus';
-	import url from 'url';
-	import client from '$lib/graphql/supabase/client';
-	import gatewayClient from '$lib/graphql/gateway/client';
-	import { Badge } from '$lib/components/pure/ui/badge';
-	import {
-		CreateBookmarkDocument,
-		type CreateBookmarkMutation as CreateBookmarkMutationType
-	} from '$lib/graphql/gateway/generated-codegen';
-	import {
-		ListCategoriesTitleDocument,
-		type ListCategoriesTitleQuery as ListCategoriesTitleQueryType
-	} from '$lib/graphql/supabase/generated-codegen';
-	import * as Dialog from '$lib/components/pure/ui/dialog/index';
-	import { Input } from '$lib/components/pure/ui/input/index';
-	import type { ApolloQueryResult, FetchResult } from '@apollo/client/core';
-	import { toast } from 'svelte-sonner';
-	import { updateSidebar } from '$lib/store/sidebar';
+import { Badge } from "$lib/components/pure/ui/badge";
+import { Button } from "$lib/components/pure/ui/button/index.js";
+import * as Command from "$lib/components/pure/ui/command/index.js";
+import * as Dialog from "$lib/components/pure/ui/dialog/index";
+import { Input } from "$lib/components/pure/ui/input/index";
+import * as Popover from "$lib/components/pure/ui/popover/index.js";
+import gatewayClient from "$lib/graphql/gateway/client";
+import {
+	CreateBookmarkDocument,
+	type CreateBookmarkMutation as CreateBookmarkMutationType,
+} from "$lib/graphql/gateway/generated-codegen";
+import client from "$lib/graphql/supabase/client";
+import {
+	ListCategoriesTitleDocument,
+	type ListCategoriesTitleQuery as ListCategoriesTitleQueryType,
+} from "$lib/graphql/supabase/generated-codegen";
+import { updateSidebar } from "$lib/store/sidebar";
+import { supabaseClient } from "$lib/supabase";
+import { cn } from "$lib/utils/index";
+import type { ApolloQueryResult, FetchResult } from "@apollo/client/core";
+import Check from "lucide-svelte/icons/check";
+import ChevronsUpDown from "lucide-svelte/icons/chevrons-up-down";
+import Plus from "lucide-svelte/icons/plus";
+import { tick } from "svelte";
+import { toast } from "svelte-sonner";
 
-	function isValidGithubUrl(url: any) {
-		const regex = /^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
-		return regex.test(url);
+function isValidGithubUrl(url: any) {
+	const regex = /^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
+	return regex.test(url);
+}
+
+function parseRepoUrl(githubUrl: any) {
+	const path = new URL(githubUrl).pathname;
+	if (path) {
+		const [_, ownerLogin, repoName] = path.split("/");
+		return { ownerLogin, repoName };
 	}
+	return null;
+}
 
-	function parseRepoUrl(githubUrl: any) {
-		const path = new URL(githubUrl).pathname;
-		if (path) {
-			const [_, ownerLogin, repoName] = path.split('/');
-			return { ownerLogin, repoName };
-		} else {
-			return null;
-		}
-	}
-
-	type Props = {
-		onDialogOpenChange?: () => void
-		startOpen?: boolean;
-		repoIdentifier?: {
-			ownerLogin: string;
-			repoName: string;
-		};
-		preSelectedCategories?: string[];
+type Props = {
+	onDialogOpenChange?: () => void;
+	startOpen?: boolean;
+	repoIdentifier?: {
+		ownerLogin: string;
+		repoName: string;
 	};
-	let { repoIdentifier, preSelectedCategories = [], startOpen = false, onDialogOpenChange }: Props = $props();
+	preSelectedCategories?: string[];
+	children?: any;
+};
+const {
+	repoIdentifier,
+	preSelectedCategories = [],
+	startOpen = false,
+	onDialogOpenChange,
+	children,
+}: Props = $props();
 
-
-	let currentCategories: { title: string; isSelected: boolean }[] = $state([]);
-	let selectedCategories: { title: string }[] = $state(preSelectedCategories.map((category) => ({ title: category })));
-	let isSubmitting = $state(false);
-
-
-	$effect(() => {
-		client
-			.query({
-				query: ListCategoriesTitleDocument
-			})
-			.then((res: ApolloQueryResult<ListCategoriesTitleQueryType>) => {
-				if (res.data.projCatCollection?.edges)
-					currentCategories = currentCategories.concat(res.data.projCatCollection?.edges.map((edge) => {
-						if(preSelectedCategories.includes(edge.node.title)) {
+let currentCategories: { title: string; isSelected: boolean }[] = $state([]);
+let selectedCategories: { title: string }[] = $state(
+	preSelectedCategories.map((category) => ({ title: category })),
+);
+let isSubmitting = $state(false);
+let isReloading = false;
+supabaseClient.auth.getUser().then((user) => {
+	if (user.data.user?.id)
+		supabaseClient
+			.channel("table_db_changes")
+			.on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "public",
+					table: "proj_bookmark",
+					filter: `auth_users_id=eq.${user.data.user.id}`,
+				},
+				(payload) => {
+					if (!isSaving) loadData();
+				},
+			)
+			.subscribe();
+});
+const loadData = () => {
+	client
+		.query({
+			query: ListCategoriesTitleDocument,
+		})
+		.then((res: ApolloQueryResult<ListCategoriesTitleQueryType>) => {
+			if (res.data.projCatCollection?.edges)
+				currentCategories = currentCategories.concat(
+					res.data.projCatCollection?.edges.map((edge) => {
+						if (preSelectedCategories.includes(edge.node.title)) {
 							return {
 								title: edge.node.title,
-								isSelected: true
+								isSelected: true,
 							};
 						}
 						return {
 							title: edge.node.title,
-							isSelected: false
+							isSelected: false,
 						};
-					}));
-			});
-	});
-	let dialogOpen = $state(startOpen);
-	let open = $state(false);
-	let selectedValue: string = $state('Add category...');
-	let commandInputValue: string = $state('');
-	function closeAndFocusTrigger(triggerId: string) {
-		open = false;
-		tick().then(() => {
-			document.getElementById(triggerId)?.focus();
+					}),
+				);
 		});
-	}
+};
+loadData();
+let isSaving = false;
+let dialogOpen = $state(startOpen);
+let open = $state(false);
+let selectedValue: string = $state("Add category...");
+let commandInputValue: string = $state("");
+function closeAndFocusTrigger(triggerId: string) {
+	open = false;
+	tick().then(() => {
+		document.getElementById(triggerId)?.focus();
+	});
+}
 
-	let githubRepoUrl = $state('');
-	const handleAddClick = () => {
-		open = false;
+let githubRepoUrl = $state("");
+const handleAddClick = () => {
+	open = false;
 
-		if (
-			!selectedCategories.find((category) => category.title === commandInputValue) &&
-			commandInputValue.trim().length > 0
-		)
-			selectedCategories = [...selectedCategories, { title: commandInputValue }];
-	};
-	const handleSaveClick = () => {
-		if (!repoIdentifier && !isValidGithubUrl(githubRepoUrl)) return;
-		isSubmitting = true;
+	if (
+		!selectedCategories.find(
+			(category) => category.title === commandInputValue,
+		) &&
+		commandInputValue.trim().length > 0
+	)
+		selectedCategories = [...selectedCategories, { title: commandInputValue }];
+};
+const handleSaveClick = () => {
+	if (!repoIdentifier && !isValidGithubUrl(githubRepoUrl)) return;
+	isSaving = true;
+	isSubmitting = true;
+	dialogOpen = false;
+	const repoIdentification: any = repoIdentifier
+		? repoIdentifier
+		: parseRepoUrl(githubRepoUrl);
+	const categories = Array.isArray(selectedCategories)
+		? selectedCategories.map((category) => category.title)
+		: "default";
+	if (repoIdentification) {
+		toast.info("Adding bookmark...");
+		gatewayClient
+			.mutate({
+				mutation: CreateBookmarkDocument,
+				variables: {
+					categories: categories,
+					repo: {
+						name: repoIdentification?.repoName,
+						owner: repoIdentification?.ownerLogin,
+					},
+				},
+			})
+			.then((res: FetchResult<CreateBookmarkMutationType>) => {
+				selectedCategories = [];
+				currentCategories = currentCategories.map((category: any) => ({
+					...category,
+					isSelected: false,
+				}));
 
-		const repoIdentification: any = repoIdentifier ? repoIdentifier : parseRepoUrl(githubRepoUrl);
-		const categories = Array.isArray(selectedCategories)
-			? selectedCategories.map((category) => category.title)
-			: 'default';
-		if (repoIdentification) {
-			gatewayClient
-				.mutate({
-					mutation: CreateBookmarkDocument,
-					variables: {
-						categories: categories,
-						repo: {
-							name: repoIdentification?.repoName,
-							owner: repoIdentification?.ownerLogin
-						}
-					}
-				})
-				.then((res: FetchResult<CreateBookmarkMutationType>) => {
-					selectedCategories = [];
-					currentCategories = currentCategories.map((category: any) => ({
-						...category,
-						isSelected: false
-					}));
+				isSubmitting = false;
+				open = false;
+				dialogOpen = false;
+				updateSidebar.set(`${repoIdentification?.repoName}-add`);
+				toast.success(
+					selectedCategories.length > 1
+						? "Success! Added Bookmarks!"
+						: "Success! Added Bookmark!",
+					{
+						duration: 3000,
+					},
+				);
+			})
+			.catch((e) => {
+				selectedCategories = [];
+				currentCategories = currentCategories.map((category: any) => ({
+					...category,
+					isSelected: false,
+				}));
 
-					isSubmitting = false;
-					open = false;
-					dialogOpen = false;
-					updateSidebar.set(`${repoIdentification?.repoName}-add`);
-					toast.success(
+				isSubmitting = false;
+				open = false;
+
+				toast.error("Error", {
+					description:
 						selectedCategories.length > 1
-							? 'Success! Added Bookmarks!'
-							: 'Success! Added Bookmark!',
-						{
-							duration: 3000
-						}
-					);
-				})
-				.catch((e) => {
-					selectedCategories = [];
-					currentCategories = currentCategories.map((category: any) => ({
-						...category,
-						isSelected: false
-					}));
-
-					isSubmitting = false;
-					open = false;
-					dialogOpen = false;
-					toast.error('Error', {
-						description:
-							selectedCategories.length > 1
-								? 'An error occurred while adding the bookmarks. Please try again later.'
-								: 'An error occurred while adding the bookmark. Please try again later.',
-						action: {
-							label: 'ok',
-							onClick: () => {}
-						}
-					});
+							? "An error occurred while adding the bookmarks. Please try again later."
+							: "An error occurred while adding the bookmark. Please try again later.",
+					action: {
+						label: "ok",
+						onClick: () => {},
+					},
 				});
-		}
-	};
+			})
+			.finally(() => {
+				isSaving = false;
+			});
+	} else {
+		isSaving = false;
+	}
+};
 </script>
 
 <Dialog.Root
 	bind:open={dialogOpen}
-	
 	onOpenChange={() => {
 		onDialogOpenChange && onDialogOpenChange();
 		isSubmitting = false;
@@ -190,11 +228,11 @@
 	}}
 >
 	<Dialog.Trigger>
-		<slot /></Dialog.Trigger
+		{@render children()}</Dialog.Trigger
 	>
 	<Dialog.Content class="sm:max-w-[425px]">
 		<Dialog.Header>
-			<Dialog.Title>Add Repository</Dialog.Title>
+			<Dialog.Title>Add Bookmark</Dialog.Title>
 			<Dialog.Description>Add a repository to your bookmarks.</Dialog.Description>
 		</Dialog.Header>
 		<div class="grid gap-4 py-4 pt-2 px-1">
@@ -227,7 +265,14 @@
 						<!-- <Command.Empty>No bookmark found.</Command.Empty> -->
 						<Command.Group>
 							{#if currentCategories}
-								{#each currentCategories as category}
+								{#each currentCategories.filter(currentCategory => {
+									if(currentCategory.title.toLowerCase().includes(commandInputValue.toLowerCase())) {
+										return true;
+									}
+									if(commandInputValue === "")
+										return true;
+									return false
+								}).slice(0, 6) as category}
 									<Command.Item
 										value={category.title}
 										onSelect={(currentValue) => {
@@ -235,7 +280,12 @@
 												(category) => category.title === currentValue
 											);
 											currentCategories[index].isSelected = !currentCategories[index].isSelected;
-											if (currentCategories[index].isSelected && !selectedCategories.find(selectedCat => selectedCat.title === currentCategories[index].title)) {
+											if (
+												currentCategories[index].isSelected &&
+												!selectedCategories.find(
+													(selectedCat) => selectedCat.title === currentCategories[index].title
+												)
+											) {
 												selectedCategories = [
 													...selectedCategories,
 													{ title: currentCategories[index].title }
@@ -255,12 +305,19 @@
 								{/each}
 							{/if}
 						</Command.Group>
+						{#if currentCategories.length > 0}
 						<div class="-mx-1 h-px bg-border"></div>
+						{/if}
 						<div
-							class="overflow-hidden p-1 text-foreground [&_[data-cmdk-group-heading]]:px-2 [&_[data-cmdk-group-heading]]:py-1.5 [&_[data-cmdk-group-heading]]:text-xs [&_[data-cmdk-group-heading]]:font-medium [&_[data-cmdk-group-heading]]:text-muted-foreground"
+							class={cn("overflow-hidden p-1 text-foreground [&_[data-cmdk-group-heading]]:px-2 [&_[data-cmdk-group-heading]]:py-1.5 [&_[data-cmdk-group-heading]]:text-xs [&_[data-cmdk-group-heading]]:font-medium [&_[data-cmdk-group-heading]]:text-muted-foreground", currentCategories.length === 0 && commandInputValue === "" && '-mt-2')}
 						>
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<!-- svelte-ignore a11y_interactive_supports_focus -->
+							<!-- svelte-ignore event_directive_deprecated -->
+							<!-- svelte-ignore a11y_role_has_required_aria_props -->
 							<div
 								on:click={handleAddClick}
+								role="checkbox"
 								class="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
 							>
 								<Check class="mr-2 h-4 w-4 text-transparent" />

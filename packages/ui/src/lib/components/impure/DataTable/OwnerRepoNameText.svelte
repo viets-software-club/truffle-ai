@@ -1,9 +1,9 @@
 <script lang="ts">
-	type Props = {
-		owner: string;
-		repo: string;
-	};
-	let { owner, repo }: Props = $props();
+type Props = {
+	owner: string;
+	repo: string;
+};
+const { owner, repo }: Props = $props();
 </script>
 
 <span class="whitespace-nowrap truncate overflow-hidden"

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Dialog as SheetPrimitive } from 'bits-ui';
-	import { cn } from '$lib/utils/index';
+import { cn } from "$lib/utils/index";
+import { Dialog as SheetPrimitive } from "bits-ui";
 
-	type $$Props = SheetPrimitive.TitleProps;
+type $$Props = SheetPrimitive.TitleProps;
 
-	let className: $$Props['class'] = undefined;
-	export { className as class };
+let className: $$Props["class"] = undefined;
+export { className as class };
 </script>
 
 <SheetPrimitive.Title

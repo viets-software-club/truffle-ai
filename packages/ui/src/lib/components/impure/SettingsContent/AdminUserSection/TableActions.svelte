@@ -1,49 +1,51 @@
 	
 <script lang="ts">
-	import Button from "$lib/components/pure/ui/button/button.svelte";
-  import * as DropdownMenu from "$lib/components/pure/ui/dropdown-menu";
-    import Ellipsis from "lucide-svelte/icons/ellipsis";
-    import client from '$lib/graphql/supabase/client';
-	import { DeleteAdminDocument } from "$lib/graphql/supabase/generated-codegen";
-	import { toast } from "svelte-sonner";
-  import {adminList, adminStore} from '../adminList.svelte'
-   
-    export let id: string;
+import Button from "$lib/components/pure/ui/button/button.svelte";
+import * as DropdownMenu from "$lib/components/pure/ui/dropdown-menu";
+import client from "$lib/graphql/supabase/client";
+import { DeleteAdminDocument } from "$lib/graphql/supabase/generated-codegen";
+import Ellipsis from "lucide-svelte/icons/ellipsis";
+import { toast } from "svelte-sonner";
+import { adminStore } from "../adminList.svelte";
 
-    const showErrorRemoving = () => {
-      toast.error('Error', {
-					description:
-						'An error occurred while removing the admin. Please try again later.',
-					action: {
-						label: 'ok',
-						onClick: () => {}
-					}
+export let id: string;
+
+const showErrorRemoving = () => {
+	toast.error("Error", {
+		description:
+			"An error occurred while removing the admin. Please try again later.",
+		action: {
+			label: "ok",
+			onClick: () => {},
+		},
+	});
+};
+
+const handleRemoveAdmin = () => {
+	client
+		.mutate({
+			mutation: DeleteAdminDocument,
+			variables: {
+				adminUuid: id,
+			},
+		})
+		.then((res) => {
+			if (res.data?.deleteFromUserAdminCollection?.affectedCount === 1) {
+				// adminList.data?.filter((adminList) => adminList.id !== id)
+				adminStore.set(`remove ${id}`);
+				toast.success("Successfully Removed Admin!", {
+					description: "",
+					duration: 1000,
 				});
-    }
-
-    const handleRemoveAdmin = () => {
-      client.mutate({
-        mutation: DeleteAdminDocument,
-        variables: {
-          adminUuid: id
-        }    
-      }).then((res) => {
-        if(res.data?.deleteFromUserAdminCollection?.affectedCount === 1) {
-          // adminList.data?.filter((adminList) => adminList.id !== id)
-          adminStore.set(`remove ${id}`);
-          toast.success('Successfully Removed Admin!', {
-							description: '',
-							duration: 1000
-						});
-        } else {
-          showErrorRemoving()
-        }
-
-      }).catch(() => {
-        showErrorRemoving();
-      })
-    }
-  </script>
+			} else {
+				showErrorRemoving();
+			}
+		})
+		.catch(() => {
+			showErrorRemoving();
+		});
+};
+</script>
    
   <DropdownMenu.Root>
     <DropdownMenu.Trigger asChild let:builder>

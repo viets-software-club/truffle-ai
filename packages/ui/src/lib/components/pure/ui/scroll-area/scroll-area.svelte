@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { ScrollArea as ScrollAreaPrimitive } from 'bits-ui';
-	import { Scrollbar } from './index.js';
-	import { cn } from '$lib/utils/index';
+import { cn } from "$lib/utils/index";
+import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
+import { Scrollbar } from "./index.js";
 
-	type $$Props = ScrollAreaPrimitive.Props & {
-		orientation?: 'vertical' | 'horizontal' | 'both';
-		scrollbarXClasses?: string;
-		scrollbarYClasses?: string;
-	};
+type $$Props = ScrollAreaPrimitive.Props & {
+	orientation?: "vertical" | "horizontal" | "both";
+	scrollbarXClasses?: string;
+	scrollbarYClasses?: string;
+};
 
-	let className: $$Props['class'] = undefined;
-	export { className as class };
-	export let orientation = 'vertical';
-	export let scrollbarXClasses: string = '';
-	export let scrollbarYClasses: string = '';
+let className: $$Props["class"] = undefined;
+export { className as class };
+export let orientation = "vertical";
+export let scrollbarXClasses = "";
+export let scrollbarYClasses = "";
 </script>
 
 <ScrollAreaPrimitive.Root {...$$restProps} class={cn('relative overflow-hidden', className)}>

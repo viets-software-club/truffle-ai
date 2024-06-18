@@ -1,32 +1,47 @@
 version: '3'
-vars:
-  SOURCE: ../../scripts/env/source.sh ../..
+
 tasks:
+  sync:
+    desc: 'Sync Svelte-Kit'
+    cmds:
+      - ./node_modules/.bin/svelte-kit sync
   dev:
+    desc: 'Start development server on local network'
     cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/vite dev --host --port 3000
+      - ./node_modules/.bin/vite dev --host --port $PUBLIC_UI_PORT
   build:
+    desc: 'Build production'
     cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/vite build
-  preview:
-    cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/vite preview
+      - ./node_modules/.bin/vite build
   start:
+    desc: 'Preview production build locally'
     cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/vite start
+      - ./node_modules/.bin/vite preview
   codegen-supabase:
+    desc: 'Generate Supabase GraphQL codegen'
     cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/graphql-codegen --config codegen.supabase.ts && sed -i '' 's/^import /&type /' src/lib/graphql/supabase/generated-codegen.ts
+      - ./node_modules/.bin/graphql-codegen --config codegen.supabase.ts && sed -i '' 's/^import /&type /' src/lib/graphql/supabase/generated-codegen.ts
   schema-server:
+    desc: 'Copy custom GraphQL server schema'
     cmds:
       - cp ../graphql-server/graph/schema.graphqls ./graphql-schema.server.graphql
   codegen-gateway:
+    desc: 'Generate custom GraphQL gateway codegen'
     cmds:
-      - source {{.SOURCE}} && ./node_modules/.bin/graphql-codegen --config codegen.gateway.ts
+      - ./node_modules/.bin/graphql-codegen --config codegen.gateway.ts && sed -i '' 's/^import /&type /' src/lib/graphql/gateway/generated-codegen.ts
   codegen:
     cmds:
       - task: codegen-supabase
       - task: codegen-gateway
   test:
     cmds:
-      - echo 'success'
+      - ./node_modules/.bin/biome check
+  format:
+    cmds:
+      - ./node_modules/.bin/biome format --write
+  lint:
+    cmds:
+      - ./node_modules/.bin/biome lint --write
+  fix:
+    cmds:
+      - ./node_modules/.bin/biome check --write

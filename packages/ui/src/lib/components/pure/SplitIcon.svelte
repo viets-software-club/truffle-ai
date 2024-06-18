@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+import { cn } from "$lib/utils";
 
-	export let icon1: any = null;
-	export let icon2: any = null;
-	export let iconProps: any = {};
-	export let dividerProps: any = {};
+export let icon1: any = null;
+export let icon2: any = null;
+export let iconProps: any = {};
+export let dividerProps: any = {};
 </script>
 
 <div {...$$restProps} class={cn('relative', $$restProps.class)}>
@@ -22,7 +22,7 @@
 			'absolute h-[1px] -rotate-45 bg-foreground/50 bottom-0 left-0 right-0 top-[50%]',
 			dividerProps.class
 		)}
-	/>
+	></div>
 	<svelte:component
 		this={icon2}
 		{...iconProps}

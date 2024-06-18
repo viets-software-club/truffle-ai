@@ -1,24 +1,24 @@
 <script lang="ts">
-	import LoginForm from '$lib/components/impure/LoginForm.svelte';
-	import LogoLight from '$lib/assets/images/logo-light.svg';
-	import LogoDark from '$lib/assets/images/logo-dark.svg';
-	import { supabaseClient } from '$lib/supabase/index';
-	import { goto } from '$app/navigation';
-	import type { AuthSession } from '@supabase/supabase-js';
-	import LogoImg from '$lib/components/pure/LogoImg.svelte';
-	import SignUpForm from '$lib/components/impure/SignUpForm.svelte';
+import { goto } from "$app/navigation";
+import LogoDark from "$lib/assets/images/logo-dark.svg";
+import LogoLight from "$lib/assets/images/logo-light.svg";
+import LoginForm from "$lib/components/impure/LoginForm.svelte";
+import SignUpForm from "$lib/components/impure/SignUpForm.svelte";
+import LogoImg from "$lib/components/pure/LogoImg.svelte";
+import { supabaseClient } from "$lib/supabase/index";
+import type { AuthSession } from "@supabase/supabase-js";
 
-	let hasLoadedSession = $state(false);
-  
-	$effect.pre(() => {
-		supabaseClient.auth.getSession().then(({ data }) => {
-			if (data.session) {
-				goto('/');
-			} else {
-				hasLoadedSession = true;
-			}
-		});
+let hasLoadedSession = $state(false);
+
+$effect.pre(() => {
+	supabaseClient.auth.getSession().then(({ data }) => {
+		if (data.session) {
+			goto("/");
+		} else {
+			hasLoadedSession = true;
+		}
 	});
+});
 </script>
 
 {#if hasLoadedSession}
@@ -37,8 +37,8 @@
 				class="absolute inset-0 bg-cover"
 				style="
 				background-image:
-					url(https://images.unsplash.com/photo-1590069261209-f8e9b8642343?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1376&q=80);"
-			/>
+					url(/images/login-image-1920x3413.jpg);"
+			></div>
 			<!-- <div class="relative z-20 flex items-center text-lg font-medium flex-grow-0">
 			<div class="flex items-center cursor-pointer align-middle">
         <div class="flex items-center">
@@ -76,11 +76,9 @@
 			<div class="relative z-20 mt-auto">
 				<blockquote class="space-y-2">
 					<p class="text-lg pr-10">
-						&ldquo;The best analysis tool for professional venture capitalists seeking to aggregate
-						data from GitHub.com and other associated relations for evaluating it in an automated
-						fashion. Highly recommended!&rdquo;
+						&ldquo;Venture capital is always wanting to go up market.&rdquo;
 					</p>
-					<footer class="text-sm">Partner @ General Catalyst</footer>
+					<footer class="text-sm">Clayton M. Christensen</footer>
 				</blockquote>
 			</div>
 		</div>
@@ -90,7 +88,7 @@
 			>
 				<div class="flex flex-col space-y-2 text-center">
 					<div>
-						<LogoImg alt="Truffle AI" class="inline h-6 w-6 mr-2"/>
+						<LogoImg alt="Truffle AI" class="inline h-6 w-6 mr-2" />
 						<!-- <img src={LogoDark} alt="Truffle AI" class="inline h-6 w-6 mr-2" /> -->
 						<h1 class="text-2xl font-semibold tracking-tight inline align-middle">
 							Welcome to Truffle

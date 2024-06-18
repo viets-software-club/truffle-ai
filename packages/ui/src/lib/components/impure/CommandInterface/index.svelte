@@ -1,81 +1,81 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import * as Command from '$lib/components/pure/ui/command/index.js';
-	import TrendingUpIcon from 'lucide-svelte/icons/trending-up';
-	import BookmarkIcon from 'lucide-svelte/icons/bookmark';
-	import SettingsIcon from 'lucide-svelte/icons/settings';
-	import PlusIcon from 'lucide-svelte/icons/plus';
+import * as Command from "$lib/components/pure/ui/command/index.js";
+import BookmarkIcon from "lucide-svelte/icons/bookmark";
+import PlusIcon from "lucide-svelte/icons/plus";
+import SettingsIcon from "lucide-svelte/icons/settings";
+import TrendingUpIcon from "lucide-svelte/icons/trending-up";
+import { onMount } from "svelte";
 
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import AddRepo from '$lib/components/impure/AddRepo/index.svelte';
+import { goto } from "$app/navigation";
+import { page } from "$app/stores";
+import AddRepo from "$lib/components/impure/AddRepo/index.svelte";
 
-	let open = $state(false);
-	let commandList: any;
+let open = $state(false);
+let commandList: any;
 
-	onMount(() => {
-		// commandList.focus();
-		function handleKeydown(e: KeyboardEvent) {
-			if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				e.stopPropagation();
-				open = !open;
-				return;
-			}
-			if (open && e.key === 'g' && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				e.stopPropagation();
-				handleTrendingSelect();
-				return;
-			}
-			if (open && e.key === 'b' && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				e.stopPropagation();
-				handleBookmarkSelect();
-				return;
-			}
-			if (open && e.key === 's' && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				e.stopPropagation();
-				handleSettingsSelect();
-				return;
-			}
-			if (open && e.key === 'a' && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				e.stopPropagation();
-				handleAddRepoSelect();
-				return;
-			}
+onMount(() => {
+	// commandList.focus();
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			open = !open;
+			return;
 		}
-
-		document.addEventListener('keydown', handleKeydown);
-		return () => {
-			document.removeEventListener('keydown', handleKeydown);
-		};
-	});
-	const handleTrendingSelect = () => {
-		goto('/');
-		open = false;
-	};
-	
-	const handleBookmarkSelect = () => {
-		goto('/bookmarks');
-		open = false;
-	};
-	const handleSettingsSelect = () => {
-		goto('/settings');
-		open = false;
-	};
-
-	let isAddRepo = $state(false)
-	const handleAddRepoSelect = () => {
-		open = false;
-		isAddRepo = true;
+		if (open && e.key === "g" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			handleTrendingSelect();
+			return;
+		}
+		if (open && e.key === "b" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			handleBookmarkSelect();
+			return;
+		}
+		if (open && e.key === "s" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			handleSettingsSelect();
+			return;
+		}
+		if (open && e.key === "a" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			handleAddRepoSelect();
+			return;
+		}
 	}
+
+	document.addEventListener("keydown", handleKeydown);
+	return () => {
+		document.removeEventListener("keydown", handleKeydown);
+	};
+});
+const handleTrendingSelect = () => {
+	goto("/");
+	open = false;
+};
+
+const handleBookmarkSelect = () => {
+	goto("/bookmarks");
+	open = false;
+};
+const handleSettingsSelect = () => {
+	goto("/settings");
+	open = false;
+};
+
+let isAddRepo = $state(false);
+const handleAddRepoSelect = () => {
+	open = false;
+	isAddRepo = true;
+};
 
 const handleDialogClose = () => {
 	isAddRepo = false;
-}
+};
 </script>
 
 <Command.Dialog bind:open>
@@ -100,7 +100,7 @@ const handleDialogClose = () => {
 			</Command.Item>
 			<Command.Item  onSelect={handleAddRepoSelect} >
 				<PlusIcon class="mr-2 h-3 w-3" />
-				<span>Add Repository</span>
+				<span>Add Bookmark</span>
 				<Command.Shortcut>⌘A</Command.Shortcut>
 			</Command.Item>
 		</Command.Group>

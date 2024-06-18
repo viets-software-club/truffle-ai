@@ -1,16 +1,16 @@
 <script lang="ts">
-	import Ellipsis from "lucide-svelte/icons/ellipsis";
-	import type { HTMLAttributes } from "svelte/elements";
-	import { cn } from "$lib/utils/index.js";
+import { cn } from "$lib/utils/index.js";
+import Ellipsis from "lucide-svelte/icons/ellipsis";
+import type { HTMLAttributes } from "svelte/elements";
 
-	type $$Props = HTMLAttributes<HTMLSpanElement>;
+type $$Props = HTMLAttributes<HTMLSpanElement>;
 
-	let className: $$Props["class"] = undefined;
-	export { className as class };
+let className: $$Props["class"] = undefined;
+export { className as class };
 </script>
 
 <span
-	aria-hidden
+	aria-hidden={true}
 	class={cn("flex h-9 w-9 items-center justify-center", className)}
 	{...$$restProps}
 >

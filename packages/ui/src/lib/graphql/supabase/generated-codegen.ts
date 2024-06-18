@@ -767,6 +767,112 @@ export type DatetimeFilter = {
   neq?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
+export type DiscordInvite = Node & {
+  __typename?: 'DiscordInvite';
+  approximateMemberCount: Scalars['BigInt']['output'];
+  discordInviteCode: Scalars['String']['output'];
+  discordInviteId: Scalars['BigInt']['output'];
+  expiresAt?: Maybe<Scalars['Datetime']['output']>;
+  guildId: Scalars['String']['output'];
+  guildName: Scalars['String']['output'];
+  internalCreatedAt: Scalars['Datetime']['output'];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output'];
+  projRepoAndDiscordInviteCollection: ProjRepoAndDiscordInviteConnection;
+};
+
+
+export type DiscordInviteProjRepoAndDiscordInviteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<ProjRepoAndDiscordInviteFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjRepoAndDiscordInviteOrderBy>>;
+};
+
+export type DiscordInviteConnection = {
+  __typename?: 'DiscordInviteConnection';
+  edges: Array<DiscordInviteEdge>;
+  pageInfo: PageInfo;
+};
+
+export type DiscordInviteDeleteResponse = {
+  __typename?: 'DiscordInviteDeleteResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<DiscordInvite>;
+};
+
+export type DiscordInviteEdge = {
+  __typename?: 'DiscordInviteEdge';
+  cursor: Scalars['String']['output'];
+  node: DiscordInvite;
+};
+
+export type DiscordInviteFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<DiscordInviteFilter>>;
+  approximateMemberCount?: InputMaybe<BigIntFilter>;
+  discordInviteCode?: InputMaybe<StringFilter>;
+  discordInviteId?: InputMaybe<BigIntFilter>;
+  expiresAt?: InputMaybe<DatetimeFilter>;
+  guildId?: InputMaybe<StringFilter>;
+  guildName?: InputMaybe<StringFilter>;
+  internalCreatedAt?: InputMaybe<DatetimeFilter>;
+  nodeId?: InputMaybe<IdFilter>;
+  /** Negates a filter */
+  not?: InputMaybe<DiscordInviteFilter>;
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<DiscordInviteFilter>>;
+};
+
+export type DiscordInviteInsertInput = {
+  approximateMemberCount?: InputMaybe<Scalars['BigInt']['input']>;
+  discordInviteCode?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  guildId?: InputMaybe<Scalars['String']['input']>;
+  guildName?: InputMaybe<Scalars['String']['input']>;
+  internalCreatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type DiscordInviteInsertResponse = {
+  __typename?: 'DiscordInviteInsertResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<DiscordInvite>;
+};
+
+export type DiscordInviteOrderBy = {
+  approximateMemberCount?: InputMaybe<OrderByDirection>;
+  discordInviteCode?: InputMaybe<OrderByDirection>;
+  discordInviteId?: InputMaybe<OrderByDirection>;
+  expiresAt?: InputMaybe<OrderByDirection>;
+  guildId?: InputMaybe<OrderByDirection>;
+  guildName?: InputMaybe<OrderByDirection>;
+  internalCreatedAt?: InputMaybe<OrderByDirection>;
+};
+
+export type DiscordInviteUpdateInput = {
+  approximateMemberCount?: InputMaybe<Scalars['BigInt']['input']>;
+  discordInviteCode?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  guildId?: InputMaybe<Scalars['String']['input']>;
+  guildName?: InputMaybe<Scalars['String']['input']>;
+  internalCreatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type DiscordInviteUpdateResponse = {
+  __typename?: 'DiscordInviteUpdateResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<DiscordInvite>;
+};
+
 export enum FilterIs {
   NotNull = 'NOT_NULL',
   Null = 'NULL'
@@ -1155,7 +1261,7 @@ export type GthbOrgUpdateResponse = {
 export type GthbOwner = Node & {
   __typename?: 'GthbOwner';
   avatarUrl: Scalars['String']['output'];
-  gthbOwner?: Maybe<GthbUser>;
+  gthbOwner?: Maybe<GthbOrg>;
   gthbOwnerId: Scalars['BigInt']['output'];
   gthbOwnerLogin: Scalars['String']['output'];
   gthbOwnerType: Scalars['Opaque']['output'];
@@ -2238,6 +2344,8 @@ export type Mutation = {
   deleteFromAlgoHnStoryCollection: AlgoHnStoryDeleteResponse;
   /** Deletes zero or more records from the `AlgoHnTag` collection */
   deleteFromAlgoHnTagCollection: AlgoHnTagDeleteResponse;
+  /** Deletes zero or more records from the `DiscordInvite` collection */
+  deleteFromDiscordInviteCollection: DiscordInviteDeleteResponse;
   /** Deletes zero or more records from the `GthbForkHist` collection */
   deleteFromGthbForkHistCollection: GthbForkHistDeleteResponse;
   /** Deletes zero or more records from the `GthbIssueHist` collection */
@@ -2276,6 +2384,8 @@ export type Mutation = {
   deleteFromProjClassifierCollection: ProjClassifierDeleteResponse;
   /** Deletes zero or more records from the `ProjRepoAndAlgoHnQuery` collection */
   deleteFromProjRepoAndAlgoHnQueryCollection: ProjRepoAndAlgoHnQueryDeleteResponse;
+  /** Deletes zero or more records from the `ProjRepoAndDiscordInvite` collection */
+  deleteFromProjRepoAndDiscordInviteCollection: ProjRepoAndDiscordInviteDeleteResponse;
   /** Deletes zero or more records from the `ProjRepoAndProjClassifier` collection */
   deleteFromProjRepoAndProjClassifierCollection: ProjRepoAndProjClassifierDeleteResponse;
   /** Deletes zero or more records from the `ProjRepoAndSbotLinCompany` collection */
@@ -2304,6 +2414,7 @@ export type Mutation = {
   fInsertUserAdminByEmail?: Maybe<Scalars['Boolean']['output']>;
   fIsAdmin?: Maybe<Scalars['Boolean']['output']>;
   fIsProjRepoBookmarked?: Maybe<Scalars['Boolean']['output']>;
+  fPinProjBookmarkInCat?: Maybe<Scalars['Boolean']['output']>;
   /** Adds one or more `AdminsView` records to the collection */
   insertIntoAdminsViewCollection?: Maybe<AdminsViewInsertResponse>;
   /** Adds one or more `AlgoHnCommentAndAlgoHnTag` records to the collection */
@@ -2318,6 +2429,8 @@ export type Mutation = {
   insertIntoAlgoHnStoryCollection?: Maybe<AlgoHnStoryInsertResponse>;
   /** Adds one or more `AlgoHnTag` records to the collection */
   insertIntoAlgoHnTagCollection?: Maybe<AlgoHnTagInsertResponse>;
+  /** Adds one or more `DiscordInvite` records to the collection */
+  insertIntoDiscordInviteCollection?: Maybe<DiscordInviteInsertResponse>;
   /** Adds one or more `GthbForkHist` records to the collection */
   insertIntoGthbForkHistCollection?: Maybe<GthbForkHistInsertResponse>;
   /** Adds one or more `GthbIssueHist` records to the collection */
@@ -2356,6 +2469,8 @@ export type Mutation = {
   insertIntoProjClassifierCollection?: Maybe<ProjClassifierInsertResponse>;
   /** Adds one or more `ProjRepoAndAlgoHnQuery` records to the collection */
   insertIntoProjRepoAndAlgoHnQueryCollection?: Maybe<ProjRepoAndAlgoHnQueryInsertResponse>;
+  /** Adds one or more `ProjRepoAndDiscordInvite` records to the collection */
+  insertIntoProjRepoAndDiscordInviteCollection?: Maybe<ProjRepoAndDiscordInviteInsertResponse>;
   /** Adds one or more `ProjRepoAndProjClassifier` records to the collection */
   insertIntoProjRepoAndProjClassifierCollection?: Maybe<ProjRepoAndProjClassifierInsertResponse>;
   /** Adds one or more `ProjRepoAndSbotLinCompany` records to the collection */
@@ -2388,6 +2503,8 @@ export type Mutation = {
   updateAlgoHnStoryCollection: AlgoHnStoryUpdateResponse;
   /** Updates zero or more records in the `AlgoHnTag` collection */
   updateAlgoHnTagCollection: AlgoHnTagUpdateResponse;
+  /** Updates zero or more records in the `DiscordInvite` collection */
+  updateDiscordInviteCollection: DiscordInviteUpdateResponse;
   /** Updates zero or more records in the `GthbForkHist` collection */
   updateGthbForkHistCollection: GthbForkHistUpdateResponse;
   /** Updates zero or more records in the `GthbIssueHist` collection */
@@ -2426,6 +2543,8 @@ export type Mutation = {
   updateProjClassifierCollection: ProjClassifierUpdateResponse;
   /** Updates zero or more records in the `ProjRepoAndAlgoHnQuery` collection */
   updateProjRepoAndAlgoHnQueryCollection: ProjRepoAndAlgoHnQueryUpdateResponse;
+  /** Updates zero or more records in the `ProjRepoAndDiscordInvite` collection */
+  updateProjRepoAndDiscordInviteCollection: ProjRepoAndDiscordInviteUpdateResponse;
   /** Updates zero or more records in the `ProjRepoAndProjClassifier` collection */
   updateProjRepoAndProjClassifierCollection: ProjRepoAndProjClassifierUpdateResponse;
   /** Updates zero or more records in the `ProjRepoAndSbotLinCompany` collection */
@@ -2493,6 +2612,13 @@ export type MutationDeleteFromAlgoHnStoryCollectionArgs = {
 export type MutationDeleteFromAlgoHnTagCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<AlgoHnTagFilter>;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromDiscordInviteCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<DiscordInviteFilter>;
 };
 
 
@@ -2630,6 +2756,13 @@ export type MutationDeleteFromProjRepoAndAlgoHnQueryCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationDeleteFromProjRepoAndDiscordInviteCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<ProjRepoAndDiscordInviteFilter>;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationDeleteFromProjRepoAndProjClassifierCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<ProjRepoAndProjClassifierFilter>;
@@ -2745,6 +2878,13 @@ export type MutationFIsProjRepoBookmarkedArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationFPinProjBookmarkInCatArgs = {
+  bookmarkid: Scalars['BigInt']['input'];
+  categoryid: Scalars['BigInt']['input'];
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntoAdminsViewCollectionArgs = {
   objects: Array<AdminsViewInsertInput>;
 };
@@ -2783,6 +2923,12 @@ export type MutationInsertIntoAlgoHnStoryCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntoAlgoHnTagCollectionArgs = {
   objects: Array<AlgoHnTagInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntoDiscordInviteCollectionArgs = {
+  objects: Array<DiscordInviteInsertInput>;
 };
 
 
@@ -2901,6 +3047,12 @@ export type MutationInsertIntoProjRepoAndAlgoHnQueryCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationInsertIntoProjRepoAndDiscordInviteCollectionArgs = {
+  objects: Array<ProjRepoAndDiscordInviteInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntoProjRepoAndProjClassifierCollectionArgs = {
   objects: Array<ProjRepoAndProjClassifierInsertInput>;
 };
@@ -3007,6 +3159,14 @@ export type MutationUpdateAlgoHnTagCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<AlgoHnTagFilter>;
   set: AlgoHnTagUpdateInput;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationUpdateDiscordInviteCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<DiscordInviteFilter>;
+  set: DiscordInviteUpdateInput;
 };
 
 
@@ -3159,6 +3319,14 @@ export type MutationUpdateProjRepoAndAlgoHnQueryCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<ProjRepoAndAlgoHnQueryFilter>;
   set: ProjRepoAndAlgoHnQueryUpdateInput;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationUpdateProjRepoAndDiscordInviteCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<ProjRepoAndDiscordInviteFilter>;
+  set: ProjRepoAndDiscordInviteUpdateInput;
 };
 
 
@@ -3647,11 +3815,13 @@ export type ProjRepo = Node & {
   note?: Maybe<Scalars['String']['output']>;
   projBookmarkCollection: ProjBookmarkConnection;
   projRepoAndAlgoHnQueryCollection: ProjRepoAndAlgoHnQueryConnection;
+  projRepoAndDiscordInviteCollection: ProjRepoAndDiscordInviteConnection;
   projRepoAndProjClassifierCollection: ProjRepoAndProjClassifierConnection;
   projRepoAndSbotLinCompanyCollection: ProjRepoAndSbotLinCompanyConnection;
   projRepoAndSbotLinProfileCollection: ProjRepoAndSbotLinProfileConnection;
   projRepoId: Scalars['BigInt']['output'];
   repoEli5?: Maybe<Scalars['String']['output']>;
+  twitterEli5?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -3674,6 +3844,17 @@ export type ProjRepoProjRepoAndAlgoHnQueryCollectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ProjRepoAndAlgoHnQueryOrderBy>>;
+};
+
+
+export type ProjRepoProjRepoAndDiscordInviteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<ProjRepoAndDiscordInviteFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjRepoAndDiscordInviteOrderBy>>;
 };
 
 
@@ -3785,6 +3966,84 @@ export type ProjRepoAndAlgoHnQueryUpdateResponse = {
   affectedCount: Scalars['Int']['output'];
   /** Array of records impacted by the mutation */
   records: Array<ProjRepoAndAlgoHnQuery>;
+};
+
+export type ProjRepoAndDiscordInvite = Node & {
+  __typename?: 'ProjRepoAndDiscordInvite';
+  discordInvite: DiscordInvite;
+  discordInviteId: Scalars['BigInt']['output'];
+  internalCreatedAt: Scalars['Datetime']['output'];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output'];
+  projRepo: ProjRepo;
+  projRepoId: Scalars['BigInt']['output'];
+};
+
+export type ProjRepoAndDiscordInviteConnection = {
+  __typename?: 'ProjRepoAndDiscordInviteConnection';
+  edges: Array<ProjRepoAndDiscordInviteEdge>;
+  pageInfo: PageInfo;
+};
+
+export type ProjRepoAndDiscordInviteDeleteResponse = {
+  __typename?: 'ProjRepoAndDiscordInviteDeleteResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<ProjRepoAndDiscordInvite>;
+};
+
+export type ProjRepoAndDiscordInviteEdge = {
+  __typename?: 'ProjRepoAndDiscordInviteEdge';
+  cursor: Scalars['String']['output'];
+  node: ProjRepoAndDiscordInvite;
+};
+
+export type ProjRepoAndDiscordInviteFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<ProjRepoAndDiscordInviteFilter>>;
+  discordInviteId?: InputMaybe<BigIntFilter>;
+  internalCreatedAt?: InputMaybe<DatetimeFilter>;
+  nodeId?: InputMaybe<IdFilter>;
+  /** Negates a filter */
+  not?: InputMaybe<ProjRepoAndDiscordInviteFilter>;
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<ProjRepoAndDiscordInviteFilter>>;
+  projRepoId?: InputMaybe<BigIntFilter>;
+};
+
+export type ProjRepoAndDiscordInviteInsertInput = {
+  discordInviteId?: InputMaybe<Scalars['BigInt']['input']>;
+  internalCreatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  projRepoId?: InputMaybe<Scalars['BigInt']['input']>;
+};
+
+export type ProjRepoAndDiscordInviteInsertResponse = {
+  __typename?: 'ProjRepoAndDiscordInviteInsertResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<ProjRepoAndDiscordInvite>;
+};
+
+export type ProjRepoAndDiscordInviteOrderBy = {
+  discordInviteId?: InputMaybe<OrderByDirection>;
+  internalCreatedAt?: InputMaybe<OrderByDirection>;
+  projRepoId?: InputMaybe<OrderByDirection>;
+};
+
+export type ProjRepoAndDiscordInviteUpdateInput = {
+  discordInviteId?: InputMaybe<Scalars['BigInt']['input']>;
+  internalCreatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  projRepoId?: InputMaybe<Scalars['BigInt']['input']>;
+};
+
+export type ProjRepoAndDiscordInviteUpdateResponse = {
+  __typename?: 'ProjRepoAndDiscordInviteUpdateResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<ProjRepoAndDiscordInvite>;
 };
 
 export type ProjRepoAndProjClassifier = Node & {
@@ -4055,6 +4314,7 @@ export type ProjRepoFilter = {
   or?: InputMaybe<Array<ProjRepoFilter>>;
   projRepoId?: InputMaybe<BigIntFilter>;
   repoEli5?: InputMaybe<StringFilter>;
+  twitterEli5?: InputMaybe<StringFilter>;
 };
 
 export type ProjRepoInsertInput = {
@@ -4063,6 +4323,7 @@ export type ProjRepoInsertInput = {
   internalCreatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
   repoEli5?: InputMaybe<Scalars['String']['input']>;
+  twitterEli5?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ProjRepoInsertResponse = {
@@ -4080,6 +4341,7 @@ export type ProjRepoOrderBy = {
   note?: InputMaybe<OrderByDirection>;
   projRepoId?: InputMaybe<OrderByDirection>;
   repoEli5?: InputMaybe<OrderByDirection>;
+  twitterEli5?: InputMaybe<OrderByDirection>;
 };
 
 export type ProjRepoUpdateInput = {
@@ -4088,6 +4350,7 @@ export type ProjRepoUpdateInput = {
   internalCreatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
   repoEli5?: InputMaybe<Scalars['String']['input']>;
+  twitterEli5?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ProjRepoUpdateResponse = {
@@ -4115,6 +4378,8 @@ export type Query = {
   algoHnStoryCollection?: Maybe<AlgoHnStoryConnection>;
   /** A pagable collection of type `AlgoHnTag` */
   algoHnTagCollection?: Maybe<AlgoHnTagConnection>;
+  /** A pagable collection of type `DiscordInvite` */
+  discordInviteCollection?: Maybe<DiscordInviteConnection>;
   fGetGthbOrgByGthbName?: Maybe<GthbOrgConnection>;
   fGetGthbOrgByGthbRepoId?: Maybe<GthbOrgConnection>;
   fGetGthbOwnerByGthbName?: Maybe<GthbOwnerConnection>;
@@ -4168,6 +4433,8 @@ export type Query = {
   projClassifierCollection?: Maybe<ProjClassifierConnection>;
   /** A pagable collection of type `ProjRepoAndAlgoHnQuery` */
   projRepoAndAlgoHnQueryCollection?: Maybe<ProjRepoAndAlgoHnQueryConnection>;
+  /** A pagable collection of type `ProjRepoAndDiscordInvite` */
+  projRepoAndDiscordInviteCollection?: Maybe<ProjRepoAndDiscordInviteConnection>;
   /** A pagable collection of type `ProjRepoAndProjClassifier` */
   projRepoAndProjClassifierCollection?: Maybe<ProjRepoAndProjClassifierConnection>;
   /** A pagable collection of type `ProjRepoAndSbotLinCompany` */
@@ -4270,6 +4537,18 @@ export type QueryAlgoHnTagCollectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<AlgoHnTagOrderBy>>;
+};
+
+
+/** The root type for querying data */
+export type QueryDiscordInviteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<DiscordInviteFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DiscordInviteOrderBy>>;
 };
 
 
@@ -4658,6 +4937,18 @@ export type QueryProjRepoAndAlgoHnQueryCollectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ProjRepoAndAlgoHnQueryOrderBy>>;
+};
+
+
+/** The root type for querying data */
+export type QueryProjRepoAndDiscordInviteCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<ProjRepoAndDiscordInviteFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProjRepoAndDiscordInviteOrderBy>>;
 };
 
 
@@ -5760,6 +6051,14 @@ export type HackernewsEli5ByGthbNameQueryVariables = Exact<{
 
 export type HackernewsEli5ByGthbNameQuery = { __typename?: 'Query', fGetProjRepoByGthbName?: { __typename?: 'ProjRepoConnection', edges: Array<{ __typename?: 'ProjRepoEdge', node: { __typename?: 'ProjRepo', algoHnEli5?: string | null } }> } | null };
 
+export type HnSentimentQueryVariables = Exact<{
+  repoName: Scalars['String']['input'];
+  ownerLogin: Scalars['String']['input'];
+}>;
+
+
+export type HnSentimentQuery = { __typename?: 'Query', fGetProjRepoByGthbName?: { __typename?: 'ProjRepoConnection', edges: Array<{ __typename?: 'ProjRepoEdge', node: { __typename?: 'ProjRepo', algoHnEli5?: string | null } }> } | null, algoHnQueryCollection?: { __typename?: 'AlgoHnQueryConnection', edges: Array<{ __typename?: 'AlgoHnQueryEdge', node: { __typename?: 'AlgoHnQuery', algoHnCommentCollection: { __typename?: 'AlgoHnCommentConnection', edges: Array<{ __typename?: 'AlgoHnCommentEdge', node: { __typename?: 'AlgoHnComment', algoHnCommentObjectId: any } }> } } }> } | null };
+
 export type IsUserAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5776,7 +6075,7 @@ export type RepoSidebarByGthbRepoIdQueryVariables = Exact<{
 }>;
 
 
-export type RepoSidebarByGthbRepoIdQuery = { __typename?: 'Query', gthbRepoCollection?: { __typename?: 'GthbRepoConnection', edges: Array<{ __typename?: 'GthbRepoEdge', node: { __typename?: 'GthbRepo', forkCount: any, homepageUrl?: string | null, isInOrganization: boolean, issuesTotalCount: any, issuesPerContributor: any, pullRequestsTotalCount: any, gthbRepoName: string, gthbRepoDescription?: string | null, gthbRepoUrl: string, stargazerCount: any, contributorCount: any, stargazersPerContributor: any, forksPerContributor: any, createdAt: any, pullRequestsPerContributor: any, gthbRepo: { __typename?: 'ProjRepo', projRepoAndSbotLinProfileCollection: { __typename?: 'ProjRepoAndSbotLinProfileConnection', edges: Array<{ __typename?: 'ProjRepoAndSbotLinProfileEdge', node: { __typename?: 'ProjRepoAndSbotLinProfile', sbotLinProfile: { __typename?: 'SbotLinProfile', sbotLinProfileUrl: string, sbotLinProfileName: string } } }> }, projRepoAndSbotLinCompanyCollection: { __typename?: 'ProjRepoAndSbotLinCompanyConnection', edges: Array<{ __typename?: 'ProjRepoAndSbotLinCompanyEdge', node: { __typename?: 'ProjRepoAndSbotLinCompany', sbotLinCompanyId: any, sbotLinCompany: { __typename?: 'SbotLinCompany', sbotLinCompanyName: string, sbotLinCompanyUrl: string } } }> } }, gthbRepoAndGthbRepoTopicCollection: { __typename?: 'GthbRepoAndGthbRepoTopicConnection', edges: Array<{ __typename?: 'GthbRepoAndGthbRepoTopicEdge', node: { __typename?: 'GthbRepoAndGthbRepoTopic', gthbRepoTopic: { __typename?: 'GthbRepoTopic', gthbRepoTopicName: string } } }> }, gthbRepoAndGthbLangCollection: { __typename?: 'GthbRepoAndGthbLangConnection', edges: Array<{ __typename?: 'GthbRepoAndGthbLangEdge', node: { __typename?: 'GthbRepoAndGthbLang', gthbLang: { __typename?: 'GthbLang', gthbLangName: string, color: string } } }> }, gthbRepoContrCollection: { __typename?: 'GthbRepoContrConnection', edges: Array<{ __typename?: 'GthbRepoContrEdge', node: { __typename?: 'GthbRepoContr', contributions: any, gthbOwner: { __typename?: 'GthbOwner', avatarUrl: string, gthbOwnerLogin: string, gthbOwnerUrl: string, gthbOwnerType: any } } }> }, gthbOwner: { __typename?: 'GthbOwner', avatarUrl: string, gthbOwnerLogin: string, gthbOwnerUrl: string, gthbOwnerType: any } } }> } | null, gthbOrgCollection?: { __typename?: 'GthbOrgConnection', edges: Array<{ __typename?: 'GthbOrgEdge', node: { __typename?: 'GthbOrg', gthbOrgId: any, gthbOrgDescription?: string | null, descriptionHtml?: string | null, email?: string | null, gthbOrgName?: string | null, twitterUsername?: string | null, websiteUrl?: string | null } }> } | null, gthbUserCollection?: { __typename?: 'GthbUserConnection', edges: Array<{ __typename?: 'GthbUserEdge', node: { __typename?: 'GthbUser', gthbUserId: any, bio?: string | null, company?: string | null, createdAt: any, email?: string | null, followersTotalCount: any, gthbUserName?: string | null, twitterUsername?: string | null, websiteUrl?: string | null } }> } | null };
+export type RepoSidebarByGthbRepoIdQuery = { __typename?: 'Query', gthbRepoCollection?: { __typename?: 'GthbRepoConnection', edges: Array<{ __typename?: 'GthbRepoEdge', node: { __typename?: 'GthbRepo', forkCount: any, homepageUrl?: string | null, isInOrganization: boolean, issuesTotalCount: any, issuesPerContributor: any, pullRequestsTotalCount: any, gthbRepoName: string, gthbRepoDescription?: string | null, gthbRepoUrl: string, stargazerCount: any, contributorCount: any, stargazersPerContributor: any, forksPerContributor: any, createdAt: any, pullRequestsPerContributor: any, gthbRepo: { __typename?: 'ProjRepo', projRepoAndDiscordInviteCollection: { __typename?: 'ProjRepoAndDiscordInviteConnection', edges: Array<{ __typename?: 'ProjRepoAndDiscordInviteEdge', node: { __typename?: 'ProjRepoAndDiscordInvite', discordInvite: { __typename?: 'DiscordInvite', discordInviteId: any, guildId: string, guildName: string, approximateMemberCount: any, discordInviteCode: string } } }> }, projRepoAndSbotLinProfileCollection: { __typename?: 'ProjRepoAndSbotLinProfileConnection', edges: Array<{ __typename?: 'ProjRepoAndSbotLinProfileEdge', node: { __typename?: 'ProjRepoAndSbotLinProfile', sbotLinProfile: { __typename?: 'SbotLinProfile', sbotLinProfileUrl: string, sbotLinProfileName: string } } }> }, projRepoAndSbotLinCompanyCollection: { __typename?: 'ProjRepoAndSbotLinCompanyConnection', edges: Array<{ __typename?: 'ProjRepoAndSbotLinCompanyEdge', node: { __typename?: 'ProjRepoAndSbotLinCompany', sbotLinCompanyId: any, sbotLinCompany: { __typename?: 'SbotLinCompany', sbotLinCompanyName: string, sbotLinCompanyUrl: string } } }> } }, gthbRepoAndGthbRepoTopicCollection: { __typename?: 'GthbRepoAndGthbRepoTopicConnection', edges: Array<{ __typename?: 'GthbRepoAndGthbRepoTopicEdge', node: { __typename?: 'GthbRepoAndGthbRepoTopic', gthbRepoTopic: { __typename?: 'GthbRepoTopic', gthbRepoTopicName: string } } }> }, gthbRepoAndGthbLangCollection: { __typename?: 'GthbRepoAndGthbLangConnection', edges: Array<{ __typename?: 'GthbRepoAndGthbLangEdge', node: { __typename?: 'GthbRepoAndGthbLang', gthbLang: { __typename?: 'GthbLang', gthbLangName: string, color: string } } }> }, gthbRepoContrCollection: { __typename?: 'GthbRepoContrConnection', edges: Array<{ __typename?: 'GthbRepoContrEdge', node: { __typename?: 'GthbRepoContr', contributions: any, gthbOwner: { __typename?: 'GthbOwner', avatarUrl: string, gthbOwnerLogin: string, gthbOwnerUrl: string, gthbOwnerType: any } } }> }, gthbOwner: { __typename?: 'GthbOwner', avatarUrl: string, gthbOwnerLogin: string, gthbOwnerUrl: string, gthbOwnerType: any } } }> } | null, gthbOrgCollection?: { __typename?: 'GthbOrgConnection', edges: Array<{ __typename?: 'GthbOrgEdge', node: { __typename?: 'GthbOrg', gthbOrgId: any, gthbOrgDescription?: string | null, descriptionHtml?: string | null, email?: string | null, gthbOrgName?: string | null, twitterUsername?: string | null, websiteUrl?: string | null } }> } | null, gthbUserCollection?: { __typename?: 'GthbUserConnection', edges: Array<{ __typename?: 'GthbUserEdge', node: { __typename?: 'GthbUser', gthbUserId: any, bio?: string | null, company?: string | null, createdAt: any, email?: string | null, followersTotalCount: any, gthbUserName?: string | null, twitterUsername?: string | null, websiteUrl?: string | null } }> } | null };
 
 export type SidebarQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5874,9 +6173,10 @@ export const GetProjRepoNotesByGthbRepoIdDocument = {"kind":"Document","definiti
 export const GetUserApiKeyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserApiKey"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userApiKeyCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userApiKey"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserApiKeyQuery, GetUserApiKeyQueryVariables>;
 export const GetUserWhiteListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserWhiteList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userWhitelistCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userWhitelistId"}},{"kind":"Field","name":{"kind":"Name","value":"kind"}},{"kind":"Field","name":{"kind":"Name","value":"userWhitelistValue"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserWhiteListQuery, GetUserWhiteListQueryVariables>;
 export const HackernewsEli5ByGthbNameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"HackernewsEli5ByGthbName"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repoName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerLogin"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fGetProjRepoByGthbName"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"reponame"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repoName"}}},{"kind":"Argument","name":{"kind":"Name","value":"ownerlogin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerLogin"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"algoHnEli5"}}]}}]}}]}}]}}]} as unknown as DocumentNode<HackernewsEli5ByGthbNameQuery, HackernewsEli5ByGthbNameQueryVariables>;
+export const HnSentimentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"HnSentiment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repoName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerLogin"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fGetProjRepoByGthbName"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"reponame"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repoName"}}},{"kind":"Argument","name":{"kind":"Name","value":"ownerlogin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerLogin"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"algoHnEli5"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"algoHnQueryCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"query"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repoName"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"algoHnCommentCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"algoHnCommentObjectId"}}]}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<HnSentimentQuery, HnSentimentQueryVariables>;
 export const IsUserAdminDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"IsUserAdmin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fIsUserAdmin"}}]}}]} as unknown as DocumentNode<IsUserAdminQuery, IsUserAdminQueryVariables>;
 export const ListCategoriesTitleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListCategoriesTitle"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projCatCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListCategoriesTitleQuery, ListCategoriesTitleQueryVariables>;
-export const RepoSidebarByGthbRepoIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"RepoSidebarByGthbRepoId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gthbRepoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"gthbRepoId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gthbRepoId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forkCount"}},{"kind":"Field","name":{"kind":"Name","value":"homepageUrl"}},{"kind":"Field","name":{"kind":"Name","value":"isInOrganization"}},{"kind":"Field","name":{"kind":"Name","value":"issuesTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"issuesPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"pullRequestsTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoName"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoDescription"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoUrl"}},{"kind":"Field","name":{"kind":"Name","value":"stargazerCount"}},{"kind":"Field","name":{"kind":"Name","value":"contributorCount"}},{"kind":"Field","name":{"kind":"Name","value":"stargazersPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"forksPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"forkCount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pullRequestsPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projRepoAndSbotLinProfileCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinProfileUrl"}},{"kind":"Field","name":{"kind":"Name","value":"sbotLinProfileName"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"projRepoAndSbotLinCompanyCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompanyId"}},{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompany"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompanyName"}},{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompanyUrl"}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoAndGthbRepoTopicCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoTopic"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoTopicName"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoAndGthbLangCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbLang"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbLangName"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoContrCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"contributions"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contributions"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerLogin"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerType"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerLogin"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerType"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbOrgCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"gthbOrgId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbOrgId"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOrgDescription"}},{"kind":"Field","name":{"kind":"Name","value":"descriptionHtml"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOrgName"}},{"kind":"Field","name":{"kind":"Name","value":"twitterUsername"}},{"kind":"Field","name":{"kind":"Name","value":"websiteUrl"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbUserCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"gthbUserId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbUserId"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followersTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"gthbUserName"}},{"kind":"Field","name":{"kind":"Name","value":"twitterUsername"}},{"kind":"Field","name":{"kind":"Name","value":"websiteUrl"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RepoSidebarByGthbRepoIdQuery, RepoSidebarByGthbRepoIdQueryVariables>;
+export const RepoSidebarByGthbRepoIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"RepoSidebarByGthbRepoId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"gthbRepoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BigInt"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"gthbRepoId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"gthbRepoId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forkCount"}},{"kind":"Field","name":{"kind":"Name","value":"homepageUrl"}},{"kind":"Field","name":{"kind":"Name","value":"isInOrganization"}},{"kind":"Field","name":{"kind":"Name","value":"issuesTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"issuesPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"pullRequestsTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoName"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoDescription"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoUrl"}},{"kind":"Field","name":{"kind":"Name","value":"stargazerCount"}},{"kind":"Field","name":{"kind":"Name","value":"contributorCount"}},{"kind":"Field","name":{"kind":"Name","value":"stargazersPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"forksPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"forkCount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"pullRequestsPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projRepoAndDiscordInviteCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"discordInvite"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"discordInviteId"}},{"kind":"Field","name":{"kind":"Name","value":"guildId"}},{"kind":"Field","name":{"kind":"Name","value":"guildName"}},{"kind":"Field","name":{"kind":"Name","value":"approximateMemberCount"}},{"kind":"Field","name":{"kind":"Name","value":"discordInviteCode"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"projRepoAndSbotLinProfileCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinProfileUrl"}},{"kind":"Field","name":{"kind":"Name","value":"sbotLinProfileName"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"projRepoAndSbotLinCompanyCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompanyId"}},{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompany"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompanyName"}},{"kind":"Field","name":{"kind":"Name","value":"sbotLinCompanyUrl"}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoAndGthbRepoTopicCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoTopic"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoTopicName"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoAndGthbLangCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbLang"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbLangName"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoContrCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"contributions"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"3"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contributions"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerLogin"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerType"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerLogin"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerType"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbOrgCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"gthbOrgId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbOrgId"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOrgDescription"}},{"kind":"Field","name":{"kind":"Name","value":"descriptionHtml"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOrgName"}},{"kind":"Field","name":{"kind":"Name","value":"twitterUsername"}},{"kind":"Field","name":{"kind":"Name","value":"websiteUrl"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"gthbUserCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"gthbUserId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbUserId"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"followersTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"gthbUserName"}},{"kind":"Field","name":{"kind":"Name","value":"twitterUsername"}},{"kind":"Field","name":{"kind":"Name","value":"websiteUrl"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RepoSidebarByGthbRepoIdQuery, RepoSidebarByGthbRepoIdQueryVariables>;
 export const SidebarDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Sidebar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projCatCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"projCatAndProjBookmarkCollection"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projBookmark"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"projRepo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoName"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerLogin"}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<SidebarQuery, SidebarQueryVariables>;
 export const TrendingTableDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TrendingTable"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"GthbRepoFilter"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"GthbRepoOrderBy"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"last"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"queryStargazerMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"stargazerCount"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"stargazerCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryStargazerMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"stargazerCount"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"stargazerCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryForkMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"forkCount"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forkCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryForkMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"forkCount"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forkCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryIssueMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"issuesTotalCount"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"issuesTotalCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryIssueMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"issuesTotalCount"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"issuesTotalCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryContributorMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"contributorCount"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contributorCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryContributorMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"contributorCount"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contributorCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryPullRequestsMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"pullRequestsTotalCount"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pullRequestsTotalCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryPullRequestsMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"pullRequestsTotalCount"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pullRequestsTotalCount"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryIssuesPerContributorMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"issuesPerContributor"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"issuesPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryIssuesPerContributorMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"issuesPerContributor"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"issuesPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryForksPerContributorMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"forksPerContributor"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forksPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryForksPerContributorMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"forksPerContributor"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forksPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryStargazersPerContributorMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"stargazersPerContributor"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"stargazersPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryStargazersPerContributorMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"stargazersPerContributor"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"stargazersPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryPullRequestsPerContributorMax"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"pullRequestsPerContributor"},"value":{"kind":"EnumValue","value":"DescNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pullRequestsPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryPullRequestsPerContributorMin"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"pullRequestsPerContributor"},"value":{"kind":"EnumValue","value":"AscNullsLast"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pullRequestsPerContributor"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"queryTrending"},"name":{"kind":"Name","value":"fListTrendingGthbRepo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"gthbDateRangeArg"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dateRange"}}},{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}},{"kind":"Argument","name":{"kind":"Name","value":"last"},"value":{"kind":"Variable","name":{"kind":"Name","value":"last"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbRepoName"}},{"kind":"Field","name":{"kind":"Name","value":"gthbOwner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"gthbOwnerLogin"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"stargazerCount"}},{"kind":"Field","name":{"kind":"Name","value":"stargazersPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"forkCount"}},{"kind":"Field","name":{"kind":"Name","value":"issuesTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"issuesPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"forksPerContributor"}},{"kind":"Field","name":{"kind":"Name","value":"gthbRepoDescription"}},{"kind":"Field","name":{"kind":"Name","value":"contributorCount"}},{"kind":"Field","name":{"kind":"Name","value":"pullRequestsTotalCount"}},{"kind":"Field","name":{"kind":"Name","value":"pullRequestsPerContributor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}}]}}]}}]}}]} as unknown as DocumentNode<TrendingTableQuery, TrendingTableQueryVariables>;
 export const UpdateUserApiKeyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserApiKey"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userApiKey"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserApiKeyCollection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userApiKey"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userApiKey"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affectedCount"}}]}}]}}]} as unknown as DocumentNode<UpdateUserApiKeyMutation, UpdateUserApiKeyMutationVariables>;

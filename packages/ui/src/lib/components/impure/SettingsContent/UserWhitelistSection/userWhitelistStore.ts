@@ -1,3 +1,3 @@
 import { writable } from "svelte/store";
 
-export const userWhiteListStore = writable('');
+export const userWhiteListStore = writable("");

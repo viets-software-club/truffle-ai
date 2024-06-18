@@ -19,6 +19,19 @@ query RepoSidebarByGthbRepoId($gthbRepoId: BigInt, $ownerId: BigInt) {
 				createdAt
 				pullRequestsPerContributor
 				gthbRepo {
+          projRepoAndDiscordInviteCollection {
+            edges {
+              node {
+                discordInvite {
+                  discordInviteId
+                  guildId
+                  guildName
+                  approximateMemberCount
+                  discordInviteCode
+                }
+              }
+            }
+          }
 					projRepoAndSbotLinProfileCollection {
 						edges {
 							node {
@@ -60,7 +73,7 @@ query RepoSidebarByGthbRepoId($gthbRepoId: BigInt, $ownerId: BigInt) {
 						}
 					}
 				}
-				gthbRepoContrCollection(orderBy: {contributions: DescNullsLast}) {
+				gthbRepoContrCollection(orderBy: {contributions: DescNullsLast}, first: 3) {
 					edges {
 						node {
 							contributions

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import * as Button from '$lib/components/pure/ui/button';
+import * as Button from "$lib/components/pure/ui/button";
 
-	type $$Props = Button.Props;
-	type $$Events = Button.Events;
+type $$Props = Button.Props;
+type $$Events = Button.Events;
 </script>
 
 <Button.Root type="submit" on:click on:keydown {...$$restProps}>

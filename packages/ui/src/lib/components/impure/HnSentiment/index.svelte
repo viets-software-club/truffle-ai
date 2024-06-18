@@ -1,41 +1,53 @@
 <script lang="ts">
-	import * as Card from '$lib/components/pure/ui/card/index.js';
-	import { Icon } from 'svelte-icons-pack';
-	import { FaBrandsSquareHackerNews } from 'svelte-icons-pack/fa';
-	import { HackernewsEli5ByGthbNameDocument } from '$lib/graphql/supabase/generated-codegen';
-	import client from '$lib/graphql/supabase/client';
-	import { toast, Toaster } from 'svelte-sonner';
+import * as Card from "$lib/components/pure/ui/card/index.js";
+import Separator from "$lib/components/pure/ui/separator/separator.svelte";
+import client from "$lib/graphql/supabase/client";
+import { HnSentimentDocument } from "$lib/graphql/supabase/generated-codegen";
+import { Icon } from "svelte-icons-pack";
+import { FaBrandsSquareHackerNews } from "svelte-icons-pack/fa";
+import { Toaster, toast } from "svelte-sonner";
 
-	type Props = {
-		repoName: string;
-		ownerLogin: string;
-	};
-	let { repoName, ownerLogin, ...attrs }: Props = $props();
-	let text: string = $state('');
-	$effect(() => {
-		client
-			.query({
-				query: HackernewsEli5ByGthbNameDocument,
-				variables: {
-					ownerLogin: ownerLogin,
-					repoName: repoName
-				}
-			})
-			.then((res) => {
-				if (res.data.fGetProjRepoByGthbName?.edges[0]?.node?.algoHnEli5)
-					text = res.data.fGetProjRepoByGthbName?.edges[0].node.algoHnEli5;
-			})
-			.catch(() => {
-				toast.error('Error', {
-					description:
-						'An error occurred while loading the HackerNews Sentiment. Please try again later.',
-					action: {
-						label: 'ok',
-						onClick: () => {}
-					}
-				});
+type Props = {
+	repoName: string;
+	ownerLogin: string;
+};
+const { repoName, ownerLogin, ...attrs }: Props = $props();
+let text: string = $state("");
+let hnCommentObjectIds: number[] | null = $state(null);
+const loadEli5 = () => {
+	client
+		.query({
+			query: HnSentimentDocument,
+			variables: {
+				ownerLogin: ownerLogin,
+				repoName: repoName,
+			},
+		})
+		.then((res) => {
+			if (res.data.fGetProjRepoByGthbName?.edges[0]?.node?.algoHnEli5)
+				text = res.data.fGetProjRepoByGthbName?.edges[0].node.algoHnEli5;
+			if (
+				res.data.algoHnQueryCollection?.edges[0].node?.algoHnCommentCollection
+					?.edges
+			) {
+				hnCommentObjectIds =
+					res.data.algoHnQueryCollection?.edges[0].node?.algoHnCommentCollection?.edges
+						.slice(0, 15)
+						.map((edge) => edge.node.algoHnCommentObjectId);
+			}
+		})
+		.catch(() => {
+			toast.error("Error", {
+				description:
+					"An error occurred while loading the HackerNews Sentiment. Please try again later.",
+				action: {
+					label: "ok",
+					onClick: () => {},
+				},
 			});
-	});
+		});
+};
+loadEli5();
 </script>
 
 <Card.Root {...attrs}>
@@ -51,6 +63,17 @@
 			style="display: -webkit-box; -webkit-line-clamp: 10; -webkit-box-orient: vertical;"
 		>
 			{text}
-		</p></Card.Content
+		</p>
+		
+		{#if hnCommentObjectIds && hnCommentObjectIds.length > 0}
+		<Separator class="my-4"/>
+		<div class="flex gap-4 px-0.5 break-normal flex-wrap text-sm">
+		{#each hnCommentObjectIds as hnCommentObjectId, i}
+			<a target="_blank" rel="noopener noreferrer" href={`https://news.ycombinator.com/item?id=${hnCommentObjectId}`}>{i + 1}</a>
+		{/each}
+	</div>
+		{/if}
+
+		</Card.Content
 	>
 </Card.Root>

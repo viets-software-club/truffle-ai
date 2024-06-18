@@ -1,52 +1,28 @@
-FROM node:21-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-COPY ./packages/ui/package.json /app/packages/ui/package.json
-COPY ./package.json /app/package.json
-COPY ./pnpm-lock.yaml /app/pnpm-lock.yaml
-COPY ./pnpm-workspace.yaml /app/pnpm-workspace.yaml
-WORKDIR /app
+ARG NODE_VERSION=22
 
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter ui install --prod --frozen-lockfile
+FROM node:${NODE_VERSION}-alpine as base
+ARG PUBLIC_UI_PORT
 
-FROM base AS build
-ARG SUPABASE_URL
-ARG SUPABASE_ANON_KEY
-ARG SUPABASE_GRAPHQL_URL
-ARG GATEWAY_GRAPHQL_URL
-ARG UI_HOSTNAME
-ENV PUBLIC_GATEWAY_GRAPHQL_URL=${GATEWAY_GRAPHQL_URL}
-ENV PUBLIC_SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
-ENV PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+WORKDIR /usr/src/app
+EXPOSE ${PUBLIC_UI_PORT}
+
+FROM base as prod
+ARG PUBLIC_API_URL
+ARG PUBLIC_SUPABASE_URL
+ARG PUBLIC_SUPABASE_ANON_KEY
+ARG PUBLIC_SUPABASE_GRAPHQL_URL
+ARG PUBLIC_UI_HOSTNAME
+ARG PUBLIC_UI_PORT
+ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 ENV PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-ENV PUBLIC_UI_HOSTNAME=${UI_HOSTNAME}
-COPY ./packages/ui/ /app/packages/ui
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm --filter ui install --frozen-lockfile
-RUN pnpm run --filter ui build
-
-FROM base AS production
-# ARG SUPABASE_URL
-# ARG SUPABASE_ANON_KEY
-# ARG SUPABASE_GRAPHQL_URL
-# ARG UI_HOSTNAME
-ARG UI_PORT
-
-# ARG GATEWAY_GRAPHQL_URL
-ENV NODE_ENV production
-# ENV PUBLIC_GATEWAY_GRAPHQL_URL=${GATEWAY_GRAPHQL_URL}
-# ENV PUBLIC_SUPABASE_GRAPHQL_URL=${SUPABASE_GRAPHQL_URL}
-# ENV PUBLIC_SUPABASE_URL=${SUPABASE_URL}
-# ENV PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-# ENV PUBLIC_UI_HOSTNAME=${UI_HOSTNAME}
-ENV PORT=3000
-ENV HOSTNAME "0.0.0.0"
-ENV HOST "0.0.0.0"
-COPY --from=build /app/packages/ui/build /app/packages/ui/build/
-COPY --from=prod-deps /app/packages/ui/node_modules /app/packages/ui/node_modules/
-COPY --from=prod-deps /app/node_modules /app/node_modules/
-
-EXPOSE 3000
-ENV NODE_ENV=production
-CMD [ "node", "/app/packages/ui/build/index.js" ]
+ENV PUBLIC_SUPABASE_GRAPHQL_URL=${PUBLIC_SUPABASE_GRAPHQL_URL}
+ENV PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
+ENV PUBLIC_UI_HOSTNAME=${PUBLIC_UI_HOSTNAME}
+ENV PORT=${PUBLIC_UI_PORT}
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
+USER node
+COPY . .
+CMD node src/index.js

@@ -1,19 +1,23 @@
 <script>
-	import { Icon } from 'svelte-icons-pack';
-	import { BsBookmarkFill, BsThreeDots, BsBookmarksFill } from 'svelte-icons-pack/bs';
-	import { IoTrendingUp, IoBookmark, IoBookmarks } from 'svelte-icons-pack/io';
-	import { HiOutlineSquare2Stack } from 'svelte-icons-pack/hi';
-	import { AiOutlinePlus } from 'svelte-icons-pack/ai';
-	import TrendingUpIcon from 'lucide-svelte/icons/trending-up';
-	import BookmarkIcon from 'lucide-svelte/icons/bookmark';
-	import CirclePlusIcon from 'lucide-svelte/icons/circle-plus';
+import BookmarkIcon from "lucide-svelte/icons/bookmark";
+import CirclePlusIcon from "lucide-svelte/icons/circle-plus";
+import TrendingUpIcon from "lucide-svelte/icons/trending-up";
+import { Icon } from "svelte-icons-pack";
+import { AiOutlinePlus } from "svelte-icons-pack/ai";
+import {
+	BsBookmarkFill,
+	BsBookmarksFill,
+	BsThreeDots,
+} from "svelte-icons-pack/bs";
+import { HiOutlineSquare2Stack } from "svelte-icons-pack/hi";
+import { IoBookmark, IoBookmarks, IoTrendingUp } from "svelte-icons-pack/io";
 
-	import PlusIcon from 'lucide-svelte/icons/plus';
-	import AddRepo from '$lib/components/impure/AddRepo/index.svelte';
+import AddRepo from "$lib/components/impure/AddRepo/index.svelte";
+import PlusIcon from "lucide-svelte/icons/plus";
 
-	import { page } from '$app/stores';
+import { page } from "$app/stores";
 
-	import { cn } from '$lib/utils';
+import { cn } from "$lib/utils";
 </script>
 
 <svelte:head>

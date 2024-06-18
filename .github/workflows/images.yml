@@ -20,7 +20,7 @@ jobs:
       REF_NAME: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
     secrets: inherit
   image:
-    environment: ${{needs.variables.outputs.ENV}}
+    environment: production
     name: 'Image'
     uses: ./.github/workflows/reusable-ghcr-image.yml
     permissions:

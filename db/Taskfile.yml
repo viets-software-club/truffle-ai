@@ -13,7 +13,7 @@ tasks:
   exec-test:
     desc: "Executes .sql file in ./sql-test, expects -- <file>"
     cmds:
-      - psql "$SUPABASE_DATABASE_URL" -f {{.CLI_ARGS}}
+      - psql "$SUPABASE_DATABASE_URL" -f ./sql-test/{{.CLI_ARGS}}
   reset:
     desc: "Reset supabase database"
     cmds:

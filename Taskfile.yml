@@ -5,7 +5,9 @@ env:
 dotenv: ['./envs/.env', './envs/.env.local', './envs/.env.{{.ENV}}']
 
 includes:
-  k8s: ./k8s/Taskfile.yml
+  k8s: 
+    taskfile: ./k8s/Taskfile.yml
+    dir: ./k8s
   docker: 
     taskfile: ./docker/Taskfile.yml
     dir: ./docker

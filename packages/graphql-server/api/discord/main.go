@@ -13,8 +13,8 @@ import (
 )
 
 type DiscordAPI struct {
-	// Session *discordgo.Session
 }
+
 type DiscordInviteResponse struct {
 	Code    string `json:"code"`
 	Guild   Guild  `json:"guild"`

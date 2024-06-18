@@ -20,6 +20,7 @@ func main() {
 
 	reader := bufio.NewReader(os.Stdin)
 
+	fmt.Println(getEnv())
 	// Check if SHA is correct before deployment
 	fmt.Printf("Enter SHA for deployment. The Docker builds from this SHA will be used. The current one is %s\n", getCurrentGitSha())
 	promptSha, _ := reader.ReadString('\n')

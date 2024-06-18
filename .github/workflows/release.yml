@@ -48,7 +48,7 @@ jobs:
     secrets: inherit
   helm:
     name: Helm
-    needs: [variables, release_tag]
+    needs: [variables, release_tag, image]
     permissions:
       contents: read
       packages: write

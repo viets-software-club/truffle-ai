@@ -74,3 +74,8 @@ tasks:
     cmds:
       - npm install
       - cd packages/ui && npm install --legacy-peer-deps
+  tag:
+    desc: Create tag and push
+    cmds:
+      - echo "Enter tag (0.0.1)"
+      - read tag && git tag -a v$tag -m "Release version v$tag" && git push origin v$tag

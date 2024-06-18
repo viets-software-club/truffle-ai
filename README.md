@@ -2,6 +2,42 @@
 
 Truffle AI is a platform helping VC analysts find early stage tech startups. It automatically collects traces founders leave on the internet, visualizes them in a compelling way and makes it easy for investors to keep track of and potentially reach out to startups they discover.
 
+## Features
+
+- View and analyze GitHub repositories and their associated data.
+- See timeline of stars, forks, issues in time intervals and normalize data to same beginning
+- Scrape multiple services concurrently in realtime
+- View GitHub Stats, Discord Invites, LinkedIn URL, Hackernews Comments, Twitter URL, Website URL etc.
+- Get AI simplicfications of data
+- List Trending repositories (daily, weekly, month)
+- Bookmark repositories
+- Whitelist Domains and Emails
+- User API Keys for API access
+- Table View with Filters, Sorting & Hide Columns
+- Take Notes
+- Delete your account
+- Change theme
+
+## Featured Technologies
+
+- 3 environments: commit, staging, production
+- Commit specific urls
+- SvelteKit UI Dashboard with shadcn-svelte
+- Golang Gateway for Supabase and Custom GraphQL Server
+- GraphQL server
+- Isolated namespaced Kubernetes deployments
+- Docker Compose files for development
+- NGINX Ingress Controller
+- GitHub Action generated Docker images
+- GitHub Action testing and building packages
+- Golang and Terraform scripts to setup infrastructure
+- Postgre Database with psql setup command, sql triggers, policies, functions, 
+- Taskfiles for setup, development and deployment via command line
+- Apollo Clients for GraphQL Access with Codegen
+- Supabase Authentication
+- Using Supabase Realtime channels for updating realtime data
+- Cronjob updating data daily, weekly and monthly in background
+
 ## Getting Started
 
 ### Requirements
@@ -17,26 +53,12 @@ Truffle AI is a platform helping VC analysts find early stage tech startups. It 
 
 Install the following extensions:
 
-- rust-analyzer
 - Biome
 - Go
 - Svelte for VS Code
 - Tailwind CSS IntelliSense
-- Deno
 - Docker
-
-then add to `.vscode` or depending on your editor the following:
-
-```json
-{
-  "deno.enablePaths": [
-    "./packages/build-values"
-  ],
-  "rust-analyzer.linkedProjects": [
-    "packages/graphql-gateway/Cargo.toml"
-  ]
-}
-```
+- GitHub Actions
 
 ### Installation
 
@@ -58,25 +80,44 @@ Just start all services with `ENV=commit t dev`
 
 ### Deployment
 
-You can now deploy the application.
+You can now deploy the application. See the Taskfiles.
 
 ### Commands
 
-You can see all commands by executing `t --list-all`.
+You can see all Taskfile commands by executing `t --list-all`.
 
 ## Architecture
 
-For authentication, the database, and the database GraphQL layer Supabase is used.
-Additionally servers are hosted on DigitalOcean Managed Kubernetes.
-A traefik reverse proxy accepts requests if `auth-server` accepts them. It also enables userapikey headers to authenticate and access the whole GraphQL API.
-For custom backend logic, the `graphql-server` periodically updates repositiories and allows requests to add respositories in realtime to the database.
-The `ui` is a SvelteKit implementation using two GraphQL clients. One to access the database on Supabase directly and one to `graphql-server` to add bookmarks of repositories.
+The architecture is divided in frontend (UI) and backend (Gateway, Supabase, GraphQL-Server).
+The backend is either reached directly from the UI in the case of Supabase or via the Gateway.
+An NGINX ingress controller load balances the backend services except Supabase.
+
+### Supabase
+
+The Postgre database is hosted on Supabase with activated role-level security. It is normalized for 3rd Normalform.
+Supabase provides a GraphQL Layer via the pg_graphql extension, the UI makes extensive use of this GraphQL API.
+Authentication is also done via Supabase.
+
+### Gateway
+
+The golang gateway acts as a proxy, that proxies requests to Supabase and GraphQL Server.
+Before it proxies, it authenticates requests. It can also accept User API Keys to authenticate users.
+
+### GraphQL Server
+
+The golang graphql server allows to mutate data in the database for complex operations that require custom server logic.
+It is able to scrape multiple services in realtime and add the data to the database.
+It also runs cronjobs that update the database data continously.
+
+### UI
+
+The Svelte 5 UI is integrated with Shadcn, TailwindCSS, Biome. It usually makes requests via the Apollo GraphQL clients to the Gateway or Supabase directly.
 
 ## Structure
 
 ### Database (./db)
 
-The database is a Postgre database running the `pg_graphql` extension that's hosted on Supabase. It exposes a full GraphQL API that's secured with sql policies. It is normalized for 3rd Normalform.
+Contains the sql files. Has Taskfile commands to delete all tables, policies, types etc. and recreate them via psql. 
 
 ### Docker (./docker)
 
@@ -84,11 +125,11 @@ Contains Docker Compose files for local testing.
 
 ### Environment Variables (./envs)
 
-Contains all the environment variables (.env, .env.commit, .env.staging, .env.production, .env.local) and a script to source them.
+Contains all the environment variables (.env, .env.commit, .env.staging, .env.production, .env.local).
 
 ### Kubernetes (./k8s)
 
-Contains the helm charts and the scripts to deploy the application.
+Contains the helm charts and the scripts to deploy the application via helm.
 
 ### Packages (./packages)
 
@@ -101,11 +142,6 @@ Used to test external APIs like ScrapingBot to get exact output formats. Importa
 ### `gateway`
 
 A golang gateway server, that authenticates any requests and proxies them to the Supabase GraphQL API or `graphql-server`. It also accepts userapikey headers to identify a user and give him access to the app's API infrastructure.
-
-### `graphql-gateway`
-
-An http proxy server that takes a request header `x-server` and proxies the request to the correct server based on the header value.
-It also does authentication and accepts userapikeys to identify a user.
 
 ### `graphql-server`
 
@@ -125,4 +161,20 @@ Contains the terraform files to create the infrastructure of the application on 
 
 ### Values (./values)
 
-Contains the input for the values used by Kubernetes and the environment variables, contains scripts to generate these values for Kubernetes and environment variables in the right format.
+Contains the input for the values used by Kubernetes and the environment variables, contains scripts to generate these values for Kubernetes and .env files.
+
+## Deprecated Technologies
+
+Over the course of this project, several technologies were used and later replaced. Here's a list of those technologies and what they were replaced with:
+
+- **Rust API gateway**: Replaced with Golang Gateway as it is simpler to maintan
+- **ZX Deployment Scripts**: Replaced with Golang Deployment Scripts
+- **GraphQL Mesh**: Replaced with Golang Gateway as it had a memory issue when used with external server logic e.g. Fastify (running Supabase GraphQL queries with complex filters through it crashed)
+- **Grafbase Gateway**: Replaced with Golang Gateway as it couldn't handle the documented authentication logic, it was below v1.0.0
+- **Next.js**: Replaced with SvelteKit and Svelte 5 because of speed, simplicity, less code, clean code refactoring, developer change and maintainability.
+- **Terraform Kubernetes Config**: Replaced with Helm; Kubernetes Deployments in Terraform were too slow and inflexible.
+- **PNPM**: Used for disallowing hoisting in GraphQL Mesh because of dependency issues. Now there is only one npm module and no GraphQL Mesh anymore. Replaced with NPM.
+- **Node.js Backend**: Replaced with Golang backend server so that scraping can be done in realtime and concurrently. Golang provides for most APIs REST libraries and is faster.
+- **Deno env variable scripts**: Replaced with Golang scripts
+
+Each of these technologies served a purpose at the time, but were eventually replaced as the needs of the project evolved.

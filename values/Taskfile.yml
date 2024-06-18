@@ -1,0 +1,30 @@
+version: '3'
+
+tasks:
+  k8s:
+    desc: Updates all k8s value files
+    deps: [match]
+    cmds:
+      - for: ['commit', 'staging', 'production']
+        cmd: go run k8s.go --input input/values.{{ .ITEM }}.yml --output ../k8s/values/values.{{ .ITEM }}.yml
+  env:
+    desc: Updates all .env files
+    deps: [match]
+    cmds:
+      - |
+        if [ ! -f ../envs/.env ]; then
+          echo "REPO_NAME=
+        ORG_NAME=
+        PRODUCTION_CLUSTER=
+        STAGING_CLUSTER=
+        COMMIT_CLUSTER=" > ../envs/.env
+        fi
+      - for: ['commit', 'staging', 'production']
+        cmd: go run env.go --input input/values.{{ .ITEM }}.yml --output ../envs/.env.{{ .ITEM }}
+  match:
+    desc: "Checks if all files contain the same keys"
+    cmds:
+      - go run match.go input/values.staging.yml input/values.production.yml input/values.commit.yml
+  generate:
+    desc: Generate all .env and k8s value files
+    deps: [k8s, env]

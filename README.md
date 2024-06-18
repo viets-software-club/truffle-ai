@@ -115,6 +115,10 @@ The Svelte 5 UI is integrated with Shadcn, TailwindCSS, Biome. It usually makes 
 
 ## Structure
 
+### Github (./.github)
+
+This module contains GitHub Actions for assigning the creator of a PR, verifying PRs, testing and building the `packages`, build the Docker Images and create a released version based on Git Tags.
+
 ### Database (./db)
 
 Contains the sql files. Has Taskfile commands to delete all tables, policies, types etc. and recreate them via psql. 

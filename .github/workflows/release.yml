@@ -57,7 +57,7 @@ jobs:
       - name: Checkout chart
         uses: actions/checkout@v4
       - name: Install Helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Helm Package App

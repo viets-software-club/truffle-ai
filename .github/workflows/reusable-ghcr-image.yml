@@ -51,6 +51,8 @@ jobs:
           cd ./packages/${{inputs.PACKAGE_NAME}} &&
           declare -a args=(
             "--build-arg"
+            "PUBLIC_SUPABASE_ANON_KEY=${{secrets.PUBLIC_SUPABASE_ANON_KEY}}"
+            "--build-arg"
             "BUILDKIT_INLINE_CACHE=1"
             "-t"
             "${{env.IMAGE_MAIN_REPOSITORY_URL}}/${{inputs.IMAGE_REPOSITORY}}/${{inputs.PACKAGE_NAME}}:$(echo "${{inputs.GIT_COMMIT_TAG}}" | head -c 7)"

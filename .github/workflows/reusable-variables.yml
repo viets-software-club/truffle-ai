@@ -66,3 +66,4 @@ jobs:
         run: echo "git_commit_tag_n7=$(echo "${{steps.git_commit_tag.outputs.git_commit_tag}}" | head -c 7)" >> "$GITHUB_OUTPUT";
       - id: git_commit_tag_n14
         run: echo "git_commit_tag_n14=$(echo "${{steps.git_commit_tag.outputs.git_commit_tag}}" | head -c 14)" >> "$GITHUB_OUTPUT"; echo $GITHUB_OUTPUT
+          

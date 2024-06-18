@@ -1,6 +1,14 @@
 version: "3"
 
 tasks:
+  select-cluster:prod:
+    desc: "Select prod cluster"
+    cmds:
+      - kubectl config use-context $PROD_CLUSTER
+  select-cluster:dev:
+    desc: "Select dev cluster"
+    cmds:
+      - kubectl config use-context $DEV_CLUSTER
   deploy:commit:
     desc: "Publish to commit environment"
     cmds:

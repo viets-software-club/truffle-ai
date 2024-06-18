@@ -92,82 +92,84 @@ The architecture is divided in frontend (UI) and backend (Gateway, Supabase, Gra
 The backend is either reached directly from the UI in the case of Supabase or via the Gateway.
 An NGINX ingress controller load balances the backend services except Supabase.
 
-### Supabase
+### General
+
+#### Supabase
 
 The Postgre database is hosted on Supabase with activated role-level security. It is normalized for 3rd Normalform.
 Supabase provides a GraphQL Layer via the pg_graphql extension, the UI makes extensive use of this GraphQL API.
 Authentication is also done via Supabase.
 
-### Gateway
+#### Gateway
 
 The golang gateway acts as a proxy, that proxies requests to Supabase and GraphQL Server.
 Before it proxies, it authenticates requests. It can also accept User API Keys to authenticate users.
 
-### GraphQL Server
+#### GraphQL Server
 
 The golang graphql server allows to mutate data in the database for complex operations that require custom server logic.
 It is able to scrape multiple services in realtime and add the data to the database.
 It also runs cronjobs that update the database data continously.
 
-### UI
+#### UI
 
 The Svelte 5 UI is integrated with Shadcn, TailwindCSS, Biome. It usually makes requests via the Apollo GraphQL clients to the Gateway or Supabase directly.
 
-## Structure
+### Structure
 
-### Github (./.github)
+#### Github `(./.github)`
 
 This module contains GitHub Actions for assigning the creator of a PR, verifying PRs, testing and building the `packages`, build the Docker Images and create a released version based on Git Tags.
 
-### Database (./db)
+#### Database `(./db)`
 
 Contains the sql files. Has Taskfile commands to delete all tables, policies, types etc. and recreate them via psql. 
 
-### Docker (./docker)
+#### Docker `(./docker)`
 
 Contains Docker Compose files for local testing.
 
-### Environment Variables (./envs)
+#### Environment Variables `(./envs)`
 
 Contains all the environment variables (.env, .env.commit, .env.staging, .env.production, .env.local).
 
-### Kubernetes (./k8s)
+#### Kubernetes `(./k8s)`
 
 Contains the helm charts and the scripts to deploy the application via helm.
 
-### Packages (./packages)
+#### Packages `(./packages)`
 
 There are four main packages in `./packages`. 
 
-#### `apis`
+##### apis
 
 Used to test external APIs like ScrapingBot to get exact output formats. Important for designing the database tables.
 
-#### `gateway`
+##### gateway
 
 A golang gateway server, that authenticates any requests and proxies them to the Supabase GraphQL API or `graphql-server`. It also accepts userapikey headers to identify a user and give him access to the app's API infrastructure.
 
-#### `graphql-server`
+##### graphql-server
 
 A golang graphql server that updates the data in the database periodically via cronjobs, allows to fetch data in the future via realtime over graphql subscriptions and inserts new bookmarks to the database in realtime, which requires scraping that is done concurrently.
 
-#### `twitter-server`
+##### twitter-server
 
 A server used to access grok AI and generate text based on repository input. Not included in the deployment.
 
-#### `ui`
+##### ui
 
 Contains the frontend of Truffle AI. It connects with the Supabase API directly via a GraphQL Client to load content from the database. Another client then connects with `graphql-server` to be able to add bookmarks via the application logic of our own server.
 
-### Terraform (./tf)
+#### Terraform (./tf)
 
 Contains the terraform files to create the infrastructure of the application on DigitalOcean.
 
-### Values (./values)
+#### Values (./values)
 
 Contains the input for the values used by Kubernetes and the environment variables, contains scripts to generate these values for Kubernetes and .env files.
 
-## Deprecated Technologies
+### Deprecated Technologies
 
 Over the course of this project, several technologies were used and later replaced. Here's a list of those technologies and what they were replaced with:
 

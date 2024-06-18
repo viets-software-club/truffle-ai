@@ -34,3 +34,10 @@ tasks:
       - deploy:cluster-prod
       - sleep 600
       - deploy:setup-prod-cluster-only
+  deploy:prod-and-dev:
+    cmds:
+      - deploy:cluster-prod
+      - sleep 600
+      - deploy:cluster-dev
+      - sleep 600
+      - deploy:setup-prod-and-dev-cluster

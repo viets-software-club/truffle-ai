@@ -4,19 +4,8 @@ out
 build
 target
 
-# Next.js
-.next
-
-# GraphQL Gateway
-.mesh
-http-cacache
-
-# GitHub Actions
-.deployment
-
 # Dependencies
 node_modules
-package-lock.json
 
 # Logs & pids
 *.log
@@ -29,59 +18,28 @@ test/**
 # Editors
 **/.idea
 .vscode
-.nvmrc
-
-# Vercel
-.vercel
-.now
 
 # Cache
 *.tsbuildinfo
 .eslintcache
 
-# Secrets and Envs
-/_*
-*.secret
+# Envs
 .env*
-secret.*
-secrets.*
-secrets
-_secrets
-!_configMaps
-!_secrets/example.secret.*
-
 
 # Terraform
-**/.terraform/*
 *.tfstate
 *.tfstate.*
 *.tfvars
 *.tfvars.json
 .terraformrc
 terraform.rc
-.terraform*
-
-# Other
-.DS_Store
-/outputs
-
-# Service worker
-**/public/fallback-*.js
-**/public/workbox-*.js
-**/public/sw.js
-
-# DBeaver
-.dbeaver
-.project
 
 # Parcel
 .parcel-cache
 
 # Golang
 go.work.sum
-packages/graphql-server/graphql-server
 
-
-# Service worker? @TODO: check if this is needed
-**/public/workbox-*.js*
-**/public/sw*.js*
+# Misc
+_*
+.DS_Store

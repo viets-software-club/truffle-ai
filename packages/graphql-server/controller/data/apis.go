@@ -1,6 +1,7 @@
 package data
 
 import (
+	"github.com/viets-software-club/truffle-ai/graphql-server/api/discord"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"
 	prompts "github.com/viets-software-club/truffle-ai/graphql-server/api/prompts"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/scrapingbot"
@@ -13,3 +14,4 @@ var ScrapingBotScraperConfig = scrapingbot.New()
 var LinkedinApi = linkedin.New(ScrapingBotScraperConfig)
 var RawApi = raw.New(ScrapingBotScraperConfig)
 var PromptsApi = prompts.New()
+var DiscordApi, err = discord.New()

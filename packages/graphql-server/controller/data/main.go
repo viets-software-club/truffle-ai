@@ -7,13 +7,14 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/time/rate"
-
+	"github.com/viets-software-club/truffle-ai/graphql-server/api/discord"
 	prompts "github.com/viets-software-club/truffle-ai/graphql-server/api/prompts"
 
 	githubv3 "github.com/google/go-github/v57/github"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/algolia/hackernews"
+	discordApi "github.com/viets-software-club/truffle-ai/graphql-server/api/discord"
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/github"
+
 	"github.com/viets-software-club/truffle-ai/graphql-server/api/scrapingbot/linkedin"
 	githubScraper "github.com/viets-software-club/truffle-ai/graphql-server/scraper/github"
 	scraper "github.com/viets-software-club/truffle-ai/graphql-server/scraper/github"
@@ -23,6 +24,7 @@ type ProjectData struct {
 	GithubData          GithubData
 	ScrapingbotData     ScrapingbotData
 	AlgoliaData         AlgoliaData
+	DiscordData         DiscordData
 	HackernewsSentiment string
 	RepoEli5            string
 	ProjClassifiers     []string
@@ -48,16 +50,19 @@ type AlgoliaData struct {
 	HackernewsCommentsPtr *hackernews.HackernewsCommentsResponse
 }
 
+type DiscordData struct {
+	Invites *[]discordApi.DiscordInviteResponse
+}
+
 type ContributorToUserMap = map[*githubv3.Contributor]*github.GetUser
 
 var MAX_PAGES = 10
 
-var limiter *rate.Limiter = rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
+// var limiter *rate.Limiter = rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
 
 func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	// limiter := rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
 
-	fmt.Println("start1", repoOwner, repoName)
 	currentTime := time.Now()
 	// Create channels
 	errChan := make(chan error, 10)
@@ -66,15 +71,18 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	issueHistPtrChan := make(chan *map[string]github.Hist, 1)
 	forkHistPtrChan := make(chan *map[string]github.Hist, 1)
 	repoEli5Chan := make(chan string, 1)
+	// twitterEli5Chan := make(chan string, 1)
 	linkedinCompaniesChan := make(chan *[]linkedin.LinkedinCompany, 1)
 	linkedinProfilesChan := make(chan *[]linkedin.LinkedinProfile, 1)
 	hackernewsStoriesResponseChan := make(chan *hackernews.HackernewsStoriesResponse, 1)
 	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse, 1)
 	hackernewsSentimentChan := make(chan string, 1)
 	contributorCountChan := make(chan int, 1)
+	discordInvitesChan := make(chan *[]discordApi.DiscordInviteResponse, 1)
 
 	var wg sync.WaitGroup
 	wg.Add(10)
+
 	// Retrieve star history
 	go func() {
 		defer wg.Done()
@@ -234,6 +242,31 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 			errChan <- err
 			return
 		}
+		codes := discord.GetDiscordInviteCodesFromDiscordInviteLinksInString(readme)
+		var invites []discordApi.DiscordInviteResponse
+		for _, code := range codes {
+			invite, err := DiscordApi.GetInvite(code)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			// if invite == nil {
+			// 	errChan <- errors.New("invite is nil")
+			// 	return
+			// }
+			if invite != nil {
+				invites = append(invites, *invite)
+			}
+		}
+		for i, invite := range invites {
+			fmt.Printf("Invite %d: %+v\n", i, invite)
+		}
+
+		if len(invites) > 0 {
+			discordInvitesChan <- &invites
+		} else {
+			discordInvitesChan <- nil
+		}
 		repoEli5, err := PromptsApi.GenerateEli5FromReadme(prompts.RepoData{
 			Readme: readme,
 			About:  about,
@@ -304,7 +337,7 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 	data.AlgoliaData.HackernewsStoriesPtr = <-hackernewsStoriesResponseChan
 	data.AlgoliaData.HackernewsCommentsPtr = <-hackernewsCommentsResponseChan
 	data.HackernewsSentiment = <-hackernewsSentimentChan
-
+	data.DiscordData.Invites = <-discordInvitesChan
 	if data.GithubData.StarHistMapPtr != nil && data.GithubData.RepoPtr != nil {
 		(*data.GithubData.StarHistMapPtr)[currentTime.String()] = github.Hist{
 			Amount: int(data.GithubData.RepoPtr.Repository.StargazerCount),
@@ -326,6 +359,7 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 
 	data.AlgoliaData.Query = hackernewsQuery
 	fmt.Println("done1", repoOwner, repoName)
+	
 
 	return &data, nil
 
@@ -346,6 +380,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 	hackernewsCommentsResponseChan := make(chan *hackernews.HackernewsCommentsResponse, 1)
 	hackernewsSentimentChan := make(chan string, 1)
 	contributorCountChan := make(chan int, 1)
+	discordInvitesChan := make(chan *[]discordApi.DiscordInviteResponse, 1)
 
 	var wg sync.WaitGroup
 	wg.Add(9)
@@ -524,6 +559,23 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 			errChan <- err
 			return
 		}
+		codes := discord.GetDiscordInviteCodesFromDiscordInviteLinksInString(readme)
+		var invites []discordApi.DiscordInviteResponse
+		for _, code := range codes {
+			invite, err := DiscordApi.GetInvite(code)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			// if invite == nil {
+			// 	errChan <- errors.New("invite is nil")
+			// 	return
+			// }
+			if invite != nil {
+			invites = append(invites, *invite)
+			}
+		}
+		discordInvitesChan <- &invites
 		repoEli5, err := PromptsApi.GenerateEli5FromReadme(prompts.RepoData{
 			Readme: readme,
 			About:  about,
@@ -571,6 +623,9 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 	fmt.Println("done12345678")
 
 	data.HackernewsSentiment = <-hackernewsSentimentChan
+	fmt.Println("done123456789")
+
+	data.DiscordData.Invites = <-discordInvitesChan
 	fmt.Println("done123456789")
 
 	if data.GithubData.StarHistMapPtr != nil {

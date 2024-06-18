@@ -33,12 +33,12 @@ func (p *Prompts) GenerateEli5FromReadme(data RepoData) (string, error) {
 	if err := p.limiter.Wait(context.Background()); err != nil {
 		return "", err
 	}
-	if len(data.Readme) > 300 {
+	if len(data.Readme) > 3000 {
 		data.Readme = data.Readme[:300]
 	}
 
-	if len(data.About) > 70 {
-		data.About = data.About[:70]
+	if len(data.About) > 400 {
+		data.About = data.About[:400]
 	}
 
 	t := fmt.Sprintf("Below is a readme and an about description from a Github Repository, can you provide an short explain like I am 5 description of the repo:\n%s\n\n\n\nAbout:\n%s", data.Readme, data.About)
@@ -77,14 +77,16 @@ func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCom
 		return "", err
 	}
 	var commentsSlice []string
-	for _, comment := range comments.Hits {
+	for i, comment := range comments.Hits {
+		if i >= 15 { // max 15 comments
+			break;
+		}
 		commentsSlice = append(commentsSlice, comment.CommentText)
 	}
 	commentsString := strings.Join(commentsSlice, ";/;")
 	if len(commentsString) > 700 {
 		commentsString = commentsString[:700]
 	}
-
 	if len(commentsString) < 5 {
 		return "No comments found", nil
 	}

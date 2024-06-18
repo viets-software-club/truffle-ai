@@ -39,15 +39,34 @@ func (c *Controller) CreateBookmarkWithCategories(authUserId string, repoOwner s
 	// }
 	data, err := data.GetProjectData(repoOwner, repoName)
 	if err != nil {
+		// fmt.Println("err1")
+
 		return err
 	}
+	// f, err := os.Create("dump2.txt")
+	// if err != nil {
+    //     panic(err)
+    // }
+	// spew.Fdump(f, data)
+
 
 	projBookmarkWithCatsPtr, err := convert.ConvertToTFInsertProjBookmarkWCats(authUserId, &categories, data)
 	if err != nil {
+		// fmt.Println("err2")
 		return err
 	}
+	// fmt.Println("projBookmarkWithCatsPtr")
+	// f, err = os.Create("dump.txt")
+	// if err != nil {
+    //     panic(err)
+    // }
+    // defer f.Close()
+	// spew.Fdump(f, projBookmarkWithCatsPtr)
+
 	err = c.db.CallInsertProjBookmarkWCats(projBookmarkWithCatsPtr)
 	if err != nil {
+		// fmt.Println("err3")
+
 		return err
 	}
 

@@ -2,6 +2,7 @@ package convert
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/google/uuid"
 	convertAlgolia "github.com/viets-software-club/truffle-ai/graphql-server/controller/convert/algolia"
+	convertDiscord "github.com/viets-software-club/truffle-ai/graphql-server/controller/convert/discord"
 	convertGithub "github.com/viets-software-club/truffle-ai/graphql-server/controller/convert/github"
 	convertScrapingbot "github.com/viets-software-club/truffle-ai/graphql-server/controller/convert/scrapingbot"
 )
@@ -53,6 +55,11 @@ func ConvertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_in
 		return nil, errors.New("storiesAndComments can not be nil")
 	}
 
+	discordInvites, err := convertDiscord.ConvertDiscordInvitesToTIvalsDiscordInvite(data.DiscordData.Invites)
+	if err != nil {
+		return nil, err
+	}
+
 	classifiers, err := ConvertProjRepoClassifier(&data.ProjClassifiers)
 	if err != nil {
 		return nil, err
@@ -71,8 +78,10 @@ func ConvertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_in
 		Proj_repo_classifiers: classifiers,
 		Sbot_lin_companies:    pgLinkedinCompanies,
 		Sbot_lin_profiles:     pgLinkedinProfiles,
+		Discord_invites:       discordInvites,
 		Algo_hn_eli5:          helper.StringToNoEmptyPgText(data.HackernewsSentiment),
 		Repo_eli5:             helper.StringToNoEmptyPgText(data.RepoEli5),
+		Twitter_eli5: 			helper.StringToNoEmptyPgText(""),
 	}, nil
 }
 
@@ -89,6 +98,7 @@ func ConvertToTFInsertProjBookmarkWCats(authUserId string, categories *[]string,
 	}
 	uuid, err := uuid.Parse(authUserId)
 	if err != nil {
+		fmt.Printf("uuid error %s", uuid)
 		return nil, err
 	}
 	return &types.T_f_insert_proj_bookmark_w_cats{

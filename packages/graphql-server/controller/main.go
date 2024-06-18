@@ -2,7 +2,6 @@ package controller
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"time"
 
@@ -67,7 +66,7 @@ func (c *Controller) UpdateProjects() error {
 	// 	log.Println("err", err)
 	// 	log.Println("skipped repo update")
 	// }
-	fmt.Println("updatables", *updatables)
+	// fmt.Println("updatables", *updatables)
 	for index, updatable := range *updatables {
 		go func(updatable types.T_f_select_updatable_result, index int) {
 

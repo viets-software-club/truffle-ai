@@ -1,6 +1,6 @@
 module github.com/viets-software-club/truffle-ai/graphql-server
 
-go 1.21
+go 1.22.2
 
 require (
 	github.com/99designs/gqlgen v0.17.45
@@ -13,6 +13,7 @@ require (
 
 require (
 	github.com/andybalholm/cascadia v1.3.2 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
@@ -29,12 +30,14 @@ require (
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
+	golang.org/x/sys v0.19.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
 
 require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
+	github.com/bwmarrin/discordgo v0.28.1
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/go-chi/chi v1.5.5
 	github.com/google/go-github/v57 v57.0.0

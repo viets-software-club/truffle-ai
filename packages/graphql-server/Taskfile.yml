@@ -3,13 +3,13 @@ version: '3'
 tasks:
   dev:
     cmds:
-      - source ../../scripts/env/source.sh ../.. && go run .
+      - go run .
   build:
     cmds:
-      - source ../../scripts/env/source.sh ../.. && go build -o {{.OUT}} .
+      - go build -o {{.OUT}} .
   start:
     cmds:
-      - source ../../scripts/env/source.sh ../.. && ./{{.OUT}}
+      - ./{{.OUT}}
   test:
     cmds:
       - fmtFiles=$(gofmt -l .) && vetFiles=$(go vet ./) && [ -z "$fmtFiles" -a -z "$vetFiles" ]

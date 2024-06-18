@@ -1,12 +1,12 @@
-FROM golang:1.21-alpine
+FROM golang:1.22-alpine
 
 WORKDIR /app
 
-COPY ./packages/graphql-server/go.mod ./
+COPY ./go.mod ./
 
 RUN go mod download
 
-COPY ./packages/graphql-server/ ./
+COPY . ./
 
 RUN go build -o /graphql-server
 

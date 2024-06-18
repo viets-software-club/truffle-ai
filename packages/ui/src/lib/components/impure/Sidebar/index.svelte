@@ -24,6 +24,7 @@ import PaletteIcon from "lucide-svelte/icons/palette";
 import SettingsIcon from "lucide-svelte/icons/settings";
 import TrendingUp from "lucide-svelte/icons/trending-up";
 import { toast } from "svelte-sonner";
+import { onMount } from "svelte";
 
 let isThemeSelectionOpen = $state(false);
 // let theme = $derived(browser && localStorage?.theme?.length > 0 ? localStorage.theme : 'light');
@@ -99,7 +100,7 @@ supabaseClient.auth.getUser().then((user) => {
 					filter: `auth_users_id=eq.${user.data.user.id}`,
 				},
 				(payload) => {
-					// console.log("update bookmark", isReloading);
+					console.log("update bookmark", isReloading);
 					loadData();
 				},
 			)
@@ -113,14 +114,17 @@ supabaseClient.auth.getUser().then((user) => {
 					filter: `auth_users_id=eq.${user.data.user.id}`,
 				},
 				(payload) => {
-					// console.log("update cat", isReloading);
+					console.log("update cat", isReloading);
 					loadData();
 				},
 			)
 			.subscribe();
 });
 
-loadData();
+onMount(() => {
+	console.log("what");
+	loadData();
+});
 // $effect(() => {
 // 	client
 // 		.query({
@@ -349,7 +353,7 @@ const handleSettingsClick = (e: any) => {
 				}
 			]}
 		/> -->
-		{#key queryResult}
+		
 			{#if queryResult && !queryResult.loading && queryResult.data?.projCatCollection?.edges}
 				{#each queryResult.data?.projCatCollection?.edges as edge}
 					<BookmarkGroup
@@ -365,7 +369,7 @@ const handleSettingsClick = (e: any) => {
 					/>
 				{/each}
 			{/if}
-		{/key}
+		
 
 		<!-- {#each fetchedData as item}{/each} -->
 		<!-- </ScrollArea> -->

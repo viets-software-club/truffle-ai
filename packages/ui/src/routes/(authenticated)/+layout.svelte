@@ -19,17 +19,24 @@ $effect.pre(() => {
 		}
 	});
 });
+let pane: any;
+
+updateMobileSidebarOpenState.subscribe((isOpen) => {
+	if (pane) {
+		if (!isOpen) pane.resize(17);
+		else isOpen && pane.resize(100);
+	}
+});
 const isMobileSidebarOpen = $derived($updateMobileSidebarOpenState);
-// updateMobileSidebarOpenState.subscribe((value) => {
-//     isMobileSidebarOpen = value;
-// });
+
 const { children } = $props();
 </script>
 
 {#if hasLoadedSession}
 	<Resizable.PaneGroup direction="horizontal">
-		{#key isMobileSidebarOpen}
+		<!-- {#key isMobileSidebarOpen} -->
 			<Resizable.Pane
+				bind:pane={pane}
 				defaultSize={isMobileSidebarOpen ? 100 : 17}
 				class={isMobileSidebarOpen ? 'block' : 'hidden md:block'}><Sidebar /></Resizable.Pane
 			>
@@ -39,7 +46,7 @@ const { children } = $props();
 					{@render children()}
 				</main></Resizable.Pane
 			>
-		{/key}
+		<!-- {/key} -->
 	</Resizable.PaneGroup>
 	<MobileNavigation class="md:hidden" />
 	<CommandInterface />

@@ -1,9 +1,0 @@
-dist
-.deployment
-.env*
-.husky
-.mesh
-.meshrc.yaml
-.next
-config/charts/**
-package.json

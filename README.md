@@ -68,7 +68,7 @@ Then run `task values:generate` to generate the Kubernetes ConfigMaps and Secret
 
 Next fill in `./envs/.env` the missing values.
 
-## Environment variables
+### Environment variables
 
 Environment variables are loaded in the order `.env`, `.env.${ENV}` and then `.env.local` for local development.
 

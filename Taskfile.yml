@@ -42,8 +42,8 @@ tasks:
     cmds:
       - >
         ./node_modules/.bin/concurrently
-        -n auth,server,ui
-        -c 'green,yellow,magenta,cyan'
+        -n gateway,server,ui
+        -c 'yellow,magenta,cyan'
         'task g:test' 'task s:test' 'task ui:test'
   dev:
     desc: 'run dev for all packages possible'

@@ -29,3 +29,8 @@ tasks:
       - echo "Do you want to apply these changes? [yes/no]"
       - read answer
       - if [ "$answer" = "yes" ]; then terraform apply; fi
+  deploy:only-prod:
+    cmds:
+      - deploy:cluster-prod
+      - sleep 600
+      - deploy:setup-prod-cluster-only

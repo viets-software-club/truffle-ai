@@ -140,7 +140,11 @@ func main() {
 	supabaseGraphqlProxy := httputil.NewSingleHostReverseProxy(supabaseGraphqlUrl)
 	customServerGraphqlProxy := httputil.NewSingleHostReverseProxy(customServerGraphqlUrl)
 	customServerGraphqlProxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
-		log.Printf("Error proxying request: %v", err)
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey")
+
+		log.Printf("Error proxying request2: %v", err)
 		http.Error(w, "Error proxying request", http.StatusInternalServerError)
 	}
 	customServerGraphqlProxy.ModifyResponse = func(r *http.Response) error {
@@ -253,5 +257,5 @@ func main() {
 	})
 
 	fmt.Printf("Starting server on port %s\n", os.Getenv("GATEWAY_PORT"))
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("GATEWAY_PORT")), nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", os.Getenv("GATEWAY_PORT")), nil))
 }

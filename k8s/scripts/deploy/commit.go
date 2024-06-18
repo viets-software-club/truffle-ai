@@ -8,7 +8,9 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -24,7 +26,7 @@ func main() {
 	sha := strings.TrimSpace(promptSha)
 
 	// Check if you want to deploy to production
-	fmt.Print("Deploy to Production?\n")
+	fmt.Print("Deploy to the Public Production?\n")
 	promptIsProduction, _ := reader.ReadString('\n')
 	isProduction := strings.TrimSpace(promptIsProduction) == "y"
 
@@ -44,7 +46,10 @@ func main() {
 	isDryRun := strings.TrimSpace(promptDryRun) == "y"
 
 	hosts := getHosts(isProduction, hasTag, sha)
-
+	hostsJson, err := json.Marshal(hosts)
+	if err != nil {
+		log.Fatalf("Error converting hosts to JSON: %v", err)
+	}
 	args := []string{
 		"--install",
 		"--atomic",
@@ -56,23 +61,24 @@ func main() {
 		"--set",
 		fmt.Sprintf("image.tag=%s", sha),
 		"--set-json",
-		fmt.Sprintf("hosts=%s", hosts),
+		fmt.Sprintf("hosts=%s", hostsJson),
 		"--values",
-		fmt.Sprintf("values.%s.yml", getEnv()),
-		"--values",
-		fmt.Sprintf("values.%s.yml", getEnv()),
+		fmt.Sprintf("./values/values.%s.yml", getEnv()),
 		"--cleanup-on-fail",
 	}
 	if isDryRun {
 		args = append(args, "--dry-run")
 	}
 	args = append(args, getChartName(isProduction, hasTag, sha))
-	args = append(args, "./config/charts/app-chart")
+	args = append(args, "./charts/app-chart")
 
 	upgradeCommand := exec.Command("helm", append([]string{"upgrade"}, args...)...)
+	fmt.Println("Command:", upgradeCommand.String())
 
-	fmt.Println("working...")
-	err := upgradeCommand.Run()
+    // Capture standard output and standard error
+    upgradeCommand.Stdout = os.Stdout
+    upgradeCommand.Stderr = os.Stderr
+	err = upgradeCommand.Run()
 	if err != nil {
 		fmt.Println("Error:", err)
 	}

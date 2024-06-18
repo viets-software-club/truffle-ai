@@ -14,10 +14,6 @@ type Deployment struct {
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Requires environment arg for it to be deleted")
-		os.Exit(1)
-	}
 
 	out, err := exec.Command("helm", "ls", "--all-namespaces", "--filter", "chart-", "--no-headers", "-o", "json").Output()
 	if err != nil {
@@ -31,14 +27,18 @@ func main() {
 	}
 
 	for _, deployment := range deployments {
-		_, err := exec.Command("helm", "uninstall", deployment.Name, "--namespace", deployment.Namespace).Output()
-		if err != nil {
-			fmt.Println("Error uninstalling helm:", err)
-		}
+		cmd1 := exec.Command("helm", "uninstall", deployment.Name, "--namespace", deployment.Namespace)
+		cmd1.Stdout = os.Stdout
+		cmd1.Stderr = os.Stderr
+		
 
-		_, err = exec.Command("kubectl", "delete", "namespace", deployment.Namespace).Output()
-		if err != nil {
-			fmt.Println("Error deleting namespace:", err)
-		}
+		cmd2 := exec.Command("kubectl", "delete", "namespace", deployment.Namespace)
+		cmd2.Stdout = os.Stdout
+		cmd2.Stderr = os.Stderr
+		
+		
+		
 	}
+	fmt.Println("Success!")
+
 }

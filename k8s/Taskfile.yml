@@ -12,15 +12,15 @@ tasks:
   deploy:commit:
     desc: "Publish to commit environment"
     cmds:
-      - go run ./scripts/deployment/deploy-commit.go
+      - go run ./scripts/deploy/commit.go
   deploy:release:
     desc: "Publish to release to production"
     cmds:
-      - go run ./scripts/deployment/deploy-release.go
+      - go run ./scripts/deploy/release.go
   deploy:uninstall-all:
     desc: "Uninstall all deployments"
     cmds:
-      - go run ./scripts/deployment/uninstall-all.go
+      - go run ./scripts/deploy/uninstall-all.go
   helm:list:
     desc: "List all Helm releases"
     cmds:

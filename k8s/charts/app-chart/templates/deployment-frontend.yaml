@@ -29,7 +29,10 @@ spec:
         - name: ui
           image: "{{ .Values.image.repositoryUrl }}/ui:{{ default .Chart.AppVersion .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.configMaps.public-config-map.PUBLIC_UI_Port }}
+            - containerPort: {{ .Values.UI_PORT }}
+          envFrom:
+            - configMapRef:
+                name: nodejs-config-map
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       hostIPC: false

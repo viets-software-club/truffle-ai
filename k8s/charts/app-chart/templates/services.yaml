@@ -8,12 +8,12 @@ spec:
   ports:
     - name: gateway-port
       protocol: TCP
-      port: {{ .Values.configMaps.gateway-config-map.GATEWAY_Port }}
-      targetPort: {{ .Values.configMaps.gateway-config-map.GATEWAY_Port }}
+      port: {{ .Values.GATEWAY_PORT }}
+      targetPort: {{ .Values.GATEWAY_PORT }}
     - name: graphql-server-port
       protocol: TCP
-      port: {{ .Values.configMaps.graphql-server-config-map.GRAPHQL_SERVER_PORT }}
-      targetPort: {{ .Values.configMaps.graphql-server-config-map.GRAPHQL_SERVER_PORT }}
+      port: {{ .Values.GRAPHQL_SERVER_PORT }}
+      targetPort: {{ .Values.GRAPHQL_SERVER_PORT }}
 ---
 apiVersion: v1
 kind: Service
@@ -24,5 +24,5 @@ spec:
     app: frontend-deployment
   ports:
     - protocol: TCP
-      port: {{ .Values.configMaps.public-config-map.PUBLIC_UI_Port }}
-      targetPort: {{ .Values.configMaps.public-config-map.PUBLIC_UI_Port }}
+      port: {{ .Values.UI_PORT }}
+      targetPort: {{ .Values.UI_PORT }}

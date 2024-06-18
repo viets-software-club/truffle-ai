@@ -29,7 +29,7 @@ spec:
         - name: gateway
           image: "{{ .Values.image.repositoryUrl }}/gateway:{{ default .Chart.AppVersion .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.configMaps.gateway-config-map.GATEWAY_Port }}
+            - containerPort: {{ .Values.GATEWAY_PORT }}
           envFrom:
             - configMapRef:
                 name: golang-config-map
@@ -44,7 +44,7 @@ spec:
         - name: graphql-server
           image: "{{ .Values.image.repositoryUrl }}/graphql-server:{{ default .Chart.AppVersion .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.configMaps.graphql-server-config-map.GRAPHQL_SERVER_PORT }}
+            - containerPort: {{ .Values.GRAPHQL_SERVER_PORT }}
           envFrom:
             - configMapRef:
                 name: golang-config-map
@@ -57,9 +57,9 @@ spec:
             - secretRef:
                 name: openai-secret
             - configMapRef:
-                name: scraping-bot-config-map
+                name: scrapingbot-config-map
             - secretRef:
-                name: scraping-bot-secret
+                name: scrapingbot-secret
             - configMapRef:
                 name: supabase-config-map
             - secretRef:

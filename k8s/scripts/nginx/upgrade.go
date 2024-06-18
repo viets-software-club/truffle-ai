@@ -20,17 +20,17 @@ func main() {
 		repoName = "truffle-ai"
 	}
 
-	// var envName string
-	// if os.Getenv("ENV") == "production" {
-	// 	envName = "prod"
-	// } else {
-	// 	envName = "dev"
-	// }
+	var envName string
+	if os.Getenv("ENV") == "production" {
+		envName = "prod"
+	} else {
+		envName = "dev"
+	}
 
 	config := map[string]interface{}{
 		"service": map[string]interface{}{
 			"annotations": map[string]interface{}{
-				"service.beta.kubernetes.io/do-loadbalancer-name":                             fmt.Sprintf("%s-nginx-ingress-controller", repoName),
+				"service.beta.kubernetes.io/do-loadbalancer-name":                             fmt.Sprintf("%s-nginx-ingress-controller", repoName, envName),
 				"service.beta.kubernetes.io/do-loadbalancer-certificate-id":                   strings.TrimSpace(string(certID)),
 				"service.beta.kubernetes.io/do-loadbalancer-protocol":                         "https",
 				"service.beta.kubernetes.io/do-loadbalancer-size-unit":                        "1",

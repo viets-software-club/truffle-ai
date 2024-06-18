@@ -60,8 +60,6 @@ Install the following extensions:
 - Docker
 - GitHub Actions
 
-### Installation
-
 ### Configuration
 
 To configure your project for your environment, fill in the values in `values/input` for your environment (commit, staging, production) and remove the `example.` prefix.

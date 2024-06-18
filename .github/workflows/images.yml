@@ -22,6 +22,7 @@ jobs:
   image:
     environment: ${{needs.variables.outputs.ENV}}
     name: 'Image'
+    uses: ./.github/workflows/reusable-ghcr-image.yml
     permissions:
       contents: read
       packages: write
@@ -38,7 +39,6 @@ jobs:
               --build-arg PUBLIC_UI_HOSTNAME="${{vars.PUBLIC_UI_HOSTNAME}}"
               --build-arg PUBLIC_UI_PORT="${{vars.PUBLIC_UI_PORT}}"
               --build-arg PUBLIC_SUPABASE_ANON_KEY="${{secrets.PUBLIC_SUPABASE_ANON_KEY}}"
-    uses: ./.github/workflows/reusable-ghcr-image.yml
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
       ENV: ${{needs.variables.outputs.ENV}}

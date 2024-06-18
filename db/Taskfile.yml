@@ -9,6 +9,7 @@ tasks:
     deps: [merge]
     desc: "Execute merged file"
     cmds:
+      - echo $SUPABASE_DATABASE_URL
       - psql "$SUPABASE_DATABASE_URL" -f output/merged.sql
   exec-test:
     desc: "Executes .sql file in ./sql-test, expects -- <file>"

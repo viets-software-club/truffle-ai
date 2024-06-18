@@ -9,39 +9,30 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func writeEnv(f *os.File, value interface{}) {
-	switch v := value.(type) {
-	case map[string]interface{}:
-		for _, value := range v {
-			writeEnvKeyValue(f, value)
+func writeMap(f *os.File, value map[interface{}]interface{}) {
+
+	for key, val := range value {
+		switch v := val.(type) {
+			case map[interface{}]interface{}:
+				writeMap(f, v)
+			default:
+				writeValue(f, key, val)
 		}
-	default:
-		panic(fmt.Sprintf("Unexpected value: %v", v))
+
 	}
 }
 
-func writeEnvKeyValue(f *os.File, value interface{}) {
-	switch v := value.(type) {
-	case map[interface{}]interface{}:
-		for key, value := range v {
-			switch value := value.(type) {
-			case map[interface{}]interface{}:
-				for key, value := range value {
-					_, err := f.WriteString(fmt.Sprintf("%s=%v\n", key, value))
-					if err != nil {
-						panic(err)
-					}
-				}
-			default:
-				_, err := f.WriteString(fmt.Sprintf("%s=%v\n", key, value))
-				if err != nil {
-					panic(err)
-				}
-			}
-		}
-	default:
-		panic(fmt.Sprintf("Unexpected value: %v", v))
-	}
+func writeValue(f *os.File, key, value interface{}) {
+    var err error
+    switch value := value.(type) {
+    case int:
+        _, err = f.WriteString(fmt.Sprintf("%s=%d\n", key, value))
+    default:
+        _, err = f.WriteString(fmt.Sprintf("%s=%v\n", key, value))
+    }
+    if err != nil {
+        panic(err)
+    }
 }
 
 func main() {
@@ -54,7 +45,7 @@ func main() {
 		panic(err)
 	}
 
-	var config map[string]interface{}
+	var config map[interface{}]interface{}
 	err = yaml.Unmarshal(data, &config)
 	if err != nil {
 		panic(err)
@@ -66,5 +57,5 @@ func main() {
 	}
 	defer f.Close()
 
-	writeEnv(f, config)
+	writeMap(f, config)
 }

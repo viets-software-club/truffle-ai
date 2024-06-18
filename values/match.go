@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"reflect"
 
 	"gopkg.in/yaml.v2"
 )
@@ -14,7 +15,7 @@ func main() {
 		log.Fatal("Please provide at least one file path as argument")
 	}
 
-	var allFields []map[string]interface{}
+	var allFields []map[interface{}]interface{}
 	for _, filePath := range os.Args[1:] {
 		fields, err := getFieldsFromFile(filePath)
 		if err != nil {
@@ -33,21 +34,20 @@ func main() {
 	fmt.Println("All keys match across all files")
 }
 
-func equalKeys(a, b map[string]interface{}) bool {
+func equalKeys(a map[interface{}]interface{}, b map[interface{}]interface{}) bool {
 	if len(a) != len(b) {
 		return false
 	}
 	for k := range a {
 		if _, ok := b[k]; !ok {
 			return false
+		} else if reflect.TypeOf(a[k]) != reflect.TypeOf(b[k]) {
+			return false;
 		} else {
 			switch av := a[k].(type) {
 			case map[interface{}]interface{}:
-				bv, ok := b[k].(map[interface{}]interface{})
-				if !ok {
-					return false
-				}
-				if !equalKeys(convertMap(av), convertMap(bv)) {
+				bv, _ := b[k].(map[interface{}]interface{})
+				if !equalKeys(av, bv) {
 					return false
 				}
 			default:
@@ -58,35 +58,7 @@ func equalKeys(a, b map[string]interface{}) bool {
 	return true
 }
 
-func convertMap(original map[interface{}]interface{}) map[string]interface{} {
-	converted := make(map[string]interface{})
-	for k, v := range original {
-		strKey, ok := k.(string)
-		if !ok {
-			continue
-		}
-		switch v := v.(type) {
-		case map[interface{}]interface{}:
-			converted[strKey] = convertMap(v)
-		default:
-			converted[strKey] = v
-		}
-	}
-	return converted
-}
-func getFields(m map[string]interface{}, prefix string) []string {
-	var fields []string
-	for k, v := range m {
-		if nestedMap, ok := v.(map[string]interface{}); ok {
-			fields = append(fields, getFields(nestedMap, prefix+k+".")...)
-		} else {
-			fields = append(fields, prefix+k)
-		}
-	}
-	return fields
-}
-
-func getFieldsFromFile(filePath string) (map[string]interface{}, error) {
+func getFieldsFromFile(filePath string) (map[interface{}]interface{}, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -98,22 +70,10 @@ func getFieldsFromFile(filePath string) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	var m map[string]interface{}
+	var m map[interface{}]interface{}
 	if err := yaml.Unmarshal(bytes, &m); err != nil {
 		return nil, err
 	}
 
 	return m, nil
-}
-
-func equal(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i, v := range a {
-		if v != b[i] {
-			return false
-		}
-	}
-	return true
 }

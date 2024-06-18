@@ -1,16 +1,13 @@
 package main
 
 import (
+	"encoding/base64"
 	"flag"
 	"io/ioutil"
+	"strconv"
 
 	"gopkg.in/yaml.v2"
 )
-
-type Config struct {
-	ConfigMaps map[string]interface{} `yaml:"configMaps"`
-	Secrets    map[string]interface{} `yaml:"secrets"`
-}
 
 func main() {
 	inputFile := flag.String("input", "", "Input file")
@@ -22,22 +19,63 @@ func main() {
 		panic(err)
 	}
 
-	var config Config
+	var config map[string]interface{}
+	var out map[string]interface{} = make(map[string]interface{})
+
 	err = yaml.Unmarshal(data, &config)
 	if err != nil {
 		panic(err)
 	}
 
-	for key, value := range config.ConfigMaps {
-		delete(config.ConfigMaps, key)
-		config.ConfigMaps[key+"-config-map"] = value
-	}
-	for key, value := range config.Secrets {
-		delete(config.Secrets, key)
-		config.Secrets[key+"-secret"] = value
-	}
+	if values, ok := config["values"].(map[interface{}]interface{}); ok {
+		for key, value := range values {
+			if strKey, ok := key.(string); ok {
+				out[strKey] = value
+			} else {
+				panic("Error parsing key")
 
-	data, err = yaml.Marshal(config)
+			}
+		}
+	}
+	if configMaps, ok := config["configMaps"].(map[interface{}]interface{}); ok {
+		outConfigMaps := make(map[string]interface{})
+		for key, value := range configMaps {
+			if strKey, ok := key.(string); ok {
+				outConfigMaps[strKey + "-config-map"] = value
+			} else {
+				panic("Error parsing key")
+			}
+
+		}
+		out["configMaps"] = outConfigMaps
+	}
+	if secrets, ok := config["secrets"].(map[interface{}]interface{}); ok {
+		outSecrets := make(map[string]map[string]interface{})
+		for key, valueMap := range secrets {
+				
+				if secretLabel, ok := key.(string); ok {
+					outSecrets[secretLabel + "-secret"] = make(map[string]interface{})
+					for actualValueKey, actualValue := range valueMap.(map[interface{}]interface{}) {
+						if actualValueKey, ok := actualValueKey.(string); ok {
+							switch v := actualValue.(type) {
+							case string:
+								outSecrets[secretLabel + "-secret"][actualValueKey] = base64.StdEncoding.EncodeToString([]byte(v))
+							case int:
+								outSecrets[secretLabel + "-secret"][actualValueKey] = base64.StdEncoding.EncodeToString([]byte(strconv.Itoa(v)))
+							default:
+								panic("Unsupported type")
+							}
+						}
+					}
+				} else {
+					panic("Error parsing key")
+				}
+			
+		}
+		out["secrets"] = outSecrets;
+	}
+	
+	data, err = yaml.Marshal(out)
 	if err != nil {
 		panic(err)
 	}

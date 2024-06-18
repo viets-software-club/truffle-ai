@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  dev:
+    cmds:
+      - go run .
+  build:
+    cmds:
+      - go build -o {{.OUT}} .
+  start:
+    cmds:
+      - ./{{.OUT}}
+  test:
+    cmds:
+      - fmtFiles=$(gofmt -l .) && vetFiles=$(go vet ./) && [ -z "$fmtFiles" -a -z "$vetFiles" ]
+  format:
+    cmds:
+      - gofmt -w .

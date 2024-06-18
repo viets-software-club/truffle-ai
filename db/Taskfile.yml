@@ -1,0 +1,21 @@
+version: "3"
+
+tasks:
+  merge:
+    desc: "Merges all .sql files in order"
+    cmds:
+      - go run scripts/merge.go
+  exec-merge:
+    deps: [merge]
+    desc: "Execute merged file"
+    cmds:
+      - psql "$SUPABASE_DATABASE_URL" -f output/merged.sql
+  exec-test:
+    desc: "Executes .sql file in ./sql-test, expects -- <file>"
+    cmds:
+      - psql "$SUPABASE_DATABASE_URL" -f {{.CLI_ARGS}}
+  reset:
+    desc: "Reset supabase database"
+    cmds:
+      - npx supabase db reset --db-url $SUPABASE_DATABASE_URL
+      - echo "Remember this resets also Authentication"

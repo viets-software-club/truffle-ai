@@ -22,8 +22,10 @@ jobs:
   image:
     environment: production
     name: 'Image'
-    uses: ./.github/workflows/reusable-ghcr-image.yml
     needs: variables
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix:
         PACKAGE_NAME: [ui, gateway, graphql-server]
@@ -36,6 +38,7 @@ jobs:
               --build-arg PUBLIC_UI_HOSTNAME="${{vars.PUBLIC_UI_HOSTNAME}}"
               --build-arg PUBLIC_UI_PORT="${{vars.PUBLIC_UI_PORT}}"
               --build-arg PUBLIC_SUPABASE_ANON_KEY="${{vars.PUBLIC_SUPABASE_ANON_KEY}}"
+    uses: ./.github/workflows/reusable-ghcr-image.yml
     with:
       GIT_COMMIT_TAG: ${{needs.variables.outputs.GIT_COMMIT_TAG}}
       ENV: ${{needs.variables.outputs.ENV}}

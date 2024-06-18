@@ -122,7 +122,6 @@ supabaseClient.auth.getUser().then((user) => {
 });
 
 onMount(() => {
-	console.log("what");
 	loadData();
 });
 // $effect(() => {

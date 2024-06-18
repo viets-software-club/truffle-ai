@@ -15,35 +15,37 @@ import (
 )
 
 const defaultPort = "3002"
+
 func loggingMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        log.Printf("Request: %s %s", r.Method, r.URL.Path)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Request: %s %s", r.Method, r.URL.Path)
 		for name, values := range r.Header {
-            // Loop over all values for the name.
-            for _, value := range values {
-                log.Printf("%s: %s", name, value)
-            }
-        }
-        rw := &responseWriter{w, http.StatusOK}
-        next.ServeHTTP(rw, r)
-        if rw.status >= 400 {
-            log.Printf("Error: %s %s %d", r.Method, r.URL.Path, rw.status)
-        }
-    })
+			// Loop over all values for the name.
+			for _, value := range values {
+				log.Printf("%s: %s", name, value)
+			}
+		}
+		rw := &responseWriter{w, http.StatusOK}
+		next.ServeHTTP(rw, r)
+		if rw.status >= 400 {
+			log.Printf("Error: %s %s %d", r.Method, r.URL.Path, rw.status)
+		}
+	})
 }
 
 type responseWriter struct {
-    http.ResponseWriter
-    status int
+	http.ResponseWriter
+	status int
 }
-// func loggingMiddleware(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		fmt.Printf("Request URI: %s\n", r.RequestURI)
-// 		fmt.Printf("Method: %s\n", r.Method)
-// 		fmt.Printf("Remote Addr: %s\n", r.RemoteAddr)
-// 		next.ServeHTTP(w, r)
-// 	})
-// }
+
+//	func loggingMiddleware(next http.Handler) http.Handler {
+//		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//			fmt.Printf("Request URI: %s\n", r.RequestURI)
+//			fmt.Printf("Method: %s\n", r.Method)
+//			fmt.Printf("Remote Addr: %s\n", r.RemoteAddr)
+//			next.ServeHTTP(w, r)
+//		})
+//	}
 func main() {
 	port := os.Getenv("GRAPHQL_SERVER_PORT")
 	if port == "" {
@@ -54,7 +56,7 @@ func main() {
 	router.Use(cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
-		AllowedHeaders:  []string{"*"},
+		AllowedHeaders:   []string{"*"},
 		Debug:            os.Getenv("GO_ENV") == "development",
 	}).Handler)
 
@@ -85,14 +87,10 @@ func main() {
 	// controller.ControllerInstance.RecreateTrending("weekly")
 
 	// controller.ControllerInstance.RecreateTrending("monthly")
-	
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)
 	router.Handle("/query/", srv)
-
-
-	
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, router))

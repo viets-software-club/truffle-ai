@@ -45,10 +45,9 @@ func (c *Controller) CreateBookmarkWithCategories(authUserId string, repoOwner s
 	}
 	// f, err := os.Create("dump2.txt")
 	// if err != nil {
-    //     panic(err)
-    // }
+	//     panic(err)
+	// }
 	// spew.Fdump(f, data)
-
 
 	projBookmarkWithCatsPtr, err := convert.ConvertToTFInsertProjBookmarkWCats(authUserId, &categories, data)
 	if err != nil {
@@ -58,9 +57,9 @@ func (c *Controller) CreateBookmarkWithCategories(authUserId string, repoOwner s
 	// fmt.Println("projBookmarkWithCatsPtr")
 	// f, err = os.Create("dump.txt")
 	// if err != nil {
-    //     panic(err)
-    // }
-    // defer f.Close()
+	//     panic(err)
+	// }
+	// defer f.Close()
 	// spew.Fdump(f, projBookmarkWithCatsPtr)
 
 	err = c.db.CallInsertProjBookmarkWCats(projBookmarkWithCatsPtr)

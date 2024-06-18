@@ -22,7 +22,7 @@ func ConvertDiscordInvitesToTIvalsDiscordInvite(invites *[]discordApi.DiscordInv
 	// 		}
 	// pgDiscordInvites = append(pgDiscordInvites, val)
 	for _, invite := range *invites {
-	
+
 		// fmt.Printf("Invites: %+v, Type: %T\n", invite, invite)
 		// val1 := reflect.ValueOf(invite)
 		// for i := 0; i < val1.NumField(); i++ {

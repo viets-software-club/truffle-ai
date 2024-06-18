@@ -79,7 +79,7 @@ func (p *Prompts) GenerateHackernewsSentiment(comments *hackernews.HackernewsCom
 	var commentsSlice []string
 	for i, comment := range comments.Hits {
 		if i >= 15 { // max 15 comments
-			break;
+			break
 		}
 		commentsSlice = append(commentsSlice, comment.CommentText)
 	}

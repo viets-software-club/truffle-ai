@@ -16,23 +16,22 @@ type DiscordAPI struct {
 	// Session *discordgo.Session
 }
 type DiscordInviteResponse struct {
-    Code    string `json:"code"`
-    Guild   Guild  `json:"guild"`
-    Channel struct {
-        ID   string `json:"id"`
-        Name string `json:"name"`
-        Type int    `json:"type"`
-    } `json:"channel"`
-    ApproximatePresenceCount int `json:"approximate_presence_count"`
-    ApproximateMemberCount   int `json:"approximate_member_count"`
-	ExpiresAt *time.Time `json:"expires_at"`
+	Code    string `json:"code"`
+	Guild   Guild  `json:"guild"`
+	Channel struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+		Type int    `json:"type"`
+	} `json:"channel"`
+	ApproximatePresenceCount int        `json:"approximate_presence_count"`
+	ApproximateMemberCount   int        `json:"approximate_member_count"`
+	ExpiresAt                *time.Time `json:"expires_at"`
 }
 
 type Guild struct {
-    ID          string `json:"id"`
-    Name        string `json:"name"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
-
 
 func New() (*DiscordAPI, error) {
 	// session, err := discordgo.New("Bot " + os.Getenv("DISCORD_BOT_TOKEN"))
@@ -50,30 +49,30 @@ func (api *DiscordAPI) GetInvite(code string) (*DiscordInviteResponse, error) {
 	// 	cfg.Request.Header.Set("with_counts", "true")
 	// 	cfg.Request.Header.Set("with_expiration", "true")
 	// })
-	req, err := http.NewRequest("GET", fmt.Sprintf("https://discord.com/api/invites/%s?with_counts=true&with_expiration=true", code), nil); 
+	req, err := http.NewRequest("GET", fmt.Sprintf("https://discord.com/api/invites/%s?with_counts=true&with_expiration=true", code), nil)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Authorization", fmt.Sprintf("Bot %s" + os.Getenv("DISCORD_BOT_TOKEN")))
-    resp, err := http.DefaultClient.Do(req)
-    if err != nil {
-        return nil, err
-    }
-    defer resp.Body.Close()
+	req.Header.Set("Authorization", fmt.Sprintf("Bot %s"+os.Getenv("DISCORD_BOT_TOKEN")))
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
 
-    body, err := io.ReadAll(resp.Body)
-    if err != nil {
-        return nil, err
-    }
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
 
-    var invite DiscordInviteResponse
-    err = json.Unmarshal(body, &invite)
-    if err != nil {
+	var invite DiscordInviteResponse
+	err = json.Unmarshal(body, &invite)
+	if err != nil {
 		log.Println("Error unmarshalling discord invite response, probably rate-limited", err)
-        return nil, nil
-    }
+		return nil, nil
+	}
 
-    return &invite, nil
+	return &invite, nil
 }
 
 func GetDiscordInviteCodesFromDiscordInviteLinksInString(str string) []string {
@@ -89,9 +88,9 @@ func GetDiscordInviteCodesFromDiscordInviteLinksInString(str string) []string {
 		}
 	}
 	codes := make([]string, 0, len(set))
-    for code := range set {
-        codes = append(codes, code)
-    }
+	for code := range set {
+		codes = append(codes, code)
+	}
 
 	return codes
 }

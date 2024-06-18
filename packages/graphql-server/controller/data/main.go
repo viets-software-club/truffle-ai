@@ -359,7 +359,6 @@ func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
 
 	data.AlgoliaData.Query = hackernewsQuery
 	fmt.Println("done1", repoOwner, repoName)
-	
 
 	return &data, nil
 
@@ -572,7 +571,7 @@ func GetProjectUpdateData(repoOwner string, repoName string) (*ProjectData, erro
 			// 	return
 			// }
 			if invite != nil {
-			invites = append(invites, *invite)
+				invites = append(invites, *invite)
 			}
 		}
 		discordInvitesChan <- &invites

@@ -29,7 +29,7 @@ type T_f_insert_proj_repo struct {
 	Discord_invites    pgtype.FlatArray[T_ivals_discord_invite]
 	Algo_hn_eli5       pgtype.Text
 	Repo_eli5          pgtype.Text
-	Twitter_eli5 	 pgtype.Text
+	Twitter_eli5       pgtype.Text
 }
 
 type T_f_insert_proj_bookmark_w_cats struct {

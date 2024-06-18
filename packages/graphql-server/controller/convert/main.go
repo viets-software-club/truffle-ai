@@ -81,7 +81,7 @@ func ConvertProjectDataToTFInsertProjRepo(data *data.ProjectData) (*types.T_f_in
 		Discord_invites:       discordInvites,
 		Algo_hn_eli5:          helper.StringToNoEmptyPgText(data.HackernewsSentiment),
 		Repo_eli5:             helper.StringToNoEmptyPgText(data.RepoEli5),
-		Twitter_eli5: 			helper.StringToNoEmptyPgText(""),
+		Twitter_eli5:          helper.StringToNoEmptyPgText(""),
 	}, nil
 }
 

@@ -19,9 +19,9 @@ import {
 import { updateSidebar } from "$lib/store/sidebar";
 import ChevronDownIcon from "lucide-svelte/icons/chevron-down";
 import ChevronUpIcon from "lucide-svelte/icons/chevron-up";
-import XIcon from "lucide-svelte/icons/x";
-import PlusIcon from "lucide-svelte/icons/plus";
 import MinusIcon from "lucide-svelte/icons/minus";
+import PlusIcon from "lucide-svelte/icons/plus";
+import XIcon from "lucide-svelte/icons/x";
 import { onDestroy, onMount, untrack } from "svelte";
 import { toast } from "svelte-sonner";
 

@@ -139,23 +139,23 @@ Contains the helm charts and the scripts to deploy the application via helm.
 
 There are four main packages in `./packages`. 
 
-### `apis`
+#### `apis`
 
 Used to test external APIs like ScrapingBot to get exact output formats. Important for designing the database tables.
 
-### `gateway`
+#### `gateway`
 
 A golang gateway server, that authenticates any requests and proxies them to the Supabase GraphQL API or `graphql-server`. It also accepts userapikey headers to identify a user and give him access to the app's API infrastructure.
 
-### `graphql-server`
+#### `graphql-server`
 
 A golang graphql server that updates the data in the database periodically via cronjobs, allows to fetch data in the future via realtime over graphql subscriptions and inserts new bookmarks to the database in realtime, which requires scraping that is done concurrently.
 
-### `twitter-server`
+#### `twitter-server`
 
 A server used to access grok AI and generate text based on repository input. Not included in the deployment.
 
-### `ui`
+#### `ui`
 
 Contains the frontend of Truffle AI. It connects with the Supabase API directly via a GraphQL Client to load content from the database. Another client then connects with `graphql-server` to be able to add bookmarks via the application logic of our own server.
 

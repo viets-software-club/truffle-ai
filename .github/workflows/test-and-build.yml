@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ ((github.event_name == 'pull_request' && github.head_ref || github.ref_name) == 'main' && 'production') || ((github.event_name == 'pull_request' && github.head_ref || github.ref_name) == 'staging' && 'staging') || 'commit' }}
     env:
-      NODE_ENV: production
-      GO_ENV: production
       PUBLIC_SUPABASE_URL: ${{vars.PUBLIC_SUPABASE_URL}}
       PUBLIC_SUPABASE_GRAPHQL_URL: ${{vars.PUBLIC_SUPABASE_GRAPHQL_URL}}
       PUBLIC_API_URL: ${{vars.PUBLIC_API_URL}}
@@ -19,7 +17,7 @@ jobs:
       PUBLIC_SUPABASE_ANON_KEY: ${{secrets.PUBLIC_SUPABASE_ANON_KEY}}
     strategy:
       matrix:
-        node-version: [21.x]
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -39,9 +37,12 @@ jobs:
       #   run: |
       #     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       #     source $HOME/.cargo/env
-      - name: Install dependencies
+      - name: Task install
         run: task install
-      - name: Test
+      - name: Task test
         run: task test
-      - name: Build
+      - name: Task Build
+        env:
+          NODE_ENV: production
+          GO_ENV: production
         run: task build

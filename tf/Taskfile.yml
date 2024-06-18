@@ -1,0 +1,13 @@
+version: '3'
+
+tasks:
+  deploy:
+    cmds:
+      - export TF_VAR_loadbalancer_prod="truffle-ai-nginx-ingress-controller"
+R_ENV=$ENV
+      - export TF_VAR_loadbalancer_dev="truffle-ai-nginx-ingress-controller"
+      - terraform init
+      - terraform plan -var 'DIGITALOCEAN_ACCESS_TOKEN=$DIGITALOCEAN_ACCESS_TOKEN'
+      - echo "Do you want to apply these changes? [yes/no]"
+      - read answer
+      - if [ "$answer" = "yes" ]; then terraform apply; fi

@@ -5,7 +5,7 @@ Truffle AI is a platform helping VC analysts find early stage tech startups. It 
 ## Features
 
 - View and analyze GitHub repositories and their associated data.
-- See timeline of stars, forks, issues in time intervals and normalize data to same beginning
+- See timeline graph of stars, forks, issues in time intervals and normalize data to same beginning
 - Scrape multiple services concurrently in realtime
 - View GitHub Stats, Discord Invites, LinkedIn URL, Hackernews Comments, Twitter URL, Website URL etc.
 - Get AI simplicfications of data
@@ -14,7 +14,7 @@ Truffle AI is a platform helping VC analysts find early stage tech startups. It 
 - Whitelist Domains and Emails
 - User API Keys for API access
 - Table View with Filters, Sorting & Hide Columns
-- Take Notes
+- Take Notes on Bookmarks
 - Delete your account
 - Change theme
 

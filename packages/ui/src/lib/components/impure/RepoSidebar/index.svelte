@@ -237,7 +237,7 @@ loadData();
 									<Icon1 class="w-3.5 h-3.5 text-foreground/50" />
 								{/if}
 								<span class="text-sm text-foreground/80">{value}</span>
-								<span class="text-foreground/80 text-xs">{label}</span>
+								<span class="text-foreground/80 text-xs hidden sm:block">{label}</span>
 
 							</Tooltip.Trigger>
 							<Tooltip.Content>

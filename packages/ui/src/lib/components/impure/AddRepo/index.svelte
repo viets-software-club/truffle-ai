@@ -22,7 +22,7 @@ import type { ApolloQueryResult, FetchResult } from "@apollo/client/core";
 import Check from "lucide-svelte/icons/check";
 import ChevronsUpDown from "lucide-svelte/icons/chevrons-up-down";
 import Plus from "lucide-svelte/icons/plus";
-import { tick } from "svelte";
+import { onMount, tick } from "svelte";
 import { toast } from "svelte-sonner";
 
 function isValidGithubUrl(url: any) {
@@ -87,24 +87,54 @@ const loadData = () => {
 			query: ListCategoriesTitleDocument,
 		})
 		.then((res: ApolloQueryResult<ListCategoriesTitleQueryType>) => {
+			console.log(res.data.projCatCollection?.edges);
 			if (res.data.projCatCollection?.edges)
 				currentCategories = currentCategories.concat(
-					res.data.projCatCollection?.edges.map((edge) => {
-						if (preSelectedCategories.includes(edge.node.title)) {
+					res.data.projCatCollection?.edges
+						.filter(
+							(edge) =>
+								currentCategories.findIndex(
+									(cat) => cat.title === edge.node.title,
+								) === -1,
+						)
+						.map((edge) => {
+							if (preSelectedCategories.includes(edge.node.title)) {
+								return {
+									title: edge.node.title,
+									isSelected: true,
+								};
+							}
 							return {
 								title: edge.node.title,
-								isSelected: true,
+								isSelected: false,
 							};
-						}
-						return {
-							title: edge.node.title,
-							isSelected: false,
-						};
-					}),
+						}),
 				);
+			console.log(res.data.projCatCollection?.edges);
 		});
 };
-loadData();
+onMount(() => {
+	loadData();
+	let realtimeOn: any;
+	supabaseClient.auth.getUser().then((user) => {
+		if (user.data.user?.id) {
+			realtimeOn = supabaseClient.channel("table_db_changes").on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "public",
+					table: "proj_cat",
+					filter: `auth_users_id=eq.${user.data.user.id}`,
+				},
+				(payload) => {
+					if (!isSaving) loadData();
+				},
+			);
+			realtimeOn.subscribe();
+		}
+	});
+	return () => realtimeOn.unsubscribe();
+});
 let isSaving = false;
 let dialogOpen = $state(startOpen);
 let open = $state(false);
@@ -162,7 +192,7 @@ const handleSaveClick = () => {
 
 				isSubmitting = false;
 				open = false;
-				dialogOpen = false;
+
 				updateSidebar.set(`${repoIdentification?.repoName}-add`);
 				toast.success(
 					selectedCategories.length > 1
@@ -260,19 +290,23 @@ const handleSaveClick = () => {
 					</Button>
 				</Popover.Trigger>
 				<Popover.Content class="w-full md:w-[350px] p-0">
-					<Command.Root>
+					
+					<Command.Root shouldFilter={false}>
 						<Command.Input bind:value={commandInputValue} placeholder="Add category..." />
 						<!-- <Command.Empty>No bookmark found.</Command.Empty> -->
+						
 						<Command.Group>
 							{#if currentCategories}
-								{#each currentCategories.filter(currentCategory => {
+								{#each (currentCategories.filter(currentCategory => {
+									console.log(currentCategory.title, commandInputValue, currentCategory.title.toLowerCase().includes(commandInputValue.toLowerCase()))
 									if(currentCategory.title.toLowerCase().includes(commandInputValue.toLowerCase())) {
 										return true;
 									}
 									if(commandInputValue === "")
 										return true;
 									return false
-								}).slice(0, 6) as category}
+									return true;
+								}).slice(0,6)) as category}
 									<Command.Item
 										value={category.title}
 										onSelect={(currentValue) => {
@@ -305,6 +339,7 @@ const handleSaveClick = () => {
 								{/each}
 							{/if}
 						</Command.Group>
+						
 						{#if currentCategories.length > 0}
 						<div class="-mx-1 h-px bg-border"></div>
 						{/if}
@@ -328,6 +363,7 @@ const handleSaveClick = () => {
 							</div>
 						</div>
 					</Command.Root>
+					
 				</Popover.Content>
 			</Popover.Root>
 			<div class="flex gap-2 flex-wrap">

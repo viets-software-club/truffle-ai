@@ -1,5 +1,6 @@
 import { browser } from "$app/environment";
 import { type ClassValue, clsx } from "clsx";
+import { untrack } from "svelte";
 import { cubicOut } from "svelte/easing";
 import type { TransitionConfig } from "svelte/transition";
 import { twMerge } from "tailwind-merge";
@@ -80,3 +81,10 @@ export const getTheme = () => {
 	}
 	return null;
 };
+
+// export const explicitEffect = (fn: any, depsFn: any) => {
+// 	$effect(() => {
+// 		depsFn();
+// 		untrack(fn);
+// 	});
+// };

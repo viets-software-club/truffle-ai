@@ -18,6 +18,7 @@ import XIcon from "lucide-svelte/icons/x";
 import { toast } from "svelte-sonner";
 
 import { updateSidebar } from "$lib/store/sidebar";
+import { untrack } from "svelte";
 type Props = {
 	title: string;
 };
@@ -79,7 +80,19 @@ const loadData = () => {
 			});
 		});
 };
-loadData();
+function explicitEffect(fn: any, depsFn: any) {
+	$effect(() => {
+		depsFn();
+		untrack(fn);
+	});
+}
+explicitEffect(
+	() => {
+		console.log("hmm55");
+		loadData();
+	},
+	() => [title],
+);
 const getHandleDeleteBookmarkFunc = (bookmark: any) => () => {
 	if (bookmark) {
 		client

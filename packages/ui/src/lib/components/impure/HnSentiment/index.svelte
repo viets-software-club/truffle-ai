@@ -3,6 +3,7 @@ import * as Card from "$lib/components/pure/ui/card/index.js";
 import Separator from "$lib/components/pure/ui/separator/separator.svelte";
 import client from "$lib/graphql/supabase/client";
 import { HnSentimentDocument } from "$lib/graphql/supabase/generated-codegen";
+import { untrack } from "svelte";
 import { Icon } from "svelte-icons-pack";
 import { FaBrandsSquareHackerNews } from "svelte-icons-pack/fa";
 import { Toaster, toast } from "svelte-sonner";
@@ -47,7 +48,18 @@ const loadEli5 = () => {
 			});
 		});
 };
-loadEli5();
+const explicitEffect = (fn: any, depsFn: any) => {
+	$effect(() => {
+		depsFn();
+		untrack(fn);
+	});
+};
+explicitEffect(
+	() => {
+		loadEli5();
+	},
+	() => [repoName, ownerLogin],
+);
 </script>
 
 <Card.Root {...attrs}>

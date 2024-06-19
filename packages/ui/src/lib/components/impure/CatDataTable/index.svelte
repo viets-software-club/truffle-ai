@@ -19,6 +19,7 @@ import GitPullRequestArrow from "lucide-svelte/icons/git-pull-request-arrow";
 import StarIcon from "lucide-svelte/icons/star";
 import UserIcon from "lucide-svelte/icons/user";
 import UsersRoundIcon from "lucide-svelte/icons/users-round";
+import { untrack } from "svelte";
 import { v4 as uuidv4 } from "uuid";
 
 let data: any = $state({
@@ -503,7 +504,18 @@ let filterData = $state({
 		},
 	],
 });
-query();
+const explicitEffect = (fn: any, depsFn: any) => {
+	$effect(() => {
+		depsFn();
+		untrack(fn);
+	});
+};
+explicitEffect(
+	() => {
+		query();
+	},
+	() => [title],
+);
 </script>
 
 <FilterHeader bind:data={filterData} options={{

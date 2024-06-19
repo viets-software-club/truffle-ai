@@ -20,11 +20,25 @@ import CircleDotIcon from "lucide-svelte/icons/circle-dot";
 import GitForkIcon from "lucide-svelte/icons/git-fork";
 import StarIcon from "lucide-svelte/icons/star";
 import { toast } from "svelte-sonner";
+import { untrack } from "svelte";
 type Props = {
 	githubRepoIds: number[];
 	isNormalizable: boolean;
 };
 const { githubRepoIds, isNormalizable }: Props = $props();
+const explicitEffect = (fn: any, depsFn: any) => {
+	$effect(() => {
+		depsFn();
+		untrack(fn);
+	});
+};
+explicitEffect(
+	() => {
+		update();
+	},
+	() => [githubRepoIds],
+);
+
 let data: any;
 function getRandomColor() {
 	const letters = "0123456789ABCDEF";

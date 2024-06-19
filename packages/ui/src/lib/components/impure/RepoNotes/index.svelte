@@ -10,6 +10,7 @@ import {
 	UpdateProjRepoNotesByGthbRepoIdDocument,
 } from "$lib/graphql/supabase/generated-codegen";
 import NotebookPen from "lucide-svelte/icons/notebook-pen";
+import { untrack } from "svelte";
 import { toast } from "svelte-sonner";
 
 type Props = {
@@ -69,7 +70,19 @@ const loadData = () => {
 			});
 	}
 };
-loadData();
+const explicitEffect = (fn: any, depsFn: any) => {
+	$effect(() => {
+		depsFn();
+		untrack(fn);
+	});
+};
+explicitEffect(
+	() => {
+		loadData();
+	},
+	() => [githubRepoId, projBookmarkId],
+);
+
 const debounce = (callback: (...args: any[]) => void, wait = 300) => {
 	let timeout: ReturnType<typeof setTimeout>;
 

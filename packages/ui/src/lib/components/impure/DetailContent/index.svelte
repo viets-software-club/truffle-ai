@@ -329,7 +329,9 @@ const handleDownClick = () => {
 		</section>
 		<section class="border-t w-full">
 			{#if data}
-				<ChartView githubRepoIds={[data.githubRepoId]} isNormalizable={false} />
+				<!-- {#key data.githubRepoId} -->
+					<ChartView githubRepoIds={[data.githubRepoId]} isNormalizable={false} />
+				<!-- {/key} -->
 			{/if}
 		</section>
 		<section class="border-t md:flex md:gap-4 p-4">
@@ -344,10 +346,9 @@ const handleDownClick = () => {
 			{/if}
 			{#if data && data.projBookmarkId}
 					<div class="w-full md:w-1/2">
-						{#key data.projBookmarkId + data.githubRepoId}
 
 						<Notes githubRepoId={data.githubRepoId} projBookmarkId={data.projBookmarkId} />
-						{/key}
+						
 					</div>
 			
 			{/if}

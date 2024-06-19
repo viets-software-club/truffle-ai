@@ -87,42 +87,44 @@ const loadData = () => {
 		});
 };
 let isReloading = false;
-supabaseClient.auth.getUser().then((user) => {
-	if (user.data.user?.id)
-		supabaseClient
-			.channel("table_db_changes")
-			.on(
-				"postgres_changes",
-				{
-					event: "*",
-					schema: "public",
-					table: "proj_bookmark",
-					filter: `auth_users_id=eq.${user.data.user.id}`,
-				},
-				(payload) => {
-					console.log("update bookmark", isReloading);
-					loadData();
-				},
-			)
-
-			.on(
-				"postgres_changes",
-				{
-					event: "*",
-					schema: "public",
-					table: "proj_cat",
-					filter: `auth_users_id=eq.${user.data.user.id}`,
-				},
-				(payload) => {
-					console.log("update cat", isReloading);
-					loadData();
-				},
-			)
-			.subscribe();
-});
 
 onMount(() => {
 	loadData();
+	let realtimeOn: any;
+	supabaseClient.auth.getUser().then((user) => {
+		if (user.data.user?.id) {
+			console.log("subscribing", user.data.user?.id);
+			realtimeOn = supabaseClient
+				.channel("table_db_changes")
+				// .on(
+				// 	"postgres_changes",
+				// 	{
+				// 		event: "*",
+				// 		schema: "public",
+				// 		table: "proj_cat",
+				// 		filter: `auth_users_id=eq.${user.data.user.id}`,
+				// 	},
+				// 	(payload) => {
+				// 		console.log("update bookmark", isReloading);
+				// 		loadData();
+				// 	},
+				// )
+				.on(
+					"postgres_changes",
+					{
+						event: "*",
+						schema: "public",
+						table: "proj_cat_and_proj_bookmark",
+					},
+					(payload) => {
+						console.log("update proj_cat_and_proj_bookmark", isReloading);
+						loadData();
+					},
+				);
+			realtimeOn.subscribe();
+		}
+	});
+	return () => realtimeOn.unsubscribe();
 });
 // $effect(() => {
 // 	client

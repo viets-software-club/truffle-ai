@@ -59,6 +59,8 @@ Install the following extensions:
 - Tailwind CSS IntelliSense
 - Docker
 - GitHub Actions
+- Hashicorp Terraform
+- Kubernetes
 
 ### Configuration
 

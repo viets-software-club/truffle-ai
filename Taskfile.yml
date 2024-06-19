@@ -16,7 +16,9 @@ includes:
   values: 
     taskfile: ./values/Taskfile.yml
     dir: ./values
-  tf: ./tf/Taskfile.yml
+  tf: 
+    taskfile: ./tf/Taskfile.yml
+    dir: ./tf
   gateway:
     taskfile: ./packages/gateway/Taskfile.yml
     dir: ./packages/gateway

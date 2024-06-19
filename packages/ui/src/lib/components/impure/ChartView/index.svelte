@@ -19,8 +19,8 @@ import CalendarIcon from "lucide-svelte/icons/calendar";
 import CircleDotIcon from "lucide-svelte/icons/circle-dot";
 import GitForkIcon from "lucide-svelte/icons/git-fork";
 import StarIcon from "lucide-svelte/icons/star";
-import { toast } from "svelte-sonner";
 import { untrack } from "svelte";
+import { toast } from "svelte-sonner";
 type Props = {
 	githubRepoIds: number[];
 	isNormalizable: boolean;

@@ -20,6 +20,7 @@ import StarIcon from "lucide-svelte/icons/star";
 import UserIcon from "lucide-svelte/icons/user";
 import UsersRoundIcon from "lucide-svelte/icons/users-round";
 import { v4 as uuidv4 } from "uuid";
+
 let data: any = $state({
 	hiddenColumnIdArr: [],
 	avatarSort: "none",

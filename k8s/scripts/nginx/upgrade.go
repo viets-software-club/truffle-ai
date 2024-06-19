@@ -44,6 +44,7 @@ func main() {
 			"use-proxy-protocol": "true",
 			"use-forwarded-headers": "true",
 		},
+		"watchNamespace": "default,production-7791fc8",
 		"service": map[string]interface{}{
 			"type": "LoadBalancer",
 			"targetPorts": map[string]interface{}{
@@ -57,6 +58,7 @@ func main() {
 				"service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records": "false",
 				"service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https":           "true",
 				"service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol":            "true",
+				
 			},
 		},
 	}

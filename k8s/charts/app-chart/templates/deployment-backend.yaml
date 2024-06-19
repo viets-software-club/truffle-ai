@@ -36,6 +36,8 @@ spec:
             - configMapRef:
                 name: gateway-config-map
             - configMapRef:
+                name: graphql-server-config-map
+            - configMapRef:
                 name: supabase-config-map
             - secretRef:
                 name: supabase-secret

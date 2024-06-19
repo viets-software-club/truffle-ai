@@ -70,7 +70,7 @@ func (c *Controller) UpdateProjects() error {
 	for index, updatable := range *updatables {
 		go func(updatable types.T_f_select_updatable_result, index int) {
 
-			time.Sleep(60 * time.Duration(index/7) * time.Second)
+			time.Sleep(900 * time.Duration(index/7) * time.Second)
 
 			data, err := data.GetProjectUpdateData(updatable.Gthb_owner_login.String, updatable.Gthb_repo_name.String)
 			log.Println(data)

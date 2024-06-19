@@ -673,7 +673,7 @@ func GetTrendingRepositoriesToProjectDataMap(dateRange string) (*map[*githubScra
 	trendingRepoAndProjDataChan := make(chan *trendingRepoAndProjData)
 	for index, trendingRepository := range trendingRepositories {
 		go func(trendingRepository githubScraper.TrendingRepository, index int) {
-			time.Sleep(60 * time.Duration(index/7) * time.Second)
+			time.Sleep(900 * time.Duration(index/7) * time.Second)
 			projectData, err := GetProjectData(trendingRepository.Owner, trendingRepository.Name)
 			// if projectData.ScrapingbotData.LinkedinProfilesPtr != nil {
 			// 	fmt.Printf("linkedin_profile %+v\n", projectData.ScrapingbotData.LinkedinProfilesPtr)

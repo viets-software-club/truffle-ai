@@ -4,40 +4,24 @@ tasks:
   init:
     cmds:
       - cd workspaces/do-cluster && terraform init 
-      - cd workspaces/do-setup && terraform init
-  deploy:cluster-prod:
+      - cd workspaces/do-dns && terraform init
+      - cd workspaces/do-certificate && terraform init
+  deploy:do-cluster-prod:
     cmds:
-      - terraform workspace select do-cluster-prod
-      - terraform plan
-  deploy:cluster-dev:
+      - cd workspaces/do-cluster && terraform workspace select do-cluster-prod
+      - cd workspaces/do-cluster && terraform apply -var 'cluster_name=prod-cluster'
+  deploy:do-cluster-dev:
     cmds:
-      - terraform workspace select do-cluster-dev
-      - terraform plan
-  deploy:setup-prod-cluster-only:
+      - cd workspaces/do-cluster && terraform workspace select do-cluster-dev
+      - cd workspaces/do-cluster && terraform apply -var 'cluster_name=dev-cluster'
+  deploy:do-certificate:
     cmds:
-      - export TF_VAR_loadbalancer_prod="truffle-ai-nginx-ingress-controller-prod"
-      - export TF_VAR_loadbalancer_dev="truffle-ai-nginx-ingress-controller-prod"
-      - terraform plan -var 'DIGITALOCEAN_ACCESS_TOKEN=$DIGITALOCEAN_ACCESS_TOKEN'
-      - echo "Do you want to apply these changes? [yes/no]"
-      - read answer
-      - if [ "$answer" = "yes" ]; then terraform apply; fi
-  deploy:setup-prod-and-dev-cluster:
+      - cd workspaces/do-certificate && terraform apply
+  deploy:do-dns-only-prod-cluster:
     cmds:
-      - export TF_VAR_loadbalancer_prod="truffle-ai-nginx-ingress-controller-prod"
-      - export TF_VAR_loadbalancer_dev="truffle-ai-nginx-ingress-controller-dev"
-      - terraform plan -var 'DIGITALOCEAN_ACCESS_TOKEN=$DIGITALOCEAN_ACCESS_TOKEN'
-      - echo "Do you want to apply these changes? [yes/no]"
-      - read answer
-      - if [ "$answer" = "yes" ]; then terraform apply; fi
-  deploy:only-prod:
+      - cd workspaces/do-dns && terraform workspace select do-dns
+      - cd workspaces/do-dns && terraform apply -var 'dev_loadbalancer_name=truffle-ai-nginx-ingress-controller-prod' -var 'prod_loadbalancer_name=truffle-ai-nginx-ingress-controller-prod'
+  deploy:do-dns-prod-and-dev-cluster:
     cmds:
-      - deploy:cluster-prod
-      - sleep 600
-      - deploy:setup-prod-cluster-only
-  deploy:prod-and-dev:
-    cmds:
-      - deploy:cluster-prod
-      - sleep 600
-      - deploy:cluster-dev
-      - sleep 600
-      - deploy:setup-prod-and-dev-cluster
+      - cd workspaces/do-dns && terraform workspace select do-dns
+      - cd workspaces/do-dns && terraform apply -var 'dev_loadbalancer_name=truffle-ai-nginx-ingress-controller-dev' -var 'prod_loadbalancer_name=truffle-ai-nginx-ingress-controller-prod'

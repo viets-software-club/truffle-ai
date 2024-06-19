@@ -1,4 +1,4 @@
-variable "repo_name" {
+variable "name" {
   type = string
 }
 variable "domain" {

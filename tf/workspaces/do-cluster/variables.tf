@@ -14,3 +14,4 @@ variable "cluster_name" {
   type    = string
   default = "truffle-ai-cluster"
 }
+variable "do_token" {}

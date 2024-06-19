@@ -4,7 +4,7 @@ terraform {
 
     workspaces {
       project = "truffle-ai"
-      name    = "do-setup"
+      tags    = ["do-dns"]
     }
   }
 }

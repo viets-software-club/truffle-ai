@@ -14,16 +14,13 @@ variable "cluster_name" {
   type    = string
   default = "truffle-ai-cluster"
 }
-variable "env" {
-  type        = string
+variable "prod_loadbalancer_name" {
+  type = string
+  default = "truffle-ai-nginx-ingress-controller-prod"
 }
-
-variable "loadbalancer_dev" {
+variable "dev_loadbalancer_name" {
   type = string
   default = "truffle-ai-nginx-ingress-controller-dev"
 }
 
-variable "loadbalancer_prod" {
-  type = string
-  default = "truffle-ai-nginx-ingress-controller-prod"
-}
+variable "do_token" {}

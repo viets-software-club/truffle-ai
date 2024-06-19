@@ -1,44 +1,50 @@
-resource "digitalocean_domain" "domain" {
-  name = var.domain
-}
+# resource "digitalocean_domain" "domain" {
+#   name = var.domain
+# }
 resource "digitalocean_record" "commit-wildcard" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "A"
   name   = "*.commit"
   value  = var.dev_load_balancer_ip
 }
 resource "digitalocean_record" "commit" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "A"
   name   = "commit"
   value  = var.dev_load_balancer_ip
 }
 resource "digitalocean_record" "staging" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "A"
   name   = "staging"
   value  = var.dev_load_balancer_ip
 }
 resource "digitalocean_record" "staging-wildcard" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "A"
   name   = "*.staging"
   value  = var.dev_load_balancer_ip
 }
 resource "digitalocean_record" "production-wildcard" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "A"
   name   = "*.production"
   value  = var.dev_load_balancer_ip
 }
+resource "digitalocean_record" "production" {
+  domain = var.domain
+  type   = "A"
+  name   = "production"
+  value  = var.dev_load_balancer_ip
+}
 resource "digitalocean_record" "public" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "A"
   name   = "@"
   value  = var.prod_load_balancer_ip
 }
 resource "digitalocean_record" "domain_CNAME" {
-  domain = digitalocean_domain.domain.name
+  domain = var.domain
   type   = "CNAME"
   name   = "www"
   value  = "@"

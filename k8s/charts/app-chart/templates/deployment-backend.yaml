@@ -35,8 +35,6 @@ spec:
                 name: golang-config-map
             - configMapRef:
                 name: gateway-config-map
-            - secretRef:
-                name: gateway-secret
             - configMapRef:
                 name: supabase-config-map
             - secretRef:
@@ -50,10 +48,6 @@ spec:
                 name: golang-config-map
             - configMapRef:
                 name: graphql-server-config-map
-            - secretRef:
-                name: graphql-server-secret
-            - configMapRef:
-                name: openai-config-map
             - secretRef:
                 name: openai-secret
             - configMapRef:

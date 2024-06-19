@@ -44,8 +44,8 @@ tasks:
     desc: "Install/Upgrade Nginx controller"
     cmds:
       - zx ./scripts/nginx/upgrade.mjs
-  nginx:ip:
-    desc: "Get Nginx IP"
-    cmds:
-      - echo "Nginx LoadBalancer IP is"
-      - kubectl get svc --namespace default ing-controller-release-nginx-ingress-controller-$ENV -o jsonpath='{.status.loadBalancer.ingress[0].ip}
+  # nginx:ip:
+  #   desc: "Get Nginx IP"
+  #   cmds:
+  #     - echo "Nginx LoadBalancer IP is"
+  #     - kubectl get svc --namespace default ing-controller-release-nginx-ingress-controller-$ENV -o jsonpath='{.status.loadBalancer.ingress[0].ip}

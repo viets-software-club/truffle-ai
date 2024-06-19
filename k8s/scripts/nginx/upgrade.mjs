@@ -20,7 +20,7 @@ const getCommaSeparatedConfig = (isProduction) => {
 			},
 			annotations: {
 				'service.beta.kubernetes.io/do-loadbalancer-name': `${REPO_NAME}-nginx-ingress-controller-${
-					isProduction ? 'production' : 'dev'
+					isProduction ? 'prod' : 'dev'
 				}`,
 				'service.beta.kubernetes.io/do-loadbalancer-certificate-id': CERT_ID,
 				'service.beta.kubernetes.io/do-loadbalancer-protocol': 'https',
@@ -45,10 +45,13 @@ const promptEnvironment = await question(
 	"Install prod, then type 'production'?\n"
 )
 const isProduction = promptEnvironment === 'production'
+console.log(`helm upgrade --timeout 10m0s --atomic --install --set-json ${getCommaSeparatedConfig(
+			isProduction
+		)} ing-controller-release oci://registry-1.docker.io/bitnamicharts/nginx-ingress-controller`)
 await spinner(
 	'working...',
 	() =>
-		$`helm upgrade --timeout 10m0s --atomic --install --set-json ${getCommaSeparatedConfig(
+		$`helm upgrade  --install --set-json ${getCommaSeparatedConfig(
 			isProduction
 		)} ing-controller-release oci://registry-1.docker.io/bitnamicharts/nginx-ingress-controller`
 )

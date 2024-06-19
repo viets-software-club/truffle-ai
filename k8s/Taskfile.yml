@@ -4,11 +4,13 @@ tasks:
   select-cluster:prod:
     desc: "Select prod cluster"
     cmds:
-      - kubectl config use-context $PROD_CLUSTER
+      - doctl kubernetes cluster kubeconfig save $PROD_CLUSTER
+      # - kubectl config use-context $PROD_CLUSTER
   select-cluster:dev:
     desc: "Select dev cluster"
     cmds:
-      - kubectl config use-context $DEV_CLUSTER
+      - doctl kubernetes cluster kubeconfig save $PROD_CLUSTER
+      # - kubectl config use-context $DEV_CLUSTER
   deploy:commit:
     desc: "Publish to commit environment"
     cmds:
@@ -38,6 +40,10 @@ tasks:
     desc: "Install/Upgrade Nginx controller"
     cmds:
       - go run ./scripts/nginx/upgrade.go
+  nginx:upgrade-zx:
+    desc: "Install/Upgrade Nginx controller"
+    cmds:
+      - zx ./scripts/nginx/upgrade.mjs
   nginx:ip:
     desc: "Get Nginx IP"
     cmds:

@@ -20,8 +20,8 @@ tasks:
   deploy:do-dns-only-prod-cluster:
     cmds:
       - cd workspaces/do-dns && terraform workspace select do-dns
-      - cd workspaces/do-dns && terraform apply -var 'dev_loadbalancer_name=truffle-ai-nginx-ingress-controller-prod' -var 'prod_loadbalancer_name=truffle-ai-nginx-ingress-controller-prod'
+      - cd workspaces/do-dns && terraform apply -var 'dev_loadbalancer_name=nginx-ingress-controller-prod' -var 'prod_loadbalancer_name=nginx-ingress-controller-prod'
   deploy:do-dns-prod-and-dev-cluster:
     cmds:
       - cd workspaces/do-dns && terraform workspace select do-dns
-      - cd workspaces/do-dns && terraform apply -var 'dev_loadbalancer_name=truffle-ai-nginx-ingress-controller-dev' -var 'prod_loadbalancer_name=truffle-ai-nginx-ingress-controller-prod'
+      - cd workspaces/do-dns && terraform apply -var 'dev_loadbalancer_name=nginx-ingress-controller-dev' -var 'prod_loadbalancer_name=nginx-ingress-controller-prod'

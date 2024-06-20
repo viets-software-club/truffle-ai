@@ -28,6 +28,13 @@ spec:
       containers:
         - name: ui
           image: "{{ .Values.image.repositoryUrl }}/ui:{{ default .Chart.AppVersion .Values.image.tag }}"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "150m"
           ports:
             - containerPort: {{ .Values.UI_PORT }}
           envFrom:

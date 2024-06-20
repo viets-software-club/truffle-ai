@@ -184,3 +184,9 @@ Over the course of this project, several technologies were used and later replac
 - **Deno env variable scripts**: Replaced with Golang scripts
 
 Each of these technologies served a purpose at the time, but were eventually replaced as the needs of the project evolved.
+
+### Deployment
+
+It might be necessary to apply the `proxy-protocol` to the nginx-ingress-controller config map manually like described [here](https://github.com/nginxinc/kubernetes-ingress/tree/90d40829ca0b92e4a8ebcc36415c220e72da7405/examples/shared-examples/proxy-protocol) and rollout restart afterwards:
+
+`kubectl rollout restart deployment ing-controller-release-nginx-ingress-nginx-ingress-controller`

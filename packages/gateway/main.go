@@ -170,7 +170,7 @@ func main() {
 		r.Header.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey, userapikey")
 
 		// log.Printf("Response1: %d %s", r.StatusCode, r.Status)
-		
+
 		// // Log all response headers
 		// for name, values := range r.Header {
 		// 	// Loop over all values for the name.
@@ -209,7 +209,6 @@ func main() {
 		authorizationHeader := r.Header.Get("Authorization")
 		userApiKeyHeader := r.Header.Get("userApiKey")
 
-
 		if strings.HasPrefix(authorizationHeader, "Bearer ") && len(authorizationHeader) > 7 {
 			if xServerHeader == "supabase-graphql" {
 				http.Redirect(w, r, os.Getenv("SUPABASE_GRAPHQL_URL"), http.StatusFound)
@@ -228,7 +227,6 @@ func main() {
 				return
 			}
 		}
-
 
 		if userApiKeyHeader != "" && len(userApiKeyHeader) == 36 {
 			autherUserIdResp, err := fetchAuthUsersIdFromSupabaseByUserApiKey(userApiKeyHeader)
@@ -253,7 +251,7 @@ func main() {
 					"email":        userResp.Email,
 					"app_metadata": userResp.AppMetadata,
 				})
-	
+
 				tokenString, err := token.SignedString([]byte(os.Getenv("SUPABASE_JWT_SECRET")))
 				if err != nil {
 					log.Println(err)

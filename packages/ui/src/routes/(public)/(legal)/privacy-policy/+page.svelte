@@ -6,7 +6,7 @@ import Separator from "$lib/components/pure/ui/separator/separator.svelte";
 	<h1 class="text-3xl mb-1 md:text-5xl font-medium border-b-gray-400 md:mb-3">Privacy Policy</h1>
 	<Separator />
 	<div class="pt-4 pb-2">
-		<span class="text-muted-foreground text-sm">Last Update: December 29, 2023</span>
+		<span class="text-muted-foreground text-sm">Last Update: June 20, 2024</span>
 	</div>
 </header>
 
@@ -296,6 +296,10 @@ import Separator from "$lib/components/pure/ui/separator/separator.svelte";
 		<li>
 			Supabase as a Backend as a Service.
 			<a href="https://supabase.com/privacy">https://supabase.com/privacy</a>
+		</li>
+		<li>
+			<a href="https://bunny.net/fonts/">BunnyFonts</a>, 
+			<a href="https://bunny.net/privacy/">https://bunny.net/privacy/</a>
 		</li>
 		<li>External Extensions and modules, npm packages, go modules etc.</li>
 	</ul>

@@ -58,8 +58,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Helm
         uses: azure/setup-helm@v4.2.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Helm Package App
         run: helm package k8s/charts/app-chart --version ${{needs.release_tag.outputs.RELEASE_TAG}} --app-version ${{needs.release_tag.outputs.RELEASE_TAG}}
       - name: Login Helm

@@ -88,7 +88,6 @@ function explicitEffect(fn: any, depsFn: any) {
 }
 explicitEffect(
 	() => {
-		console.log("hmm55");
 		loadData();
 	},
 	() => [title],

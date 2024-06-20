@@ -87,7 +87,6 @@ const loadData = () => {
 			query: ListCategoriesTitleDocument,
 		})
 		.then((res: ApolloQueryResult<ListCategoriesTitleQueryType>) => {
-			console.log(res.data.projCatCollection?.edges);
 			if (res.data.projCatCollection?.edges)
 				currentCategories = currentCategories.concat(
 					res.data.projCatCollection?.edges
@@ -110,7 +109,6 @@ const loadData = () => {
 							};
 						}),
 				);
-			console.log(res.data.projCatCollection?.edges);
 		});
 };
 onMount(() => {
@@ -298,14 +296,12 @@ const handleSaveClick = () => {
 						<Command.Group>
 							{#if currentCategories}
 								{#each (currentCategories.filter(currentCategory => {
-									console.log(currentCategory.title, commandInputValue, currentCategory.title.toLowerCase().includes(commandInputValue.toLowerCase()))
 									if(currentCategory.title.toLowerCase().includes(commandInputValue.toLowerCase())) {
 										return true;
 									}
 									if(commandInputValue === "")
 										return true;
 									return false
-									return true;
 								}).slice(0,6)) as category}
 									<Command.Item
 										value={category.title}

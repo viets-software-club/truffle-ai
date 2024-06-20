@@ -93,7 +93,7 @@ onMount(() => {
 	let realtimeOn: any;
 	supabaseClient.auth.getUser().then((user) => {
 		if (user.data.user?.id) {
-			console.log("subscribing", user.data.user?.id);
+			// console.log("subscribing", user.data.user?.id);
 			realtimeOn = supabaseClient
 				.channel("table_db_changes")
 				// .on(
@@ -117,7 +117,7 @@ onMount(() => {
 						table: "proj_cat_and_proj_bookmark",
 					},
 					(payload) => {
-						console.log("update proj_cat_and_proj_bookmark", isReloading);
+						// console.log("update proj_cat_and_proj_bookmark", isReloading);
 						loadData();
 					},
 				);

@@ -53,16 +53,19 @@ func fetchAuthUsersIdFromSupabase(userApiKey string) (*AuthUsersIdResponse, erro
 		return nil, err
 	}
 
-	var authUserIdResponse AuthUsersIdResponse
-	err = json.Unmarshal(body, &authUserIdResponse)
+	var authUserIdResponses []AuthUsersIdResponse
+	err = json.Unmarshal(body, &authUserIdResponses)
 	if err != nil {
 		return nil, err
 	}
-	if authUserIdResponse.AuthUsersId == "" {
+	if len(authUserIdResponses) == 0 {
+		return nil, fmt.Errorf("auth_users_id not found")
+	}
+	if authUserIdResponses[0].AuthUsersId == "" {
 		return nil, fmt.Errorf("auth_users_id not found")
 	}
 
-	return &authUserIdResponse, nil
+	return &authUserIdResponses[0], nil
 }
 
 func fetchUserFromSupabaseAsAdmin(authUsersId string) (*UserResponse, error) {
@@ -219,7 +222,7 @@ func main() {
 			}
 		}
 
-		if userApiKeyHeader != "" {
+		if userApiKeyHeader != "" && len(userApiKeyHeader) == 36 {
 			autherUserIdResp, err := fetchAuthUsersIdFromSupabase(userApiKeyHeader)
 			if err != nil {
 				log.Println(err)

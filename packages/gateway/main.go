@@ -200,6 +200,7 @@ func main() {
 				fmt.Printf("%+v\n", resp)
 				r.Header.Set("authusersid", resp.Id)
 				fmt.Println("check")
+				fmt.Printf("%+v\n", r)
 				customServerGraphqlProxy.ServeHTTP(w, r)
 				return
 			} else {

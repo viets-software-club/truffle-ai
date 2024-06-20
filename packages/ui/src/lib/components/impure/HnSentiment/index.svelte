@@ -79,9 +79,9 @@ explicitEffect(
 		
 		{#if hnCommentObjectIds && hnCommentObjectIds.length > 0}
 		<Separator class="my-4"/>
-		<div class="flex gap-4 px-0.5 break-normal flex-wrap text-sm">
+		<div class="flex gap-4 px-0.5 break-normal flex-wrap text-sm text-zinc-600">
 		{#each hnCommentObjectIds as hnCommentObjectId, i}
-			<a target="_blank" rel="noopener noreferrer" href={`https://news.ycombinator.com/item?id=${hnCommentObjectId}`}>{i + 1}</a>
+			<a class="hover:underline text-[0..85rem]" target="_blank" rel="noopener noreferrer" href={`https://news.ycombinator.com/item?id=${hnCommentObjectId}`}>{i + 1}</a>
 		{/each}
 	</div>
 		{/if}

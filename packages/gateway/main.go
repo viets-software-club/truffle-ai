@@ -138,7 +138,17 @@ func main() {
 	}
 	fmt.Printf("cu GraphQL URL: %s\n", customServerGraphqlUrl)
 	supabaseGraphqlProxy := httputil.NewSingleHostReverseProxy(supabaseGraphqlUrl)
+	supabaseGraphqlProxy.Director = func(req *http.Request) {
+		req.URL.Scheme = supabaseGraphqlUrl.Scheme
+		req.URL.Host = supabaseGraphqlUrl.Host
+		req.URL.Path = supabaseGraphqlUrl.Path
+	}
 	customServerGraphqlProxy := httputil.NewSingleHostReverseProxy(customServerGraphqlUrl)
+	customServerGraphqlProxy.Director = func(req *http.Request) {
+		req.URL.Scheme = customServerGraphqlUrl.Scheme
+		req.URL.Host = customServerGraphqlUrl.Host
+		req.URL.Path = customServerGraphqlUrl.Path
+	}
 	customServerGraphqlProxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")

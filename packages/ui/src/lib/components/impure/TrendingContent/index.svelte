@@ -390,6 +390,7 @@ let filterData = $state({
 	time: "Day",
 	onTimeChange: (value: string) => {
 		filterData.time = value;
+		query();
 	},
 	onSortUpdate: (oldIndex: number, newIndex: number) => {
 		const copy = filterData.sortableItems[newIndex];

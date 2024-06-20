@@ -85,7 +85,6 @@ func main() {
 	// })
 	// controller.ControllerInstance.RecreateTrending("daily")
 	// controller.ControllerInstance.RecreateTrending("weekly")
-
 	// controller.ControllerInstance.RecreateTrending("monthly")
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))

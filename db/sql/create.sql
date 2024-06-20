@@ -189,7 +189,7 @@ create table public.algo_hn_comment(
   algo_hn_query_id bigint not null,
   comment_text text not null,
   story_id bigint not null,
-  story_title text not null,
+  story_title text null,
   story_url text null,
   created_at timestamp with time zone not null,
   updated_at timestamp with time zone not null,

@@ -61,8 +61,8 @@ var MAX_PAGES = 10
 // var limiter *rate.Limiter = rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
 
 func GetProjectData(repoOwner string, repoName string) (*ProjectData, error) {
+	log.Println("GetProjectData", repoOwner, repoName)
 	// limiter := rate.NewLimiter(rate.Every(time.Second), 120) // Adjust rate as needed
-
 	currentTime := time.Now()
 	// Create channels
 	errChan := make(chan error, 10)
@@ -673,7 +673,8 @@ func GetTrendingRepositoriesToProjectDataMap(dateRange string) (*map[*githubScra
 	trendingRepoAndProjDataChan := make(chan *trendingRepoAndProjData)
 	for index, trendingRepository := range trendingRepositories {
 		go func(trendingRepository githubScraper.TrendingRepository, index int) {
-			time.Sleep(900 * time.Duration(index/7) * time.Second)
+			// TODO in prod use 900, in dev 30
+			time.Sleep(30 * time.Duration(index/7) * time.Second)
 			projectData, err := GetProjectData(trendingRepository.Owner, trendingRepository.Name)
 			// if projectData.ScrapingbotData.LinkedinProfilesPtr != nil {
 			// 	fmt.Printf("linkedin_profile %+v\n", projectData.ScrapingbotData.LinkedinProfilesPtr)

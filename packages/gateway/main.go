@@ -161,7 +161,7 @@ func main() {
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey, userapikey")
 
-		log.Printf("Error proxying request2: %v", err)
+		// log.Printf("Error proxying request2: %v", err)
 		http.Error(w, "Error proxying request", http.StatusInternalServerError)
 	}
 	modifyResponse := func(r *http.Response) error {
@@ -169,15 +169,15 @@ func main() {
 		r.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		r.Header.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey, userapikey")
 
-		log.Printf("Response1: %d %s", r.StatusCode, r.Status)
+		// log.Printf("Response1: %d %s", r.StatusCode, r.Status)
 		
-		// Log all response headers
-		for name, values := range r.Header {
-			// Loop over all values for the name.
-			for _, value := range values {
-				log.Printf("%s: %s", name, value)
-			}
-		}
+		// // Log all response headers
+		// for name, values := range r.Header {
+		// 	// Loop over all values for the name.
+		// 	for _, value := range values {
+		// 		log.Printf("%s: %s", name, value)
+		// 	}
+		// }
 
 		return nil
 	}
@@ -187,14 +187,14 @@ func main() {
 	customServerGraphqlProxy.ModifyResponse = modifyResponse
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Gateway Received %s request for %s\n", r.Method, r.URL)
-		fmt.Println("Headers:")
-		for name, values := range r.Header {
-		    // Loop over all values for the name.
-		    for _, value := range values {
-		        fmt.Printf("%s: %s\n", name, value)
-		    }
-		}
+		// fmt.Printf("Gateway Received %s request for %s\n", r.Method, r.URL)
+		// fmt.Println("Headers:")
+		// for name, values := range r.Header {
+		//     // Loop over all values for the name.
+		//     for _, value := range values {
+		//         fmt.Printf("%s: %s\n", name, value)
+		//     }
+		// }
 
 		if r.Method == "OPTIONS" {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -220,9 +220,7 @@ func main() {
 					log.Println(err)
 					w.WriteHeader(http.StatusUnauthorized)
 				}
-				fmt.Printf("%+v\n", resp)
 				r.Header.Set("authusersid", resp.Id)
-				fmt.Printf("%+v\n", r)
 				customServerGraphqlProxy.ServeHTTP(w, r)
 				return
 			} else {
@@ -264,12 +262,10 @@ func main() {
 				}
 				r.Header.Set("authorization", fmt.Sprintf("Bearer %s", tokenString))
 				r.Header.Set("apikey", os.Getenv("SUPABASE_ANON_KEY"))
-				fmt.Printf("%+v\n", r)
 				supabaseGraphqlProxy.ServeHTTP(w, r)
 				return
 			} else if xServerHeader == "server" {
 				r.Header.Set("authusersid", autherUserIdResp.AuthUsersId)
-				fmt.Printf("%+v\n", r)
 				customServerGraphqlProxy.ServeHTTP(w, r)
 				return
 			} else {

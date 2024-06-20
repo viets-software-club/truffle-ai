@@ -152,7 +152,8 @@ func main() {
 		req.URL.Host = customServerGraphqlUrl.Host
 		req.URL.Path = customServerGraphqlUrl.Path
 	}
-	customServerGraphqlProxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
+
+	errHandler := func(w http.ResponseWriter, r *http.Request, err error) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey")
@@ -160,7 +161,7 @@ func main() {
 		log.Printf("Error proxying request2: %v", err)
 		http.Error(w, "Error proxying request", http.StatusInternalServerError)
 	}
-	customServerGraphqlProxy.ModifyResponse = func(r *http.Response) error {
+	modifyResponse := func(r *http.Response) error {
 		r.Header.Set("Access-Control-Allow-Origin", "*")
 		r.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		r.Header.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey")
@@ -177,6 +178,11 @@ func main() {
 
 		return nil
 	}
+	supabaseGraphqlProxy.ErrorHandler = errHandler
+	supabaseGraphqlProxy.ModifyResponse = modifyResponse
+	customServerGraphqlProxy.ErrorHandler = errHandler
+	customServerGraphqlProxy.ModifyResponse = modifyResponse
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// fmt.Printf("Received %s request for %s\n", r.Method, r.URL)
 		// fmt.Println("Headers:")
@@ -257,6 +263,7 @@ func main() {
 			r.Header.Set("authorization", fmt.Sprintf("Bearer %s", tokenString))
 			r.Header.Set("authusersid", userResp.Id)
 			r.Header.Set("apikey", apikey)
+			fmt.Printf("%+v\n", r)
 
 			if xServerHeader == "supabase-graphql" {
 				supabaseGraphqlProxy.ServeHTTP(w, r)

@@ -26,10 +26,10 @@ func main() {
 		return
 	}
 
-	repoName, exists := os.LookupEnv("REPO_NAME")
-	if !exists {
-		repoName = "truffle-ai"
-	}
+	// repoName, exists := os.LookupEnv("REPO_NAME")
+	// if !exists {
+	// 	repoName = "truffle-ai"
+	// }
 
 	var envName string
 	if os.Getenv("ENV") == "production" {
@@ -39,26 +39,30 @@ func main() {
 	}
 
 	config := map[string]interface{}{
-		"name": "nginx-ingress-controller",
-		"config": map[string]interface{}{
-			"use-proxy-protocol": "true",
-			"use-forwarded-headers": "true",
-		},
-		"watchNamespace": "default,production-7791fc8",
-		"service": map[string]interface{}{
-			"type": "LoadBalancer",
-			"targetPorts": map[string]interface{}{
-				"https": "80",
-			},
-			"annotations": map[string]interface{}{
-				"service.beta.kubernetes.io/do-loadbalancer-name":                             fmt.Sprintf("%s-nginx-ingress-controller-%s", repoName, envName),
-				"service.beta.kubernetes.io/do-loadbalancer-protocol":                         "https",
-				"service.beta.kubernetes.io/do-loadbalancer-certificate-id":                   strings.TrimSpace(string(certID)),
-				"service.beta.kubernetes.io/do-loadbalancer-size-unit":                        "1",
-				"service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records": "false",
-				"service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https":           "true",
-				"service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol":            "true",
-				
+		"controller": map[string]interface{}{
+			"name": "nginx-ingress-controller",
+			// "config": map[string]interface{}{
+			// 	"use-proxy-protocol": "true",
+			// 	"use-forwarded-headers": "true",
+			// },
+			"service": map[string]interface{}{
+				"type": "LoadBalancer",
+				// "targetPorts": map[string]interface{}{
+				// 	"https": "80",
+				// },
+				"httpsPort": map[string]interface{}{
+					"targetPort": 80,
+				},
+				"annotations": map[string]interface{}{
+					"service.beta.kubernetes.io/do-loadbalancer-name":                             fmt.Sprintf("nginx-ingress-controller-%s", envName),
+					"service.beta.kubernetes.io/do-loadbalancer-protocol":                         "https",
+					"service.beta.kubernetes.io/do-loadbalancer-certificate-id":                   strings.TrimSpace(string(certID)),
+					"service.beta.kubernetes.io/do-loadbalancer-size-unit":                        "1",
+					"service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records": "false",
+					"service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https":           "true",
+					"service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol":            "true",
+					
+				},
 			},
 		},
 	}
@@ -75,7 +79,7 @@ func main() {
 		return
 	}
 
-	cmd := exec.Command("helm", "upgrade", "--timeout", "10m0s", "--atomic", "--install", "--cleanup-on-fail", "--set-json", commaSeperatedConfig, "ing-controller-release", "oci://registry-1.docker.io/bitnamicharts/nginx-ingress-controller")
+	cmd := exec.Command("helm", "upgrade", "--timeout", "10m0s", "--atomic", "--install", "--cleanup-on-fail", "--set-json", commaSeperatedConfig, "ing-controller-release", "oci://ghcr.io/nginxinc/charts/nginx-ingress", "--version", "1.2.2")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	fmt.Println("Command:", cmd.String())

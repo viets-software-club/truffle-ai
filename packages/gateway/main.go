@@ -199,6 +199,8 @@ func main() {
 		xServerHeader := r.Header.Get("X-Server")
 		authorizationHeader := r.Header.Get("Authorization")
 		userApiKeyHeader := r.Header.Get("userApiKey")
+		apikey := r.Header.Get("apikey")
+
 
 		if strings.HasPrefix(authorizationHeader, "Bearer ") && len(authorizationHeader) > 7 {
 			if xServerHeader == "supabase-graphql" {
@@ -254,6 +256,7 @@ func main() {
 
 			r.Header.Set("authorization", fmt.Sprintf("Bearer %s", tokenString))
 			r.Header.Set("authusersid", userResp.Id)
+			r.Header.Set("apikey", apikey)
 
 			if xServerHeader == "supabase-graphql" {
 				supabaseGraphqlProxy.ServeHTTP(w, r)

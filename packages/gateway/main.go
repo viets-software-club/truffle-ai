@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type AuthUsersIdResponse struct {
@@ -30,7 +30,7 @@ type AppMetadata struct {
 	Providers []string `json:"providers"`
 }
 
-func fetchAuthUsersIdFromSupabase(userApiKey string) (*AuthUsersIdResponse, error) {
+func fetchAuthUsersIdFromSupabaseByUserApiKey(userApiKey string) (*AuthUsersIdResponse, error) {
 	encodedUserApiKey := url.QueryEscape(userApiKey)
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/rest/v1/user_api_key?select=auth_users_id&user_api_key=eq.%s&limit=1", os.Getenv("SUPABASE_URL"), encodedUserApiKey), nil)
@@ -69,8 +69,8 @@ func fetchAuthUsersIdFromSupabase(userApiKey string) (*AuthUsersIdResponse, erro
 }
 
 func fetchUserFromSupabaseAsAdmin(authUsersId string) (*UserResponse, error) {
-	encodedAuthUsersId := url.QueryEscape(authUsersId)
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/auth/v1/admin/users/%s", os.Getenv("SUPABASE_URL"), encodedAuthUsersId), nil)
+	// encodedAuthUsersId := url.QueryEscape(authUsersId)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/auth/v1/admin/users/%s", os.Getenv("SUPABASE_URL"), authUsersId), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -139,24 +139,27 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("cu GraphQL URL: %s\n", customServerGraphqlUrl)
-	supabaseGraphqlProxy := httputil.NewSingleHostReverseProxy(supabaseGraphqlUrl)
-	supabaseGraphqlProxy.Director = func(req *http.Request) {
-		req.URL.Scheme = supabaseGraphqlUrl.Scheme
-		req.URL.Host = supabaseGraphqlUrl.Host
-		req.URL.Path = supabaseGraphqlUrl.Path
+	supabaseGraphqlProxy := &httputil.ReverseProxy{
+		Rewrite: func(r *httputil.ProxyRequest) {
+			r.SetURL(supabaseGraphqlUrl)
+			r.Out.Method = r.In.Method
+			r.Out.URL.Path = supabaseGraphqlUrl.Path
+			r.Out.Host = supabaseGraphqlUrl.Host
+		},
 	}
-	customServerGraphqlProxy := httputil.NewSingleHostReverseProxy(customServerGraphqlUrl)
-	customServerGraphqlProxy.Director = func(req *http.Request) {
-		req.URL.Scheme = customServerGraphqlUrl.Scheme
-		req.URL.Host = customServerGraphqlUrl.Host
-		req.URL.Path = customServerGraphqlUrl.Path
+	customServerGraphqlProxy := &httputil.ReverseProxy{
+		Rewrite: func(r *httputil.ProxyRequest) {
+			r.SetURL(customServerGraphqlUrl)
+			r.Out.Method = r.In.Method
+			r.Out.URL.Path = customServerGraphqlUrl.Path
+			r.Out.Host = customServerGraphqlUrl.Host
+		},
 	}
 
 	errHandler := func(w http.ResponseWriter, r *http.Request, err error) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey, userapikey")
 
 		log.Printf("Error proxying request2: %v", err)
 		http.Error(w, "Error proxying request", http.StatusInternalServerError)
@@ -164,10 +167,10 @@ func main() {
 	modifyResponse := func(r *http.Response) error {
 		r.Header.Set("Access-Control-Allow-Origin", "*")
 		r.Header.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		r.Header.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey")
+		r.Header.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey, userapikey")
 
-		log.Printf("Response: %d %s", r.StatusCode, r.Status)
-
+		log.Printf("Response1: %d %s", r.StatusCode, r.Status)
+		
 		// Log all response headers
 		for name, values := range r.Header {
 			// Loop over all values for the name.
@@ -184,19 +187,19 @@ func main() {
 	customServerGraphqlProxy.ModifyResponse = modifyResponse
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// fmt.Printf("Received %s request for %s\n", r.Method, r.URL)
-		// fmt.Println("Headers:")
-		// for name, values := range r.Header {
-		//     // Loop over all values for the name.
-		//     for _, value := range values {
-		//         fmt.Printf("%s: %s\n", name, value)
-		//     }
-		// }
+		fmt.Printf("Gateway Received %s request for %s\n", r.Method, r.URL)
+		fmt.Println("Headers:")
+		for name, values := range r.Header {
+		    // Loop over all values for the name.
+		    for _, value := range values {
+		        fmt.Printf("%s: %s\n", name, value)
+		    }
+		}
 
 		if r.Method == "OPTIONS" {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, x-server, apikey, userapikey")
 
 			w.WriteHeader(http.StatusOK)
 			return
@@ -205,7 +208,6 @@ func main() {
 		xServerHeader := r.Header.Get("X-Server")
 		authorizationHeader := r.Header.Get("Authorization")
 		userApiKeyHeader := r.Header.Get("userApiKey")
-		apikey := r.Header.Get("apikey")
 
 
 		if strings.HasPrefix(authorizationHeader, "Bearer ") && len(authorizationHeader) > 7 {
@@ -220,7 +222,6 @@ func main() {
 				}
 				fmt.Printf("%+v\n", resp)
 				r.Header.Set("authusersid", resp.Id)
-				fmt.Println("check")
 				fmt.Printf("%+v\n", r)
 				customServerGraphqlProxy.ServeHTTP(w, r)
 				return
@@ -230,45 +231,45 @@ func main() {
 			}
 		}
 
+
 		if userApiKeyHeader != "" && len(userApiKeyHeader) == 36 {
-			autherUserIdResp, err := fetchAuthUsersIdFromSupabase(userApiKeyHeader)
+			autherUserIdResp, err := fetchAuthUsersIdFromSupabaseByUserApiKey(userApiKeyHeader)
 			if err != nil {
 				log.Println(err)
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
-
-			userResp, err := fetchUserFromSupabaseAsAdmin(autherUserIdResp.AuthUsersId)
-			if err != nil {
-				log.Println(err)
-				w.WriteHeader(http.StatusUnauthorized)
-				return
-			}
-			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-				"sub":          userResp.Id,
-				"iss":          fmt.Sprintf("%s/auth/v1", os.Getenv("SUPABASE_URL")),
-				"aud":          userResp.Aud,
-				"role":         userResp.Role,
-				"email":        userResp.Email,
-				"app_metadata": userResp.AppMetadata,
-			})
-
-			tokenString, err := token.SignedString([]byte(os.Getenv("SUPABASE_JWT_SECRET")))
-			if err != nil {
-				log.Println(err)
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-
-			r.Header.Set("authorization", fmt.Sprintf("Bearer %s", tokenString))
-			r.Header.Set("authusersid", userResp.Id)
-			r.Header.Set("apikey", apikey)
-			fmt.Printf("%+v\n", r)
 
 			if xServerHeader == "supabase-graphql" {
+				userResp, err := fetchUserFromSupabaseAsAdmin(autherUserIdResp.AuthUsersId)
+				if err != nil {
+					log.Println(err)
+					w.WriteHeader(http.StatusUnauthorized)
+					return
+				}
+				token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+					"sub":          userResp.Id,
+					"iss":          fmt.Sprintf("%s/auth/v1", os.Getenv("SUPABASE_URL")),
+					"aud":          userResp.Aud,
+					"role":         userResp.Role,
+					"email":        userResp.Email,
+					"app_metadata": userResp.AppMetadata,
+				})
+	
+				tokenString, err := token.SignedString([]byte(os.Getenv("SUPABASE_JWT_SECRET")))
+				if err != nil {
+					log.Println(err)
+					w.WriteHeader(http.StatusInternalServerError)
+					return
+				}
+				r.Header.Set("authorization", fmt.Sprintf("Bearer %s", tokenString))
+				r.Header.Set("apikey", os.Getenv("SUPABASE_ANON_KEY"))
+				fmt.Printf("%+v\n", r)
 				supabaseGraphqlProxy.ServeHTTP(w, r)
 				return
 			} else if xServerHeader == "server" {
+				r.Header.Set("authusersid", autherUserIdResp.AuthUsersId)
+				fmt.Printf("%+v\n", r)
 				customServerGraphqlProxy.ServeHTTP(w, r)
 				return
 			} else {

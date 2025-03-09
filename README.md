@@ -87,7 +87,7 @@ It might be necessary to apply the `proxy-protocol` to the nginx-ingress-control
 
 You can see all Taskfile commands by executing `task --list-all`.
 
-## Architecture
+## 🏛️ Architecture
 
 The architecture is divided in frontend (UI) and backend (Gateway, Supabase, GraphQL-Server).
 The backend is either reached directly from the UI in the case of Supabase or via the Gateway.

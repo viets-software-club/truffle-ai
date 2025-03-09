@@ -169,22 +169,6 @@ Contains the terraform files to create the infrastructure of the application on 
 
 Contains the input for the values used by Kubernetes and the environment variables, contains scripts to generate these values for Kubernetes and .env files.
 
-### Deprecated Technologies
-
-Over the course of this project, several technologies were used and later replaced. Here's a list of those technologies and what they were replaced with:
-
-- **Rust API gateway**: Replaced with Golang Gateway as it is simpler to maintan
-- **ZX Deployment Scripts**: Replaced with Golang Deployment Scripts
-- **GraphQL Mesh**: Replaced with Golang Gateway as it had a memory issue when used with external server logic e.g. Fastify (running Supabase GraphQL queries with complex filters through it crashed)
-- **Grafbase Gateway**: Replaced with Golang Gateway as it couldn't handle the documented authentication logic, it was below v1.0.0
-- **Next.js**: Replaced with SvelteKit and Svelte 5 because of speed, simplicity, less code, clean code refactoring, developer change and maintainability.
-- **Terraform Kubernetes Config**: Replaced with Helm; Kubernetes Deployments in Terraform were too slow and inflexible.
-- **PNPM**: Used for disallowing hoisting in GraphQL Mesh because of dependency issues. Now there is only one npm module and no GraphQL Mesh anymore. Replaced with NPM.
-- **Node.js Backend**: Replaced with Golang backend server so that scraping can be done in realtime and concurrently. Golang provides for most APIs REST libraries and is faster.
-- **Deno env variable scripts**: Replaced with Golang scripts
-
-Each of these technologies served a purpose at the time, but were eventually replaced as the needs of the project evolved.
-
 ### Deployment
 
 It might be necessary to apply the `proxy-protocol` to the nginx-ingress-controller config map manually like described [here](https://github.com/nginxinc/kubernetes-ingress/tree/90d40829ca0b92e4a8ebcc36415c220e72da7405/examples/shared-examples/proxy-protocol) and rollout restart afterwards:

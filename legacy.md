@@ -1,4 +1,4 @@
-# Deprecated Technologies
+# Previously used Technologies
 Over the course of this project, several technologies were used and later replaced. Here's a list of those technologies and what they were replaced with:
 
 - **Rust API gateway**: Replaced with Golang Gateway as it is simpler to maintain and refactor.
